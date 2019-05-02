@@ -18,7 +18,9 @@ class CreateCadenasTable extends Migration
             $table->string('name');
             $table->string('dirlogo1')->nullable();
             $table->string('key')->nullable();
+            $table->boolean('filter')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

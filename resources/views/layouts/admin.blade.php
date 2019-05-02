@@ -38,6 +38,14 @@
     <script src="{{ asset('js/app.js') }}"></script>
     @include('layouts.auth.scripts')
     <script src="{{ asset('/js/general.js') }}"></script>
+    <!--Echart 4.2-->
+    <script src="{{ asset('/bower_components/incubator-echarts-4.2.1/dist/echarts.js') }}"></script>
+    <script src="{{ asset('/bower_components/incubator-echarts-4.2.1/theme/vintage.js') }}"></script>
+    <!-- Date Picker Plugin JavaScript -->
+    <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}" type="text/css" />
+    <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js')}}"></script>
+    <script src="{{ asset('bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js')}}" charset="UTF-8"></script>
+
     @stack('scripts')
   </body>
 </html>

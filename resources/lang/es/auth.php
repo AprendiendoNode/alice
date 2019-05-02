@@ -28,4 +28,5 @@ return [
     'resetpassword' => 'Reset Password',
     'retrypepassword' => 'Retype password',
     'sendresetpassword' => 'Send Password Reset Link',
+    'close' => 'Cerrar',
 ];

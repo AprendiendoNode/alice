@@ -24,7 +24,7 @@ class ClassificationController extends Controller
       $workstations = Workstation::select('id','name')->get();
       $departments = Department::select('id','name')->get();
       $cadena = Cadena::select('id','name')->get();
-      $hotel= DB::table('hotels')->select('id','Nombre_hotel')->whereNull('deleted_at')->get();
+      $hotel= DB::table('hotels')->select('id','Nombre_hotel')->where('filter', 1)->whereNull('deleted_at')->get();
       return view('permitted.classification.classification',compact('user', 'workstations','departments','cadena','hotel'));
     }
 

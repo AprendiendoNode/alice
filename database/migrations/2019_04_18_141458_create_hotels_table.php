@@ -58,7 +58,7 @@ class CreateHotelsTable extends Migration
             $table->string('num_ext', 100)->nullable();
             $table->string('num_int', 100)->nullable();
             $table->string('codigopostal', 12)->nullable();
-
+            $table->boolean('filter')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

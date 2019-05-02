@@ -26,6 +26,7 @@ class Hotel extends Model
     'servicios_id',
     'sucursal_id',
     'estado_id',
+    'filter'
   ];
   public function operaciones()
   {
