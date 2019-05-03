@@ -71,12 +71,6 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/department_update', 'DepartmentController@update');
   Route::post('/department_destroy', 'DepartmentController@destroy');
 
-  //- Reportes - Asignacion de reportes
-  Route::get('/type_report' , 'TypereportController@index');
-  Route::post('/reg_user_type' , 'TypereportController@create');
-  Route::post('/get_user_type' , 'TypereportController@show');
-  Route::post('/delete_assign_hotel_cl' , 'TypereportController@destroy');
-
   //Facturación Electronica - Folder Base
   Route::get('/dashboard_cfdi', 'Base\DashboardCFDIController@dashboard');
   Route::get('/settings_pac', 'Base\DashboardCFDIController@settings_pac');
@@ -147,5 +141,23 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/detailed_cover', 'Inventory\Entry_letter@index');
   //Modulo de inventario - Reporte Distribucion
   Route::get('/detailed_distribution', 'Inventory\Distribution@index');
+
+
+  //Modulo de reportes - Asignacion tipo de reportes
+  Route::get('/type_report' , 'TypereportController@index');
+  Route::post('/reg_user_type' , 'TypereportController@create');
+  Route::post('/get_user_type' , 'TypereportController@show');
+  Route::post('/delete_assign_hotel_cl' , 'TypereportController@destroy');
+  //Modulo de reportes - Capturar reporte
+  Route::get('/individual' , 'Report\Capture@index');
+
+  //Modulo de reportes - Editar reportes
+  Route::get('/edit_report' , 'Report\Edition@index');
+
+  //Modulo de reportes - ver reporte basico
+  Route::get('/viewreports' , 'Report\Basic@index');
+
+  //Modulo de reportes - ver reporte concatenado
+  Route::get('/viewreportscont' , 'Report\Concatenated@index');
 
 });

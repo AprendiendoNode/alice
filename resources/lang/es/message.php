@@ -149,8 +149,8 @@ return [
     'contentwlantop' => 'Top 5 de wlan‘s mas usadas',
 
 
-    'ingnombw' => 'Ingresar nombre de WLAN',
-    'ingnumcw' => 'Ingresar num. de clientes',
+    'ingnombw' => 'Nombre de WLAN',
+    'ingnumcw' => 'Num. de clientes',
     'gbtrans' => 'GB. trans',
     'usersauth' => 'Usuarios',
 
