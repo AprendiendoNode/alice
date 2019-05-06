@@ -83,10 +83,6 @@ Route::group(['middleware' => 'auth'], function () {
     return view('permitted.invoicing.settings_product');
   });
 
-  Route::prefix('catalogs')->group(function () {
-      Route::get('products/get-product', 'Catalogs\ProductController@getProduct')->name('products/get-product');
-  });
-
   //- Modulo de zendesk - Dashboard
   Route::get('/dashboardcust', 'Support\Dashboard@index');
   // Modulo de zendesk - Peticion - Grafica 1
@@ -150,6 +146,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/delete_assign_hotel_cl' , 'TypereportController@destroy');
   //Modulo de reportes - Capturar reporte
   Route::get('/individual' , 'Report\Capture@index');
+  Route::post('/get_zd_hotel', 'Report\Capture@get_zd_hotel');
 
   //Modulo de reportes - Editar reportes
   Route::get('/edit_report' , 'Report\Edition@index');
@@ -159,5 +156,18 @@ Route::group(['middleware' => 'auth'], function () {
 
   //Modulo de reportes - ver reporte concatenado
   Route::get('/viewreportscont' , 'Report\Concatenated@index');
+
+
+  //Catalogo
+  Route::prefix('catalogs')->group(function () {
+    Route::get('products/get-product', 'Catalogs\ProductController@getProduct')->name('products/get-product');
+    Route::get('/unit-measures2', 'Inventory\Entry_letter@index');
+
+    //Catalogo - Unidad de medida
+    Route::get('/unit-measures', 'Catalogs\UnitMeasureController@index');
+
+  });
+
+
 
 });

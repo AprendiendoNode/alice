@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCountriesTable extends Migration
+class CreateCreatePaymentTermsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateCountriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('countries', function (Blueprint $table) {
+        Schema::create('payment_terms', function (Blueprint $table) {
             $table->increments('id');
+            //Campos
             $table->string('name');
-            $table->string('code',3)->unique();
+            $table->integer('days')->default(0);
             $table->integer('sort_order')->default(0);
             $table->boolean('status')->default(TRUE);
             // Operaciones de usuario
@@ -37,6 +38,6 @@ class CreateCountriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('countries');
+        Schema::dropIfExists('payment_terms');
     }
 }

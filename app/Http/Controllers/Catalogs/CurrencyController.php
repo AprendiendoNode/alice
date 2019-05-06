@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Catalogs;
 
-use App\country_state;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class CountryStateController extends Controller
+class CurrencyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class CountryStateController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\country_state  $country_state
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(country_state $country_state)
+    public function show($id)
     {
         //
     }
@@ -52,10 +52,10 @@ class CountryStateController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\country_state  $country_state
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(country_state $country_state)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +64,10 @@ class CountryStateController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\country_state  $country_state
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, country_state $country_state)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +75,10 @@ class CountryStateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\country_state  $country_state
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(country_state $country_state)
+    public function destroy($id)
     {
         //
     }

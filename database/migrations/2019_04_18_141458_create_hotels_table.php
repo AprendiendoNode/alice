@@ -48,7 +48,7 @@ class CreateHotelsTable extends Migration
             $table->foreign('sucursal_id')->references('id')->on('sucursals');
             //Sexta llave foranea
             $table->integer('estado_id')->unsigned();
-            $table->foreign('estado_id')->references('id')->on('country_states');
+            $table->foreign('estado_id')->references('id')->on('states');
 
             $table->string('id_proyecto', 20)->nullable();
             $table->string('key', 200)->nullable();

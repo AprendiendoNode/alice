@@ -153,4 +153,80 @@ $(function() {
     }
   });
 
+  //Create workstation
+  $('#form_gb').formValidation({
+   framework: 'bootstrap',
+   excluded: ':disabled',
+   fields: {
+     select_onet:{
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+     select_two_zd:{
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+     month_trans_zd: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+     valorgb_trans: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+
+   }
+  })
+  .on('success.form.fv', function(e) {
+     e.preventDefault();
+
+   });
+});
+
+$('#select_onet').on('change', function(){
+  var _token = $('input[name="_token"]').val();
+  var select1 = $('#select_onet').val();
+  let dataselect = [];
+  $('#select_two_zd').empty();
+    $.ajax({
+        type: "POST",
+        url: "/get_zd_hotel",
+        data: { _token : _token, select : select1 },
+        success: function (data){
+          //console.log(data);
+          if (data && data.length) {
+            //console.log('algo');
+            dataselect.push({id : "", text : "Elije"});
+            $.each(data, function(index, datos){
+              dataselect.push({id: datos.id, text: datos.ip});
+            });
+            //console.log(dataselect);
+            $('#select_two_zd').select2({
+              data : dataselect
+            });
+          }else{
+            //console.log('vacio');
+            dataselect.push({id : "", text : "Elije"});
+            dataselect.push({id : "0", text : "Default"});
+            $('#select_two_zd').select2({
+              data : dataselect
+            });
+          }
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
 });

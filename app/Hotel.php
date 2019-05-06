@@ -10,7 +10,7 @@ use App\Vertical;
 use App\Cadena;
 use App\Servicio;
 use App\Sucursal;
-use App\country_state;
+use App\Models\Catalogs\State;
 
 class Hotel extends Model
 {
@@ -48,9 +48,9 @@ class Hotel extends Model
   {
       return $this->belongsTo(Sucursal::class);
   }
-  public function country_states()
+  public function states()
   {
-      return $this->belongsTo(country_state::class);
+      return $this->belongsTo(State::class);
   }
 
 }

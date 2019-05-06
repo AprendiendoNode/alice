@@ -1,16 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Report;
+namespace App\Http\Controllers\Catalogs;
 
+use App\Models\Catalogs\country;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use DB;
-use Auth;
-use App\Hotel;
-use Carbon\Carbon;
-use Jenssegers\Date\Date;
 
-class Capture extends Controller
+class CountryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,20 +14,17 @@ class Capture extends Controller
      */
     public function index()
     {
-      $user_id = Auth::user()->id;
-      if (auth()->user()->hasanyrole('SuperAdmin|Admin')) {
-        $hotels= DB::table('hotels')->select('id','Nombre_hotel')->where('filter', 1)->whereNull('deleted_at')->get();
-      }
-      else {
-        $hotels = DB::select('CALL GetAllCadenaActiveByUserv2 (?)', array($user_id));
-      }
-      return view('permitted.report.individual',compact('hotels'));
+        //
     }
-    public function get_zd_hotel(Request $request)
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-      $select = $request->select;
-      $res = DB::select('CALL get_zd_venue(?)', array($select));
-      return $res;
+        //
     }
 
     /**
@@ -49,10 +41,10 @@ class Capture extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\country  $country
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(country $country)
     {
         //
     }
@@ -60,10 +52,10 @@ class Capture extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\country  $country
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(country $country)
     {
         //
     }
@@ -72,10 +64,10 @@ class Capture extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\country  $country
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, country $country)
     {
         //
     }
@@ -83,10 +75,10 @@ class Capture extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\country  $country
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(country $country)
     {
         //
     }
