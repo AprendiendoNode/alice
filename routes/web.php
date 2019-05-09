@@ -165,7 +165,22 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Catalogo - Unidad de medida
     Route::get('/unit-measures', 'Catalogs\UnitMeasureController@index');
-
+    Route::post('/unit-measures-create', 'Catalogs\UnitMeasureController@create');
+    Route::post('/unit-measures-edit', 'Catalogs\UnitMeasureController@edit');
+    Route::post('/unit-measures-show', 'Catalogs\UnitMeasureController@show');
+    Route::post('/unit-measures-destroy', 'Catalogs\UnitMeasureController@destroy');
+    //Catalogo - Paises
+    Route::get('/countries', 'Catalogs\CountryController@index');
+    //Catalogo - Estados
+    Route::get('/states', 'Catalogs\StateController@index');
+    //Catalogo - Ciudades
+    Route::get('/cities', 'Catalogs\CityController@index');
+    //Catalogo - Monedas
+    Route::get('/currencies', 'Catalogs\CurrencyController@index');
+    //Catalogo - Termino de pago
+    Route::get('/payment-terms', 'Catalogs\PaymentTermController@index');
+    //Catalogo - Metodo de pago
+    Route::get('/payment-methods', 'Catalogs\PaymentMethodController@index');
   });
 
 

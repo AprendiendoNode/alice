@@ -14,7 +14,7 @@ class PaymentMethodController extends Controller
      */
     public function index()
     {
-        //
+      return view('permitted.catalogs.payment_methods');
     }
 
     /**

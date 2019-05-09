@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Catalogs;
 
-use App\Models\Catalogs\country;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CountryController extends Controller
 {
@@ -14,7 +14,7 @@ class CountryController extends Controller
      */
     public function index()
     {
-        //
+      return view('permitted.catalogs.countries');
     }
 
     /**

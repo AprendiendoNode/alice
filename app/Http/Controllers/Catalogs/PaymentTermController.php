@@ -14,7 +14,8 @@ class PaymentTermController extends Controller
      */
     public function index()
     {
-        //
+      return view('permitted.catalogs.payment_terms');
+
     }
 
     /**

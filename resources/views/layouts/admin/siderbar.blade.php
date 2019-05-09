@@ -81,13 +81,13 @@
             <div class="collapse" id="billing_catalog">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-university mr-2"></i>Bancos</a></li>
-                <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-weight mr-2"></i>Unidades de medida</a></li>
-                <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-donate mr-2"></i>Monedas</a></li>
-                <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-globe-americas mr-2"></i> Paises</a></li>
-                <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-globe-americas mr-2"></i> Ciudades</a></li>
-                <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-globe-americas mr-2"></i> Municipios</a></li>
-                <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-ruler mr-2"></i> Impuestos</a></li>
-                <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-paste mr-2"></i> Plazos de pago</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/unit-measures') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/unit-measures') }}"><i class="fas fa-weight mr-2"></i>Unidades de medida</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/currencies') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/currencies') }}"><i class="fas fa-donate mr-2"></i>Monedas</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/countries') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/countries') }}"><i class="fas fa-globe-americas mr-2"></i> Paises</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/states') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/states') }}"><i class="fas fa-globe-americas mr-2"></i> Estados</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/cities') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/cities') }}"><i class="fas fa-globe-americas mr-2"></i> Ciudades</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/payment-terms') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/payment-terms') }}"><i class="fas fa-ruler mr-2"></i> Términos de pago</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/payment-methods') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/payment-methods') }}"><i class="fas fa-paste mr-2"></i> Métodos de pago</a></li>
               </ul>
             </div>
           </li>
