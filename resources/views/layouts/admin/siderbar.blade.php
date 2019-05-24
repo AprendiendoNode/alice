@@ -17,7 +17,7 @@
             <div class="collapse" id="{{ App\Section::find($menu[0]->section_id)->display_name }}">
               <ul class="nav flex-column sub-menu">
                 @foreach (auth()->user()->menus->where('section_id', $menu[0]->section_id) as $submenu)
-                  <li class="nav-item {{ Request::is($submenu->url) ? 'active' : '' }}"> <a class="nav-link" href="{{ $submenu->url }}"><i class="{{ $submenu->icons }} mr-2"></i>{{ $submenu->display_name }}</a></li>
+                  <li class="nav-item {{ Request::is($submenu->url) ? 'active' : '' }}"> <a class="nav-link" href="{{ url($submenu->url) }}"><i class="{{ $submenu->icons }} mr-2"></i>{{ $submenu->display_name }}</a></li>
                 @endforeach
               </ul>
             </div>
@@ -80,7 +80,8 @@
             </a>
             <div class="collapse" id="billing_catalog">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-university mr-2"></i>Bancos</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/taxes') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/taxes') }}"><i class="fas fa-balance-scale mr-2"></i>Impuestos</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/banks') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/banks') }}"><i class="fas fa-university mr-2"></i>Bancos</a></li>
                 <li class="nav-item {{ Request::is('/catalogs/unit-measures') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/unit-measures') }}"><i class="fas fa-weight mr-2"></i>Unidades de medida</a></li>
                 <li class="nav-item {{ Request::is('/catalogs/currencies') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/currencies') }}"><i class="fas fa-donate mr-2"></i>Monedas</a></li>
                 <li class="nav-item {{ Request::is('/catalogs/countries') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/countries') }}"><i class="fas fa-globe-americas mr-2"></i> Paises</a></li>

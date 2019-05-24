@@ -52,15 +52,66 @@
                 </div>
                 <div class="form-group row">
                   <label for="status" class="col-sm-3 control-label">Estatus</label>
-                  <div class="col-md-9">
-                      <label>
-                          <input class="js-switch" name="status" type="checkbox" value="1" id="status" checked>
-                      </label>
-                      <span class="check-change js-check-change-field2 ml-2 mt-1"></span>
+                  <div class="col-md-9 mb-3">
+                    <input id="status" name="status" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
+                    {{-- <label>
+                        <input class="js-switch" name="status" type="checkbox" value="1" id="status" checked>
+                    </label>
+                    <span class="check-change js-check-change-field2 ml-2 mt-1"></span> --}}
                   </div>
                 </div>
                 <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
                 <button type="button" class="btn btn-danger waves-effect form_creat_user" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-Edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaleditunitmeasure" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modaleditunitmeasure">Editar unidad de medida</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="editunitmeasure" name="editunitmeasure" class="forms-sample" action="">
+                {{ csrf_field() }}
+                <input class="form-control" type="hidden" placeholder="" id="token_b" name="token_b" value="">
+
+                <div class="form-group row">
+                  <label for="inputEditCode" class="col-sm-3 col-form-label">Clave <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditCode" name="inputEditCode" placeholder="Clave" maxlength="4">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputEditName" class="col-sm-3 col-form-label">{{ trans('auth.nombre')}} <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditName" name="inputEditName" placeholder="{{ trans('auth.nombre') }}" maxlength="60">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputEditOrden" class="col-sm-3 col-form-label">Orden<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required onlynumber" id="inputEditOrden" name="inputEditOrden" placeholder="Orden de visualización" value="0" maxlength="3">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="editstatus" class="col-sm-3 control-label">Estatus</label>
+                  <div class="col-md-9 mb-3">
+                    <input id="editstatus" name="editstatus" type="checkbox" data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.editar') }}</button>
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
               </form>
             </div>
           </div>
@@ -123,46 +174,13 @@
   <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
 
-  <link href="{{ asset('bower_components/switchery-master/dist/switchery.css')}}" rel="stylesheet" type="text/css">
-  <script src="{{ asset('bower_components/switchery-master/dist/switchery.js')}}" charset="utf-8"></script>
+  <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
+  <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>
 
   <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
   <script src="{{ asset('js/admin/catalogs/unit_measures.js')}}"></script>
-
-  <script type="text/javascript">
-    var defaults = {
-      color             : '#3FB5F3',
-      secondaryColor    : '#dfdfdf',
-      jackColor         : '#fff',
-      jackSecondaryColor: null,
-      className         : 'switchery',
-      disabled          : true,
-      disabledOpacity   : 0.5,
-      speed             : '0.1s',
-      size              : 'default',
-    }
-    // var elem = document.querySelector('.js-switch'),
-    // changeField = document.querySelector('.js-check-change-field');
-    // var init = new Switchery(elem, defaults);
-    // elem.onchange = function() {
-    //   changeField.innerHTML = elem.checked;
-    // };
-
-    // var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-    // elems.forEach(function(html) {
-    //   var switchery = new Switchery(html, defaults);
-    // });
-    $(document).ready(function() {
-    if ($(".js-switch")[0]) {
-        var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-        elems.forEach(function (html) {
-            var switchery = new Switchery(html, defaults);
-        });
-    }
-});
-  </script>
   {{-- @else --}}
   {{-- @endif  --}}
 @endpush

@@ -326,4 +326,12 @@ return [
 
     'hist_document_edit' => 'Historial de Compras',
     'breadcrumb_hist_document_edit' => 'Historial de Compras',
+    'editar' => 'Editar',
+
+    'credit_day' => 'Dias de credito',
+    'text_left' => 'Izquierda',
+    'text_right' => 'Derecha',
+    'valormoneda'=> 'Valor o Tarifa',
+    'decimal' => 'Decimal',
+    'simbolo' => 'Simbolo',
 ];

@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use App\Models\Catalogs\UnitMeasure;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Crypt;
 class UnitMeasureController extends Controller
 {
     /**
@@ -33,7 +33,6 @@ class UnitMeasureController extends Controller
          $name= $request->inputCreatName;
         $orden= $request->inputCreatOrden;
        $status= !empty($request->status) ? 1 : 0;
-
        $result = DB::table('unit_measures')
                  ->select('code')
                  ->where([
@@ -69,7 +68,39 @@ class UnitMeasureController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $user_id= Auth::user()->id;
+  $id_received= Crypt::decryptString($request->token_b);
+         $code= $request->inputEditCode;
+         $name= $request->inputEditName;
+        $orden= $request->inputEditOrden;
+       $status= !empty($request->editstatus) ? 1 : 0;
+       $result = DB::table('unit_measures')
+                 ->select('code')
+                 ->where([
+                     ['code', '=', $code],
+                     ['id', '!=', $id_received],
+                   ])->count();
+       if($result == 0)
+       {
+         $newId = DB::table('unit_measures')
+         ->where('id', '=',$id_received )
+         ->update([     'code' => $code,
+                        'name' => $name,
+                  'sort_order' => $orden,
+                      'status' => $status,
+                 'updated_uid' => $user_id,
+                  'updated_at' => \Carbon\Carbon::now()]);
+         if($newId == '0' ){
+             return 'abort'; // returns 0
+         }
+         else{
+             return $newId; // returns id
+         }
+       }
+       else
+       {
+         return 'false';//Ya esta asociado
+       }
     }
 
     /**
@@ -90,9 +121,15 @@ class UnitMeasureController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+      $identificador= $request->value;
+      $resultados = DB::select('CALL GetUnitMeasuresByIdv2 (?)', array($identificador));
+      foreach ($resultados as $key) {
+        $key->id = Crypt::encryptString($key->id);
+      }
+
+      return $resultados;
     }
 
     /**
@@ -104,7 +141,6 @@ class UnitMeasureController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
     }
 
     /**
@@ -113,8 +149,22 @@ class UnitMeasureController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy()
     {
+        $resultados = DB::select('CALL GetUnitMeasuresByIdv2 (?)', array(1));
+        //OPCION A
+        foreach ($resultados as $key) {
+          $key->id = bcrypt($key->id);
+        }
+        //OPCION B
+        // if (isset($resultados)) {
+        //   return $resultados;
+        // }
+        // else {
+        //   $resultados[0]->id =  Crypt::encryptString($resultados[0]->id);
+        // }
+        return $resultados;
         //
+        // return bcrypt('123456');
     }
 }

@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Catalogs;
-
+use DB;
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Crypt;
 class StateController extends Controller
 {
     /**
@@ -14,8 +16,8 @@ class StateController extends Controller
      */
     public function index()
     {
-      return view('permitted.catalogs.states');
-
+      $country = DB::select('CALL GetAllCountryActivev2 ()', array());
+      return view('permitted.catalogs.states',compact('country'));
     }
 
     /**
@@ -23,9 +25,39 @@ class StateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+      $user_id= Auth::user()->id;
+         $name= $request->inputCreatName;
+       $select= $request->select_one;
+        $orden= $request->inputCreatOrden;
+       $status= !empty($request->status) ? 1 : 0;
+
+       $result = DB::table('states')
+                 ->select('id')
+                 ->where([
+                     ['name', '=', $name],
+                   ])->count();
+       if($result == 0)
+       {
+         $newId = DB::table('states')
+         ->insertGetId(['name' => $name,
+                  'country_id' => $select,
+                  'sort_order' => $orden,
+                      'status' => $status,
+                 'created_uid' => $user_id,
+                  'created_at' => \Carbon\Carbon::now()]);
+         if(empty($newId)){
+             return 'abort'; // returns 0
+         }
+         else{
+             return $newId; // returns id
+         }
+       }
+       else
+       {
+         return 'false';//Ya esta asociado
+       }
     }
 
     /**
@@ -36,7 +68,39 @@ class StateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $user_id= Auth::user()->id;
+  $id_received= Crypt::decryptString($request->token_b);
+         $select= $request->edit_select_one;
+         $name= $request->inputEditName;
+        $orden= $request->inputEditOrden;
+       $status= !empty($request->editstatus) ? 1 : 0;
+       $result = DB::table('states')
+                 ->select('id')
+                 ->where([
+                     ['name', '=', $name],
+                     ['id', '!=', $id_received],
+                   ])->count();
+       if($result == 0)
+       {
+         $newId = DB::table('states')
+         ->where('id', '=',$id_received )
+         ->update([     'name' => $name,
+                  'country_id' => $select,
+                  'sort_order' => $orden,
+                      'status' => $status,
+                 'updated_uid' => $user_id,
+                  'updated_at' => \Carbon\Carbon::now()]);
+         if($newId == '0' ){
+             return 'abort'; // returns 0
+         }
+         else{
+             return $newId; // returns id
+         }
+       }
+       else
+       {
+         return 'false';//Ya esta asociado
+       }
     }
 
     /**
@@ -45,9 +109,10 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $resultados = DB::select('CALL GetAllStatesv2 ()', array());
+        return json_encode($resultados);
     }
 
     /**
@@ -56,9 +121,14 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+      $identificador= $request->value;
+      $resultados = DB::select('CALL GetStatesByIdv2 (?)', array($identificador));
+      foreach ($resultados as $key) {
+        $key->id = Crypt::encryptString($key->id);
+      }
+      return $resultados;
     }
 
     /**

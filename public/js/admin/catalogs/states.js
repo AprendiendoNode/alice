@@ -1,6 +1,9 @@
 $(function () {
-  get_info_unit_measures();
-  $('#creatunitmeasure').formValidation({
+  get_info_states();
+  $("#select_one").select2();
+  $("#edit_select_one").select2();
+
+  $('#creatstates').formValidation({
    framework: 'bootstrap',
    excluded: ':disabled',
    fields: {
@@ -25,31 +28,38 @@ $(function () {
          }
        }
      },
+     select_one: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
    }
   })
   .on('success.form.fv', function(e) {
-     e.preventDefault();
-     var form = $('#creatunitmeasure')[0];
+        e.preventDefault();
+        var form = $('#creatstates')[0];
         var formData = new FormData(form);
         $.ajax({
           type: "POST",
-          url: "/catalogs/unit-measures-create",
+          url: "/catalogs/states-create",
           data: formData,
           contentType: false,
           processData: false,
           success: function (data){
-            if (data == 'false') {
-              Swal.fire({
-                 type: 'error',
-                 title: 'Error encontrado..',
-                 text: 'Ya existe!',
-               });
-            }
-            else if (data == 'abort') {
+            if (data == 'abort') {
               Swal.fire({
                  type: 'error',
                  title: 'Error encontrado..',
                  text: 'Realice la operacion nuevamente!',
+               });
+            }
+            else if (data == 'false') {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Error encontrado..',
+                 text: 'Ya existe!',
                });
             }
             else {
@@ -73,7 +83,7 @@ $(function () {
                     // Read more about handling dismissals
                     result.dismiss === Swal.DismissReason.timer
                   ) {
-                    window.location.href = "/catalogs/unit-measures";
+                    window.location.href = "/catalogs/states";
                   }
                 });
             }
@@ -88,19 +98,18 @@ $(function () {
         });
    });
 
-
-   $('#editunitmeasure').formValidation({
+  $('#editstates').formValidation({
     framework: 'bootstrap',
     excluded: ':disabled',
     fields: {
-      inputEditCode: {
+      inputEditName: {
         validators: {
           notEmpty: {
             message: 'The field is required'
           }
         }
       },
-      inputEditName: {
+      edit_select_one: {
         validators: {
           notEmpty: {
             message: 'The field is required'
@@ -116,13 +125,13 @@ $(function () {
       },
     }
    })
-   .on('success.form.fv', function(e) {
+  .on('success.form.fv', function(e) {
       e.preventDefault();
-      var form = $('#editunitmeasure')[0];
+      var form = $('#editstates')[0];
       var formData = new FormData(form);
       $.ajax({
         type: "POST",
-        url: "/catalogs/unit-measures-store",
+        url: "/catalogs/states-store",
         data: formData,
         contentType: false,
         processData: false,
@@ -132,7 +141,7 @@ $(function () {
              Swal.fire({
                 type: 'error',
                 title: 'Error encontrado..',
-                text: 'La clave ya existe!',
+                text: 'La Nombre ya existe!',
               });
            }
           else if (data == 'abort') {
@@ -163,7 +172,7 @@ $(function () {
                   // Read more about handling dismissals
                   result.dismiss === Swal.DismissReason.timer
                 ) {
-                  window.location.href = "/catalogs/unit-measures";
+                  window.location.href = "/catalogs/states";
                 }
               });
           }
@@ -176,19 +185,18 @@ $(function () {
            });
         }
       });
+  });
 
-   });
 });
 
-
-function get_info_unit_measures(){
+function get_info_states(){
   var _token = $('meta[name="csrf-token"]').attr('content');
   $.ajax({
       type: "POST",
-      url: "/catalogs/unit-measures-show",
+      url: "/catalogs/states-show",
       data: { _token : _token },
       success: function (data){
-        table_unit_measures(data, $("#table_unit_measures"));
+        table_states(data, $("#table_states"));
       },
       error: function (data) {
         console.log('Error:', data.statusText);
@@ -196,9 +204,9 @@ function get_info_unit_measures(){
   });
 }
 
-function table_unit_measures(datajson, table){
+function table_states(datajson, table){
   table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table_responsive_unit_measures);
+  var vartable = table.dataTable(Configuration_table_responsive_states);
   vartable.fnClearTable();
   $.each(JSON.parse(datajson), function(index, information){
     var badge = '<span class="badge badge-success badge-pill text-uppercase text-white">Habilitado</span>';
@@ -207,31 +215,32 @@ function table_unit_measures(datajson, table){
     }
     vartable.fnAddData([
       information.name,
-      information.code,
+      information.country,
       information.sort_order,
       badge,
-      '<a href="javascript:void(0);" onclick="edit_unit_measures(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
+      '<a href="javascript:void(0);" onclick="edit_states(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
     ]);
   });
 }
 
-//Mostrar - Edit unit measures
-function edit_unit_measures(e){
+//Mostrar - Edit states
+function edit_states(e){
   var valor= e.getAttribute('value');
   var _token = $('meta[name="csrf-token"]').attr('content');
   $.ajax({
        type: "POST",
-       url: '/catalogs/unit-measures-edit',
+       url: '/catalogs/states-edit',
        data: {value : valor, _token : _token},
        success: function (data) {
-         $("#editunitmeasure")[0].reset();
-         $('#editunitmeasure').data('formValidation').resetForm($('#editunitmeasure'));
+         $("#editstates")[0].reset();
+         $('#editstates').data('formValidation').resetForm($('#editstates'));
 
          if (data != []) {
             $('#token_b').val(data[0].id);
-            $('#inputEditCode').val(data[0].code);
             $('#inputEditName').val(data[0].name);
             $('#inputEditOrden').val(data[0].sort_order);
+            $("#edit_select_one").val(data[0].country_id).trigger('change');
+
             if (data[0].status == '0')
             {
               $("#editstatus").prop('checked', false).change();
@@ -248,7 +257,7 @@ function edit_unit_measures(e){
              text: 'Realice la operacion nuevamente!',
            });
          }
-           //$('#modal-Edit').modal('show');
+
        },
        error: function (data) {
          alert('Error:', data);
@@ -256,7 +265,7 @@ function edit_unit_measures(e){
    })
 }
 
-var Configuration_table_responsive_unit_measures= {
+var Configuration_table_responsive_states = {
   dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -270,14 +279,17 @@ var Configuration_table_responsive_unit_measures= {
         },
         action: function ( e, dt, node, config ) {
           $('#modal-CreatNew').modal('show');
-          if (document.getElementById("creatunitmeasure")) {
-            $('#creatunitmeasure')[0].reset();
+          if (document.getElementById("creatstates")) {
+            $('#creatstates')[0].reset();
+            $('#creatstates').data('formValidation').resetForm($('#creatstates'));
+            $('#inputCreatOrden').val(0);
+
           }
         }
       },
       {
         extend: 'excelHtml5',
-        title: 'Unidad de medida',
+        title: 'Estados',
         init: function(api, node, config) {
            $(node).removeClass('btn-secondary')
         },
@@ -290,7 +302,7 @@ var Configuration_table_responsive_unit_measures= {
       },
       {
         extend: 'csvHtml5',
-        title: 'Unidad de medida',
+        title: 'Estados',
         init: function(api, node, config) {
            $(node).removeClass('btn-secondary')
         },
@@ -328,7 +340,6 @@ var Configuration_table_responsive_unit_measures= {
     }
   }
 };
-
 $(".onlynumber").keypress(function (e) {
   //if the letter is not digit then display error and don't type anything
   if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {

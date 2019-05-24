@@ -1,9 +1,19 @@
 $(function () {
-  get_info_unit_measures();
-  $('#creatunitmeasure').formValidation({
+  get_info_currencies();
+  $("#select_one").select2();
+  $("#editposition").select2();
+
+  $('#creatcurrencies').formValidation({
    framework: 'bootstrap',
    excluded: ':disabled',
    fields: {
+     inputCreatName: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
      inputCreatCode: {
        validators: {
          notEmpty: {
@@ -11,7 +21,42 @@ $(function () {
          }
        }
      },
-     inputCreatName: {
+     inputCreatRate: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+     inputCreatDecimal: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+     inputCreatSymbol: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+     select_one: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+     inputCreatMark: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+     inputCreatThousands: {
        validators: {
          notEmpty: {
            message: 'The field is required'
@@ -28,28 +73,28 @@ $(function () {
    }
   })
   .on('success.form.fv', function(e) {
-     e.preventDefault();
-     var form = $('#creatunitmeasure')[0];
+        e.preventDefault();
+        var form = $('#creatcurrencies')[0];
         var formData = new FormData(form);
         $.ajax({
           type: "POST",
-          url: "/catalogs/unit-measures-create",
+          url: "/catalogs/currencies-create",
           data: formData,
           contentType: false,
           processData: false,
           success: function (data){
-            if (data == 'false') {
-              Swal.fire({
-                 type: 'error',
-                 title: 'Error encontrado..',
-                 text: 'Ya existe!',
-               });
-            }
-            else if (data == 'abort') {
+            if (data == 'abort') {
               Swal.fire({
                  type: 'error',
                  title: 'Error encontrado..',
                  text: 'Realice la operacion nuevamente!',
+               });
+            }
+            else if (data == 'false') {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Error encontrado..',
+                 text: 'Ya existe!',
                });
             }
             else {
@@ -73,7 +118,7 @@ $(function () {
                     // Read more about handling dismissals
                     result.dismiss === Swal.DismissReason.timer
                   ) {
-                    window.location.href = "/catalogs/unit-measures";
+                    window.location.href = "/catalogs/currencies";
                   }
                 });
             }
@@ -86,10 +131,9 @@ $(function () {
              });
           }
         });
-   });
+  });
 
-
-   $('#editunitmeasure').formValidation({
+  $('#editcurrencies').formValidation({
     framework: 'bootstrap',
     excluded: ':disabled',
     fields: {
@@ -107,6 +151,48 @@ $(function () {
           }
         }
       },
+      inputEditRate: {
+        validators: {
+          notEmpty: {
+            message: 'The field is required'
+          }
+        }
+      },
+      inputEditDecimal: {
+        validators: {
+          notEmpty: {
+            message: 'The field is required'
+          }
+        }
+      },
+      inputEditSymbol: {
+        validators: {
+          notEmpty: {
+            message: 'The field is required'
+          }
+        }
+      },
+      edit_select_one: {
+        validators: {
+          notEmpty: {
+            message: 'The field is required'
+          }
+        }
+      },
+      inputEditMark: {
+        validators: {
+          notEmpty: {
+            message: 'The field is required'
+          }
+        }
+      },
+      inputEditThousands: {
+        validators: {
+          notEmpty: {
+            message: 'The field is required'
+          }
+        }
+      },
       inputEditOrden: {
         validators: {
           notEmpty: {
@@ -116,13 +202,13 @@ $(function () {
       },
     }
    })
-   .on('success.form.fv', function(e) {
+  .on('success.form.fv', function(e) {
       e.preventDefault();
-      var form = $('#editunitmeasure')[0];
+      var form = $('#editcurrencies')[0];
       var formData = new FormData(form);
       $.ajax({
         type: "POST",
-        url: "/catalogs/unit-measures-store",
+        url: "/catalogs/currencies-store",
         data: formData,
         contentType: false,
         processData: false,
@@ -163,7 +249,7 @@ $(function () {
                   // Read more about handling dismissals
                   result.dismiss === Swal.DismissReason.timer
                 ) {
-                  window.location.href = "/catalogs/unit-measures";
+                  window.location.href = "/catalogs/currencies";
                 }
               });
           }
@@ -176,19 +262,17 @@ $(function () {
            });
         }
       });
-
-   });
+  });
 });
 
-
-function get_info_unit_measures(){
+function get_info_currencies(){
   var _token = $('meta[name="csrf-token"]').attr('content');
   $.ajax({
       type: "POST",
-      url: "/catalogs/unit-measures-show",
+      url: "/catalogs/currencies-show",
       data: { _token : _token },
       success: function (data){
-        table_unit_measures(data, $("#table_unit_measures"));
+        table_currencies(data, $("#table_currencies"));
       },
       error: function (data) {
         console.log('Error:', data.statusText);
@@ -196,9 +280,9 @@ function get_info_unit_measures(){
   });
 }
 
-function table_unit_measures(datajson, table){
+function table_currencies(datajson, table){
   table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table_responsive_unit_measures);
+  var vartable = table.dataTable(Configuration_table_responsive_currencies);
   vartable.fnClearTable();
   $.each(JSON.parse(datajson), function(index, information){
     var badge = '<span class="badge badge-success badge-pill text-uppercase text-white">Habilitado</span>';
@@ -208,30 +292,37 @@ function table_unit_measures(datajson, table){
     vartable.fnAddData([
       information.name,
       information.code,
+      information.rate,
+      information.decimal_place,
       information.sort_order,
       badge,
-      '<a href="javascript:void(0);" onclick="edit_unit_measures(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
+      '<a href="javascript:void(0);" onclick="edit_currency(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
     ]);
   });
 }
-
-//Mostrar - Edit unit measures
-function edit_unit_measures(e){
+//Mostrar - Edit country
+function edit_currency(e){
   var valor= e.getAttribute('value');
   var _token = $('meta[name="csrf-token"]').attr('content');
   $.ajax({
        type: "POST",
-       url: '/catalogs/unit-measures-edit',
+       url: '/catalogs/currencies-edit',
        data: {value : valor, _token : _token},
        success: function (data) {
-         $("#editunitmeasure")[0].reset();
-         $('#editunitmeasure').data('formValidation').resetForm($('#editunitmeasure'));
+         $("#editcurrencies")[0].reset();
+         $('#editcurrencies').data('formValidation').resetForm($('#editcurrencies'));
 
          if (data != []) {
             $('#token_b').val(data[0].id);
             $('#inputEditCode').val(data[0].code);
             $('#inputEditName').val(data[0].name);
+            $('#inputEditRate').val(data[0].rate);
+            $('#inputEditDecimal').val(data[0].decimal_place);
+            $('#inputEditSymbol').val(data[0].symbol);
+            $('#inputEditMark').val(data[0].decimal_mark);
+            $('#inputEditThousands').val(data[0].thousands_separator);
             $('#inputEditOrden').val(data[0].sort_order);
+            $("#editposition").val(data[0].symbol_position).trigger('change');
             if (data[0].status == '0')
             {
               $("#editstatus").prop('checked', false).change();
@@ -256,7 +347,8 @@ function edit_unit_measures(e){
    })
 }
 
-var Configuration_table_responsive_unit_measures= {
+
+var Configuration_table_responsive_currencies = {
   dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -270,14 +362,16 @@ var Configuration_table_responsive_unit_measures= {
         },
         action: function ( e, dt, node, config ) {
           $('#modal-CreatNew').modal('show');
-          if (document.getElementById("creatunitmeasure")) {
-            $('#creatunitmeasure')[0].reset();
+          if (document.getElementById("creatcurrencies")) {
+            $('#creatcurrencies')[0].reset();
+            $('#creatcurrencies').data('formValidation').resetForm($('#creatcurrencies'));
+            $('#inputCreatOrden').val(0);
           }
         }
       },
       {
         extend: 'excelHtml5',
-        title: 'Unidad de medida',
+        title: 'Moneda',
         init: function(api, node, config) {
            $(node).removeClass('btn-secondary')
         },
@@ -290,7 +384,7 @@ var Configuration_table_responsive_unit_measures= {
       },
       {
         extend: 'csvHtml5',
-        title: 'Unidad de medida',
+        title: 'Moneda',
         init: function(api, node, config) {
            $(node).removeClass('btn-secondary')
         },

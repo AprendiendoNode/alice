@@ -13,7 +13,7 @@
 
 Route::get('/', 'HomeController@welcome');
 
-Route::get('/policies', 'PoliceController@index');
+Route::get('/policies', 'PoliceController@index')->name('policies');
 
 Auth::routes();
 
@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
   //Dashboard
-  Route::get('/', 'HomeController@index');
+  Route::get('/', 'HomeController@index')->name('/');
   Route::post('/data_get_payment_all_week','HomeController@show_payment');
   Route::post('/data_summary_info_nps' , 'HomeController@show_summary_info_nps');
   Route::post('/get_graph_pais_distribution' , 'HomeController@show_apps');
@@ -84,7 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
   });
 
   //- Modulo de zendesk - Dashboard
-  Route::get('/dashboardcust', 'Support\Dashboard@index');
+  Route::get('/dashboardcust', 'Support\Dashboard@index')->name('dashboardcust');
   // Modulo de zendesk - Peticion - Grafica 1
 	Route::post('/dataTicketYearNowP', 'Support\Dashboard@showTicketYearP');
 	Route::post('/dataTicketYearLastP', 'Support\Dashboard@showTicketLastYearP');
@@ -121,13 +121,13 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/get_info_reg_ticket', 'Support\MyTickets@showinfoticket');
   Route::post('/update_ticket_sc', 'Support\MyTickets@update_ticket');
   //- Modulo de zendesk - Estadisticas
-  Route::get('/statistics_tickets', 'Support\Statistics@index');
+  Route::get('/statistics_tickets', 'Support\Statistics@index')->name('statistics_tickets');
   //- Modulo de zendesk - Estadisticas - Tabla
   Route::post('/get_table_allticket', 'Support\Statistics@show');
 
   //- Zendesk PACKAGE TEST
-  Route::get('/testzendesk', 'Support\Zendesk@index');
-  Route::get('/testzendesk2', 'Support\Zendesk@index2');
+  Route::get('/testzendesk', 'Support\Zendesk@index')->name('testzendesk');
+  Route::get('/testzendesk2', 'Support\Zendesk@index2')->name('testzendesk2');
 
   //Modulo de inventario - Reporte Detallado por hotel
   Route::get('/detailed_hotel', 'Inventory\Byhotel@index');
@@ -157,32 +157,57 @@ Route::group(['middleware' => 'auth'], function () {
   //Modulo de reportes - ver reporte concatenado
   Route::get('/viewreportscont' , 'Report\Concatenated@index');
 
+});
 
-  //Catalogo
-  Route::prefix('catalogs')->group(function () {
-    Route::get('products/get-product', 'Catalogs\ProductController@getProduct')->name('products/get-product');
-    Route::get('/unit-measures2', 'Inventory\Entry_letter@index');
+
+Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
+{
+    //All the routes that belongs to the group goes here
 
     //Catalogo - Unidad de medida
     Route::get('/unit-measures', 'Catalogs\UnitMeasureController@index');
     Route::post('/unit-measures-create', 'Catalogs\UnitMeasureController@create');
     Route::post('/unit-measures-edit', 'Catalogs\UnitMeasureController@edit');
     Route::post('/unit-measures-show', 'Catalogs\UnitMeasureController@show');
-    Route::post('/unit-measures-destroy', 'Catalogs\UnitMeasureController@destroy');
+    Route::post('/unit-measures-store', 'Catalogs\UnitMeasureController@store');
+    Route::get('/texts', 'Catalogs\UnitMeasureController@destroy');
+
     //Catalogo - Paises
     Route::get('/countries', 'Catalogs\CountryController@index');
+    Route::post('/countries-create', 'Catalogs\CountryController@create');
+    Route::post('/countries-edit', 'Catalogs\CountryController@edit');
+    Route::post('/countries-show', 'Catalogs\CountryController@show');
+    Route::post('/countries-store', 'Catalogs\CountryController@store');
     //Catalogo - Estados
     Route::get('/states', 'Catalogs\StateController@index');
+    Route::post('/states-show', 'Catalogs\StateController@show');
+    Route::post('/states-create', 'Catalogs\StateController@create');
+    Route::post('/states-edit', 'Catalogs\StateController@edit');
+    Route::post('/states-store', 'Catalogs\StateController@store');
     //Catalogo - Ciudades
     Route::get('/cities', 'Catalogs\CityController@index');
+    Route::post('/cities-show', 'Catalogs\CityController@show');
+    Route::post('/cities-create', 'Catalogs\CityController@create');
+    Route::post('/cities-store', 'Catalogs\CityController@store');
+    Route::post('/cities-edit', 'Catalogs\CityController@edit');
     //Catalogo - Monedas
     Route::get('/currencies', 'Catalogs\CurrencyController@index');
+    Route::post('/currencies-show', 'Catalogs\CurrencyController@show');
+    Route::post('/currencies-create', 'Catalogs\CurrencyController@create');
+    Route::post('/currencies-store', 'Catalogs\CurrencyController@store');
+    Route::post('/currencies-edit', 'Catalogs\CurrencyController@edit');
+
     //Catalogo - Termino de pago
     Route::get('/payment-terms', 'Catalogs\PaymentTermController@index');
+    Route::post('/payment-terms-show', 'Catalogs\PaymentTermController@show');
+    Route::post('/payment-terms-create', 'Catalogs\PaymentTermController@create');
+    Route::post('/payment-terms-store', 'Catalogs\PaymentTermController@store');
+    Route::post('/payment-terms-edit', 'Catalogs\PaymentTermController@edit');
     //Catalogo - Metodo de pago
     Route::get('/payment-methods', 'Catalogs\PaymentMethodController@index');
-  });
-
-
+    Route::post('/payment-methods-show', 'Catalogs\PaymentMethodController@show');
+    Route::post('/payment-methods-create', 'Catalogs\PaymentMethodController@create');
+    Route::post('/payment-methods-store', 'Catalogs\PaymentMethodController@store');
+    Route::post('/payment-methods-edit', 'Catalogs\PaymentMethodController@edit');
 
 });

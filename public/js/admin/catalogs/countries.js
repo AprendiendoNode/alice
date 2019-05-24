@@ -1,6 +1,6 @@
 $(function () {
-  get_info_unit_measures();
-  $('#creatunitmeasure').formValidation({
+  get_info_countries();
+  $('#creatcountry').formValidation({
    framework: 'bootstrap',
    excluded: ':disabled',
    fields: {
@@ -28,28 +28,28 @@ $(function () {
    }
   })
   .on('success.form.fv', function(e) {
-     e.preventDefault();
-     var form = $('#creatunitmeasure')[0];
+        e.preventDefault();
+        var form = $('#creatcountry')[0];
         var formData = new FormData(form);
         $.ajax({
           type: "POST",
-          url: "/catalogs/unit-measures-create",
+          url: "/catalogs/countries-create",
           data: formData,
           contentType: false,
           processData: false,
           success: function (data){
-            if (data == 'false') {
-              Swal.fire({
-                 type: 'error',
-                 title: 'Error encontrado..',
-                 text: 'Ya existe!',
-               });
-            }
-            else if (data == 'abort') {
+            if (data == 'abort') {
               Swal.fire({
                  type: 'error',
                  title: 'Error encontrado..',
                  text: 'Realice la operacion nuevamente!',
+               });
+            }
+            else if (data == 'false') {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Error encontrado..',
+                 text: 'Ya existe!',
                });
             }
             else {
@@ -73,7 +73,7 @@ $(function () {
                     // Read more about handling dismissals
                     result.dismiss === Swal.DismissReason.timer
                   ) {
-                    window.location.href = "/catalogs/unit-measures";
+                    window.location.href = "/catalogs/countries";
                   }
                 });
             }
@@ -88,8 +88,7 @@ $(function () {
         });
    });
 
-
-   $('#editunitmeasure').formValidation({
+  $('#editcountry').formValidation({
     framework: 'bootstrap',
     excluded: ':disabled',
     fields: {
@@ -116,13 +115,13 @@ $(function () {
       },
     }
    })
-   .on('success.form.fv', function(e) {
+  .on('success.form.fv', function(e) {
       e.preventDefault();
-      var form = $('#editunitmeasure')[0];
+      var form = $('#editcountry')[0];
       var formData = new FormData(form);
       $.ajax({
         type: "POST",
-        url: "/catalogs/unit-measures-store",
+        url: "/catalogs/countries-store",
         data: formData,
         contentType: false,
         processData: false,
@@ -163,7 +162,7 @@ $(function () {
                   // Read more about handling dismissals
                   result.dismiss === Swal.DismissReason.timer
                 ) {
-                  window.location.href = "/catalogs/unit-measures";
+                  window.location.href = "/catalogs/countries";
                 }
               });
           }
@@ -176,19 +175,18 @@ $(function () {
            });
         }
       });
-
    });
+
 });
 
-
-function get_info_unit_measures(){
+function get_info_countries(){
   var _token = $('meta[name="csrf-token"]').attr('content');
   $.ajax({
       type: "POST",
-      url: "/catalogs/unit-measures-show",
+      url: "/catalogs/countries-show",
       data: { _token : _token },
       success: function (data){
-        table_unit_measures(data, $("#table_unit_measures"));
+        table_countries(data, $("#table_countries"));
       },
       error: function (data) {
         console.log('Error:', data.statusText);
@@ -196,9 +194,9 @@ function get_info_unit_measures(){
   });
 }
 
-function table_unit_measures(datajson, table){
+function table_countries(datajson, table){
   table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table_responsive_unit_measures);
+  var vartable = table.dataTable(Configuration_table_responsive_countries);
   vartable.fnClearTable();
   $.each(JSON.parse(datajson), function(index, information){
     var badge = '<span class="badge badge-success badge-pill text-uppercase text-white">Habilitado</span>';
@@ -210,22 +208,22 @@ function table_unit_measures(datajson, table){
       information.code,
       information.sort_order,
       badge,
-      '<a href="javascript:void(0);" onclick="edit_unit_measures(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
+      '<a href="javascript:void(0);" onclick="edit_countries(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
     ]);
   });
 }
 
-//Mostrar - Edit unit measures
-function edit_unit_measures(e){
+//Mostrar - Edit country
+function edit_countries(e){
   var valor= e.getAttribute('value');
   var _token = $('meta[name="csrf-token"]').attr('content');
   $.ajax({
        type: "POST",
-       url: '/catalogs/unit-measures-edit',
+       url: '/catalogs/countries-edit',
        data: {value : valor, _token : _token},
        success: function (data) {
-         $("#editunitmeasure")[0].reset();
-         $('#editunitmeasure').data('formValidation').resetForm($('#editunitmeasure'));
+         $("#editcountry")[0].reset();
+         $('#editcountry').data('formValidation').resetForm($('#editcountry'));
 
          if (data != []) {
             $('#token_b').val(data[0].id);
@@ -256,7 +254,8 @@ function edit_unit_measures(e){
    })
 }
 
-var Configuration_table_responsive_unit_measures= {
+
+var Configuration_table_responsive_countries = {
   dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -270,14 +269,14 @@ var Configuration_table_responsive_unit_measures= {
         },
         action: function ( e, dt, node, config ) {
           $('#modal-CreatNew').modal('show');
-          if (document.getElementById("creatunitmeasure")) {
-            $('#creatunitmeasure')[0].reset();
+          if (document.getElementById("creatcountry")) {
+            $('#creatcountry')[0].reset();
           }
         }
       },
       {
         extend: 'excelHtml5',
-        title: 'Unidad de medida',
+        title: 'Paises',
         init: function(api, node, config) {
            $(node).removeClass('btn-secondary')
         },
@@ -290,7 +289,7 @@ var Configuration_table_responsive_unit_measures= {
       },
       {
         extend: 'csvHtml5',
-        title: 'Unidad de medida',
+        title: 'Paises',
         init: function(api, node, config) {
            $(node).removeClass('btn-secondary')
         },

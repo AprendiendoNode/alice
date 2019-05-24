@@ -1,16 +1,10 @@
 $(function () {
-  get_info_unit_measures();
-  $('#creatunitmeasure').formValidation({
+  get_info_cities();
+
+  $('#creatcities').formValidation({
    framework: 'bootstrap',
    excluded: ':disabled',
    fields: {
-     inputCreatCode: {
-       validators: {
-         notEmpty: {
-           message: 'The field is required'
-         }
-       }
-     },
      inputCreatName: {
        validators: {
          notEmpty: {
@@ -25,31 +19,38 @@ $(function () {
          }
        }
      },
+     select_one: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
    }
   })
   .on('success.form.fv', function(e) {
-     e.preventDefault();
-     var form = $('#creatunitmeasure')[0];
+        e.preventDefault();
+        var form = $('#creatcities')[0];
         var formData = new FormData(form);
         $.ajax({
           type: "POST",
-          url: "/catalogs/unit-measures-create",
+          url: "/catalogs/cities-create",
           data: formData,
           contentType: false,
           processData: false,
           success: function (data){
-            if (data == 'false') {
-              Swal.fire({
-                 type: 'error',
-                 title: 'Error encontrado..',
-                 text: 'Ya existe!',
-               });
-            }
-            else if (data == 'abort') {
+            if (data == 'abort') {
               Swal.fire({
                  type: 'error',
                  title: 'Error encontrado..',
                  text: 'Realice la operacion nuevamente!',
+               });
+            }
+            else if (data == 'false') {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Error encontrado..',
+                 text: 'Ya existe!',
                });
             }
             else {
@@ -73,7 +74,7 @@ $(function () {
                     // Read more about handling dismissals
                     result.dismiss === Swal.DismissReason.timer
                   ) {
-                    window.location.href = "/catalogs/unit-measures";
+                    window.location.href = "/catalogs/cities";
                   }
                 });
             }
@@ -86,21 +87,20 @@ $(function () {
              });
           }
         });
-   });
+  });
 
-
-   $('#editunitmeasure').formValidation({
+  $('#editcities').formValidation({
     framework: 'bootstrap',
     excluded: ':disabled',
     fields: {
-      inputEditCode: {
+      inputEditName: {
         validators: {
           notEmpty: {
             message: 'The field is required'
           }
         }
       },
-      inputEditName: {
+      edit_select_one: {
         validators: {
           notEmpty: {
             message: 'The field is required'
@@ -116,23 +116,22 @@ $(function () {
       },
     }
    })
-   .on('success.form.fv', function(e) {
+  .on('success.form.fv', function(e) {
       e.preventDefault();
-      var form = $('#editunitmeasure')[0];
+      var form = $('#editcities')[0];
       var formData = new FormData(form);
       $.ajax({
         type: "POST",
-        url: "/catalogs/unit-measures-store",
+        url: "/catalogs/cities-store",
         data: formData,
         contentType: false,
         processData: false,
         success: function (data){
-           console.log(data);
            if (data == 'false') {
              Swal.fire({
                 type: 'error',
                 title: 'Error encontrado..',
-                text: 'La clave ya existe!',
+                text: 'La Nombre ya existe!',
               });
            }
           else if (data == 'abort') {
@@ -163,7 +162,7 @@ $(function () {
                   // Read more about handling dismissals
                   result.dismiss === Swal.DismissReason.timer
                 ) {
-                  window.location.href = "/catalogs/unit-measures";
+                  window.location.href = "/catalogs/cities";
                 }
               });
           }
@@ -176,19 +175,18 @@ $(function () {
            });
         }
       });
+  });
 
-   });
 });
 
-
-function get_info_unit_measures(){
+function get_info_cities(){
   var _token = $('meta[name="csrf-token"]').attr('content');
   $.ajax({
       type: "POST",
-      url: "/catalogs/unit-measures-show",
+      url: "/catalogs/cities-show",
       data: { _token : _token },
       success: function (data){
-        table_unit_measures(data, $("#table_unit_measures"));
+        table_cities(data, $("#table_cities"));
       },
       error: function (data) {
         console.log('Error:', data.statusText);
@@ -196,9 +194,9 @@ function get_info_unit_measures(){
   });
 }
 
-function table_unit_measures(datajson, table){
+function table_cities(datajson, table){
   table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table_responsive_unit_measures);
+  var vartable = table.dataTable(Configuration_table_responsive_cities);
   vartable.fnClearTable();
   $.each(JSON.parse(datajson), function(index, information){
     var badge = '<span class="badge badge-success badge-pill text-uppercase text-white">Habilitado</span>';
@@ -207,31 +205,32 @@ function table_unit_measures(datajson, table){
     }
     vartable.fnAddData([
       information.name,
-      information.code,
+      information.state,
       information.sort_order,
       badge,
-      '<a href="javascript:void(0);" onclick="edit_unit_measures(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
+      '<a href="javascript:void(0);" onclick="edit_countries(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
     ]);
   });
 }
 
-//Mostrar - Edit unit measures
-function edit_unit_measures(e){
+//Mostrar - Edit country
+function edit_countries(e){
   var valor= e.getAttribute('value');
   var _token = $('meta[name="csrf-token"]').attr('content');
   $.ajax({
        type: "POST",
-       url: '/catalogs/unit-measures-edit',
+       url: '/catalogs/cities-edit',
        data: {value : valor, _token : _token},
        success: function (data) {
-         $("#editunitmeasure")[0].reset();
-         $('#editunitmeasure').data('formValidation').resetForm($('#editunitmeasure'));
+         $("#editcities")[0].reset();
+         $('#editcities').data('formValidation').resetForm($('#editcities'));
 
          if (data != []) {
             $('#token_b').val(data[0].id);
-            $('#inputEditCode').val(data[0].code);
             $('#inputEditName').val(data[0].name);
             $('#inputEditOrden').val(data[0].sort_order);
+            $("#edit_select_one").val(data[0].state_id).trigger('change');
+
             if (data[0].status == '0')
             {
               $("#editstatus").prop('checked', false).change();
@@ -256,7 +255,7 @@ function edit_unit_measures(e){
    })
 }
 
-var Configuration_table_responsive_unit_measures= {
+var Configuration_table_responsive_cities = {
   dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -270,14 +269,16 @@ var Configuration_table_responsive_unit_measures= {
         },
         action: function ( e, dt, node, config ) {
           $('#modal-CreatNew').modal('show');
-          if (document.getElementById("creatunitmeasure")) {
-            $('#creatunitmeasure')[0].reset();
+          if (document.getElementById("creatcities")) {
+            $('#creatcities')[0].reset();
+            $('#creatcities').data('formValidation').resetForm($('#creatcities'));
+            $('#inputCreatOrden').val(0);
           }
         }
       },
       {
         extend: 'excelHtml5',
-        title: 'Unidad de medida',
+        title: 'Ciudades',
         init: function(api, node, config) {
            $(node).removeClass('btn-secondary')
         },
@@ -290,7 +291,7 @@ var Configuration_table_responsive_unit_measures= {
       },
       {
         extend: 'csvHtml5',
-        title: 'Unidad de medida',
+        title: 'Ciudades',
         init: function(api, node, config) {
            $(node).removeClass('btn-secondary')
         },
