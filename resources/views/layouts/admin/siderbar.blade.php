@@ -65,9 +65,11 @@
             </a>
             <div class="collapse" id="electronic_billing">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item {{ Request::is('invoice_client') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/invoice_client') }}"><i class="fas fa-user-tie mr-2"></i>Clientes</a></li>
-                <li class="nav-item {{ Request::is('invoice_product') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/invoice_product') }}"><i class="fas fa-boxes mr-2"></i>Productos</a></li>
+                <li class="nav-item {{ Request::is('/sales/salespersons') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/sales/salespersons') }}"><i class="fas fa-user-tie mr-2"></i>Vendedores</a></li>
+                <li class="nav-item {{ Request::is('/sales/customers') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/sales/customers') }}"><i class="fas fa-user-tag mr-2"></i>Clientes</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/products') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/products') }}"><i class="fas fa-boxes mr-2"></i>Productos</a></li>
                 <li class="nav-item {{ Request::is('settings_pac') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/settings_pac') }}"><i class="fas fa-cogs mr-2"></i> PAC</a></li>
+
               </ul>
             </div>
           </li>
@@ -89,6 +91,14 @@
                 <li class="nav-item {{ Request::is('/catalogs/cities') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/cities') }}"><i class="fas fa-globe-americas mr-2"></i> Ciudades</a></li>
                 <li class="nav-item {{ Request::is('/catalogs/payment-terms') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/payment-terms') }}"><i class="fas fa-ruler mr-2"></i> Términos de pago</a></li>
                 <li class="nav-item {{ Request::is('/catalogs/payment-methods') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/payment-methods') }}"><i class="fas fa-paste mr-2"></i> Métodos de pago</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/payment-way') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/payment-way') }}"><i class="fas fa-exchange-alt mr-2"></i>Formas de pago</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/cfdi-relation') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/cfdi-relation') }}"><i class="fas fa-file-alt mr-2"></i>Tipos de relación CFDI</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/cfdi-types') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/cfdi-types') }}"><i class="fas fa-file-invoice mr-2"></i>Tipos de comprobantes</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/sat-products') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/sat-products') }}"><i class="fas fa-cart-arrow-down mr-2"></i>Productos/Servicios SAT</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/tax-regimens') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/tax-regimens') }}"><i class="fas fa-pencil-ruler mr-2"></i>Regimen fiscal</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/cfdi-uses') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/cfdi-uses') }}"><i class="fas fa-chalkboard-teacher mr-2"></i>Usos de CFDI</a></li>
+
+
               </ul>
             </div>
           </li>

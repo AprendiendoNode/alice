@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTaxesTable extends Migration
+class CreateBanksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,12 @@ class CreateTaxesTable extends Migration
      */
     public function up()
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('banks', function (Blueprint $table) {
             $table->increments('id');
-            //Campos
             $table->string('name');
-            $table->string('code',3)->unique();
-            $table->decimal('rate',15,8)->default(0);
-            $table->enum('factor',[
-              \App\Models\Catalogs\Tax::TASA,
-              \App\Models\Catalogs\Tax::CUOTA,
-              \App\Models\Catalogs\Tax::EXENTO,
-            ])->default(\App\Models\Catalogs\Tax::TASA);
+            $table->string('code',10)->nullable()->unique();
+            $table->string('taxid',15)->nullable();//RFC O Identificación del impuesto
             $table->integer('sort_order')->default(0);
-
             $table->boolean('status')->default(TRUE);
             // Operaciones de usuario
             $table->integer('created_uid')->nullable()->unsigned();
@@ -33,6 +26,7 @@ class CreateTaxesTable extends Migration
 
             $table->integer('updated_uid')->nullable()->unsigned();
             $table->foreign('updated_uid')->references('id')->on('users');
+            // Marcas de tiempo
             $table->timestamps();
         });
     }
@@ -44,6 +38,6 @@ class CreateTaxesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('banks');
     }
 }

@@ -171,7 +171,6 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
     Route::post('/unit-measures-show', 'Catalogs\UnitMeasureController@show');
     Route::post('/unit-measures-store', 'Catalogs\UnitMeasureController@store');
     Route::get('/texts', 'Catalogs\UnitMeasureController@destroy');
-
     //Catalogo - Paises
     Route::get('/countries', 'Catalogs\CountryController@index');
     Route::post('/countries-create', 'Catalogs\CountryController@create');
@@ -196,7 +195,6 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
     Route::post('/currencies-create', 'Catalogs\CurrencyController@create');
     Route::post('/currencies-store', 'Catalogs\CurrencyController@store');
     Route::post('/currencies-edit', 'Catalogs\CurrencyController@edit');
-
     //Catalogo - Termino de pago
     Route::get('/payment-terms', 'Catalogs\PaymentTermController@index');
     Route::post('/payment-terms-show', 'Catalogs\PaymentTermController@show');
@@ -209,5 +207,77 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
     Route::post('/payment-methods-create', 'Catalogs\PaymentMethodController@create');
     Route::post('/payment-methods-store', 'Catalogs\PaymentMethodController@store');
     Route::post('/payment-methods-edit', 'Catalogs\PaymentMethodController@edit');
+    //Catalogo - Impuestos
+    Route::get('/taxes', 'Catalogs\TaxController@index');
+    Route::post('/taxes-show', 'Catalogs\TaxController@show');
+    Route::post('/taxes-create', 'Catalogs\TaxController@create');
+    Route::post('/taxes-store', 'Catalogs\TaxController@store');
+    Route::post('/taxes-edit', 'Catalogs\TaxController@edit');
+    //Catalogo - Bancos
+    Route::get('/banks', 'Catalogs\BankController@index');
+    Route::post('/banks-show', 'Catalogs\BankController@show');
+    Route::post('/banks-create', 'Catalogs\BankController@create');
+    Route::post('/banks-store', 'Catalogs\BankController@store');
+    Route::post('/banks-edit', 'Catalogs\BankController@edit');
+    //Catalogo - Formas de pago
+    Route::get('/payment-way', 'Catalogs\PaymentWayController@index');
+    Route::post('/payment-way-show', 'Catalogs\PaymentWayController@show');
+    Route::post('/payment-way-create', 'Catalogs\PaymentWayController@create');
+    Route::post('/payment-way-store', 'Catalogs\PaymentWayController@store');
+    Route::post('/payment-way-edit', 'Catalogs\PaymentWayController@edit');
+    //Catalogo - Tipos de relación CFDI
+    Route::get('/cfdi-relation', 'Catalogs\CfdiRelationController@index');
+    Route::post('/cfdi-relation-show', 'Catalogs\CfdiRelationController@show');
+    Route::post('/cfdi-relation-create', 'Catalogs\CfdiRelationController@create');
+    Route::post('/cfdi-relation-store', 'Catalogs\CfdiRelationController@store');
+    Route::post('/cfdi-relation-edit', 'Catalogs\CfdiRelationController@edit');
+    //Catalogo - Tipos de comprobantes
+    Route::get('/cfdi-types', 'Catalogs\CfdiTypeController@index');
+    Route::post('/cfdi-types-show', 'Catalogs\CfdiTypeController@show');
+    Route::post('/cfdi-types-create', 'Catalogs\CfdiTypeController@create');
+    Route::post('/cfdi-types-store', 'Catalogs\CfdiTypeController@store');
+    Route::post('/cfdi-types-edit', 'Catalogs\CfdiTypeController@edit');
+    //Catalogo - Productos/Servicios SAT
+    Route::get('/sat-products', 'Catalogs\SatProductController@index');
+    Route::post('/sat-products-show', 'Catalogs\SatProductController@show');
+    Route::post('/sat-products-create', 'Catalogs\SatProductController@create');
+    Route::post('/sat-products-store', 'Catalogs\SatProductController@store');
+    Route::post('/sat-products-edit', 'Catalogs\SatProductController@edit');
+    //Catalogo - Régimen Fiscal
+    Route::get('/tax-regimens', 'Catalogs\TaxRegimenController@index');
+    Route::post('/tax-regimens-show', 'Catalogs\TaxRegimenController@show');
+    Route::post('/tax-regimens-create', 'Catalogs\TaxRegimenController@create');
+    Route::post('/tax-regimens-store', 'Catalogs\TaxRegimenController@store');
+    Route::post('/tax-regimens-edit', 'Catalogs\TaxRegimenController@edit');
+    //Catalogo - Régimen Fiscal
+    Route::get('/cfdi-uses', 'Catalogs\CfdiUseController@index');
+    Route::post('/cfdi-uses-show', 'Catalogs\CfdiUseController@show');
+    Route::post('/cfdi-uses-create', 'Catalogs\CfdiUseController@create');
+    Route::post('/cfdi-uses-store', 'Catalogs\CfdiUseController@store');
+    Route::post('/cfdi-uses-edit', 'Catalogs\CfdiUseController@edit');
 
+    //Catalogo - Productos
+    Route::get('/products', 'Catalogs\ProductController@index');
+    Route::post('/products-show', 'Catalogs\ProductController@show');
+    Route::post('/products-create', 'Catalogs\ProductController@create');
+    Route::post('/products-store', 'Catalogs\ProductController@store');
+    Route::post('/products-edit', 'Catalogs\ProductController@edit');
+});
+
+Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
+{
+    //All the routes that belongs to the group goes here
+
+    //Ventas - Vendedores
+    Route::get('/salespersons', 'Sales\SalespersonController@index');
+    Route::post('/salespersons-show', 'Sales\SalespersonController@show');
+    Route::post('/salespersons-create', 'Sales\SalespersonController@create');
+    Route::post('/salespersons-store', 'Sales\SalespersonController@store');
+    Route::post('/salespersons-edit', 'Sales\SalespersonController@edit');
+    //Ventas - Clientes
+    Route::get('/customers', 'Sales\CustomerController@index');
+    Route::post('/customers-show', 'Sales\CustomerController@show');
+    Route::post('/customers-create', 'Sales\CustomerController@create');
+    Route::post('/customers-store', 'Sales\CustomerController@store');
+    Route::post('/customers-edit', 'Sales\CustomerController@edit');
 });

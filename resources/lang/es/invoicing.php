@@ -11,4 +11,19 @@ return [
     'currencies' => 'Monedas',
     'payment_terms' => 'Termino de pago',
     'payment_methods' => 'Metodo de pago',
+    'taxes' => 'Impuestos',
+    // Textos generales
+    'text_factor_tasa' => 'Tasa',
+    'text_factor_cuota' => 'Cuota',
+    'text_factor_exento' => 'Exento',
+    'banks' => 'Bancos',
+    'paymentway' => 'Formas de pago',
+    'cfdirelation' => 'Tipos de relación entre CFDI',
+    'cfditypes' => 'Tipos de comprobante',
+    'productossat' => 'Productos/Servicios SAT',
+    'taxregimen' => 'Régimen Fiscal',
+    'cfdiuses' => 'Usos de CFDI',
+    'salespersons' => 'Vendedores',
+    'customers' => 'Clientes',
+
 ];
