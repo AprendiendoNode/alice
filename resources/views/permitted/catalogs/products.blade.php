@@ -193,6 +193,10 @@
                         <div id="cont_estatus" class="input-group mb-3">
                           <select datas="sel_estatus" id="sel_estatus" name="sel_estatus" class="form-control required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
+                            @forelse ($estatus as $data_estatus)
+                            <option value="{{ $data_estatus->id }}"> {{ $data_estatus->name }} </option>
+                            @empty
+                            @endforelse
                           </select>
                           <div class="input-group-append">
                             <button class="btn btn-primary addstatus" type="button"><i class="fa fa-plus"></i></button>
