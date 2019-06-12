@@ -1,0 +1,819 @@
+//Configuracion de x-editable jquery
+$.fn.editable.defaults.mode = 'popup';
+$.fn.editable.defaults.ajaxOptions = {type:'POST'};
+
+var _token = $('input[name="_token"]').val();
+
+/*
+* Funciones para manipular productos del localStorage
+* y tabla de productos de pedidos.
+*/
+
+//Tipo de cambio
+function exchange_rate(){
+   var tipo_cambio = document.getElementById('tipo_cambio').value;
+   var productosLS = obtenerProductosLocalStorage();
+   let productoNew = [];
+
+   if(productosLS != '[]'){
+     productosLS.forEach((productoLS, index) => {
+       var descuento = parseInt(productoLS.descuento);
+       var cant_req = parseFloat(productoLS.cant_req);
+       var precio = parseFloat(productoLS.precio)
+       var currency_id = productoLS.currency_id;
+       var precioTotal = 0.0;
+       productoNew = productoLS;
+
+       if(currency_id == 1){
+         precioTotal = precio * cant_req;
+         precioTotal = precioTotal - percent(descuento, precioTotal);
+         productoNew.precio_total_usd = ( precioTotal / parseFloat(tipo_cambio) ).toFixed(2);
+         productosLS.splice(index, 1, productoNew);
+       }
+
+     })
+     localStorage.setItem('productos', JSON.stringify(productosLS));
+
+   }
+
+}
+
+//Calculo de porcentaje
+function percent(num, amount){
+  return (num * amount) / 100;
+}
+
+function sumaTotales(){
+  var productosLS = obtenerProductosLocalStorage();
+  var total_eqactivo = 0.0;
+  var total_materiales = 0.0;
+  var total_sitwifi = 0.0;
+  //Separo en diferentes arreglos del Local Storage  segun la clasificacion de un producto
+  let equipo_activo = productosLS.filter(producto => producto.categoria_id == 4  || producto.categoria_id == 6 || producto.categoria_id == 14);
+  let materiales= productosLS.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6 && producto.categoria_id != 7 && producto.categoria_id != 14);
+  let sitwifi= productosLS.filter(producto => producto.categoria_id == 7 );
+
+  //Sumando totales por categorias
+  equipo_activo.forEach(function(producto){
+    total_eqactivo += parseFloat(producto.precio_total_usd);
+  });
+  materiales.forEach(function(producto){
+    total_materiales += parseFloat(producto.precio_total_usd);
+  });
+  sitwifi.forEach(function(producto){
+    total_sitwifi += parseFloat(producto.precio_total_usd);
+  });
+  //Actualizando montos totales en el DOM
+  document.getElementById("total_eqactivo").innerHTML = (total_eqactivo.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  document.getElementById("total_eqactivo_footer").innerHTML = (total_eqactivo.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  document.getElementById("total_materiales").innerHTML =  (total_materiales.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  document.getElementById("total_materiales_footer").innerHTML = (total_materiales.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  document.getElementById("total_sitwifi").innerHTML = (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  document.getElementById("total_sitwifi_footer").innerHTML = (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  //Total global
+  document.getElementById("total_global").innerHTML = ((total_materiales + total_eqactivo + total_sitwifi).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+}
+
+// Funcion para mofdificar datos al actualizar una cantidad de la tabla de pedidos
+function update_cantidades(id, cant_req){
+  let tipo_cambio = document.getElementById('tipo_cambio').value;
+  let productosLS;
+  let currency_id = 0;
+  let precio = 0.0;
+  let precioTotal = 0.0;
+  let precioTotalUSD = 0.0;
+  let descuento = 0.0;
+  let productoNew = [];
+  var row_precio_total, row_precio_total_usd;
+  productosLS = obtenerProductosLocalStorage();
+
+  productosLS.forEach((productoLS, index) => {
+      //Buscando producto a actualizar
+      if(productoLS.id == id){
+        productoNew = productoLS;
+        precio = productoLS.precio;
+        descuento = productoLS.descuento;
+        precioTotal = parseFloat(cant_req) * parseFloat(precio);
+        precioTotal -= percent(descuento, parseFloat(precioTotal));
+        row_precio_total = document.getElementById(productoLS.id);
+        row_precio_usd = document.getElementById(productoLS.id);
+        //Actualizando cantidades
+        productoNew.precio_total = precioTotal.toFixed(2);
+        productoNew.cant_req = cant_req;
+        productoNew.descuento = descuento;
+
+        if(productoLS.currency_id == 1){
+          precioTotalUSD  = parseFloat(precioTotal) / parseFloat(tipo_cambio);
+          productoNew.precio_total_usd = precioTotalUSD.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total')[0].innerHTML= precioTotal.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total_usd')[0].innerHTML= precioTotalUSD.toFixed(2);
+
+        }else{
+          productoNew.precio_total_usd = precioTotal.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total')[0].innerHTML= precioTotal.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total_usd')[0].innerHTML= precioTotal.toFixed(2);
+        }
+
+        //Remplazo el index del arreglo de LOcal Storage con las nuevas cantidades
+        productosLS.splice(index, 1, productoNew);
+
+
+      }
+  });
+  localStorage.setItem('productos', JSON.stringify(productosLS));
+  sumaTotales();
+}
+
+// Funcion para modificar datos al actualizar el descuento de un producto
+function update_decuento(id, desq){
+  let tipo_cambio = document.getElementById('tipo_cambio').value;
+  let productosLS;
+  let currency_id = 0;
+  let precio = 0.0;
+  let precioTotal = 0.0;
+  let precioTotalUSD = 0.0;
+  let descuento = parseInt(desq);
+  let productoNew = [];
+  var row_precio_total, row_precio_total_usd;
+  productosLS = obtenerProductosLocalStorage();
+
+  productosLS.forEach((productoLS, index) => {
+      //Buscando producto a actualizar
+      if(productoLS.id == id){
+        productoNew = productoLS;
+        precio = productoLS.precio;
+        cant_req = productoLS.cant_req;
+        precioTotal = parseFloat(cant_req) * parseFloat(precio);
+        precioTotal -= percent(descuento, parseFloat(precioTotal));
+        row_precio_total = document.getElementById(productoLS.id);
+        row_precio_usd = document.getElementById(productoLS.id);
+        //Actualizando cantidades
+        productoNew.precio_total = precioTotal.toFixed(2);
+        productoNew.cant_req = cant_req;
+        productoNew.descuento = descuento;
+
+        if(productoLS.currency_id == 1){
+          precioTotalUSD  = parseFloat(precioTotal) / parseFloat(tipo_cambio);
+          productoNew.precio_total_usd = precioTotalUSD.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total')[0].innerHTML= precioTotal.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total_usd')[0].innerHTML= precioTotalUSD.toFixed(2);
+
+        }else{
+          productoNew.precio_total_usd = precioTotal.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total')[0].innerHTML= precioTotal.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total_usd')[0].innerHTML= precioTotal.toFixed(2);
+        }
+
+        //Remplazo el index del arreglo de LOcal Storage con las nuevas cantidades
+        productosLS.splice(index, 1, productoNew);
+
+
+      }
+  });
+  localStorage.setItem('productos', JSON.stringify(productosLS));
+  sumaTotales();
+}
+
+//Modificar precio Unitario
+function update_price_unit(id, newPrice){
+  let tipo_cambio = document.getElementById('tipo_cambio').value;
+  let productosLS;
+  let currency_id = 0;
+  let nuevo_precio = newPrice;
+  let precio = 0.0;
+  let descuento = 0.0
+  let precioTotal = 0.0;
+  let precioTotalUSD = 0.0;
+  let productoNew = [];
+  var row_precio_total, row_precio_total_usd;
+  productosLS = obtenerProductosLocalStorage();
+
+  productosLS.forEach((productoLS, index) => {
+      //Buscando producto a actualizar
+      if(productoLS.id == id){
+        productoNew = productoLS;
+        precio = parseFloat(nuevo_precio);
+        descuento = productoLS.descuento;
+        cant_req = productoLS.cant_req;
+        precioTotal = parseFloat(cant_req) * parseFloat(precio);
+        precioTotal -= percent(productoLS.descuento, parseFloat(precioTotal));
+        row_precio_total = document.getElementById(productoLS.id);
+        row_precio_usd = document.getElementById(productoLS.id);
+        //Actualizando cantidades
+        productoNew.precio_total = precioTotal.toFixed(2);
+        productoNew.cant_req = cant_req;
+        productoNew.precio = precio;
+
+        if(productoLS.currency_id == 1){
+          precioTotalUSD  = parseFloat(precioTotal) / parseFloat(tipo_cambio);
+          productoNew.precio_total_usd = precioTotalUSD.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total')[0].innerHTML= precioTotal.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total_usd')[0].innerHTML= precioTotalUSD.toFixed(2);
+
+        }else{
+          productoNew.precio_total_usd = precioTotal.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total')[0].innerHTML= precioTotal.toFixed(2);
+          row_precio_total.getElementsByClassName('precio_total_usd')[0].innerHTML= precioTotal.toFixed(2);
+        }
+
+        //Remplazo el index del arreglo de LOcal Storage con las nuevas cantidades
+        productosLS.splice(index, 1, productoNew);
+
+
+      }
+  });
+  localStorage.setItem('productos', JSON.stringify(productosLS));
+  sumaTotales();
+}
+
+function obtenerProductosLocalStorage(){
+    let productosLS;
+
+    if(localStorage.getItem('productos') === null){
+        productosLS = [];
+    }else{
+        productosLS = JSON.parse(localStorage.getItem('productos'));
+    }
+
+    return productosLS;
+}
+
+// Muestra los productos de LocalStorage en el carrito
+function leerLocalStorage(){
+    let productosLS;
+    productosLS = obtenerProductosLocalStorage();
+}
+
+//Elimina un producto del local storage
+function eliminarProductoLocalStorage(producto){
+    let productosLS;
+    productosLS = obtenerProductosLocalStorage();
+
+    productosLS.forEach((productoLS, index) => {
+        if(productoLS.id == producto){
+
+            productosLS.splice(index, 1);
+        }
+    });
+
+    localStorage.setItem('productos', JSON.stringify(productosLS));
+    sumaTotales();
+}
+
+function generate_table_products(){
+  var productos = obtenerProductosLocalStorage();
+  //Filtrar productos por categoria
+  let equipo_activo = productos.filter(producto => producto.categoria_id == 4  || producto.categoria_id == 6 || producto.categoria_id == 14);
+  let materiales= productos.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6 && producto.categoria_id != 7 && producto.categoria_id != 14);
+  let sitwifi= productos.filter(producto => producto.categoria_id == 7 );
+
+  $("#tabla_productos tbody tr").remove();
+  var total_eq_activo = 0.0;
+  var total_materiales = 0.0;
+  var total_sitwifi = 0.0;
+  $.each(equipo_activo, function( i, key ) {
+    total_eq_activo += parseFloat(key.precio_total_usd);
+    $('#tabla_productos tbody').append('<tr id="' + key.id + '"><td>'
+      + key.cant_sug + '</td>'
+      + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id +'" data-clave="' + key.codigo + '" data-title="Cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
+      + key.descripcion + '</td><td>'
+      + key.categoria + '</td><td>'
+      + key.codigo + '</td><td>'
+      + key.proveedor + '</td><td>'
+      + key.num_parte + '</td>'
+      + '<td><a href="#" data-type="text" data-pk="' + key.id + '" data-desc="' + key.descuento + '" data-cant="' + key.cant_req + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td><td class="precio">'
+      + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio + '" data-name="precio" class="set-price"></a></td><td>'
+      + key.currency + '</td><td class="precio_total">'
+      + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
+      + key.precio_total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
+      + '<button type="button" onclick="eliminarProductoLocalStorage('+key.id+');deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td>'
+      + '</td></tr>');
+   });
+   $('#tabla_productos tbody').append(
+     `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Equipo Activo:</td><td>DLLS</td><td id="total_eqactivo" colspan="2">$</td></tr>`);
+      document.getElementById("total_eqactivo").innerHTML = "$" + (total_eq_activo.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      document.getElementById("total_eqactivo_footer").innerHTML =  (total_eq_activo.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+   $.each(materiales, function( i, key ) {
+     total_materiales += parseFloat(key.precio_total_usd);
+     $('#tabla_productos tbody').append('<tr id="' + key.id + '"><td>'
+       + key.cant_sug + '</td>'
+       + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id + '" data-clave="' + key.codigo + '" data-title="cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
+       + key.descripcion + '</td><td>'
+       + key.categoria + '</td><td>'
+       + key.codigo + '</td><td>'
+       + key.proveedor + '</td><td>'
+       + key.num_parte + '</td>'
+       + '<td><a href="#" data-type="text" data-pk="' + key.id + '" data-desc="' + key.descuento + '" data-cant="' + key.cant_req + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td><td class="precio">'
+       + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio + '" data-name="precio" class="set-price"></a></td><td>'
+       + key.currency + '</td><td class="precio_total">'
+       + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
+       + key.precio_total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
+       + '<button type="button" onclick="eliminarProductoLocalStorage('+key.id+');deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td>'
+       + '</td></tr>');
+    });
+    $('#tabla_productos tbody').append(
+      `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Materiales:</td><td>DLLS</td><td id="total_materiales" colspan="2">$0.00</td></tr>`);
+      document.getElementById("total_materiales").innerHTML = "$" + (total_materiales.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      document.getElementById("total_materiales_footer").innerHTML = (total_materiales.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    $.each(sitwifi, function( i, key ) {
+      total_sitwifi += parseFloat(key.precio_total_usd);
+      $('#tabla_productos tbody').append('<tr id="' + key.id + '"><td>'
+        + key.cant_sug + '</td>'
+        + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id + '" data-clave="' + key.codigo + '" data-title="cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
+        + key.descripcion + '</td><td>'
+        + key.categoria + '</td><td>'
+        + key.codigo + '</td><td>'
+        + key.proveedor + '</td><td>'
+        + key.num_parte + '</td>'
+        + '<td><a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td class="precio"><td>'
+        + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio+ '" data-name="precio" class="set-price"></a></td class=""><td>'
+        + key.currency + '</td><td class="precio_total">'
+        + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
+        + key.precio_total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
+        + '<button type="button" onclick="eliminarProductoLocalStorage('+key.id+');deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td>'
+        + '</td></tr>');
+     });
+      $('#tabla_productos tbody').append(
+        `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Mano de obra:</td><td>DLLS</td><td id="total_sitwifi" colspan="2">$0.00</td></tr>`);
+         document.getElementById("total_sitwifi").innerHTML = "$" + (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+         document.getElementById("total_sitwifi_footer").innerHTML =  (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+         //Total global
+         document.getElementById("total_global").innerHTML = ((total_materiales + total_eq_activo + total_sitwifi).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  //  Fix de errorres en validate
+  $('.set-cant-req').on('shown', function() {
+      var $innerForm = $(this).data('editable').input.$input.closest('form');
+      var $outerForm = $innerForm.parents('form').eq(0);
+      $innerForm.data('validator', $outerForm.data('validator'));
+  });
+
+  $('.set-descuento').on('shown', function() {
+      var $innerForm = $(this).data('editable').input.$input.closest('form');
+      var $outerForm = $innerForm.parents('form').eq(0);
+      $innerForm.data('validator', $outerForm.data('validator'));
+  });
+
+  $('.set-price').on('shown', function() {
+      var $innerForm = $(this).data('editable').input.$input.closest('form');
+      var $outerForm = $innerForm.parents('form').eq(0);
+      $innerForm.data('validator', $outerForm.data('validator'));
+  });
+
+  // Funcion para detectar cambio en alguna cantidad de un producto
+
+  $('.set-cant-req').editable({
+      container: 'body',
+      type : 'number',
+      validate: function(newValue) {
+        if($.trim(newValue) == '')
+            return 'Este campo es requerido';
+        else if(!isFinite(newValue))
+            return 'Debe ingresar un valor númerico';
+        else if(newValue <= 0)
+            return 'Debe ingresar un valor mayor a 0';
+      },
+      success: function(response, newValue) {
+        var id = $(this).data('pk');
+        var clave = $(this).data('clave').substring(0, 3);
+        var num_aps = 0;
+        update_cantidades(id, parseFloat(newValue));
+        document.getElementById(id).style.background = "#BDD3DE";
+        if(clave == 'API' || clave == 'APE'){
+          var productos = obtenerProductosLocalStorage();
+          //Filtro de antenas
+          var products_aps = productos.filter(producto =>
+                              producto.codigo.substring(0, 3) == 'API' || producto.codigo.substring(0, 3) == 'APE');
+
+          var mo_products = productos.filter(producto => producto.categoria_id == 7);
+          /* Si es mayor a 0 significa que se agrego mano de obra por
+             parte del usuario y se procede a recalcular las cantidades */
+          if(mo_products.length > 0){
+            $.each(products_aps, function( i, key ) {
+              num_aps += key.cant_req;
+            })
+
+            new_products =  productos.filter(producto => producto.categoria_id != 7);
+            localStorage.setItem('productos', JSON.stringify(new_products));
+
+            $.ajax({
+                url : `/items/ajax/four/0/${num_aps}`
+            }).done(function (data) {
+              var productosLS = obtenerProductosLocalStorage();
+
+                data.forEach(element => {
+                  var productosLS = obtenerProductosLocalStorage();
+                  var id_product = element.id;
+                  if(productosLS == '[]'){
+                    //Primer producto del carrito
+                    leerDatosProductMO(element);
+                  }else {
+                    let count =  productosLS.filter(producto => producto.id == id_product);
+                    (count.length == 1) ? console.log("producto existe") : leerDatosProductMO(element);
+                  }
+
+                })
+                  generate_table_products();
+                  menssage_toast('Mensaje', '4', 'Mano de obra actualizada' , '2000');
+                }).fail(function () {
+                    swal("Ocurrio un error","","error");
+                });//Fin funcion ajax
+
+              }
+
+            }
+
+      }// Fin susccess
+
+  });// fin set-cant-req
+
+  //Funcion para detectar cambio en algun descuento de un producto
+  $('.set-descuento').editable({
+      type : 'number',
+      validate: function(newValue) {
+        if($.trim(newValue) == '')
+            return 'Este campo es requerido';
+        else if(!isFinite(newValue))
+            return 'Debe ingresar un valor númerico';
+        else if (newValue % 1 != 0)
+          return 'El valor debe ser un entero';
+      },
+      success: function(response, newValue) {
+        var id = $(this).data('pk');
+        update_decuento(id, newValue);
+        document.getElementById(id).style.background = "#BDD3DE";
+      }
+  });
+
+  //Funcion para detectar cambio en algun precio unitario de un producto
+  $('.set-price').editable({
+      type : 'number',
+      validate: function(newValue) {
+        if($.trim(newValue) == '')
+            return 'Este campo es requerido';
+        else if(!isFinite(newValue))
+            return 'Debe ingresar un valor númerico';
+        else if(newValue < 0)
+            return 'No puede ingresar una cantidad negativa';
+      },
+      success: function(response, newValue) {
+        var id = $(this).data('pk');
+        update_price_unit(id, newValue);
+        document.getElementById(id).style.background = "#BDD3DE";
+      }
+  });
+
+}
+
+//Elimino la columna  seleccionada de la tabla de pedidos
+
+function deleteRow(fila) {
+  var row = fila.parentNode.parentNode;
+  row.parentNode.removeChild(row);
+}
+
+
+/*
+*******************************************************************************
+*/
+
+
+/*
+*  Formulario steps wizard
+*/
+
+$.validator.addMethod('filesize', function(value, element, param) {
+
+return this.optional(element) || (element.files[0].size <= param)
+});
+
+//Formulario documento P
+var form_master = $(".validation-wizard-master").show();
+
+$(".validation-wizard-master").steps({
+    headerTag: "h6",
+    bodyTag: "section",
+    transitionEffect: "fade",
+    titleTemplate: '<span class="step">#index#</span> #title#',
+    labels: {
+        finish: "Submit"
+    },
+    onStepChanging: function (event, currentIndex, newIndex) {
+      // Tabla de productos del Documento P
+      var productos = obtenerProductosLocalStorage();
+      generate_table_products(productos);
+
+      return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form_master.find(".body:eq(" + newIndex + ") label.error").remove(), form_master.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form_master.validate().settings.ignore = ":disabled,:hidden", form_master.valid())
+    },
+    onFinishing: function (event, currentIndex) {
+        return form_master.validate().settings.ignore = ":disabled", form_master.valid()
+    },
+    onFinished: function (event, currentIndex) {
+      event.preventDefault();
+        // swal("form_master Submitted!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem erat eleifend ex semper, lobortis purus sed.");
+      /************************************************************************************/
+        swal({
+          title: "¿Estás seguro?",
+          text: "Solo se permitiran 3 modificaciones despues de guardar el DOCUMENTO",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonClass: "btn-danger",
+          confirmButtonText: "Continuar.!",
+          cancelButtonText: "Cancelar.!",
+          closeOnConfirm: false,
+          closeOnCancel: false,
+          showLoaderOnConfirm: true,
+        },
+        function(isConfirm) {
+          if (isConfirm) {
+
+             let productosLS;
+             var _token = $('input[name="_token"]').val();
+             let total_ea = 0.0;
+             let total_ena = 0.0;
+             let total_mo = 0.0;
+             let total = 0.0;
+
+              productosLS = localStorage.getItem('productos');
+              total_ea = document.getElementById('total_eqactivo_footer').innerHTML;
+              total_ena = document.getElementById('total_materiales_footer').innerHTML;
+              total_mo = document.getElementById('total_sitwifi_footer').innerHTML;
+              total = document.getElementById('total_global').innerHTML;
+
+              var form = $('#validation_master')[0];
+              var formData = new FormData(form);
+
+              formData.append('shopping_cart',productosLS);
+              formData.append('total_ea',total_ea.replace(/,/g, ""));
+              formData.append('total_ena',total_ena.replace(/,/g, ""));
+              formData.append('total_mo',total_mo.replace(/,/g, ""));
+              formData.append('total',total.replace(/,/g, ""));
+
+              const headers = new Headers({
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-TOKEN": _token
+              })
+
+              var miInit = { method: 'post',
+                                headers: headers,
+                                credentials: "same-origin",
+                                body:formData,
+                                cache: 'default' };
+
+              fetch('/documentp', miInit)
+                    .then(function(response){
+                      return response.text();
+                    })
+                    .then(function(response){
+                      console.log(response);
+                      if(response == "true"){
+                        localStorage.clear();
+                        swal({title: "Documento creado",  type: "success"},
+                            function(){
+                              location.href ="/documentp_cart";
+                            }
+                         );
+                      }else{
+                        swal("Operación abortada", "Ocurrio un error al guardar :(", "error");
+                      }
+
+                    })
+                    .catch(function(error){
+                            console.log(error);
+                    });
+
+          } else {
+            swal("Operación abortada", "Ningúna operación afectuada :)", "error");
+          }
+        });
+      /************************************************************************************/
+    }
+}), $(".validation-wizard-master").validate({
+    ignore: "input[type=hidden]",
+    errorClass: "text-danger",
+    successClass: "text-success",
+    highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass)
+    },
+    unhighlight: function (element, errorClass) {
+        $(element).removeClass(errorClass)
+    },
+    errorPlacement: function (error, element) {
+        // error.insertAfter(element);
+        if (element[0].id === 'fileInput') {
+          error.insertAfter($('#cont_file'));
+        }
+        else {
+          error.insertAfter(element);
+        }
+    },
+    rules: {
+        // type_service: {
+        //   required: true
+        // },
+        // vertical: {
+        //   required: true
+        // },
+        // itc: {
+        //   required: true
+        // },
+        // comercial: {
+        //   required: true
+        // },
+        // lugar_instalacion: {
+        //   required: true
+        // },
+        // tipo_cambio: {
+        //   required: true
+        // },
+    },
+
+})
+var conceptIndex = 0,
+    conceptIndex1 = 0,
+    conceptIndex2 = 0,
+    constante_eliminar = [],
+    constante_eliminar_1 = [],
+    constante_eliminar_2 = [],
+    constante_a = 0,
+    max_options = 7,
+    max_options1 = 1,
+    max_options2 = 8;
+
+
+$(".validation-wizard-master").on('click', '.addButtonAP', function(){
+  if( constante_eliminar.length === 0) {
+    if(conceptIndex <= max_options) {
+      conceptIndex++;
+      var $template = $('#optionTemplateAP'),
+      $clone  = $template
+        .clone()
+        .removeClass('hide')
+        .removeAttr('id')
+        .attr('data-book-index', conceptIndex)
+        .insertBefore($template);
+      // Update the name attributes
+      $clone
+        .find('[name="aps_modelo"]').attr('name', 'aps_modelo[' + conceptIndex + ']').attr('data_row', conceptIndex).addClass("required").end()
+        .find('[name="aps_cant"]').attr('name', 'aps_cant[' + conceptIndex + ']').addClass("required").end();
+
+
+        //createEvent_Mensualidad (conceptIndex);
+
+    }
+    else{
+      swal("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+    }
+  }
+  else {
+    /*INICIO DE LA SECCION-- Reutilizo index eliminados. */
+      var ordenando_array = constante_eliminar.sort();
+      index_reutilizado = ordenando_array[0];
+
+      var $template = $('#optionTemplateAP'),
+      $clone  = $template
+        .clone()
+        .removeClass('hide')
+        .removeAttr('id')
+        .attr('data-book-index', index_reutilizado)
+        .insertBefore($template);
+
+      $clone
+          .find('[name="aps_modelo"]').attr('name', 'aps_modelo[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
+          .find('[name="aps_cant"]').attr('name', 'aps_cant[' + index_reutilizado + ']').addClass("required").end();
+
+          //createEvent_Mensualidad (index_reutilizado);
+
+    //Elimino el primero elemento del array
+      ordenando_array.shift();
+  }
+});
+
+$(".validation-wizard-master").on('click','.removeButtonAP',function(){
+  var $row  = $(this).parents('.clone'),
+      index = $row.attr('data-book-index');
+  // Remove element containing the option
+      $row.remove();
+  //Añado el index a reutilizar en la inserción
+      constante_eliminar.push(index);
+      // createEvent_llenarmoneda ();
+});
+
+$(".validation-wizard-master").on('click', '.addButtonFW', function(){
+  if( constante_eliminar_1.length === 0) {
+    if(conceptIndex1 <= max_options1) {
+      conceptIndex1++;
+      var $template = $('#optionTemplateFIRE'),
+      $clone  = $template
+        .clone()
+        .removeClass('hide')
+        .removeAttr('id')
+        .attr('data-book-index', conceptIndex1)
+        .insertBefore($template);
+      // Update the name attributes
+      $clone
+        .find('[name="firew_mod"]').attr('name', 'firew_mod[' + conceptIndex1 + ']').attr('data_row', conceptIndex1).addClass("required").end()
+        .find('[name="firew_cant"]').attr('name', 'firew_cant[' + conceptIndex1 + ']').addClass("required").end();
+
+
+        //createEvent_Mensualidad (conceptIndex1);
+
+    }
+    else{
+      swal("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+    }
+  }
+  else {
+    /*INICIO DE LA SECCION-- Reutilizo index eliminados. */
+      var ordenando_array = constante_eliminar_1.sort();
+      index_reutilizado = ordenando_array[0];
+
+      var $template = $('#optionTemplateFIRE'),
+      $clone  = $template
+        .clone()
+        .removeClass('hide')
+        .removeAttr('id')
+        .attr('data-book-index', index_reutilizado)
+        .insertBefore($template);
+
+      $clone
+          .find('[name="firew_mod"]').attr('name', 'firew_mod[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
+          .find('[name="firew_cant"]').attr('name', 'firew_cant[' + index_reutilizado + ']').addClass("required").end();
+
+          //createEvent_Mensualidad (index_reutilizado);
+
+    //Elimino el primero elemento del array
+      ordenando_array.shift();
+  }
+});
+
+$(".validation-wizard-master").on('click','.removeButtonFW',function(){
+  var $row  = $(this).parents('.clone'),
+      index = $row.attr('data-book-index');
+  // Remove element containing the option
+      $row.remove();
+  //Añado el index a reutilizar en la inserción
+      constante_eliminar.push(index);
+      // createEvent_llenarmoneda ();
+});
+
+$(".validation-wizard-master").on('click', '.addButtonSW', function(){
+  if( constante_eliminar_2.length === 0) {
+    if(conceptIndex2 <= max_options2) {
+      conceptIndex2++;
+      var $template = $('#optionTemplateSW'),
+      $clone  = $template
+        .clone()
+        .removeClass('hide')
+        .removeAttr('id')
+        .attr('data-book-index', conceptIndex2)
+        .insertBefore($template);
+      // Update the name attributes
+      $clone
+        .find('[name="switches_mod"]').attr('name', 'switches_mod[' + conceptIndex2 + ']').attr('data_row', conceptIndex2).addClass("required").end()
+        .find('[name="switches_cant"]').attr('name', 'switches_cant[' + conceptIndex2 + ']').addClass("required").end();
+
+
+        //createEvent_Mensualidad (conceptIndex2);
+
+    }
+    else{
+      swal("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+    }
+  }
+  else {
+    /*INICIO DE LA SECCION-- Reutilizo index eliminados. */
+      var ordenando_array = constante_eliminar_2.sort();
+      index_reutilizado = ordenando_array[0];
+
+      var $template = $('#optionTemplateSW'),
+      $clone  = $template
+        .clone()
+        .removeClass('hide')
+        .removeAttr('id')
+        .attr('data-book-index', index_reutilizado)
+        .insertBefore($template);
+
+      $clone
+          .find('[name="switches_mod"]').attr('name', 'switches_mod[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
+          .find('[name="switches_cant"]').attr('name', 'switches_cant[' + index_reutilizado + ']').addClass("required").end();
+
+          //createEvent_Mensualidad (index_reutilizado);
+
+    //Elimino el primero elemento del array
+      ordenando_array.shift();
+  }
+});
+
+$(".validation-wizard-master").on('click','.removeButtonSW',function(){
+  var $row  = $(this).parents('.clone'),
+      index = $row.attr('data-book-index');
+  // Remove element containing the option
+      $row.remove();
+  //Añado el index a reutilizar en la inserción
+      constante_eliminar.push(index);
+      // createEvent_llenarmoneda ();
+});

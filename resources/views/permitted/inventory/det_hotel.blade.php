@@ -58,11 +58,17 @@
       </div>
     </div>
   @else
+    @include('default.denied')
   @endif
 @endsection
 
 @push('scripts')
   @if( auth()->user()->can('View detailed for hotel') )
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
+    <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
+    <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
+    <script src="{{ asset('js/admin/inventory/hoteld.js')}}"></script>
   @else
   @endif
 @endpush
