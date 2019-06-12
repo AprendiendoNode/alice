@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
-class ProductController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,17 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-      $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
-      $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array());
-      $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
-      $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
-      $customer = DB::select('CALL GetCustomersActivev2 ()', array());
-      $category = DB::select('CALL GetAllCategoriesActivev2 ()', array());
-      $brands = DB::select('CALL GetAllBrandsActivev2 ()', array());
-      $models = DB::select('CALL GetAllModelsActivev2 ()', array());
-      $estatus = DB::select('CALL GetAllStatusProductsActivev2 ()', array());
-
-      return view('permitted.catalogs.products',compact('currency','unitmeasures','satproduct', 'customer', 'category','brands','models', 'estatus'));
+        return view('permitted.catalogs.categories');
     }
 
     /**
@@ -58,7 +48,7 @@ class ProductController extends Controller
      */
     public function show(Request $request)
     {
-      $resultados = DB::select('CALL GetAllProductsv2 ()', array());
+      $resultados = DB::select('CALL GetAllCategoriesv2 ()', array());
       return json_encode($resultados);
     }
 
@@ -71,7 +61,7 @@ class ProductController extends Controller
     public function edit(Request $request)
     {
       $identificador= $request->value;
-      $resultados = DB::select('CALL GetAllProductsByIdv2 (?)', array($identificador));
+      $resultados = DB::select('CALL GetCategoriesByIdv2 (?)', array($identificador));
       foreach ($resultados as $key) {
         $key->id = Crypt::encryptString($key->id);
       }

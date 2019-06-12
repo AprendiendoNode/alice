@@ -4,12 +4,11 @@ namespace App\Models\Inventory;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Marca extends Model
+class Category extends Model
 {
-    protected $table = 'marcas';
+    protected $table = 'categories';
     protected $fillable = [
-      'Nombre_marca',
-      'Distribuidor',
+      'name',
       'sort_order',
       'status',
     ];

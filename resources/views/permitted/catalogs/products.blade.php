@@ -127,6 +127,10 @@
                         <div id="cont_category" class="input-group mb-3">
                           <select datas="sel_categoria" id="sel_categoria" name="sel_categoria" class="form-control required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
+                            @forelse ($category as $data_category)
+                            <option value="{{ $data_category->id }}"> {{ $data_category->name }} </option>
+                            @empty
+                            @endforelse
                           </select>
                           <div class="input-group-append">
                             <button class="btn btn-primary addcategorias" type="button"><i class="fa fa-plus"></i></button>
@@ -140,6 +144,10 @@
                         <div id="cont_model" class="input-group mb-3">
                           <select datas="sel_modelo" id="sel_modelo" name="sel_modelo" class="form-control required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
+                            @forelse ($models as $data_models)
+                            <option value="{{ $data_models->id }}"> {{ $data_models->ModeloNombre }} </option>
+                            @empty
+                            @endforelse
                           </select>
                           <div class="input-group-append">
                             <button class="btn btn-primary addmodel" type="button"><i class="fa fa-plus"></i></button>

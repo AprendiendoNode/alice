@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Inventory;
-
+namespace App\Http\Controllers\Catalogs;
+use DB;
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Crypt;
 class MarcaController extends Controller
 {
     /**
@@ -14,7 +16,7 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        //
+        return view('permitted.catalogs.brands');
     }
 
     /**
@@ -44,9 +46,10 @@ class MarcaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+      $resultados = DB::select('CALL GetAllBrandsv2 ()', array());
+      return json_encode($resultados);
     }
 
     /**
@@ -55,9 +58,14 @@ class MarcaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+      $identificador= $request->value;
+      $resultados = DB::select('CALL GetBrandByIdv2 (?)', array($identificador));
+      foreach ($resultados as $key) {
+        $key->id = Crypt::encryptString($key->id);
+      }
+      return $resultados;
     }
 
     /**

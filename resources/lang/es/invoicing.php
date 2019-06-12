@@ -25,5 +25,7 @@ return [
     'cfdiuses' => 'Usos de CFDI',
     'salespersons' => 'Vendedores',
     'customers' => 'Clientes',
-
+    'brands' => 'Marcas',
+    'categories' => 'Categorias',
+    'models' => 'Modelos',
 ];

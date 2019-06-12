@@ -262,6 +262,27 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
     Route::post('/products-create', 'Catalogs\ProductController@create');
     Route::post('/products-store', 'Catalogs\ProductController@store');
     Route::post('/products-edit', 'Catalogs\ProductController@edit');
+
+    //Catalogo - Category
+    Route::get('/categories', 'Catalogs\CategoryController@index');
+    Route::post('/categories-show', 'Catalogs\CategoryController@show');
+    Route::post('/categories-create', 'Catalogs\CategoryController@create');
+    Route::post('/categories-store', 'Catalogs\CategoryController@store');
+    Route::post('/categories-edit', 'Catalogs\CategoryController@edit');
+
+    //Catalogo - Marca
+    Route::get('/brands', 'Catalogs\MarcaController@index');
+    Route::post('/brands-show', 'Catalogs\MarcaController@show');
+    Route::post('/brands-create', 'Catalogs\MarcaController@create');
+    Route::post('/brands-store', 'Catalogs\MarcaController@store');
+    Route::post('/brands-edit', 'Catalogs\MarcaController@edit');
+
+    //Catalogo - Modelo
+    Route::get('/models', 'Catalogs\ModeloController@index');
+    Route::post('/models-show', 'Catalogs\ModeloController@show');
+    Route::post('/models-create', 'Catalogs\ModeloController@create');
+    Route::post('/models-store', 'Catalogs\ModeloController@store');
+    Route::post('/models-edit', 'Catalogs\ModeloController@edit');
 });
 
 Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
