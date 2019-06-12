@@ -130,13 +130,33 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/testzendesk2', 'Support\Zendesk@index2')->name('testzendesk2');
 
   //Modulo de inventario - Reporte Detallado por hotel
-  Route::get('/detailed_hotel', 'Inventory\Byhotel@index');
+  Route::get('/detailed_hotel', 'Inventory\ByHotelController@index');
   //Modulo de inventario - Reporte Detallado por proyecto
-  Route::get('/detailed_proyect', 'Inventory\Project@index');
+  Route::get('/detailed_proyect', 'Inventory\ProjectController@index');
   //Modulo de inventario - Carta de entrega
-  Route::get('/detailed_cover', 'Inventory\Entry_letter@index');
+  Route::get('/detailed_cover', 'Inventory\EntryLetterController@index');
   //Modulo de inventario - Reporte Distribucion
-  Route::get('/detailed_distribution', 'Inventory\Distribution@index');
+  Route::get('/detailed_distribution', 'Inventory\DistributionController@index');
+
+  //posts detailed_proyect
+  Route::post('/cover_header', 'Inventory\ByHotelController@getHeader');
+  Route::post('/cover_dist_equipos', 'Inventory\ByHotelController@getCoverDistEquipos');
+  Route::post('/cover_dist_modelos', 'Inventory\ByHotelController@getCoverDistModelos');
+  Route::post('/update_reference_by_cover', 'Inventory\ByHotelController@update_reference_by_cover');
+
+  Route::post('/hotel_cadena', 'Inventory\ByHotelController@hotel_cadena');
+  /*Distribution*/
+  Route::post('/geoHotel', 'DistributionController@show');
+  Route::post('/detailed_equipament_all', 'DistributionController@show_device');
+  //posts detailed_hotel
+  Route::post('/detailed_hotel_head','Inventory\DistributionController@getHeaders');
+  Route::post('/detailed_hotel_sum','Inventory\DistributionController@getSummary');
+  Route::post('/detailed_hotel_sw','Inventory\DistributionController@getSwitch');
+  Route::post('/detailed_hotel_zd','Inventory\DistributionController@getZone');
+  Route::post('/detailed_hotel_pie','Inventory\DistributionController@getSummaryPie');
+  Route::post('/detailed_hotel_disqn','Inventory\DistributionController@getDristributionQuantitys');
+  Route::post('/detailed_hotel_models','Inventory\DistributionController@getEquipmentModels');
+  Route::post('/detailed_hotel_table','Inventory\DistributionController@getDetailedEquipment');
 
 
   //Modulo de reportes - Asignacion tipo de reportes
@@ -156,6 +176,41 @@ Route::group(['middleware' => 'auth'], function () {
 
   //Modulo de reportes - ver reporte concatenado
   Route::get('/viewreportscont' , 'Report\Concatenated@index');
+
+  //- Herramientas
+  Route::get('/detailed_guest_review', 'Tools\GuestToolsController@index');
+  Route::get('/detailed_server_review', 'Tools\ServerToolsController@index');
+  Route::get('/testzone', 'Tools\ZoneToolsController@index');
+  Route::post('/getInfoZD', 'Tools\ZoneToolsController@getInfo');
+  Route::post('/testzonedir', 'Tools\ZoneToolsController@testRequest');
+
+  Route::post('/existenceUsers', 'Tools\GuestToolsController@getUsersHC');
+  Route::post('/existenceUsersAll', 'Tools\GuestToolsController@getPortalUsers');
+
+  Route::get('/DiagHuespedAjax','Tools\GuestToolsController@checkGuest');
+  Route::post('/DiagHuespedAjax2', 'Tools\GuestToolsController@checkWebSer');
+
+  Route::get('/DiagServidorAjax', 'Tools\ServerToolsController@checkRad');
+  Route::get('/DiagServidorAjax2','Tools\ServerToolsController@checkWB');
+
+  Route::get('/testWebSer', 'Tools\GuestToolsController@checkWebSer');
+
+  //MODULO DE COMPRAS - Documento P / M
+	Route::resource('documentp', 'DocumentpController', ['only' => [
+	   'store'
+	]]);
+	Route::get('/documentp_cart', 'ShoppingCart\DocumentpCartController@index');
+	Route::get('items/ajax/{type}/{aps}/{api}/{ape}/{firewalls}/{switches}/{switch_cant}',
+	['uses'  => 'ShoppingCart\DocumentpCartController@getItemType'])->where('type', 'first|second');
+  Route::get('items/ajax/four/{api}/{ape}', ['uses'  => 'ShoppingCart\DocumentpCartController@getMoProducts']);
+  Route::get('items/ajax/four/{api}/{ape}/{id_doc}', ['uses'  => 'ShoppingCart\DocumentpCartController@getMoProductsCart']);
+	Route::get('items/ajax/third/{category}', ['uses'  => 'ShoppingCart\DocumentpCartController@getCategories']);
+	Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'ShoppingCart\DocumentpCartController@getCategoriesDescription']);
+	Route::get('/documentp_invoice/{id_documentp}/{id_cart}', 'DocumentpController@export_invoice');
+	Route::get('/update_cant_cart/{id}/{cant}/{porcentaje_compra}', 'DocumentpController@update_cantidad_recibida');
+	Route::get('/update_status_product/{id}/{status}', 'DocumentpController@update_status_product');
+	Route::get('/update_motive_project/{id}/{motive}', 'DocumentpController@update_motive_project');
+	Route::get('/update_purchase_order/{id}/{order}', 'DocumentpController@update_purchase_order');
 
 });
 
