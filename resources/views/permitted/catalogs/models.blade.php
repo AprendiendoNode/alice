@@ -19,6 +19,213 @@
 @section('content')
   {{-- @if( auth()->user()->can('View cover') ) --}}
   <!-- Crear -->
+  <div id="modal-CreatNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalbanks" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalmodels">Crear nuevo</h4> <!-- change -->
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="creatmodels" name="creatmodels" class="forms-sample" action=""> <!-- change -->
+                {{ csrf_field() }}
+                <div class="form-group row">
+                  <label for="inputCreatName" class="col-sm-3 col-form-label">{{ trans('auth.nombre')}} <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required" id="inputCreatName" name="inputCreatName" placeholder="{{ trans('auth.nombre') }}" maxlength="60">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputCreatCosto" class="col-sm-3 col-form-label">Costo<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="number" step="any" class="form-control form-control-sm required" id="inputCreatCosto" name="inputCreatCosto" placeholder="Costo del modelo" maxlength="60">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="select_onemoneda" class="col-sm-3 col-form-label">Moneda<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="select_onemoneda" name="select_onemoneda" class="form-control form-control-sm required"  style="width: 100%;">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($list_moneda as $key => $value)
+                        <option value="{{ $value }}"> {{ $value }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="select_onemarca" class="col-sm-3 col-form-label">Marca<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="select_onemarca" name="select_onemarca" class="form-control form-control-sm required"  style="width: 100%;">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($list_marca as $key => $value)
+                        <option value="{{ $value }}"> {{ $value }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="select_oneespec" class="col-sm-3 col-form-label">Especificación<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="select_oneespec" name="select_oneespec" class="form-control form-control-sm required"  style="width: 100%;">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($list_espec as $key => $value)
+                        <option value="{{ $value }}"> {{ $value }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputCreatOrden" class="col-sm-3 col-form-label">Orden<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required onlynumber" id="inputCreatOrden" name="inputCreatOrden" placeholder="Orden de visualización" value="0" maxlength="3">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="status" class="col-sm-3 control-label">Estatus</label>
+                  <div class="col-md-9 mb-3">
+                    <input id="status" name="status" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
+                <button type="button" class="btn btn-danger waves-effect form_creat_user" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Editar -->
+  <div id="modal-Edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaledit" aria-hidden="true" style="display: none;"> <!-- change -->
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modaledit">Editar</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="editmodels" name="editmodels" class="forms-sample" action=""> <!-- change -->
+                {{ csrf_field() }}
+                <input class="form-control" type="hidden" placeholder="" id="token_b" name="token_b" value="">
+
+                <div class="form-group row">
+                  <label for="inputEditName" class="col-sm-3 col-form-label">{{ trans('auth.nombre')}} <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditName" name="inputEditName" placeholder="{{ trans('auth.nombre') }}" maxlength="60">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputEditCosto" class="col-sm-3 col-form-label">Costo<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="number" step="any" class="form-control form-control-sm required" id="inputEditCosto" name="inputEditCosto" placeholder="Costo del modelo" maxlength="60">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="editpositionmoneda" class="col-sm-3 col-form-label">Moneda<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="editpositionmoneda" name="editpositionmoneda" class="form-control form-control-sm required"  style="width: 100%;">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($list_moneda as $key => $value)
+                        <option value="{{ $value }}"> {{ $value }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="editpositionmarca" class="col-sm-3 col-form-label">Marca<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="editpositionmarca" name="editpositionmarca" class="form-control form-control-sm required"  style="width: 100%;">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($list_marca as $key => $value)
+                        <option value="{{ $value }}"> {{ $value }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="editpositionespec" class="col-sm-3 col-form-label">Especificación<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="editpositionespec" name="editpositionespec" class="form-control form-control-sm required"  style="width: 100%;">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($list_espec as $key => $value)
+                        <option value="{{ $value }}"> {{ $value }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputEditOrden" class="col-sm-3 col-form-label">Orden<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required onlynumber" id="inputEditOrden" name="inputEditOrden" placeholder="Orden de visualización" value="0" maxlength="3">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="editstatus" class="col-sm-3 control-label">Estatus</label>
+                  <div class="col-md-9 mb-3">
+                    <input id="editstatus" name="editstatus" type="checkbox" data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.editar') }}</button>
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-12 grid-margin-onerem  stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <p class="mt-2 card-title">Esta sección nos permite gestionar los modelos, que podremos utilizar en nuestro proyecto.</p>
+          <div class="d-flex justify-content-center pt-3"></div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="table-responsive">
+                <table id="table_models" name='table_models' class="table table-striped border display nowrap" style="width:100%; font-size: 10px;">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Costo</th>
+                      <th>Moneda</th>
+                      <th>Marca</th>
+                      <th>Especificación</th>
+                      <th>Orden</th>
+                      <th>Estatus</th>
+                      <th>Opciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  {{-- @else --}}
+  {{-- @endif --}}
 
 @endsection
 
