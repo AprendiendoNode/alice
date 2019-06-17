@@ -49,27 +49,45 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/create_junior', 'ClassificationController@create_junior');
   Route::post('/show_junior', 'ClassificationController@show_junior');
 
+  //Classification
+  Route::get('/Classification', 'ClassificationController@index')->name('Classification');
+  Route::post('/create_master', 'ClassificationController@create_master');
+  Route::post('/show_master', 'ClassificationController@show_master');
+  Route::post('/edit_master', 'ClassificationController@edit_master');
+  Route::post('/update_master', 'ClassificationController@update_master');
+  Route::post('/destroy_master', 'ClassificationController@destroy_master');
+
+  Route::post('/create_junior', 'ClassificationController@create_junior');
+  Route::post('/show_junior', 'ClassificationController@show_junior');
+  Route::post('/edit_junior', 'ClassificationController@edit_junior');
+  Route::post('/update_junior', 'ClassificationController@update_junior');
+  Route::post('/destroy_junior', 'ClassificationController@destroy_junior');
+
   //Workstation
   Route::post('/workstation_show', 'WorkstationController@show');
   Route::post('/workstation_create', 'WorkstationController@create');
-
   Route::post('/workstation_edit', 'WorkstationController@edit');
   Route::post('/workstation_update', 'WorkstationController@update');
   Route::post('/workstation_destroy', 'WorkstationController@destroy');
+
   //Workstation - user
   Route::post('/workstation_show_user', 'WorkstationController@show_user');
   Route::post('/workstation_create_user', 'WorkstationController@create_user');
+  Route::post('/workstation_edit_user', 'WorkstationController@edit_user');
+  Route::post('/workstation_update_user', 'WorkstationController@update_user');
+  Route::post('/workstation_destroy_user', 'WorkstationController@destroy_user');
 
   //Department
   Route::post('/department_show', 'DepartmentController@show');
   Route::post('/department_create', 'DepartmentController@create');
-  //Department - user
-  Route::post('/department_show_user', 'DepartmentController@show_user');
-  Route::post('/department_create_user', 'DepartmentController@create_user');
-
   Route::post('/department_edit', 'DepartmentController@edit');
   Route::post('/department_update', 'DepartmentController@update');
   Route::post('/department_destroy', 'DepartmentController@destroy');
+
+  //Department - user
+  Route::post('/department_show_user', 'DepartmentController@show_user');
+  Route::post('/department_create_user', 'DepartmentController@create_user');
+  Route::post('/department_destroy_user', 'DepartmentController@destroy_user');
 
   //Facturación Electronica - Folder Base
   Route::get('/dashboard_cfdi', 'Base\DashboardCFDIController@dashboard');

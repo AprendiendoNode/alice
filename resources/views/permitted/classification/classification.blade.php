@@ -51,6 +51,39 @@
         </div>
     </div>
   </div>
+  <!-- Editar Workstation-->
+  <div id="modal-Edit-Workstation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaleditwork" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modaleditwork">Editar puesto de trabajo</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="editwork" name="editwork" class="forms-sample" action="">
+                {{ csrf_field() }}
+                <input class="form-control" type="hidden" placeholder="" id="token_b" name="token_b" value="">
+
+                <div class="form-group row">
+                  <label for="inputEditName" class="col-sm-3 col-form-label">Nombre<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditName" name="inputEditName" placeholder="Nombre">
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-navy"><i class="fas fa-check" style="margin-right: 4px;"></i> {{ trans('message.editar') }}</button>
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="col-12 mb-3">
     <div class="card  card-hover">
         <div class="card-header bg-primary">
@@ -118,6 +151,62 @@
         </div>
     </div>
   </div>
+  <!-- Editar Usuario - puesto trabajo-->
+  <div id="modal-Edit-User-Puesto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaledituserpuesto" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modaledituserpuesto">Editar Usuario - Puesto de trabajo</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="edit_position_user" name="edit_position_user" class="forms-sample" action="">
+                {{ csrf_field() }}
+                <input class="form-control" type="hidden" placeholder="" id="token_e" name="token_e" value="">
+                <div class="form-group row">
+                  <label for="selectpositionEdit" class="col-sm-3 col-form-label">Puesto de trabajo<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="selectpositionEdit" name="selectpositionEdit" class="form-control form-control-sm required">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($workstations as $workstations_data)
+                      <option value="{{ $workstations_data->id }}"> {{ $workstations_data->name }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="selectuserpositionEdit" class="col-sm-3 col-form-label">Usuario<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="selectuserpositionEdit" name="selectuserpositionEdit" class="form-control form-control-sm required">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($user as $user_data)
+                      <option value="{{ $user_data->id }}"> {{ $user_data->name }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputdatepositionEdit" class="col-sm-3 col-form-label">Inicio de actividades <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm datepicker required" id="inputdatepositionEdit" name="inputdatepositionEdit" placeholder="Inicio de actividades" maxlength="10">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="fas fa-check" style="margin-right: 4px;"></i> {{ trans('message.edit') }}</button>
+                <button type="button" class="btn btn-danger reset_workstation_user" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="col-12 mb-3">
     <div class="card  card-hover">
         <div class="card-header bg-danger">
@@ -157,6 +246,39 @@
           </div>
           <hr>
         </div>
+    </div>
+  </div>
+  <!-- Editar Departamento-->
+  <div id="modal-Edit-Department" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaleditwork" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modaleditwork">Editar departamento</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="editdepartment" name="editdepartment" class="forms-sample" action="">
+                {{ csrf_field() }}
+                <input class="form-control" type="hidden" placeholder="" id="token_c" name="token_c" value="">
+
+                <div class="form-group row">
+                  <label for="inputEditNameDep" class="col-sm-3 col-form-label">Nombre<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditNameDep" name="inputEditNameDep" placeholder="Nombre">
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-navy"><i class="fas fa-check" style="margin-right: 4px;"></i> {{ trans('message.editar') }}</button>
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
     </div>
   </div>
   <div class="col-12 mb-3">
@@ -279,6 +401,55 @@
         </div>
     </div>
   </div>
+  <!-- Editar itc master-->
+  <div id="modal-Edit-Itc-Master" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaledititcmaster" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modaledititcmaster">Editar ITC Junior</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="edit_itc_master" name="edit_itc_master" class="forms-sample" action="">
+                {{ csrf_field() }}
+                <input class="form-control" type="hidden" placeholder="" id="token_f" name="token_f" value="">
+                <div class="form-group row">
+                  <label for="selectcadenaEdit" class="col-sm-3 col-form-label">Hotel<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="selectcadenaEdit" name="selectcadenaEdit" class="form-control form-control-sm required">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($cadena as $cadena_data)
+                      <option value="{{ $cadena_data->id }}"> {{ $cadena_data->name }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="selectUserMasterEdit" class="col-sm-3 col-form-label">Usuario<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="selectUserMasterEdit" name="selectUserMasterEdit" class="form-control form-control-sm required">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($user as $user_data)
+                      <option value="{{ $user_data->id }}"> {{ $user_data->name }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="fas fa-check" style="margin-right: 4px;"></i> {{ trans('message.edit') }}</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="col-12 mb-3">
     <div class="card  card-hover">
         <div class="card-header bg-warning">
@@ -338,6 +509,55 @@
           <p><strong>Editar:</strong> Nos permite Habilitar o Inhabilitar el registro</p>
           <p><strong>Eliminar:</strong> Destruye completamente el registro</p>
         </div>
+    </div>
+  </div>
+  <!-- Editar itc junior-->
+  <div id="modal-Edit-Itc-Junior" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaledititcjunior" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modaledititcjunior">Editar ITC Junior</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="edit_itc_junior" name="edit_itc_junior" class="forms-sample" action="">
+                {{ csrf_field() }}
+                <input class="form-control" type="hidden" placeholder="" id="token_d" name="token_d" value="">
+                <div class="form-group row">
+                  <label for="selectHotelEdit" class="col-sm-3 col-form-label">Hotel<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="selectHotelEdit" name="selectHotelEdit" class="form-control form-control-sm required">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($hotel as $hotel_data)
+                      <option value="{{ $hotel_data->id }}"> {{ $hotel_data->Nombre_hotel }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="selectUserJuniorEdit" class="col-sm-3 col-form-label">Usuario<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="selectUserJuniorEdit" name="selectUserJuniorEdit" class="form-control form-control-sm required">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($user as $user_data)
+                      <option value="{{ $user_data->id }}"> {{ $user_data->name }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="fas fa-check" style="margin-right: 4px;"></i> {{ trans('message.edit') }}</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
     </div>
   </div>
 </div>
