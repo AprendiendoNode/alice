@@ -20,6 +20,7 @@
     });
     get_info_products();
     createEvent_Mensualidad();
+    createEvent_Mensualidad2();
   });
 
   function testDecimals(currentVal) {
@@ -38,6 +39,21 @@
   }
   function createEvent_Mensualidad () {
     const element = document.querySelector('[name="inputCreatcoindefault"]')
+    element.addEventListener('keyup', function(event) {
+      //Convertir formato pesos
+      if (event.which >= 37 && event.which <= 40) {
+        event.preventDefault();
+      }
+      var currentVal = $(this).val();
+      var testDecimal = testDecimals(currentVal);
+      if (testDecimal.length > 1) {
+        currentVal = currentVal.slice(0, -1);
+      }
+      $(this).val(replaceCommas(currentVal));
+    });
+  };
+  function createEvent_Mensualidad2 () {
+    const element = document.querySelector('[name="inputEditcoindefault"]')
     element.addEventListener('keyup', function(event) {
       //Convertir formato pesos
       if (event.which >= 37 && event.which <= 40) {
@@ -211,22 +227,36 @@ function edit_product(e){
   $.ajax({
        type: "POST",
        url: '/catalogs/products-edit',
-       data: { xy : valor, _token : _token},
+       data: { value : valor, _token : _token},
        success: function (data) {
-         var datosJ = JSON.parse(data);
-         $('#inputEditkey').val(datosJ[0].codigo);
-         $('#inputEditpart').val(datosJ[0].num_parte);
-         $('#inputEditname').val(datosJ[0].descripcion);
-         $('#inputEditcoindefault').val(datosJ[0].precio);
 
-         $('[name="editsel_modal_coin"]').val(datosJ[0].currency_id).trigger('change');
-         $('[name="editsel_modal_proveedor"]').val(datosJ[0].proveedor_id).trigger('change');
-         $('[name="edit_sel_categoria"]').val(datosJ[0].categoria_id).trigger('change');
-         $('[name="edit_sel_modelo"]').val(datosJ[0].modelo_id).trigger('change');
-         $('[name="edit_sel_estatus"]').val(datosJ[0].status_id).trigger('change');
-         $('#edit_img_preview').attr("src", 'images/storage/'+datosJ[0].img);
-         $('input.dodoo').val('');
+         $('#_token_c').val(data[0].id);
+         $('#inputEditkey').val(data[0].code);
+         $('#inputEditpart').val(data[0].num_parte);
+         $('#inputEditname').val(data[0].name);
+         $('#inputEditcoindefault').val(data[0].price);
+         $('#inputEditdescription').val(data[0].description);
+         $('#inputEditcomment').val(data[0].comment);
 
+         $('[name="edit_sel_categoria"]').val(data[0].categoria_id).trigger('change');
+         $('[name="editsel_modal_coin"]').val(data[0].currency_id).trigger('change');
+         $('[name="edit_sel_modelo"]').val(data[0].modelo_id).trigger('change');
+         $('[name="editsel_modal_proveedor"]').val(data[0].proveedor_id).trigger('change');
+         $('[name="edit_sel_unit"]').val(data[0].unit_measure_id).trigger('change');
+         $('[name="edit_sel_satserv"]').val(data[0].sat_product_id).trigger('change');
+
+
+         $('#inputEditManufacter').val(data[0].manufacturer);
+         $('[name="edit_sel_estatus"]').val(data[0].status_id).trigger('change');
+         $('#edit_img_preview').attr("src", '../images/storage/'+data[0].image);
+         $('#inputEditOrden').val(data[0].sort_order);
+         if (data[0].status == '0')
+         {
+           $("#editstatus").prop('checked', false).change();
+         }
+         else {
+           $('#editstatus').prop('checked', true).change();
+         }
        },
        error: function (data) {
          alert('Error:', data);
