@@ -28,4 +28,5 @@ return [
     'brands' => 'Marcas',
     'categories' => 'Categorias',
     'models' => 'Modelos',
+    'especificacions' => 'Especificaciones',
 ];

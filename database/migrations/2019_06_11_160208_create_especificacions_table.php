@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateModelosTable extends Migration
+class CreateEspecificacionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,9 @@ class CreateModelosTable extends Migration
      */
     public function up()
     {
-        Schema::create('modelos', function (Blueprint $table) {
+        Schema::create('especificacions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ModeloNombre');
-            $table->double('Costo', 15, 8);
-
-            $table->integer('currency_id')->nullable()->unsigned();
-            $table->foreign('currency_id')->references('id')->on('currencies');
-
-            $table->integer('marca_id')->nullable()->unsigned();
-            $table->foreign('marca_id')->references('id')->on('marcas');
-
-            $table->integer('especification_id')->unsigned();
-            $table->foreign('especification_id')->references('id')->on('especificacions');
-
-            $table->integer('sort_order')->default(0);
+            $table->string('name');
             $table->boolean('status')->default(TRUE);
             // Operaciones de usuario
             $table->integer('created_uid')->nullable()->unsigned();
@@ -46,6 +34,6 @@ class CreateModelosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('modelos');
+        Schema::dropIfExists('especificacions');
     }
 }

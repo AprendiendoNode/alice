@@ -29,47 +29,53 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-12">
-              <form id="creatproducts" name="creatproducts" class="forms-sample" action="">
+              <form id="creatproductsystem" name="creatproductsystem" enctype="multipart/form-data">
                 {{ csrf_field() }}
-                <div class="row">
-                  <div class="col-md-6">
+                <div class="d-flex justify-content-center">
+                  <div class="p-2 col-md-8">
                     <div id="ads">
                       <div class="card rounded">
-                          <div class="card-image">
-                              <span class="card-notify-badge">Preview</span>
-                              <img id="img_preview" name="img_preview" src="{{ asset('img/company/Default.svg') }}" alt="Alternate Text" class="img-responsive mx-auto d-block"/>
-                          </div>
-                          <div class="mt-3">
-                              <div class="form-group">
-                                  <div id="cont_file" class="">
-                                      <div class="input-group">
-                                        <label class="input-group-btn">
-                                          <span class="btn btn-primary">
-                                              Imagen <input id="fileInput" name="fileInput" type="file" style="display: none;" class="required">
-                                          </span>
-                                        </label>
-                                        <input type="text" class="form-control" readonly>
-                                      </div>
-                                  </div>
+                        <div class="card-image">
+                          <span class="card-notify-badge">Preview</span>
+                          <img id="img_preview" name="img_preview" src="{{ asset('img/company/Default.svg') }}" alt="Alternate Text" class="img-responsive mx-auto d-block"/>
+                        </div>
+                        <div class="mt-3">
+                          <div class="form-group">
+                            <div id="cont_file" class="">
+                              <div class="input-group">
+                                <label class="input-group-btn">
+                                  <span class="btn btn-primary">
+                                    Imagen <input id="fileInput" name="fileInput" type="file" style="display: none;" class="required">
+                                  </span>
+                                </label>
+                                <input type="text" class="form-control" readonly>
                               </div>
+                            </div>
                           </div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="row">
                   <div class="col-md-6">
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>Clave:<span style="color: red;">*</span></label>
-                          <input type="text" class="form-control required" id="inputCreatkey" name="inputCreatkey" placeholder="Ingrese una clave"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                          <input maxlength="10" type="text" class="form-control required" id="inputCreatkey" name="inputCreatkey" placeholder="Ingrese una clave"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>No. Parte:<span style="color: red;">*</span></label>
-                          <input type="text" class="form-control required" id="inputCreatpart" name="inputCreatpart" placeholder="Ingrese el núm. de parte">
+                          <input maxlength="10" type="text" class="form-control required" id="inputCreatpart" name="inputCreatpart" placeholder="Ingrese el núm. de parte">
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>Nombre:<span style="color: red;">*</span></label>
@@ -86,8 +92,14 @@
                   </div>
                   <div class="col-md-12 mt-4">
                     <div class="form-group">
+                      <label for="description">Descripcion:</label>
+                      <input type="text" class="form-control" id="description" name="description">
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-4">
+                    <div class="form-group">
                       <label for="comment">Comentario:</label>
-                      <input type="password" class="form-control" id="comment">
+                      <input type="text" class="form-control" id="comment" name="comment">
                     </div>
                   </div>
                   <div class="col-md-12 mt-4">
@@ -157,12 +169,10 @@
                     </div>
                     <div class="row">
                       <div class="col-md-6">
-                        <label for="sel_unit"> Unidad de medida:
-                          <span style="color: red;">*</span>
-                        </label>
-                        <div id="cont_unit" class="input-group mb-3">
-                          <select datas="sel_unit" id="sel_unit" name="sel_unit" class="form-control required">
-                            <option value="" selected>{{ trans('message.selectopt') }}</option>
+                        <div class="form-group">
+                          <label for="sel_unit" class="control-label">Unidad de medida:<span style="color: red;">*</span></label>
+                          <select id="sel_unit" name="sel_unit" class="form-control required" style="width:100%;">
+                            <option value="">{{ trans('message.selectopt') }}</option>
                             @forelse ($unitmeasures as $data_unitmeasures)
                             <option value="{{ $data_unitmeasures->id }}"> {{ $data_unitmeasures->name }} </option>
                             @empty
@@ -171,21 +181,25 @@
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <label for="sel_satserv"> Productos/Servicios SAT:
-                          <span style="color: red;">*</span>
-                        </label>
-                        <div id="cont_satserv" class="input-group mb-3">
-                          <select datas="sel_satserv" id="sel_satserv" name="sel_satserv" class="form-control required">
-                            <option value="" selected>{{ trans('message.selectopt') }}</option>
-                            @forelse ($satproduct as $data_satproduct)
-                            <option value="{{ $data_satproduct->id }}"> {{ $data_satproduct->name }} </option>
-                            @empty
-                            @endforelse
-                          </select>
+                        <div class="form-group">
+                          <label for="sel_satserv" class="control-label">Productos/Servicios SAT:<span style="color: red;">*</span></label>
+                            <select id="sel_satserv" name="sel_satserv" class="form-control required" style="width:100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($satproduct as $data_satproduct)
+                              <option value="{{ $data_satproduct->id }}"> {{ $data_satproduct->name }} </option>
+                              @empty
+                              @endforelse
+                            </select>
                         </div>
                       </div>
                     </div>
                     <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Fabricante:</label>
+                          <input type="text" class="form-control" id="inputCreatManufacter" name="inputCreatManufacter" placeholder="Nombre del fabricante" maxlength="60">
+                        </div>
+                      </div>
                       <div class="col-md-6">
                         <label for="sel_estatus"> Estatus:
                           <span style="color: red;">*</span>
@@ -194,13 +208,21 @@
                           <select datas="sel_estatus" id="sel_estatus" name="sel_estatus" class="form-control required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
                             @forelse ($estatus as $data_estatus)
-                            <option value="{{ $data_estatus->id }}"> {{ $data_estatus->name }} </option>
+                              <option value="{{ $data_estatus->id }}"> {{ $data_estatus->name }} </option>
                             @empty
                             @endforelse
                           </select>
                           <div class="input-group-append">
                             <button class="btn btn-primary addstatus" type="button"><i class="fa fa-plus"></i></button>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Orden:<span style="color: red;">*</span></label>
+                          <input type="text" class="form-control required" id="inputCreatOrden" name="inputCreatOrden" placeholder="Orden de visualización" value="0" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -219,9 +241,231 @@
                       <button type="button" class="btn btn-danger waves-effect form_creat_user" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
                   </div>
                 </div>
+              </form>
 
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Editar -->
+  <div id="modal-Edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaledit" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modaledit">Editar</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="editproductsystem" name="editproductsystem" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <input id="fsd" name="fsd" type="hidden" class="form-control">
+                <div class="d-flex justify-content-center">
+                  <div class="p-2 col-md-8">
+                    <div id="ads">
+                      <div class="card rounded">
+                        <div class="card-image">
+                          <span class="card-notify-badge">Preview</span>
+                          <img id="edit_img_preview" name="edit_img_preview" src="{{ asset('img/company/Default.svg') }}" alt="Alternate Text" class="img-responsive mx-auto d-block"/>
+                        </div>
+                        <div class="mt-3">
+                          <div class="form-group">
+                            <div id="cont_file" class="">
+                              <div class="input-group">
+                                <label class="input-group-btn">
+                                  <span class="btn btn-primary">
+                                    Imagen <input id="editfileInput" name="editfileInput" type="file" style="display: none;" class="required">
+                                  </span>
+                                </label>
+                                <input type="text" class="form-control" readonly>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label>Clave:<span style="color: red;">*</span></label>
+                          <input maxlength="10" type="text" class="form-control required" id="inputEditkey" name="inputEditkey" placeholder="Ingrese una clave"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label>No. Parte:<span style="color: red;">*</span></label>
+                          <input maxlength="10" type="text" class="form-control required" id="inputEditpart" name="inputEditpart" placeholder="Ingrese el núm. de parte">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label>Nombre:<span style="color: red;">*</span></label>
+                          <input type="text" class="form-control required" id="inputEditname" name="inputEditname" placeholder="Ingrese el nombre">
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label>Precio (Default):<span style="color: red;">*</span></label>
+                          <input type="text" class="form-control required" id="inputEditcoindefault" name="inputEditcoindefault" placeholder="Ingrese el precio generico" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-4">
+                    <div class="form-group">
+                      <label for="description">Descripcion:</label>
+                      <input type="text" class="form-control" id="inputEditdescription" name="inputEditdescription">
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-4">
+                    <div class="form-group">
+                      <label for="comment">Comentario:</label>
+                      <input type="text" class="form-control" id="inputEditcomment" name="inputEditcomment">
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-4">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="editsel_modal_coin" class="control-label">Moneda (Default)<span style="color: red;">*</span></label>
+                            <select id="editsel_modal_coin" name="editsel_modal_coin" class="form-control required" style="width:100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($currency as $data_currency)
+                              <option value="{{ $data_currency->id }}"> {{ $data_currency->name }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="editsel_modal_proveedor" class="control-label">Proveedor/Clientes<span style="color: red;">*</span></label>
+                            <select id="editsel_modal_proveedor" name="editsel_modal_proveedor" class="form-control required" style="width:100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($customer as $data_customer)
+                              <option value="{{ $data_customer->id }}"> {{ $data_customer->name }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-4">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label for="edit_sel_categoria"> Categoria:
+                          <span style="color: red;">*</span>
+                        </label>
+                        <div id="edit_cont_category" class="input-group mb-3">
+                          <select datas="edit_sel_categoria" id="edit_sel_categoria" name="edit_sel_categoria" class="form-control required">
+                            <option value="" selected>{{ trans('message.selectopt') }}</option>
+                            @forelse ($category as $data_category)
+                            <option value="{{ $data_category->id }}"> {{ $data_category->name }} </option>
+                            @empty
+                            @endforelse
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="edit_sel_modelo"> Modelo:
+                          <span style="color: red;">*</span>
+                        </label>
+                        <div id="edit_cont_model" class="input-group mb-3">
+                          <select datas="edit_sel_modelo" id="edit_sel_modelo" name="edit_sel_modelo" class="form-control required">
+                            <option value="" selected>{{ trans('message.selectopt') }}</option>
+                            @forelse ($models as $data_models)
+                            <option value="{{ $data_models->id }}"> {{ $data_models->ModeloNombre }} </option>
+                            @empty
+                            @endforelse
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="edit_sel_unit" class="control-label">Unidad de medida:<span style="color: red;">*</span></label>
+                          <select id="edit_sel_unit" name="edit_sel_unit" class="form-control required" style="width:100%;">
+                            <option value="">{{ trans('message.selectopt') }}</option>
+                            @forelse ($unitmeasures as $data_unitmeasures)
+                            <option value="{{ $data_unitmeasures->id }}"> {{ $data_unitmeasures->name }} </option>
+                            @empty
+                            @endforelse
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="edit_sel_satserv" class="control-label">Productos/Servicios SAT:<span style="color: red;">*</span></label>
+                            <select id="edit_sel_satserv" name="edit_sel_satserv" class="form-control required" style="width:100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($satproduct as $data_satproduct)
+                              <option value="{{ $data_satproduct->id }}"> {{ $data_satproduct->name }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Fabricante:</label>
+                          <input type="text" class="form-control" id="inputEditManufacter" name="inputEditManufacter" placeholder="Nombre del fabricante" maxlength="60">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="edit_sel_estatus"> Estatus:
+                          <span style="color: red;">*</span>
+                        </label>
+                        <div id="edit_cont_estatus" class="input-group mb-3">
+                          <select datas="edit_sel_estatus" id="edit_sel_estatus" name="edit_sel_estatus" class="form-control required">
+                            <option value="" selected>{{ trans('message.selectopt') }}</option>
+                            @forelse ($estatus as $data_estatus)
+                              <option value="{{ $data_estatus->id }}"> {{ $data_estatus->name }} </option>
+                            @empty
+                            @endforelse
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Orden:<span style="color: red;">*</span></label>
+                          <input type="text" class="form-control required" id="inputEditOrden" name="inputEditOrden" placeholder="Orden de visualización" value="0" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="status" class="col-sm-3 control-label">Activo</label>
+                          <div class="col-md-9 mb-3">
+                            <input id="editstatus" name="editstatus" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-
+                  <div class="col-md-12 mt-4">
+                      <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
+                      <button type="button" class="btn btn-danger waves-effect form_creat_user" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -231,6 +475,7 @@
       </div>
     </div>
   </div>
+
 
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
@@ -252,6 +497,7 @@
                       <th>Sat Producto</th>
                       <th>Order</th>
                       <th>Estatus</th>
+                      <th>Filtrable</th>
                       <th>Opciones</th>
                     </tr>
                   </thead>
@@ -279,6 +525,9 @@
   <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
 
+  <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
+  <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
+
   <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>
 
@@ -286,6 +535,7 @@
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
   <script src="{{ asset('js/admin/catalogs/products.js')}}"></script>
+  <script src="{{ asset('js/admin/catalogs/modal_products.js')}}"></script>
 
   <style media="screen">
     .select2-selection__rendered {
@@ -297,6 +547,9 @@
     }
     .select2-selection__arrow {
       height: 36px !important;
+    }
+    .text-danger {
+      font-size: 12px !important;
     }
     #img_preview {
       margin-top: 20px;

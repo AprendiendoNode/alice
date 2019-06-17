@@ -70,6 +70,7 @@
                 <li class="nav-item {{ Request::is('/catalogs/categories') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/categories') }}"><i class="fas fa-box-open mr-2"></i>Categorias de producto</a></li>
                 <li class="nav-item {{ Request::is('/catalogs/brands') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/brands') }}"><i class="fas fa-box-open mr-2"></i>Marcas de productos</a></li>
                 <li class="nav-item {{ Request::is('/catalogs/models') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/models') }}"><i class="fas fa-box-open mr-2"></i>Modelos de productos</a></li>
+                <li class="nav-item {{ Request::is('/catalogs/especificacions') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/especificacions') }}"><i class="fas fa-box-open mr-2"></i>Especificaciones de prod</a></li>
                 <li class="nav-item {{ Request::is('/catalogs/products') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/products') }}"><i class="fas fa-boxes mr-2"></i>Admón de Productos</a></li>
                 <li class="nav-item {{ Request::is('settings_pac') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/settings_pac') }}"><i class="fas fa-cogs mr-2"></i> PAC</a></li>
 
