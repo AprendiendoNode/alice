@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Catalogs;
-use DB;
-use Auth;
-use Carbon\Carbon;
+namespace App\Http\Controllers\Base;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Crypt;
-class EspecificacionController extends Controller
+
+class PacController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +14,7 @@ class EspecificacionController extends Controller
      */
     public function index()
     {
-        return view('permitted.catalogs.especificacions');
+        //
     }
 
     /**
@@ -24,7 +22,7 @@ class EspecificacionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
         //
     }
@@ -46,15 +44,9 @@ class EspecificacionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show($id)
     {
-      $resultados = DB::select('CALL GetAllEspecificacionv2 ()', array());
-      return json_encode($resultados);
-    }
-    public function show_active(Request $request)
-    {
-      $resultados = DB::select('CALL GetAllEspecificacionActivev2 ()', array());
-      return json_encode($resultados);
+        //
     }
 
     /**

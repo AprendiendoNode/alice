@@ -363,8 +363,7 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
     Route::post('/especificacions-store', 'Catalogs\EspecificacionController@store');
     Route::post('/especificacions-show', 'Catalogs\EspecificacionController@show');
     Route::post('/especificacions-edit', 'Catalogs\EspecificacionController@edit');
-    Route::post('/especificacions-show-act', 'Catalogs\EspecificacionController@show_active');
-
+    Route::post('/especificacions-show-act', 'Catalogs\EspecificacionController@show_active'); 
 });
 
 Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
