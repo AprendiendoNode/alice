@@ -341,9 +341,11 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
 
     //Catalogo - Especificacion
     Route::get('/especificacions', 'Catalogs\EspecificacionController@index');
-    Route::post('/especificacion-create', 'Catalogs\EspecificacionController@create');
-    Route::post('/especificacion-show', 'Catalogs\EspecificacionController@show');
-    Route::post('/especificacion-show-act', 'Catalogs\EspecificacionController@show_active');
+    Route::post('/especificacions-create', 'Catalogs\EspecificacionController@create');
+    Route::post('/especificacions-store', 'Catalogs\EspecificacionController@store');
+    Route::post('/especificacions-show', 'Catalogs\EspecificacionController@show');
+    Route::post('/especificacions-edit', 'Catalogs\EspecificacionController@edit');
+    Route::post('/especificacions-show-act', 'Catalogs\EspecificacionController@show_active');
 
 });
 
