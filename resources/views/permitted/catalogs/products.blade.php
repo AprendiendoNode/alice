@@ -478,6 +478,48 @@
     </div>
   </div>
   <!-- Categoria -->
+  <!-- Crear categoría-->
+  <div id="modal-CreatNew-Category" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalcategory" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalbanks">Crear nuevo</h4> <!-- change -->
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="creatcategories" name="creatcategories" class="forms-sample" action=""> <!-- change -->
+                {{ csrf_field() }}
+                <div class="form-group row">
+                  <label for="inputCreatName" class="col-sm-3 col-form-label">{{ trans('auth.nombre')}} <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required" id="inputCreatName" name="inputCreatName" placeholder="{{ trans('auth.nombre') }}" maxlength="60">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputCreatOrden" class="col-sm-3 col-form-label">Orden<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required onlynumber" id="inputCreatOrden" name="inputCreatOrden" placeholder="Orden de visualización" value="0" maxlength="3">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="status" class="col-sm-3 control-label">Estatus</label>
+                  <div class="col-md-9 mb-3">
+                    <input id="status" name="status" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
+                <button type="button" class="btn btn-danger waves-effect form_creat_user" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Modelo -->
   <!-- Estatus -->
 

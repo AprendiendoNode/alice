@@ -21,7 +21,136 @@
     get_info_products();
     createEvent_Mensualidad();
     createEvent_Mensualidad2();
+
+    var _token = $('input[name="_token"]').val();
+
+    const headers = new Headers({
+      "Accept": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+      "X-CSRF-TOKEN": _token
+    })
+
+    var miInit = { method: 'post',
+                      headers: headers,
+                      credentials: "same-origin",
+                      cache: 'default' };
+
+    $('#creatcategories').formValidation({
+     framework: 'bootstrap',
+     excluded: ':disabled',
+     fields: {
+       inputCreatName: {
+         validators: {
+           notEmpty: {
+             message: 'The field is required'
+           }
+         }
+       },
+       inputCreatOrden: {
+         validators: {
+           notEmpty: {
+             message: 'The field is required'
+           }
+         }
+       },
+
+     }
+    })
+    .on('success.form.fv', function(e) {
+          e.preventDefault();
+          var form = $('#creatcategories')[0];
+          var formData = new FormData(form);
+          $.ajax({
+            type: "POST",
+            url: "/catalogs/categories-create",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data){
+              if (data == 'abort') {
+                Swal.fire({
+                   type: 'error',
+                   title: 'Error encontrado..',
+                   text: 'Realice la operacion nuevamente!',
+                 });
+              }
+              else if (data == 'false') {
+                Swal.fire({
+                   type: 'error',
+                   title: 'Error encontrado..',
+                   text: 'Ya existe!',
+                 });
+              }
+              else {
+                  let timerInterval;
+                  Swal.fire({
+                    type: 'success',
+                    title: 'Operación Completada!',
+                    html: 'Aplicando los cambios.',
+                    timer: 2000,
+                    onBeforeOpen: () => {
+                      Swal.showLoading()
+                      timerInterval = setInterval(() => {
+                        Swal.getContent().querySelector('strong')
+                      }, 100)
+                    },
+                    onClose: () => {
+                      clearInterval(timerInterval)
+                    }
+                  }).then((result) => {
+                    if (
+                      // Read more about handling dismissals
+                      result.dismiss === Swal.DismissReason.timer
+                    ) {
+
+                      fetch('/catalogs/categories-show', miInit)
+                            .then(function(response){
+                              return response.json();
+                            })
+                            .then(function(data){
+                              /* Remove all options from the select list */
+                              $('#sel_categoria').empty();
+                              $('#sel_categoria').append($('<option>', {
+                                  value: '',
+                                  text: 'Elegir'
+                              }));
+                                /* Insert the new ones from the array above */
+                              data.forEach(function(key) {
+                                var opt = document.createElement('option');
+                                    opt.text = key.name;
+                                    opt.value = key.id;
+                                    $('#sel_categoria').append(opt);;
+                              });
+                            })
+                            .catch(function(error){
+                                    console.log(error);
+                            });
+
+                    }
+                  });
+              }
+            },
+            error: function (err) {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Oops...',
+                 text: err.statusText,
+               });
+            }
+          });
+    });
+
+
   });
+
+  $(".addcategorias").on("click",function(){
+    $('#modal-CreatNew-Category').modal('show');
+    if (document.getElementById("creatcategories")) {
+      $('#creatcategories')[0].reset();
+      $('#creatcategories').data('formValidation').resetForm($('#creatcategories'));
+      $('#inputCreatOrden').val(0);
+    }
+  })
 
   function testDecimals(currentVal) {
     var count;
