@@ -623,18 +623,6 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="select_one" class="col-sm-3 col-form-label">Pais<span style="color: red;">*</span></label>
-                  <div class="col-sm-9">
-                    <select  id="select_one" name="select_one" class="form-control form-control-sm required"  style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
-                      @forelse ($country as $country_data)
-                      <option value="{{ $country_data->id }}"> {{ $country_data->name }} </option>
-                      @empty
-                      @endforelse
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
                   <label for="inputCreatOrden" class="col-sm-3 col-form-label">Orden<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm required onlynumber" id="inputCreatOrden" name="inputCreatOrden" placeholder="Orden de visualización" value="0" maxlength="3">

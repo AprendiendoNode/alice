@@ -332,7 +332,9 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
     //Catalogo - Productos
     Route::get('/products', 'Catalogs\ProductController@index');
     Route::post('/products-show', 'Catalogs\ProductController@show');
+    Route::post('/products-status-show', 'Catalogs\ProductController@showEstatusProduct');
     Route::post('/products-create', 'Catalogs\ProductController@create');
+    Route::post('/products-status-create', 'Catalogs\ProductController@createStatus');
     Route::post('/products-store', 'Catalogs\ProductController@store');
     Route::post('/products-edit', 'Catalogs\ProductController@edit');
 
@@ -363,7 +365,7 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
     Route::post('/especificacions-store', 'Catalogs\EspecificacionController@store');
     Route::post('/especificacions-show', 'Catalogs\EspecificacionController@show');
     Route::post('/especificacions-edit', 'Catalogs\EspecificacionController@edit');
-    Route::post('/especificacions-show-act', 'Catalogs\EspecificacionController@show_active'); 
+    Route::post('/especificacions-show-act', 'Catalogs\EspecificacionController@show_active');
 });
 
 Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()

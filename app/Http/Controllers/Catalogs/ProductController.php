@@ -212,16 +212,28 @@ class ProductController extends Controller
                 'sat_product_id' => $id_satserv,
                 'especifications_id' => $id_especification,
                 'comment' => $nComment,
-               'sort_order' => $orden,
-                   'status' => $status,
-              'updated_uid' => $user_id,
-               'updated_at' => \Carbon\Carbon::now()]);
+                'sort_order' => $orden,
+                'status' => $status,
+                'updated_uid' => $user_id,
+                'updated_at' => \Carbon\Carbon::now()]);
       if($newId == '0' ){
           return 'abort'; // returns 0
       }
       else{
           return $newId; // returns id
       }
+
+    }
+
+    public function createStatus(Request $request)
+    {
+      DB::table('products_status')->insert(
+          ['name' => $request->inputCreatName,
+            'sort_order' => $request->inputCreatOrden,
+            'status' => $request->status]
+      );
+
+      return 'true';
 
     }
 
@@ -235,6 +247,12 @@ class ProductController extends Controller
     {
       $resultados = DB::select('CALL GetAllProductsv2 ()', array());
       return json_encode($resultados);
+    }
+
+    public function showEstatusProduct(Request $request)
+    {
+      $estatus = DB::select('CALL GetAllStatusProductsActivev2 ()', array());
+      return json_encode($estatus);
     }
 
     /**

@@ -277,13 +277,6 @@
      framework: 'bootstrap',
      excluded: ':disabled',
      fields: {
-       inputCreatCode: {
-         validators: {
-           notEmpty: {
-             message: 'The field is required'
-           }
-         }
-       },
        inputCreatName: {
          validators: {
            notEmpty: {
@@ -298,13 +291,6 @@
            }
          }
        },
-       select_one: {
-         validators: {
-           notEmpty: {
-             message: 'The field is required'
-           }
-         }
-       },
      }
     })
     .on('success.form.fv', function(e) {
@@ -313,7 +299,7 @@
           var formData = new FormData(form);
           $.ajax({
             type: "POST",
-            url: "/catalogs/states-create",
+            url: "/catalogs/products-status-create",
             data: formData,
             contentType: false,
             processData: false,
@@ -353,7 +339,7 @@
                       // Read more about handling dismissals
                       result.dismiss === Swal.DismissReason.timer
                     ) {
-                      fetch('/catalogs/states-show', miInit)
+                      fetch('/catalogs/products-status-show', miInit)
                             .then(function(response){
                               return response.json();
                             })
