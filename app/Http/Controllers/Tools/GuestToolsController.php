@@ -9,10 +9,10 @@ use SoapClient;
 
 class GuestToolsController extends Controller
 {
+
 public $xmlreq=<<<XML
 <?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><Post_ObtenerInfoRoomPorHabitacion xmlns="http://localhost/xmlschemas/postserviceinterface/16-07-2009/"><RmroomRequest xmlns="http://localhost/pr_xmlschemas/hotel/01-03-2006/RmroomRequest.xsd"><Rmroom><hotel xmlns="http://localhost/pr_xmlschemas/hotel/01-03-2006/Rmroom.xsd"></hotel><room xmlns="http://localhost/pr_xmlschemas/hotel/01-03-2006/Rmroom.xsd"></room></Rmroom><rooms /></RmroomRequest></Post_ObtenerInfoRoomPorHabitacion></soap:Body></soap:Envelope>
 XML;
-
   /**
   * Show the application guest tools
   *
@@ -28,15 +28,15 @@ XML;
       $hotel_code = $request->hotelCode;
       $room = $request->roomNum;
 
-      $result = DB::connection('sunrisezq')->table('authtoken')->select([
+      $result = DB::connection('cloudrad')->table('userinfo')->select([
           'username',
-          'name',
-          'createdate',
+          'lastname',
+          'creationdate',
           'expiration',
-          'description'
+          'email'
       ])->where([
           ['username', 'like', '%'.$room.'%'],
-          ['description', '=', $hotel_code]
+          ['email', '=', $hotel_code]
       ])->get();
 
       return $result;
@@ -45,71 +45,67 @@ XML;
   public function getPortalUsers(Request $request)
   {
       $collection = collect();
-      $result1 = DB::connection('sunrisezq')->table('authtoken')->select([
+      $result1 = DB::connection('cloudrad')->table('userinfo')->select([
           'username',
-          'name',
-          'createdate',
+          'lastname',
+          'creationdate',
           'expiration',
-          'description'
-      ])->where([
-          ['description', '=', 'PL'],
-          //['description', '=', 'CZ'],
-          //['description', '=', 'ZCJG'],
+          'email'
       ])->get();
-      $result2 = DB::connection('sunrisezq')->table('authtoken')->select([
+      /*$result2 = DB::connection('cloudrad')->table('userinfo')->select([
           'username',
-          'name',
-          'createdate',
+          'lastname',
+          'creationdate',
           'expiration',
-          'description'
+          'email'
       ])->where([
-          //['description', '=', 'PL'],
-          ['description', '=', 'CZ'],
-          //['description', '=', 'ZCJG'],
+          //['email', '=', 'PL'],
+          ['email', '=', 'CZ'],
+          //['email', '=', 'ZCJG'],
       ])->get();
-      $result3 = DB::connection('sunrisezq')->table('authtoken')->select([
+      $result3 = DB::connection('cloudrad')->table('userinfo')->select([
           'username',
-          'name',
-          'createdate',
+          'lastname',
+          'creationdate',
           'expiration',
-          'description'
+          'email'
       ])->where([
-          //['description', '=', 'PL'],
-          //['description', '=', 'CZ'],
-          ['description', '=', 'ZCJG'],
-      ])->get();
-      $collection->push($result1);
-      $collection->push($result2);
-      $collection->push($result3);
+          //['email', '=', 'PL'],
+          //['email', '=', 'CZ'],
+          ['email', '=', 'ZCJG'],
+      ])->get();*/
+      // $collection->push($result1);
+      // $collection->push($result2);
+      // $collection->push($result3);
 
-      return $collection;
+      return $result1;
   }
 
   //deprecated
-public function checkGuest(Request $request)
-{
-  $hotel_code = $request->input('hotelCode');
+    public function checkGuest(Request $request)
+    {
+      $hotel_code = $request->input('hotelCode');
 
-  $room = $request->input('roomNum');
+      $room = $request->input('roomNum');
 
-  if ($hotel_code === 'PL' || $hotel_code === 'CZ') {
-      $queryPL = DB::connection('sunrisezq')->table('authtoken')->select([
-          'username',
-          'createdate',
-          'expiration'
-      ])->where('username', 'like', '%'.$room.'%')->get();
+      if ($hotel_code === 'PL' || $hotel_code === 'CZ') {
+          $queryPL = DB::connection('cloudrad')->table('userinfo')->select([
+              'username',
+              'creationdate',
+              'expiration'
+          ])->where('username', 'like', '%'.$room.'%')->get();
 
-      return json_encode($queryPL);
-  }else{
-      $queryJP = DB::connection('jamaicazq')->table('authtoken')->select([
-          'username',
-          'createdate',
-          'expiration'
-      ])->where('username', 'like', '%'.$room.'%')->get();
+          return json_encode($queryPL);
+      }else{
+          $queryJP = DB::connection('cloudrad')->table('userinfo')->select([
+              'username',
+              'creationdate',
+              'expiration'
+          ])->where('username', 'like', '%'.$room.'%')->get();
 
-      return json_encode($queryJP);
-  }
-}
+          return json_encode($queryJP);
+      }
+    }
 
   public function checkWebSer(Request $request)
   {
@@ -198,5 +194,4 @@ public function checkGuest(Request $request)
           return FALSE;
       }
   }
-
 }
