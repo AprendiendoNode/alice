@@ -16,9 +16,6 @@ class MyTickets extends Controller
     $itconcierge = DB::select('CALL List_user_NPS (?)', array(7));
     return view('permitted.service.zendesk_table', compact('sitios', 'itconcierge'));
     // return view('permitted.service.zendesk_table', compact('sitios'));
-    // Route::post('/search_data_traf_tickets', 'Support\MyTickets@showheader_mod');
-    // Route::post('/get_table_ticket', 'Support\MyTickets@showtable_mod'); 
-    // Route::post('/get_graph_time_ticket', 'Support\MyTickets@showgraph_mod');
   }
   public function index_all()
   {
