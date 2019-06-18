@@ -130,11 +130,11 @@ Route::group(['middleware' => 'auth'], function () {
   // Modulo de zendesk - Mis tickets
   Route::get('/mytickets', 'Support\MyTickets@index');
   // Modulo de zendesk - Mis tickets - Opciones flex
-  Route::post('/search_data_traf_tickets', 'Support\MyTickets@showheader');
+  Route::post('/search_data_traf_tickets', 'Support\MyTickets@showheader_mod');
   // Modulo de zendesk - Mis tickets - Table
-  Route::post('/get_table_ticket', 'Support\MyTickets@showtable');
+  Route::post('/get_table_ticket', 'Support\MyTickets@showtable_mod');
   // Modulo de zendesk - Mis tickets - Grafica
-  Route::post('/get_graph_time_ticket', 'Support\MyTickets@showgraph');
+  Route::post('/get_graph_time_ticket', 'Support\MyTickets@showgraph_mod');
   // Modulo de zendesk - Mis tickets - Modal
   Route::post('/get_info_reg_ticket', 'Support\MyTickets@showinfoticket');
   Route::post('/update_ticket_sc', 'Support\MyTickets@update_ticket');
