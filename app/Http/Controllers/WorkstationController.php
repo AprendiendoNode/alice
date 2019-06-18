@@ -6,6 +6,7 @@ use Auth;
 use App\Workstation;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Crypt;
 class WorkstationController extends Controller
 {
     /**
@@ -81,9 +82,15 @@ class WorkstationController extends Controller
      * @param  \App\Workstation  $workstation
      * @return \Illuminate\Http\Response
      */
-    public function edit(Workstation $workstation)
+    public function edit(Request $request)
     {
-        //
+      $identificador= $request->value;
+      $resultados = DB::select('CALL GetWorkstationById (?)', array($identificador));
+      foreach ($resultados as $key) {
+        $key->id = Crypt::encryptString($key->id);
+      }
+
+      return $resultados;
     }
 
     /**
@@ -95,7 +102,13 @@ class WorkstationController extends Controller
      */
     public function update(Request $request, Workstation $workstation)
     {
-        //
+        $id = Crypt::decryptString($request->token_b);
+        $workstation = Workstation::findOrFail($id);
+        $workstation->name = $request->inputEditName;
+        $workstation->updated_at = \Carbon\Carbon::now();
+        $workstation->save();
+
+        return response()->json(['status' => 200]);
     }
 
     /**
@@ -104,8 +117,52 @@ class WorkstationController extends Controller
      * @param  \App\Workstation  $workstation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Workstation $workstation)
+    public function destroy(Request $request)
     {
-        //
+      $id = $request->id;
+      $workstation = Workstation::findOrFail($id);
+      $workstation->delete();
+
+      return response()->json(['status' => 200]);
     }
+
+    public function edit_user(Request $request)
+    {
+      $result = DB::table('user_workstation')
+                ->select('id', 'user_id', 'workstation_id', 'start_activities')
+                ->where('id', '=', $request->value)->get();
+
+      return response()->json([
+        'id' => $result[0]->id,
+        'workstation_id' => $result[0]->workstation_id,
+        'start_activities' => $result[0]->start_activities,
+        'user_id' => $result[0]->user_id
+      ]);
+    }
+
+    public function update_user(Request $request)
+    {
+      $result = DB::table('user_workstation')
+                    ->where('id', '=', $request->token_e)
+                    ->update([
+                      'user_id' => $request->selectuserpositionEdit,
+                      'workstation_id' => $request->selectpositionEdit,
+                      'start_activities' => $request->inputdatepositionEdit,
+                      'updated_at' => \Carbon\Carbon::now()
+                    ]);
+
+      return response()->json(['status' => 200]);
+    }
+
+    public function destroy_user(Request $request)
+    {
+      $id = $request->id;
+
+      DB::table('user_workstation')->where('id', '=', $id)->delete();
+
+      return response()->json(['status' => 200]);
+    }
+
+
+
 }

@@ -227,7 +227,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="status" class="col-sm-3 control-label">Activo</label>
+                          <label for="status" class="col-sm-3 control-label">Filtrable</label>
                           <div class="col-md-9 mb-3">
                             <input id="status" name="status" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
                           </div>
@@ -265,6 +265,8 @@
               <form id="editproductsystem" name="editproductsystem" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input id="fsd" name="fsd" type="hidden" class="form-control">
+                <input id="_token_c" name="_token_c" type="hidden" class="form-control">
+
                 <div class="d-flex justify-content-center">
                   <div class="p-2 col-md-8">
                     <div id="ads">
@@ -275,7 +277,7 @@
                         </div>
                         <div class="mt-3">
                           <div class="form-group">
-                            <div id="cont_file" class="">
+                            <div id="edit_cont_file" class="">
                               <div class="input-group">
                                 <label class="input-group-btn">
                                   <span class="btn btn-primary">
@@ -371,7 +373,7 @@
                           <span style="color: red;">*</span>
                         </label>
                         <div id="edit_cont_category" class="input-group mb-3">
-                          <select datas="edit_sel_categoria" id="edit_sel_categoria" name="edit_sel_categoria" class="form-control required">
+                          <select edatas="edit_sel_categoria" id="edit_sel_categoria" name="edit_sel_categoria" class="form-control required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
                             @forelse ($category as $data_category)
                             <option value="{{ $data_category->id }}"> {{ $data_category->name }} </option>
@@ -385,7 +387,7 @@
                           <span style="color: red;">*</span>
                         </label>
                         <div id="edit_cont_model" class="input-group mb-3">
-                          <select datas="edit_sel_modelo" id="edit_sel_modelo" name="edit_sel_modelo" class="form-control required">
+                          <select edatas="edit_sel_modelo" id="edit_sel_modelo" name="edit_sel_modelo" class="form-control required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
                             @forelse ($models as $data_models)
                             <option value="{{ $data_models->id }}"> {{ $data_models->ModeloNombre }} </option>
@@ -433,7 +435,7 @@
                           <span style="color: red;">*</span>
                         </label>
                         <div id="edit_cont_estatus" class="input-group mb-3">
-                          <select datas="edit_sel_estatus" id="edit_sel_estatus" name="edit_sel_estatus" class="form-control required">
+                          <select edatas="edit_sel_estatus" id="edit_sel_estatus" name="edit_sel_estatus" class="form-control required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
                             @forelse ($estatus as $data_estatus)
                               <option value="{{ $data_estatus->id }}"> {{ $data_estatus->name }} </option>
@@ -452,7 +454,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="status" class="col-sm-3 control-label">Activo</label>
+                          <label for="status" class="col-sm-3 control-label">Filtrable</label>
                           <div class="col-md-9 mb-3">
                             <input id="editstatus" name="editstatus" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
                           </div>
@@ -475,7 +477,9 @@
       </div>
     </div>
   </div>
-
+  <!-- Categoria -->
+  <!-- Modelo -->
+  <!-- Estatus -->
 
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
@@ -536,6 +540,7 @@
 
   <script src="{{ asset('js/admin/catalogs/products.js')}}"></script>
   <script src="{{ asset('js/admin/catalogs/modal_products.js')}}"></script>
+  <script src="{{ asset('js/admin/catalogs/modal_edit_products.js')}}"></script>
 
   <style media="screen">
     .select2-selection__rendered {
@@ -552,6 +557,11 @@
       font-size: 12px !important;
     }
     #img_preview {
+      margin-top: 20px;
+      height: 90%;
+      width: 90%;
+    }
+    #edit_img_preview {
       margin-top: 20px;
       height: 90%;
       width: 90%;

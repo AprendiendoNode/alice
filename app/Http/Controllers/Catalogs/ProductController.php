@@ -133,7 +133,90 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $user_id= Auth::user()->id;
+      $id_prod= $request->fsd;
+      $identificador_a= $request->_token_c;
+
+      $key= $request->inputEditkey;
+      $nkey= $request->inputEditpart;
+      $name= $request->inputEditname;
+      $description= $request->inputEditdescription;
+      $nComment= !empty($request->inputEditcomment) ? $request->inputEditcomment : '';
+
+      $id_moneda= $request->editsel_modal_coin;
+      $id_proveedor= $request->editsel_modal_proveedor;
+      $id_categoria= $request->edit_sel_categoria;
+      $id_modelo= $request->edit_sel_modelo;
+      $id_estatus= $request->edit_sel_estatus;
+
+      $id_unit= $request->edit_sel_unit;
+      $id_satserv= $request->edit_sel_satserv;
+      $id_manufacter= !empty($request->inputEditManufacter) ? $request->inputEditManufacter : '';
+
+      $precio_comas = $request->inputEditcoindefault;
+      $precio_sincomas = str_replace(',','',$precio_comas);
+
+      $orden= $request->inputEditOrden;
+      $status= !empty($request->editstatus) ? 1 : 0;
+
+      $id_name_modelito = DB::select('CALL px_products_modelos_namev2 (?)', array($id_modelo));
+      $name_modelo = $id_name_modelito[0]->modelos;
+
+      $rest_id_especification = DB::select('CALL px_products_especification_idv2 (?)', array($id_modelo));
+      $id_especification = $rest_id_especification[0]->especification_id;
+
+      $rest_id_marca = DB::select('CALL px_products_id_modelosv2 (?)', array($id_modelo));
+      $id_marca = $rest_id_marca[0]->marca_id;
+
+      $file_img = $request->file('editfileInput');
+      if($file_img){
+        $id_prox= DB::select('CALL px_products_img (?)', array($id_prod));
+        $image_path = 'images/storage/'.$id_prox[0]->img;
+        if(File::exists($image_path)) {
+          File::delete($image_path);
+        }
+        $id_name_category = DB::select('CALL px_products_categories_name (?)', array($id_categoria));
+        $name_category = $id_name_category[0]->categoria;
+
+        $file_extension = $file_img->getClientOriginalExtension(); // get filename extension
+        $fileName = uniqid().'.'.$file_extension;
+        $img= $request->file('editfileInput')->storeAs('product/',$fileName);
+
+        DB::table('products')->where('id', $id_prod)->update(['image' => $img]);
+      }
+
+
+      $newId = DB::table('products')
+      ->where('id', '=',$id_prod )
+      ->update([
+                'name' => $name,
+                'code' => $key,
+                'num_parte' => $nkey,
+                'description' => $description,
+                'model' => $name_modelo,
+                'manufacturer' => $id_manufacter,
+                'price' => $precio_sincomas,
+                'categoria_id' => $id_categoria,
+                'currency_id' => $id_moneda,
+                'modelo_id' => $id_modelo,
+                'marca_id' => $id_marca,
+                'proveedor_id' => $id_proveedor,
+                'status_id' => $id_estatus,
+                'unit_measure_id' => $id_unit,
+                'sat_product_id' => $id_satserv,
+                'especifications_id' => $id_especification,
+                'comment' => $nComment,
+               'sort_order' => $orden,
+                   'status' => $status,
+              'updated_uid' => $user_id,
+               'updated_at' => \Carbon\Carbon::now()]);
+      if($newId == '0' ){
+          return 'abort'; // returns 0
+      }
+      else{
+          return $newId; // returns id
+      }
+
     }
 
     /**

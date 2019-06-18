@@ -5,6 +5,7 @@ use DB;
 use Auth;
 use App\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Carbon\Carbon;
 class DepartmentController extends Controller
 {
@@ -77,9 +78,12 @@ class DepartmentController extends Controller
      * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function edit(Department $department)
+    public function edit(Request $request)
     {
-        //
+      $id = $request->value;
+      $department = Department::findOrFail($id);
+
+      return $department;
     }
 
     /**
@@ -91,7 +95,13 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        //
+      $id = $request->token_c;
+      $department = Department::findOrFail($id);
+      $department->name = $request->inputEditNameDep;
+      $department->updated_at = \Carbon\Carbon::now();
+      $department->save();
+
+      return response()->json(['status' => 200]);
     }
 
     /**
@@ -100,8 +110,13 @@ class DepartmentController extends Controller
      * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Department $department)
-    {
-        //
-    }
+     public function destroy_user(Request $request)
+     {
+       $id = $request->id;
+
+       DB::table('department_user')->where('id', '=', $id)->delete();
+
+       return response()->json(['status' => 200]);
+     }
+
 }
