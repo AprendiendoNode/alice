@@ -109,7 +109,7 @@
         <div class="table-responsive">
           <form name="generate_graph1" class="form-inline">
             <div class="input-group mb-2 mr-sm-2">
-              <button type="button" class="btn btn-danger btn-lg text-white pac" data-toggle="modal" data-target="#userbyrole"> <i class="fas fa-shipping-fast" style="margin-right: 4px;"></i> <strong>Nuevo</strong> </button>            
+              <button type="button" class="btn btn-danger btn-lg text-white pac" data-toggle="modal" data-target="#userbyrole"> <i class="fas fa-shipping-fast" style="margin-right: 4px;"></i> <strong>Nuevo</strong> </button>
             </div>
           </form>
           <div class="table-responsive">

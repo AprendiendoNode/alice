@@ -29,4 +29,5 @@ return [
     'categories' => 'Categorias',
     'models' => 'Modelos',
     'especificacions' => 'Especificaciones',
+    'pac' => 'Configuración del Pacs',
 ];

@@ -91,8 +91,6 @@ Route::group(['middleware' => 'auth'], function () {
 
   //Facturación Electronica - Folder Base
   Route::get('/dashboard_cfdi', 'Base\DashboardCFDIController@dashboard');
-  Route::get('/settings_pac', 'Base\DashboardCFDIController@settings_pac');
-
 
   Route::get('/settings_bank', function () {
     return view('permitted.invoicing.settings_bank');
@@ -384,4 +382,12 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customers-create', 'Sales\CustomerController@create');
     Route::post('/customers-store', 'Sales\CustomerController@store');
     Route::post('/customers-edit', 'Sales\CustomerController@edit');
+});
+Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
+{
+      Route::get('/settings_pac', 'Base\PacController@index');
+      Route::post('/pacs-show', 'Base\PacController@show');
+      Route::post('/pacs-create', 'Base\PacController@create');
+      Route::post('/pacs-store', 'Base\PacController@store');
+      Route::post('/pacs-edit', 'Base\PacController@edit');
 });
