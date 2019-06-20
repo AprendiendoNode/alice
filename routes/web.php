@@ -390,4 +390,10 @@ Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
       Route::post('/pacs-create', 'Base\PacController@create');
       Route::post('/pacs-store', 'Base\PacController@store');
       Route::post('/pacs-edit', 'Base\PacController@edit');
+
+      Route::get('/document-types', 'Base\DocumentTypeController@index');
+      Route::post('/document-types-show', 'Base\DocumentTypeController@show');
+      Route::post('/document-types-create', 'Base\DocumentTypeController@create');
+      Route::post('/document-types-store', 'Base\DocumentTypeController@store');
+      Route::post('/document-types-edit', 'Base\DocumentTypeController@edit');
 });

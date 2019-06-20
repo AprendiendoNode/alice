@@ -30,4 +30,5 @@ return [
     'models' => 'Modelos',
     'especificacions' => 'Especificaciones',
     'pac' => 'Configuración del Pacs',
+    'document_types' => 'Tipos de documentos',
 ];
