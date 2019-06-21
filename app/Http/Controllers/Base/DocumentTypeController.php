@@ -36,9 +36,50 @@ class DocumentTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+          $user_id= Auth::user()->id;
+             $name= $request->inputCreatName;
+             $code= $request->inputCreatCode;
+           $prefix= $request->inputCreatPrefix;
+         $currency= $request->inputCreatCurrency;
+        $increment= $request->inputCreatIncrement;
+       $naturaleza= $request->select_one;
+ $tipo_comprobante= $request->select_two;
+            $orden= $request->inputCreatOrden;
+            $status= !empty($request->status) ? 1 : 0;
+            $result= DB::table('document_types')
+                      ->select('code')
+                      ->where([
+                          ['code', '=', $code],
+                        ])->count();
+            if($result == 0)
+            {
+              $newId = DB::table('document_types')
+              ->insertGetId([
+                         'name' => $name,
+                         'code' => $code,
+                         'prefix' => $prefix,
+                         'current_number' => $currency,
+                         'increment_number' => $increment,
+                         'nature' => $naturaleza,
+                         'cfdi_type_id' => $tipo_comprobante,
+                         'sort_order' => $orden,
+                         'status' => $status,
+                         'created_uid' => $user_id,
+                         'created_at' => \Carbon\Carbon::now()]);
+              if(empty($newId)){
+                  return 'abort'; // returns 0
+              }
+              else{
+                  return $newId; // returns id
+              }
+            }
+            else
+            {
+              return 'false';//Ya esta asociado
+            }
+
     }
 
     /**
@@ -49,7 +90,50 @@ class DocumentTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+          $user_id= Auth::user()->id;
+      $id_received= Crypt::decryptString($request->token_b);
+             $name= $request->inputEditName;
+             $code= $request->inputEditCode;
+           $prefix= $request->inputEditPrefix;
+         $currency= $request->inputEditCurrency;
+        $increment= $request->inputEditIncrement;
+       $naturaleza= $request->edit_select_one;
+ $tipo_comprobante= $request->edit_select_two;
+            $orden= $request->inputEditOrden;
+            $status= !empty($request->editstatus) ? 1 : 0;
+
+         $result = DB::table('document_types')
+                   ->select('code')
+                   ->where([
+                       ['code', '=', $code],
+                       ['id', '!=', $id_received],
+                     ])->count();
+         if($result == 0)
+         {
+           $newId = DB::table('document_types')
+           ->where('id', '=',$id_received )
+           ->update([     'name' => $name,
+                          'code' => $code,
+                        'prefix' => $prefix,
+                'current_number' => $currency,
+              'increment_number' => $increment,
+                        'nature' => $naturaleza,
+                  'cfdi_type_id' => $tipo_comprobante,
+                    'sort_order' => $orden,
+                        'status' => $status,
+                   'updated_uid' => $user_id,
+                    'updated_at' => \Carbon\Carbon::now()]);
+           if($newId == '0' ){
+               return 'abort'; // returns 0
+           }
+           else{
+               return $newId; // returns id
+           }
+         }
+         else
+         {
+           return 'false';//Ya esta asociado
+         }
     }
 
     /**
@@ -61,6 +145,14 @@ class DocumentTypeController extends Controller
      public function show(Request $request)
      {
        $resultados = DB::select('CALL GetAllDocTypev2 ()', array());
+       $list_nature = $this->list_nature;
+
+       foreach ($resultados as $key) {
+          $valor = $key->nature;
+           if (array_key_exists( ($valor), $list_nature)) {
+                $key->nature = $list_nature[$valor];
+            }
+       }
        return json_encode($resultados);
      }
 
@@ -71,9 +163,14 @@ class DocumentTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+      $identificador= $request->value;
+      $resultados = DB::select('CALL GetAllDocTypeByIdv2 (?)', array($identificador));
+      foreach ($resultados as $key) {
+        $key->id = Crypt::encryptString($key->id);
+      }
+      return $resultados;
     }
 
     /**

@@ -33,7 +33,7 @@
                 <div class="form-group row">
                   <label for="inputCreatCode" class="col-sm-3 col-form-label">Clave <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputCreatCode" name="inputCreatCode" placeholder="Clave" maxlength="10">
+                    <input type="text" class="form-control form-control-sm required" id="inputCreatCode" name="inputCreatCode" placeholder="Clave" maxlength="50">
                   </div>
                 </div>
                 <div class="form-group row">
@@ -45,7 +45,7 @@
                 <div class="form-group row">
                   <label for="inputCreatPrefix" class="col-sm-3 col-form-label">Prefijo <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputCreatPrefix" name="inputCreatPrefix" placeholder="Clave" maxlength="10">
+                    <input type="text" class="form-control form-control-sm required" id="inputCreatPrefix" name="inputCreatPrefix" placeholder="Clave" maxlength="30">
                   </div>
                 </div>
                 <div class="form-group row">
@@ -66,7 +66,7 @@
                     <select  id="select_one" name="select_one" class="form-control form-control-sm required"  style="width: 100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($list_nature as $key => $value)
-                        <option value="{{ $value }}"> {{ $value }} </option>
+                        <option value="{{ $key }}"> {{ $value }} </option>
                       @empty
                       @endforelse
                     </select>
@@ -125,19 +125,19 @@
                 <div class="form-group row">
                   <label for="inputEditCode" class="col-sm-3 col-form-label">Clave <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputEditCode" name="inputEditCode" placeholder="Clave" maxlength="10">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditCode" name="inputEditCode" placeholder="Clave" maxlength="50">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="inputEditName" class="col-sm-3 col-form-label">Nombre <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputEditName" name="inputEditName" placeholder="{{ trans('auth.nombre') }}" maxlength="20">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditName" name="inputEditName" placeholder="{{ trans('auth.nombre') }}" maxlength="60">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="inputEditPrefix" class="col-sm-3 col-form-label">Prefijo <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputEditPrefix" name="inputEditPrefix" placeholder="Clave" maxlength="10">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditPrefix" name="inputEditPrefix" placeholder="Clave" maxlength="30">
                   </div>
                 </div>
                 <div class="form-group row">
@@ -158,7 +158,7 @@
                     <select  id="edit_select_one" name="edit_select_one" class="form-control form-control-sm required"  style="width: 100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($list_nature as $key => $value)
-                        <option value="{{ $value }}"> {{ $value }} </option>
+                        <option value="{{ $key }}"> {{ $value }} </option>
                       @empty
                       @endforelse
                     </select>
@@ -188,7 +188,7 @@
                     <input id="editstatus" name="editstatus" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
                   </div>
                 </div>
-                <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
+                <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.editar') }}</button>
                 <button type="button" class="btn btn-danger waves-effect form_creat_user" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
               </form>
             </div>
