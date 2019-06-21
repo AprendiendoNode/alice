@@ -396,4 +396,6 @@ Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
       Route::post('/document-types-create', 'Base\DocumentTypeController@create');
       Route::post('/document-types-store', 'Base\DocumentTypeController@store');
       Route::post('/document-types-edit', 'Base\DocumentTypeController@edit');
+
+      Route::get('/exchange_rate', 'Base\ExchangeRateController@index');
 });
