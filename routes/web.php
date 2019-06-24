@@ -155,6 +155,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/detailed_distribution', 'Inventory\DistributionController@index');
 
   //posts detailed_proyect
+  Route::post('/detailed_pro_head', 'Inventory\HotelPController@getHeaderProject');
   Route::post('/cover_header', 'Inventory\ByHotelController@getHeader');
   Route::post('/cover_dist_equipos', 'Inventory\ByHotelController@getCoverDistEquipos');
   Route::post('/cover_dist_modelos', 'Inventory\ByHotelController@getCoverDistModelos');
@@ -192,6 +193,9 @@ Route::group(['middleware' => 'auth'], function () {
 
   //Modulo de reportes - ver reporte concatenado
   Route::get('/viewreportscont' , 'Report\Concatenated@index');
+  Route::post('/get_user_cont', 'Report\Concatenated@table_user');
+  Route::post('/get_gb_cont', 'Report\Concatenated@table_gb');
+  Route::post('/get_device_cont', 'Report\Concatenated@table_device');
 
   //- Herramientas
   Route::get('/detailed_guest_review', 'Tools\GuestToolsController@index');
