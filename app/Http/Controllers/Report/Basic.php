@@ -8,6 +8,7 @@ use DB;
 use Auth;
 use App\Hotel;
 use App\Typereport;
+use App\User;
 
 class Basic extends Controller
 {
@@ -19,13 +20,11 @@ class Basic extends Controller
   public function index()
   {
     $user_id = Auth::user()->id;
-    //$user_role = auth()->user();
-
-    //info($user_role); 
+    $user_role = User::find($user_id)->getRoleNames();
     
-    $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array(26, 'itconcierge'));
+    $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array($user_id, $user_role));
 
-    //info($hotels); 
+    info($user_id); 
 
     return view('permitted.report.view_reports', compact('hotels'));
   }
