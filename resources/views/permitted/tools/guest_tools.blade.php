@@ -66,7 +66,7 @@
                    <thead>
                      <tr class="bg-dark" style="color: #fff;">
                        <th> <small>Usuario.</small> </th>
-                       <th> <small>Nombre.</small> </th>
+                       <th> <small>Apellido.</small> </th>
                        <th> <small>Expiración.</small> </th>
                        <th> <small>Fecha de creación.</small> </th>
                        <th> <small>Descripción.</small> </th>

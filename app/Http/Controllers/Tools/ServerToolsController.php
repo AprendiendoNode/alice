@@ -26,26 +26,28 @@ XML;
   		return view('permitted.tools.server_tools');
 	}
 
-
     public function checkRad(Request $request)
     {
         $hotel_code = $request->input('hotelCode');
-
-        if ($hotel_code === 'PL' || $hotel_code === 'CZ') {
-            if(DB::connection('sunrisezq')->getDatabaseName()){
+        if(DB::connection('cloudrad')->getDatabaseName()){
+            return "TRUE";
+        }else{
+            return "FALSE";
+        }
+        /*if ($hotel_code === 'PL' || $hotel_code === 'CZ') {
+            if(DB::connection('cloudrad')->getDatabaseName()){
                 return "TRUE";
             }else{
                 return "FALSE";
             }
         }else{
-            if(DB::connection('jamaicazq')->getDatabaseName()){
+            if(DB::connection('cloudrad')->getDatabaseName()){
                 return "TRUE";
             }else{
                 return "FALSE";
             }
-        }
+        }*/
     }
-
     public function checkWB(Request $request)
     {
         $hotel_code = $request->input('hotelCode');
@@ -68,7 +70,6 @@ XML;
 
         return $resultsErr;
     }
-
     public function getInfoxHab($xml){
         $wsdlloc = "http://api.palaceresorts.com/TigiServiceInterface/ServiceInterface.asmx?wsdl";
         $accion = "http://localhost/xmlschemas/postserviceinterface/16-07-2009/Post_ObtenerInfoRoomPorHabitacion";
@@ -92,7 +93,6 @@ XML;
             return FALSE;
         }
     }
-
     public function replaceXML($hotelcode){
         $xmlinfo = $this->xmlreq;
 

@@ -53,6 +53,7 @@
                 <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-passport mr-2"></i> Verificador</a></li>
                 <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="far fa-handshake mr-2"></i>Creditos</a></li>
                 <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-file-invoice mr-2"></i>Notas</a></li>
+                <li class="nav-item {{ Request::is('/base/exchange_rate') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/base/exchange_rate') }}"><i class="fas fa-passport mr-2"></i> Tipo Cambio Actual</a></li>
               </ul>
             </div>
           </li>
@@ -72,7 +73,8 @@
                 <li class="nav-item {{ Request::is('/catalogs/models') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/models') }}"><i class="fas fa-box-open mr-2"></i>Modelos de productos</a></li>
                 <li class="nav-item {{ Request::is('/catalogs/especificacions') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/especificacions') }}"><i class="fas fa-box-open mr-2"></i>Especificaciones de prod</a></li>
                 <li class="nav-item {{ Request::is('/catalogs/products') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/catalogs/products') }}"><i class="fas fa-boxes mr-2"></i>Admón de Productos</a></li>
-                <li class="nav-item {{ Request::is('settings_pac') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/settings_pac') }}"><i class="fas fa-cogs mr-2"></i> PAC</a></li>
+                <li class="nav-item {{ Request::is('/base/document-types') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/base/document-types') }}"><i class="far fa-file-word mr-2"></i> Tipos de documentos</a></li>
+                <li class="nav-item {{ Request::is('/base/settings_pac') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/base/settings_pac') }}"><i class="fas fa-cogs mr-2"></i> PAC</a></li>
 
               </ul>
             </div>

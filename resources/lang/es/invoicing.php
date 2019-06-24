@@ -29,4 +29,7 @@ return [
     'categories' => 'Categorias',
     'models' => 'Modelos',
     'especificacions' => 'Especificaciones',
+    'pac' => 'Configuración del Pacs',
+    'document_types' => 'Tipos de documentos',
+    'exchange_rate' => 'Tipo de cambio',
 ];

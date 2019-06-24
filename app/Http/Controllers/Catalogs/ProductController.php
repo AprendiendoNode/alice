@@ -26,9 +26,15 @@ class ProductController extends Controller
       $models = DB::select('CALL GetAllModelsActivev2 ()', array());
       $estatus = DB::select('CALL GetAllStatusProductsActivev2 ()', array());
       $marcas = DB::select('CALL GetAllBrandsActivev2 ()', array());
+      $country = DB::select('CALL GetAllCountryActivev2 ()', array());
+
+      $list_moneda = DB::table('currencies')->select('name')->pluck('name')->all();
+      $list_marca = DB::table('marcas')->select('Nombre_marca')->pluck('Nombre_marca')->all();
+      $list_espec = DB::table('especificacions')->select('name')->where([['status', '=', 1],])->pluck('name')->all();
       $especificacion = DB::select('CALL GetAllEspecificacionActivev2 ()', array());
 
-      return view('permitted.catalogs.products',compact('currency','unitmeasures','satproduct', 'customer', 'category','brands','models', 'estatus', 'marcas', 'especificacion'));
+      return view('permitted.catalogs.products',compact('currency','unitmeasures','satproduct', 'customer', 'category','brands','models',
+      'estatus', 'marcas', 'especificacion', 'currencies', 'marcas', 'list_moneda', 'list_marca', 'list_espec', 'country'));
     }
 
     /**
@@ -206,16 +212,28 @@ class ProductController extends Controller
                 'sat_product_id' => $id_satserv,
                 'especifications_id' => $id_especification,
                 'comment' => $nComment,
-               'sort_order' => $orden,
-                   'status' => $status,
-              'updated_uid' => $user_id,
-               'updated_at' => \Carbon\Carbon::now()]);
+                'sort_order' => $orden,
+                'status' => $status,
+                'updated_uid' => $user_id,
+                'updated_at' => \Carbon\Carbon::now()]);
       if($newId == '0' ){
           return 'abort'; // returns 0
       }
       else{
           return $newId; // returns id
       }
+
+    }
+
+    public function createStatus(Request $request)
+    {
+      DB::table('products_status')->insert(
+          ['name' => $request->inputCreatName,
+            'sort_order' => $request->inputCreatOrden,
+            'status' => $request->status]
+      );
+
+      return 'true';
 
     }
 
@@ -229,6 +247,12 @@ class ProductController extends Controller
     {
       $resultados = DB::select('CALL GetAllProductsv2 ()', array());
       return json_encode($resultados);
+    }
+
+    public function showEstatusProduct(Request $request)
+    {
+      $estatus = DB::select('CALL GetAllStatusProductsActivev2 ()', array());
+      return json_encode($estatus);
     }
 
     /**
