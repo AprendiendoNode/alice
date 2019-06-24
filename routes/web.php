@@ -91,8 +91,6 @@ Route::group(['middleware' => 'auth'], function () {
 
   //Facturación Electronica - Folder Base
   Route::get('/dashboard_cfdi', 'Base\DashboardCFDIController@dashboard');
-  Route::get('/settings_pac', 'Base\DashboardCFDIController@settings_pac');
-
 
   Route::get('/settings_bank', function () {
     return view('permitted.invoicing.settings_bank');
@@ -130,11 +128,11 @@ Route::group(['middleware' => 'auth'], function () {
   // Modulo de zendesk - Mis tickets
   Route::get('/mytickets', 'Support\MyTickets@index');
   // Modulo de zendesk - Mis tickets - Opciones flex
-  Route::post('/search_data_traf_tickets', 'Support\MyTickets@showheader');
+  Route::post('/search_data_traf_tickets', 'Support\MyTickets@showheader_mod');
   // Modulo de zendesk - Mis tickets - Table
-  Route::post('/get_table_ticket', 'Support\MyTickets@showtable');
+  Route::post('/get_table_ticket', 'Support\MyTickets@showtable_mod');
   // Modulo de zendesk - Mis tickets - Grafica
-  Route::post('/get_graph_time_ticket', 'Support\MyTickets@showgraph');
+  Route::post('/get_graph_time_ticket', 'Support\MyTickets@showgraph_mod');
   // Modulo de zendesk - Mis tickets - Modal
   Route::post('/get_info_reg_ticket', 'Support\MyTickets@showinfoticket');
   Route::post('/update_ticket_sc', 'Support\MyTickets@update_ticket');
@@ -342,7 +340,9 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
     //Catalogo - Productos
     Route::get('/products', 'Catalogs\ProductController@index');
     Route::post('/products-show', 'Catalogs\ProductController@show');
+    Route::post('/products-status-show', 'Catalogs\ProductController@showEstatusProduct');
     Route::post('/products-create', 'Catalogs\ProductController@create');
+    Route::post('/products-status-create', 'Catalogs\ProductController@createStatus');
     Route::post('/products-store', 'Catalogs\ProductController@store');
     Route::post('/products-edit', 'Catalogs\ProductController@edit');
 
@@ -373,7 +373,7 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
     Route::post('/especificacions-store', 'Catalogs\EspecificacionController@store');
     Route::post('/especificacions-show', 'Catalogs\EspecificacionController@show');
     Route::post('/especificacions-edit', 'Catalogs\EspecificacionController@edit');
-    Route::post('/especificacions-show-act', 'Catalogs\EspecificacionController@show_active'); 
+    Route::post('/especificacions-show-act', 'Catalogs\EspecificacionController@show_active');
 });
 
 Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
@@ -392,4 +392,20 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customers-create', 'Sales\CustomerController@create');
     Route::post('/customers-store', 'Sales\CustomerController@store');
     Route::post('/customers-edit', 'Sales\CustomerController@edit');
+});
+Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
+{
+      Route::get('/settings_pac', 'Base\PacController@index');
+      Route::post('/pacs-show', 'Base\PacController@show');
+      Route::post('/pacs-create', 'Base\PacController@create');
+      Route::post('/pacs-store', 'Base\PacController@store');
+      Route::post('/pacs-edit', 'Base\PacController@edit');
+
+      Route::get('/document-types', 'Base\DocumentTypeController@index');
+      Route::post('/document-types-show', 'Base\DocumentTypeController@show');
+      Route::post('/document-types-create', 'Base\DocumentTypeController@create');
+      Route::post('/document-types-store', 'Base\DocumentTypeController@store');
+      Route::post('/document-types-edit', 'Base\DocumentTypeController@edit');
+
+      Route::get('/exchange_rate', 'Base\ExchangeRateController@index');
 });

@@ -142,7 +142,7 @@ function refresh_table() {
 		url: "/existenceUsersAll",
 		data: { _token : _token },
 		success: function (data){
-			//console.log(data);
+			// console.log(data); 
 			table_group_content(data, $('#table_guests'));
 		},
 		error: function (data) {
@@ -158,7 +158,7 @@ function refresh_table2(codigoH, roomNumba) {
 		url: "/existenceUsers",
 		data: { _token : _token, hotelCode : codigoH, roomNum:  roomNumba },
 		success: function (data){
-			//console.log(data);
+			//console.log(data); 
 			if (data.length === 0) {
 				menssage_toast('Mensaje', '2', 'No se encontro ningun registro con ese numero de habitación!' , '3000');
 			}
@@ -174,18 +174,26 @@ function table_group_content(datajson, table){
 	table.DataTable().destroy();
 	var vartable = table.dataTable(Configuration_table_responsive_with_pdf_enc_dominio);
 	vartable.fnClearTable();
-
-	for (var i = 0; i < datajson.length; i++) {
+	$.each(datajson, function(index, status){
+		table.fnAddData([
+		  status.username,
+		  status.lastname,
+		  status.expiration,
+		  status.creationdate,
+		  status.email,
+		]);
+	});
+	/*for (var i = 0; i < datajson.length; i++) {
 		for (var j = 0; j < datajson[i].length; j++) {
 			table.fnAddData([
 			    datajson[i][j].username,
-			    datajson[i][j].name,
+			    datajson[i][j].lastname,
 			    datajson[i][j].expiration,
-			    datajson[i][j].createdate,
-			    datajson[i][j].description
+			    datajson[i][j].creationdate,
+			    datajson[i][j].email
 		  	]);
 		}
-	}
+	}*/
 }
 
 function table_group_content2(datajson, table){
@@ -195,92 +203,10 @@ function table_group_content2(datajson, table){
   $.each(datajson, function(index, status){
     vartable.fnAddData([
       status.username,
-      status.name,
+      status.lastname,
       status.expiration,
-      status.createdate,
-      status.description,
+      status.creationdate,
+      status.email,
     ]);
   });
 }
-
-var Configuration_table_responsive_with_pdf_enc_dominio= {
-  dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +
-          "<'row'<'col-sm-12'tr>>" +
-          "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-    buttons: [
-      {
-        extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
-        titleAttr: 'Excel',
-        title: function ( e, dt, node, config ) {
-          return 'Relación Encuestados';
-        },
-        init: function(api, node, config) {
-           $(node).removeClass('btn-default')
-        },
-        exportOptions: {
-            columns: [ 0, 1, 2, 3, 4]
-        },
-        className: 'btn bg-success custombtntable',
-      },
-      {
-        extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
-        titleAttr: 'CSV',
-        title: function ( e, dt, node, config ) {
-          return 'Relación Encuestados';
-        },
-        init: function(api, node, config) {
-           $(node).removeClass('btn-default')
-        },
-        exportOptions: {
-            columns: [ 0, 1, 2, 3, 4]
-        },
-        className: 'btn btn-info',
-      },
-      {
-        extend: 'pdf',
-        // orientation: 'landscape',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
-        title: function ( e, dt, node, config ) {
-          return 'Relación Encuestados';
-        },
-        init: function(api, node, config) {
-           $(node).removeClass('btn-default')
-        },
-        exportOptions: {
-            columns: [ 0, 1, 2, 3, 4],
-            modifier: {
-                page: 'all',
-            }
-        },
-        className: 'btn btn-danger',
-      }
-  ],
-  "processing": true,
-
-  language:{
-    "sProcessing":     "Procesando...",
-    "sLengthMenu":     "Mostrar _MENU_ registros",
-    "sZeroRecords":    "No se encontraron resultados",
-    "sEmptyTable":     "Ningún dato disponible",
-    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-    "sInfoPostFix":    "",
-    "sSearch":         "<i class='fa fa-search'></i> Buscar:",
-    "sUrl":            "",
-    "sInfoThousands":  ",",
-    "sLoadingRecords": "Cargando...",
-    "oPaginate": {
-      "sFirst":    "Primero",
-      "sLast":     "Último",
-      "sNext":     "Siguiente",
-      "sPrevious": "Anterior"
-    },
-    "oAria": {
-      "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-      "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-    }
-  }
-};

@@ -101,17 +101,7 @@
               </form>
               <div id="maingraphicTicketsTiempos" class="mt-4" style="width: 100%; min-height: 300px;"></div>
               <div class="table-responsive">
-                <table id="time_reps" name='time_reps' class="table">
-                <thead>
-                  <tr>
-                    <th> <small>Mes</small> </th>
-                    <th> <small>% Primera respuesta</small> </th>
-                    <th> <small>% Tiempo de solución</small> </th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
+                <div id="maingraphicTicketsTiempos_2" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;" class="mt-10"></div>
               </div>
             </div>
             <!--End Grafica 3--------------------------------------------------------------------->

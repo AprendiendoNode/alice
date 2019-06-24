@@ -140,6 +140,242 @@
           });
     });
 
+    $('#creatmodels').formValidation({
+     framework: 'bootstrap',
+     excluded: ':disabled',
+     fields: {
+       inputCreatName: {
+         validators: {
+           notEmpty: {
+             message: 'The field is required'
+           }
+         }
+       },
+       inputCreatCosto: {
+         validators: {
+           notEmpty: {
+             message: 'The field is required'
+           }
+         }
+       },
+       select_onemoneda: {
+         validators: {
+           notEmpty: {
+             message: 'The field is required'
+           }
+         }
+       },
+       select_onemarca: {
+         validators: {
+           notEmpty: {
+             message: 'The field is required'
+           }
+         }
+       },
+       select_oneespec: {
+         validators: {
+           notEmpty: {
+             message: 'The field is required'
+           }
+         }
+       },
+       inputCreatOrden: {
+         validators: {
+           notEmpty: {
+             message: 'The field is required'
+           }
+         }
+       },
+
+     }
+    })
+    .on('success.form.fv', function(e) {
+          e.preventDefault();
+          var form = $('#creatmodels')[0];
+          var formData = new FormData(form);
+          $.ajax({
+            type: "POST",
+            url: "/catalogs/models-create",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data){
+              if (data == 'abort') {
+                Swal.fire({
+                   type: 'error',
+                   title: 'Error encontrado..',
+                   text: 'Realice la operacion nuevamente!',
+                 });
+              }
+              else if (data == 'false') {
+                Swal.fire({
+                   type: 'error',
+                   title: 'Error encontrado..',
+                   text: 'Ya existe!',
+                 });
+              }
+              else {
+                  let timerInterval;
+                  Swal.fire({
+                    type: 'success',
+                    title: 'Operación Completada!',
+                    html: 'Aplicando los cambios.',
+                    timer: 2500,
+                    onBeforeOpen: () => {
+                      Swal.showLoading()
+                      timerInterval = setInterval(() => {
+                        Swal.getContent().querySelector('strong')
+                      }, 100)
+                    },
+                    onClose: () => {
+                      clearInterval(timerInterval)
+                    }
+                  }).then((result) => {
+                    if (
+                      // Read more about handling dismissals
+                      result.dismiss === Swal.DismissReason.timer
+                    ) {
+                      fetch('/catalogs/models-show', miInit)
+                            .then(function(response){
+                              return response.json();
+                            })
+                            .then(function(data){
+                              /* Remove all options from the select list */
+                              $('#sel_modelo').empty();
+                              $('#sel_modelo').append($('<option>', {
+                                  value: '',
+                                  text: 'Elegir'
+                              }));
+                                /* Insert the new ones from the array above */
+                              data.forEach(function(key) {
+                                var opt = document.createElement('option');
+                                    opt.text = key.ModeloNombre;
+                                    opt.value = key.id;
+                                    $('#sel_modelo').append(opt);;
+                              });
+                            })
+                            .catch(function(error){
+                                    console.log(error);
+                            });
+                    }
+                  });
+              }
+            },
+            error: function (err) {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Oops...',
+                 text: err.statusText,
+               });
+            }
+          });
+    });
+
+
+    //estatus
+    $('#creatstates').formValidation({
+     framework: 'bootstrap',
+     excluded: ':disabled',
+     fields: {
+       inputCreatName: {
+         validators: {
+           notEmpty: {
+             message: 'The field is required'
+           }
+         }
+       },
+       inputCreatOrden: {
+         validators: {
+           notEmpty: {
+             message: 'The field is required'
+           }
+         }
+       },
+     }
+    })
+    .on('success.form.fv', function(e) {
+          e.preventDefault();
+          var form = $('#creatstates')[0];
+          var formData = new FormData(form);
+          $.ajax({
+            type: "POST",
+            url: "/catalogs/products-status-create",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data){
+              if (data == 'abort') {
+                Swal.fire({
+                   type: 'error',
+                   title: 'Error encontrado..',
+                   text: 'Realice la operacion nuevamente!',
+                 });
+              }
+              else if (data == 'false') {
+                Swal.fire({
+                   type: 'error',
+                   title: 'Error encontrado..',
+                   text: 'Ya existe!',
+                 });
+              }
+              else {
+                  let timerInterval;
+                  Swal.fire({
+                    type: 'success',
+                    title: 'Operación Completada!',
+                    html: 'Aplicando los cambios.',
+                    timer: 2500,
+                    onBeforeOpen: () => {
+                      Swal.showLoading()
+                      timerInterval = setInterval(() => {
+                        Swal.getContent().querySelector('strong')
+                      }, 100)
+                    },
+                    onClose: () => {
+                      clearInterval(timerInterval)
+                    }
+                  }).then((result) => {
+                    if (
+                      // Read more about handling dismissals
+                      result.dismiss === Swal.DismissReason.timer
+                    ) {
+                      fetch('/catalogs/products-status-show', miInit)
+                            .then(function(response){
+                              return response.json();
+                            })
+                            .then(function(data){
+                              /* Remove all options from the select list */
+                              $('#sel_estatus').empty();
+                              $('#sel_estatus').append($('<option>', {
+                                  value: '',
+                                  text: 'Elegir'
+                              }));
+                                /* Insert the new ones from the array above */
+                              data.forEach(function(key) {
+                                var opt = document.createElement('option');
+                                    opt.text = key.name;
+                                    opt.value = key.id;
+                                    $('#sel_estatus').append(opt);;
+                              });
+                            })
+                            .catch(function(error){
+                                    console.log(error);
+                            });
+                    }
+                  });
+              }
+            },
+            error: function (err) {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Oops...',
+                 text: err.statusText,
+               });
+            }
+          });
+     });
+
+
 
   });
 
@@ -148,6 +384,24 @@
     if (document.getElementById("creatcategories")) {
       $('#creatcategories')[0].reset();
       $('#creatcategories').data('formValidation').resetForm($('#creatcategories'));
+      $('#inputCreatOrden').val(0);
+    }
+  })
+
+  $(".addmodel").on("click",function(){
+    $('#modal-CreatNew-Model').modal('show');
+    if (document.getElementById("creatmodels")) {
+      $('#creatmodels')[0].reset();
+      $('#creatmodels').data('formValidation').resetForm($('#creatmodels'));
+      $('#inputCreatOrden').val(0);
+    }
+  })
+
+  $(".addstatus").on("click",function(){
+    $('#modal-CreatNew-Estatus').modal('show');
+    if (document.getElementById("creatstates")) {
+      $('#creatstates')[0].reset();
+      $('#creatstates').data('formValidation').resetForm($('#creatstates'));
       $('#inputCreatOrden').val(0);
     }
   })

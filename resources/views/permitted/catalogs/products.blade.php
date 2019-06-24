@@ -477,8 +477,7 @@
       </div>
     </div>
   </div>
-  <!-- Categoria -->
-  <!-- Crear categoría-->
+  <!--Crear  Categoria Modal-->
   <div id="modal-CreatNew-Category" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalcategory" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -520,8 +519,132 @@
       </div>
     </div>
   </div>
-  <!-- Modelo -->
-  <!-- Estatus -->
+  <!--Crear Modelo Modal-->
+  <div id="modal-CreatNew-Model" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalmodleo" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalmodels">Crear nuevo</h4> <!-- change -->
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="creatmodels" name="creatmodels" class="forms-sample" action=""> <!-- change -->
+                {{ csrf_field() }}
+                <div class="form-group row">
+                  <label for="inputCreatName" class="col-sm-3 col-form-label">{{ trans('auth.nombre')}} <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required" id="inputCreatName" name="inputCreatName" placeholder="{{ trans('auth.nombre') }}" maxlength="60">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputCreatCosto" class="col-sm-3 col-form-label">Costo<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="number" step="any" class="form-control form-control-sm required" id="inputCreatCosto" name="inputCreatCosto" placeholder="Costo del modelo" maxlength="60">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="select_onemoneda" class="col-sm-3 col-form-label">Moneda<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="select_onemoneda" name="select_onemoneda" class="form-control form-control-sm required"  style="width: 100%;">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($list_moneda as $key => $value)
+                        <option value="{{ $value }}"> {{ $value }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="select_onemarca" class="col-sm-3 col-form-label">Marca<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="select_onemarca" name="select_onemarca" class="form-control form-control-sm required"  style="width: 100%;">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($list_marca as $key => $value)
+                        <option value="{{ $value }}"> {{ $value }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="select_oneespec" class="col-sm-3 col-form-label">Especificación<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="select_oneespec" name="select_oneespec" class="form-control form-control-sm required"  style="width: 100%;">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($list_espec as $key => $value)
+                        <option value="{{ $value }}"> {{ $value }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputCreatOrden" class="col-sm-3 col-form-label">Orden<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required onlynumber" id="inputCreatOrden" name="inputCreatOrden" placeholder="Orden de visualización" value="0" maxlength="3">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="status" class="col-sm-3 control-label">Estatus</label>
+                  <div class="col-md-9 mb-3">
+                    <input id="status" name="status" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
+                <button type="button" class="btn btn-danger waves-effect form_creat_user" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Modal Estatus Modal -->
+  <div id="modal-CreatNew-Estatus" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalstates" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalstates">Crear estado</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="creatstates" name="creatstates" class="forms-sample" action="">
+                {{ csrf_field() }}
+                <div class="form-group row">
+                  <label for="inputCreatName" class="col-sm-3 col-form-label">{{ trans('auth.nombre')}} <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required" id="inputCreatName" name="inputCreatName" placeholder="{{ trans('auth.nombre') }}" maxlength="60">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputCreatOrden" class="col-sm-3 col-form-label">Orden<span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm required onlynumber" id="inputCreatOrden" name="inputCreatOrden" placeholder="Orden de visualización" value="0" maxlength="3">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="status" class="col-sm-3 control-label">Estatus</label>
+                  <div class="col-md-9 mb-3">
+                    <input id="status" name="status" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
+                <button type="button" class="btn btn-danger waves-effect form_creat_user" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
