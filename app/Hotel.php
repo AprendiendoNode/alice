@@ -28,6 +28,10 @@ class Hotel extends Model
     'estado_id',
     'filter'
   ];
+  public function typereports()
+  {
+    return $this->belongsToMany(Typereport::class);
+  }
   public function operaciones()
   {
       return $this->belongsTo(Operacione::class);

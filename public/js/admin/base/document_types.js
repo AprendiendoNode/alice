@@ -90,6 +90,8 @@ $(function () {
                });
             }
             else {
+              $('#modal-CreatNew').modal('toggle');
+
                 let timerInterval;
                 Swal.fire({
                   type: 'success',
@@ -213,6 +215,8 @@ $(function () {
              });
           }
           else {
+            $('#modal-Edit').modal('toggle');
+
               let timerInterval;
               Swal.fire({
                 type: 'success',
@@ -283,7 +287,7 @@ $.each(JSON.parse(datajson), function(index, information){
     information.cfdi_type,
     information.sort_order,
     badge,
-    '<a href="javascript:void(0);" onclick="edit_doctype(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
+    '<a href="javascript:void(0);" onclick="editdoctype(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
   ]);
 });
 }
@@ -292,6 +296,7 @@ var Configuration_table_responsive_doctypes = {
   dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+    "order": [[ 7, "asc" ]],
     buttons: [
       {
         text: '<i class="fas fa-plus-circle fastable mt-2"></i> Crear nuevo',
@@ -319,7 +324,7 @@ var Configuration_table_responsive_doctypes = {
         titleAttr: 'Excel',
         className: 'btn btn-success btn-sm',
         exportOptions: {
-            columns: [ 0, 1, 2, 3]
+            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
         },
       },
       {
@@ -332,7 +337,7 @@ var Configuration_table_responsive_doctypes = {
         titleAttr: 'CSV',
         className: 'btn btn-primary btn-sm',
         exportOptions: {
-            columns: [ 0, 1, 2, 3]
+            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
         },
       }
   ],

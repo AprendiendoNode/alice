@@ -47,6 +47,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Menu::class);
     }
+    public function hotels()
+    {
+      return $this->belongsToMany(Hotel::class);
+    }
     public function cadenas()
     {
         return $this->belongsToMany(Cadena::class);
