@@ -9,6 +9,7 @@ use Auth;
 use App\Hotel;
 use Carbon\Carbon;
 use Jenssegers\Date\Date;
+use App\User;
 
 class Capture extends Controller
 {
@@ -20,12 +21,9 @@ class Capture extends Controller
     public function index()
     {
       $user_id = Auth::user()->id;
-      if (auth()->user()->hasanyrole('SuperAdmin|Admin')) {
-        $hotels= DB::table('hotels')->select('id','Nombre_hotel')->where('filter', 1)->whereNull('deleted_at')->get();
-      }
-      else {
-        $hotels = DB::select('CALL GetAllCadenaActiveByUserv2 (?)', array(37));
-      }
+      $user_role = User::find($user_id)->getRoleNames();
+
+      $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array($user_id, $user_role));
       return view('permitted.report.individual',compact('hotels'));
     }
     public function upload_client(Request $request)

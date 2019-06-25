@@ -200,6 +200,16 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/get_device_cont', 'Report\Concatenated@table_device');
   //Modulo de reportes - ver reporte basico
   Route::get('/viewreports' , 'Report\Basic@index');
+  Route::post('/typereport','Report\Basic@typerep');
+  Route::post('/view_reports_header', 'Report\Basic@report_header');
+  Route::post('/get_client_wlan', 'Report\Basic@graph_client_wlan');
+  Route::post('/get_client_wlan_top', 'Report\Basic@client_wlan_top');
+  Route::post('/get_user_month', 'Report\Basic@user_month');
+  Route::post('/get_gb_month', 'Report\Basic@gb_month');
+  Route::post('/get_mostAP_top5', 'Report\Basic@mostAP_top5');
+  Route::post('/get_comparative', 'Report\Basic@tab_comparativa');
+  Route::post('/view_reports_band' , 'Report\Basic@view_band');
+  Route::post('/view_reports_device' , 'Report\Basic@view_device');
 
   //Modulo de reportes - ver reporte concatenado
   Route::get('/viewreportscont' , 'Report\Concatenated@index');

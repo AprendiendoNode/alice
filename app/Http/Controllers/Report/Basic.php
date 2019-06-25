@@ -21,10 +21,8 @@ class Basic extends Controller
   {
     $user_id = Auth::user()->id;
     $user_role = User::find($user_id)->getRoleNames();
-    
-    $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array($user_id, $user_role));
 
-    info($user_id); 
+    $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array(26, 'itconcierge'));
 
     return view('permitted.report.view_reports', compact('hotels'));
   }
@@ -34,9 +32,9 @@ class Basic extends Controller
 
       //$hotel = Hotel::select(['Nombre_hotel'])->find($value);
       $hotel = Hotel::find($value);
-      
+
       $hotel->typereports->toJson();
-      //info($hotel); 
+      info($hotel);
       return $hotel;
       //$selectnivel= DB::table('NivelesReportes')->select('ReporteID','Nivel')->where('HotelID', '=', $value)->get();
       //$selectnivel= DB::table('tipos_reporte_new')->select('fk_tiporeportenew','Nombre')->where('fk_hotel', '=', $value)->get();
