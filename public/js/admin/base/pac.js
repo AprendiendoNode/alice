@@ -240,7 +240,7 @@ function table_pacs(datajson, table){
   vartable.fnClearTable();
   $.each(JSON.parse(datajson), function(index, information){
     var badge = '<span class="badge badge-success badge-pill text-uppercase text-white">Habilitado</span>';
-    if (information.test == '0') {
+    if (information.status == '0') {
       badge= '<span class="badge badge-danger badge-pill text-uppercase text-white">Inhabilitado</span>';
     }
 
