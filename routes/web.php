@@ -184,6 +184,14 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/individual' , 'Report\Capture@index');
   Route::post('/get_zd_hotel', 'Report\Capture@get_zd_hotel');
 
+  Route::post('/upload_client', 'Report\Capture@upload_client');
+  Route::post('/upload_banda', 'Report\Capture@upload_banda');
+  Route::post('/upload_gigs', 'Report\Capture@upload_gigs');
+  Route::post('/upload_users', 'Report\Capture@upload_users');
+  Route::post('/upload_comments', 'Report\Capture@upload_comments');
+  Route::post('/upload_mostap', 'Report\Capture@upload_mostap');
+  Route::post('/upload_mostwlan', 'Report\Capture@upload_mostwlan');
+
   //Modulo de reportes - Editar reportes
   Route::get('/edit_report' , 'Report\Edition@index');
 

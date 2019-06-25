@@ -31,7 +31,7 @@
                   <select  id="select_one_type" name="select_one_type" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -71,7 +71,7 @@
                   <select  id="select_one_band" name="select_one_band" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -114,7 +114,7 @@
                   <select  id="select_onet" name="select_onet" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -137,7 +137,7 @@
               <div class="form-group row">
                 <label for="valorgb_trans" class="col-sm-3 col-form-label">{{ trans('message.gbtrans')}} <span style="color: red;">*</span></label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control form-control-sm required" id="valorgb_trans" name="valorgb_trans" placeholder="Máximo 5 digitos." maxlength="5" title="{{ trans('message.gbtrans')}}">
+                  <input type="number" class="form-control form-control-sm required" id="valorgb_trans" name="valorgb_trans" placeholder="Máximo 5 digitos." maxlength="5" title="{{ trans('message.gbtrans')}}">
                 </div>
               </div>
               <div class="form-group row mt-2">
@@ -162,7 +162,7 @@
                   <select  id="select_one_device" name="select_one_device" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -178,7 +178,7 @@
               <div class="form-group row">
                 <label for="valor_users" class="col-sm-3 col-form-label">{{ trans('message.usersauth')}} <span style="color: red;">*</span></label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control form-control-sm required" id="valor_users" name="valor_users" placeholder="Máximo 5 digitos." maxlength="5" title="{{ trans('message.usersauth')}}">
+                  <input type="number" class="form-control form-control-sm required" id="valor_users" name="valor_users" placeholder="Máximo 5 digitos." maxlength="5" title="{{ trans('message.usersauth')}}">
                 </div>
               </div>
               <div class="form-group row mt-2">
@@ -206,7 +206,7 @@
                   <select  id="select_one_comments" name="select_one_comments" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -251,7 +251,7 @@
                   <select  id="select_three" name="select_three" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -456,7 +456,7 @@
                   <select  id="select_four" name="select_four" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
                     @empty
                     @endforelse
                   </select>
