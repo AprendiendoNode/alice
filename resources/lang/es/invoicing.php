@@ -32,4 +32,5 @@ return [
     'pac' => 'Configuración del Pacs',
     'document_types' => 'Tipos de documentos',
     'exchange_rate' => 'Tipo de cambio',
+    'companies' => 'Datos de la empresa',
 ];

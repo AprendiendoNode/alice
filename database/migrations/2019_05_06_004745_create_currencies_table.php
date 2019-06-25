@@ -18,6 +18,7 @@ class CreateCurrenciesTable extends Migration
             //Campos
             $table->string('name');
             $table->string('code',3)->unique();
+            $table->string('code_banxico',200)->nullable();
             $table->decimal('rate',15,8)->default(0);
             $table->unsignedInteger('decimal_place')->default(2);
             $table->string('symbol',3)->nullable();

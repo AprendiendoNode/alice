@@ -155,7 +155,6 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/detailed_distribution', 'Inventory\DistributionController@index');
 
   //posts detailed_proyect
-  Route::post('/detailed_pro_head', 'Inventory\HotelPController@getHeaderProject');
   Route::post('/cover_header', 'Inventory\ByHotelController@getHeader');
   Route::post('/cover_dist_equipos', 'Inventory\ByHotelController@getCoverDistEquipos');
   Route::post('/cover_dist_modelos', 'Inventory\ByHotelController@getCoverDistModelos');
@@ -188,24 +187,11 @@ Route::group(['middleware' => 'auth'], function () {
   //Modulo de reportes - Editar reportes
   Route::get('/edit_report' , 'Report\Edition@index');
 
-  //Modulo de reportes - Ver reporte basico
+  //Modulo de reportes - ver reporte basico
   Route::get('/viewreports' , 'Report\Basic@index');
-  Route::post('/typereport','Report\Basic@typerep');
-  Route::post('/view_reports_header', 'Report\Basic@report_header');
-  Route::post('/get_client_wlan', 'Report\Basic@graph_client_wlan');
-  Route::post('/get_client_wlan_top', 'Report\Basic@client_wlan_top');
-  Route::post('/get_user_month', 'Report\Basic@user_month');
-  Route::post('/get_gb_month', 'Report\Basic@gb_month');
-  Route::post('/get_mostAP_top5', 'Report\Basic@mostAP_top5');
-  Route::post('/get_comparative', 'Report\Basic@tab_comparativa');
-  Route::post('/view_reports_band' , 'Report\Basic@view_band');
-  Route::post('/view_reports_device' , 'Report\Basic@view_device');
 
   //Modulo de reportes - ver reporte concatenado
   Route::get('/viewreportscont' , 'Report\Concatenated@index');
-  Route::post('/get_user_cont', 'Report\Concatenated@table_user');
-  Route::post('/get_gb_cont', 'Report\Concatenated@table_gb');
-  Route::post('/get_device_cont', 'Report\Concatenated@table_device');
 
   //- Herramientas
   Route::get('/detailed_guest_review', 'Tools\GuestToolsController@index');
@@ -411,5 +397,17 @@ Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
       Route::post('/document-types-store', 'Base\DocumentTypeController@store');
       Route::post('/document-types-edit', 'Base\DocumentTypeController@edit');
 
-      Route::get('/exchange_rate', 'Base\ExchangeRateController@index');
+      Route::get('/exchange-rate', 'Base\ExchangeRateController@index');
+      Route::post('/exchange-rate-show', 'Base\ExchangeRateController@show');
+      Route::post('/exchange-rate-create', 'Base\ExchangeRateController@create');
+      Route::post('/exchange-rate-store', 'Base\ExchangeRateController@store');
+      Route::post('/exchange-rate-edit', 'Base\ExchangeRateController@edit');
+
+      Route::get('/companies', 'Base\CompanyController@index');
+      Route::post('/companies-show', 'Base\CompanyController@show');
+      Route::post('/companies-create', 'Base\CompanyController@create');
+      Route::post('/companies-store', 'Base\CompanyController@store');
+      Route::post('/companies-edit', 'Base\CompanyController@edit');
+
+
 });

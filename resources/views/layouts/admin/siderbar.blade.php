@@ -53,7 +53,8 @@
                 <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-passport mr-2"></i> Verificador</a></li>
                 <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="far fa-handshake mr-2"></i>Creditos</a></li>
                 <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-file-invoice mr-2"></i>Notas</a></li>
-                <li class="nav-item {{ Request::is('/base/exchange_rate') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/base/exchange_rate') }}"><i class="fas fa-passport mr-2"></i> Tipo Cambio Actual</a></li>
+                <li class="nav-item {{ Request::is('/base/exchange-rate') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/base/exchange-rate') }}"><i class="fas fa-passport mr-2"></i> Tipo Cambio</a></li>
+                <li class="nav-item {{ Request::is('/base/exchange-rate') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/base/companies') }}"><i class="fas fa-university mr-2"></i> Empresa</a></li>
               </ul>
             </div>
           </li>
