@@ -408,6 +408,11 @@ Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
       Route::post('/companies-create', 'Base\CompanyController@create');
       Route::post('/companies-store', 'Base\CompanyController@store');
       Route::post('/companies-edit', 'Base\CompanyController@edit');
+      //Exchange rate
+      Route::get('/exchange_rate', 'Base\ExchangeRateController@index');
+      Route::get('/show_rate', 'Base\ExchangeRateController@show');
+      Route::post('/edit_rate', 'Base\ExchangeRateController@edit');
+      Route::post('/update_rate', 'Base\ExchangeRateController@update');
 
 
 });
