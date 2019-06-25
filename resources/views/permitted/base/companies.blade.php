@@ -243,8 +243,8 @@
                       <div class="col-sm-9">
                         <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input type="file" class="btn btn-danger custom-file-input" id="file02">
-                                <label class="custom-file-label" for="file02">Choose file</label>
+                                <input type="file" class="btn btn-danger custom-file-input" id="file01">
+                                <label class="custom-file-label" for="file01">Choose file</label>
                             </div>
                             <div class="input-group-append">
                               <button class="btn btn-danger test_btm" type="button">Eliminar</button>
@@ -255,33 +255,23 @@
                     <div class="form-group row">
                       <label for="select_six" class="col-sm-3 col-form-label">Llave privada (.key)<span style="color: red;">*</span></label>
                       <div class="col-sm-9">
-
+                        <div class="input-group mb-3">
+                            <div class="custom-file">
+                                <input type="file" class="btn btn-danger custom-file-input" id="file02">
+                                <label class="custom-file-label" for="file02">Choose file</label>
+                            </div>
+                            <div class="input-group-append">
+                              <button class="btn btn-danger test_btm" type="button">Eliminar</button>
+                            </div>
+                        </div>
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="select_six" class="col-sm-3 col-form-label">Contraseña de llave privada<span style="color: red;">*</span></label>
+                      <label for="inputCreatKey" class="col-sm-3 col-form-label">Contraseña de llave privada <span style="color: red;">*</span></label>
                       <div class="col-sm-9">
-
+                        <input type="text" class="form-control form-control-sm required" id="inputCreatKey" name="inputCreatKey" placeholder="Contraseña" maxlength="60">
                       </div>
                     </div>
-
-
-
-
-                    <div class="container">
-
-
-                      <div class="input-group mb-3">
-                          <div class="custom-file">
-                              <input type="file" class="btn btn-danger custom-file-input" id="file02">
-                              <label class="custom-file-label" for="file02">Choose file</label>
-                          </div>
-                          <div class="input-group-append">
-                            <button class="btn btn-danger test_btm" type="button">Eliminar</button>
-                          </div>
-                      </div>
-                  </div>
-
 
                   </div>
                 </div>

@@ -14,7 +14,7 @@ class BranchOfficeController extends Controller
      */
     public function index()
     {
-        //
+      return view('permitted.base.branch_office');
     }
 
     /**

@@ -421,6 +421,12 @@ Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
       Route::get('/show_rate', 'Base\ExchangeRateController@show');
       Route::post('/edit_rate', 'Base\ExchangeRateController@edit');
       Route::post('/update_rate', 'Base\ExchangeRateController@update');
+      //Branch-office
+      Route::get('/branch-office', 'Base\BranchOfficeController@index');
+      Route::post('/branch-office-show', 'Base\BranchOfficeController@show');
+      Route::post('/branch-office-create', 'Base\BranchOfficeController@create');
+      Route::post('/branch-office-store', 'Base\BranchOfficeController@store');
+      Route::post('/branch-office-edit', 'Base\BranchOfficeController@edit');
 
 
 });
