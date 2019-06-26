@@ -27,7 +27,7 @@ class Concatenated extends Controller
         $cadena = DB::select('CALL GetAllCadenaActiveByUserv2 (?)', array($user_id));
       }
       return view('permitted.report.view_reports_cont',compact('cadena'));
-      
+
     }
 
     public function table_gb(Request $request)

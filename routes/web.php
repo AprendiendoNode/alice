@@ -198,6 +198,21 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/get_user_cont', 'Report\Concatenated@table_user');
   Route::post('/get_gb_cont', 'Report\Concatenated@table_gb');
   Route::post('/get_device_cont', 'Report\Concatenated@table_device');
+
+
+  Route::post('/search_info_zdhtl', 'Report\Edition@search_zd');
+  Route::post('/search_infogb', 'Report\Edition@search_gb');
+  Route::post('/update_infogb', 'Report\Edition@update_gb');
+
+  Route::post('/search_info_user','Report\Edition@search_user');
+  Route::post('/update_infouser', 'Report\Edition@update_user');
+
+  Route::post('/reupload_client', 'Report\Edition@reupload_client');
+  Route::post('/reupload_banda', 'Report\Edition@reupload_banda');
+
+  Route::post('/search_comment_hotel', 'Report\Edition@search_comment');
+  Route::post('/update_comment_hotel', 'Report\Edition@update_comment');
+  
   //Modulo de reportes - ver reporte basico
   Route::get('/viewreports' , 'Report\Basic@index');
   Route::post('/typereport','Report\Basic@typerep');
