@@ -137,7 +137,9 @@
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
         <div class="card-body">
-          <p class="mt-2 card-title">Esta sección nos permite gestionar los datos bancarios, que podremos utilizar en nuestro proyecto.</p>
+          <p class="mt-2 card-title">Esta sección nos permite gestionar los datos bancarios, que podremos utilizar en nuestro proyecto. Mas informacion
+            <a href="https://catalogosat.mx/Banco/" target="_blank">Buscador del sat</a>
+          </p>
           <div class="d-flex justify-content-center pt-3"></div>
 
           <div class="row">

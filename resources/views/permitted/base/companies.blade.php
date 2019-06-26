@@ -18,7 +18,7 @@
 
 @section('content')
   {{-- @if( auth()->user()->can('View cover') ) --}}
-
+<form id="form" name="form" class="" action="index.html" method="post">
   <div class="col-md-12 col-xl-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body dashboard-tabs p-0">
@@ -272,6 +272,27 @@
                         <input type="text" class="form-control form-control-sm required" id="inputCreatKey" name="inputCreatKey" placeholder="Contraseña" maxlength="60">
                       </div>
                     </div>
+                    <div class="form-group row">
+                      <label for="inputCreatNumber" class="col-sm-3 col-form-label">Número certificado <span style="color: red;">*</span></label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm required onlynumber" id="inputCreatNumber" name="inputCreatNumber" placeholder="" maxlength="60">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="date_start" class="col-sm-3 col-form-label">Fecha inicial <span style="color: red;">*</span></label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm datepickercomplete required onlynumber" id="date_start" name="date_start" placeholder="">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="date_end" class="col-sm-3 col-form-label">Fecha final <span style="color: red;">*</span></label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm datepickercomplete required onlynumber" id="date_end" name="date_end" placeholder="">
+                      </div>
+                    </div>
+
+
 
                   </div>
                 </div>
@@ -282,12 +303,140 @@
           <div class="tab-pane fade" id="accounts" role="tabpanel" aria-labelledby="accounts-tab">
             <div class="media">
               <div class="media-body">
+                <!---------------------------------------------------------------------------------->
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table table-items table-condensed table-hover table-bordered table-striped"
+                                    id="items_bank_account">
+                                <thead>
+                                <tr>
+                                    <th width="5%"
+                                        class="text-center">Opciones</th>
+                                    <th width="15%"
+                                        class="text-center">Banco</th>
+                                    <th width="15%"
+                                        class="text-center">Moneda</th>
+                                    <th width="25%"
+                                        class="text-center">Número de cuenta</th>
+                                    <th width="40%"
+                                        class="text-left">Descripción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- Items -->
+                                @php
+                                    $item_bank_account_row = 0;
+                                    $items_bank_account = old('item_bank_account',[]);
+                                @endphp
+                                @foreach ($items_bank_account as $item_bank_account_row => $item)
+                                    @php
+                                    @endphp
+                                    <tr id="item_bank_account_row_{{ $item_bank_account_row }}">
+                                        <td class="text-center"
+                                            style="vertical-align: middle;">
+                                            <button type="button"
+                                                    onclick="$('#item_bank_account_row_{{ $item_bank_account_row }}').remove();"
+                                                    class="btn btn-xs btn-danger"
+                                                    style="margin-bottom: 0;">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                            <!-- input hidden -->
+                                            <input type="hidden"
+                                                    id="item_bank_account_id_{{ $item_bank_account_row }}"
+                                                    name="item_bank_account[{{ $item_bank_account_row }}][id]"
+                                                    value="{{ old('item_bank_account.' . $item_bank_account_row . '.id') }}">
+                                            <!-- /.input hidden -->
+                                        </td
+                                          <div class="form-group form-group-sm">
+                                            <select class="form-control input-sm"  id="item_bank_account{{ $item_bank_account_row.'[bank_id]' }}" name="item_bank_account{{ $item_bank_account_row }}" required>
+                                              <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                              @forelse ($banks as $banks_data)
+                                                <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option>
+                                              @empty
+                                              @endforelse
+                                            </select>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <select class="form-control input-sm"  id="item_bank_account{{ $item_bank_account_row.'[currency_id]'}}" name="item_bank_account{{ $item_bank_account_row }}" required>
+                                              <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                              @forelse ($currencies as $currencies_data)
+                                                <option value="{{ $currencies_data->id  }}">{{ $currencies_data->name }}</option>
+                                              @empty
+                                              @endforelse
+                                            </select>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <input type="text" class="form-control input-sm text-center" id="item_bank_account{{ $item_bank_account_row.'[account_number]'}}" name="item_bank_account{{ $item_bank_account_row }}" required />
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <input type="text" class="form-control input-sm" id="item_bank_account{{ $item_bank_account_row.'[name]'}}" name="item_bank_account{{ $item_bank_account_row }}" required />
+                                          </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                @php
+                                    $item_bank_account_row++;
+                                @endphp
+                                <!-- /Items -->
+                                <!-- Agregar nuevo item -->
+                                <tr id="add_item_bank_account">
+                                    <td class="text-center">
+                                        <button type="button"
+                                                onclick="addItemBankAccount();"
+                                                class="btn btn-xs btn-primary"
+                                                style="margin-bottom: 0;">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-right" colspan="4"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!---------------------------------------------------------------------------------->
               </div>
             </div>
           </div>
           <div class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="setting-tab">
             <div class="media">
               <div class="media-body">
+                <div class="row mt-3">
+                  <div class="col-md-12">
+                    <!-------------------------------------------------------------------------------->
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="select_six" class="control-label">Versión de CFDI:<span style="color: red;">*</span></label>
+                            <select id="select_six" name="select_six" class="form-control required" style="width:100%;">
+                              <option value="cfdi33">CFDI33</option>
+                            </select>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="select_seven" class="control-label">Seleccion de PAC:<span style="color: red;">*</span></label>
+                            <select id="select_seven" name="select_seven" class="form-control required" style="width:100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($pacs as $pacs_data)
+                                <option value="{{ $pacs_data->id  }}">{{ $pacs_data->name }}</option>
+                              @empty
+                              @endforelse
+                            </select>
+                        </div>
+                      </div>
+                    </div>
+                    <!-------------------------------------------------------------------------------->
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -298,6 +447,7 @@
       </div>
     </div>
   </div>
+</form>
   {{-- @else --}}
   {{-- @endif --}}
 @endsection
@@ -317,8 +467,65 @@
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
-    <script src="{{ asset('js/admin/base/document_types.js')}}"></script>
+    <script src="{{ asset('js/admin/base/companies.js')}}"></script>
     <script type="text/javascript">
+
+        var item_bank_account_row = "{{ $item_bank_account_row }}";
+
+        function addItemBankAccount() {
+            var html = '';
+            html += '<tr id="item_bank_account_row_' + item_bank_account_row + '">';
+            html += '<td class="text-center" style="vertical-align: middle;">';
+            html += '<button type="button" onclick="$(\'#item_bank_account_row_' + item_bank_account_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
+            html += '<i class="fa fa-trash"></i>';
+            html += '</button>';
+            html += '<input type="hidden" name="item_bank_account[' + item_bank_account_row + '][id]" id="item_bank_account_id_' + item_bank_account_row + '" /> ';
+            html += '</td>';
+
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<select class="form-control input-sm" name="item_bank_account[' + item_bank_account_row + '][bank_id]" id="item_bank_account_bank_id_' + item_bank_account_row + '" required>';
+            html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+              @forelse ($banks as $banks_data)
+              html += '<option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option>';
+              @empty
+              @endforelse
+            html += '</select>';
+            html += '</div>';
+            html += '</td>';
+
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<select class="form-control input-sm" name="item_bank_account[' + item_bank_account_row + '][currency_id]" id="item_bank_account_currency_id_' + item_bank_account_row + '" required>';
+            html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+            @forelse ($currencies as $currencies_data)
+            html += '<option value="{{ $currencies_data->id  }}">{{ $currencies_data->name }}</option>';
+            @empty
+            @endforelse
+            html += '</select>';
+            html += '</div>';
+            html += '</td>';
+
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<input type="text" class="form-control input-sm text-center" name="item_bank_account[' + item_bank_account_row + '][account_number]" id="item_bank_account_account_number_' + item_bank_account_row + '" required />';
+            html += '</div>';
+            html += '</td>';
+
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<input type="text" class="form-control input-sm" name="item_bank_account[' + item_bank_account_row + '][name]" id="item_bank_account_name_' + item_bank_account_row + '" required />';
+            html += '</div>';
+            html += '</td>';
+
+
+            html += '</tr>';
+
+            $("#form #items_bank_account tbody #add_item_bank_account").before(html);
+
+            item_bank_account_row++;
+        }
+
       $(".custom-file-input").on("change", function() {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);

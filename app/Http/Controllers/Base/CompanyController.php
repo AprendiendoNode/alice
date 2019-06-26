@@ -16,7 +16,10 @@ class CompanyController extends Controller
      */
     public function index()
     {
-      return view('permitted.base.companies');
+      $banks = DB::select('CALL GetAllBankActive ()', array());
+      $currencies = DB::select('CALL GetAllCurrencyActivev2 ()', array());
+      $pacs = DB::select('CALL GetAllPacsActivev2 ()', array());
+      return view('permitted.base.companies',compact('banks','currencies', 'pacs'));
     }
 
     /**
