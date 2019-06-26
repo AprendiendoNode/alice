@@ -31,7 +31,7 @@
                   <select  id="select_one_type" name="select_one_type" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -71,7 +71,7 @@
                   <select  id="select_one_band" name="select_one_band" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -114,7 +114,7 @@
                   <select  id="select_onet" name="select_onet" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -142,7 +142,7 @@
               </div>
               <div class="form-group row mt-2">
                 <div class="col-sm-9">
-                  <button id="generateGbInfo" name="generateGbInfo"  type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
+                  <button id="generateGbInfo" name="generateGbInfo"  type="button" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
                   <button id="generateGbClear"  name="generateGbClear"  type="button" class="btn btn-danger"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.cancelar') }}</button>
                 </div>
               </div>
@@ -162,7 +162,7 @@
                   <select  id="select_one_device" name="select_one_device" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -183,7 +183,7 @@
               </div>
               <div class="form-group row mt-2">
                 <div class="col-sm-9">
-                  <button id="generateUserInfo" name="generateUserInfo"  type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
+                  <button id="generateUserInfo" name="generateUserInfo"  type="button" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
                   <button id="generateUserClear"  name="generateUserClear"  type="button" class="btn btn-danger"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.cancelar') }}</button>
                 </div>
               </div>
@@ -198,7 +198,7 @@
         <div class="card">
           <div class="card-body">
             <p class="card-title">Añadir comentarios.</p>
-            <form id="form_device" name="form_device" class="forms-sample" action="">
+            <form id="form_comments" name="form_comments" class="forms-sample" action="">
               {{ csrf_field() }}
               <div class="form-group row">
                 <label for="select_one_comments" class="col-sm-3 col-form-label">{{ trans('message.hotel') }}<span style="color: red;">*</span></label>
@@ -206,7 +206,7 @@
                   <select  id="select_one_comments" name="select_one_comments" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -228,7 +228,7 @@
 
               <div class="form-group row mt-2">
                 <div class="col-sm-9">
-                  <button id="generateComment" name="generateComment"  type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
+                  <button id="generateComment" name="generateComment"  type="button" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
                   <button id="generateCommentClear"  name="generateCommentClear"  type="button" class="btn btn-danger"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.cancelar') }}</button>
                 </div>
               </div>
@@ -251,7 +251,7 @@
                   <select  id="select_three" name="select_three" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
                     @empty
                     @endforelse
                   </select>
@@ -261,7 +261,7 @@
               <div class="form-group row">
                 <label for="datepickermonth" class="col-sm-3 col-form-label">{{ trans('message.date')}} <span style="color: red;">*</span></label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control form-control-sm required datepickermonth" id="datepickermonth" name="datepickermonth" placeholder="{{ trans('message.maxcardiez')}}" maxlength="10">
+                  <input type="text" class="form-control form-control-sm required datepickermonth" id="fecha_aps" name="fecha_aps" placeholder="{{ trans('message.maxcardiez')}}" maxlength="10">
                 </div>
               </div>
 
@@ -456,7 +456,7 @@
                   <select  id="select_four" name="select_four" class="form-control form-control-sm required select2">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($hotels as $data_hotel)
-                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->name }} </option>
+                      <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
                     @empty
                     @endforelse
                   </select>

@@ -23,7 +23,9 @@ class Capture extends Controller
       $user_id = Auth::user()->id;
       $user_role = User::find($user_id)->getRoleNames();
 
-      $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array($user_id, $user_role));
+      $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array(26, 'itconcierge'));
+      //$hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array($user_id, "'".$user_role[0]."'"));
+      //$
       return view('permitted.report.individual',compact('hotels'));
     }
     public function upload_client(Request $request)

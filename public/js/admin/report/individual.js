@@ -98,6 +98,11 @@ $(function() {
     }
   });
 
+  $('#generateimgtypeClear').on('click', function(){
+    $('#select_one_type').val('').trigger('change');
+    $('#month_upload_type').val('');
+  });
+
   new Dropzone('#dropzone_band' ,{
     url: "/upload_banda",
     paramName: 'phone_band',
@@ -156,6 +161,11 @@ $(function() {
 
 });
 
+$('#clearimgband').on('click', function(){
+  $('#select_one_band').val('').trigger('change');
+  $('#month_upload_band').val('');
+});
+
 $('#select_onet').on('change', function(){
   var _token = $('input[name="_token"]').val();
   var select1 = $('#select_onet').val();
@@ -192,7 +202,7 @@ $('#select_onet').on('change', function(){
     });
 });
 
-$('#generateGbInfo').on('click', function(){
+$('#generateGbInfo').on('click', function(e){
   var select1 = $('#select_onet').val();
   var select2 = $('#select_two_zd').val();
   var month = $('#month_trans_zd').val();
@@ -200,6 +210,7 @@ $('#generateGbInfo').on('click', function(){
 
   if (select1 === "" || select2 === "" || month === "" || valuegb.length === 0 || valuegb.length > 5) {
     menssage_toast('Mensaje', '2', 'LLene todos los campos correctamente.' , '3000');
+    e.preventDefault();
   }else{
     //menssage_toast('Mensaje', '4', 'OK.' , '3000');
     gig_24();
@@ -255,7 +266,7 @@ function gig_24() {
   });
 }
 
-$('#generateUserInfo').on('click', function(){
+$('#generateUserInfo').on('click', function(e){
   var select = $('#select_one_device').val();
 
   var month = $('#month_device').val();
@@ -263,6 +274,7 @@ $('#generateUserInfo').on('click', function(){
 
   if (select === "" || month === "" || valueuser.length === 0 || valueuser.length > 5) {
     menssage_toast('Mensaje', '2', 'LLene todos los campos correctamente.' , '3000');
+    e.preventDefault();
   }else{
     //menssage_toast('Mensaje', '4', 'OK.' , '3000');
     device_authclient();
@@ -308,7 +320,7 @@ function device_authclient() {
   });
 }
 
-$('#generateComment').on('click', function(){
+$('#generateComment').on('click', function(e){
   var select = $('#select_one_comments').val();
 
   var month = $('#month_comments').val();
@@ -316,6 +328,7 @@ $('#generateComment').on('click', function(){
 
   if (select === "" || month === "" || comentario === '') {
     menssage_toast('Mensaje', '2', 'LLene todos los campos correctamente.' , '3000');
+    e.preventDefault();
   }else{
     //menssage_toast('Mensaje', '4', 'OK.' , '3000');
     month_comment();
