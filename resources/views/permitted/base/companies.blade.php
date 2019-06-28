@@ -18,7 +18,7 @@
 
 @section('content')
   {{-- @if( auth()->user()->can('View cover') ) --}}
-<form id="form" name="form" class="" action="index.html" method="post">
+<form id="form" name="form" enctype="multipart/form-data">
   <div class="col-md-12 col-xl-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body dashboard-tabs p-0">
@@ -93,14 +93,14 @@
                     <div class="row mt-3">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Telefono:<span style="color: red;">*</span></label>
-                          <input maxlength="12" type="text" class="form-control required onlynumber" id="inputCreatPhone" name="inputCreatPhone" placeholder="Ingrese el núm. telefono">
+                          <label>Telefono:</label>
+                          <input maxlength="12" type="text" class="form-control onlynumber" id="inputCreatPhone" name="inputCreatPhone" placeholder="Ingrese el núm. telefono">
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Telefono movil:<span style="color: red;">*</span></label>
-                          <input maxlength="12" type="text" class="form-control required onlynumber" id="inputCreatMobile" name="inputCreatMobile" placeholder="Ingrese el núm. telefono movil">
+                          <label>Telefono movil:</label>
+                          <input maxlength="12" type="text" class="form-control onlynumber" id="inputCreatMobile" name="inputCreatMobile" placeholder="Ingrese el núm. telefono movil">
                         </div>
                       </div>
 
@@ -110,6 +110,10 @@
                           <div class="col-md-12 ml-0">
                             <select  id="select_seven" name="select_seven" class="form-control form-control-sm required"  style="width: 100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($taxregimen as $taxregimen_data)
+                                <option value="{{ $taxregimen_data->id  }}">{{ $taxregimen_data->name }}</option>
+                              @empty
+                              @endforelse
                             </select>
                           </div>
                         </div>
@@ -181,13 +185,13 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Localidad:<span style="color: red;">*</span></label>
+                          <label>Localidad:</label>
                           <input type="text" class="form-control" id="inputCreatAddress_5" name="inputCreatAddress_5" placeholder="" maxlength="50">
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Referencia:<span style="color: red;">*</span></label>
+                          <label>Referencia:</label>
                           <input type="text" class="form-control" id="inputCreatAddress_6" name="inputCreatAddress_6" placeholder="" maxlength="50">
                         </div>
                       </div>
@@ -200,30 +204,51 @@
                   <div class="col-md-12">
                     <!-------------------------------------------------------------------------------->
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <div class="form-group">
                           <label for="select_six" class="control-label">Paises:<span style="color: red;">*</span></label>
                             <select id="select_six" name="select_six" class="form-control required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($countries as $countries_data)
+                              <option value="{{ $countries_data->id }}"> {{ $countries_data->name }} </option>
+                              @empty
+                              @endforelse
                             </select>
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <div class="form-group">
-                          <label for="select_seven" class="control-label">Estados:<span style="color: red;">*</span></label>
-                            <select id="select_seven" name="select_seven" class="form-control required" style="width:100%;">
-                              <option value="">{{ trans('message.selectopt') }}</option>
-                            </select>
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="select_eight" class="control-label">Ciudades:<span style="color: red;">*</span></label>
+                          <label for="select_eight" class="control-label">Estados:<span style="color: red;">*</span></label>
                             <select id="select_eight" name="select_eight" class="form-control required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($states as $states_data)
+                              <option value="{{ $states_data->id }}"> {{ $states_data->name }} </option>
+                              @empty
+                              @endforelse
                             </select>
                         </div>
                       </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="select_nine" class="control-label">Ciudades:<span style="color: red;">*</span></label>
+                            <select id="select_nine" name="select_nine" class="form-control required" style="width:100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($cities as $cities_data)
+                              <option value="{{ $cities_data->id }}"> {{ $cities_data->name }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Codigo Postal: <span style="color: red;">*</span></label>
+                          <input type="text" class="form-control required onlynumber" id="inputPostcode" name="inputPostcode" placeholder="" maxlength="5">
+                        </div>
+                      </div>
+
+
+
                     </div>
                     <!-------------------------------------------------------------------------------->
                   </div>
@@ -236,46 +261,52 @@
             <div class="media">
               <div class="media-body">
                 <!-------------------------------------------------------------------------------->
+                <input class="form-control" type="hidden" placeholder="" id="file_pfx" name="file_pfx" value="">
+
                 <div class="row">
                   <div class="col-md-12">
-                    <div class="form-group row">
+                    <div  class="form-group row">
                       <label for="select_six" class="col-sm-3 col-form-label">Certificado (.cer)<span style="color: red;">*</span></label>
                       <div class="col-sm-9">
-                        <div class="input-group mb-3">
+                <!-----><div id="cont_file_file_cer"><!----->
+                          <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input type="file" class="btn btn-danger custom-file-input" id="file01">
-                                <label class="custom-file-label" for="file01">Choose file</label>
+                                <input  datas="file_file_cer" type="file" class="btn btn-danger custom-file-input required" id="file_file_cer" name="file_file_cer">
+                                <label class="custom-file-label" for="file_file_cer">Choose file</label>
                             </div>
                             <div class="input-group-append">
                               <button class="btn btn-danger test_btm" type="button">Eliminar</button>
                             </div>
-                        </div>
+                          </div>
+                <!-----></div><!----->
                       </div>
                     </div>
                     <div class="form-group row">
                       <label for="select_six" class="col-sm-3 col-form-label">Llave privada (.key)<span style="color: red;">*</span></label>
                       <div class="col-sm-9">
-                        <div class="input-group mb-3">
+                <!-----><div id="cont_file_file_key"><!----->
+                          <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input type="file" class="btn btn-danger custom-file-input" id="file02">
-                                <label class="custom-file-label" for="file02">Choose file</label>
+                                <input datas="file_file_key" type="file" class="btn btn-danger custom-file-input required" id="file_file_key" name="file_file_key">
+                                <label class="custom-file-label" for="file_file_key">Choose file</label>
                             </div>
                             <div class="input-group-append">
                               <button class="btn btn-danger test_btm" type="button">Eliminar</button>
                             </div>
-                        </div>
+                          </div>
+                <!-----></div><!----->
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="inputCreatKey" class="col-sm-3 col-form-label">Contraseña de llave privada <span style="color: red;">*</span></label>
+                      <label for="password_key" class="col-sm-3 col-form-label">Contraseña de llave privada <span style="color: red;">*</span></label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control form-control-sm required" id="inputCreatKey" name="inputCreatKey" placeholder="Contraseña" maxlength="60">
+                        <input type="text" class="form-control form-control-sm required" id="password_key" name="password_key" placeholder="Contraseña" maxlength="60">
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="inputCreatNumber" class="col-sm-3 col-form-label">Número certificado <span style="color: red;">*</span></label>
+                      <label for="certificate_number" class="col-sm-3 col-form-label">Número certificado <span style="color: red;">*</span></label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control form-control-sm required onlynumber" id="inputCreatNumber" name="inputCreatNumber" placeholder="" maxlength="60">
+                        <input type="text" class="form-control form-control-sm required onlynumber" id="certificate_number" name="certificate_number" placeholder="" maxlength="60">
                       </div>
                     </div>
                     <div class="form-group row">
@@ -413,26 +444,31 @@
                   <div class="col-md-12">
                     <!-------------------------------------------------------------------------------->
                     <div class="row">
-                      <div class="col-md-12">
+
+                      <div class="col-md-6">
                         <div class="form-group">
-                          <label for="select_six" class="control-label">Versión de CFDI:<span style="color: red;">*</span></label>
-                            <select id="select_six" name="select_six" class="form-control required" style="width:100%;">
-                              <option value="cfdi33">CFDI33</option>
-                            </select>
+                          <label for="select_cfdi" class="control-label">Versión de CFDI<span style="color: red;">*</span></label>
+                          <select id="select_cfdi" name="select_cfdi" class="form-control required" style="width:100%;">
+                            <option value="cfdi33">CFDI 3.3</option>
+                          </select>
                         </div>
                       </div>
-                      <div class="col-md-12">
+
+
+                      <div class="col-md-6">
                         <div class="form-group">
-                          <label for="select_seven" class="control-label">Seleccion de PAC:<span style="color: red;">*</span></label>
-                            <select id="select_seven" name="select_seven" class="form-control required" style="width:100%;">
+                          <label for="select_pacs" class="control-label">Seleccion de PAC:<span style="color: red;">*</span></label>
+                          <select id="select_pacs" name="select_pacs" class="form-control required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($pacs as $pacs_data)
                                 <option value="{{ $pacs_data->id  }}">{{ $pacs_data->name }}</option>
                               @empty
                               @endforelse
-                            </select>
+                          </select>
                         </div>
                       </div>
+
+
                     </div>
                     <!-------------------------------------------------------------------------------->
                   </div>
@@ -460,6 +496,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
+
+    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
+    <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
     <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>

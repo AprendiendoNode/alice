@@ -10,6 +10,8 @@ class Bank extends Model
 
   protected $fillable = [
     'name',
+    'code',
+    'taxid',
     'sort_order',
     'status',
   ];
