@@ -38,8 +38,11 @@ class CompanyController extends Controller
       $states = DB::select('CALL GetAllStateActivev2 ()', array());
       $cities = DB::select('CALL GetAllCitiesv2 ()', array());
 
+      $company = DB::select('CALL GetAllCompanyActivev2 ()', array());
+
+
       return view('permitted.base.companies',compact('countries', 'states', 'cities',
-      'banks','currencies', 'pacs', 'taxregimen'));
+      'banks','currencies', 'pacs', 'taxregimen', 'company'));
     }
 
     /**
@@ -79,8 +82,8 @@ class CompanyController extends Controller
       $file_img = $request->file('fileInput');
       $file_name = $file_img->getClientOriginalName(); //** get name extension
       $file_extension = $file_img->getClientOriginalExtension(); //** get filename extension
-      $fileName = $file_name.'.'.$file_extension;
-      $img= $request->file('fileInput')->storeAs('company',$fileName);
+      $fileName = 'logo.'.$file_extension;
+      $img= $request->file('fileInput')->storeAs('default/files/companies',$fileName);
 
       $file_cer_new = '';
       $file_certificate_number = '';
@@ -150,18 +153,54 @@ class CompanyController extends Controller
         'password_key' => $file_pass_key,
         'file_pfx' => $file_pfx_new,
         'certificate_number' => $file_certificate_number,
-        'date_start' => $creat_date_start,
-        'date_end' => $creat_date_end,
+        'date_start' => $file_data_start,
+        'date_end' => $file_data_end,
         'comment' => $comment,
         'sort_order' => '1',
         'status' => $status,
         'created_uid' => $user_id,
         'created_at' => \Carbon\Carbon::now()
       ]);
+
+
       if(empty($newId)) {
         return 'abort'; // returns 0
       }
       else {
+        //Cuentas bancarias
+        //Guarda
+        if (!empty($request->item_bank_account)) {
+            foreach ($request->item_bank_account as $key => $result) {
+                $newId_account = DB::table('company_bank_accounts')
+                ->insertGetId([
+                  'company_id' => $newId->id,
+                  'name' => $result['name'],
+                  'account_number' => $result['account_number'],
+                  'bank_id' => $result['bank_id'],
+                  'currency_id' => $result['currency_id'],
+                  'sort_order' => $key,
+                  'status' => 1,
+                  'created_uid' => $user_id,
+                  'created_at' => \Carbon\Carbon::now()
+                ]);
+            }
+        }
+
+        $newId_account1 = DB::table('settings')
+        ->insertGetId([
+          'key' => 'cfdi_version',
+          'value' =>  $request->select_cfdi,
+          'created_at' => \Carbon\Carbon::now()
+        ]);
+
+        $newId_account2 = DB::table('settings')
+        ->insertGetId([
+          'key' => 'default_pac_id',
+          'value' =>  $request->select_pacs,
+          'created_at' => \Carbon\Carbon::now()
+        ]);
+
+
         return $newId; // returns id
       }
 
@@ -184,7 +223,7 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
         //
     }

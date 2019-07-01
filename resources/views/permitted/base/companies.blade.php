@@ -19,6 +19,7 @@
 @section('content')
   {{-- @if( auth()->user()->can('View cover') ) --}}
 <form id="form" name="form" enctype="multipart/form-data">
+  {{ csrf_field() }}
   <div class="col-md-12 col-xl-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body dashboard-tabs p-0">
@@ -50,7 +51,7 @@
                     <div class="card rounded">
                       <div class="card-image">
                         <span class="card-notify-badge">Preview</span>
-                        <img id="img_preview" name="img_preview" src="{{ asset('img/company/Default.svg') }}" alt="Alternate Text" class="img-responsive mx-auto d-block"/>
+                        <img id="img_preview" name="img_preview" src="@forelse ($company as $data_company) {{ '../images/storage/'.$data_company->image }} @empty {{ asset('img/company/Default.svg') }}  @endforelse" alt="Alternate Text" class="img-responsive mx-auto d-block"/>
                       </div>
                       <div class="mt-3">
                         <div class="form-group">
@@ -61,7 +62,7 @@
                                   Imagen <input id="fileInput" name="fileInput" type="file" style="display: none;" class="required">
                                 </span>
                               </label>
-                              <input type="text" class="form-control" readonly>
+                              <input type="text" class="form-control" value="@forelse ($company as $data_company) {{ '../images/storage/'.$data_company->image }} @empty {{ asset('img/company/Default.svg') }}  @endforelse" readonly>
                             </div>
                           </div>
                         </div>
@@ -72,19 +73,22 @@
                     <div class="form-group row">
                       <label for="inputCreatName" class="col-sm-3 col-form-label">Nombre <span style="color: red;">*</span></label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control form-control-sm required" id="inputCreatName" name="inputCreatName" placeholder="Nombre de la empresa" maxlength="60">
+                        <input type="text" class="form-control form-control-sm required" id="inputCreatName" name="inputCreatName" placeholder="Nombre de la empresa"
+                          value="@if(isset($company[0]->name)){{$company[0]->name}}@endif" maxlength="60">
                       </div>
                     </div>
                     <div class="form-group row">
                       <label for="inputCreatRFC" class="col-sm-3 col-form-label">RFC <span style="color: red;">*</span></label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control form-control-sm required" id="inputCreatRFC" name="inputCreatRFC" placeholder="RFC" maxlength="10">
+                        <input type="text" class="form-control form-control-sm required" id="inputCreatRFC" name="inputCreatRFC" placeholder="RFC"
+                        value="@if(isset($company[0]->taxid)){{$company[0]->taxid}}@endif" maxlength="10">
                       </div>
                     </div>
                     <div class="form-group row">
                       <label for="inputCreatEmail" class="col-sm-3 col-form-label">Correo electrónico<span style="color: red;">*</span></label>
                       <div class="col-sm-9">
-                        <input type="email" class="form-control form-control-sm required" id="inputCreatEmail" name="inputCreatEmail" placeholder="Correo electrónico" maxlength="100">
+                        <input type="email" class="form-control form-control-sm required" id="inputCreatEmail" name="inputCreatEmail" placeholder="Correo electrónico"
+                        value="@if(isset($company[0]->email)){{$company[0]->email}}@endif" maxlength="100">
                       </div>
                     </div>
                   </div>
@@ -94,13 +98,15 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Telefono:</label>
-                          <input maxlength="12" type="text" class="form-control onlynumber" id="inputCreatPhone" name="inputCreatPhone" placeholder="Ingrese el núm. telefono">
+                          <input maxlength="12" type="text" class="form-control onlynumber" id="inputCreatPhone" name="inputCreatPhone"
+                          value="@if(isset($company[0]->phone)){{$company[0]->phone}}@endif" placeholder="Ingrese el núm. telefono">
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Telefono movil:</label>
-                          <input maxlength="12" type="text" class="form-control onlynumber" id="inputCreatMobile" name="inputCreatMobile" placeholder="Ingrese el núm. telefono movil">
+                          <input maxlength="12" type="text" class="form-control onlynumber" id="inputCreatMobile" name="inputCreatMobile"
+                          value="@if(isset($company[0]->phone_mobile)){{$company[0]->phone_mobile}}@endif" placeholder="Ingrese el núm. telefono movil">
                         </div>
                       </div>
 
@@ -111,7 +117,15 @@
                             <select  id="select_seven" name="select_seven" class="form-control form-control-sm required"  style="width: 100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($taxregimen as $taxregimen_data)
-                                <option value="{{ $taxregimen_data->id  }}">{{ $taxregimen_data->name }}</option>
+                                @if(isset($company[0]->tax_regimen_id))
+                                  @if ($company[0]->tax_regimen_id === $taxregimen_data->id)
+                                    <option value="{{ $taxregimen_data->id  }}" selected>{{ $taxregimen_data->name }}</option>
+                                  @else
+                                    <option value="{{ $taxregimen_data->id  }}">{{ $taxregimen_data->name }}</option>
+                                  @endif
+                                @else
+                                  <option value="{{ $taxregimen_data->id  }}">{{ $taxregimen_data->name }}</option>
+                                @endif
                               @empty
                               @endforelse
                             </select>
@@ -122,7 +136,7 @@
                         <div class="form-group row mt-3">
                           <label for="status" class="col-md-12 control-label">Estatus</label>
                           <div class="col-md-12 mb-3">
-                            <input id="status" name="status" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
+                            <input id="status" name="status" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="@if(isset($company[0]->status)){{$company[0]->status}}@else{{0}}@endif">
                           </div>
                         </div>
                       </div>
@@ -130,7 +144,7 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="datainfo">Información adicional</label>
-                          <textarea class="form-control" id="datainfo" name="datainfo" rows="4"></textarea>
+                          <textarea class="form-control" id="datainfo" name="datainfo" rows="4">@if(isset($company[0]->comment)){{$company[0]->comment}}@endif</textarea>
                         </div>
                       </div>
 
@@ -153,25 +167,29 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Direccion:<span style="color: red;">*</span></label>
-                          <input maxlength="100" type="text" class="form-control required" id="inputCreatAddress_1" name="inputCreatAddress_1" placeholder="Direccion">
+                          <input maxlength="100" type="text" class="form-control required" id="inputCreatAddress_1" name="inputCreatAddress_1" placeholder="Direccion"
+                          value="@if(isset($company[0]->address_1)){{$company[0]->address_1}}@endif">
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Num. Ext:</label>
-                          <input type="text" class="form-control" id="inputCreatAddress_2" name="inputCreatAddress_2" placeholder="" maxlength="50">
+                          <input type="text" class="form-control" id="inputCreatAddress_2" name="inputCreatAddress_2" placeholder="" maxlength="50"
+                          value="@if(isset($company[0]->address_2)){{$company[0]->address_2}}@endif">
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Num Int.</label>
-                          <input type="text" class="form-control" id="inputCreatAddress_3" name="inputCreatAddress_3" placeholder="" maxlength="50">
+                          <input type="text" class="form-control" id="inputCreatAddress_3" name="inputCreatAddress_3" placeholder="" maxlength="50"
+                          value="@if(isset($company[0]->address_3)){{$company[0]->address_3}}@endif">
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Colonia:</label>
-                          <input type="text" class="form-control" id="inputCreatAddress_4" name="inputCreatAddress_4" placeholder="" maxlength="100">
+                          <input type="text" class="form-control" id="inputCreatAddress_4" name="inputCreatAddress_4" placeholder="" maxlength="100"
+                          value="@if(isset($company[0]->address_4)){{$company[0]->address_4}}@endif">
                         </div>
                       </div>
                     </div>
@@ -186,13 +204,15 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Localidad:</label>
-                          <input type="text" class="form-control" id="inputCreatAddress_5" name="inputCreatAddress_5" placeholder="" maxlength="50">
+                          <input type="text" class="form-control" id="inputCreatAddress_5" name="inputCreatAddress_5" placeholder="" maxlength="50"
+                          value="@if(isset($company[0]->address_5)){{$company[0]->address_5}}@endif">
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Referencia:</label>
-                          <input type="text" class="form-control" id="inputCreatAddress_6" name="inputCreatAddress_6" placeholder="" maxlength="50">
+                          <input type="text" class="form-control" id="inputCreatAddress_6" name="inputCreatAddress_6" placeholder="" maxlength="50"
+                          value="@if(isset($company[0]->address_6)){{$company[0]->address_6}}@endif">
                         </div>
                       </div>
                     </div>
@@ -210,7 +230,15 @@
                             <select id="select_six" name="select_six" class="form-control required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($countries as $countries_data)
-                              <option value="{{ $countries_data->id }}"> {{ $countries_data->name }} </option>
+                                @if(isset($company[0]->country_id))
+                                  @if ($company[0]->country_id === $countries_data->id)
+                                    <option value="{{ $countries_data->id }}" selected> {{ $countries_data->name }} </option>
+                                  @else
+                                    <option value="{{ $countries_data->id }}"> {{ $countries_data->name }} </option>
+                                  @endif
+                                @else
+                                  <option value="{{ $countries_data->id }}"> {{ $countries_data->name }} </option>
+                                @endif
                               @empty
                               @endforelse
                             </select>
@@ -222,7 +250,15 @@
                             <select id="select_eight" name="select_eight" class="form-control required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($states as $states_data)
-                              <option value="{{ $states_data->id }}"> {{ $states_data->name }} </option>
+                                @if(isset($company[0]->state_id))
+                                  @if ($company[0]->state_id === $states_data->id)
+                                    <option value="{{ $states_data->id }}" selected> {{ $states_data->name }} </option>
+                                  @else
+                                    <option value="{{ $states_data->id }}"> {{ $states_data->name }} </option>
+                                  @endif
+                                @else
+                                  <option value="{{ $states_data->id }}"> {{ $states_data->name }} </option>
+                                @endif
                               @empty
                               @endforelse
                             </select>
@@ -234,7 +270,15 @@
                             <select id="select_nine" name="select_nine" class="form-control required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($cities as $cities_data)
-                              <option value="{{ $cities_data->id }}"> {{ $cities_data->name }} </option>
+                                @if(isset($company[0]->city_id))
+                                  @if ($company[0]->city_id === $cities_data->id)
+                                    <option value="{{ $cities_data->id }}" selected> {{ $cities_data->name }} </option>
+                                  @else
+                                    <option value="{{ $cities_data->id }}"> {{ $cities_data->name }} </option>
+                                  @endif
+                                @else
+                                  <option value="{{ $cities_data->id }}"> {{ $cities_data->name }} </option>
+                                @endif
                               @empty
                               @endforelse
                             </select>
@@ -243,7 +287,8 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Codigo Postal: <span style="color: red;">*</span></label>
-                          <input type="text" class="form-control required onlynumber" id="inputPostcode" name="inputPostcode" placeholder="" maxlength="5">
+                          <input type="text" class="form-control required onlynumber" id="inputPostcode" name="inputPostcode" placeholder="" maxlength="5"
+                          value="@if(isset($company[0]->postcode)){{$company[0]->postcode}}@endif">
                         </div>
                       </div>
 
@@ -271,7 +316,8 @@
                 <!-----><div id="cont_file_file_cer"><!----->
                           <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input  datas="file_file_cer" type="file" class="btn btn-danger custom-file-input required" id="file_file_cer" name="file_file_cer">
+                                <input  datas="file_file_cer" type="file" class="btn btn-danger custom-file-input required" id="file_file_cer" name="file_file_cer"
+                                value="">
                                 <label class="custom-file-label" for="file_file_cer">Choose file</label>
                             </div>
                             <div class="input-group-append">
@@ -287,8 +333,9 @@
                 <!-----><div id="cont_file_file_key"><!----->
                           <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input datas="file_file_key" type="file" class="btn btn-danger custom-file-input required" id="file_file_key" name="file_file_key">
-                                <label class="custom-file-label" for="file_file_key">Choose file</label>
+                                <input datas="file_file_key" type="file" class="btn btn-danger custom-file-input required" id="file_file_key" name="file_file_key"
+                                value="">
+                                <label class="custom-file-label" for="file_file_key"> Choose file</label>
                             </div>
                             <div class="input-group-append">
                               <button class="btn btn-danger test_btm" type="button">Eliminar</button>
@@ -304,22 +351,23 @@
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="certificate_number" class="col-sm-3 col-form-label">Número certificado <span style="color: red;">*</span></label>
+                      <label for="certificate_number" class="col-sm-3 col-form-label">Número certificado</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control form-control-sm required onlynumber" id="certificate_number" name="certificate_number" placeholder="" maxlength="60">
+                        <input type="text" class="form-control form-control-sm" id="certificate_number" name="certificate_number" placeholder="" maxlength="60" readonly
+                        value="@if(isset($company[0]->certificate_number)){{$company[0]->certificate_number}}@endif">
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="date_start" class="col-sm-3 col-form-label">Fecha inicial <span style="color: red;">*</span></label>
+                      <label for="date_start" class="col-sm-3 col-form-label">Fecha inicial</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control form-control-sm datepickercomplete required onlynumber" id="date_start" name="date_start" placeholder="">
+                        <input type="text" class="form-control form-control-sm datepickercomplete onlynumber" id="date_start" name="date_start" placeholder="" value="@if(isset($company[0]->date_start)){{$company[0]->date_start}}@endif" readonly>
                       </div>
                     </div>
 
                     <div class="form-group row">
-                      <label for="date_end" class="col-sm-3 col-form-label">Fecha final <span style="color: red;">*</span></label>
+                      <label for="date_end" class="col-sm-3 col-form-label">Fecha final</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control form-control-sm datepickercomplete required onlynumber" id="date_end" name="date_end" placeholder="">
+                        <input type="text" class="form-control form-control-sm datepickercomplete onlynumber" id="date_end" name="date_end" placeholder="" value="@if(isset($company[0]->date_end)){{$company[0]->date_end}}@endif"readonly>
                       </div>
                     </div>
 
@@ -505,7 +553,7 @@
 
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-
+    <script src="{{ asset('js/admin/base/default_companies.js')}}"></script>
     <script src="{{ asset('js/admin/base/companies.js')}}"></script>
     <script type="text/javascript">
 
