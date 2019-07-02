@@ -18,6 +18,189 @@
 
 @section('content')
   {{-- @if( auth()->user()->can('View cover') ) --}}
+  <div class="col-md-12 col-xl-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body dashboard-tabs p-0">
+        <ul class="nav nav-tabs px-4" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true"><i class="fas fa-search"></i> General</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false"><i class="fas fa-address-card"></i> Dirección</a>
+          </li>
+        </ul>
+        <form id="createBranchOffice" name="createBranchOffice">
+        <div class="tab-content">
+          <!--- TAB GENERAL ------------------->
+          <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+            <div class="media">
+              <div class="media-body">
+                <div class="row">
+                  <div id="ads" class="col-md-6">
+                    <div class="form-group row">
+                      <label for="inputCreateName" class="col-sm-4 col-form-label">Nombre <span style="color: red;">*</span></label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control form-control-sm required" id="inputCreateName" name="inputCreateName" placeholder="Nombre de la empresa" maxlength="60">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="inputCreateEmail" class="col-sm-4 col-form-label">Correo electrónico</label>
+                      <div class="col-sm-8">
+                        <input type="email" class="form-control form-control-sm required" id="inputCreatEmail" name="inputCreatEmail" placeholder="Correo electrónico" maxlength="100">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="inputCreatePhone" class="col-sm-4 col-form-label">Telefono:</label>
+                      <div class="col-sm-8">
+                        <input maxlength="12" type="text" class="form-control required onlynumber" id="inputCreatPhone" name="inputCreatPhone" placeholder="Ingrese el núm. telefono">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="inputCreatePhoneMobile" class="col-sm-4 col-form-label">Telefono móvil:</label>
+                      <div class="col-sm-8">
+                        <input maxlength="12" type="text" class="form-control required onlynumber" id="inputCreatPhoneMobile" name="inputCreatPhoneMobile" placeholder="Ingrese el núm. telefono">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label for="inputCreateOrden" class="col-sm-4 col-form-label">Orden:<span style="color: red;">*</span></label>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm required onlynumber" id="inputCreatOrden" name="inputCreatOrden" placeholder="Orden de visualización" value="0" maxlength="3">
+                      </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                      <label for="status" class="col-sm-4 control-label">Estatus</label>
+                      <div class="col-md-8 mb-3">
+                        <input id="status" name="status" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1">
+                      </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                      <label for="datainfo" class="col-sm-4 control-label">Información adicional</label>
+                      <div class="col-md-8 mb-3">
+                        <textarea class="form-control" id="datainfo" name="datainfo" rows="4"></textarea>
+                      </div>
+                    </div>
+
+                  </div>
+                </div><!---row---->
+              </div>
+            </div>
+          </div>
+          <!--- TAB ADDRESS ------------------->
+          <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+            <div class="media">
+              <div class="media-body">
+                <!-------------------------------------------------------------------------------->
+                <div class="row">
+                  <div class="col-md-12">
+                    <!-------------------------------------------------------------------------------->
+                    <div class="row">
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>Direccion:</label>
+                          <input maxlength="100" type="text" class="form-control required" id="inputCreatAddress_1" name="inputCreatAddress_1" placeholder="Direccion">
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>Num. Ext:</label>
+                          <input type="text" class="form-control" id="inputCreatAddress_2" name="inputCreatAddress_2" placeholder="" maxlength="50">
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>Num Int.</label>
+                          <input type="text" class="form-control" id="inputCreatAddress_3" name="inputCreatAddress_3" placeholder="" maxlength="50">
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>Colonia:</label>
+                          <input type="text" class="form-control" id="inputCreatAddress_4" name="inputCreatAddress_4" placeholder="" maxlength="100">
+                        </div>
+                      </div>
+                    </div>
+                    <!-------------------------------------------------------------------------------->
+                  </div>
+                </div>
+                <!-------------------------------------------------------------------------------->
+                <div class="row mt-3">
+                  <div class="col-md-12">
+                    <!-------------------------------------------------------------------------------->
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Localidad:</label>
+                          <input type="text" class="form-control" id="inputCreatAddress_5" name="inputCreatAddress_5" placeholder="" maxlength="50">
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label>Código postal:</label>
+                          <input type="text" class="form-control" id="inputZipCode" name="inputZipCode" placeholder="" maxlength="10">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Referencia:</label>
+                          <input type="text" class="form-control" id="inputCreatAddress_6" name="inputCreatAddress_6" placeholder="" maxlength="100">
+                        </div>
+                      </div>
+                    </div>
+                    <!-------------------------------------------------------------------------------->
+                  </div>
+                </div>
+                <!-------------------------------------------------------------------------------->
+                <div class="row mt-3">
+                  <div class="col-md-12">
+                    <!-------------------------------------------------------------------------------->
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="select_paises" class="control-label">Paises:<span style="color: red;">*</span></label>
+                            <select id="select_paises" name="select_paises" class="form-control required" style="width:100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @foreach ($countries as $country)
+                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                              @endforeach
+                            </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="select_estados" class="control-label">Estados:<span style="color: red;">*</span></label>
+                            <select id="select_estados" name="select_estados" class="form-control required" style="width:100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                            </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="select_ciudades" class="control-label">Ciudades:<span style="color: red;">*</span></label>
+                            <select id="select_ciudades" name="select_ciudades" class="form-control required" style="width:100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                            </select>
+                        </div>
+                      </div>
+                    </div>
+                    <!-------------------------------------------------------------------------------->
+                  </div>
+                </div>
+                <!-------------------------------------------------------------------------------->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer text-muted">
+          <button class="btn btn-danger mt-2 mt-xl-0">Actualizar</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   {{-- @else --}}
   {{-- @endif --}}
 @endsection
@@ -53,6 +236,164 @@
       }
       .toggle.btn {
         min-width: 5rem !important;
+      }
+      #img_preview {
+        margin-top: 20px;
+        height: 30%;
+        width: 30%;
+      }
+      #ads {
+          margin: 20px 0 0 0;
+      }
+      #ads .card-notify-badge {
+          position: absolute;
+          left: 0px;
+          top: -10px;
+          background: #f2d900;
+          text-align: center;
+          border-radius: 30px 30px 30px 30px;
+          color: #000;
+          padding: 5px 20px;
+          font-size: 14px;
+
+      }
+      #ads .card-detail-badge {
+          background: #f2d900;
+          text-align: center;
+          border-radius: 30px 30px 30px 30px;
+          color: #000;
+          padding: 5px 10px;
+          font-size: 14px;
+      }
+      .tab-content {
+      	border: 1px solid $border-color;
+      	border-top: 0;
+      	padding: 2rem 1.5rem;
+      	text-align: justify;
+      	&.tab-content-vertical {
+      		border-top: 1px solid $border-color;
+      	}
+      	&.tab-content-vertical-custom {
+      		border: 0;
+      		padding-top: 0;
+      	}
+      	&.tab-content-custom-pill {
+      		border: 0;
+      		padding-left: 0;
+      	}
+      }
+      .test_btm {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3;
+        padding-top: 1;
+        display: block;
+        height: calc(1.8em + 0.75rem);
+        padding: 0.5rem 0.75rem;
+        line-height: 1.5;
+      }
+      /**/
+      .custom-file {
+      	position: relative;
+      	display: inline-block;
+      	width: 100%;
+        height: calc(1.8em + 0.75rem) !important;
+      	margin-bottom: 0
+      }
+
+      .custom-file-input {
+      	position: relative;
+      	z-index: 3;
+      	width: 100%;
+        height: calc(1.8em + 0.75rem) !important;
+      	margin: 0;
+      	opacity: 0
+      }
+
+      .custom-file-input:focus~.custom-file-control {
+      	border-color: #007bff !important;
+      	box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25)
+      }
+
+      .custom-file-input:focus~.custom-file-control::before {
+      	border-color: #007bff !important;
+      }
+
+      .custom-file-label {
+      	position: absolute;
+      	top: 0;
+      	right: 0;
+      	left: 0;
+      	z-index: 1;
+      	height: calc(2.25rem + 2px);
+      	padding: .375rem .75rem;
+      	line-height: 1.5;
+      	color: #495057;
+      	background-color: #fff;
+      	border: 1px solid #ced4da;
+      	border-radius: .25rem
+      }
+
+      .custom-file-label::after {
+      	position: absolute;
+      	top: 0;
+      	right: 0;
+      	bottom: 0;
+      	z-index: 3;
+      	display: block;
+      	height: calc(calc(2.25rem + 2px) - 1px * 2);
+      	padding: .375rem .75rem;
+      	line-height: 1.5;
+      	color: #fff;
+      	content: "Subir";
+      	background-color: #007bff !important;
+      	border-left: 1px solid #007bff !important;
+      	border-radius: 0 .25rem .25rem 0
+      }
+      /**/
+      .custom-file-input.is-valid~.custom-file-label,
+      .was-validated .custom-file-input:valid~.custom-file-label {
+      	border-color: #28a745
+      }
+
+      .custom-file-input.is-valid~.custom-file-label::before,
+      .was-validated .custom-file-input:valid~.custom-file-label::before {
+      	border-color: inherit
+      }
+
+      .custom-file-input.is-valid~.valid-feedback,
+      .custom-file-input.is-valid~.valid-tooltip,
+      .was-validated .custom-file-input:valid~.valid-feedback,
+      .was-validated .custom-file-input:valid~.valid-tooltip {
+      	display: block
+      }
+
+      .custom-file-input.is-valid:focus~.custom-file-label,
+      .was-validated .custom-file-input:valid:focus~.custom-file-label {
+      	box-shadow: 0 0 0 .2rem rgba(40, 167, 69, .25)
+      }
+      .custom-file-input.is-invalid~.custom-file-label,
+      .was-validated .custom-file-input:invalid~.custom-file-label {
+      	border-color: #dc3545
+      }
+
+      .custom-file-input.is-invalid~.custom-file-label::before,
+      .was-validated .custom-file-input:invalid~.custom-file-label::before {
+      	border-color: inherit
+      }
+
+      .custom-file-input.is-invalid~.invalid-feedback,
+      .custom-file-input.is-invalid~.invalid-tooltip,
+      .was-validated .custom-file-input:invalid~.invalid-feedback,
+      .was-validated .custom-file-input:invalid~.invalid-tooltip {
+      	display: block
+      }
+
+      .custom-file-input.is-invalid:focus~.custom-file-label,
+      .was-validated .custom-file-input:invalid:focus~.custom-file-label {
+      	box-shadow: 0 0 0 .2rem rgba(220, 53, 69, .25)
       }
     </style>
     {{-- @else --}}

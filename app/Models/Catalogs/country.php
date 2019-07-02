@@ -19,4 +19,10 @@ class country extends Model
   {
     return $this->hasMany(State::class);
   }
+
+  public static function getStateCountry($id)
+  {
+    return State::where('id', '=', $id);
+  }
+
 }

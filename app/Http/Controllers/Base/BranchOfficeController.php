@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Base;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Catalogs\country;
 
 class BranchOfficeController extends Controller
 {
@@ -14,17 +15,9 @@ class BranchOfficeController extends Controller
      */
     public function index()
     {
-      return view('permitted.base.branch_office');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+      $countries = country::all();
+    
+      return view('permitted.base.branch_office',compact('countries'));
     }
 
     /**
@@ -35,7 +28,7 @@ class BranchOfficeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**

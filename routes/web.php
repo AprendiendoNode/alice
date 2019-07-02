@@ -212,7 +212,7 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::post('/search_comment_hotel', 'Report\Edition@search_comment');
   Route::post('/update_comment_hotel', 'Report\Edition@update_comment');
-  
+
   //Modulo de reportes - ver reporte basico
   Route::get('/viewreports' , 'Report\Basic@index');
   Route::post('/typereport','Report\Basic@typerep');
@@ -452,9 +452,11 @@ Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
       //Branch-office
       Route::get('/branch-office', 'Base\BranchOfficeController@index');
       Route::post('/branch-office-show', 'Base\BranchOfficeController@show');
-      Route::post('/branch-office-create', 'Base\BranchOfficeController@create');
       Route::post('/branch-office-store', 'Base\BranchOfficeController@store');
       Route::post('/branch-office-edit', 'Base\BranchOfficeController@edit');
-
+      Route::get('/state-country/{id}', function ($id) {
+        $query = App\Models\Catalogs\State::where('id', '=', $id);
+        return $query;
+      });
 
 });
