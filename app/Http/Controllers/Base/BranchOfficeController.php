@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Base;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Catalogs\country;
+use App\Models\Base\BranchOffice;
+use \Carbon\Carbon;
+use DB;
 
 class BranchOfficeController extends Controller
 {
@@ -15,9 +17,11 @@ class BranchOfficeController extends Controller
      */
     public function index()
     {
-      $countries = country::all();
-    
-      return view('permitted.base.branch_office',compact('countries'));
+      $countries = DB::select('CALL GetAllCountryActivev2 ()', array());
+      $states = DB::select('CALL GetAllStateActivev2 ()', array());
+      $cities = DB::select('CALL GetAllCitiesv2 ()', array());
+
+      return view('permitted.base.branch_office',compact('countries', 'states', 'cities'));
     }
 
     /**
@@ -28,7 +32,30 @@ class BranchOfficeController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $newbranch = new BranchOffice;
+        $newbranch->name = $request->inputCreateName;
+        $newbranch->email = $request->inputCreatEmail;
+        $newbranch->phone = $request->inputCreatPhone;
+        $newbranch->phone_mobile = $request->inputCreatPhoneMobile;
+        $newbranch->address_1 = $request->inputCreatAddress_1;
+        $newbranch->address_2 = $request->inputCreatAddress_2;
+        $newbranch->address_3 = $request->inputCreatAddress_3;
+        $newbranch->address_4 = $request->inputCreatAddress_4;
+        $newbranch->address_5 = $request->inputCreatAddress_5;
+        $newbranch->address_6 = $request->inputCreatAddress_6;
+        $newbranch->city_id = $request->select_ciudades;
+        $newbranch->state_id = $request->select_estados;
+        $newbranch->country_id = $request->select_paises;
+        $newbranch->postcode = $request->inputZipCode;
+        $newbranch->comment = $request->datainfo;
+        $newbranch->sort_order = $request->inputCreatOrden;
+        $newbranch->status = $request->status;
+        $newbranch->created_uid = 1;
+        $newbranch->updated_uid = 1;
+        $newbranch->created_at = Carbon::now();
+        $newbranch->save();
+
+        return response()->json(["status" => 200]);
     }
 
     /**

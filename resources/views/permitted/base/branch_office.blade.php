@@ -171,7 +171,18 @@
                         <div class="form-group">
                           <label for="select_estados" class="control-label">Estados:<span style="color: red;">*</span></label>
                             <select id="select_estados" name="select_estados" class="form-control required" style="width:100%;">
-                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($states as $states_data)
+                                @if(isset($company[0]->state_id))
+                                  @if ($company[0]->state_id === $states_data->id)
+                                    <option value="{{ $states_data->id }}" selected> {{ $states_data->name }} </option>
+                                  @else
+                                    <option value="{{ $states_data->id }}"> {{ $states_data->name }} </option>
+                                  @endif
+                                @else
+                                  <option value="{{ $states_data->id }}"> {{ $states_data->name }} </option>
+                                @endif
+                              @empty
+                              @endforelse
                             </select>
                         </div>
                       </div>
@@ -179,7 +190,18 @@
                         <div class="form-group">
                           <label for="select_ciudades" class="control-label">Ciudades:<span style="color: red;">*</span></label>
                             <select id="select_ciudades" name="select_ciudades" class="form-control required" style="width:100%;">
-                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($cities as $cities_data)
+                                @if(isset($company[0]->city_id))
+                                  @if ($company[0]->city_id === $cities_data->id)
+                                    <option value="{{ $cities_data->id }}" selected> {{ $cities_data->name }} </option>
+                                  @else
+                                    <option value="{{ $cities_data->id }}"> {{ $cities_data->name }} </option>
+                                  @endif
+                                @else
+                                  <option value="{{ $cities_data->id }}"> {{ $cities_data->name }} </option>
+                                @endif
+                              @empty
+                              @endforelse
                             </select>
                         </div>
                       </div>

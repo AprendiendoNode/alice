@@ -455,7 +455,11 @@ Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
       Route::post('/branch-office-store', 'Base\BranchOfficeController@store');
       Route::post('/branch-office-edit', 'Base\BranchOfficeController@edit');
       Route::get('/state-country/{id}', function ($id) {
-        $query = App\Models\Catalogs\State::where('id', '=', $id);
+        $query = App\Models\Catalogs\State::where('country_id', '=', $id)->get();
+        return $query;
+      });
+      Route::get('/cities-state/{id}', function ($id) {
+        $query = App\Models\Catalogs\City::where('state_id', '=', $id)->get();
         return $query;
       });
 
