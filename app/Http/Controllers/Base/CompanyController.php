@@ -40,9 +40,11 @@ class CompanyController extends Controller
 
       $company = DB::select('CALL GetAllCompanyActivev2 ()', array());
 
+      $cfdi = DB::select('CALL GetCfdiActivev2 ()', array());
+      $pacs2 = DB::select('CALL GetPacsActivev2 ()', array());
 
       return view('permitted.base.companies',compact('countries', 'states', 'cities',
-      'banks','currencies', 'pacs', 'taxregimen', 'company'));
+      'banks','currencies', 'pacs', 'taxregimen', 'company', 'cfdi', 'pacs2'));
     }
 
     /**
@@ -186,20 +188,8 @@ class CompanyController extends Controller
             }
         }
 
-        $newId_account1 = DB::table('settings')
-        ->insertGetId([
-          'key' => 'cfdi_version',
-          'value' =>  $request->select_cfdi,
-          'created_at' => \Carbon\Carbon::now()
-        ]);
-
-        $newId_account2 = DB::table('settings')
-        ->insertGetId([
-          'key' => 'default_pac_id',
-          'value' =>  $request->select_pacs,
-          'created_at' => \Carbon\Carbon::now()
-        ]);
-
+        $newId_account1 =DB::select('CALL px_actualiza_settings (?,?)', array('CFDI', $request->select_cfdi));
+        $newId_account2 =DB::select('CALL px_actualiza_settings (?,?)', array('PAC', $request->select_pacs));
 
         return $newId; // returns id
       }

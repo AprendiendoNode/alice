@@ -497,7 +497,7 @@
                         <div class="form-group">
                           <label for="select_cfdi" class="control-label">Versión de CFDI<span style="color: red;">*</span></label>
                           <select id="select_cfdi" name="select_cfdi" class="form-control required" style="width:100%;">
-                            <option value="cfdi33">CFDI 3.3</option>
+                            <option value="1">CFDI 3.3</option>
                           </select>
                         </div>
                       </div>
@@ -509,14 +509,22 @@
                           <select id="select_pacs" name="select_pacs" class="form-control required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($pacs as $pacs_data)
-                                <option value="{{ $pacs_data->id  }}">{{ $pacs_data->name }}</option>
+                                @if(isset($pacs2[0]->value))
+                                    @if ($pacs2[0]->value === '0')
+                                      <option value="{{ $pacs_data->id  }}">{{ $pacs_data->name }}</option>
+                                    @elseif($pacs2[0]->value == $pacs_data->id)
+                                      <option value="{{ $pacs_data->id  }}" selected>{{ $pacs_data->name }}</option>
+                                    @else
+                                      <option value="{{ $pacs_data->id  }}">{{ $pacs_data->name }}</option>
+                                    @endif
+                                @else
+                                  <option value="{{ $pacs_data->id  }}">{{ $pacs_data->name }}</option>
+                                @endif
                               @empty
                               @endforelse
                           </select>
                         </div>
                       </div>
-
-
                     </div>
                     <!-------------------------------------------------------------------------------->
                   </div>
