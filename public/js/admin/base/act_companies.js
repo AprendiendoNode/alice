@@ -33,7 +33,7 @@ $(function() {
           maxlength: 10
         },
         fileInput: {
-          required: true,
+          required: false,
           accept:"jpg,png,jpeg"
         },
       },
@@ -63,7 +63,7 @@ $(function() {
             var formData = new FormData(form);
             $.ajax({
               type: 'POST',
-              url: "/base/companies-create",
+              url: "/base/companies-store",
               data: formData,
               contentType: false,
               processData: false,
@@ -103,7 +103,7 @@ $(function() {
                         // Read more about handling dismissals
                         result.dismiss === Swal.DismissReason.timer
                       ) {
-                        window.location.href = "/base/companies";
+                       window.location.href = "/base/companies";
                       }
                     });
                 }
@@ -135,7 +135,6 @@ $(function() {
   });
   //-----------------------------------------------------------
 });
-
 $(function() {
   // We can attach the `fileselect` event to all file inputs on the page
   $(document).on('change', ':file', function() {

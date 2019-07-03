@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Base;
 use DB;
 use Auth;
+use File;
+use Illuminate\Support\Facades\Storage;
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -39,12 +42,15 @@ class CompanyController extends Controller
       $cities = DB::select('CALL GetAllCitiesv2 ()', array());
 
       $company = DB::select('CALL GetAllCompanyActivev2 ()', array());
+      $company_account = DB::select('CALL GetAllAccountCompanyActivev2 ()', array());
+
 
       $cfdi = DB::select('CALL GetCfdiActivev2 ()', array());
       $pacs2 = DB::select('CALL GetPacsActivev2 ()', array());
+      $question_a = DB::table('companies')->select('name')->where([['id', '=', '1'],])->count();
 
       return view('permitted.base.companies',compact('countries', 'states', 'cities',
-      'banks','currencies', 'pacs', 'taxregimen', 'company', 'cfdi', 'pacs2'));
+      'banks','currencies', 'pacs', 'taxregimen', 'company', 'cfdi', 'pacs2', 'company_account', 'question_a'));
     }
 
     /**
@@ -81,11 +87,6 @@ class CompanyController extends Controller
       $creat_date_start = $request->date_start;
       $creat_date_end = $request->date_end;
 
-      $file_img = $request->file('fileInput');
-      $file_name = $file_img->getClientOriginalName(); //** get name extension
-      $file_extension = $file_img->getClientOriginalExtension(); //** get filename extension
-      $fileName = 'logo.'.$file_extension;
-      $img= $request->file('fileInput')->storeAs('default/files/companies',$fileName);
 
       $file_cer_new = '';
       $file_certificate_number = '';
@@ -96,104 +97,98 @@ class CompanyController extends Controller
       $file_pass_key = '';
       $file_pfx_new = '';
 
-      //Archivos SAT
-      //Convertir en CER a PEM
-      $path_file_cer_pem = '';
-      if ($request->hasFile('file_file_cer')) {
-          $tmp = $this->convertCerToPem(); //
-          $file_cer_new = !empty($tmp['file_cer']) ? $tmp['file_cer'] : null;
-          $file_certificate_number = !empty($tmp['certificate_number']) ? $tmp['certificate_number'] : null;
-          $file_data_start = !empty($tmp['date_start']) ? $tmp['date_start'] : null;
-          $file_data_end = !empty($tmp['date_end']) ? $tmp['date_end'] : null;
-          $path_file_cer_pem = !empty($tmp['path_file_cer_pem']) ? $tmp['path_file_cer_pem'] : null;
-          /*
-          $request->merge(['file_cer' => !empty($tmp['file_cer']) ? $tmp['file_cer'] : null]);
-          $request->merge(['certificate_number' => !empty($tmp['certificate_number']) ? $tmp['certificate_number'] : null]);
-          $request->merge(['date_start' => !empty($tmp['date_start']) ? $tmp['date_start'] : null]);
-          $request->merge(['date_end' => !empty($tmp['date_end']) ? $tmp['date_end'] : null]);
-          $path_file_cer_pem = !empty($tmp['path_file_cer_pem']) ? $tmp['path_file_cer_pem'] : null;
-          */
-      }
-      //Convertir en KEY a PEM, debe contener la contraseña
-      $path_file_key_pem = '';
-      if ($request->hasFile('file_file_key')) {
-          $tmp = $this->convertKeyToPem($request->password_key, $path_file_cer_pem);
-          // $request->merge(['password_key' => !empty($tmp['password_key']) ? $tmp['password_key'] : null]);
-          // $request->merge(['file_key' => !empty($tmp['file_key']) ? $tmp['file_key'] : null]);
-         $file_pass_key = !empty($tmp['password_key']) ? $tmp['password_key'] : null;
-          $file_key_new = !empty($tmp['file_key']) ? $tmp['file_key'] : null;
-          $path_file_key_pem = !empty($tmp['path_file_key_pem']) ? $tmp['path_file_key_pem'] : null;
-      }
-      //Crear archivo PFX
-      if (!empty($path_file_cer_pem) && !empty($path_file_key_pem)) {
-          $tmp = $this->createPfx($path_file_key_pem, $request->password_key, $path_file_cer_pem);
-          $file_pfx_new = !empty($tmp['file_pfx']) ? $tmp['file_pfx'] : null;
-          // $request->merge(['file_pfx' => !empty($tmp['file_pfx']) ? $tmp['file_pfx'] : null]);
-      }
-
-      $newId = DB::table('companies')
-      ->insertGetId([
-             'name' => $creatName,
-            'image' => $img,
-            'taxid' => $creatRFC,
-   'tax_regimen_id' => $taxregimen_id,
-            'email' => $creatEmail,
-            'phone' => $creatPhone,
-     'phone_mobile' => $creatMobile,
-        'address_1' => $direccion, //Direccion
-        'address_2' => $numExt,    //Num. Ext
-        'address_3' => $numInt, //Num Int.
-        'address_4' => $colonia, //Colonia
-        'address_5' => $localidad, //Localidad
-        'address_6' => $referencia, //Referencia
-          'city_id' => $cities_id,
-         'state_id' => $states_id,
-       'country_id' => $countries_id,
-         'postcode' => $creatPostcode,
-         'file_cer' => $file_cer_new,
-         'file_key' => $file_key_new,
-        'password_key' => $file_pass_key,
-        'file_pfx' => $file_pfx_new,
-        'certificate_number' => $file_certificate_number,
-        'date_start' => $file_data_start,
-        'date_end' => $file_data_end,
-        'comment' => $comment,
-        'sort_order' => '1',
-        'status' => $status,
-        'created_uid' => $user_id,
-        'created_at' => \Carbon\Carbon::now()
-      ]);
-
-
-      if(empty($newId)) {
-        return 'abort'; // returns 0
-      }
-      else {
-        //Cuentas bancarias
-        //Guarda
-        if (!empty($request->item_bank_account)) {
-            foreach ($request->item_bank_account as $key => $result) {
-                $newId_account = DB::table('company_bank_accounts')
-                ->insertGetId([
-                  'company_id' => $newId->id,
-                  'name' => $result['name'],
-                  'account_number' => $result['account_number'],
-                  'bank_id' => $result['bank_id'],
-                  'currency_id' => $result['currency_id'],
-                  'sort_order' => $key,
-                  'status' => 1,
-                  'created_uid' => $user_id,
-                  'created_at' => \Carbon\Carbon::now()
-                ]);
-            }
+        //Inserto
+        //--------------------------------------------------------------------------------
+        $file_img = $request->file('fileInput');
+        $file_name = $file_img->getClientOriginalName(); //** get name extension
+        $file_extension = $file_img->getClientOriginalExtension(); //** get filename extension
+        $fileName = 'logo.'.$file_extension;
+        $img= $request->file('fileInput')->storeAs('default/files/companies',$fileName);
+        //Archivos SAT
+        //Convertir en CER a PEM
+        $path_file_cer_pem = '';
+        if ($request->hasFile('file_file_cer')) {
+            $tmp = $this->convertCerToPem(); //
+            $file_cer_new = !empty($tmp['file_cer']) ? $tmp['file_cer'] : null;
+            $file_certificate_number = !empty($tmp['certificate_number']) ? $tmp['certificate_number'] : null;
+            $file_data_start = !empty($tmp['date_start']) ? $tmp['date_start'] : null;
+            $file_data_end = !empty($tmp['date_end']) ? $tmp['date_end'] : null;
+            $path_file_cer_pem = !empty($tmp['path_file_cer_pem']) ? $tmp['path_file_cer_pem'] : null;
         }
-
-        $newId_account1 =DB::select('CALL px_actualiza_settings (?,?)', array('CFDI', $request->select_cfdi));
-        $newId_account2 =DB::select('CALL px_actualiza_settings (?,?)', array('PAC', $request->select_pacs));
-
-        return $newId; // returns id
-      }
-
+        //Convertir en KEY a PEM, debe contener la contraseña
+        $path_file_key_pem = '';
+        if ($request->hasFile('file_file_key')) {
+            $tmp = $this->convertKeyToPem($request->password_key, $path_file_cer_pem);
+            $file_pass_key = !empty($tmp['password_key']) ? $tmp['password_key'] : null;
+            $file_key_new = !empty($tmp['file_key']) ? $tmp['file_key'] : null;
+            $path_file_key_pem = !empty($tmp['path_file_key_pem']) ? $tmp['path_file_key_pem'] : null;
+        }
+        //Crear archivo PFX
+        if (!empty($path_file_cer_pem) && !empty($path_file_key_pem)) {
+            $tmp = $this->createPfx($path_file_key_pem, $request->password_key, $path_file_cer_pem);
+            $file_pfx_new = !empty($tmp['file_pfx']) ? $tmp['file_pfx'] : null;
+        }
+        //Inserto
+        $newId = DB::table('companies')
+        ->insertGetId([
+                   'id' => 1,
+                   'name' => $creatName,
+                  'image' => $img,
+                  'taxid' => $creatRFC,
+         'tax_regimen_id' => $taxregimen_id,
+                  'email' => $creatEmail,
+                  'phone' => $creatPhone,
+           'phone_mobile' => $creatMobile,
+              'address_1' => $direccion, //Direccion
+              'address_2' => $numExt,    //Num. Ext
+              'address_3' => $numInt, //Num Int.
+              'address_4' => $colonia, //Colonia
+              'address_5' => $localidad, //Localidad
+              'address_6' => $referencia, //Referencia
+                'city_id' => $cities_id,
+               'state_id' => $states_id,
+             'country_id' => $countries_id,
+               'postcode' => $creatPostcode,
+               'file_cer' => $file_cer_new,
+               'file_key' => $file_key_new,
+              'password_key' => $file_pass_key,
+              'file_pfx' => $file_pfx_new,
+              'certificate_number' => $file_certificate_number,
+              'date_start' => $file_data_start,
+              'date_end' => $file_data_end,
+              'comment' => $comment,
+              'sort_order' => '1',
+              'status' => $status,
+              'created_uid' => $user_id,
+              'created_at' => \Carbon\Carbon::now()
+        ]);
+        if(empty($newId)) {
+          return 'abort'; // returns 0
+        }
+        else {
+          //Cuentas bancarias
+          //Guarda
+          if (!empty($request->item_bank_account)) {
+              foreach ($request->item_bank_account as $key => $result) {
+                  $newId_account = DB::table('company_bank_accounts')
+                  ->insertGetId([
+                    'company_id' => $newId,
+                    'name' => $result['name'],
+                    'account_number' => $result['account_number'],
+                    'bank_id' => $result['bank_id'],
+                    'currency_id' => $result['currency_id'],
+                    'sort_order' => $key,
+                    'status' => 1,
+                    'created_uid' => $user_id,
+                    'created_at' => \Carbon\Carbon::now()
+                  ]);
+              }
+          }
+          $newId_account1 =DB::select('CALL px_actualiza_settings (?,?)', array('CFDI', $request->select_cfdi));
+          $newId_account2 =DB::select('CALL px_actualiza_settings (?,?)', array('PAC', $request->select_pacs));
+          return $newId; // returns id
+        }
+        //--------------------------------------------------------------------------------
     }
 
     /**
@@ -204,7 +199,185 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $user_id = Auth::user()->id;
+    $creatName = $request->inputCreatName;
+     $creatRFC = $request->inputCreatRFC;
+   $creatEmail = $request->inputCreatEmail;
+   $creatPhone = !empty($request->inputCreatPhone) ? $request->inputCreatPhone : '';
+  $creatMobile = !empty($request->inputCreatMobile) ? $request->inputCreatMobile : '';
+
+$taxregimen_id = $request->select_seven;
+       $status = !empty($request->status) ? 1 : 0;
+      $comment = !empty($request->datainfo) ? $request->datainfo : '';
+
+    $direccion = $request->inputCreatAddress_1;
+       $numExt = !empty($request->inputCreatAddress_2) ? $request->inputCreatAddress_2 : '';
+       $numInt = !empty($request->inputCreatAddress_3) ? $request->inputCreatAddress_3 : '';
+      $colonia = !empty($request->inputCreatAddress_4) ? $request->inputCreatAddress_4 : '';
+
+    $localidad = !empty($request->inputCreatAddress_5) ? $request->inputCreatAddress_5 : '';
+   $referencia = !empty($request->inputCreatAddress_6) ? $request->inputCreatAddress_6 : '';
+
+    $cities_id = $request->select_nine;
+    $states_id = $request->select_eight;
+ $countries_id = $request->select_six;
+
+   $creatPostcode = $request->inputPostcode;
+
+
+   $url_image = DB::table('companies')->where([['id', '=', '1'],])->value('image');
+
+     if ($request->hasFile('fileInput')) {
+       Storage::delete($url_image);
+
+       $file_img = $request->file('fileInput');
+       $file_name = $file_img->getClientOriginalName(); //** get name extension
+       $file_extension = $file_img->getClientOriginalExtension(); //** get filename extension
+       $fileName = 'logo.'.$file_extension;
+       $img= $request->file('fileInput')->storeAs('default/files/companies',$fileName);
+       $update_img = DB::table('companies')
+                 ->where('id', '=', '1')
+                 ->update([
+                   'image' => $img,
+                   'updated_uid' => $user_id,
+                   'updated_at' => \Carbon\Carbon::now()
+                 ]);
+     }
+
+     $file_cer_new = '';
+     $file_certificate_number = '';
+     $file_data_start = '';
+     $file_data_end = '';
+
+     $file_key_new = '';
+     $file_pass_key = '';
+     $file_pfx_new = '';
+
+     //Archivos SAT
+     //Convertir en CER a PEM
+     $path_file_cer_pem = '';
+     if ($request->hasFile('file_file_cer')) {
+         $tmp = $this->convertCerToPem(); //
+         $file_cer_new = !empty($tmp['file_cer']) ? $tmp['file_cer'] : null;
+         $file_certificate_number = !empty($tmp['certificate_number']) ? $tmp['certificate_number'] : null;
+         $file_data_start = !empty($tmp['date_start']) ? $tmp['date_start'] : null;
+         $file_data_end = !empty($tmp['date_end']) ? $tmp['date_end'] : null;
+         $path_file_cer_pem = !empty($tmp['path_file_cer_pem']) ? $tmp['path_file_cer_pem'] : null;
+         $update_cer = DB::table('companies')
+                   ->where('id', '=', '1')
+                   ->update([
+                     'file_cer' => $file_cer_new,
+                     'certificate_number' => $file_certificate_number,
+                     'date_start' => $file_data_start,
+                     'date_end' => $file_data_end,
+                     'updated_uid' => $user_id,
+                     'updated_at' => \Carbon\Carbon::now()
+                   ]);
+     }
+     //Convertir en KEY a PEM, debe contener la contraseña
+     $path_file_key_pem = '';
+     if ($request->hasFile('file_file_key')) {
+         $tmp = $this->convertKeyToPem($request->password_key, $path_file_cer_pem); //
+         $file_pass_key = !empty($tmp['password_key']) ? $tmp['password_key'] : null;
+         $file_key_new = !empty($tmp['file_key']) ? $tmp['file_key'] : null;
+         $path_file_key_pem = !empty($tmp['path_file_key_pem']) ? $tmp['path_file_key_pem'] : null;
+
+         $update_key = DB::table('companies')
+                   ->where('id', '=', '1')
+                   ->update([
+                     'password_key' => $file_pass_key,
+                     'file_key' => $file_key_new,
+                     'updated_uid' => $user_id,
+                     'updated_at' => \Carbon\Carbon::now()
+                   ]);
+     }
+     //Crear archivo PFX
+     if (!empty($path_file_cer_pem) && !empty($path_file_key_pem)) {
+         $tmp = $this->createPfx($path_file_key_pem, $request->password_key, $path_file_cer_pem); //
+         $file_pfx_new = !empty($tmp['file_pfx']) ? $tmp['file_pfx'] : null;
+         $update_pfx = DB::table('companies')
+                   ->where('id', '=', '1')
+                   ->update([
+                     'file_pfx' => $file_pfx_new,
+                     'updated_uid' => $user_id,
+                     'updated_at' => \Carbon\Carbon::now()
+                   ]);
+     }
+     //Cuentas bancarias
+     //Elimina
+     if (!empty($request->delete_item_bank_account)) {
+         foreach ($request->delete_item_bank_account as $key => $result) {
+             //Actualizar status
+            DB::table('company_bank_accounts')
+            ->where('id', '=', $result)
+            ->update([
+              'status' => 0,
+              'updated_uid' => $user_id,
+              'updated_at' => \Carbon\Carbon::now()
+            ]);
+         }
+     }
+     //Guarda
+     if (!empty($request->item_bank_account)) {
+        foreach ($request->item_bank_account as $key => $result) {
+          //Valida si es registro nuevo o actualizacion
+          if (!empty($result['id'])) {
+            DB::table('company_bank_accounts')
+            ->where('id', '=', $result['id'])
+            ->update([
+              'name' => $result['name'],
+              'account_number' => $result['account_number'],
+              'bank_id' => $result['bank_id'],
+              'currency_id' => $result['currency_id'],
+              'sort_order' => $key,
+              'status' => 1,
+              'updated_uid' => $user_id,
+              'updated_at' => \Carbon\Carbon::now()
+            ]);
+          }
+          else {
+              $newId_account = DB::table('company_bank_accounts')
+              ->insertGetId([
+                'company_id' => 1,
+                'name' => $result['name'],
+                'account_number' => $result['account_number'],
+                'bank_id' => $result['bank_id'],
+                'currency_id' => $result['currency_id'],
+                'sort_order' => $key,
+                'status' => 1,
+                'created_uid' => $user_id,
+                'created_at' => \Carbon\Carbon::now()
+              ]);
+          }
+        }
+     }
+     ////////////////////////////////////////////
+     $update_img = DB::table('companies')
+               ->where('id', '=', '1')
+               ->update([
+                     'name' => $creatName,
+                    'taxid' => $creatRFC,
+           'tax_regimen_id' => $taxregimen_id,
+                    'email' => $creatEmail,
+                    'phone' => $creatPhone,
+             'phone_mobile' => $creatMobile,
+                'address_1' => $direccion, //Direccion
+                'address_2' => $numExt,    //Num. Ext
+                'address_3' => $numInt, //Num Int.
+                'address_4' => $colonia, //Colonia
+                'address_5' => $localidad, //Localidad
+                'address_6' => $referencia, //Referencia
+                  'city_id' => $cities_id,
+                 'state_id' => $states_id,
+               'country_id' => $countries_id,
+                 'postcode' => $creatPostcode,
+                  'comment' => $comment,
+               'sort_order' => '1',
+                   'status' => $status,
+              'updated_uid' => $user_id,
+               'updated_at' => \Carbon\Carbon::now()
+               ]);
+     return $update_img;
     }
 
     /**

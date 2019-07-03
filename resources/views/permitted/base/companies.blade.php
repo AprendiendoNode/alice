@@ -59,7 +59,15 @@
                             <div class="input-group">
                               <label class="input-group-btn">
                                 <span class="btn btn-primary">
-                                  Imagen <input id="fileInput" name="fileInput" type="file" style="display: none;" class="required">
+                                  Imagen <input id="fileInput" name="fileInput" type="file" style="display: none;"
+                                  @if(isset($question_a))
+                                      @if ($question_a == '0')
+                                        class="required"
+                                      @else
+                                        class=""
+                                      @endif
+                                  @endif
+                                  >
                                 </span>
                               </label>
                               <input type="text" class="form-control" value="@forelse ($company as $data_company) {{ '../images/storage/'.$data_company->image }} @empty {{ asset('img/company/Default.svg') }}  @endforelse" readonly>
@@ -81,7 +89,7 @@
                       <label for="inputCreatRFC" class="col-sm-3 col-form-label">RFC <span style="color: red;">*</span></label>
                       <div class="col-sm-9">
                         <input type="text" class="form-control form-control-sm required" id="inputCreatRFC" name="inputCreatRFC" placeholder="RFC"
-                        value="@if(isset($company[0]->taxid)){{$company[0]->taxid}}@endif" maxlength="10">
+                        value="@if(isset($company[0]->taxid)){{$company[0]->taxid}}@endif" maxlength="12">
                       </div>
                     </div>
                     <div class="form-group row">
@@ -316,8 +324,15 @@
                 <!-----><div id="cont_file_file_cer"><!----->
                           <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input  datas="file_file_cer" type="file" class="btn btn-danger custom-file-input required" id="file_file_cer" name="file_file_cer"
-                                value="">
+                                <input  datas="file_file_cer" type="file"
+                                @if(isset($question_a))
+                                    @if ($question_a == '0')
+                                      class="btn btn-danger custom-file-input required"
+                                    @else
+                                      class="btn btn-danger custom-file-input"
+                                    @endif
+                                @endif
+                                id="file_file_cer" name="file_file_cer" value="">
                                 <label class="custom-file-label" for="file_file_cer">Choose file</label>
                             </div>
                             <div class="input-group-append">
@@ -333,8 +348,15 @@
                 <!-----><div id="cont_file_file_key"><!----->
                           <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input datas="file_file_key" type="file" class="btn btn-danger custom-file-input required" id="file_file_key" name="file_file_key"
-                                value="">
+                                <input datas="file_file_key" type="file"
+                                @if(isset($question_a))
+                                    @if ($question_a == '0')
+                                      class="btn btn-danger custom-file-input required"
+                                    @else
+                                      class="btn btn-danger custom-file-input"
+                                    @endif
+                                @endif
+                                id="file_file_key" name="file_file_key" value="">
                                 <label class="custom-file-label" for="file_file_key"> Choose file</label>
                             </div>
                             <div class="input-group-append">
@@ -347,7 +369,16 @@
                     <div class="form-group row">
                       <label for="password_key" class="col-sm-3 col-form-label">Contraseña de llave privada <span style="color: red;">*</span></label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control form-control-sm required" id="password_key" name="password_key" placeholder="Contraseña" maxlength="60">
+                        <input type="text"
+                        @if(isset($question_a))
+                            @if ($question_a == '0')
+                              class="form-control form-control-sm required"
+                            @else
+                              class="form-control form-control-sm"
+                            @endif
+                        @endif
+                        class="form-control form-control-sm required"
+                        id="password_key" name="password_key" placeholder="Contraseña" maxlength="60">
                       </div>
                     </div>
                     <div class="form-group row">
@@ -371,8 +402,6 @@
                       </div>
                     </div>
 
-
-
                   </div>
                 </div>
                 <!-------------------------------------------------------------------------------->
@@ -386,6 +415,11 @@
                 <div class="row">
                     <div class="col-md-12 col-xs-12">
                         <div class="table-responsive">
+                            <div class="hidden" id="delete_items_bank_account">
+                              @foreach(old('delete_item_bank_account',[]) as $tmp)
+                                  <input type="text" name="delete_item_bank_account[]" value="{{ $tmp }}"/>
+                              @endforeach
+                            </div>
                             <table class="table table-items table-condensed table-hover table-bordered table-striped"
                                     id="items_bank_account">
                                 <thead>
@@ -406,32 +440,49 @@
                                 <!-- Items -->
                                 @php
                                     $item_bank_account_row = 0;
-                                    $items_bank_account = old('item_bank_account',[]);
+                                    $items_bank_account = old('item_bank_account',$company_account);
+                                    //$items_bank_account = old('item_bank_account',[]);
                                 @endphp
                                 @foreach ($items_bank_account as $item_bank_account_row => $item)
                                     @php
+                                    // echo $item_bank_account_row.'/';
+                                    // print_r($item);
                                     @endphp
                                     <tr id="item_bank_account_row_{{ $item_bank_account_row }}">
                                         <td class="text-center"
                                             style="vertical-align: middle;">
                                             <button type="button"
-                                                    onclick="$('#item_bank_account_row_{{ $item_bank_account_row }}').remove();"
+                                                    onclick="deleteItemBankAccount('{{old('item_bank_account.' . $item_bank_account_row . '.id',$item->id)}}');$('#item_bank_account_row_{{ $item_bank_account_row }}').remove();"
                                                     class="btn btn-xs btn-danger"
                                                     style="margin-bottom: 0;">
-                                                <i class="fa fa-trash-o"></i>
+                                                <i class="fas fa-trash-alt"></i>
                                             </button>
+
                                             <!-- input hidden -->
                                             <input type="hidden"
-                                                    id="item_bank_account_id_{{ $item_bank_account_row }}"
-                                                    name="item_bank_account[{{ $item_bank_account_row }}][id]"
-                                                    value="{{ old('item_bank_account.' . $item_bank_account_row . '.id') }}">
-                                            <!-- /.input hidden -->
-                                        </td
+                                                id="item_bank_account_id_{{ $item_bank_account_row }}"
+                                                name="item_bank_account[{{ $item_bank_account_row }}][id]"
+                                                value="{{ old('item_bank_account.' . $item_bank_account_row . '.id',$item->id) }}">
+                                        </td>
+                                        <td>
                                           <div class="form-group form-group-sm">
-                                            <select class="form-control input-sm"  id="item_bank_account{{ $item_bank_account_row.'[bank_id]' }}" name="item_bank_account{{ $item_bank_account_row }}" required>
+                                            @php
+                                            // echo $item->bank_id;
+                                            @endphp
+
+                                            <select class="form-control input-sm"  id="item_bank_account{{ $item_bank_account_row.'['.$item->bank_id.']' }}" name="item_bank_account[{{ $item_bank_account_row }}][bank_id]" required>
                                               <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
                                               @forelse ($banks as $banks_data)
-                                                <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option>
+                                                {{-- <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option> --}}
+                                                @if(isset($item->bank_id))
+                                                    @if ($item->bank_id === $banks_data->id)
+                                                      <option value="{{ $banks_data->id  }}" selected>{{ $banks_data->name }}</option>
+                                                    @else
+                                                      <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option>
+                                                    @endif
+                                                @else
+                                                  <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option>
+                                                @endif
                                               @empty
                                               @endforelse
                                             </select>
@@ -439,10 +490,18 @@
                                         </td>
                                         <td>
                                           <div class="form-group form-group-sm">
-                                            <select class="form-control input-sm"  id="item_bank_account{{ $item_bank_account_row.'[currency_id]'}}" name="item_bank_account{{ $item_bank_account_row }}" required>
+                                            <select class="form-control input-sm"  id="item_bank_account{{ $item_bank_account_row.'['.$item->currency_id.']'}}" name="item_bank_account[{{ $item_bank_account_row }}][currency_id]" required>
                                               <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
                                               @forelse ($currencies as $currencies_data)
-                                                <option value="{{ $currencies_data->id  }}">{{ $currencies_data->name }}</option>
+                                                @if(isset($item->currency_id))
+                                                    @if ($item->currency_id === $currencies_data->id)
+                                                      <option value="{{ $currencies_data->id  }}" selected>{{ $currencies_data->name }}</option>
+                                                    @else
+                                                      <option value="{{ $currencies_data->id  }}">{{ $currencies_data->name }}</option>
+                                                    @endif
+                                                @else
+                                                  <option value="{{ $currencies_data->id  }}">{{ $currencies_data->name }}</option>
+                                                @endif
                                               @empty
                                               @endforelse
                                             </select>
@@ -450,12 +509,20 @@
                                         </td>
                                         <td>
                                           <div class="form-group form-group-sm">
-                                            <input type="text" class="form-control input-sm text-center" id="item_bank_account{{ $item_bank_account_row.'[account_number]'}}" name="item_bank_account{{ $item_bank_account_row }}" required />
+                                            <input type="text" class="form-control input-sm text-center"
+                                            id="item_bank_account{{ $item_bank_account_row.'['.$item->account_number.']'}}"
+                                            name="item_bank_account[{{ $item_bank_account_row }}][account_number]"
+                                            value="{{old('item_bank_account.' . $item_bank_account_row . '.account_number',$item->account_number)}}"
+                                            required />
                                           </div>
                                         </td>
                                         <td>
                                           <div class="form-group form-group-sm">
-                                            <input type="text" class="form-control input-sm" id="item_bank_account{{ $item_bank_account_row.'[name]'}}" name="item_bank_account{{ $item_bank_account_row }}" required />
+                                            <input type="text" class="form-control input-sm"
+                                            id="item_bank_account{{ $item_bank_account_row.'['.$item->name.']'}}"
+                                            name="item_bank_account[{{ $item_bank_account_row }}][name]"
+                                            value="{{ old('item_bank_account.' . $item_bank_account_row . '.name',$item->name)}}"
+                                             required />
                                           </div>
                                         </td>
                                     </tr>
@@ -482,6 +549,11 @@
                     </div>
                 </div>
                 <!---------------------------------------------------------------------------------->
+
+                @php
+                  // print_r($items_bank_account);
+                  // print_r($company_account);
+                @endphp
               </div>
             </div>
           </div>
@@ -534,7 +606,13 @@
           </div>
         </div>
         <div class="card-footer text-muted">
-          <button class="btn btn-danger mt-2 mt-xl-0">Actualizar</button>
+          @if(isset($question_a))
+              @if ($question_a == '0')
+                <button class="btn btn-danger mt-2 mt-xl-0">Crear</button>
+              @else
+                <button class="btn btn-danger mt-2 mt-xl-0">Actualizar</button>
+              @endif
+          @endif
         </div>
       </div>
     </div>
@@ -562,8 +640,21 @@
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <script src="{{ asset('js/admin/base/default_companies.js')}}"></script>
-    <script src="{{ asset('js/admin/base/companies.js')}}"></script>
+    @if(isset($question_a))
+        @if ($question_a == '0')
+          <script src="{{ asset('js/admin/base/companies.js')}}"></script>
+        @else
+          <script src="{{ asset('js/admin/base/act_companies.js')}}"></script>
+        @endif
+    @endif
+
     <script type="text/javascript">
+        function deleteItemBankAccount(id) {
+            if(id) {
+                let html = '<input type="text" name="delete_item_bank_account[]" value="'+id+'"/>';
+                $('#form #delete_items_bank_account').append(html);
+            }
+        }
 
         var item_bank_account_row = "{{ $item_bank_account_row }}";
 
@@ -572,7 +663,7 @@
             html += '<tr id="item_bank_account_row_' + item_bank_account_row + '">';
             html += '<td class="text-center" style="vertical-align: middle;">';
             html += '<button type="button" onclick="$(\'#item_bank_account_row_' + item_bank_account_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
-            html += '<i class="fa fa-trash"></i>';
+            html += '<i class="fas fa-trash-alt"></i>';
             html += '</button>';
             html += '<input type="hidden" name="item_bank_account[' + item_bank_account_row + '][id]" id="item_bank_account_id_' + item_bank_account_row + '" /> ';
             html += '</td>';
