@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Inventory;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Hotel;
 use DB;
 use Auth;
 class DistributionController extends Controller
@@ -17,6 +18,19 @@ class DistributionController extends Controller
     {
       $hotels= DB::table('hotels')->select('id','Nombre_hotel')->where('filter', 1)->whereNull('deleted_at')->orderBy('Nombre_hotel','ASC')->get();
       return view('permitted.inventory.det_distribution',compact('hotels'));
+    }
+
+    public function show(Request $request)
+    {
+      $hotels = Hotel::select('Nombre_hotel', 'Direccion', 'Latitude', 'Longitude')->get();
+      return json_encode($hotels);
+    }
+
+public function show_device(Request $request)
+    {
+      $hotel = $request->ident;
+      $result = DB::select('CALL desglose_inventario_venue(?)', array($hotel));
+      return json_encode($result);
     }
 
     public function hotel_cadena(Request $request)

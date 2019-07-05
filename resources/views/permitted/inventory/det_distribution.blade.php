@@ -27,14 +27,14 @@
                     <h4 style="background-color:#f7f7f7; font-size: 18px; text-align: center; padding: 7px 10px; margin-top: 0;">
                         {{ trans('general.distribucion_sitios') }}
                     </h4>
-                    <div class="media">
-                        <div class="media-body">
-                            <div class="clearfix">
-                                {{ csrf_field() }}
-                                <div id="googlemap" style="height: 400px; width: 100%;"></div>
-                            </div>
-                        </div>
-                    </div>
+                  </div>
+                  <div class="media">
+                      <div class="media-body">
+                          <div class="clearfix">
+                              {{ csrf_field() }}
+                              <div id="googlemap" style="height: 400px; width: 100%;"></div>
+                          </div>
+                      </div>
                   </div>
                  </div>
               </div>
@@ -119,6 +119,12 @@
 
 @push('scripts')
   @if( auth()->user()->can('View distribucion') )
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/pdf.css')}}" >
+    <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCD07V9hwyUjrRCXiJHo9YdftE0VJIbRP8"></script>
+    <script src="{{ asset('js/admin/inventory/distribucion.js')}}"></script>
   @else
   @endif
 @endpush

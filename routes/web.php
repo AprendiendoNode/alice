@@ -163,8 +163,8 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::post('/hotel_cadena', 'Inventory\ByHotelController@hotel_cadena');
   /*Distribution*/
-  Route::post('/geoHotel', 'DistributionController@show');
-  Route::post('/detailed_equipament_all', 'DistributionController@show_device');
+  Route::post('/geoHotel', 'Inventory\DistributionController@show');
+  Route::post('/detailed_equipament_all', 'Inventory\DistributionController@show_device');
   //posts detailed_hotel
   Route::post('/detailed_hotel_head','Inventory\DistributionController@getHeaders');
   Route::post('/detailed_hotel_sum','Inventory\DistributionController@getSummary');
