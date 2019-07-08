@@ -451,9 +451,11 @@ Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
       Route::post('/update_rate', 'Base\ExchangeRateController@update');
       //Branch-office
       Route::get('/branch-office', 'Base\BranchOfficeController@index');
+      Route::get('/get-all-branch', 'Base\BranchOfficeController@getAllBranchOffice');
       Route::post('/branch-office-show', 'Base\BranchOfficeController@show');
       Route::post('/branch-office-store', 'Base\BranchOfficeController@store');
       Route::post('/branch-office-edit', 'Base\BranchOfficeController@edit');
+      Route::post('/branch-office-update', 'Base\BranchOfficeController@update');
       Route::get('/state-country/{id}', function ($id) {
         $query = App\Models\Catalogs\State::where('country_id', '=', $id)->get();
         return $query;

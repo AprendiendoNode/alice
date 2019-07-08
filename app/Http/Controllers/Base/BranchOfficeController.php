@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Base\BranchOffice;
 use \Carbon\Carbon;
+use Auth;
 use DB;
 
 class BranchOfficeController extends Controller
@@ -22,6 +23,13 @@ class BranchOfficeController extends Controller
       $cities = DB::select('CALL GetAllCitiesv2 ()', array());
 
       return view('permitted.base.branch_office',compact('countries', 'states', 'cities'));
+    }
+
+    public function getAllBranchOffice()
+    {
+      $result = DB::select('CALL px_branch_offices_all()', array());
+
+      return $result;
     }
 
     /**
@@ -59,25 +67,16 @@ class BranchOfficeController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $result = DB::select('CALL px_branch_offices_xid(?)', array($request->id));
+
+        return $result;
     }
 
     /**
@@ -87,9 +86,34 @@ class BranchOfficeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+      $user_id = Auth::id();
+      $status= !empty($request->statusEdit) ? 1 : 0;
+
+      $setbranch = BranchOffice::find($request->id_branch);
+      $setbranch->name = $request->inputEditName;
+      $setbranch->email = $request->inputEditEmail;
+      $setbranch->phone = $request->inputEditPhone;
+      $setbranch->phone_mobile = $request->inputEditPhoneMobile;
+      $setbranch->address_1 = $request->inputEditAddress_1;
+      $setbranch->address_2 = $request->inputEditAddress_2;
+      $setbranch->address_3 = $request->inputEditAddress_3;
+      $setbranch->address_4 = $request->inputEditAddress_4;
+      $setbranch->address_5 = $request->inputEditAddress_5;
+      $setbranch->address_6 = $request->inputEditAddress_6;
+      $setbranch->city_id = $request->select_ciudades_edit;
+      $setbranch->state_id = $request->select_estados_edit;
+      $setbranch->country_id = $request->select_paises_edit;
+      $setbranch->postcode = $request->inputZipCodeEdit;
+      $setbranch->comment = $request->datainfoEdit;
+      $setbranch->sort_order = $request->inputEditOrden;
+      $setbranch->status = $status;
+      $setbranch->updated_uid = $user_id;
+      $setbranch->updated_at = Carbon::now();
+      $setbranch->save();
+
+      return response()->json(["status" => 200]);
     }
 
     /**
