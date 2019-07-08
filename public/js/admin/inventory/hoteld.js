@@ -54,7 +54,7 @@ $('#select_one').on('change', function(e){
   }
 });
 
-$('#btn_generar').on('click', function(e){
+$('#boton-generar').on('click', function(e){
   var hotel= $('#select_two').val();
   if (hotel == "") {
 
@@ -83,7 +83,7 @@ function headersEmpty() {
   $("#servicio").empty();
 
   // URL de imagen
-  $("#client_img").attr("src","../images/hotel/Sin_imagen.png");
+  $("#client_img").attr("src","../images/hotel/Default.svg");
 
   $("#email").empty();
   $("#tel").empty();
@@ -338,7 +338,7 @@ function table_equipment(datajson, table){
 }
 
 
-$('.btn-export').on('click', function(){
+$('#boton-exportar').on('click', function(){
     $("#captura_table_general").hide();
 
     $(".hojitha").css("border", "");
