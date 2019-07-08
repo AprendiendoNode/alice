@@ -65,10 +65,10 @@ class ByHotelController extends Controller
 
   }
 
-  public function getHeaders(Request $request)
+  public function getHeader(Request $request)
   {
-    $hotel = $request->data_two;
-    $result = DB::select('CALL GetHeader_Venue (?)', array($hotel));
+    $hotel = $request->data_one;
+    $result = DB::select('CALL delivery_letter_venue_header (?)', array($hotel));
 
     return json_encode($result);
   }
@@ -161,5 +161,118 @@ class ByHotelController extends Controller
     return json_encode($result);
   }
 
+  public function update_reference_by_cover(Request $request)
+  {
+    $hotel = $request->id_site;
+    $name = $request->update_cliente_responsable;
+
+
+    $pregunta = DB::select('CALL px_reference_hotel_existe (?)', array($hotel));
+    if ($pregunta[0]->existe == '0') {
+
+      if (isset($request->update_cliente_tel)) {  $client_telf = $request->update_cliente_tel;  }
+      else{ $client_telf = '';  }
+
+      if (isset($request->update_cliente_email)) {  $client_email = $request->update_cliente_email;  }
+      else{ $client_email = '';  }
+
+      $crear_referencia = DB::table('references')
+      ->insertGetId(['responsable' => $name,
+                     'telefono' => $client_telf,
+                     'correo' => $client_email,
+                     'created_at' =>  \Carbon\Carbon::now()
+                    ]);
+      if($crear_referencia != '0'){
+        $pivot_new = DB::table('reference_hotel')
+        ->insertGetId([
+          'hotel_id' => $hotel,
+          'reference_id' => $crear_referencia,
+          'created_at' => \Carbon\Carbon::now(),
+        ]);
+        return $pivot_new;
+      }
+      else {
+        return 0;
+      }
+    }
+    else {
+      $id_reference = DB::table('reference_hotel')
+                      ->select('reference_id')
+                      ->where('hotel_id', '=', $hotel)
+                      ->value('reference_id');
+
+      if (isset($request->update_cliente_tel)) {
+            $client_telf = $request->update_cliente_tel;
+            $ver_client_telf = 'si';
+      }
+      else{ $ver_client_telf = 'no';  }
+
+      if (isset($request->update_cliente_email)) {
+            $client_email = $request->update_cliente_email;
+            $ver_client_email = 'si';
+      }
+      else{  $ver_client_email = 'no'; }
+
+      if ($ver_client_telf == 'si' & $ver_client_email == 'si') {
+        // code...
+        $sql_reference = DB::table('references')
+                        ->where('id', $id_reference)
+                        ->update(['responsable' => $name,
+                                  'telefono' => $client_telf,
+                                  'correo' => $client_email,
+                                  'updated_at' =>  \Carbon\Carbon::now()]);
+      }
+      if ($ver_client_telf == 'no' & $ver_client_email == 'si') {
+        // code...
+        $sql_reference = DB::table('references')
+                        ->where('id', $id_reference)
+                        ->update(['responsable' => $name,
+                                  'correo' => $client_email ,
+                                  'updated_at' =>  \Carbon\Carbon::now()]);
+      }
+      if ($ver_client_telf == 'si' & $ver_client_email == 'no') {
+        // code...
+        $sql_reference = DB::table('references')
+                        ->where('id', $id_reference)
+                        ->update(['responsable' => $name,
+                                  'telefono' => $client_telf,
+                                  'updated_at' =>  \Carbon\Carbon::now()]);
+      }
+      if ($ver_client_telf == 'no' & $ver_client_email == 'no') {
+        // code...
+        $sql_reference = DB::table('references')
+                        ->where('id', $id_reference)
+                        ->update(['responsable' => $name,
+                                  'updated_at' =>  \Carbon\Carbon::now()]);
+      }
+
+      return $sql_reference; // returns 1 se cambio
+                             // returns 0 no se cambio
+    }
+  }
+
+  public function getCoverDistEquipos(Request $request)
+  {
+    $hotel = $request->data_one;
+    if (auth()->user()->hasanyrole('SuperAdmin')) {
+      $result1 = DB::select('CALL delivery_letter_venue_disp (?)', array($hotel));
+    }
+    else{
+      $result1 = DB::select('CALL delivery_letter_venue_disp2 (?)', array($hotel));
+    }
+    return json_encode($result1);
+  }
+
+  public function getCoverDistModelos(Request $request)
+  {
+    $hotel = $request->data_one;
+    if (auth()->user()->hasanyrole('SuperAdmin')) {
+      $result1 = DB::select('CALL delivery_letter_venue_models (?)', array($hotel));
+    }
+    else{
+      $result1 = DB::select('CALL delivery_letter_venue_models2 (?)', array($hotel));
+    }
+    return json_encode($result1);
+  }
 
 }
