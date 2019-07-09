@@ -26,7 +26,7 @@
                   <div class="form-inline d-flex justify-content-around">
                       {{ csrf_field() }}
                       <div class="form-group">
-                        <label for="select_one" class="control-label">{{ trans('message.hotel') }}: </label>
+                        <label for="select_one" class="control-label">{{ trans('message.hotel') }}:&nbsp;</label>
                         <select id="select_one" name="select_one"  class="form-control select2" required>
                           <option value="" selected> Elija </option>
                           @forelse ($hotels as $data_hotel)
@@ -222,10 +222,19 @@
 
 @push('scripts')
   @if( auth()->user()->can('View cover') )
+    <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
+    <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
+    <!-- FormValidation -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
+    <!-- FormValidation plugin and the class supports validating Bootstrap form -->
+    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
+    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('js/admin/inventory/cover_update_client.js')}}"></script>
     <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
+    <script src="{{ asset('js/admin/inventory/cover.js')}}"></script>
   @else
   @endif
 @endpush

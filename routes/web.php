@@ -149,13 +149,20 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/detailed_hotel', 'Inventory\ByHotelController@index');
   //Modulo de inventario - Reporte Detallado por proyecto
   Route::get('/detailed_proyect', 'Inventory\ProjectController@index');
+  Route::post('detailed_pro_head', 'Inventory\HotelPController@getHeaderProject');
+  Route::post('detailed_pro_stat', 'Inventory\ProjectController@getStatusProject');
+  Route::post('detailed_pro_ap', 'Inventory\ProjectController@getGraphAPS');
+  Route::post('detailed_pro_sw', 'Inventory\ProjectController@getGraphSWS');
+  Route::post('detailed_pro_dispro', 'Inventory\ProjectController@getDispProject');
+  Route::post('detailed_pro_modpro', 'Inventory\ProjectController@getModelProject');
+  Route::post('detailed_pro_tab', 'Inventory\ProjectController@getProjectTable');
+  Route::post('detailed_pro_gen', 'Inventory\ProjectController@getProjectTableGen');
   //Modulo de inventario - Carta de entrega
   Route::get('/detailed_cover', 'Inventory\EntryLetterController@index');
   //Modulo de inventario - Reporte Distribucion
   Route::get('/detailed_distribution', 'Inventory\DistributionController@index');
 
   //posts detailed_proyect
-    Route::post('detailed_pro_head', 'Inventory\HotelPController@getHeaderProject');
   Route::post('/cover_header', 'Inventory\ByHotelController@getHeader');
   Route::post('/cover_dist_equipos', 'Inventory\ByHotelController@getCoverDistEquipos');
   Route::post('/cover_dist_modelos', 'Inventory\ByHotelController@getCoverDistModelos');

@@ -39,7 +39,7 @@
                         <button type="button" id="btn_generar" class="btn btn-dark btngeneral"><i class="fa fa-bullseye"></i> {{ trans('message.generate') }}</button>
                       </div>
                       <div class="form-group mt-sm-0 mt-3">
-                        <button type="button" class="btn btn-success btn-danger hidden-xs"><i class="fas fa-file-pdf"></i> {{ trans('message.export') }} Portada</button>
+                        <button type="button" class="btn btn-success btn-danger hidden-xs btn-export"><i class="fas fa-file-pdf"></i> {{ trans('message.export') }} Portada</button>
                       </div>
                   </div>
                  </div>
@@ -132,7 +132,7 @@
 
 
                   <div class="row pad-top-botm client-info">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
                         <table id="table_resume" class="table table-striped table-bordered table-hover">
                           <thead>
                             <tr>
@@ -167,7 +167,7 @@
                 </div>
 
                 <div class="row mt-4 client-info">
-                  <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
                       <table id="table_resume_general" class="table table-striped table-bordered table-hover">
                         <thead>
                           <tr>
@@ -200,9 +200,14 @@
 
 @push('scripts')
   @if( auth()->user()->can('View detailed for proyect') )
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
+    <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <link rel="stylesheet" href="{{ asset('bower_components/datatables_bootstrap_4/datatables.css') }}" type="text/css" />
+    <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}"></script>
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
     <script src="{{ asset('js/admin/inventory/hotelp.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/pdf.css')}}" >
   @else
   @endif
 @endpush
