@@ -234,6 +234,7 @@
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/pdf.css')}}" >
     <script src="{{ asset('js/admin/inventory/cover.js')}}"></script>
   @else
   @endif
