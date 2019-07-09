@@ -34,5 +34,6 @@ return [
     'document_types' => 'Tipos de documentos',
     'exchange_rate' => 'Tipo de cambio',
     'companies' => 'Datos de la empresa',
-    'branchoffice' => 'Sucursales'
+    'branchoffice' => 'Sucursales',
+    'customers_invoices' => 'Facturación',
 ];
