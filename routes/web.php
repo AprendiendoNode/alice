@@ -427,11 +427,11 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customers-edit', 'Sales\CustomerController@edit');
 
     //Facturacion
+    Route::get('/customer-invoice-pdf', 'Sales\CustomerInvoiceController@generate_invoice');
     Route::get('/customer-invoices', 'Sales\CustomerInvoiceController@index');
-    Route::post('/customer-invoices-show', 'Sales\CustomerInvoiceController@show');
     Route::post('/customer-invoices-create', 'Sales\CustomerInvoiceController@create');
     Route::post('/customer-invoices-store', 'Sales\CustomerInvoiceController@store');
-    Route::post('/customer-invoices-edit', 'Sales\CustomerInvoiceController@edit'); 
+    Route::post('/customer-invoices-edit', 'Sales\CustomerInvoiceController@edit');
 });
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
 {
