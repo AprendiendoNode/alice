@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Sales;
-
+use DB;
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Crypt;
 class CustomerInvoiceController extends Controller
 {
     /**
@@ -14,7 +16,12 @@ class CustomerInvoiceController extends Controller
      */
     public function index()
     {
-        //
+
+      $customer = DB::select('CALL GetCustomersActivev2 ()', array());
+      $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
+      $payment_terms = DB::select('CALL GetAllPaymentTermisActivev2 ()', array());
+
+      return view('permitted.sales.customer_invoices',compact('customer'));
     }
 
     /**
