@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+use PDF;
 class CustomerInvoiceController extends Controller
 {
     /**
@@ -88,5 +89,14 @@ class CustomerInvoiceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function generate_invoice()
+    {
+
+      // Enviando datos a la vista de la factura
+      $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi');
+
+      return $pdf->stream();
     }
 }
