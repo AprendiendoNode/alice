@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Crypt;
 use App\Models\Catalogs\Currency;
 use App\Models\Catalogs\Tax;
 use PDF;
+use Gerardojbaez\Money\Money;
+
 class CustomerInvoiceController extends Controller
 {
 

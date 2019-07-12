@@ -27,7 +27,8 @@
         "openpay/sdk": "dev-master",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "spatie/laravel-newsletter": "^4.4",
-        "spatie/laravel-permission": "^2.37"
+        "spatie/laravel-permission": "^2.37",
+        "gerardojbaez/money": "0.*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
