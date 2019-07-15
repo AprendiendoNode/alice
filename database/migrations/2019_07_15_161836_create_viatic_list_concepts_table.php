@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateViaticsTable extends Migration
+class CreateViaticListConceptsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateViaticsTable extends Migration
      */
     public function up()
     {
-        Schema::create('viatics', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+        Schema::create('viatic_list_concepts', function (Blueprint $table) {
+          $table->increments('id');
+          $table->string('name');
+          $table->tinyInteger('activar_monto');
+          $table->timestamps();
         });
     }
 
@@ -26,6 +28,6 @@ class CreateViaticsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('viatics');
+        Schema::dropIfExists('viatic_list_concepts');
     }
 }
