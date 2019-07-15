@@ -271,6 +271,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/update_motive_project/{id}/{motive}', 'DocumentpController@update_motive_project');
 	Route::get('/update_purchase_order/{id}/{order}', 'DocumentpController@update_purchase_order');
 
+  //Notificaciones viaticos
+  Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');
+  Route::get('/notificaciones_store', 'Viatics\ViaticController@store');
+
 });
 
 
