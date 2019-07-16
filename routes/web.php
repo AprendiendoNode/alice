@@ -275,6 +275,18 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');
   Route::get('/notificaciones_store', 'Viatics\ViaticController@store');
 
+  //- Viaticos Dashboard
+  Route::get('/dashboard_viaticos', 'DashboardViaticController@index');
+  //- Viaticos Solicitud
+  Route::get('/add_request_via', 'AddViaticController@index');
+  //- Viaticos Solicitud
+  Route::get('/view_request_via', 'RequestsViaticController@index');
+  //- Todos los vitaticos
+  Route::get('/view_request_all_via', 'RequestViaticAllController@index');
+  //- Reporte semanal viaticos
+  Route::get('/view_viatic_weekly', 'ViaticWeeklyController@index');
+
+
 });
 
 
