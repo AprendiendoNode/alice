@@ -543,6 +543,8 @@
   {{-- <script src="{{ asset('js/admin/sales/customers_invoices.js')}}"></script> --}}
 
   <script type="text/javascript">
+      // var currency = {!! json_encode($currency) !!};
+      // console.log(currency);
       var item_row = "{{ $item_row }}";
       var item_relation_row = "{{ $item_relation_row }}";
       function addItem() {
@@ -618,11 +620,30 @@
           html += '</div>';
           html += '</td>';
 
+          // 
+          /*<select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
+            <option value="">{{ trans('message.selectopt') }}</option>
+            @forelse ($currency as $currency_data)
+              <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
+            @empty
+            @endforelse
+          </select>*/
+
           html += '<td>';
           html += '<div class="form-group form-group-sm">';
-          html += '<input type="number" class="form-control input-sm text-center col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" step="any" />';
+
+          html += '<select class="form-control input-sm col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" readonly>';
+          html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+          @forelse ($currency as $currency_data)
+            html += '<option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>';
+          @empty
+          @endforelse
+          html += '</select>';
+          // html += '<input type="number" class="form-control input-sm text-center col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" step="any" />';
           html += '</div>';
           html += '</td>';      
+
+          // 
 
           html += '<td>';
           html += '<div class="form-group form-group-sm">';
@@ -659,6 +680,7 @@
             $(document).on('select2:select', '#form #items tbody .col-product-id', function (e) {
                 let id = $(this).val();
                 let row = $(this).attr('data-row');
+                // console.log(id);
                 if (id) {
                     $.ajax({
                         url: "/sales/products/get-product",
@@ -666,10 +688,12 @@
                         dataType: "JSON",
                         data: "id=" + id,
                         success: function (data) {
+
                             $("#form #item_name_" + row).val(data[0].description);
                             $("#form #item_unit_measure_id_" + row).val(data[0].unit_measure_id);
                             $("#form #item_sat_product_id_" + row).val(data[0].sat_product_id);
                             $("#form #item_price_unit_" + row).val(data[0].price);
+                            $("#form #item_current_" + row).val(data[0].currency_id);
                             initItem();
                             totalItem();
                         },
@@ -698,6 +722,7 @@
                 data: $("#form").serialize(),
                 success: function (data) {
                     if (data) {
+                        console.log(data);
                         $.each(data.items, function (key, value) {
                             $("#item_txt_amount_untaxed_" + key).html(value);
                         });

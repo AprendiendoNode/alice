@@ -76,13 +76,29 @@ class CustomerInvoiceController extends Controller
       $json = new \stdClass;
       $input_items = $request->item;
       $currency_id = $request->currency_id; //Guardo la moneda seleccionada
+      $currency_value = $request->currency_value;
+      if (empty($currency_id)) {
+        $currency_id = 1;
+      }
+      if ($currency_id === 1) {
+        $currency_value = 1;
+      }
+      if (empty($currency_value)) {
+        $currency_value = 1;
+      }
+
       $currency_code = 'MXN'; //En caso que no haya moneda le digo por defecto es pesos mexicanos
 
       if ($request->ajax()) {
           //Datos de moneda - Obtengo moneda seleccionada al principio
-          if (!empty($currency_id)) {
+          /*if (!empty($currency_id)) {
               $currency = Currency::findOrFail($currency_id);
               $currency_code = $currency->code;
+          }*/
+          if ($currency_id != 1) {
+            // procedura para buscar exchange rate.
+            // de prueba usar voy a usar el textbox.
+            $currency_value = $currency_value; // aquí tengo que cambiar el valor por el obtenido en el procedure.
           }
 
           //Variables de totales
@@ -130,8 +146,14 @@ class CustomerInvoiceController extends Controller
               $amount_tax += $item_amount_tax;
               $amount_tax_ret += $item_amount_tax_ret;
               $amount_total += $item_amount_total;
+              //Tipo cambio
+              if ($item['current'] === $currency_id) {
+                $item_amount_total = $item_amount_total * $currency_value;
+              }
               //Subtotales por cada item
-              // $items[$key] = money($item_amount_untaxed, $currency_code, true)->format();
+              // $items[$key] = $currency_id;
+              // $items[$key] = $item_amount_total;
+              $items[$key] = moneyFormat($item_amount_total, $currency_code);
             }
           }
           //Respuesta
@@ -145,7 +167,14 @@ class CustomerInvoiceController extends Controller
       }
       return response()->json(['error' => __('general.error_general')], 422);
   }
+  public function test_s()
+  {
 
+    $cantidad = 777;
+    $currency_code = 'USD';
+    $formateado = moneyFormat($cantidad, $currency_code);
+    return $formateado;
+  }
 
     /**
      * Show the form for creating a new resource.

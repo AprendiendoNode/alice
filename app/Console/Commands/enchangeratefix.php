@@ -30,6 +30,9 @@ class enchangeratefix extends Command
     public function handle()
     {
       $result = ExchangeRate::getExchangeRateFix();
+
+      dd($result);
+
       $data = $result['bmx']['series'];
       $series = $data[0]['datos'];
 
@@ -44,7 +47,7 @@ class enchangeratefix extends Command
         'current_date' => $current_date,
         'currency_id' => 2,
         'code_banxico' => $code_banxico,
-        'current_rate' => $current_rate,
+        'current_rate_fix' => $current_rate,
         'modified_rate' => $current_rate,
         'status' => 1,
         'created_uid' => 2,
