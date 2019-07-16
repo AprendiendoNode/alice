@@ -222,4 +222,55 @@ class Helper
       return Company::get()->first();
     }
 
+    //Fechas --------------------------------------------------------------------------
+    /**
+     * Convierte fecha tiempo a sql para guardar
+     *
+     * @param $date
+     * @return mixed
+     */
+    public static function dateTimeToSql($date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+    /**
+     * Crea fecha tiempo a apartir de una fecha en formato BD
+     *
+     * @param $datetime
+     * @return mixed
+     */
+    public static function createDateTimeFromSql($datetime)
+    {
+        return \Date::createFromFormat('Y-m-d H:i:s', $datetime);
+    }
+    /**
+     * Crear fecha a partir de fecha configurada y convierte a sql para guardar
+     *
+     * @param $datetime
+     * @return mixed
+    */
+    public static function convertSqlToDateTime($datetime)
+    {
+        return self::dateTime(self::createDateTimeFromSql($datetime));
+    }
+    //CFDI --------------------------------------------------------------------------
+    /**
+     * Crea directorios para CFDI's
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public static function makeDirectoryCfdi($path_xml)
+    {
+        try {
+            $tmp_path = date('Y') . '/' . date('m');
+            if (!\Storage::exists($path_xml . $tmp_path)) {
+                \Storage::makeDirectory($path_xml . $tmp_path, 0777, true, true);
+            }
+
+            return $tmp_path;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
 }
