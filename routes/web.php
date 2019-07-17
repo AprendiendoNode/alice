@@ -276,15 +276,20 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/notificaciones_store', 'Viatics\ViaticController@store');
 
   //- Viaticos Dashboard
-  Route::get('/dashboard_viaticos', 'DashboardViaticController@index');
+  Route::get('/dashboard_viaticos', 'Viatics\DashboardViaticController@index');
+  Route::post('/search_info_dash_viat', 'Viatics\DashboardViaticController@info');
   //- Viaticos Solicitud
-  Route::get('/add_request_via', 'AddViaticController@index');
+  Route::get('/add_request_via', 'Viatics\AddViaticController@index');
+  Route::post('/viat_find_hotel', 'Viatics\AddViaticController@find_hotel');
+  Route::post('/create_viatic_new', 'Viatics\AddViaticController@create_viatic');
+  Route::post('/search_beneficiary', 'Viatics\AddViaticController@find_user');
+  Route::post('/viat_find_concept', 'Viatics\AddViaticController@find_concept');
   //- Viaticos Solicitud
-  Route::get('/view_request_via', 'RequestsViaticController@index');
+  Route::get('/view_request_via', 'Viatics\RequestsViaticController@index');
   //- Todos los vitaticos
-  Route::get('/view_request_all_via', 'RequestViaticAllController@index');
+  Route::get('/view_request_all_via', 'Viatics\RequestViaticAllController@index');
   //- Reporte semanal viaticos
-  Route::get('/view_viatic_weekly', 'ViaticWeeklyController@index');
+  Route::get('/view_viatic_weekly', 'Viatics\ViaticWeeklyController@index');
 
 
 });
