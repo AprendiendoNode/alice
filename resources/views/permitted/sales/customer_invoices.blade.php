@@ -35,10 +35,10 @@
 
           <div class="row">
             <div class="col-md-6 col-xs-12">
-              <label for="inputGroupSelect04" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
+              <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
               <div class="input-group">
-                <select class="custom-select" id="inputGroupSelect04">
-                  <option selected>Choose...</option>
+                <select class="custom-select" id="customer_id" name="customer_id">
+                  <option selected>Selecciona...</option>
                   @forelse ($customer as $customer_data)
                     {{-- <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option> --}}
                     <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
@@ -46,8 +46,8 @@
                   @endforelse
                 </select>
                 <div class="input-group-append">
-                  <button class="btn btn btn-outline-primary btn-sm" type="button"><i class="fas fa-search"></i></button>
-                  <button class="btn btn-outline-info btn-sm" type="button"><i class="fas fa-plus-square"></i></button>
+                  <button class="btn btn btn-outline-primary btn-xs" type="button"><i class="fas fa-search"></i></button>
+                  <button class="btn btn-outline-info btn-xs" type="button"><i class="fas fa-plus-square"></i></button>
                 </div>
               </div>
             </div>
@@ -540,6 +540,13 @@
 
   <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
+
+  <script src="{{ asset('plugins/momentupdate/moment.js')}}"></script>
+  <link href="{{ asset('plugins/daterangepicker-master/daterangepicker.css')}}" rel="stylesheet" type="text/css">
+  <script src="{{ asset('plugins/daterangepicker-master/daterangepicker.js')}}"></script>
+
+  {{-- <link href="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet" type="text/css"> --}}
+  {{-- <script src="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script> --}}
   {{-- <script src="{{ asset('js/admin/sales/customers_invoices.js')}}"></script> --}}
 
   <script type="text/javascript">
@@ -620,7 +627,7 @@
           html += '</div>';
           html += '</td>';
 
-          // 
+          //
           /*<select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
             <option value="">{{ trans('message.selectopt') }}</option>
             @forelse ($currency as $currency_data)
@@ -641,9 +648,9 @@
           html += '</select>';
           // html += '<input type="number" class="form-control input-sm text-center col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" step="any" />';
           html += '</div>';
-          html += '</td>';      
+          html += '</td>';
 
-          // 
+          //
 
           html += '<td>';
           html += '<div class="form-group form-group-sm">';
@@ -677,79 +684,144 @@
         $("#form #items tbody .col-product-id").select2();
       }
       /*Selecciona producto*/
-            $(document).on('select2:select', '#form #items tbody .col-product-id', function (e) {
-                let id = $(this).val();
-                let row = $(this).attr('data-row');
-                // console.log(id);
-                if (id) {
-                    $.ajax({
-                        url: "/sales/products/get-product",
-                        type: "GET",
-                        dataType: "JSON",
-                        data: "id=" + id,
-                        success: function (data) {
-
-                            $("#form #item_name_" + row).val(data[0].description);
-                            $("#form #item_unit_measure_id_" + row).val(data[0].unit_measure_id);
-                            $("#form #item_sat_product_id_" + row).val(data[0].sat_product_id);
-                            $("#form #item_price_unit_" + row).val(data[0].price);
-                            $("#form #item_current_" + row).val(data[0].currency_id);
-                            initItem();
-                            totalItem();
-                        },
-                        error: function (error, textStatus, errorThrown) {
-                            if (error.status == 422) {
-                                var message = error.responseJSON.error;
-                                $("#general_messages").html(alertMessage("danger", message));
-                            } else {
-                                alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
-                            }
-                        }
+      $(document).on('select2:select', '#form #items tbody .col-product-id', function (e) {
+          let id = $(this).val();
+          let row = $(this).attr('data-row');
+          // console.log(id);
+          if (id) {
+              $.ajax({
+                  url: "/sales/products/get-product",
+                  type: "GET",
+                  dataType: "JSON",
+                  data: "id=" + id,
+                  success: function (data) {
+                      $("#form #item_name_" + row).val(data[0].description);
+                      $("#form #item_unit_measure_id_" + row).val(data[0].unit_measure_id);
+                      $("#form #item_sat_product_id_" + row).val(data[0].sat_product_id);
+                      $("#form #item_price_unit_" + row).val(data[0].price);
+                      $("#form #item_current_" + row).val(data[0].currency_id);
+                      initItem();
+                      totalItem();
+                  },
+                  error: function (error, textStatus, errorThrown) {
+                      if (error.status == 422) {
+                          var message = error.responseJSON.error;
+                          $("#general_messages").html(alertMessage("danger", message));
+                      } else {
+                          alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                      }
+                  }
+              });
+          }
+      });
+      $(document).on("change", "#form #items tbody .col-taxes", function () {
+          totalItem();
+      });
+      $(document).on("keyup", "#form #items tbody .col-quantity,#form #items tbody .col-price-unit,#form #items tbody .col-discount", function () {
+          totalItem();
+      });
+      function totalItem() {
+        $.ajax({
+            url: "/sales/customer-invoices/total-lines",
+            type: "POST",
+            dataType: "JSON",
+            data: $("#form").serialize(),
+            success: function (data) {
+                if (data) {
+                    console.log(data);
+                    $.each(data.items, function (key, value) {
+                        $("#item_txt_amount_untaxed_" + key).html(value);
                     });
+                    $("#form #txt_amount_untaxed").html(data.amount_untaxed);
+                    $("#form #txt_amount_tax").html(data.amount_tax);
+                    $("#form #txt_amount_total").html(data.amount_total);
+                    $("#form input[name='amount_total_tmp']").val(data.amount_total_tmp)
                 }
-            });
-            $(document).on("change", "#form #items tbody .col-taxes", function () {
-                totalItem();
-            });
-            $(document).on("keyup", "#form #items tbody .col-quantity,#form #items tbody .col-price-unit,#form #items tbody .col-discount", function () {
-                totalItem();
-            });
-            function totalItem() {
-            $.ajax({
-                url: "/sales/customer-invoices/total-lines",
-                type: "POST",
-                dataType: "JSON",
-                data: $("#form").serialize(),
-                success: function (data) {
-                    if (data) {
-                        console.log(data);
-                        $.each(data.items, function (key, value) {
-                            $("#item_txt_amount_untaxed_" + key).html(value);
-                        });
-                        $("#form #txt_amount_untaxed").html(data.amount_untaxed);
-                        $("#form #txt_amount_tax").html(data.amount_tax);
-                        $("#form #txt_amount_total").html(data.amount_total);
-                        $("#form input[name='amount_total_tmp']").val(data.amount_total_tmp)
-                    }
-                },
-                error: function (error, textStatus, errorThrown) {
-                    if (error.status == 422) {
-                        var message = error.responseJSON.error;
-                        $("#general_messages").html(alertMessage("danger", message));
-                    } else {
-                        alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
-                    }
+            },
+            error: function (error, textStatus, errorThrown) {
+                if (error.status == 422) {
+                    var message = error.responseJSON.error;
+                    $("#general_messages").html(alertMessage("danger", message));
+                } else {
+                    alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
                 }
-            });
-        }
+            }
+        });
+      }
+
+      $(function () {
+        $("#form input[name='date']").daterangepicker({
+            singleDatePicker: true,
+            timePicker: true,
+            timePicker24Hour: true,
+            showDropdowns: true,
+            locale: {
+                format: "DD-MM-YYYY HH:mm:ss"
+            },
+            autoUpdateInput: false
+        }, function (chosen_date) {
+            $("#form input[name='date']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
+        });
+        /*Configura datepicker*/
+        $("#form input[name='date_due']").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: "DD-MM-YYYY"
+            },
+            autoUpdateInput: false,
+        }, function (chosen_date) {
+            $("#form input[name='date_due']").val(chosen_date.format("DD-MM-YYYY"));
+        });
+        /* Configura select2 para buscar cliente*/
+        $("#form select[name='customer_id']").select2({
+            theme: "bootstrap",
+            placeholder: "Selecciona",
+            dropdownAutoWidth : true,
+            width: "80%",
+            height: "110%"
+            // allowClear: true,
+        }).on("change", function () {
+          let id = $(this).val();
+          if (id) {
+              $.ajax({
+                  url: "{{ route('customers/get-customer') }}",
+                  type: "GET",
+                  dataType: "JSON",
+                  data: "id=" + id,
+                  success: function (data) {
+                      $("#form select[name='salesperson_id']").val(data.salesperson_id);
+                      $("#form select[name='payment_term_id']").val(data.payment_term_id);
+                      $("#form select[name='payment_way_id']").val(data.payment_way_id);
+                      $("#form select[name='payment_method_id']").val(data.payment_method_id);
+                      $("#form select[name='cfdi_use_id']").val(data.cfdi_use_id);
+                  },
+                  error: function (error, textStatus, errorThrown) {
+                      if (error.status == 422) {
+                          var message = error.responseJSON.error;
+                          $("#general_messages").html(alertMessage("danger", message));
+                      } else {
+                          alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                      }
+                  }
+              });
+          }
+        });
+      });
 
   </script>
 
   <style media="screen">
+    .btn-xs {
+      padding: .35rem .4rem .25rem !important;
+    }
     input {
       padding-left: 0px !important;
       padding-right: : 0px !important;
-
+    }
+    .datepicker td, .datepicker th {
+        width: 1.5em !important;
+        height: 1.5em !important;
     }
     /* .select2-selection__rendered {
       line-height: 44px !important;

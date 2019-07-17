@@ -23,7 +23,7 @@ return [
     'cuenta_con_factura' => "Cuenta con factura",
     '' => "",
 
-    '' => "",
+'text_select' => 'Selecciona',
 
 'guardar' => "Guardar",
 'limpiar' => "Limpiar",

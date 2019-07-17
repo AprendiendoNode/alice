@@ -45,7 +45,7 @@
           }
         },
         mounted() {
-            axios.get('notificaciones').then(res => {
+            axios.get('../notificaciones').then(res => {
               this.notifications = res.data;
             });
         }

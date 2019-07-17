@@ -1778,7 +1778,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    axios.get('notificaciones').then(function (res) {
+    axios.get('../notificaciones').then(function (res) {
       _this.notifications = res.data;
     });
   }

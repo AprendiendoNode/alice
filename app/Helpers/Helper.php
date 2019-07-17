@@ -129,10 +129,10 @@ class Helper
                 $data['id'] = $document_type->id;
                 $document_type->update();
             } else {
-                throw new \Exception(__('base/document_type.error_next_document_type'));
+                throw new \Exception(__('document_type.error_next_document_type'));
             }
             if (empty($data['id']) || empty($data['name'])) {
-                throw new \Exception(__('base/document_type.error_next_document_type'));
+                throw new \Exception(__('document_type.error_next_document_type'));
             }
             return $data;
         } catch (\Exception $e) {

@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
-
+use App\Models\Sales\Customer;
 class CustomerController extends Controller
 {
     /**
@@ -227,6 +227,24 @@ class CustomerController extends Controller
       }
       return $resultados;
     }
+
+    /**
+       * Obtener registro
+       *
+       * @param Request $request
+       * @return \Illuminate\Http\JsonResponse
+       */
+      public function getCustomer(Request $request)
+      {
+          //Variables
+          $id = $request->id;
+          //Logica
+          if ($request->ajax() && !empty($id)) {
+              $customer = Customer::findOrFail($id);
+              return response()->json($customer, 200);
+          }
+          return response()->json(['error' => __('general.error_general')], 422);
+      }
 
     /**
      * Update the specified resource in storage.
