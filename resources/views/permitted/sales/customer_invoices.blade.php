@@ -720,6 +720,34 @@
       $(document).on("keyup", "#form #items tbody .col-quantity,#form #items tbody .col-price-unit,#form #items tbody .col-discount", function () {
           totalItem();
       });
+      $('#currency_id').on("change", function(){
+        var valor = $(this).val();
+        var token = $('input[name="_token"]').val();
+        if (valor === '1') {
+          $('#currency_value').val('1');
+        }else{
+          $.ajax({
+              url: "/sales/customer-invoices/currency_now",
+              type: "POST",
+              // dataType: "JSON",
+              data: { _token : token, id_currency: valor },
+              success: function (data) {
+                console.log(data);
+                $('#currency_value').val(data);
+              },
+              error: function (error, textStatus, errorThrown) {
+                  if (error.status == 422) {
+                      var message = error.responseJSON.error;
+                      $("#general_messages").html(alertMessage("danger", message));
+                  } else {
+                      alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                  }
+              }
+          });
+        }
+
+      });
+
       function totalItem() {
         $.ajax({
             url: "/sales/customer-invoices/total-lines",

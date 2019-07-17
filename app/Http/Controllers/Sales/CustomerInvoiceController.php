@@ -77,6 +77,7 @@ class CustomerInvoiceController extends Controller
       $input_items = $request->item;
       $currency_id = $request->currency_id; //Guardo la moneda seleccionada
       $currency_value = $request->currency_value;
+      // $texto = "";
       if (empty($currency_id)) {
         $currency_id = 1;
       }
@@ -95,11 +96,17 @@ class CustomerInvoiceController extends Controller
               $currency = Currency::findOrFail($currency_id);
               $currency_code = $currency->code;
           }*/
-          if ($currency_id != 1) {
-            // procedura para buscar exchange rate.
-            // de prueba usar voy a usar el textbox.
-            $currency_value = $currency_value; // aquí tengo que cambiar el valor por el obtenido en el procedure.
-          }
+          /*if ($currency_id != 1) {
+            $texto = 'entre al primero';
+            if ($currency_value === 1 || empty($currency_value)) {
+              $current_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+              $currency_value = $current_rate->current_rate;
+              $texto = 'entre';
+            }else{
+              $currency_value = $currency_value;
+              $texto = 'no entre';
+            }
+          }*/
 
           //Variables de totales
           $amount_discount = 0;
@@ -148,8 +155,14 @@ class CustomerInvoiceController extends Controller
               $amount_total += $item_amount_total;
               //Tipo cambio
               if ($item['current'] === $currency_id) {
-                $item_amount_total = $item_amount_total * $currency_value;
+                $current_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+                if($currency_value != $current_rate->current_rate){
+                  $item_amount_total = $item_amount_total * $currency_value;
+                }else{
+                  $item_amount_total = $item_amount_total * $current_rate->current_rate;
+                }
               }
+
               //Subtotales por cada item
               // $items[$key] = $currency_id;
               // $items[$key] = $item_amount_total;
@@ -157,6 +170,8 @@ class CustomerInvoiceController extends Controller
             }
           }
           //Respuesta
+          
+          $json->text = $currency_value;
           $json->items = $items;
           $json->amount_discount = $amount_discount;
           $json->amount_untaxed = $amount_untaxed;
@@ -167,13 +182,14 @@ class CustomerInvoiceController extends Controller
       }
       return response()->json(['error' => __('general.error_general')], 422);
   }
-  public function test_s()
+  public function get_currency(Request $request)
   {
-
-    $cantidad = 777;
-    $currency_code = 'USD';
-    $formateado = moneyFormat($cantidad, $currency_code);
-    return $formateado;
+    $current_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+    if (empty($current_rate)) {
+      return response()->json(['error' => __('general.error_general')], 422);
+    }else{
+      return $current_rate->current_rate;
+    }
   }
 
     /**

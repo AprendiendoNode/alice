@@ -455,9 +455,9 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices-edit', 'Sales\CustomerInvoiceController@edit');
     //
     Route::get('/products/get-product', 'Sales\CustomerInvoiceController@getproduct');
-    Route::post('customer-invoices/total-lines', 'Sales\CustomerInvoiceController@totallines');
-
-    Route::get('customers/get-customer', 'Sales\CustomerController@getCustomer')->name('customers/get-customer');
+    Route::post('/customer-invoices/total-lines', 'Sales\CustomerInvoiceController@totallines');
+    Route::post('/customer-invoices/currency_now', 'Sales\CustomerInvoiceController@get_currency');
+    Route::get('/customers/get-customer', 'Sales\CustomerController@getCustomer')->name('customers/get-customer');
 
 });
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
