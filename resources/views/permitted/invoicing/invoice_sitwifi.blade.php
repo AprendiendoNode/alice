@@ -115,6 +115,28 @@
       border-right: 1px solid black;
     }
 
+    #table_amounts{
+      width: 100%;
+      margin-top: 5px;
+      border: 1px solid black;
+      font-weight: bold;
+    }
+
+    #table_cfdi{
+      width: 100%;
+      margin-top: 5px;
+      border: 1px solid black;
+    }
+
+    #table_cfdi p{
+      font-size: 9px;
+    }
+
+    #table_cfdi tbody tr td{
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+    }
+
 
 </style>
 
@@ -186,14 +208,81 @@
     <tbody>
       <tr>
         <td>813323</td>
-        <td>1.00</td>
+        <td align="right">1.00</td>
         <td>PZA</td>
         <td colspan="2">PRESTACIÓN DE SERVICIOS DE ACCESO A LA RED INTERNET</td>
-        <td>$550.00</td>
-        <td>$550.00</td>
+        <td align="right">$550.00</td>
+        <td align="right">$550.00</td>
       </tr>
     </tbody>
   </table>
+  <!--------->
+  <table id="table_amounts">
+    <tbody>
+      <tr>
+        <td rowspan="5" valign="top" colspan="3"> <span>(SEISCIENTOS TERINTA Y OCHO DOLARES 00 / 100 USD)</span> </td>
+        <td align="right" colspan="2">Sub Total</td>
+        <td align="right" colspan="2">$ <span>550.00</span></td>
+      </tr>
+      <tr>
+        <td align="right" colspan="2">Descuentos</td>
+        <td align="right" colspan="2">$ <span>0.00</span></td>
+      </tr>
+      <tr>
+        <td align="right" colspan="2">Total Impuestos Trasladados</td>
+        <td align="right" colspan="2">$ <span>88.00</span></td>
+      </tr>
+      <tr>
+        <td align="right" colspan="2">Total Impuestos Retenidos</td>
+        <td align="right" colspan="2">$ <span>0.00</span></td>
+      </tr>
+      <tr>
+        <td align="right" colspan="2">Total</td>
+        <td align="right" style="border-top:1px solid black;" colspan="2">$ <span>0.00</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <!--------->
+
+  <!--------->
+  <table id="table_cfdi">
+    <tbody>
+      <tr>
+        <td rowspan="2" style="width:20%;"> <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Commons_QR_code.png" alt=""> </td>
+        <td valign="top" style="width:80%;">
+          Sello Digital del CFDI
+          <br>
+          <p>E2wQhqOCVzwME4866yVEME/8PD1S1g6AV48D8VrLhKUDq0Sjqnp9IwfMAbX0ggwUCLRKa Hg5q8aYhya63If2HVqH1sA08poer080P1J6Z
+            BwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVT 9mkTb0Xn5Emu5U8=
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" style="width:80%;">
+          Versión timbre fiscal digital
+          <br>
+          Cadena original del complemento de certificación digital del sat
+          <br>
+          <p>E2wQhqOCVzwME4866yVEME/8PD1S1g6AV48D8VrLhKUDq0Sjqnp9IwfMAbX0ggwUCLRKa Hg5q8aYhya63If2HVqH1sA08poer080P1J6Z
+            BwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVTBwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVT BwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVT  9mkTb0Xn5Emu5U8=
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:none;"></td>
+        <td style="width:20%;border-bottom:none;" valign="top" style="width:80%;">
+          Sello Digital del SAT
+          <br>
+          <p>E2wQhqOCVzwME4866yVEME/8PD1S1g6AV48D8VrLhKUDq0Sjqnp9IwfMAbX0ggwUCLRKa Hg5q8aYhya63If2HVqH1sA08poer080P1J6Z
+            BwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVTBwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVT BwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVT  9mkTb0Xn5Emu5U8=
+          </p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br><br>
+  <p class="text-center">Este documento es una representación impresa de un CFDI</p>
 
 </body>
 </html>
