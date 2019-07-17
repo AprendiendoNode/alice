@@ -407,9 +407,9 @@
                   <div class="row">
                     <div class="col-md-4 col-xs-12">
                       <div class="form-group row">
-                        <label for="select_seven" class="col-md-12 col-form-label ml-0">Tipo de relación<span style="color: red;">*</span></label>
+                        <label for="cfdi_relation_id" class="col-md-12 col-form-label ml-0">Tipo de relación<span style="color: red;">*</span></label>
                         <div class="col-md-12 ml-0">
-                          <select  id="select_seven" name="select_seven" class="form-control form-control-sm required"  style="width: 100%;">
+                          <select  id="cfdi_relation_id" name="cfdi_relation_id" class="form-control form-control-sm required"  style="width: 100%;">
                             <option value="">{{ trans('message.selectopt') }}</option>
                             @forelse ($cfdi_relations as $cfdi_relations_data)
                             <option value="{{ $cfdi_relations_data->id }}"> [{{ $cfdi_relations_data->code}}]{{ $cfdi_relations_data->name }} </option>

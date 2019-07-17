@@ -458,7 +458,8 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices/total-lines', 'Sales\CustomerInvoiceController@totallines');
     Route::post('/customer-invoices/currency_now', 'Sales\CustomerInvoiceController@get_currency');
     Route::get('/customers/get-customer', 'Sales\CustomerController@getCustomer')->name('customers/get-customer');
-
+    //Notas de credito
+    Route::get('/customer-credit-notes', 'Sales\CustomerCreditNoteController@index');
 });
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
 {
