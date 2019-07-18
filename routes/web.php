@@ -284,12 +284,46 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/create_viatic_new', 'Viatics\AddViaticController@create_viatic');
   Route::post('/search_beneficiary', 'Viatics\AddViaticController@find_user');
   Route::post('/viat_find_concept', 'Viatics\AddViaticController@find_concept');
-  //- Viaticos Solicitud
-  Route::get('/view_request_via', 'Viatics\RequestsViaticController@index');
-  //- Todos los vitaticos
-  Route::get('/view_request_all_via', 'Viatics\RequestViaticAllController@index');
-  //- Reporte semanal viaticos
-  Route::get('/view_viatic_weekly', 'Viatics\ViaticWeeklyController@index');
+  //Denegar Viaticos
+      Route::post('/deny_viatic', 'Viatics\RequestsViaticController@deny_viatic');
+    //- Viaticos Solicitud
+    Route::get('/view_request_via', 'Viatics\RequestsViaticController@index');
+    //- Todos los vitaticos
+    Route::get('/view_request_all_via', 'Viatics\RequestViaticAllController@index');
+    Route::get('/view_request_all_via_edit', 'Viatics\RequestViaticAllController@edit');
+    Route::post('/view_request_via_all', 'Viatics\RequestViaticAllController@history_all');
+    //- Reporte semanal viaticos
+    Route::get('/view_viatic_weekly', 'Viatics\ViaticWeeklyController@index');
+    Route::post('/view_request_via_weekly', 'Viatics\ViaticWeeklyController@viatic_historic_weekly');
+    //Timeline Viaticos
+    Route::post('/search_data_timeline', 'Viatics\RequestViaticAllController@timeline');
+    Route::post('/view_request_total_concept_viatic', 'Viatics\RequestViaticAllController@totales');
+
+    //Viaticos Historial N0
+    Route::post('/view_request_via_zero','Viatics\RequestsViaticController@history_zero');
+    Route::post('/view_request_show_viatic_up', 'Viatics\RequestsViaticController@show_viatic_up');
+    Route::post('/view_request_show_viatic_down', 'Viatics\RequestsViaticController@show_viatic_down');
+    Route::post('/view_request_via_btns', 'Viatics\RequestsViaticController@get_prvnext');
+    //Viaticos Historial N1
+    Route::post('/view_request_via_one', 'Viatics\RequestsViaticController@history_one');
+    Route::post('/view_pertain_viatic_ur', 'Viatics\RequestsViaticController@pertain_viatic');
+    Route::post('/send_item_nuevo', 'Viatics\RequestsViaticController@edit_status_one');
+    Route::post('/view_concept_via_one', 'Viatics\RequestsViaticController@find_concept_all');
+    Route::post('/search_all_status_concep', 'Viatics\RequestsViaticController@find_concept');
+    Route::post('/insert_request_1_data', 'Viatics\RequestsViaticController@insert_data_1');
+    //Viaticos Historial N2
+    Route::post('/view_request_via_two', 'Viatics\RequestsViaticController@history_two');
+    Route::post('/view_pertain_viatic_ur_n2', 'Viatics\RequestsViaticController@pertain_viatic_two');
+    Route::post('/send_item_pendientes', 'Viatics\RequestsViaticController@edit_status_two');
+
+    //Viaticos Historial N3
+    Route::post('/view_request_via_three', 'Viatics\RequestsViaticController@history_three');
+    Route::post('/view_pertain_viatic_ur_n3', 'Viatics\RequestsViaticController@pertain_viatic_three');
+    Route::post('/send_item_verifica', 'Viatics\RequestsViaticController@edit_status_three');
+    //Viaticos Historial N4
+    Route::post('/view_request_via_four', 'Viatics\RequestsViaticController@history_four');
+    Route::post('/view_pertain_viatic_ur_n4', 'Viatics\RequestsViaticController@pertain_viatic_four');
+    Route::post('/send_item_aprueba', 'Viatics\RequestsViaticController@edit_status_four');
 
 
 });
