@@ -51,7 +51,7 @@
                                         <div class="col-xs-10 selectContainer">
                                             <select name="priority_id" class="form-control">
                                                 @forelse ($priority as $data_priority)
-                                                  @if ($data_priority->id === 2)
+                                                  @if ($data_priority->id === 1)
                                                     <option value="{{ $data_priority->id }}" selected> {{ $data_priority->name }} </option>
                                                   @else
                                                     <option value="{{ $data_priority->id }}"> {{ $data_priority->name }} </option>
