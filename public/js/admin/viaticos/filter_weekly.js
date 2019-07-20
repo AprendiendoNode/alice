@@ -202,68 +202,68 @@ var Configuration_table_responsive_viatic_weekly= {
   "columnDefs": [
     {
         "targets": 0,
-        "width": "1%",
+        "width": "0.2%",
         "className": "text-center",
     },
     {
         "targets": 1,
         "width": "0.2%",
-        "className": "text-center",
+        "className": "text-center ",
     },
     {
         "targets": 2,
         "width": "0.2%",
-        "className": "text-center",
+        "className": "text-center col-sm-viatic",
     },
     {
         "targets": 3,
         "width": "0.2%",
-        "className": "text-center",
+        "className": "text-center col-sm-viatic",
     },
     {
         "targets": 4,
         "width": "0.2%",
-        "className": "text-center",
+        "className": "text-center col-sm-viatic",
     },
     {
         "targets": 5,
-        "width": "1%",
-        "className": "text-center",
+        "width": "0.2%",
+        "className": "text-center col-sm-viatic",
     },
     {
         "targets": 6,
         "width": "0.2%",
-        "className": "text-center",
+        "className": "text-center col-sm-viatic",
     },
     {
         "targets": 7,
-        "width": "1%",
-        "className": "text-center",
+        "width": "0.2%",
+        "className": "text-center col-sm-viatic",
     },
     {
         "targets": 8,
         "width": "0.2%",
-        "className": "text-center",
+        "className": "text-center col-sm-viatic",
     },
     {
         "targets": 9,
         "width": "0.2%",
-        "className": "text-center",
+        "className": "text-center col-sm-viatic",
     },
     {
         "targets": 10,
         "width": "0.2%",
-        "className": "text-center",
+        "className": "text-center  col-sm-viatic",
     },
     {
         "targets": 11,
         "width": "0.2%",
-        "className": "text-center",
+        "className": "text-center  col-sm-viatic",
     },
     {
         "targets": 12,
-        "width": "2%",
-        "className": "text-center",
+        "width": "0.2%",
+        "className": "text-center  col-sm-viatic",
     },
     {
         "targets": 13,
@@ -277,7 +277,7 @@ var Configuration_table_responsive_viatic_weekly= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="fas fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           var ax = '';
@@ -308,7 +308,7 @@ var Configuration_table_responsive_viatic_weekly= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="fas fa-file-csv"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           var ax = '';
@@ -338,7 +338,7 @@ var Configuration_table_responsive_viatic_weekly= {
       },
       {
         extend: 'pdf',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="fas fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           var ax = '';
           if($('input[name="date_to_search"]').val() != ''){
@@ -365,7 +365,8 @@ var Configuration_table_responsive_viatic_weekly= {
             }
         },
         className: 'btn btn-danger',
-        orientation: 'landscape'
+        orientation: 'landscape',
+         pageSize: 'LEGAL'
       }
   ],
   "processing": true,

@@ -160,7 +160,7 @@ var Configuration_table_responsive_checkbox_move_viatic= {
           },
           {
             extend: 'excelHtml5',
-            text: '<i class="fa fa-file-excel-o"></i> Excel',
+            text: '<i class="fas fa-file-excel"></i> Excel',
             titleAttr: 'Excel',
             title: function ( e, dt, node, config ) {
               return 'Reporte de viaticos.';
@@ -178,7 +178,7 @@ var Configuration_table_responsive_checkbox_move_viatic= {
           },
           {
             extend: 'csvHtml5',
-            text: '<i class="fa fa-file-text-o"></i> CSV',
+            text: '<i class="fas fa-file-csv"></i> CSV',
             titleAttr: 'CSV',
             title: function ( e, dt, node, config ) {
               return 'Reporte de viaticos.';
@@ -196,7 +196,7 @@ var Configuration_table_responsive_checkbox_move_viatic= {
           },
           {
             extend: 'pdf',
-            text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+            text: '<i class="fas fa-file-pdf"></i>  PDF',
             title: function ( e, dt, node, config ) {
               return 'Reporte de viaticos.';
             },
@@ -293,7 +293,7 @@ function enviar(e){
   var valor= e.getAttribute('value');
   var _token = $('input[name="_token"]').val();
   var fecha = $('#date_to_search').val();
-  $('#id_viatic').val(valor);  
+  $('#id_viatic').val(valor);
   $.ajax({
       type: "POST",
       url: "/view_pertain_viatic_ur_n2",
@@ -402,7 +402,7 @@ $('#aprv_viatic').on('click', function(){
       $('.confirm').prop('disabled', 'disabled');
        // Iterate over all selected checkboxes
       var valores= new Array();
-       
+
       valores.push(id_viatic);
       if ( valores.length === 0){
         swal("Operación abortada", "Ningún viático seleccionado :(", "error");

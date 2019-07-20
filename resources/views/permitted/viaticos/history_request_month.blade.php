@@ -10,7 +10,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View history all viatic') )
-    {{ trans('message.history_viat_month') }}
+    {{ trans('message.breadcrumb_history_viat_month') }}
   @else
   {{ trans('message.denied') }}
   @endif
@@ -27,8 +27,8 @@
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
-          <div class="box-body table-responsive">
-            <div class="box-body">
+          <div class="card table-responsive">
+            <div class="card-body">
               <div class="row">
                 <!------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <div id="captura_pdf_general" class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -197,8 +197,8 @@
             <h4 class="modal-title"><i class="fa fa-pencil-square-o" style="margin-right: 4px;"></i>Aprobar concepto</h4>
           </div>
           <div class="modal-body">
-            <div class="box-body">
-              <div class="box-body">
+            <div class="card-body">
+              <div class="card-body">
                 <div class="row">
                   <!-- <select class="form-control" name="select_concept_cadena" id="select_concept_cadena">
                     <option value="">Elija...</option>
@@ -275,7 +275,7 @@
       </div>
       <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
         <form id="egef" name="egef" enctype="multipart/form-data" >
-          <div class="table-responsive">
+          <div class="">
             <table id="table_viatics" class="table table-striped table-bordered table-hover">
               <thead>
                 <tr class="bg-white" style="background: #088A68;">
@@ -339,7 +339,16 @@
   .pt-10 {
     padding-top: 10px;
   }
-
+  #table_viatics tbody tr td{
+    table-layout: fixed;
+    width: auto !important;
+    white-space: pre-wrap !important;
+  }
+  #table_concept tbody tr td{
+    table-layout: fixed;
+    width: auto !important;
+    white-space: pre-wrap !important;
+  }
   .modal-content{
     width: 120% !important;
     margin-left: -10% !important;

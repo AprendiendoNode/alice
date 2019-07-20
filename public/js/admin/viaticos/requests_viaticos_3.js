@@ -24,7 +24,7 @@ var Configuration_table_responsive_checkbox_move_viatic_n3= {
       "checkboxes": {
         'selectRow': true
       },
-      "width": "1%",
+      "width": "0.5%",
       "createdCell": function (td, cellData, rowData, row, col){
         // console.log(cellData);
         if (cellData == '<input type="checkbox" class="dt-checkboxes" disabled="">') {
@@ -40,60 +40,60 @@ var Configuration_table_responsive_checkbox_move_viatic_n3= {
       }
     },
     {
-      "targets": 1,
-      "width": "1%",
-      "className": "text-center",
-    },
-    {
-      "targets": 2,
-      "width": "3%",
-      "className": "text-center",
-    },
-    {
-      "targets": 3,
-      "width": "1%",
-      "className": "text-center",
-    },
-    {
-      "targets": 4,
-      "width": "1%",
-      "className": "text-center",
-    },
-    {
-      "targets": 5,
-      "width": "0.2%",
-      "className": "text-center",
-    },
-    {
-      "targets": 6,
-      "width": "0.2%",
-      "className": "text-center",
-    },
-    {
-      "targets": 7,
-      "width": "0.2%",
-      "className": "text-center",
-    },
-    {
-      "targets": 8,
-      "width": "0.2%",
-      "className": "text-center",
-    },
-    {
-      "targets": 9,
-      "width": "2%",
-      "className": "text-center",
-    },
-    {
-      "targets": 10,
-      "width": "1%",
-      "className": "text-center",
-    },
-    {
-      "targets": 11,
-      "visible": false,
-      "searchable": false
-    }
+        "targets": 1,
+        "width": "0.8%",
+        "className": "text-center",
+      },
+      {
+        "targets": 2,
+        "width": "2%",
+        "className": "text-center",
+      },
+      {
+        "targets": 3,
+        "width": "0.7%",
+        "className": "text-center",
+      },
+      {
+        "targets": 4,
+        "width": "0.7%",
+        "className": "text-center",
+      },
+      {
+        "targets": 5,
+        "width": "0.7%",
+        "className": "text-center",
+      },
+      {
+        "targets": 6,
+        "width": "0.7%",
+        "className": "text-center",
+      },
+      {
+        "targets": 7,
+        "width": "0.9%",
+        "className": "text-center",
+      },
+      {
+        "targets": 8,
+        "width": "0.9%",
+        "className": "text-center",
+      },
+      {
+        "targets": 9,
+        "width": "1.5%",
+        "className": "text-center",
+      },
+      {
+        "targets": 10,
+        "width": "0.9%",
+        "className": "text-center",
+      },
+      {
+        "targets": 11,
+        "visible": false,
+        "searchable": false
+      }
   ],
   "select": {
     'style': 'multi',
@@ -162,9 +162,10 @@ var Configuration_table_responsive_checkbox_move_viatic_n3= {
         });
       }
     },
+
     {
       extend: 'excelHtml5',
-      text: '<i class="fa fa-file-excel-o"></i> Excel',
+      text: '<i class="fas fa-file-excel"></i> Excel',
       titleAttr: 'Excel',
       title: function ( e, dt, node, config ) {
         return 'Reporte de viaticos.';
@@ -182,7 +183,7 @@ var Configuration_table_responsive_checkbox_move_viatic_n3= {
     },
     {
       extend: 'csvHtml5',
-      text: '<i class="fa fa-file-text-o"></i> CSV',
+      text: '<i class="fas fa-file-csv"></i> CSV',
       titleAttr: 'CSV',
       title: function ( e, dt, node, config ) {
         return 'Reporte de viaticos.';
@@ -200,7 +201,7 @@ var Configuration_table_responsive_checkbox_move_viatic_n3= {
     },
     {
       extend: 'pdf',
-      text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+      text: '<i class="fas fa-file-pdf"></i>  PDF',
       title: function ( e, dt, node, config ) {
         return 'Reporte de viaticos.';
       },

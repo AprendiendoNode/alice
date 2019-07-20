@@ -259,14 +259,14 @@
       <br><br>
       <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
         <div class="table-responsive">
-          <table id="table_viatics" class="table table-striped table-bordered table-hover">
+          <table id="table_viatics" class="table table-striped table-bordered table-hover" style=" padding:0; margin:0;">
             <thead>
               <tr class="bg-white" style="background: #088A68;">
                 <th> <small>Folio</small> </th>
                 <th> <small>Sitio</small> </th>
                 <th> <small>Fecha Inicio</small> </th>
                 <th> <small>Fecha Fin</small> </th>
-                <th> <small>Transportación áerea</small> </th>
+                <th > <small>Transportación áerea</small> </th>
                 <th> <small>Transportación Terrestre</small> </th>
                 <th> <small>Hospedaje</small> </th>
                 <th> <small>Alimentación</small> </th>
@@ -314,6 +314,25 @@
   .modal-content{
     width: 120% !important;
     margin-left: -10% !important;
+  }
+  #table_viatics tbody tr td{
+    table-layout: fixed;
+    width: auto !important;
+    white-space: pre-wrap !important;
+     padding:0; margin:0;
+  }
+  #table_concept tbody tr td{
+    table-layout: fixed;
+    width: auto !important;
+    white-space: pre-wrap !important;
+  }
+  .col-md-viatic{
+max-width: 130px;
+white-space: pre-wrap !important;
+  }
+  .col-sm-viatic{
+max-width: 120px;
+white-space: pre-wrap !important;
   }
 </style>
 @push('scripts')

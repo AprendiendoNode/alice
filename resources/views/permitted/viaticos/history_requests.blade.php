@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View requests via') )
-    {{ trans('message.viaticos_dashboard_request') }}
+    {{ trans('message.viaticos_history_request') }}
   @else
   {{ trans('message.denied') }}
   @endif
@@ -10,7 +10,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View requests via') )
-    {{ trans('message.breadcrumb_dashboard_request') }}
+    {{ trans('message.breadcrumb_viaticos_hist') }}
   @else
   {{ trans('message.denied') }}
   @endif
@@ -218,7 +218,7 @@
             </div>
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
-              <div class="table-responsive">
+              <div class="">
                 <table id="table_viatics" class="table table-striped table-bordered table-hover">
                   <thead>
                     <tr class="bg-white" >
@@ -362,7 +362,7 @@
             </div>
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
-              <div class="table-responsive">
+              <div class="">
                 <table id="table_viatics" class="table table-striped table-bordered table-hover">
                   <thead>
                     <tr class="bg-white" style="background: #088A68;">
@@ -459,8 +459,8 @@
             </div>
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
-              <div class="table-responsive">
-                <table id="table_viatics" class="table table-striped table-bordered table-hover">
+              <div class="">
+                <table id="table_viatics" class="table table-striped table-bordered table-hover" >
                   <thead>
                     <tr class="bg-white" style="background: #088A68;">
                       <th> <small></small> </th>
@@ -555,27 +555,29 @@
                 </form>
               </div>
             </div>
+          </div>
 
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
-              <div class="table-responsive">
-                <table id="table_viatics" class="table table-striped table-bordered table-hover">
-                  <thead>
-                    <tr class="bg-white" style="background: #088A68;">
-                      <th> <small></small> </th>
-                      <th> <small>Folio</small> </th>
-                      <th> <small>Servicio</small> </th>
-                      <th> <small>Fecha Inicio</small> </th>
-                      <th> <small>Fecha Fin</small> </th>
-                      <th> <small>Monto Solicitado</small> </th>
-                      <th> <small>Monto Aprobado</small> </th>
-                      <th> <small>Estatus</small> </th>
-                      <th> <small>Prioridad</small> </th>
-                      <th> <small>Usuario</small> </th>
-                      <th> <small>Opciones</small> </th>
-                      <th> <small>status</small> </th>
+            <div class="row" >
+            <div  class="container-fluid">
+
+                <table id="table_viatics" class="table table-sm table-striped table-bordered table-hover"  >
+                  <thead  >
+                    <tr class="bg-white" style="background: #088A68; " class="overflow-text" >
+                      <th class="overflow-text"> <small></small> </th>
+                      <th class="overflow-text"> <small>Folio</small> </th>
+                      <th  class="overflow-text"> <small>Servicio</small> </th>
+                      <th class="overflow-text"> <small>Fecha Inicio</small> </th>
+                      <th class="overflow-text"> <small>Fecha Fin</small> </th>
+                      <th class="overflow-text"> <small >Monto Solicitado</small> </th>
+                      <th class="overflow-text"> <small>Monto Aprobado</small> </th>
+                      <th class="overflow-text"> <small>Estatus</small> </th>
+                      <th class="overflow-text"> <small>Prioridad</small> </th>
+                      <th class="overflow-text"> <small>Usuario</small> </th>
+                      <th class="overflow-text"> <small>Opciones</small> </th>
+                      <th class="overflow-text"> <small>status</small> </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody >
                   </tbody>
                   <tfoot id='tfoot_average'>
                     <tr>
@@ -596,7 +598,7 @@
               </div>
             </div>
 
-          </div>
+
         </div>
       @elseif ( auth()->user()->can('View level four notifications') )
         <div class="container">
@@ -621,7 +623,7 @@
             </div>
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
-              <div class="table-responsive">
+              <div class="">
                 <table id="table_viatics" class="table table-striped table-bordered table-hover">
                   <thead>
                     <tr class="bg-white" style="background: #088A68;">
@@ -673,7 +675,23 @@
       .pt-10 {
         padding-top: 10px;
       }
-
+      .overflow-text{
+        width: auto !important;
+        white-space: pre-wrap !important;
+      }
+      #table_viatics tbody tr td{
+        table-layout: fixed;
+        width: auto !important;
+        white-space: pre-wrap !important;
+      }
+      #table_concept tbody tr td{
+        table-layout: fixed;
+        width: auto !important;
+        white-space: pre-wrap !important;
+      }
+      .col-med{
+        max-width: 200px;
+      }
       .modal-content{
         width: 120% !important;
         margin-left: -10% !important;

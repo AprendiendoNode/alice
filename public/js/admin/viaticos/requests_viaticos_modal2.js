@@ -158,7 +158,7 @@ $('.addButton').on('click', function(){
       '<select size="1" id="c_concept['+count_rows+']" name="c_concept['+count_rows+']"><option value="">Elija...</option>'+conceptos+'</select>',
       '<select size="1" id="c_cant['+count_rows+']" name="c_cant['+count_rows+']"><option value="">Elija...</option>'+cant+'</select>',
       '<input class="col-xs-12" type="text" id="m_ind['+count_rows+']" name="m_ind['+count_rows+']" value="0">',
-      '<input class="col-xs-12" type="text" id="subt['+count_rows+']" name="subt['+count_rows+']" value="0">',      
+      '<input class="col-xs-12" type="text" id="subt['+count_rows+']" name="subt['+count_rows+']" value="0">',
       '<input class="col-xs-12" type="text" id="c_just['+count_rows+']" name="c_just['+count_rows+']" placeholder="Justificación">'
   ]).draw(false);
   createEventListenerSites(count_rows);
@@ -423,7 +423,7 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
         },
         {
           extend: 'excelHtml5',
-          text: '<i class="fa fa-file-excel-o"></i> Excel',
+          text: '<i class="fas fa-file-excel"></i> Excel',
           titleAttr: 'Excel',
           title: function ( e, dt, node, config ) {
             return 'Reporte de mensualidades';
