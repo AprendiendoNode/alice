@@ -32,6 +32,76 @@ function enviar(e){
 
 }
 
+function addCommentModal(e){
+  var element = e;
+  let id_documentp = element.dataset.id;
+  var _token = $('input[name="_token"]').val();
+
+  document.getElementById('id_doc').value = id_documentp;
+  document.getElementById('comment').value = '';
+
+  const headers = new Headers({
+    "Accept": "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+    "X-CSRF-TOKEN": _token
+  })
+
+  var miInit = { method: 'get',
+                 headers: headers,
+                 credentials: "same-origin",
+                 cache: 'default' };
+
+      fetch(`/get_comment_documentp_advance/id_doc/${id_documentp}`,  miInit)
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+            document.getElementById('comment').value = data[0].comentario_manager;
+            $('#modal-add-comment').modal('show');
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+}
+
+$('#addComment').on('click', function(e){
+  e.preventDefault();
+  var _token = $('input[name="_token"]').val();
+  let id_documentp = document.getElementById('id_doc').value;
+  let comment = document.getElementById('comment').value;
+
+  const headers = new Headers({
+    "Accept": "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+    "X-CSRF-TOKEN": _token
+  })
+  var form = $('#form_add_comment')[0];
+  var formData = new FormData(form);
+
+  var miInit = { method: 'post',
+                    headers: headers,
+                    body: formData,
+                    credentials: "same-origin",
+                    cache: 'default' };
+
+      fetch(`/set_comment_documentp_advance`,  miInit)
+        .then(response => {
+          return response.text();
+        })
+        .then(data => {
+          console.log(data);
+          if(data == "true"){
+            menssage_toast('Mensaje', '3', 'Comentario agregado' , '2000');
+          }else{
+            menssage_toast('Mensaje', '2', 'Error inesperado' , '2000');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+})
 
 function deny_docp(e){
   var valor= e.getAttribute('value');
@@ -51,8 +121,10 @@ function deny_docp(e){
   },
   function(isConfirm){
     if(isConfirm){
-      var comment = $('#comentario').val();
+      var comment = document.getElementById("comentario").value;
+      console.log(comment);
       if (comment === "") {
+
         swal("Operación abortada!", "Añada un comentario de denegación.", "error");
       }else{
         $.ajax({
@@ -61,7 +133,7 @@ function deny_docp(e){
             data: { idents: valor, comm: comment, _token : _token },
             success: function (data){
               if (data === 'true') {
-                swal("Operación Completada!", "El Documento P ha sido denegado.", "success");
+                swal("Operación Completada!", "El Documento ha sido denegado.", "success");
                 table_permission_one();
               }
               if (data === 'false') {
@@ -86,6 +158,17 @@ function editar(e){
   let id_documentp = element.dataset.id;
   var form = $('#form_edit_docp');
   $('#id_docp').val(id_documentp);
+
+  form.submit();
+
+}
+
+function editar_cotizador(e){
+  var element = e;
+  var _token = $('input[name="_token"]').val();
+  let id_documentp = element.dataset.id;
+  var form = $('#form_edit_cotizador');
+  $('#id_docp_2').val(id_documentp);
 
   form.submit();
 
@@ -116,7 +199,10 @@ function data_header(miInit, id_documentp){
           type_doc == 1 ? $('#tipo_doc').text('Documento P') : $('#tipo_doc').text('Documento M');
           let nombre_proyecto = data[0].nombre_proyecto;
           nombre_proyecto == null ?   $('#proyecto').text(data[0].anexo) :  $('#proyecto').text(data[0].nombre_proyecto);
-          $('#fecha').text(data[0].fecha);
+          //Formatear la fecha
+          var fechainvertida=invertirFecha(data[0].fecha);
+          //$('#fecha').text(data[0].fecha);
+          $('#fecha').text(fechainvertida);
           $('#folio').text(data[0].folio);
           $('#itc').text(data[0].ITC);
           $('#comercial').text(data[0].comercial);
@@ -147,7 +233,7 @@ function data_deny(miInit, id_documentp){
         if(data != null || data != '[]'){
           let html = `<ul>`;
           $.each(data, function( i, key ) {
-            html +=`<li>` + key.name + ` - ` + key.description + ` - ` + key.created_at  + `</li`;
+            html +=`<li>` + key.name + ` - ` + key.description + ` - ` + invertirFecha(key.created_at.split(" ")[0])+ " " + key.created_at.split(" ")[1]  + `</li`;
           })
           html +=`</ul>`;
           $('#observaciones').html(html);
@@ -181,19 +267,19 @@ function data_status_users(miInit, id_documentp){
           entrego = data.filter(val => val.status_id == 5);
 
           $.each(reviso, function( i, key ) {
-            html +=`<li>` + key.name + ` - ` + key.created_at + `</li>`;
+            html +=`<li>` + key.name + ` - ` + invertirFecha(key.created_at.split(" ")[0])+ " " + key.created_at.split(" ")[1]  + `</li>`;
           })
           html +=`</ul>`;
           $('#reviso').html(html);
 
           $.each(autorizo, function( i, key ) {
-            html2 +=`<li>` + key.name + ` - ` + key.created_at + `</li>`;
+            html2 +=`<li>` + key.name + ` - ` + invertirFecha(key.created_at.split(" ")[0])+ " " + key.created_at.split(" ")[1]  + `</li>`;
           })
           html2 +=`</ul>`;
           $('#autorizo').html(html2);
 
           $.each(entrego, function( i, key ) {
-            html3 +=`<li>` + key.name + ` - ` + key.created_at + `</li>`;
+            html3 +=`<li>` + key.name + ` - ` + invertirFecha(key.created_at.split(" ")[0])+ " " + key.created_at.split(" ")[1] + `</li>`;
           })
           html3 +=`</ul>`;
           $('#entrego').html(html3);
@@ -361,3 +447,9 @@ var Configuration_table_responsive_logs= {
             }
         },
     };
+//Formatea la fecha dd/mm/aa
+    function invertirFecha(f) {
+       var fechaDividida = f.split("-");
+       var fechaInvertida = fechaDividida.reverse();
+       return fechaInvertida.join("-");
+   }

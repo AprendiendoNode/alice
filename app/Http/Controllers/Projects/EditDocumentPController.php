@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Projects;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use App\Http\Controllers\Controller;
+use App\Models\Projects\Documentp;
+use App\Models\Projects\Documentp_cart;
+use App\Models\Projects\In_Documentp_cart;
 use Auth;
 use DB;
-use App\Documentp;
-use App\Documentp_cart;
-use App\In_Documentp_cart;
 
 class EditDocumentPController extends Controller
 {
@@ -42,7 +43,7 @@ class EditDocumentPController extends Controller
     $viewPermitted = view('permitted.documentp.show' ,compact('id_document', 'hour_created','grupos', 'anexos','data_header', 'tipo_cambio', 'categories', 'itc', 'verticals', 'comerciales', 'type_service', 'priorities', 'installation'));
     $viewBlock = view('permitted.documentp.edit_documentp_block', compact('folio', 'hour_created'));
 
-    if($this->check_user_permission() == 0){
+    if($this->check_user_permission() == 0 || $this->check_user_permission() == 1){
         //Se revisa si el documento no ha sido aprobado
       if($this->check_status_document($id_document)){
           // Se verifica que el usuario que solicito editar sea el que elaboro o el itc asignado
@@ -60,7 +61,7 @@ class EditDocumentPController extends Controller
       }
     }else {
       //Es un usuario con mayor permiso que un itc, se revisa que el carrito no haya sido entregado
-      ($this->check_status_cart($cart))  ? $view = $viewPermitted  : $view = $viewBlock;
+      ($this->check_status_cart($cart))  ? $view = $viewPermitted  : $view = $viewPermitted;
         return $view;
     }
 
@@ -105,6 +106,9 @@ class EditDocumentPController extends Controller
     }
     else if(auth()->user()->can('View level two documentp notification')){
       return 2;
+    }
+    else if(auth()->user()->can('View level three documentp notification')){
+      return 3;
     }
   }
 
@@ -330,15 +334,25 @@ class EditDocumentPController extends Controller
       $set_in_documentp_product = In_Documentp_cart::find($id_product_cart);
       $cant_req = $cant_new;
       $cantidad_recibida = $set_in_documentp_product->cantidad_recibida;
+      $percent_sale = 0;
 
-      $percent_sale = $cantidad_recibida * 100 / $cant_req;
+      if($cant_req != 0){
+        $percent_sale = $cantidad_recibida * 100 / $cant_req;
+      }
+
       $percent_sale = number_format($percent_sale, 2, '.', '');
       $status = 3; // En transito
-      if($percent_sale == '100.00'){
+      if($percent_sale > '100.00'){
+        $percent_sale = 100.00;
+        $cantidad_recibida = $cant_req;
+        $set_in_documentp_product->cantidad_recibida = $cantidad_recibida;
         $status = 4; // status completado
+      }else if($percent_sale == '100.00'){
+        $status = 1; // status en espera
       }else if($percent_sale == '0.00'){
         $status = 1; // status en espera
       }
+
       $set_in_documentp_product->porcentaje_compra = $percent_sale;
       $set_in_documentp_product->order_status_id = $status;
       $set_in_documentp_product->save();
@@ -398,6 +412,80 @@ class EditDocumentPController extends Controller
       }
     }
 
+  }
+
+  public function update_priority(Request $request)
+  {
+    $flag = "false";
+    $id_doc = $request->id_doc;
+    $id_prioridad = $request->id_prioridad;
+    $set_doc = Documentp::find($id_doc);
+    $set_doc->priority_id = $id_prioridad;
+    $set_doc->save();
+    $flag = "true";
+
+    return $flag;
+  }
+
+  public function update_servicio_mensual(Request $request)
+  {
+    $doc = Documentp::findOrFail($request->id);
+    $doc->servicio_mensual = $request->servicio_mensual;
+    $doc->save();
+
+    return response()->json(['status' => 200]);
+  }
+
+  public function update_alert(Request $request)
+  {
+    $flag = "false";
+    $id_doc = $request->id_doc;
+
+    if($request->id_alert == 4){
+      $date = \Carbon\Carbon::now();
+      $date = $date->format('d-m-Y');
+      $date = date("Y-m-d", strtotime($date));
+
+      DB::table('documentp_project_advance')->where('id_doc', $id_doc)->update([
+        'alert' => $request->id_alert,
+        'fecha_terminacion_real' => $date
+      ]);
+
+    }else{
+      DB::table('documentp_project_advance')->where('id_doc', $id_doc)->update([
+        'alert' => $request->id_alert
+      ]);
+    }
+
+    $flag = "true";
+
+    return $flag;
+  }
+
+  public function update_status_fact(Request $request)
+  {
+    $flag = "false";
+    $id_doc = $request->id_doc;
+    DB::table('documentp_project_advance')->where('id_doc', $id_doc)->update([
+      'facturando' => $request->id_status
+    ]);
+
+    $flag = "true";
+
+    return $flag;
+  }
+
+  public function update_comment_manager(Request $request)
+  {
+    $flag = "false";
+    $id_doc = $request->id_doc;
+    DB::table('documentp_project_advance')->where('id_doc', $id_doc)->update([
+      'comentario_manager' => $request->comentario
+    ]);
+
+    $flag = "true";
+
+    return $flag;
   }
 
 

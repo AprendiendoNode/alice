@@ -5,7 +5,7 @@
 .card img {
   position: relative;
   top:-32px;
-  height: 150px;
+  height: 130px;
   width: 100%;
   z-index: 1;
 }
@@ -136,9 +136,9 @@ button {
 }
 
 .text-price{
-  font-size: .86em;
+  font-size: .8em;
   font-weight: bold;
-  color: #C5003E;
+  color: #E8210E;
 }
 
 .ml-20{
@@ -163,7 +163,27 @@ button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 1rem;
+  padding: 0.5rem;
+}
+
+.cards__item h6{
+  font-size: 0.60rem;
+}
+
+.cards__item .form-control{
+  padding: 0.275rem 0.375rem;
+  height: 2.2rem;
+}
+
+.cards__item button{
+  width: 80%;
+  margin: 0.5rem auto;
+  padding: 0.5rem 1rem
+}
+
+.cards__item button:hover{
+  background-color: #8C0303;
+  border-color: #8C0303;
 }
 
 .cards__item .card:hover {
@@ -178,15 +198,45 @@ button {
     position:static !important;
 }
 
-@media (min-width: 40rem) {
+/* xs Small devices ( phones, 576px and up) */
+@media (min-width: 470px) {
   .cards__item {
-    width: 40%;
+    width: 50%;
   }
-
 }
-@media (min-width: 56rem) {
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .cards__item {
+    width: 33%;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .cards__item {
+    width: 25%;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
   .cards__item {
     width: 20%;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .cards__item {
+    width: 20%;
+  }
+}
+
+/* Extra very large devices (large desktops, 1500px and up) */
+@media (min-width: 1500px) {
+  .cards__item {
+    width: 14.1%;
   }
 }
 
@@ -224,8 +274,8 @@ button {
 
 .card {
   background-color: white;
-  border-radius: 0.25rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-radius: 0.2rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all .2s;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -235,10 +285,11 @@ button {
   -ms-flex-direction: column;
   flex-direction: column;
   overflow: hidden;
+  padding: 0px 0px;
 }
 
 .card .header{
-  height: 150px;
+  height: 130px;
 }
 
 .card-2 {
@@ -272,7 +323,7 @@ button {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0.4rem;
 }
 
 @media (min-width: 40rem) {
@@ -283,7 +334,7 @@ button {
 
 .card__title {
   color: #112F41 !important;
-  font-size: 1.22rem !important;
+  font-size: 0.8rem !important;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -414,4 +465,121 @@ input::-webkit-input-placeholder {
 #validation_master .form-group .form-control{
   color: #585855 !important;
   padding: 2px 12px !important;
+}
+
+/* .form-group {
+  margin-bottom: 0px !important;
+} */
+
+
+#tipo_doc{
+  font-size: 1em;
+}
+.actions a{
+  padding: 2px 4px !important;
+  margin-left: 3px;
+}
+
+#form-modal label{
+  font-weight: bold !important;
+  color: #092957;
+}
+
+#table_documentp thead th{
+  width: 100%;
+  padding: 0.2rem 0.2rem;
+  color: white;
+  white-space: pre-line;
+}
+
+#table_documentp td, #table_documentp th{
+  vertical-align: middle;
+}
+
+#table_documentp td, #table_documentp th{
+  vertical-align: middle;
+}
+
+#table_documentp tbody tr td{
+  padding: 0.2rem 0.5rem;
+  width: auto !important;
+  height: 35px !important;
+  white-space: pre-line;
+}
+
+.actions-button{
+  max-width: 170px !important;
+}
+
+.actions-button a{
+  margin-left: .2rem;
+  padding: 0rem 0rem;
+}
+
+.actions-button .btn span{
+  font-size: 0.7rem;
+}
+
+.cell-name{
+   max-width: 130px !important;
+}
+
+.cell-price{
+  max-width: 80px !important;
+}
+
+.cell-short{
+  max-width: 70px;
+}
+
+.dataTables_wrapper .dataTable .btn{
+  width: 30px;
+  padding: 0 0;
+}
+
+.dataTable tr.selected{
+  background-color: #0C74E8 !important;
+  color: #fff !important;
+}
+
+.editableform .form-control{
+  height: 1.8rem;
+}
+
+.editable-buttons .btn{
+  width: 30px;
+  font-size: 0.4rem !important;
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .375rem .375rem;
+  font-size: .7rem !important;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out
+}
+
+.editable-buttons .btn i{
+  font-size: .7rem;
+}
+
+/* Extra very large devices (large desktops, 1500px and up) */
+@media (min-width: 1500px) {
+  .cell-name{
+     max-width: 180px !important;
+  }
+
+  .cell-price{
+    max-width: 120px !important;
+  }
+
+  .cell-short{
+    max-width: 100px;
+  }
 }

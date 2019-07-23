@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Projects;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use App\User;
-use App\Documentp;
-use App\Documentp_cart;
-use App\Documentp_status_user;
-use App\Deny_docpcomment;
-use App\Documentp_project;
-use App\Mail\SolicitudCompraAprobada;
+use App\Models\Projects\Documentp;
+use App\Models\Projects\Documentp_cart;
+use App\Models\Projects\Documentp_status_user;
+use App\Models\Projects\Deny_docpcomment;
+use App\Models\Projects\Documentp_project;
+// use App\Mail\SolicitudCompraAprobada;
 use Mail;
 use Auth;
 use DB;
@@ -35,6 +36,11 @@ class DocumentpHistoryController extends Controller
     public function view_project_advance()
     {
         return view('permitted.documentp.history_documentp_advance');
+    }
+
+    public function view_project_advance_success()
+    {
+        return view('permitted.documentp.history_documentp_advance_success');
     }
 
     public function get_estimation_site($id_anexo, $tipo_cambio)
@@ -72,8 +78,8 @@ class DocumentpHistoryController extends Controller
       if(auth()->user()->can('View level zero documentp notification')){
         //$result = DB::select('CALL px_documentop_mensual_all(?)' , array($date));
         $result = DB::select('CALL px_documentop_mensual(?,?)' , array($date, $id_user));
-      }else{
-        ($input_date_i != '') ? $result = DB::select('CALL px_documentop_mensual_all(?)' , array($date)) : $result = DB::select('CALL px_documentop_year_all(?)' , array($date));
+      }else {
+         $result = DB::select('CALL px_documentop_mensual_all(?)' , array($date));
       }
 
       return $result;
@@ -127,11 +133,9 @@ class DocumentpHistoryController extends Controller
       $cart = $id_cart;
       $status = [];
       $data = DB::select('CALL px_docupentop_materialesXcarrito(?)' , array($cart));
-
       if($data == []){
         return view('permitted.documentp.empty_cart');
       }
-
       $tipo_cambio = $data[0]->tipo_cambio;
       $collection = collect($data);
       $select_status = DB::table('orders_products')->select('id','name')->get();
@@ -146,6 +150,22 @@ class DocumentpHistoryController extends Controller
       $equipo_activo = $collection->whereIn('categoria_id', [4, 6, 14]);
       $materiales = $collection->whereNotIn('categoria_id', [4, 6, 7, 14]);
       $mano_obra = $collection->where('categoria_id', 7);
+      foreach ($equipo_activo as $ea) {
+          $ea->cantidad = floor($ea->cantidad);
+          $ea->cantidad_sugerida = floor($ea->cantidad_sugerida);
+          $ea->porcentaje_compra = floor($ea->porcentaje_compra);
+      }
+      foreach ($materiales as $m) {
+          $m->cantidad = floor($m->cantidad);
+          $m->cantidad_sugerida = floor($m->cantidad_sugerida);
+          $m->porcentaje_compra = floor($m->porcentaje_compra);
+      }
+      foreach ($mano_obra as $mo) {
+          $mo->cantidad = floor($mo->cantidad);
+          $mo->cantidad_sugerida = floor($mo->cantidad_sugerida);
+          $mo->porcentaje_compra = floor($mo->porcentaje_compra);
+      }
+
       if (auth()->user()->can('View level zero documentp notification')) {
         return view('permitted.documentp.table_products_modal_itc', compact('equipo_activo', 'materiales', 'mano_obra', 'status', 'tipo_cambio'))->render();
       }else{
@@ -179,6 +199,11 @@ class DocumentpHistoryController extends Controller
             ->select('documentp_motives.name')->where('id_doc', $id_doc)->get();
 
         $motivo_name = $motivo[0]->name;
+
+        $docp_advance->instalacion_total = floor($docp_advance->instalacion_total);
+        $docp_advance->configuracion_total = floor($docp_advance->configuracion_total);
+        $docp_advance->test_total = floor($docp_advance->test_total);
+        $docp_advance->total_global = floor($docp_advance->total_global);
 
         if (auth()->user()->can('View level zero documentp notification')) {
           return view('permitted.documentp.table_project_advance_itc', compact('docp_advance', 'motives'))->render();
@@ -214,12 +239,28 @@ class DocumentpHistoryController extends Controller
       $project->comentario = $request->comentario;
       $project->fecha_inicio = $request->date_start;
       $project->fecha_final = $request->date_end;
+      $project->fecha_firma = $request->date_signature;
       $project->updated_at = \Carbon\Carbon::now();
       $project->save();
 
       $flag = "true";
 
       return $flag;
+    }
+
+    public function get_comment_project($id)
+    {
+      $result = Documentp_project::where('id_doc', $id)->get();
+
+      return $result;
+    }
+
+    public function update_comment_project(Request $request)
+    {
+      $project = Documentp_project::where('id_doc', $request->id_doc)
+                ->update(['comentario_manager' => $request->comment]);
+
+      return "true";
     }
 
     public function check_document_type($id_doc)
@@ -336,7 +377,7 @@ class DocumentpHistoryController extends Controller
        $valor= 'false';
        $comment = $request->comm;
 
-      if (auth()->user()->can('View level one documentp notification')){
+      if (auth()->user()->can('View level two documentp notification')){
         $count_md = DB::table('documentp')->where('id', '=', $doc_id)->where('status_id', '!=', '4')->count();
         if ($count_md != '0') {
           $sql = DB::table('documentp')->where('id', '=', $doc_id)->update(['status_id' => '4', 'updated_at' => Carbon::now()]);
@@ -355,7 +396,7 @@ class DocumentpHistoryController extends Controller
           $valor= 'true';
         }
       }
-      if (auth()->user()->can('View level two documentp notification')){
+      if (auth()->user()->can('View level three documentp notification')){
         $count_md = DB::table('documentp')->where('id', '=', $doc_id)->where('status_id', '!=', '4')->count();
         if ($count_md != '0') {
           $sql = DB::table('documentp')->where('id', '=', $doc_id)->update(['status_id' => '4', 'updated_at' => Carbon::now()]);

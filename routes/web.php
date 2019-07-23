@@ -255,21 +255,81 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/testWebSer', 'Tools\GuestToolsController@checkWebSer');
 
   //MODULO DE COMPRAS - Documento P / M
-	Route::resource('documentp', 'DocumentpController', ['only' => [
-	   'store'
-	]]);
-	Route::get('/documentp_cart', 'ShoppingCart\DocumentpCartController@index');
-	Route::get('items/ajax/{type}/{aps}/{api}/{ape}/{firewalls}/{switches}/{switch_cant}',
-	['uses'  => 'ShoppingCart\DocumentpCartController@getItemType'])->where('type', 'first|second');
-  Route::get('items/ajax/four/{api}/{ape}', ['uses'  => 'ShoppingCart\DocumentpCartController@getMoProducts']);
-  Route::get('items/ajax/four/{api}/{ape}/{id_doc}', ['uses'  => 'ShoppingCart\DocumentpCartController@getMoProductsCart']);
-	Route::get('items/ajax/third/{category}', ['uses'  => 'ShoppingCart\DocumentpCartController@getCategories']);
-	Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'ShoppingCart\DocumentpCartController@getCategoriesDescription']);
-	Route::get('/documentp_invoice/{id_documentp}/{id_cart}', 'DocumentpController@export_invoice');
-	Route::get('/update_cant_cart/{id}/{cant}/{porcentaje_compra}', 'DocumentpController@update_cantidad_recibida');
-	Route::get('/update_status_product/{id}/{status}', 'DocumentpController@update_status_product');
-	Route::get('/update_motive_project/{id}/{motive}', 'DocumentpController@update_motive_project');
-	Route::get('/update_purchase_order/{id}/{order}', 'DocumentpController@update_purchase_order');
+  Route::resource('documentp', 'DocumentpController', ['only' => [
+     'store'
+  ]]);
+  Route::get('/documentp_cart', 'Projects\DocumentpCartController@index');
+  Route::get('items/ajax/{type}/{aps}/{api}/{ape}/{firewalls}/{switches}/{switch_cant}',
+  ['uses'  => 'Projects\DocumentpCartController@getItemType'])->where('type', 'first|second');
+  Route::get('items/ajax/four/{api}/{ape}', ['uses'  => 'DocumentpCartController@getMoProducts']);
+  Route::get('items/ajax/four/{api}/{ape}/{id_doc}', ['uses'  => 'DocumentpCartController@getMoProductsCart']);
+  Route::get('items/ajax/third/{category}', ['uses'  => 'DocumentpCartController@getCategories']);
+  Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'DocumentpCartController@getCategoriesDescription']);
+  Route::get('/documentp_invoice/{id_documentp}/{id_cart}', 'Projects\DocumentpController@export_invoice');
+  Route::get('/update_cant_cart/{id}/{cant}/{porcentaje_compra}', 'Projects\DocumentpController@update_cantidad_recibida');
+  Route::get('/update_fecha_entrega/{id}/{date}', 'Projects\DocumentpController@update_fecha_entrega');
+  Route::get('/update_status_product/{id}/{status}', 'Projects\DocumentpController@update_status_product');
+  Route::get('/update_motive_project/{id}/{motive}', 'Projects\DocumentpController@update_motive_project');
+  Route::get('/update_purchase_order/{id}/{order}', 'Projects\DocumentpController@update_purchase_order');
+  Route::get('/get_comment_documentp_advance/id_doc/{id}', 'Projects\DocumentpHistoryController@get_comment_project');
+  Route::post('/set_comment_documentp_advance', 'Projects\DocumentpHistoryController@update_comment_project');
+  //Historial documento P
+  Route::get('/view_history_documentp', 'Projects\DocumentpHistoryController@index');
+  Route::get('/view_history_auth_documentp', 'Projects\DocumentpHistoryController@view_auth');
+  Route::get('/view_doc_delivery', 'Projects\DocumentpHistoryController@view_delivery');
+  Route::get('/view_project_doc_p', 'Projects\DocumentpHistoryController@view_project_advance');
+  Route::get('/view_project_docp_success', 'Projects\DocumentpHistoryController@view_project_advance_success');
+  Route::get('/documentp_table_products/{id_documentp}/{id_cart}', 'Projects\DocumentpHistoryController@get_table_products');
+  Route::get('/documentp_table_project_advance/id_doc/{id_documentp}', 'Projects\DocumentpHistoryController@get_table_project_advance');
+  Route::post('/update_advace_project', 'Projects\DocumentpHistoryController@update_project_advance');
+  Route::get('/documentp_header/data/{id}', 'Projects\DocumentpHistoryController@get_header');
+  Route::get('/documentp_header/data_deny/{id}', 'Projects\DocumentpHistoryController@get_deny_comment');
+  Route::get('/documentp_header/data_status_user/{id}', 'Projects\DocumentpHistoryController@get_status_user');
+  Route::post('/view_request_documentp_zero', 'Projects\DocumentpHistoryController@get_history_documentp');
+  Route::post('/get_documentp_auth', 'Projects\DocumentpHistoryController@get_history_auth_documentp');
+  Route::post('/get_documentp_advance', 'Projects\DocumentpHistoryController@get_history_project_advance');
+  Route::post('/get_documentp_delivery', 'Projects\DocumentpHistoryController@get_history_delivery_documentp');
+  Route::get('/documentp_table_logs/data/{id_documentp}', 'Projects\DocumentpHistoryController@get_history_logs');
+  Route::get('/get_vertical_anexo/anexo/{id}', 'Projects\DocumentpController@get_vertical_anexo');
+  Route::get('/estimation_site_table/{id_anexo}/{tipo_cambio}', 'Projects\DocumentpHistoryController@get_estimation_site');
+  Route::get('/budget_site_table/{id_anexo}/{tipo_cambio}/{date}', 'Projects\DocumentpHistoryController@get_budgettable_site');
+  //Editar Documento P
+  Route::post('/edit_cart', 'Projects\EditDocumentPController@index'); //Vista del formulario para editar
+  Route::get('/get_shopping_cart/id/{id}', 'Projects\EditDocumentPController@getShoppingCart');
+  Route::post('/edit_documentp', 'Projects\EditDocumentPController@edit');
+  Route::post('/get_data_project', 'Projects\EditDocumentPController@get_data_project');
+  Route::get('/view_edit_projects', 'Projects\EditDocumentPController@edit_project');
+  Route::post('/edit_form_docp', 'Projects\EditDocumentPController@update_form_project');
+  Route::post('/set_servmensual_documentp', 'Projects\EditDocumentPController@update_servicio_mensual');
+  Route::post('/set_priority_documentp', 'Projects\EditDocumentPController@update_priority');
+  Route::post('/set_alert_documentp_advance', 'Projects\EditDocumentPController@update_alert');
+  Route::post('/set_statusfact_documentp_advance', 'Projects\EditDocumentPController@update_status_fact');
+  //Documento P Autorizaciones
+  Route::post('/send_item_doc_new', 'Projects\DocumentpHistoryController@approval_one');
+  Route::post('/send_item_doc_auth', 'Projects\DocumentpHistoryController@approval_two');
+  Route::post('/send_item_doc_delivery', 'Projects\DocumentpHistoryController@delivery_doc');
+  Route::post('/deny_documentp', 'Projects\DocumentpHistoryController@deny_docp');
+  //Dashboard Documento
+  Route::get('/view_dashboard_project', 'Projects\DocumentpDashboardController@index');
+  Route::get('/get_count_all_doctype', 'Projects\DocumentpDashboardController@get_count_all_doctype');
+  Route::get('/get_status_project', 'Projects\DocumentpDashboardController@get_status_project');
+  Route::get('/get_delay_projects', 'Projects\DocumentpDashboardController@get_delay_projects');
+  Route::get('/get_delay_motives', 'Projects\DocumentpDashboardController@get_delay_motives');
+  Route::get('/get_rentas_perdidas', 'Projects\DocumentpDashboardController@get_rentas_perdidas');
+  Route::get('/get_presupuesto_ejercido_prom', 'Projects\DocumentpDashboardController@get_presupuesto_ejercido_prom');
+  Route::get('/get_table_atraso_filterby_motivo/id/{id}', 'Projects\DocumentpDashboardController@get_table_atraso_filterby_motivo');
+  Route::get('/get_table_atraso_filterby_servicio/{tipo_servicio}/{atraso}', 'Projects\DocumentpDashboardController@get_table_atraso_filterby_servicio');
+  //COTIZADOR
+  Route::get('/quoting', 'QuotingController@index');
+  Route::post('/quoating_create', 'QuotingController@store');
+  Route::get('/view_quotig_history', 'QuotingController@index_history');
+  Route::get('/view_auth_history_quoting', 'QuotingController@view_auth');
+  Route::get('/quoting_table_products/{id_documentp}/{id_cart}', 'QuotingController@get_table_products');
+  Route::get('/quoting_invoice/{id_documentp}/{id_cart}', 'QuotingController@export_invoice');
+  Route::post('/view_request_quoting', 'QuotingController@get_history_quoting');
+  Route::post('/get_quoting_auth', 'QuotingController@get_history_auth_quoting');
+  Route::post('/edit_cart_quoting', 'QuotingEditController@index'); //Vista del formulario para editar
+  Route::post('/edit_quoting', 'QuotingEditController@edit');
 
   //Notificaciones viaticos
   Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');

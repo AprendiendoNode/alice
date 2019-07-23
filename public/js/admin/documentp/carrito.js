@@ -84,7 +84,6 @@ function leerDatosProduct(producto){
         precio_total : precioTotal.toFixed(2),
         precio_total_usd : precio_usd.toFixed(2)
     }
-    console.log(infoProducto);
 
     insertarCarrito(infoProducto);
 }
@@ -118,9 +117,8 @@ function guardarProductoLocalStorage(producto){
     let productos;
 
     productos = obtenerProductosLocalStorage();
-
     productos.push(producto);
-    console.log(productos);
+
     localStorage.setItem('productos', JSON.stringify(productos));
 }
 

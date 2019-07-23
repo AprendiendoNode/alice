@@ -117,9 +117,8 @@ function guardarProductoLocalStorage(producto){
     let productos;
 
     productos = obtenerProductosLocalStorage();
-
     productos.push(producto);
-    console.log(productos);
+
     localStorage.setItem('productos', JSON.stringify(productos));
 }
 

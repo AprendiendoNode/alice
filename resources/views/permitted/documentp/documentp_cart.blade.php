@@ -43,41 +43,17 @@
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script src="{{ asset('/plugins/momentupdate/moment-with-locales.js')}}"></script>
-    <!-- FormValidation -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
     <!-- FormValidation plugin and the class supports validating Bootstrap form -->
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.steps.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-
-
-    <!-- FormValidation -->
+    <!-- FormValidation Wizard steps-->
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master-two/steps.css')}}" >
-    <!-- FormValidation plugin and the class supports validating Bootstrap form -->
-    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
 
 
-
-    <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
-
-    <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
-    <script src="{{ asset('/plugins/momentupdate/moment-with-locales.js')}}"></script>
-    <!-- FormValidation -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
-    <!-- FormValidation plugin and the class supports validating Bootstrap form -->
-    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.steps.min.js')}}"></script>
-    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
-    <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master-two/steps.css')}}" >
     <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
-    <!-- FormValidation plugin and the class supports validating Bootstrap form -->
-    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
-    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
-
     <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
 

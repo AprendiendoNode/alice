@@ -39,6 +39,12 @@ function documentp_table(datajson, table){
   vartable.fnClearTable();
   let delivery = datajson.filter(data => data.status == 'Entregado');
   $.each(delivery, function(index, data){
+    let type_doc = '';
+    if(data.doc_type == 1){
+      type_doc = 'P';
+    }else{
+      type_doc = 'M';
+    }
   vartable.fnAddData([
     data.fecha,
     data.nombre_proyecto,
@@ -50,7 +56,7 @@ function documentp_table(datajson, table){
     data.num_edit,
     data.porcentaje_compra + '%',
     data.atraso,
-    '-',
+    type_doc,
     '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fa fa-file-pdf-o"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>',
     ]);
   });
@@ -148,7 +154,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8,9,10 ],
+                columns: [ 0,1,2,3,4,5,6,7,8,9,10,11 ],
                 modifier: {
                     page: 'all',
                 }
@@ -178,7 +184,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8,9,10 ],
+                columns: [ 0,1,2,3,4,5,6,7,8,9,10,11 ],
                 modifier: {
                     page: 'all',
                 }
@@ -208,7 +214,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8,9,10 ],
+                columns: [ 0,1,2,3,4,5,6,7,8,9,10,11 ],
                 modifier: {
                     page: 'all',
                 }

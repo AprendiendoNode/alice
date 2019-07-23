@@ -124,6 +124,281 @@
       </div>
       <div  class="row fields_docp">
         <section id="products-grid" class="products-grid">
+          <ul id="lista-productos" class="cards row" style="position: relative;">
+            <li class="cards__item">
+              <div class="card">
+                <div class="header">
+                  <span class="categoria">Equipo activo</span>
+                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
+                </div>
+                <div class="card__content">
+                  <div class="card__title">
+                    <a  class="" data-toggle="tooltip" data-placement="top" title="MIKROTIK ROUTERBOARD CCR1036-12G-4S">R310</a>
+
+                  </div>
+                  <div class="row">
+                    <p class="col-md-12 text-price">$
+                      <span class="card_price">2,500.00</span>
+                      <span class="card_currency">USD</span>
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                    <h6>Cant. Sugerida</h6>
+                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
+                    </div>
+                    <div class="col-6">
+                    <h6>Cant. Requerida</h6>
+                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
+                    </div>
+                  </div>
+
+                  <button type="button"
+                     class="btn btn-danger agregar-carrito">
+                     <i class="fas fa-cart-plus"></i>
+                   </button>
+                </div>
+              </div>
+            </li>
+            <li class="cards__item">
+              <div class="card">
+                <div class="header">
+                  <span class="categoria">Equipo activo</span>
+                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
+                </div>
+                <div class="card__content">
+                  <div class="card__title">
+                    R310
+                  </div>
+                  <div class="row">
+                    <p class="col-md-12 text-price">$
+                      <span class="card_price">2,500.00</span>
+                      <span class="card_currency">USD</span>
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                    <h6>Cant. Sugerida</h6>
+                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
+                    </div>
+                    <div class="col-6">
+                    <h6>Cant. Requerida</h6>
+                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
+                    </div>
+                  </div>
+
+                  <button type="button"
+                     class="btn btn-danger agregar-carrito">
+                     <i class="fas fa-cart-plus"></i>
+                   </button>
+                </div>
+              </div>
+            </li>
+            <li class="cards__item">
+              <div class="card">
+                <div class="header">
+                  <span class="categoria">Equipo activo</span>
+                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
+                </div>
+                <div class="card__content">
+                  <div class="card__title">
+                    R310
+                  </div>
+                  <div class="row">
+                    <p class="col-md-12 text-price">$
+                      <span class="card_price">2,500.00</span>
+                      <span class="card_currency">USD</span>
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                    <h6>Cant. Sugerida</h6>
+                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
+                    </div>
+                    <div class="col-6">
+                    <h6>Cant. Requerida</h6>
+                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
+                    </div>
+                  </div>
+
+                  <button type="button"
+                     class="btn btn-danger agregar-carrito">
+                     <i class="fas fa-cart-plus"></i>
+                   </button>
+                </div>
+              </div>
+            </li>
+            <li class="cards__item">
+              <div class="card">
+                <div class="header">
+                  <span class="categoria">Equipo activo</span>
+                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
+                </div>
+                <div class="card__content">
+                  <div class="card__title">
+                    R310
+                  </div>
+                  <div class="row">
+                    <p class="col-md-12 text-price">$
+                      <span class="card_price">2,500.00</span>
+                      <span class="card_currency">USD</span>
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                    <h6>Cant. Sugerida</h6>
+                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
+                    </div>
+                    <div class="col-6">
+                    <h6>Cant. Requerida</h6>
+                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
+                    </div>
+                  </div>
+
+                  <button type="button"
+                     class="btn btn-danger agregar-carrito">
+                     <i class="fas fa-cart-plus"></i>
+                   </button>
+                </div>
+              </div>
+            </li>
+            <li class="cards__item">
+              <div class="card">
+                <div class="header">
+                  <span class="categoria">Equipo activo</span>
+                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
+                </div>
+                <div class="card__content">
+                  <div class="card__title">
+                    R310
+                  </div>
+                  <div class="row">
+                    <p class="col-md-12 text-price">$
+                      <span class="card_price">2,500.00</span>
+                      <span class="card_currency">USD</span>
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                    <h6>Cant. Sugerida</h6>
+                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
+                    </div>
+                    <div class="col-6">
+                    <h6>Cant. Requerida</h6>
+                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
+                    </div>
+                  </div>
+
+                  <button type="button"
+                     class="btn btn-danger agregar-carrito">
+                     <i class="fas fa-cart-plus"></i>
+                   </button>
+                </div>
+              </div>
+            </li>
+            <li class="cards__item">
+              <div class="card">
+                <div class="header">
+                  <span class="categoria">Equipo activo</span>
+                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
+                </div>
+                <div class="card__content">
+                  <div class="card__title">
+                    R310
+                  </div>
+                  <div class="row">
+                    <p class="col-md-12 text-price">$
+                      <span class="card_price">2,500.00</span>
+                      <span class="card_currency">USD</span>
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                    <h6>Cant. Sugerida</h6>
+                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
+                    </div>
+                    <div class="col-6">
+                    <h6>Cant. Requerida</h6>
+                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
+                    </div>
+                  </div>
+
+                  <button type="button"
+                     class="btn btn-danger agregar-carrito">
+                     <i class="fas fa-cart-plus"></i>
+                   </button>
+                </div>
+              </div>
+            </li>
+            <li class="cards__item">
+              <div class="card">
+                <div class="header">
+                  <span class="categoria">Equipo activo</span>
+                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
+                </div>
+                <div class="card__content">
+                  <div class="card__title">
+                    R310
+                  </div>
+                  <div class="row">
+                    <p class="col-md-12 text-price">$
+                      <span class="card_price">2,500.00</span>
+                      <span class="card_currency">USD</span>
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                    <h6>Cant. Sugerida</h6>
+                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
+                    </div>
+                    <div class="col-6">
+                    <h6>Cant. Requerida</h6>
+                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
+                    </div>
+                  </div>
+
+                  <button type="button"
+                     class="btn btn-danger agregar-carrito">
+                     <i class="fas fa-cart-plus"></i>
+                   </button>
+                </div>
+              </div>
+            </li>
+            <li class="cards__item">
+              <div class="card">
+                <div class="header">
+                  <span class="categoria">Equipo activo</span>
+                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
+                </div>
+                <div class="card__content">
+                  <div class="card__title">
+                    R310
+                  </div>
+                  <div class="row">
+                    <p class="col-md-12 text-price">$
+                      <span class="card_price">2,500.00</span>
+                      <span class="card_currency">USD</span>
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                    <h6>Cant. Sugerida</h6>
+                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
+                    </div>
+                    <div class="col-6">
+                    <h6>Cant. Requerida</h6>
+                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
+                    </div>
+                  </div>
+
+                  <button type="button"
+                     class="btn btn-danger agregar-carrito">
+                     <i class="fas fa-cart-plus"></i>
+                   </button>
+                </div>
+              </div>
+            </li>
+          </ul>
         </section>
       </div>
       <br>

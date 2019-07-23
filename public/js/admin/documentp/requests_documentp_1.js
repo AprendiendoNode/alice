@@ -1,4 +1,7 @@
 $(function() {
+  //Configuracion de x-editable jquery
+  $.fn.editable.defaults.mode = 'popup';
+  $.fn.editable.defaults.ajaxOptions = {type:'POST'};
   moment.locale('es');
   $('#date_to_search').datepicker({
     language: 'es',
@@ -17,6 +20,25 @@ $(function() {
 $("#boton-aplica-filtro").click(function(event) {
   table_permission_one();
 });
+
+function setPriority(id_doc, id_prioridad){
+  var _token = $('input[name="_token"]').val();
+  $.ajax({
+      type: "POST",
+      url: "/set_priority_documentp",
+      data: { id_doc : id_doc, id_prioridad : id_prioridad, _token : _token },
+      success: function (data){
+        if(data == "true"){
+          menssage_toast('Mensaje', '3', 'Prioridad actualizada' , '2000');
+        }else{
+          menssage_toast('Error', '2', 'Ocurrio un error inesperado' , '3000');
+        }
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+  });
+}
 
 function table_permission_one() {
   var objData = $('#search_info').find("select,textarea, input").serialize();
@@ -37,89 +59,106 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  let datajson_result = datajson.filter(data => data.status == 'Nuevo');
+  let datajson_result = datajson.filter(data => data.status != 'Denegado');
   $.each(datajson_result, function(index, data){
     let type_doc = '';
+    let badge = '';
     if(data.doc_type == 1){
       type_doc = 'P';
     }else{
       type_doc = 'M';
     }
+    switch (data.status) {
+      case 'Nuevo':
+        badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';
+        break;
+      case 'Reviso':
+        badge= '<span class="badge badge-warning badge-pill text-white">Revisado</span>';
+        break;
+       case 'Autorizado':
+         badge= '<span class="badge badge-success badge-pill text-white">Autorizado</span>';
+         break;
+       case 'Entregado':
+          badge= '<span class="badge badge-dark badge-pill text-white">Entregado</span>';
+          break;
+       default:
+         badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
+         break;
+    }
+
   vartable.fnAddData([
-    data.id,
     data.fecha,
     data.nombre_proyecto,
     '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     data.elaboro,
-  '<span class="label label-primary">'+data.status+'</span>',
+    badge,
     data.num_edit,
     data.porcentaje_compra + '%',
     data.atraso,
     type_doc,
-    '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a><a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fa fa-file-pdf-o"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a><a href="javascript:void(0);" onclick="deny_docp(this)" value="'+data.id+'" class="btn btn-warning btn-xs" role="button" data-target="#modal-deny" title="Denegar"><span class="fa fa-ban"></span></a>',
-    data.status,
-    data.cant_sug_total,
-    data.cant_req_total
+    '<a href="" data-type="select" data-pk="'+ data.id +'" data-title="Prioridad" data-value="' + data.id_prioridad + '" class="set-priority">',
+    '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a><a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a>',
+    data.status
     ]);
+
   });
 }
-var Configuration_table_responsive_documentp= {
-        "order": [[ 1, "desc" ]],
+var Configuration_table_responsive_documentp = {
         "select": true,
+        "order": [[ 1, "asc" ]],
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+        "fnDrawCallback": function() {
+          var source_priority = [{'value': 1, 'text': 'Baja'}, {'value': 2, 'text': 'Normal'}, {'value': 3, 'text': 'Alta'}];
+          var source_facturacion = [{'value': 0, 'text': 'No'}, {'value': 1, 'text': 'Si'}];
+          $('.set-priority').editable({
+              type : 'select',
+              source: function() {
+              return source_priority;
+            },
+            success: function(response, newValue) {
+              var id = $(this).data('pk');
+              console.log(id);
+              //setPriority(id, newValue);
+            }
+          });
+        },
         "columnDefs": [
             {
-                "targets": 0,
-                "checkboxes": {
-                  'selectRow': true
-                },
-                "width": "0.1%",
-                "createdCell": function (td, cellData, rowData, row, col){
-                  if ( cellData > 0 ) {
-                    if(rowData[13] != 'Nuevo'){
-                      this.api().cell(td).checkboxes.disable();
-                    }
-                    if(rowData[14] != null){
-                      if(rowData[14] != rowData[15]){
-                        $(td).parent().addClass('highlight-doc');
-                      }
-
-                    }
-                  }
-                },
-                "className": "text-center",
+              "targets": 0,
+              "width": "0.1%",
+              "className": "text-center cell-name",
             },
             {
               "targets": 1,
               "width": "0.1%",
-              "className": "text-center",
+              "className": "text-center cell-name",
             },
             {
               "targets": 2,
-              "width": "1.5%",
-              "className": "text-center",
+              "width": "0.1%",
+              "className": "text-right cell-price",
             },
             {
               "targets": 3,
-              "width": "0.5%",
-              "className": "text-right",
+              "width": "0.1%",
+              "className": "text-right cell-price",
             },
             {
               "targets": 4,
-              "width": "0.5%",
-              "className": "text-right",
+              "width": "0.1%",
+              "className": "text-right cell-price",
             },
             {
               "targets": 5,
-              "width": "0.2%",
-              "className": "text-right",
+              "width": "0.1%",
+              "className": "text-center cell-name",
             },
             {
               "targets": 6,
-              "width": "1.8%",
-              "className": "text-center",
+              "width": "0.1%",
+              "className": "text-center cell-short",
             },
             {
               "targets": 7,
@@ -134,7 +173,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 9,
               "width": "0.1%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 10,
@@ -148,89 +187,20 @@ var Configuration_table_responsive_documentp= {
             },
             {
               "targets": 12,
-              "width": "2.5%",
-              "className": "text-center actions",
+              "width": "3%",
+              "className": "text-center actions-button",
             },
             {
               "targets": 13,
+              "width": "0.1%",
+              "className": "text-center",
               "visible": false,
-              "searchable": false
-            },
-            {
-              "targets": 14,
-              "visible": false,
-              "searchable": false
-            },
-            {
-              "targets": 15,
-              "visible": false,
-              "searchable": false
             }
         ],
         dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +
               "<'row'<'col-sm-12'tr>>" +
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
               buttons: [
-                {
-                  text: '<i class="fa fa-check margin-r5"></i> Revisar Marcados',
-                  titleAttr: 'Revisar Marcados',
-                  className: 'btn bg-yellow',
-                  init: function(api, node, config) {
-                    $(node).removeClass('btn-default')
-                  },
-                  action: function ( e, dt, node, config ) {
-                    // $('#modal-confirmation').modal('show');
-                    swal({
-                      title: "Estás seguro?",
-                      text: "Se revisarán todos las solicitudes seleccionadas.!",
-                      type: "warning",
-                      showCancelButton: true,
-                      confirmButtonClass: "btn-danger",
-                      confirmButtonText: "Continuar.!",
-                      cancelButtonText: "Cancelar.!",
-                      closeOnConfirm: false,
-                      closeOnCancel: false
-                    },
-                    function(isConfirm) {
-                      if (isConfirm) {
-                        $('.cancel').prop('disabled', 'disabled');
-                        $('.confirm').prop('disabled', 'disabled');
-                        var rows_selected = $("#table_documentp").DataTable().column(0).checkboxes.selected();
-                        var _token = $('input[name="_token"]').val();
-                        // Iterate over all selected checkboxes
-                        var valores= new Array();
-                        $.each(rows_selected, function(index, rowId){
-                          valores.push(rowId);
-                        });
-                        if ( valores.length === 0){
-                          swal("Operación abortada", "Ningún Documento seleccionado :(", "error");
-                        }
-                        else {
-                          $.ajax({
-                            type: "POST",
-                            url: "/send_item_doc_new",
-                            data: { idents: JSON.stringify(valores), _token : _token },
-                            success: function (data){
-                              if (data === 'true') {
-                                swal("Operación Completada!", "Las solicitudes seleccionadas han sido afectadas.", "success");
-                                table_permission_one();
-                              }
-                              if (data === 'false') {
-                                swal("Operación abortada!", "Las solicitudes seleccionadas no han sido afectadas.", "error");
-                              }
-                            },
-                            error: function (data) {
-                              console.log('Error:', data);
-                            }
-                          });
-                        }
-
-                      } else {
-                        swal("Operación abortada", "Ningún Documento afectado :)", "error");
-                      }
-                    });
-                  }
-                },
                 {
                   extend: 'excelHtml5',
                   text: '<i class="fa fa-file-excel-o"></i> Excel',
@@ -254,7 +224,7 @@ var Configuration_table_responsive_documentp= {
                     $(node).removeClass('btn-default')
                   },
                   exportOptions: {
-                    columns: [ 1,2,3,4,5,6,7,8,9,10,11 ],
+                    columns: [ 0,1,2,3,4,5,6,7,8,9,10 ],
                     modifier: {
                       page: 'all',
                     }
@@ -284,7 +254,7 @@ var Configuration_table_responsive_documentp= {
                     $(node).removeClass('btn-default')
                   },
                   exportOptions: {
-                    columns: [ 1,2,3,4,5,6,7,8,9,10,11 ],
+                    columns: [ 0,1,2,3,4,5,6,7,8,9,10  ],
                     modifier: {
                       page: 'all',
                     }
@@ -313,7 +283,7 @@ var Configuration_table_responsive_documentp= {
                     $(node).removeClass('btn-default')
                   },
                   exportOptions: {
-                    columns: [ 1,2,3,4,5,6,7,8,9,10,11 ],
+                    columns: [ 0,1,2,3,4,5,6,7,8,9,10 ],
                     modifier: {
                       page: 'all',
                     }

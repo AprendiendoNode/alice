@@ -1,7 +1,4 @@
 $(function() {
-  //Configuracion de x-editable jquery
-  $.fn.editable.defaults.mode = 'popup';
-  $.fn.editable.defaults.ajaxOptions = {type:'POST'};
   moment.locale('es');
   $('#date_to_search').datepicker({
     language: 'es',
@@ -20,25 +17,6 @@ $(function() {
 $("#boton-aplica-filtro").click(function(event) {
   table_permission_one();
 });
-
-function setPriority(id_doc, id_prioridad){
-  var _token = $('input[name="_token"]').val();
-  $.ajax({
-      type: "POST",
-      url: "/set_priority_documentp",
-      data: { id_doc : id_doc, id_prioridad : id_prioridad, _token : _token },
-      success: function (data){
-        if(data == "true"){
-          menssage_toast('Mensaje', '3', 'Prioridad actualizada' , '2000');
-        }else{
-          menssage_toast('Error', '2', 'Ocurrio un error inesperado' , '3000');
-        }
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-  });
-}
 
 function table_permission_one() {
   var objData = $('#search_info').find("select,textarea, input").serialize();
@@ -59,7 +37,7 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  let datajson_result = datajson.filter(data => data.status != 'Denegado' && data.status == 'Nuevo');
+  let datajson_result = datajson.filter(data => data.status != 'Denegado');
   $.each(datajson_result, function(index, data){
   let type_doc = '';
   if(data.doc_type == 1){
@@ -113,36 +91,26 @@ function documentp_table(datajson, table){
         ]);
     }
   });
-
+  
 }
 var Configuration_table_responsive_documentp= {
         "order": [[ 1, "desc" ]],
         "select": true,
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
-        "fnDrawCallback": function() {
-          var source = [{'value': 1, 'text': 'Baja'}, {'value': 2, 'text': 'Normal'}, {'value': 3, 'text': 'Alta'}];
-          //Funcion para detectar cambio en algun descuento de un producto
-          $('.set-priority').editable({
-              type : 'select',
-              source: function() {
-              return source;
-            },
-            success: function(response, newValue) {
-              var id = $(this).data('pk');
-              setPriority(id, newValue);
-            }
-          });
-        },
         "columnDefs": [
             {
                 "targets": 0,
+                "createdRow": function(row, data) {
+                  console.log(data[13]);
+                    $(row).addClass('bg-red');
+                },
                 "checkboxes": {
                   'selectRow': true
                 },
                 "width": "0.1%",
                 "createdCell": function (td, cellData, rowData, row, col){
                   if ( cellData > 0 ) {
-                    if(rowData[14] != 'Nuevo'){
+                    if(rowData[14] != 'Reviso'){
                       this.api().cell(td).checkboxes.disable();
                     }
                     if(rowData[15] != null){
@@ -241,17 +209,17 @@ var Configuration_table_responsive_documentp= {
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
               buttons: [
                 {
-                  text: '<i class="fa fa-check margin-r5"></i> Revisar Marcados',
-                  titleAttr: 'Revisar Marcados',
-                  className: 'btn bg-yellow',
+                  text: '<i class="fa fa-check margin-r5"></i> Autorizar Marcados',
+                  titleAttr: 'Autorizar Marcados',
+                  className: 'btn bg-blue',
                   init: function(api, node, config) {
                     $(node).removeClass('btn-default')
                   },
                   action: function ( e, dt, node, config ) {
                     // $('#modal-confirmation').modal('show');
                     swal({
-                      title: "Estás seguro?",
-                      text: "Se revisarán todos las solicitudes seleccionadas.!",
+                      title: "¿Estás seguro?",
+                      text: "Se Autorizaran todos los Documentos P seleccionados!",
                       type: "warning",
                       showCancelButton: true,
                       confirmButtonClass: "btn-danger",
@@ -277,7 +245,7 @@ var Configuration_table_responsive_documentp= {
                         else {
                           $.ajax({
                             type: "POST",
-                            url: "/send_item_doc_new",
+                            url: "/send_item_doc_auth",
                             data: { idents: JSON.stringify(valores), _token : _token },
                             success: function (data){
                               if (data === 'true') {

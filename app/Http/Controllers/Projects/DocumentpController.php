@@ -1,19 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Projects;
 
 use Illuminate\Http\Request;
-use App\Documentp;
-use App\Documentp_cart;
-use App\In_Documentp_cart;
-use App\Documentp_project;
+use App\Http\Controllers\Controller;
 use App\User;
+use App\Models\Projects\Documentp;
+use App\Models\Projects\Documentp_cart;
+use App\Models\Projects\Documentp_status_user;
+use App\Models\Projects\Deny_docpcomment;
+use App\Models\Projects\Documentp_project;
 use View;
 use PDF;
 use Auth;
 use DB;
 use Mail;
-use App\Mail\SolicitudCompra;
+//use App\Mail\SolicitudCompra;
 
 class DocumentpController extends Controller
 {
@@ -218,6 +220,20 @@ class DocumentpController extends Controller
     $in_document_cart->order_status_id = $status;
     $in_document_cart->porcentaje_compra = $percent;
     $in_document_cart->save();
+  }
+
+  public function update_fecha_entrega($id, $date)
+  {
+
+    $newDate = date("Y-m-d", strtotime($date));
+    //dd($newDate);
+    $flag = "false";
+    $in_document_cart = In_Documentp_cart::find($id);
+    $in_document_cart->fecha_entrega = $newDate;
+    $in_document_cart->save();
+    $flag = "true";
+
+    return $flag;
   }
 
   public function update_status_product($id, $status)
