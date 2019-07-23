@@ -9,7 +9,7 @@
 
     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown" >
       <p class="mb-0 font-weight-normal float-left dropdown-header" v-if="notifications.length > 0">Notificaciones: {{ notifications.length }}</p>
-      <p class="mb-0 font-weight-normal float-left dropdown-header" v-else-if="notifications.length <= 0">Sin notificaciones</p>
+      <p class="mb-0 font-weight-normal float-left dropdown-header" v-else-if="notifications.length <= 0">Sin notificaciones de viáticos</p>
 
       <div v-for="notification in notifications">
         <a class="dropdown-item" v-bind:href="notification.data.link" v-if="notification.type ==  notification_a" >
@@ -20,7 +20,7 @@
             <h6 class="ellipsis font-weight-normal">Folio: {{ notification.data.folio }}
             </h6>
             <p class="font-weight-light small-text text-muted mb-0"> Estatus:  {{ notification.data.status }}</p>
-            <p class="font-weight-light small-text text-muted text-right mb-0">  {{ notification.data.date }} </p>
+            <p class="font-weight-light small-text text-muted text-right mb-0">  {{ notification.data.created_at }} </p>
           </div>
         </a>
         <a class="dropdown-item" v-else >
@@ -41,13 +41,16 @@
           return {
             key: "",
             notification_a: "App\\Notifications\\MessageViatic",
-            'notifications': []
+            'notifications': [],
+            interval: null
           }
         },
         mounted() {
+          this.interval = setInterval(function () {
             axios.get('../notificaciones').then(res => {
               this.notifications = res.data;
             });
+          }.bind(this), 3000);
         }
     }
 </script>

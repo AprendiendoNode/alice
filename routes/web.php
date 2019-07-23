@@ -347,7 +347,7 @@ Route::group(['middleware' => 'auth'], function () {
   //Denegar Viaticos
       Route::post('/deny_viatic', 'Viatics\RequestsViaticController@deny_viatic');
     //- Viaticos Solicitud
-    Route::get('/view_request_via', 'Viatics\RequestsViaticController@index');
+    Route::get('/view_request_via', 'Viatics\RequestsViaticController@index')->name('view_request_via');
     //- Todos los vitaticos
     Route::get('/view_request_all_via', 'Viatics\RequestViaticAllController@index');
     Route::get('/view_request_all_via_edit', 'Viatics\RequestViaticAllController@edit');

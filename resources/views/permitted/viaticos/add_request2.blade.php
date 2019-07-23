@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View add request of travel expenses') )
-    {{ trans('message.viaticos_dashboard_request') }}
+    {{ trans('message.viaticos_add_request') }}
   @else
   {{ trans('message.denied') }}
   @endif
@@ -10,7 +10,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View add request of travel expenses') )
-    {{ trans('message.breadcrumb_dashboard_request') }}
+    {{ trans('message.viaticos') }}
   @else
   {{ trans('message.denied') }}
   @endif

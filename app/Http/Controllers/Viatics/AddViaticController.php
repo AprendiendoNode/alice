@@ -24,6 +24,8 @@ use App\Models\Viatics\viatic_user_status;
 use App\Models\Viatics\Viatic_state_concept;
 use Mail;
 use App\Mail\SolicitudesV;
+use App\Models\Base\Message;
+use App\Notifications\MessageViatic;
 
 class AddViaticController extends Controller
 {
@@ -235,19 +237,47 @@ class AddViaticController extends Controller
         //$email_actual = trim($email_actual);
         $gerente_email = trim($gerente_email);
         $copias = ['bdejesus@sitwifi.com', $gerente_email];
-        Mail::to($email_actual)->cc($copias)->send(new SolicitudesV($parametros1, $parametros2));
+        //Mail::to($email_actual)->cc($copias)->send(new SolicitudesV($parametros1, $parametros2));
         //Mail::to($email_actual)->send(new SolicitudesV($parametros1, $parametros2));
       }else{
         $emails = [$email_actual, $email_bene];
         //array_push($emails, [$email_actual, $email_bene]);
         $gerente_email = trim($gerente_email);
         $copias = ['bdejesus@sitwifi.com', $gerente_email];
-        Mail::to($emails)->cc($copias)->send(new SolicitudesV($parametros1, $parametros2));
+        //Mail::to($emails)->cc($copias)->send(new SolicitudesV($parametros1, $parametros2));
         //Mail::to($emails)->send(new SolicitudesV($parametros1, $parametros2));
       }
 
-
       $folioxd = 'Operation complete! - Folio: ' . $folio_new;
+
+      //NOTIFICACIONES
+      $recipient_users = json_decode(User::permission('View level one notifications')->get()); //Todos los usuarios nivel 1
+      array_push($recipient_users, (object) array('id' => Auth::user()->id)); //Creador de la notificación
+      array_push($recipient_users, (object) array('id' => intval($user))); //Beneficiario del viático
+
+      $recipients = [];
+
+      foreach($recipient_users as $user) { array_push($recipients, $user->id); }
+
+      $recipients = array_unique($recipients);
+
+      foreach($recipients as $recipient_id) {
+
+        $message = Message::create([
+          'sender_id' => auth()->id(),
+          'recipient_id' => $recipient_id,
+          'body' =>  'Solicitud de viáticos',
+          'folio' => $folio_new,
+          'status' => 'Nuevo',
+          'date' => \Carbon\Carbon::now(),
+          'link' => route('view_request_via')
+        ]);
+
+        $recipient = User::find($recipient_id);
+        $recipient->notify(new MessageViatic($message));
+
+      }
+
       return back()->with('status', $folioxd);
     }
 
