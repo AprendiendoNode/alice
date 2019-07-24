@@ -31,6 +31,12 @@ class NotificationController extends Controller
       DatabaseNotification::find($id)->markAsRead();
       return back();
     }
+
+    public function readbyfolio($id)
+    {
+      DatabaseNotification::find($id)->markAsRead();
+    }
+
     public function destroy($id)
     {
       DatabaseNotification::find($id)->delete();

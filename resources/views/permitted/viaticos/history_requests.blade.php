@@ -56,8 +56,8 @@
                             <br />
                             <strong>Correo: </strong><small id="correo_user"></small>
                     <!--        <br />
-                            <strong>Beneficiario: </strong><small id="tipo_beneficiario"></small>
-                            <br /> -->
+                            <strong>Beneficiario: </strong><small id="tipo_beneficiario"></small>-->
+                            <br />
                             <strong>Gerente aprobar: </strong><small id="responsable"></small>
                             <br />
                             <strong>Folio del viaticos: </strong><small id="folio_solicitud"></small>

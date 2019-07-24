@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Viatics;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Auth\NotificationController;
 use DB;
 use Auth;
 use Carbon\Carbon;
@@ -23,6 +25,8 @@ use App\Models\Viatics\Viatic_state_concept;
 use Mail;
 use App\Mail\ConfirmacionV;
 use App\Mail\NotifViatic;
+use App\Models\Base\Message;
+use App\Notifications\MessageViatic;
 
 class RequestsViaticController extends Controller
 {
@@ -75,6 +79,30 @@ class RequestsViaticController extends Controller
 
       Mail::to($benef_email)->send(new NotifViatic($params));
       $valor= 'true';
+
+      $user_soli = viatic_user_status::select('user_id')->where([//Usuario que solicito el viatico
+        ['viatic_id', $viatic_id],
+        ['status_id', 1]
+      ])->value('user_id');
+
+      $benef_id=DB::table('users')->select('id')->where('email',$benef_email)->get();
+
+      $recipients=array_unique(array($user_soli,$benef_id[0]->id));
+
+      foreach($recipients as $recipient_id){
+        $message = Message::create([
+                    'sender_id' => auth()->id(), //USUARIO LOGUEADO
+                    'recipient_id' => $recipient_id, //USUARIO QUE RECIBE LA NOTIFICACION
+                    'body' =>  $service_name,
+                    'folio' => $folio,
+                    'status' => 'Denegado', //Status pendiente
+                    'date' => Carbon::now(),
+                    'link' => route('view_request_via'),
+                  ]);
+                  $recipient = User::find($recipient_id);
+                  $recipient->notify(new MessageViatic($message));
+      }
+
     }
   }
   return $valor;
@@ -103,7 +131,7 @@ public function history (Request $request) {
       return json_encode($result);
     }
     if (auth()->user()->can('View level two notifications')){ /*Notificaciones del usuario, con estatus pendiente*/
-      $result = DB::select('CALL  history_viatic_user_solicitado_aprobado_N2 (?,?)', array($date, $id_gerente));
+      $result = DB::select('CALL  history_viatic_user_solicitado_aprobado_N2 (?,?)', array($date, $id_gerente));info($date);info($id_gerente);
       return json_encode($result);
     }
     if (auth()->user()->can('View level three notifications')){ /*Notificaciones del usuario, con estatus aprueba*/
@@ -221,6 +249,7 @@ public function pertain_viatic (Request $request) { /*Me pertenece el viatico. 0
   return $result_find_pertain_viatic;
 }
 public function edit_status_one (Request $request) {
+  info($request);
   $viaticos_id = json_decode($request->idents);
   $user = Auth::user()->id;
   $user_email = Auth::user()->email;
@@ -267,7 +296,29 @@ public function edit_status_one (Request $request) {
     ];
     //$result = DB::select('CALL history_viatic_user_conceptos (?)', array($viaticos_id[$i]));
     Mail::to($benef_email)->send(new NotifViatic($params));
-  }
+    $NotificationOBJ= new NotificationController();
+    $leer=DB::table('notifications')->select('id')->where('data','like','%'.$folio.'%')->get();
+    foreach($leer as $folioleido){
+      //info($folioleido->id);
+      $NotificationOBJ->readbyfolio($folioleido->id);
+    }
+    // Notificacion
+    $recipient_notification= DB::Select('CALL px_iduser_viaticsXfolio (?)',array($folio));//Usuario que autoriza el viatico
+         $message = Message::create([
+              'sender_id' => auth()->id(), //USUARIO LOGUEADO
+              'recipient_id' => $recipient_notification[0]->id, //USUARIO QUE RECIBE LA NOTIFICACION
+              'body' =>  $service_name,
+              'folio' => $folio,
+              'status' => 'Pendiente', //Status pendiente
+              'date' => Carbon::now(),
+              'link' => route('view_request_via'),
+            ]);
+
+            $recipient = User::find($recipient_notification[0]->id);
+            $recipient->notify(new MessageViatic($message));
+
+
+    }
 
   return $valor;
 }
@@ -416,6 +467,52 @@ public function edit_status_two (Request $request) {
       ];
       $result = DB::select('CALL history_viatic_user_conceptos (?)', array($viaticos_id[$i]));
       Mail::to($benef_email)->send(new NotifViatic($params));
+      $NotificationOBJ= new NotificationController();
+      $leer=DB::table('notifications')->select('id')->where('data','like','%'.$folio.'%')->get();
+      foreach($leer as $folioleido){
+        //info($folioleido->id);
+        $NotificationOBJ->readbyfolio($folioleido->id);
+      }
+      // Notificacion
+      switch ($service) {
+        case 2:
+          // René González Sánchez
+            $recipient_notification_id= 14; //14;
+          break;
+        case 3:
+            // René González Sánchez
+            $recipient_notification_id= 14;
+        break;
+        case 4:
+              // John Thomas Walker Del Olmo
+            $recipient_notification_id= 13;
+        break;
+        case 5:
+                // Alejandro Espejo Sokol
+            $recipient_notification_id= 11;
+        break;
+        case 6:
+            // René González Sánchez
+            $recipient_notification_id= 14;
+        break;
+        default:
+          // code...
+          break;
+      }
+
+           $message = Message::create([
+                'sender_id' => auth()->id(), //USUARIO LOGUEADO
+                'recipient_id' => $recipient_notification_id, //USUARIO QUE RECIBE LA NOTIFICACION dependiendo el servicio
+                'body' =>  $service_name,
+                'folio' => $folio,
+                'status' => 'Verificado', //Status pendiente
+                'date' => Carbon::now(),
+                'link' => route('view_request_via'),
+              ]);
+
+              $recipient = User::find($recipient_notification_id);
+              $recipient->notify(new MessageViatic($message));
+
     }
     return $valor;
   }
@@ -535,6 +632,32 @@ public function edit_status_three (Request $request) {
       info($benef_email);
 
       Mail::to($benef_email)->send(new NotifViatic($params));
+      $NotificationOBJ= new NotificationController();
+      $leer=DB::table('notifications')->select('id')->where('data','like','%'.$folio.'%')->get();
+      foreach($leer as $folioleido){
+        //info($folioleido->id);
+        $NotificationOBJ->readbyfolio($folioleido->id);
+      }
+      //Notificacion
+      $Users_notif=User::permission('View level four notifications')->get();//Lista de usuarios
+      //info($Users_notif[0]['id']);
+      foreach($Users_notif as $user_notificado){
+        //info($user_notificado['id']);
+
+      $message = Message::create([
+           'sender_id' => auth()->id(), //USUARIO LOGUEADO
+           'recipient_id' => $user_notificado['id'], //USUARIO QUE RECIBE LA NOTIFICACION dependiendo el servicio
+           'body' =>  $service_name,
+           'folio' => $folio,
+           'status' => 'Aprobado',
+           'date' => Carbon::now(),
+           'link' => route('view_request_via'),
+         ]);
+
+         $recipient = User::find($user_notificado['id']);
+         $recipient->notify(new MessageViatic($message));
+
+       } //Fin foreach
     }
     return $valor;
   }
@@ -662,6 +785,34 @@ public function edit_status_four (Request $request) {
      }
 
      Mail::to($user_email)->send(new ConfirmacionV($parametros1, $parametros2));
+     $NotificationOBJ= new NotificationController();
+     $leer=DB::table('notifications')->select('id')->where('data','like','%'.$folio.'%')->get();
+     foreach($leer as $folioleido){
+       //info($folioleido->id);
+       $NotificationOBJ->readbyfolio($folioleido->id);
+     }
+     //Notificaciones
+     $user_soli = viatic_user_status::select('user_id')->where([//Usuario que solicito el viatico
+       ['viatic_id', $viaticos_id[$i]],
+       ['status_id', 1]
+     ])->value('user_id');
+
+     $recipients=array_unique(array($user_soli,$user_id));
+
+     foreach($recipients as $recipient_user_notif){
+     $message = Message::create([
+          'sender_id' => auth()->id(), //USUARIO LOGUEADO
+          'recipient_id' => $recipient_user_notif, //USUARIO QUE RECIBE LA NOTIFICACION dependiendo el servicio
+          'body' =>  $service_name,
+          'folio' => $folio,
+          'status' => 'Pagado',
+          'date' => Carbon::now(),
+          'link' => route('view_request_via'),
+        ]);
+
+        $recipient = User::find($recipient_user_notif);
+        $recipient->notify(new MessageViatic($message));
+        }
     }
     return $valor;
   }
