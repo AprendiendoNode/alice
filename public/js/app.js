@@ -33421,6 +33421,7 @@ var render = function() {
       "div",
       {
         staticClass: "dropdown-menu dropdown-menu-right navbar-dropdown",
+        staticStyle: { "max-height": "50vh", overflow: "auto" },
         attrs: { "aria-labelledby": "messageDropdown" }
       },
       [

@@ -237,14 +237,14 @@ class AddViaticController extends Controller
         //$email_actual = trim($email_actual);
         $gerente_email = trim($gerente_email);
         $copias = ['bdejesus@sitwifi.com', $gerente_email];
-        //Mail::to($email_actual)->cc($copias)->send(new SolicitudesV($parametros1, $parametros2));
+        Mail::to($email_actual)->cc($copias)->send(new SolicitudesV($parametros1, $parametros2));
         //Mail::to($email_actual)->send(new SolicitudesV($parametros1, $parametros2));
       }else{
         $emails = [$email_actual, $email_bene];
         //array_push($emails, [$email_actual, $email_bene]);
         $gerente_email = trim($gerente_email);
         $copias = ['bdejesus@sitwifi.com', $gerente_email];
-        //Mail::to($emails)->cc($copias)->send(new SolicitudesV($parametros1, $parametros2));
+        Mail::to($emails)->cc($copias)->send(new SolicitudesV($parametros1, $parametros2));
         //Mail::to($emails)->send(new SolicitudesV($parametros1, $parametros2));
       }
 

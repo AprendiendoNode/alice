@@ -333,7 +333,7 @@ Route::group(['middleware' => 'auth'], function () {
 
   //Notificaciones viaticos
   Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');
-  Route::get('/notificaciones_store', 'Viatics\ViaticController@store');
+  Route::get('/notificaciones_read/{id}', 'Auth\NotificationController@read');
 
   //- Viaticos Dashboard
   Route::get('/dashboard_viaticos', 'Viatics\DashboardViaticController@index');

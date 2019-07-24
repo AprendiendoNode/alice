@@ -7,7 +7,7 @@
     </a>
 
 
-    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown" >
+    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown" style="max-height: 50vh; overflow: auto;">
       <p class="mb-0 font-weight-normal float-left dropdown-header" v-if="notifications.length > 0">Notificaciones: {{ notifications.length }}</p>
       <p class="mb-0 font-weight-normal float-left dropdown-header" v-else-if="notifications.length <= 0">Sin notificaciones de viáticos</p>
 
@@ -51,6 +51,9 @@
               this.notifications = res.data;
             });
           }.bind(this), 3000);
-        }
+        },
+        beforeDestroy: function(){
+           clearInterval(this.interval);
+       }
     }
 </script>

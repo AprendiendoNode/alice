@@ -57,14 +57,18 @@ class MessageViatic extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->message->toArray(); //Guardo el mensaje en forma de array
-        // return []; //Definimos la informacion a almacenar
-        /* return [
-           'folio' => 'SP-JUL19-235885',
-           'estatus' => 'Elaboro',
-           'fecha' => '2019-07-10 11:330:36',
-           'link' => route('home'),
-         ];
-        */
+      $mensaje = $this->message->toArray();
+      if($mensaje['status'] == 'Denegado') {
+        $mensaje['link'] = "http://localhost:8000/notificaciones_read/".$this->id;
+      }
+      return $mensaje; //Guardo el mensaje en forma de array
+      // return []; //Definimos la informacion a almacenar
+      /* return [
+         'folio' => 'SP-JUL19-235885',
+         'estatus' => 'Elaboro',
+         'fecha' => '2019-07-10 11:330:36',
+         'link' => route('home'),
+       ];
+      */
     }
 }
