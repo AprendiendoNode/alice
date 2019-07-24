@@ -80,6 +80,13 @@ class RequestsViaticController extends Controller
       Mail::to($benef_email)->send(new NotifViatic($params));
       $valor= 'true';
 
+      $NotificationOBJ= new NotificationController();
+      $leer=DB::table('notifications')->select('id')->where('data','like','%'.$folio.'%')->get();
+      foreach($leer as $folioleido){
+        //info($folioleido->id);
+        $NotificationOBJ->readbyfolio($folioleido->id);
+      }
+
       $user_soli = viatic_user_status::select('user_id')->where([//Usuario que solicito el viatico
         ['viatic_id', $viatic_id],
         ['status_id', 1]

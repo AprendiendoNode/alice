@@ -29,7 +29,7 @@ class NotificationController extends Controller
     public function read($id)
     {
       DatabaseNotification::find($id)->markAsRead();
-      return back();
+      return redirect()->route('view_request_via');
     }
 
     public function readbyfolio($id)
