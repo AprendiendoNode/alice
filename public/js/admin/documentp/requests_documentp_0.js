@@ -60,10 +60,28 @@ function documentp_table(datajson, table){
   vartable.fnClearTable();
   $.each(datajson, function(index, data){
     let type_doc = '';
+    let badge = '';
     if(data.doc_type == 1){
       type_doc = 'P';
     }else{
       type_doc = 'M';
+    }
+    switch (data.status) {
+      case 'Nuevo':
+        badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';
+        break;
+      case 'Reviso':
+        badge= '<span class="badge badge-warning badge-pill text-white">Revisado</span>';
+        break;
+       case 'Autorizado':
+         badge= '<span class="badge badge-success badge-pill text-white">Autorizado</span>';
+         break;
+       case 'Entregado':
+          badge= '<span class="badge badge-dark badge-pill text-white">Entregado</span>';
+          break;
+       default:
+         badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
+         break;
     }
   vartable.fnAddData([
     data.fecha,
@@ -72,13 +90,13 @@ function documentp_table(datajson, table){
     '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     data.elaboro,
-  '<span class="label label-primary">'+data.status+'</span>',
+    badge,
     data.num_edit,
     data.porcentaje_compra + '%',
     data.atraso,
     type_doc,
     '<a href="" data-type="number" data-pk="'+ data.id +'" data-title="Serv. mensual" data-value="' + data.servicio_mensual + '" class="set-servmensual">',
-    '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a><a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fa fa-file-pdf-o"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>',
+    '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a><a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>',
     ]);
   });
 }
@@ -108,47 +126,47 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 1,
               "width": "1.5%",
-              "className": "text-center",
+              "className": "text-center cell-name",
             },
             {
               "targets": 2,
               "width": "0.5%",
-              "className": "text-right",
+              "className": "text-right cell-price",
             },
             {
               "targets": 3,
               "width": "0.5%",
-              "className": "text-right",
+              "className": "text-right cell-price",
             },
             {
               "targets": 4,
               "width": "0.5%",
-              "className": "text-right",
+              "className": "text-right cell-price",
             },
             {
               "targets": 5,
               "width": "1.6%",
-              "className": "text-center",
+              "className": "text-center cell-name",
             },
             {
               "targets": 6,
               "width": "0.3%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 7,
               "width": "0.1%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 8,
               "width": "0.2%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 9,
               "width": "0.2%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 10,
@@ -158,12 +176,12 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 11,
               "width": "0.2%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 12,
               "width": "1.5%",
-              "className": "text-center actions",
+              "className": "text-center actions-button",
             }
         ],
         dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +

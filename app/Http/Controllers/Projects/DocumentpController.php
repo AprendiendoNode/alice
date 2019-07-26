@@ -10,12 +10,13 @@ use App\Models\Projects\Documentp_cart;
 use App\Models\Projects\Documentp_status_user;
 use App\Models\Projects\Deny_docpcomment;
 use App\Models\Projects\Documentp_project;
+use App\Models\Projects\In_Documentp_cart;
 use View;
 use PDF;
 use Auth;
 use DB;
 use Mail;
-//use App\Mail\SolicitudCompra;
+use App\Mail\SolicitudCompra;
 
 class DocumentpController extends Controller
 {
@@ -149,8 +150,8 @@ class DocumentpController extends Controller
           'total' => $total
         ];
 
-        Mail::to('rdelgado@sitwifi.com')->cc('aarciga@sitwifi.com')->send(new SolicitudCompra($parametros1));
-
+        //Mail::to('rdelgado@sitwifi.com')->cc('aarciga@sitwifi.com')->send(new SolicitudCompra($parametros1));
+        Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompra($parametros1));
         $flag = "true";
 
     } catch(\Exception $e){
@@ -314,6 +315,14 @@ class DocumentpController extends Controller
         return (string)$num_folio;
       }
     }
+  }
+
+  public function hotel_cadena(Request $request)
+  {
+      $id = $request->data_one;
+      //$hotel = DB::table('hotels')->select('id', 'Nombre_hotel')->where('cadena_id', $id)->get();
+      $hotel = DB::select('CALL get_hotel_cadena(?)', array($id));
+      return json_encode($hotel);
   }
 
   public function get_vertical_anexo($id)

@@ -4,7 +4,7 @@
     <h6>Paso 1 -Llenar datos y pedido de compras</h6>
     <section>
       <div class="row">
-        <div class="col-6 col-md-4">
+        <div class="col-6 col-md-4 col-lg-3">
           <div class="form-group">
             <label for="doc_type" class="">Tipo Documento</label>
               <select class="form-control form-control-sm" name="doc_type" id="doc_type">
@@ -21,34 +21,26 @@
             <label for="grupo_id" class="">Grupo</label>
               <select type="text" class="form-control form-control-sm select2" id="grupo_id" name="grupo_id" placeholder="">
                 <option value="0">Elegir</option>
-                {{-- @foreach ($grupos as $grupo_data)
+                @foreach ($grupos as $grupo_data)
                   <option value="{{$grupo_data->id}}">{{$grupo_data->name}}</option>
-                @endforeach --}}
+                @endforeach
               </select>
           </div>
-          <div class="form-group">
-            <label for="type_service" class="">Tipo de servicio</label>
-              <select class="form-control form-control-sm" id="type_service" name="type_service">
-                <option value="">Elegir...</option>
-                {{-- @foreach ($type_service as $type_service_data)
-                  <option value="{{$type_service_data->id}}">{{$type_service_data->name}}</option>
-                @endforeach --}}
-              </select>
-          </div>
+
           <div class="form-group fields_docp">
             <label for="sites" class="">Num. sitios</label>
             <input type="number" class="form-control form-control-sm" id="sites" name="sites" placeholder="">
           </div>
         </div>
         <!-------------------------------------------------------------------->
-        <div class="col-6 col-md-4">
+        <div class="col-6 col-md-4 col-lg-3">
           <div class="form-group">
             <label for="vertical" class="">Vertical</label>
               <select class="form-control form-control-sm" id="vertical" name="vertical">
                 <option value="0">Elegir...</option>
-                {{-- @foreach ($verticals as $vertical_data)
+                @foreach ($verticals as $vertical_data)
                   <option value="{{$vertical_data->id}}">{{$vertical_data->name}}</option>
-                @endforeach --}}
+                @endforeach
               </select>
           </div>
           <div id="" class="form-group fields_docp">
@@ -65,18 +57,9 @@
             <label for="oportunity" class="">Num. oportunidad</label>
               <input type="text" class="form-control form-control-sm" id="oportunity" name="oportunity" placeholder="">
           </div>
-          <div class="form-group">
-            <label for="fecha" class="">Propietario de la cuenta</label>
-              <select class="form-control form-control-sm" name="comercial" id="comercial">
-                <option value="">Elegir...</option>
-                {{-- @foreach ($comerciales as $comercial_data)
-                  <option value="{{$comercial_data->id}}">{{$comercial_data->nombre}}</option>
-                @endforeach --}}
-              </select>
-          </div>
         </div>
         <!-------------------------------------------------------------------->
-        <div class="col-md-4">
+        <div class="col-6 col-md-4 col-lg-3">
           <div class="form-group fields_docp">
             <label for="fecha" class="">Densidad</label>
               <input type="number" class="form-control form-control-sm" id="densidad" name="densidad">
@@ -85,19 +68,40 @@
             <label for="fecha" class="">IT Concierge</label>
               <select class="form-control form-control-sm select2" name="itc" id="itc">
                 <option value="">Elegir...</option>
-                {{-- @foreach ($itc as $itc_data)
+                @foreach ($itc as $itc_data)
                   <option value="{{$itc_data->id}}">{{$itc_data->nombre}}</option>
-                @endforeach --}}
+                @endforeach
                 <option value="310">Roberto Carlos Gomez Martinez</option>
+              </select>
+          </div>
+          <div class="form-group">
+            <label for="fecha" class="">Propietario de la cuenta</label>
+              <select class="form-control form-control-sm" name="comercial" id="comercial">
+                <option value="">Elegir...</option>
+                @foreach ($comerciales as $comercial_data)
+                  <option value="{{$comercial_data->id}}">{{$comercial_data->nombre}}</option>
+                @endforeach
+              </select>
+          </div>
+        </div>
+        <!-------------------------------------------------------------------->
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="form-group">
+            <label for="type_service" class="">Tipo de servicio</label>
+              <select class="form-control form-control-sm" id="type_service" name="type_service">
+                <option value="">Elegir...</option>
+                @foreach ($type_service as $type_service_data)
+                  <option value="{{$type_service_data->id}}">{{$type_service_data->name}}</option>
+                @endforeach
               </select>
           </div>
           <div class="form-group">
             <label for="fecha" class="">Lugar de la instalación</label>
               <select class="form-control form-control-sm" id="lugar_instalacion" name="lugar_instalacion">
                 <option value="">Elegir</option>
-                {{-- @foreach ($installation as $installation_data)
+                @foreach ($installation as $installation_data)
                   <option value="{{$installation_data->id}}">{{$installation_data->name}}</option>
-                @endforeach --}}
+                @endforeach
               </select>
           </div>
           <div class="form-group">
@@ -105,12 +109,156 @@
               <input type="number" class="form-control form-control-sm" onblur="exchange_rate()" id="tipo_cambio" name="tipo_cambio" value="20">
           </div>
         </div>
-
       </div><!---row -->
-
-
       <br>
-      <div  class="row"></div>
+      <div class="row fields_docm">
+        <div class="col-md-12">
+          <div class="form-group">
+            <h4 class="text-center text-danger">Presupuesto Anual</h4>
+            <br>
+            <div id="presupuesto_anual">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 fields_docp">
+          <div class="row">
+            <div class="col-md-8">
+              <h4 class="text-center text-primary">AP'S</h4>
+            </div>
+            <div class="col-md-2">
+              <button class="btn addButtonAP" type="button"><i class="fa fa-plus"></i></button>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="form-row">
+              <div class="col-6">
+                <select class="form-control form-control-sm aps_modelo" name="aps_modelo[0]">
+                  <option value="0">Elija ...</option>
+                  @foreach ($product_ap as $product_ap_data)
+                    <option data-key="{{$product_ap_data->clave}}" value="{{$product_ap_data->id}}">{{$product_ap_data->equipo}}</option>
+                  @endforeach
+                  <option data-key="APE" value="1075">Nodos extra (Voz y datos) no para antenas</option>
+                </select>
+              </div>
+              <div class="col-4">
+                <input class="form-control form-control-sm aps_cant" min="0" type="number" name="aps_cant[0]" placeholder="Cantidad">
+              </div>
+              <div class="col-2"></div>
+            </div>
+          </div>
+          <div class="row clone d-none" id="optionTemplateAP">
+            <div class="form-row">
+              <div class="col-6">
+                <select class="form-control form-control-sm aps_modelo" name="aps_modelo">
+                  <option value="0"> Elija ...</option>
+                  @foreach ($product_ap as $product_ap_data)
+                    <option data-key="{{$product_ap_data->clave}}" value="{{$product_ap_data->id}}">{{$product_ap_data->equipo}}</option>
+                  @endforeach
+                  <option data-key="APE" value="1075">Nodos extra (Voz y datos) no para antenas</option>
+                </select>
+              </div>
+              <div class="col-4">
+                <input class="form-control form-control-sm aps_cant" min="0" type="number" name="aps_cant" placeholder="Cantidad">
+              </div>
+              <button type="button" class="col-1 btn removeButtonAP"><i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+        </div><!--row antenas--->
+
+        <div class="col-md-4 fields_docp">
+          <div class="row">
+            <div class="col-md-8">
+              <h4 class="text-center text-primary">FIREWALL</h4>
+            </div>
+            <div class="col-md-2">
+              <button class="btn addButtonFW" type="button" name="button"> <i class="fa fa-plus"></i></button>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="form-row">
+              <div class="col-6">
+                <select class="form-control form-control-sm firewall_modelo" name="firew_mod[0]">
+                  <option value="0">Elija ...</option>
+                  @foreach ($product_fw as $product_fw_data)
+                    <option value="{{$product_fw_data->id}}">{{$product_fw_data->equipo}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-4">
+                <input class="form-control form-control-sm firewall_cant" min="0" type="number" name="firew_cant[0]" placeholder="Cantidad">
+              </div>
+              <div class="col-2"></div>
+            </div>
+          </div>
+          <div class="row clone d-none" id="optionTemplateFIRE">
+            <div class="form-row">
+              <div class="col-6">
+                <select class="form-control form-control-sm firewall_modelo" name="firew_mod">
+                  <option value="0">Elija ...</option>
+                  @foreach ($product_fw as $product_fw_data)
+                    <option value="{{$product_fw_data->id}}">{{$product_fw_data->equipo}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-4">
+                <input class="form-control form-control-sm firewall_cant" min="0" type="number" name="firew_cant" placeholder="Cantidad">
+              </div>
+              <button type="button" class="col-1 btn removeButtonFW"><i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+        </div><!--row firewall--->
+
+        <div class="col-md-4 fields_docp">
+          <div class="row ">
+            <div class="col-8">
+              <h4 class="text-center text-primary">SWITCHES</h4>
+            </div>
+            <div class="col-2">
+              <button class="btn addButtonSW" type="button" name="button"> <i class="fa fa-plus"></i></button>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="form-row">
+              <div class="col-6">
+                <select class="form-control form-control-sm switch_modelo" name="switches_mod[0]">
+                  <option value="0">Elija ...</option>
+                  @foreach ($product_sw as $product_sw_data)
+                    <option value="{{$product_sw_data->id}}">{{$product_sw_data->equipo}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-4">
+                <input class="form-control form-control-sm switch_cant" min="0" type="number" name="switches_cant[0]" placeholder="Cantidad">
+              </div>
+              <div class="col-1"></div>
+            </div>
+          </div>
+
+          <div class="row clone d-none" id="optionTemplateSW">
+            <div class="form-row">
+              <div class="col-6">
+                <select class="form-control form-control-sm switch_modelo" name="switches_mod">
+                  <option value="0">Elija ...</option>
+                  @foreach ($product_sw as $product_sw_data)
+                    <option value="{{$product_sw_data->id}}">{{$product_sw_data->equipo}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-4">
+                <input class="form-control form-control-sm switch_cant" min="0" type="number" name="switches_cant" placeholder="Cantidad">
+              </div>
+              <button type="button" class="col-1 btn removeButtonSW"><i class="fa fa-minus"></i></button>
+              </div>
+            </div>
+          </div><!--row switches--->
+      </div><!---row-->
+      <div  class="row mb-3"></div>
 
       <div class="row fields_docp">
         <h4 class="text-danger">Equipo activo</h4>
@@ -124,281 +272,7 @@
       </div>
       <div  class="row fields_docp">
         <section id="products-grid" class="products-grid">
-          <ul id="lista-productos" class="cards row" style="position: relative;">
-            <li class="cards__item">
-              <div class="card">
-                <div class="header">
-                  <span class="categoria">Equipo activo</span>
-                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
-                </div>
-                <div class="card__content">
-                  <div class="card__title">
-                    <a  class="" data-toggle="tooltip" data-placement="top" title="MIKROTIK ROUTERBOARD CCR1036-12G-4S">R310</a>
 
-                  </div>
-                  <div class="row">
-                    <p class="col-md-12 text-price">$
-                      <span class="card_price">2,500.00</span>
-                      <span class="card_currency">USD</span>
-                    </p>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                    <h6>Cant. Sugerida</h6>
-                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
-                    </div>
-                    <div class="col-6">
-                    <h6>Cant. Requerida</h6>
-                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
-                    </div>
-                  </div>
-
-                  <button type="button"
-                     class="btn btn-danger agregar-carrito">
-                     <i class="fas fa-cart-plus"></i>
-                   </button>
-                </div>
-              </div>
-            </li>
-            <li class="cards__item">
-              <div class="card">
-                <div class="header">
-                  <span class="categoria">Equipo activo</span>
-                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
-                </div>
-                <div class="card__content">
-                  <div class="card__title">
-                    R310
-                  </div>
-                  <div class="row">
-                    <p class="col-md-12 text-price">$
-                      <span class="card_price">2,500.00</span>
-                      <span class="card_currency">USD</span>
-                    </p>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                    <h6>Cant. Sugerida</h6>
-                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
-                    </div>
-                    <div class="col-6">
-                    <h6>Cant. Requerida</h6>
-                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
-                    </div>
-                  </div>
-
-                  <button type="button"
-                     class="btn btn-danger agregar-carrito">
-                     <i class="fas fa-cart-plus"></i>
-                   </button>
-                </div>
-              </div>
-            </li>
-            <li class="cards__item">
-              <div class="card">
-                <div class="header">
-                  <span class="categoria">Equipo activo</span>
-                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
-                </div>
-                <div class="card__content">
-                  <div class="card__title">
-                    R310
-                  </div>
-                  <div class="row">
-                    <p class="col-md-12 text-price">$
-                      <span class="card_price">2,500.00</span>
-                      <span class="card_currency">USD</span>
-                    </p>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                    <h6>Cant. Sugerida</h6>
-                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
-                    </div>
-                    <div class="col-6">
-                    <h6>Cant. Requerida</h6>
-                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
-                    </div>
-                  </div>
-
-                  <button type="button"
-                     class="btn btn-danger agregar-carrito">
-                     <i class="fas fa-cart-plus"></i>
-                   </button>
-                </div>
-              </div>
-            </li>
-            <li class="cards__item">
-              <div class="card">
-                <div class="header">
-                  <span class="categoria">Equipo activo</span>
-                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
-                </div>
-                <div class="card__content">
-                  <div class="card__title">
-                    R310
-                  </div>
-                  <div class="row">
-                    <p class="col-md-12 text-price">$
-                      <span class="card_price">2,500.00</span>
-                      <span class="card_currency">USD</span>
-                    </p>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                    <h6>Cant. Sugerida</h6>
-                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
-                    </div>
-                    <div class="col-6">
-                    <h6>Cant. Requerida</h6>
-                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
-                    </div>
-                  </div>
-
-                  <button type="button"
-                     class="btn btn-danger agregar-carrito">
-                     <i class="fas fa-cart-plus"></i>
-                   </button>
-                </div>
-              </div>
-            </li>
-            <li class="cards__item">
-              <div class="card">
-                <div class="header">
-                  <span class="categoria">Equipo activo</span>
-                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
-                </div>
-                <div class="card__content">
-                  <div class="card__title">
-                    R310
-                  </div>
-                  <div class="row">
-                    <p class="col-md-12 text-price">$
-                      <span class="card_price">2,500.00</span>
-                      <span class="card_currency">USD</span>
-                    </p>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                    <h6>Cant. Sugerida</h6>
-                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
-                    </div>
-                    <div class="col-6">
-                    <h6>Cant. Requerida</h6>
-                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
-                    </div>
-                  </div>
-
-                  <button type="button"
-                     class="btn btn-danger agregar-carrito">
-                     <i class="fas fa-cart-plus"></i>
-                   </button>
-                </div>
-              </div>
-            </li>
-            <li class="cards__item">
-              <div class="card">
-                <div class="header">
-                  <span class="categoria">Equipo activo</span>
-                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
-                </div>
-                <div class="card__content">
-                  <div class="card__title">
-                    R310
-                  </div>
-                  <div class="row">
-                    <p class="col-md-12 text-price">$
-                      <span class="card_price">2,500.00</span>
-                      <span class="card_currency">USD</span>
-                    </p>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                    <h6>Cant. Sugerida</h6>
-                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
-                    </div>
-                    <div class="col-6">
-                    <h6>Cant. Requerida</h6>
-                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
-                    </div>
-                  </div>
-
-                  <button type="button"
-                     class="btn btn-danger agregar-carrito">
-                     <i class="fas fa-cart-plus"></i>
-                   </button>
-                </div>
-              </div>
-            </li>
-            <li class="cards__item">
-              <div class="card">
-                <div class="header">
-                  <span class="categoria">Equipo activo</span>
-                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
-                </div>
-                <div class="card__content">
-                  <div class="card__title">
-                    R310
-                  </div>
-                  <div class="row">
-                    <p class="col-md-12 text-price">$
-                      <span class="card_price">2,500.00</span>
-                      <span class="card_currency">USD</span>
-                    </p>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                    <h6>Cant. Sugerida</h6>
-                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
-                    </div>
-                    <div class="col-6">
-                    <h6>Cant. Requerida</h6>
-                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
-                    </div>
-                  </div>
-
-                  <button type="button"
-                     class="btn btn-danger agregar-carrito">
-                     <i class="fas fa-cart-plus"></i>
-                   </button>
-                </div>
-              </div>
-            </li>
-            <li class="cards__item">
-              <div class="card">
-                <div class="header">
-                  <span class="categoria">Equipo activo</span>
-                  <img class="img-fluid" src="http://alice.sitwifi.com/images/storage/product//5c7d47e85eee3.jpg" alt="">
-                </div>
-                <div class="card__content">
-                  <div class="card__title">
-                    R310
-                  </div>
-                  <div class="row">
-                    <p class="col-md-12 text-price">$
-                      <span class="card_price">2,500.00</span>
-                      <span class="card_currency">USD</span>
-                    </p>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                    <h6>Cant. Sugerida</h6>
-                    <input readonly width="20" type="number" class="form-control cant_sug" name="" value="2">
-                    </div>
-                    <div class="col-6">
-                    <h6>Cant. Requerida</h6>
-                    <input min="0" type="number" class="form-control cant_req" name="" value="0">
-                    </div>
-                  </div>
-
-                  <button type="button"
-                     class="btn btn-danger agregar-carrito">
-                     <i class="fas fa-cart-plus"></i>
-                   </button>
-                </div>
-              </div>
-            </li>
-          </ul>
         </section>
       </div>
       <br>
@@ -435,36 +309,36 @@
       <br>
       <div class="row">
         <h4 class="text-danger col-12">Agregar material extra</h4>
+      </div>
         <br>
-        <div class="col-md-3">
-          <div class="card">
-          <div class="card-body">
-            <h4 class="text-center text-success"><b>Filtrar por:</b></h4>
-            <div>
+        <div class="row">
+            <div class="card col-3 p-3">
               <div class="form-group">
+                <h4 class="col text-dark"><b>Filtrar por:</b></h4>
                 <label for="">Categoría:</label>
-                <select class="form-control form-control-sm" id="categoria" name="categoria">
+                <select class="col form-control form-control-sm" id="categoria" name="categoria">
                   <option value="0">Elegir...</option>
-                  {{-- @foreach ($categories as $category)
+                  @foreach ($categories as $category)
                     <option value="{{$category->id}}">{{$category->name}}</option>
-                  @endforeach --}}
+                  @endforeach
                 </select>
               </div>
+
               <div class="form-group">
                 <label for="">Descripción:</label>
-                <input id="description" class="form-control form-control-sm" placeholder=" Mínimo 4 letras"/>
+                <input id="description" class="col form-control form-control-sm" placeholder=" Mínimo 4 letras"/>
               </div>
-              <button id="get_categorias_button" type="button" class="btn btn-dark mt-3"><i class="fas fa-search"></i> Buscar</button>
+              <div class="form-group">
+                <button id="get_categorias_button" type="button" class="col btn btn-dark mt-3"><i class="fas fa-search"></i> Buscar</button>
+              </div>
+            </div>
+
+            <div class="col-9">
+              <section id="products-grid-categorias" class="products-grid-categorias">
+              </section>
             </div>
           </div>
-        </div>
-        <br>
-        </div>
-        <div class="col-md-9">
-          <section id="products-grid-categorias" class="products-grid-categorias">
-          </section>
-        </div>
-      </div>
+
     </section>
 
     <!-- Step 2 -->

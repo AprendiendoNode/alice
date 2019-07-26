@@ -255,16 +255,16 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/testWebSer', 'Tools\GuestToolsController@checkWebSer');
 
   //MODULO DE COMPRAS - Documento P / M
-  Route::resource('documentp', 'DocumentpController', ['only' => [
+  Route::resource('documentp', 'Projects\DocumentpController', ['only' => [
      'store'
   ]]);
   Route::get('/documentp_cart', 'Projects\DocumentpCartController@index');
   Route::get('items/ajax/{type}/{aps}/{api}/{ape}/{firewalls}/{switches}/{switch_cant}',
   ['uses'  => 'Projects\DocumentpCartController@getItemType'])->where('type', 'first|second');
-  Route::get('items/ajax/four/{api}/{ape}', ['uses'  => 'DocumentpCartController@getMoProducts']);
-  Route::get('items/ajax/four/{api}/{ape}/{id_doc}', ['uses'  => 'DocumentpCartController@getMoProductsCart']);
-  Route::get('items/ajax/third/{category}', ['uses'  => 'DocumentpCartController@getCategories']);
-  Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'DocumentpCartController@getCategoriesDescription']);
+  Route::get('items/ajax/four/{api}/{ape}', ['uses'  => 'Projects\DocumentpCartController@getMoProducts']);
+  Route::get('items/ajax/four/{api}/{ape}/{id_doc}', ['uses'  => 'Projects\DocumentpCartController@getMoProductsCart']);
+  Route::get('items/ajax/third/{category}', ['uses'  => 'Projects\DocumentpCartController@getCategories']);
+  Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']);
   Route::get('/documentp_invoice/{id_documentp}/{id_cart}', 'Projects\DocumentpController@export_invoice');
   Route::get('/update_cant_cart/{id}/{cant}/{porcentaje_compra}', 'Projects\DocumentpController@update_cantidad_recibida');
   Route::get('/update_fecha_entrega/{id}/{date}', 'Projects\DocumentpController@update_fecha_entrega');
@@ -290,6 +290,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/get_documentp_advance', 'Projects\DocumentpHistoryController@get_history_project_advance');
   Route::post('/get_documentp_delivery', 'Projects\DocumentpHistoryController@get_history_delivery_documentp');
   Route::get('/documentp_table_logs/data/{id_documentp}', 'Projects\DocumentpHistoryController@get_history_logs');
+  Route::post('/get_hotel_cadena_doc', 'Projects\DocumentpController@hotel_cadena');
   Route::get('/get_vertical_anexo/anexo/{id}', 'Projects\DocumentpController@get_vertical_anexo');
   Route::get('/estimation_site_table/{id_anexo}/{tipo_cambio}', 'Projects\DocumentpHistoryController@get_estimation_site');
   Route::get('/budget_site_table/{id_anexo}/{tipo_cambio}/{date}', 'Projects\DocumentpHistoryController@get_budgettable_site');

@@ -17,18 +17,19 @@ class DocumentpCartController extends Controller
 {
     public function index(Request $request)
     {
-        //$categories = DB::table('products_categories')->select('id', 'name')->get();
+        $categories = DB::table('categories')->select('id', 'name')->get();
         $grupos = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
-        //$verticals = DB::table('verticals')->select('id','name')->get();
-        //$itc = DB::select('CALL px_ITC_todos');
-        //$comerciales = DB::select('CALL px_resguardoXgrupo_users(?)', array(2));
-        //$type_service = DB::table('documentp_type')->select('id', 'name')->get();
-        //$installation = DB::table('documentp_installation')->select('id', 'name')->get();
-        //$product_sw = DB::select('CALL px_products_swiches');
-        //$product_ap = DB::select('CALL px_products_antenas');
-        //$product_fw = DB::select('CALL px_products_firewalls');
+        $verticals = DB::table('verticals')->select('id','name')->get();
+        $itc = DB::select('CALL px_ITC_todos');
+        $comerciales = DB::select('CALL px_resguardoXgrupo_users(?)', array(2));
+        $type_service = DB::table('documentp_type')->select('id', 'name')->get();
+        $installation = DB::table('documentp_installation')->select('id', 'name')->get();
+        $product_sw = DB::select('CALL px_products_swiches');
+        $product_ap = DB::select('CALL px_products_antenas');
+        $product_fw = DB::select('CALL px_products_firewalls');
 
-        return view('permitted.documentp.documentp_cart', compact('grupos'));
+        return view('permitted.documentp.documentp_cart', compact('grupos', 'verticals', 'itc'
+              , 'categories', 'type_service', 'installation','comerciales' ,'product_ap', 'product_sw', 'product_fw'));
 
     }
 
@@ -57,7 +58,8 @@ class DocumentpCartController extends Controller
 
         } else if ($type == 'second') {
           $products_m = DB::select('CALL px_products_propuesta_antenas_materiales(?,?,?)', array($api, $ape, $switch_cant));
-          $products_materiales =  $this->paginate($products_m, $perPage = 10,  null , $options = []);
+          //dd($products_m);
+          $products_materiales =  $this->paginate($products_m, $perPage = 5,  null , $options = []);
 
           return view('permitted.documentp.products_materiales', ['products_materiales' => $products_materiales])->render();
 
@@ -120,7 +122,7 @@ class DocumentpCartController extends Controller
     public function getCategories($category)
     {
       $products = DB::select('CALL px_products_xcategoria(?)', array($category));
-      $products_categories =  $this->paginate($products, $perPage = 8,  null , $options = []);
+      $products_categories =  $this->paginate($products, $perPage = 4,  null , $options = []);
 
       return view('permitted.documentp.products_categories', ['products_categories' => $products_categories])->render();
     }
@@ -129,13 +131,13 @@ class DocumentpCartController extends Controller
     {
       if($category != 0){
         $products = DB::select('CALL px_products_xcategoria_ydescripcion(?,?)', array($category, $description));
-        $products_categories =  $this->paginate($products, $perPage = 8,  null , $options = []);
+        $products_categories =  $this->paginate($products, $perPage = 4,  null , $options = []);
 
         return view('permitted.documentp.products_categories', ['products_categories' => $products_categories])->render();
       }else{
         $products = DB::select('CALL px_products_xdescripcion(?)', array($description));
-        $products_categories =  $this->paginate($products, $perPage = 8,  null , $options = []);
-
+        $products_categories =  $this->paginate($products, $perPage = 4,  null , $options = []);
+        //dd($products);
         return view('permitted.documentp.products_categories', ['products_categories' => $products_categories])->render();
       }
 

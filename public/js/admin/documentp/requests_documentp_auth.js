@@ -25,7 +25,6 @@ function table_permission_zero() {
       url: "/get_documentp_auth",
       data: objData,
       success: function (data){
-        console.log(data);
         documentp_table(data, $("#table_documentp"));
       },
       error: function (data) {
@@ -53,12 +52,13 @@ function documentp_table(datajson, table){
     '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     data.elaboro,
-    '<span class="badge badge-warning badge-pill">'+data.status+'</span>',
+    '<span class="badge badge-success badge-pill">'+data.status+'</span>',
     data.num_edit,
     data.porcentaje_compra + '%',
     data.atraso,
     type_doc,
-    '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar Documento P" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a><a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fa fa-file-pdf-o"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>',
+    data.prioridad,
+    '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a><a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a>',
     data.status,
     ]);
   });
@@ -76,7 +76,7 @@ var Configuration_table_responsive_documentp= {
               "width": "0.1%",
               "createdCell": function (td, cellData, rowData, row, col){
                 if ( cellData > 0 ) {
-                  if(rowData[13] != 'Autorizado'){
+                  if(rowData[14] != 'Autorizado'){
                     this.api().cell(td).checkboxes.disable();
                   }
                 }
@@ -111,7 +111,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 6,
               "width": "1%",
-              "className": "text-center",
+              "className": "text-center cell-name",
             },
             {
               "targets": 7,
@@ -126,12 +126,12 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 9,
               "width": "0.2%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 10,
               "width": "0.2%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 11,
@@ -140,11 +140,16 @@ var Configuration_table_responsive_documentp= {
             },
             {
               "targets": 12,
-              "width": "2.5%",
-              "className": "text-center actions-button",
+              "width": "0.3%",
+              "className": "text-center cell-short",
             },
             {
               "targets": 13,
+              "width": "2%",
+              "className": "text-center actions-button",
+            },
+            {
+              "targets": 14,
               "visible": false,
               "searchable": false
             }
@@ -154,27 +159,25 @@ var Configuration_table_responsive_documentp= {
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
           {
-            text: '<i class="fa fa-paper-plane margin-r5"></i> Entregar Marcados',
+            text: ' Entregar Marcados',
             titleAttr: 'Entregar marcados',
-            className: 'btn btn-primary',
+            className: '',
             init: function(api, node, config) {
               $(node).removeClass('btn-default')
             },
             action: function ( e, dt, node, config ) {
-              // $('#modal-confirmation').modal('show');
-              swal({
-                title: "Estás seguro?",
-                text: "Se entregaran todos los documentos seleccionados.!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Continuar.!",
-                cancelButtonText: "Cancelar.!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-              },
-              function(isConfirm) {
-                if (isConfirm) {
+              Swal.fire({
+              title: '¿Estás seguro?',
+              text: "Se entregarán todos los documentos seleccionados!",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Confirmar',
+              cancelButtonText: 'Cancelar'
+              }).then((result) => {
+
+                if (result.value) {
                   $('.cancel').prop('disabled', 'disabled');
                   $('.confirm').prop('disabled', 'disabled');
                   var rows_selected = $("#table_documentp").DataTable().column(0).checkboxes.selected();
@@ -185,32 +188,45 @@ var Configuration_table_responsive_documentp= {
                     valores.push(rowId);
                   });
                   if ( valores.length === 0){
-                    swal("Operación abortada", "Ningún Documento seleccionado :(", "error");
-                  }
-                  else {
+                    Swal.fire(
+                      'Debe selecionar al menos un documento',
+                      'Ningun documento afectado!',
+                      'error'
+                    )
+                  }else{
                     $.ajax({
                       type: "POST",
                       url: "/send_item_doc_delivery",
                       data: { idents: JSON.stringify(valores), _token : _token },
                       success: function (data){
                         if (data === 'true') {
-                          swal("Operación Completada!", "Los documentos seleccionados han sido entregados.", "success");
+                          Swal.fire(
+                            'Estatus actualizado!',
+                            'Los documentos han sido entregados!',
+                            'success'
+                          )
                           table_permission_zero();
                         }
                         if (data === 'false') {
-                          swal("Operación abortada!", "Los documentos seleccionados no han sido afectados.", "error");
+                          Swal.fire(
+                            'Ocurrio un error!',
+                            'Ningun documento afectado!',
+                            'error'
+                          )
                         }
                       },
                       error: function (data) {
-                        console.log('Error:', data);
+                        Swal.fire({
+                           type: 'error',
+                           title: 'Oops...',
+                           text: err.statusText,
+                         });
                       }
                     });
                   }
+                }//value
+              })
 
-                } else {
-                  swal("Operación abortada", "Ningún Documento afectado :)", "error");
-                }
-              });
             },
            },
           {
@@ -236,7 +252,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8,9,10,11 ],
+                columns: [ 1,2,3,4,5,6,7,8,9,10,11,12 ],
                 modifier: {
                     page: 'all',
                 }
@@ -266,7 +282,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8,9,10,11 ],
+                columns: [ 1,2,3,4,5,6,7,8,9,10,11,12 ],
                 modifier: {
                     page: 'all',
                 }
@@ -296,7 +312,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8,9,10,11 ],
+                columns: [ 1,2,3,4,5,6,7,8,9,10,11,12 ],
                 modifier: {
                     page: 'all',
                 }

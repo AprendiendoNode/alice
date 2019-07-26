@@ -43,18 +43,26 @@
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script src="{{ asset('/plugins/momentupdate/moment-with-locales.js')}}"></script>
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
+    <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <!-- FormValidation -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
     <!-- FormValidation plugin and the class supports validating Bootstrap form -->
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.steps.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-    <!-- FormValidation Wizard steps-->
+
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master-two/steps.css')}}" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
+    <!-- FormValidation plugin and the class supports validating Bootstrap form -->
+    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
-
+    <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
+    <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
-    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
 
 
 
@@ -68,9 +76,9 @@
           var id= $('select[name="select_one"]').val();
           var _token = $('input[name="_token"]').val();
 
-
-
         });
+
+        $("[data-toggle=popover]").popover();
 
         $(document).on('change', ':file', function() {
           var input = $(this),
@@ -97,6 +105,7 @@
 
       });
     </script>
+    <script type="text/javascript" src="{{asset('js/admin/documentp/document_cart_general.js')}}"></script>
     @else
       @include('default.denied')
     @endif
@@ -106,6 +115,8 @@
     @elseif ( auth()->user()->can('View level one documentp notification') )
       <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_create_comercial.js?v=1.0.2')}}"></script>
     @elseif ( auth()->user()->can('View level two documentp notification') )
+      <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_create_comercial.js?v=1.0.2')}}"></script>
+    @elseif ( auth()->user()->can('View level three documentp notification') )
       <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_create_comercial.js?v=1.0.2')}}"></script>
     @endif
 

@@ -23,172 +23,103 @@ table tfoot td, table tfoot th {
 
 </style>
 <p><strong class="text-danger">Tipo de cambio: $<span>{{$tipo_cambio}}</span> </strong></p>
-<table id="products" width="100%">
-  <thead style="background-color: #0E2A38;color:white;">
-    <tr>
-      <th>Descripción</th>
-      <th align="center">Cant. Sug.</th>
-      <th align="center">Cant. Req.</th>
-      <th class="text-center">Precio unitario</th>
-      <th class="text-center">Moneda</th>
-      <th class="text-center">Desc. %</th>
-      <th class="text-center">Total</th>
-      <th class="text-center">Total USD</th>
-      <th class="text-center">Recibido</th>
-      <th class="text-center" style="min-width: 80px;">% de compra</th>
-      <th class="text-center">Orden de compra</th>
-      <th class="text-center">Fecha de entrega</th>
-      <th width="90" class="text-center">Estatus</th>
-    </tr>
-  </thead>
-  <tbody>
-    @php
-      $total_ea = 0.0;
-      $total_materiales = 0.0;
-      $total_mano_obra = 0.0;
-      $background_progress = "bg-warning";
-    @endphp
-
-    @foreach($equipo_activo as $producto)
-      @php
-      if($producto->order_status_id == 4) $background_progress  = "bg-success";
-      else if($producto->order_status_id >= 5) $background_progress  = "bg-primary";
-      else $background_progress  = "bg-warning";
-      @endphp
-      <tr id="{{$producto->id}}">
-        <td class="descripcion">{{$producto->producto}}</td>
-        <td align="center">{{$producto->cantidad_sugerida}}</td>
-        <td class="text-bold" align="center">{{$producto->cantidad}}</td>
-        <td align="right">{{number_format($producto->precio, 2, '.', ',')}}</td>
-        <td align="center">{{$producto->currency}}</td>
-        <td align="center">{{$producto->descuento}}</td>
-        <td align="right">{{number_format($producto->total, 2, '.', ',')}}</td>
-        <td class="p-left" align="right">{{ number_format($producto->total_usd, 2, '.', ',')}}</td>
-        <td align="center">
-          <a id="cant_req" href="javascript:void(0);"
-          data-type="text"
-          data-cant="{{$producto->cantidad}}"
-          data-pk="{{$producto->id}}"
-          data-title="cantidad"
-          data-value="{{$producto->cantidad_recibida}}" data-name="cant_req" class="set-cant-req"></a></td>
-        <td  style="vertical-align: center;">
-            <div style="height: 14px;width:{{$producto->porcentaje_compra}}%" class="progress-bar {{$background_progress}}  progress-bar-striped" role="progressbar"
-              aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{$producto->porcentaje_compra}}">
-              <span>{{$producto->porcentaje_compra}}%</span>
-            </div>
-        </td>
-        <td align="center">
-          <a href="javascript:void(0);"
-             data-type="text"
-             data-pk="{{$producto->id}}"
-             data-title="orden-compra"
-             data-value="{{$producto->purchase_order}}"
-             data-name="orden-compra"
-             class="set-purchase-order">
-
-          </a>
-        </td>
-        <td align="center">
-          <a href="javascript:void(0);"
-             data-type="text"
-             data-pk="{{$producto->id}}"
-             data-title="Fecha de entrega"
-             data-value="{{ ($producto->fecha_entrega != null ? date("d-m-Y", strtotime($producto->fecha_entrega))  : $producto->fecha_entrega) }}"
-             data-name="fecha-entrega"
-             class="set-fecha-entrega">
-
-          </a>
-        </td>
-        <td align="center">
-          <a id="cant_req" href="javascript:void(0);"
-          data-type="select"
-          data-cant="{{$producto->cantidad}}"
-          data-pk="{{$producto->id}}"
-          data-title="Estatus"
-          data-source="{{$status}}"
-          data-value="{{$producto->order_status_id}}" data-name="status" class="set-status"></a></td>
+<div class="table-responsive">
+  <table id="products" width="100%">
+    <thead style="background-color: #0E2A38;color:white;">
+      <tr>
+        <th>Descripción</th>
+        <th align="center">Cant. Sug.</th>
+        <th align="center">Cant. Req.</th>
+        <th class="text-center">Precio unitario</th>
+        <th class="text-center">Moneda</th>
+        <th class="text-center">Desc. %</th>
+        <th class="text-center">Total</th>
+        <th class="text-center">Total USD</th>
+        <th class="text-center">Recibido</th>
+        <th class="text-center" style="min-width: 80px;">% de compra</th>
+        <th class="text-center">Orden de compra</th>
+        <th class="text-center">Fecha de entrega</th>
+        <th width="90" class="text-center">Estatus</th>
       </tr>
-    @php $total_ea += $producto->total_usd @endphp
-    @endforeach
-
-    <tr class="bg-blue text-bold">
-        <td></td>
-        <td colspan="5"></td>
-        <td colspan="5" align="right">Total Equipo Activo USD</td>
-        <td colspan="3" align="right">$ {{ number_format($total_ea, 2, '.', ',') }}</td>
-    </tr>
-
-    @foreach($materiales as $producto)
+    </thead>
+    <tbody>
       @php
+        $total_ea = 0.0;
+        $total_materiales = 0.0;
+        $total_mano_obra = 0.0;
+        $background_progress = "bg-warning";
+      @endphp
+
+      @foreach($equipo_activo as $producto)
+        @php
         if($producto->order_status_id == 4) $background_progress  = "bg-success";
         else if($producto->order_status_id >= 5) $background_progress  = "bg-primary";
         else $background_progress  = "bg-warning";
-      @endphp
-      <tr id="{{$producto->id}}">
-        <td class="descripcion">{{$producto->producto}}</td>
-        <td align="center">{{$producto->cantidad_sugerida}}</td>
-        <td class="text-bold" align="center">{{$producto->cantidad}}</td>
-        <td align="right">{{number_format($producto->precio, 2, '.', ',')}}</td>
-        <td align="center">{{$producto->currency}}</td>
-        <td align="center">{{$producto->descuento}}</td>
-        <td align="right">{{number_format($producto->total, 2, '.', ',')}}</td>
-        <td class="p-left" align="right">{{ number_format($producto->total_usd, 2, '.', ',')}}</td>
-        <td align="center">
-          <a id="cant_req" href="javascript:void(0);"
-          data-type="text"
-          data-cant="{{$producto->cantidad}}"
-          data-pk="{{$producto->id}}"
-          data-title="cantidad"
-          data-value="{{$producto->cantidad_recibida}}" data-name="cant_req" class="set-cant-req"></a></td>
+        @endphp
+        <tr id="{{$producto->id}}">
+          <td class="descripcion">{{$producto->producto}}</td>
+          <td align="center">{{$producto->cantidad_sugerida}}</td>
+          <td class="text-bold" align="center">{{$producto->cantidad}}</td>
+          <td align="right">{{number_format($producto->precio, 2, '.', ',')}}</td>
+          <td align="center">{{$producto->currency}}</td>
+          <td align="center">{{$producto->descuento}}</td>
+          <td align="right">{{number_format($producto->total, 2, '.', ',')}}</td>
+          <td class="p-left" align="right">{{ number_format($producto->total_usd, 2, '.', ',')}}</td>
+          <td align="center">
+            <a id="cant_req" href="javascript:void(0);"
+            data-type="text"
+            data-cant="{{$producto->cantidad}}"
+            data-pk="{{$producto->id}}"
+            data-title="cantidad"
+            data-value="{{$producto->cantidad_recibida}}" data-name="cant_req" class="set-cant-req"></a></td>
           <td  style="vertical-align: center;">
               <div style="height: 14px;width:{{$producto->porcentaje_compra}}%" class="progress-bar {{$background_progress}}  progress-bar-striped" role="progressbar"
                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{$producto->porcentaje_compra}}">
                 <span>{{$producto->porcentaje_compra}}%</span>
               </div>
           </td>
-        <td align="center">
-          <a href="javascript:void(0);"
-             data-type="text"
-             data-pk="{{$producto->id}}"
-             data-title="orden-compra"
-             data-value="{{$producto->purchase_order}}"
-             data-name="orden-compra"
-             class="set-purchase-order">
+          <td align="center">
+            <a href="javascript:void(0);"
+               data-type="text"
+               data-pk="{{$producto->id}}"
+               data-title="orden-compra"
+               data-value="{{$producto->purchase_order}}"
+               data-name="orden-compra"
+               class="set-purchase-order">
 
-          </a>
-        </td>
-        <td align="center">
-          <a href="javascript:void(0);"
-             data-type="text"
-             data-pk="{{$producto->id}}"
-             data-title="Fecha de entrega"
-             data-value="{{ ($producto->fecha_entrega != null ? date("d-m-Y", strtotime($producto->fecha_entrega))  : $producto->fecha_entrega) }}"
-             data-name="fecha-entrega"
-             class="set-fecha-entrega">
+            </a>
+          </td>
+          <td align="center">
+            <a href="javascript:void(0);"
+               data-type="text"
+               data-pk="{{$producto->id}}"
+               data-title="Fecha de entrega"
+               data-value="{{ ($producto->fecha_entrega != null ? date("d-m-Y", strtotime($producto->fecha_entrega))  : $producto->fecha_entrega) }}"
+               data-name="fecha-entrega"
+               class="set-fecha-entrega">
 
-          </a>
-        </td>
-        <td align="center">
-          <a id="cant_req" href="javascript:void(0);"
-          data-type="select"
-          data-cant="{{$producto->cantidad}}"
-          data-pk="{{$producto->id}}"
-          data-title="Estatus"
-          data-source="{{$status}}"
-          data-value="{{$producto->order_status_id}}" data-name="status" class="set-status"></a></td>
+            </a>
+          </td>
+          <td align="center">
+            <a id="cant_req" href="javascript:void(0);"
+            data-type="select"
+            data-cant="{{$producto->cantidad}}"
+            data-pk="{{$producto->id}}"
+            data-title="Estatus"
+            data-source="{{$status}}"
+            data-value="{{$producto->order_status_id}}" data-name="status" class="set-status"></a></td>
+        </tr>
+      @php $total_ea += $producto->total_usd @endphp
+      @endforeach
+
+      <tr class="bg-blue text-bold">
+          <td></td>
+          <td colspan="5"></td>
+          <td colspan="5" align="right">Total Equipo Activo USD</td>
+          <td colspan="3" align="right">$ {{ number_format($total_ea, 2, '.', ',') }}</td>
       </tr>
-    @php  $total_materiales += $producto->total_usd @endphp
-    @endforeach
 
-    <tr class="bg-blue text-bold">
-        <td></td>
-        <td colspan="5"></td>
-        <td colspan="5" align="right">Total Materiales USD</td>
-        <td colspan="3" align="right">$ {{ number_format($total_materiales, 2, '.', ',') }}</td>
-    </tr>
-
-    @if ($mano_obra != '[]')
-      @foreach($mano_obra as $producto)
+      @foreach($materiales as $producto)
         @php
           if($producto->order_status_id == 4) $background_progress  = "bg-success";
           else if($producto->order_status_id >= 5) $background_progress  = "bg-primary";
@@ -247,56 +178,127 @@ table tfoot td, table tfoot th {
             data-source="{{$status}}"
             data-value="{{$producto->order_status_id}}" data-name="status" class="set-status"></a></td>
         </tr>
-      @php $total_mano_obra += $producto->total_usd @endphp
+      @php  $total_materiales += $producto->total_usd @endphp
       @endforeach
-    @else
 
-    @endif
-    <tr class="bg-blue text-bold">
-        <td></td>
-        <td colspan="5"></td>
-        <td colspan="5" align="right">Total Mano de obra USD</td>
-        <td colspan="3" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
-    </tr>
-  </tbody>
+      <tr class="bg-blue text-bold">
+          <td></td>
+          <td colspan="5"></td>
+          <td colspan="5" align="right">Total Materiales USD</td>
+          <td colspan="3" align="right">$ {{ number_format($total_materiales, 2, '.', ',') }}</td>
+      </tr>
 
-  <tfoot>
-    <tr>
-        <td></td>
-        <td colspan="3"></td>
-        <td align="right"></td>
-        <td align="right">-</td>
-    </tr>
-      <tr>
+      @if ($mano_obra != '[]')
+        @foreach($mano_obra as $producto)
+          @php
+            if($producto->order_status_id == 4) $background_progress  = "bg-success";
+            else if($producto->order_status_id >= 5) $background_progress  = "bg-primary";
+            else $background_progress  = "bg-warning";
+          @endphp
+          <tr id="{{$producto->id}}">
+            <td class="descripcion">{{$producto->producto}}</td>
+            <td align="center">{{$producto->cantidad_sugerida}}</td>
+            <td class="text-bold" align="center">{{$producto->cantidad}}</td>
+            <td align="right">{{number_format($producto->precio, 2, '.', ',')}}</td>
+            <td align="center">{{$producto->currency}}</td>
+            <td align="center">{{$producto->descuento}}</td>
+            <td align="right">{{number_format($producto->total, 2, '.', ',')}}</td>
+            <td class="p-left" align="right">{{ number_format($producto->total_usd, 2, '.', ',')}}</td>
+            <td align="center">
+              <a id="cant_req" href="javascript:void(0);"
+              data-type="text"
+              data-cant="{{$producto->cantidad}}"
+              data-pk="{{$producto->id}}"
+              data-title="cantidad"
+              data-value="{{$producto->cantidad_recibida}}" data-name="cant_req" class="set-cant-req"></a></td>
+              <td  style="vertical-align: center;">
+                  <div style="height: 14px;width:{{$producto->porcentaje_compra}}%" class="progress-bar {{$background_progress}}  progress-bar-striped" role="progressbar"
+                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{$producto->porcentaje_compra}}">
+                    <span>{{$producto->porcentaje_compra}}%</span>
+                  </div>
+              </td>
+            <td align="center">
+              <a href="javascript:void(0);"
+                 data-type="text"
+                 data-pk="{{$producto->id}}"
+                 data-title="orden-compra"
+                 data-value="{{$producto->purchase_order}}"
+                 data-name="orden-compra"
+                 class="set-purchase-order">
+
+              </a>
+            </td>
+            <td align="center">
+              <a href="javascript:void(0);"
+                 data-type="text"
+                 data-pk="{{$producto->id}}"
+                 data-title="Fecha de entrega"
+                 data-value="{{ ($producto->fecha_entrega != null ? date("d-m-Y", strtotime($producto->fecha_entrega))  : $producto->fecha_entrega) }}"
+                 data-name="fecha-entrega"
+                 class="set-fecha-entrega">
+
+              </a>
+            </td>
+            <td align="center">
+              <a id="cant_req" href="javascript:void(0);"
+              data-type="select"
+              data-cant="{{$producto->cantidad}}"
+              data-pk="{{$producto->id}}"
+              data-title="Estatus"
+              data-source="{{$status}}"
+              data-value="{{$producto->order_status_id}}" data-name="status" class="set-status"></a></td>
+          </tr>
+        @php $total_mano_obra += $producto->total_usd @endphp
+        @endforeach
+      @else
+
+      @endif
+      <tr class="bg-blue text-bold">
           <td></td>
-          <td id="" rowspan="4" colspan="4"> </td>
-          <td colspan="6" align="right">Total Equipo Activo USD</td>
-          <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_ea, 2, '.', ',') }}</td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td colspan="5" align="right">Total Material USD</td>
-          <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_materiales, 2, '.', ',') }}</td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
+          <td colspan="5"></td>
           <td colspan="5" align="right">Total Mano de obra USD</td>
-          <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
+          <td colspan="3" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
       </tr>
+    </tbody>
+
+    <tfoot>
       <tr>
-        @php
-          $total = 0.0;
-          $total = $total_ea + $total_materiales + $total_mano_obra;
-        @endphp
           <td></td>
-          <td></td>
-          <td colspan="5" align="right">Total USD</td>
-          <td colspan="3" class="text-danger" align="right" class="">$ {{ number_format($total, 2, '.', ',') }}</td>
+          <td colspan="3"></td>
+          <td align="right"></td>
+          <td align="right">-</td>
       </tr>
-  </tfoot>
-</table>
+        <tr>
+            <td></td>
+            <td id="" rowspan="4" colspan="4"> </td>
+            <td colspan="6" align="right">Total Equipo Activo USD</td>
+            <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_ea, 2, '.', ',') }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td colspan="5" align="right">Total Material USD</td>
+            <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_materiales, 2, '.', ',') }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td colspan="5" align="right">Total Mano de obra USD</td>
+            <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
+        </tr>
+        <tr>
+          @php
+            $total = 0.0;
+            $total = $total_ea + $total_materiales + $total_mano_obra;
+          @endphp
+            <td></td>
+            <td></td>
+            <td colspan="5" align="right">Total USD</td>
+            <td colspan="3" class="text-danger" align="right" class="">$ {{ number_format($total, 2, '.', ',') }}</td>
+        </tr>
+    </tfoot>
+  </table>
+</div>
 <script type="text/javascript">
 $( document ).ready(function() {
 
@@ -363,13 +365,13 @@ $( document ).ready(function() {
               })
               .then(data => {
                 if(status >= 5){
-                  $( "#" + `${id}`).find( "div.progress-bar").removeClass( "progress-bar-success" ).addClass( "progress-bar-primary" );
+                  $( "#" + `${id}`).find( "div.progress-bar").removeClass( "bg-success" ).addClass( "bg-primary" );
                 }
                 else if(status == 4){
-                  $( "#" + `${id}`).find( "div.progress-bar").removeClass( "progress-bar-warning" ).addClass( "progress-bar-success" );
+                  $( "#" + `${id}`).find( "div.progress-bar").removeClass( "bg-warning" ).addClass( "bg-success" );
                 }
                 else if(status == 3){
-                  $( "#" + `${id}`).find( "div.progress-bar").removeClass( "progress-bar-success" ).addClass( "progress-bar-warning" );
+                  $( "#" + `${id}`).find( "div.progress-bar").removeClass( "bg-success" ).addClass( "bg-warning" );
                 }
               })
               .catch(error => {
@@ -406,8 +408,12 @@ $( document ).ready(function() {
         placeholder:'dd-mm-aaaa',
         container: 'body',
         validate: function(newValue) {
+          var pattern =/^([0-9]{2})\-([0-9]{2})\-([0-9]{4})$/;
           if($.trim(newValue) == '')
               return 'Este campo es requerido';
+          if (!pattern.test(newValue)) {
+              return 'Formato de fecha invalido';
+            }
         },
         success: function(response, newValue) {
           var id = $(this).data('pk');
@@ -438,11 +444,11 @@ $( document ).ready(function() {
       $( "#" + `${id}`).find( "div.progress-bar" ).css( "width", porcentaje_compra + '%' );
       $( "#" + `${id}`).find( "div.progress-bar").find("span").text(porcentaje_compra + '%');
       if(porcentaje_compra == 100.00){
-        $( "#" + `${id}`).find( "div.progress-bar").removeClass( "progress-bar-warning" ).addClass( "progress-bar-success" );
+        $( "#" + `${id}`).find( "div.progress-bar").removeClass( "bg-warning" ).addClass( "bg-success" );
       }else if(porcentaje_compra > 0.0 && porcentaje_compra < 100){
-        $( "#" + `${id}`).find( "div.progress-bar").removeClass( "progress-bar-success" ).addClass( "progress-bar-warning" );
+        $( "#" + `${id}`).find( "div.progress-bar").removeClass( "bg-success" ).addClass( "bg-warning" );
       }else if(porcentaje_compra == 0.0) {
-        $( "#" + `${id}`).find( "div.progress-bar").removeClass( "progress-bar-success" ).addClass( "progress-bar-warning" );
+        $( "#" + `${id}`).find( "div.progress-bar").removeClass( "bg-success" ).addClass( "bg-warning" );
       }
 
 

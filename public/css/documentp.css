@@ -91,46 +91,6 @@ button {
 			transition: all 0.2s ease-in-out;
 }
 
-.azul{
-  background: #0B1F3A;
-  box-shadow: 0px 5px 0px 0px #041529;
-}
-
-.azul:hover{
-  background: #263B58;
-}
-
-.azul:active{
-  box-shadow: 0px 2px 0px 0px #041529;
-}
-
-.verde{
-  background: #2ECC71;
-  box-shadow: 0px 5px 0px 0px #27AE60;
-}
-
-.verde:hover{
-  background: #32db78;
-}
-
-.verde:active{
-  box-shadow: 0px 2px 0px 0px #27AE60;
-}
-
-.rojo{
-  background: #E74C3C;
-  box-shadow: 0px 5px 0px 0px #C0392B;
-}
-
-.rojo:hover{
-  background: #ff5242;
-}
-
-.rojo:active{
-  box-shadow: 0px 2px 0px 0px #C0392B;
-}
-
-
 .categoria{
   text-transform:lowercase !important;
 }
@@ -166,6 +126,11 @@ button {
   padding: 0.5rem;
 }
 
+.cards__item .info-product i{
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
 .cards__item h6{
   font-size: 0.60rem;
 }
@@ -178,7 +143,7 @@ button {
 .cards__item button{
   width: 80%;
   margin: 0.5rem auto;
-  padding: 0.5rem 1rem
+  padding: 0.5rem 1rem;
 }
 
 .cards__item button:hover{
@@ -236,7 +201,7 @@ button {
 /* Extra very large devices (large desktops, 1500px and up) */
 @media (min-width: 1500px) {
   .cards__item {
-    width: 14.1%;
+    width: 18.1% !important;
   }
 }
 
@@ -334,7 +299,7 @@ button {
 
 .card__title {
   color: #112F41 !important;
-  font-size: 0.8rem !important;
+  font-size: 0.68rem !important;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -485,28 +450,6 @@ input::-webkit-input-placeholder {
   color: #092957;
 }
 
-#table_documentp thead th{
-  width: 100%;
-  padding: 0.2rem 0.2rem;
-  color: white;
-  white-space: pre-line;
-}
-
-#table_documentp td, #table_documentp th{
-  vertical-align: middle;
-}
-
-#table_documentp td, #table_documentp th{
-  vertical-align: middle;
-}
-
-#table_documentp tbody tr td{
-  padding: 0.2rem 0.5rem;
-  width: auto !important;
-  height: 35px !important;
-  white-space: pre-line;
-}
-
 .actions-button{
   max-width: 170px !important;
 }
@@ -530,6 +473,10 @@ input::-webkit-input-placeholder {
 
 .cell-short{
   max-width: 70px;
+}
+
+.cell-large{
+  max-width: 200px;
 }
 
 .dataTables_wrapper .dataTable .btn{
@@ -568,6 +515,64 @@ input::-webkit-input-placeholder {
 .editable-buttons .btn i{
   font-size: .7rem;
 }
+
+#data_installation .form-row label{
+  color: #363636;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+#data_installation .form-row{
+  margin-bottom: 0.3rem;
+}
+
+/*Tabla historial y logs*/
+
+#table_documentp thead th, #table_documentp_logs thead th{
+  width: 100%;
+  padding: 0.2rem 0.2rem;
+  color: white;
+  white-space: pre-line;
+}
+
+#table_documentp td, #table_documentp th{
+  vertical-align: middle;
+}
+
+#table_documentp_logs td, #table_documentp_logs th{
+  vertical-align: middle;
+}
+
+#table_documentp tbody tr td {
+  padding: 0.2rem 0.5rem;
+  width: auto !important;
+  height: 35px !important;
+  white-space: pre-line;
+}
+
+#table_documentp_logs thead{
+  height: 15px !important;
+}
+
+#table_documentp_logs tbody tr td {
+  min-width: 120px;
+  padding: 0.2rem 0.5rem;
+}
+
+/*Tabla resumen de pedido*/
+
+#tabla_productos tbody tr td {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.2rem;
+}
+
+#tabla_productos tbody tr td button.borrar{
+  padding: 0;
+}
+#tabla_productos tbody tr td button.borrar i{
+  font-size: 1rem;
+}
+
 
 /* Extra very large devices (large desktops, 1500px and up) */
 @media (min-width: 1500px) {

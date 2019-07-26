@@ -30,7 +30,6 @@
   @include('permitted.documentp.modal_documentp')
 
   @if( auth()->user()->can('View level zero documentp notification') )
-    <div class="container">
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
           <div class="row">
@@ -57,7 +56,7 @@
           <div class="table-responsive">
             <table id="table_documentp" class="table table-striped table-bordered table-hover table-condensed">
               <thead>
-                <tr class="bg-primary" style="background: #088A68;">
+                <tr style="background: #088A68;">
                   <th> <small>Fecha de solicitud</small> </th>
                   <th> <small>Nombre del proyecto</small> </th>
                   <th> <small>$ EA USD</small> </th>
@@ -96,7 +95,6 @@
           </div>
         </div>
       </div>
-    </div>
   @elseif ( auth()->user()->can('View level one documentp notification') )
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -318,18 +316,14 @@
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
 
     <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
-    <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
     <script src="{{ asset('js/admin/documentp/requests_documentp_0.js?v=2.0.1')}}"></script>
+
+    <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
     <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
     <style>
-      
-
-
-
-
     </style>
       @if( auth()->user()->can('View level zero documentp notification') )
         <script src="{{ asset('js/admin/documentp/requests_documentp_0.js?v=2.0.1')}}"></script>

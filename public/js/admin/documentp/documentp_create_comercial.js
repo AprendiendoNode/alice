@@ -280,7 +280,7 @@ function generate_table_products(){
       + key.cant_sug + '</td>'
       + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id +'" data-clave="' + key.codigo + '" data-title="Cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
       + key.descripcion.toUpperCase() + '</td><td>'
-      + key.categoria + '</td><td>'
+      + key.categoria.toUpperCase() + '</td><td>'
       + key.codigo + '</td><td>'
       + key.proveedor + '</td><td>'
       + key.num_parte + '</td>'
@@ -302,7 +302,7 @@ function generate_table_products(){
        + key.cant_sug + '</td>'
        + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id + '" data-clave="' + key.codigo + '" data-title="cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
        + key.descripcion.toUpperCase() + '</td><td>'
-       + key.categoria + '</td><td>'
+       + key.categoria.toUpperCase() + '</td><td>'
        + key.codigo + '</td><td>'
        + key.proveedor + '</td><td>'
        + key.num_parte + '</td>'
@@ -418,7 +418,11 @@ function generate_table_products(){
                   generate_table_products();
                   menssage_toast('Mensaje', '4', 'Mano de obra actualizada' , '2000');
                 }).fail(function () {
-                    swal("Ocurrio un error","","error");
+                  Swal.fire(
+                    'Ocurrio un error',
+                    '',
+                    'error'
+                  )
                 });//Fin funcion ajax
 
               }
@@ -514,81 +518,83 @@ $(".validation-wizard-master").steps({
       event.preventDefault();
         // swal("form_master Submitted!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem erat eleifend ex semper, lobortis purus sed.");
       /************************************************************************************/
-        swal({
-          title: "¿Estás seguro?",
-          text: "Solo se permitiran 3 modificaciones despues de guardar el DOCUMENTO",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Continuar.!",
-          cancelButtonText: "Cancelar.!",
-          closeOnConfirm: false,
-          closeOnCancel: false,
-          showLoaderOnConfirm: true,
-        },
-        function(isConfirm) {
-          if (isConfirm) {
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Solo se permitirán 3 modificaciones despues de autorizar tu DOCUMENTO",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+          let productosLS;
+          var _token = $('input[name="_token"]').val();
+          let total_ea = 0.0;
+          let total_ena = 0.0;
+          let total_mo = 0.0;
+          let total = 0.0;
 
-             let productosLS;
-             var _token = $('input[name="_token"]').val();
-             let total_ea = 0.0;
-             let total_ena = 0.0;
-             let total_mo = 0.0;
-             let total = 0.0;
+           productosLS = localStorage.getItem('productos');
+           total_ea = document.getElementById('total_eqactivo_footer').innerHTML;
+           total_ena = document.getElementById('total_materiales_footer').innerHTML;
+           total_mo = document.getElementById('total_sitwifi_footer').innerHTML;
+           total = document.getElementById('total_global').innerHTML;
 
-              productosLS = localStorage.getItem('productos');
-              total_ea = document.getElementById('total_eqactivo_footer').innerHTML;
-              total_ena = document.getElementById('total_materiales_footer').innerHTML;
-              total_mo = document.getElementById('total_sitwifi_footer').innerHTML;
-              total = document.getElementById('total_global').innerHTML;
+           var form = $('#validation_master')[0];
+           var formData = new FormData(form);
 
-              var form = $('#validation_master')[0];
-              var formData = new FormData(form);
+           formData.append('shopping_cart',productosLS);
+           formData.append('total_ea',total_ea.replace(/,/g, ""));
+           formData.append('total_ena',total_ena.replace(/,/g, ""));
+           formData.append('total_mo',total_mo.replace(/,/g, ""));
+           formData.append('total',total.replace(/,/g, ""));
 
-              formData.append('shopping_cart',productosLS);
-              formData.append('total_ea',total_ea.replace(/,/g, ""));
-              formData.append('total_ena',total_ena.replace(/,/g, ""));
-              formData.append('total_mo',total_mo.replace(/,/g, ""));
-              formData.append('total',total.replace(/,/g, ""));
+           const headers = new Headers({
+             "Accept": "application/json",
+             "X-Requested-With": "XMLHttpRequest",
+             "X-CSRF-TOKEN": _token
+           })
 
-              const headers = new Headers({
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-TOKEN": _token
-              })
+           var miInit = { method: 'post',
+                             headers: headers,
+                             credentials: "same-origin",
+                             body:formData,
+                             cache: 'default' };
 
-              var miInit = { method: 'post',
-                                headers: headers,
-                                credentials: "same-origin",
-                                body:formData,
-                                cache: 'default' };
-
-              fetch('/documentp', miInit)
-                    .then(function(response){
-                      return response.text();
-                    })
-                    .then(function(response){
-                      console.log(response);
-                      if(response == "true"){
-                        localStorage.clear();
-                        swal({title: "Documento creado",  type: "success"},
-                            function(){
-                              location.href ="/documentp_cart";
-                            }
-                         );
-                      }else{
-                        swal("Operación abortada", "Ocurrio un error al guardar :(", "error");
-                      }
-
-                    })
-                    .catch(function(error){
-                            console.log(error);
-                    });
-
-          } else {
-            swal("Operación abortada", "Ningúna operación afectuada :)", "error");
-          }
-        });
+           return fetch('/documentp', miInit)
+                 .then(function(response){
+                   if (!response.ok) {
+                      throw new Error(response.statusText)
+                    }
+                   return response.text();
+                 })
+                 .catch(function(error){
+                   Swal.showValidationMessage(
+                     `Request failed: ${error}`
+                   )
+                 });
+        }//Preconfirm
+      }).then((result) => {
+        if (result.value) {
+          console.log(result);
+          localStorage.clear();
+          Swal.fire({
+            title: 'Documento creado',
+            text: "",
+            type: 'success',
+          }).then(function (result) {
+            if (result.value) {
+              window.location = "/documentp_cart";
+            }
+          })
+        }else{
+          Swal.showValidationMessage(
+            `Ocurrio un error inesperado`
+          )
+        }
+      })
       /************************************************************************************/
     }
 }), $(".validation-wizard-master").validate({
@@ -611,24 +617,24 @@ $(".validation-wizard-master").steps({
         }
     },
     rules: {
-        // type_service: {
-        //   required: true
-        // },
-        // vertical: {
-        //   required: true
-        // },
-        // itc: {
-        //   required: true
-        // },
-        // comercial: {
-        //   required: true
-        // },
-        // lugar_instalacion: {
-        //   required: true
-        // },
-        // tipo_cambio: {
-        //   required: true
-        // },
+        type_service: {
+          required: true
+        },
+        vertical: {
+          required: true
+        },
+        itc: {
+          required: true
+        },
+        comercial: {
+          required: true
+        },
+        lugar_instalacion: {
+          required: true
+        },
+        tipo_cambio: {
+          required: true
+        },
     },
 
 })
@@ -651,7 +657,7 @@ $(".validation-wizard-master").on('click', '.addButtonAP', function(){
       var $template = $('#optionTemplateAP'),
       $clone  = $template
         .clone()
-        .removeClass('hide')
+        .removeClass('d-none')
         .removeAttr('id')
         .attr('data-book-index', conceptIndex)
         .insertBefore($template);
@@ -676,7 +682,7 @@ $(".validation-wizard-master").on('click', '.addButtonAP', function(){
       var $template = $('#optionTemplateAP'),
       $clone  = $template
         .clone()
-        .removeClass('hide')
+        .removeClass('d-none')
         .removeAttr('id')
         .attr('data-book-index', index_reutilizado)
         .insertBefore($template);
@@ -709,7 +715,7 @@ $(".validation-wizard-master").on('click', '.addButtonFW', function(){
       var $template = $('#optionTemplateFIRE'),
       $clone  = $template
         .clone()
-        .removeClass('hide')
+        .removeClass('d-none')
         .removeAttr('id')
         .attr('data-book-index', conceptIndex1)
         .insertBefore($template);
@@ -734,7 +740,7 @@ $(".validation-wizard-master").on('click', '.addButtonFW', function(){
       var $template = $('#optionTemplateFIRE'),
       $clone  = $template
         .clone()
-        .removeClass('hide')
+        .removeClass('d-none')
         .removeAttr('id')
         .attr('data-book-index', index_reutilizado)
         .insertBefore($template);
@@ -767,7 +773,7 @@ $(".validation-wizard-master").on('click', '.addButtonSW', function(){
       var $template = $('#optionTemplateSW'),
       $clone  = $template
         .clone()
-        .removeClass('hide')
+        .removeClass('d-none')
         .removeAttr('id')
         .attr('data-book-index', conceptIndex2)
         .insertBefore($template);
@@ -792,7 +798,7 @@ $(".validation-wizard-master").on('click', '.addButtonSW', function(){
       var $template = $('#optionTemplateSW'),
       $clone  = $template
         .clone()
-        .removeClass('hide')
+        .removeClass('d-none')
         .removeAttr('id')
         .attr('data-book-index', index_reutilizado)
         .insertBefore($template);

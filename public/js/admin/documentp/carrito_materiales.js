@@ -6,7 +6,7 @@ $(function () {
 
 
 $(".agregar-carrito-material").on('click', function(e){
-  const producto = e.target.parentElement.parentElement;
+  const producto = e.target.closest('.card');
   var cant_sug = producto.getElementsByClassName("cant_sug")[0].value;
   var cant_req = producto.getElementsByClassName("cant_req")[0].value;
   var button =  producto.getElementsByTagName("button");

@@ -150,24 +150,23 @@
 <!--Modal logs--->
 <div class="col-md-5">
   <div class="modal fade" id="modal-logs" data-backdrop="static">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"><i class="fa fa-history" style="margin-right: 4px;"></i> Historial de modificaciones</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body table-responsive">
-            <div class="box-body">
                 <div class="row">
                   <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
                     <div class="table-responsive">
                       <table id="table_documentp_logs" class="table table-striped table-bordered table-hover">
-                        <thead>
-                          <tr class="bg-primary" style="background: #088A68;">
+                        <thead style="height:15px !important;">
+                          <tr class="bg-secondary">
                             <th> <small>Fecha del movimiento</small> </th>
-                            <th> <small>Cantidad anterior</small> </th>
-                            <th> <small>Cantidad actual</small> </th>
-                            <th> <small>Descripción</small> </th>
+                            <th class="cell-short"> <small>Cantidad anterior</small> </th>
+                            <th class="cell-short"> <small>Cantidad actual</small> </th>
+                            <th class="cell-large"> <small>Descripción</small> </th>
                             <th> <small>Acción</small> </th>
                             <th> <small>Modificó</small> </th>
                           </tr>
@@ -188,7 +187,6 @@
                     </div>
                   </div>
                 </div>
-            </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
           </div>
