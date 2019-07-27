@@ -585,84 +585,84 @@ $(".validation-wizard-master").steps({
       event.preventDefault();
         // swal("form_master Submitted!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem erat eleifend ex semper, lobortis purus sed.");
       /************************************************************************************/
-        swal({
-          title: "¿Estás seguro?",
-          text: "",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Continuar.!",
-          cancelButtonText: "Cancelar.!",
-          closeOnConfirm: false,
-          closeOnCancel: false,
-          showLoaderOnConfirm: true,
-        },
-        function(isConfirm) {
-          if (isConfirm) {
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+          let productosLS;
+          var _token = $('input[name="_token"]').val();
+          let total_ea = 0.0;
+          let total_ena = 0.0;
+          let total_mo = 0.0;
+          let total = 0.0;
+          let id = $('#id_documentp').val();
+           productosLS = localStorage.getItem('productos');
+           total_ea = document.getElementById('total_eqactivo_footer').innerHTML;
+           total_ena = document.getElementById('total_materiales_footer').innerHTML;
+           total_mo = document.getElementById('total_sitwifi_footer').innerHTML;
+           total = document.getElementById('total_global').innerHTML;
 
-             let productosLS;
-             var _token = $('input[name="_token"]').val();
-             let total_ea = 0.0;
-             let total_ena = 0.0;
-             let total_mo = 0.0
-             let total = 0.0;
-             let id = $('#id_documentp').val();
-              productosLS = localStorage.getItem('productos');
-              productosLogLS = localStorage.getItem('productos_log');
-              total_ea = document.getElementById('total_eqactivo_footer').innerHTML;
-              total_ena = document.getElementById('total_materiales_footer').innerHTML;
-              total_mo = document.getElementById('total_sitwifi_footer').innerHTML;
-              total = document.getElementById('total_global').innerHTML;
+           var form = $('#validation_master')[0];
+           var formData = new FormData(form);
 
-              var form = $('#validation_master')[0];
-              var formData = new FormData(form);
+           formData.append('id', id);
+           formData.append('shopping_cart',productosLS);
+           formData.append('total_ea',total_ea.replace(/,/g, ""));
+           formData.append('total_ena',total_ena.replace(/,/g, ""));
+           formData.append('total_mo',total_mo.replace(/,/g, ""));
+           formData.append('total',total.replace(/,/g, ""));
 
-              formData.append('id', id);
-              formData.append('shopping_cart',productosLS);
-              formData.append('productos_log',productosLogLS);
-              formData.append('total_ea',total_ea.replace(/,/g, ""));
-              formData.append('total_ena',total_ena.replace(/,/g, ""));
-              formData.append('total_mo',total_mo.replace(/,/g, ""));
-              formData.append('total',total.replace(/,/g, ""));
+           const headers = new Headers({
+             "Accept": "application/json",
+             "X-Requested-With": "XMLHttpRequest",
+             "X-CSRF-TOKEN": _token
+           })
 
-              const headers = new Headers({
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-TOKEN": _token
-              })
+           var miInit = { method: 'post',
+                             headers: headers,
+                             credentials: "same-origin",
+                             body:formData,
+                             cache: 'default' };
 
-              var miInit = { method: 'post',
-                                headers: headers,
-                                credentials: "same-origin",
-                                body:formData,
-                                cache: 'default' };
-
-              fetch('/edit_documentp', miInit)
-                    .then(function(response){
-                      return response.text();
-                    })
-                    .then(function(response){
-                      console.log(response);
-                      if(response == "true"){
-                        localStorage.clear();
-                        swal({title: "Documento editado correctamente",  type: "success"},
-                            function(){
-                              location.href ="/view_history_documentp";
-                            }
-                         );
-                      }else{
-                        swal("Operación abortada", "Ocurrio un error al guardar :(", "error");
-                      }
-
-                    })
-                    .catch(function(error){
-                            console.log(error);
-                    });
-
-          } else {
-            swal("Operación abortada", "Ningúna operación afectuada :)", "error");
-          }
-        });
+           return fetch('/edit_documentp', miInit)
+                 .then(function(response){
+                   if (!response.ok) {
+                      throw new Error(response.statusText)
+                    }
+                   return response.text();
+                 })
+                 .catch(function(error){
+                   Swal.showValidationMessage(
+                     `Request failed: ${error}`
+                   )
+                 });
+        }//Preconfirm
+      }).then((result) => {
+        if (result.value) {
+          console.log(result);
+          localStorage.clear();
+          Swal.fire({
+            title: 'Documento actualizado',
+            text: "",
+            type: 'success',
+          }).then(function (result) {
+            if (result.value) {
+              window.location = "/view_history_documentp";
+            }
+          })
+        }else{
+          Swal.showValidationMessage(
+            `Ocurrio un error inesperado`
+          )
+        }
+      })
       /************************************************************************************/
     }
 }), $(".validation-wizard-master").validate({

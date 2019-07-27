@@ -1,21 +1,16 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View Edit Document P') )
-    {{ trans('message.document_edit') }}
+  @if( auth()->user()->can('View cover') )
+    {{ trans('message.breadcrumb_document_create') }}
   @else
     {{ trans('message.denied') }}
   @endif
 @endsection
 
-@section('contentheader_description')
-
-
-@endsection
-
-@section('breadcrumb_ubication')
-  @if( auth()->user()->can('View Edit Document P') )
-    {{ trans('message.breadcrumb_document_edit') }}
+@section('breadcrumb_title')
+  @if( auth()->user()->can('View Document P') )
+    {{ trans('message.document_create') }}
   @else
     {{ trans('message.denied') }}
   @endif
@@ -52,27 +47,8 @@
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script src="{{ asset('/plugins/momentupdate/moment-with-locales.js')}}"></script>
-    <!-- FormValidation -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
-    <!-- FormValidation plugin and the class supports validating Bootstrap form -->
-    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.steps.min.js')}}"></script>
-    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
-    <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-
-
-    <!-- FormValidation -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master-two/steps.css')}}" >
-    <!-- FormValidation plugin and the class supports validating Bootstrap form -->
-    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
-    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
-
-
-
-    <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/css/pagination.min.css')}}" rel="stylesheet" type="text/css" />
-    <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
-    <script src="{{ asset('/plugins/momentupdate/moment-with-locales.js')}}"></script>
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
+    <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <!-- FormValidation -->
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
     <!-- FormValidation plugin and the class supports validating Bootstrap form -->
@@ -86,60 +62,25 @@
     <!-- FormValidation plugin and the class supports validating Bootstrap form -->
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
+    <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
+    <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
 
-    <style media="screen">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
 
+  @else
+    @include('default.denied')
+  @endif
+  <script type="text/javascript" src="{{asset('js/admin/documentp/edit_document_cart_general.js')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_logs.js')}}"></script>
 
-
-    </style>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-    <script type="text/javascript">
-      $(function() {
-        $('#select_one').val('').trigger('change');
-
-        $('.btngeneral').on('click', function(e){
-
-          var id= $('select[name="select_one"]').val();
-          var _token = $('input[name="_token"]').val();
-
-
-
-        });
-
-        $(document).on('change', ':file', function() {
-          var input = $(this),
-          numFiles = input.get(0).files ? input.get(0).files.length : 1,
-          label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-          input.trigger('fileselect', [numFiles, label]);
-        });
-        // We can watch for our custom `fileselect` event like this
-        $(document).ready( function() {
-          $(':file').on('fileselect', function(event, numFiles, label) {
-
-            var input = $(this).parents('.input-group').find(':text'),
-            log = numFiles > 1 ? numFiles + ' files selected' : label;
-
-            if( input.length ) {
-              input.val(log);
-            } else {
-              if( log ) alert(log);
-            }
-
-          });
-        });
-
-
-      });
-    </script>
-    <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_logs.js')}}"></script>
   @if( auth()->user()->can('View level zero documentp notification') )
     <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_itc.js?v=1.0.2')}}"></script>
   @elseif ( auth()->user()->can('View level one documentp notification') )
     <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=1.0.2')}}"></script>
   @elseif ( auth()->user()->can('View level two documentp notification') )
     <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=1.0.2')}}"></script>
-
-  @endif
+  @elseif ( auth()->user()->can('View level three documentp notification') )
+    <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=1.0.2')}}"></script>
   @else
     @include('default.denied')
   @endif

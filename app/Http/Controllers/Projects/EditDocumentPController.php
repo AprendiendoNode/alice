@@ -33,13 +33,12 @@ class EditDocumentPController extends Controller
     //Data formulario
     $grupos = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
     $anexos = DB::table('hotels')->select('id', 'Nombre_hotel')->orderBy('Nombre_hotel')->get();
-    $categories = DB::table('products_categories')->select('id', 'name')->get();
+    $categories = DB::table('categories')->select('id', 'name')->get();
     $verticals = DB::table('verticals')->select('id','name')->get();
     $itc = DB::select('CALL px_ITC_todos');
     $comerciales = DB::select('CALL px_resguardoXgrupo_users(?)', array(2));
     $type_service = DB::table('documentp_type')->select('id', 'name')->get();
     $installation = DB::table('documentp_installation')->select('id', 'name')->get();
-    $priorities = DB::table('documentp_priorities')->select('id', 'name')->get();
     $viewPermitted = view('permitted.documentp.show' ,compact('id_document', 'hour_created','grupos', 'anexos','data_header', 'tipo_cambio', 'categories', 'itc', 'verticals', 'comerciales', 'type_service', 'priorities', 'installation'));
     $viewBlock = view('permitted.documentp.edit_documentp_block', compact('folio', 'hour_created'));
 
