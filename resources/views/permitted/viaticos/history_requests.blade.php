@@ -363,7 +363,7 @@
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
               <div class="">
-                <table id="table_viatics" class="table table-striped table-bordered table-hover">
+                <table id="table_viatics" class="table table-striped table-bordered table-hover compact"  style="width:100%">
                   <thead>
                     <tr class="bg-white" style="background: #088A68;">
                       <th> <small></small> </th>
@@ -460,7 +460,7 @@
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
               <div class="">
-                <table id="table_viatics" class="table table-striped table-bordered table-hover" >
+                <table id="table_viatics" class="table table-striped table-bordered table-hover compact" style="width:100%" >
                   <thead>
                     <tr class="bg-white" style="background: #088A68;">
                       <th> <small></small> </th>
@@ -560,7 +560,7 @@
             <div class="row" >
             <div  class="container-fluid">
 
-                <table id="table_viatics" class="table table-sm table-striped table-bordered table-hover"  >
+                <table id="table_viatics" class="table table-sm table-striped table-bordered table-hover compact" style="width:100%">
                   <thead  >
                     <tr class="bg-white" style="background: #088A68; " class="overflow-text" >
                       <th class="overflow-text"> <small></small> </th>
@@ -622,26 +622,27 @@
               </div>
             </div>
 
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
-              <div class="">
-                <table id="table_viatics" class="table table-striped table-bordered table-hover">
-                  <thead>
-                    <tr class="bg-white" style="background: #088A68;">
-                      <th> <small></small> </th>
-                      <th> <small>Folio</small> </th>
-                      <th> <small>Servicio</small> </th>
-                      <th> <small>Fecha Inicio</small> </th>
-                      <th> <small>Fecha Fin</small> </th>
-                      <th> <small>Monto Solicitado</small> </th>
-                      <th> <small>Monto Aprobado</small> </th>
-                      <th> <small>Estatus</small> </th>
-                      <th> <small>Prioridad</small> </th>
-                      <th> <small>Usuario</small> </th>
-                      <th> <small>Opciones</small> </th>
-                      <th> <small>status</small> </th>
+            <div class="row" >
+            <div  class="container-fluid">
+
+                <table id="table_viatics" class="table table-sm table-striped table-bordered table-hover compact" style="width:100%">
+                  <thead  >
+                    <tr class="bg-white" style="background: #088A68; " class="overflow-text" >
+                      <th class="overflow-text"> <small></small> </th>
+                      <th class="overflow-text"> <small>Folio</small> </th>
+                      <th  class="overflow-text"> <small>Servicio</small> </th>
+                      <th class="overflow-text"> <small>Fecha Inicio</small> </th>
+                      <th class="overflow-text"> <small>Fecha Fin</small> </th>
+                      <th class="overflow-text"> <small >Monto Solicitado</small> </th>
+                      <th class="overflow-text"> <small>Monto Aprobado</small> </th>
+                      <th class="overflow-text"> <small>Estatus</small> </th>
+                      <th class="overflow-text"> <small>Prioridad</small> </th>
+                      <th class="overflow-text"> <small>Usuario</small> </th>
+                      <th class="overflow-text"> <small>Opciones</small> </th>
+                      <th class="overflow-text"> <small>status</small> </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody >
                   </tbody>
                   <tfoot id='tfoot_average'>
                     <tr>
@@ -683,6 +684,16 @@
         table-layout: fixed;
         width: auto !important;
         white-space: pre-wrap !important;
+        padding:0; margin:0;
+      }
+      .fix-table tbody tr td{
+        table-layout: fixed;
+        width: auto !important;
+        white-space: pre-wrap !important;
+        padding:0; margin:0;
+      }
+      .fix-columns{
+        padding:0; margin:0;
       }
       #table_concept tbody tr td{
         table-layout: fixed;

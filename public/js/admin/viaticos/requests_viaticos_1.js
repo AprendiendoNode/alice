@@ -43,52 +43,52 @@ var Configuration_table_responsive_checkbox_move_viatic_n1= {
     {
       "targets": 1,
       "width": "1%",
-      "className": "text-center",
+      "className": "text-center fix-colums",
     },
     {
       "targets": 2,
-      "width": "3%",
-      "className": "text-center",
+      "width": "1%",
+      "className": "text-center fix-colums",
     },
     {
       "targets": 3,
       "width": "1%",
-      "className": "text-center",
+      "className": "text-center fix-columns",
     },
     {
       "targets": 4,
       "width": "1%",
-      "className": "text-center",
+      "className": "text-center fix-columns",
     },
     {
       "targets": 5,
       "width": "0.2%",
-      "className": "text-center",
+      "className": "text-center fix-columns",
     },
     {
       "targets": 6,
       "width": "0.2%",
-      "className": "text-center",
+      "className": "text-center fix-columns",
     },
     {
       "targets": 7,
       "width": "0.2%",
-      "className": "text-center",
+      "className": "text-center fix-columns",
     },
     {
       "targets": 8,
       "width": "0.2%",
-      "className": "text-center",
+      "className": "text-center fix-columns",
     },
     {
       "targets": 9,
-      "width": "2%",
-      "className": "text-center",
+      "width": "1%",
+      "className": "text-center fix-columns",
     },
     {
       "targets": 10,
       "width": "1%",
-      "className": "text-center",
+      "className": "text-center fix-columns",
     },
     {
       "targets": 11,
@@ -162,6 +162,11 @@ var Configuration_table_responsive_checkbox_move_viatic_n1= {
             swal("Operación abortada", "Ningún viático afectado :)", "error");
           }
         });
+        $('#table_viatics').css({
+          padding:0,
+          margin:0
+        });
+        $('#table_viatics').addClass('fix-table');
       }
     },
     {
