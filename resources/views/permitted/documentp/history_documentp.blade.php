@@ -10,12 +10,11 @@
 @endsection
 
 @section('breadcrumb_title')
-  Historial de compras
-  {{-- @if( auth()->user()->can('View Document P') )
-    {{ trans('message.document_create') }}
-  @else
-    {{ trans('message.denied') }}
-  @endif --}}
+   @if( auth()->user()->can('View Document P') )
+    Historial de compras
+    @else
+      {{ trans('message.denied') }}
+    @endif
 @endsection
 
 @section('content')
@@ -154,7 +153,6 @@
       </div>
 
   @elseif ( auth()->user()->can('View level two documentp notification') )
-    <div class="container">
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
           <div class="row">
@@ -178,7 +176,7 @@
       <br>
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
-          <div class="">
+          <div class="table-responsive">
             <table id="table_documentp" class="table table-striped table-bordered table-hover table-condensed">
               <thead>
                 <tr class="" style="background: #088A68;">
@@ -227,7 +225,6 @@
           </div>
         </div>
       </div>
-    </div>
   @elseif ( auth()->user()->can('View level three documentp notification') )
     <div class="container">
       <div class="row">
@@ -314,6 +311,8 @@
     <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
+    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
+    <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
 
     <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />

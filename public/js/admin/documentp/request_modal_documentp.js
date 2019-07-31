@@ -103,52 +103,39 @@ $('#addComment').on('click', function(e){
 
 })
 
-function deny_docp(e){
+async function deny_docp(e){
   var valor= e.getAttribute('value');
   var _token = $('input[name="_token"]').val();
 
-  swal({
-    title: "¿Estás seguro?",
-    text: "Se denegará este Documento P!<br><br><textarea rows='3' placeholder='Añadir comentario' class='form-control' id='comentario'></textarea>",
-    type: "warning",
-    html:true,
-    showCancelButton: true,
-    confirmButtonClass: "btn-danger",
-    confirmButtonText: "Continuar.!",
-    cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm){
-    if(isConfirm){
-      var comment = document.getElementById("comentario").value;
-      console.log(comment);
-      if (comment === "") {
-
-        swal("Operación abortada!", "Añada un comentario de denegación.", "error");
-      }else{
-        $.ajax({
-            type: "POST",
-            url: "/deny_documentp",
-            data: { idents: valor, comm: comment, _token : _token },
-            success: function (data){
-              if (data === 'true') {
-                swal("Operación Completada!", "El Documento ha sido denegado.", "success");
-                table_permission_one();
-              }
-              if (data === 'false') {
-                swal("Operación abortada!", "No cuenta con el permiso o esta ya se encuentra denegado :) Nota: Si la solicitud ya esta confirmada no se puede denegar", "error");
-              }
-            },
-            error: function (data) {
-              console.log('Error:', data);
-            }
-        });
-      }
-    }else{
-        swal("Operación abortada", "Ningúna solicitud afectada :)", "error");
-    }
+  const {value: text} = await Swal.fire({
+    title: 'Denegar documento',
+    input: 'textarea',
+    inputPlaceholder: 'Escriba un comentario para denegar el documento...',
+    showCancelButton: true
   })
+
+  if (text) {
+    $.ajax({
+      type: "POST",
+      url: "/deny_documentp",
+      data: { idents: valor, comm: text, _token : _token },
+      success: function (data){
+        if (data === 'true') {
+          Swal.fire('Operación completada', 'El documento a sido denegado', 'success');
+          table_permission_one();
+        }
+        if (data === 'false') {
+        Swal.fire('Oops', '', 'Error');
+        }
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+  }else {
+    Swal.fire('Debe escribir un comentario', '', 'warning');
+  }
+
 }
 
 

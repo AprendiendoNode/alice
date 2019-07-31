@@ -11,7 +11,7 @@ use App\Models\Projects\Documentp_cart;
 use App\Models\Projects\Documentp_status_user;
 use App\Models\Projects\Deny_docpcomment;
 use App\Models\Projects\Documentp_project;
-// use App\Mail\SolicitudCompraAprobada;
+use App\Mail\SolicitudCompraAprobada;
 use Mail;
 use Auth;
 use DB;
@@ -299,7 +299,7 @@ class DocumentpHistoryController extends Controller
     //Estatus->Autorizado
     public function approval_two(Request $request)
     {
-      $doc_id = json_decode($request->idents);
+      $doc_id = $request->idents;
       $user = Auth::user()->id;
       $valor= 'false';
 
@@ -472,9 +472,9 @@ class DocumentpHistoryController extends Controller
         'total' => $total
       ];
 
-      $copias = ['aguevara@sitwifi.com', 'mdeoca@sitwifi.com', 'mmoreno@sitwifi.com'];
-      Mail::to($itc_email)->cc($copias)->send(new SolicitudCompraAprobada($parametros1));
-
+      //$copias = ['aguevara@sitwifi.com', 'mdeoca@sitwifi.com', 'mmoreno@sitwifi.com'];
+      //Mail::to($itc_email)->cc($copias)->send(new SolicitudCompraAprobada($parametros1));
+      Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompraAprobada($parametros1));
     }
 
 }

@@ -52,12 +52,12 @@ function documentp_table(datajson, table){
     '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     data.elaboro,
-  '<span class="label label-primary">'+data.status+'</span>',
+    '<span class="badge badge-dark badge-pill">'+data.status+'</span>',
     data.num_edit,
     data.porcentaje_compra + '%',
     data.atraso,
     type_doc,
-    '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fa fa-file-pdf-o"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>',
+    '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>',
     ]);
   });
 }
@@ -69,27 +69,27 @@ var Configuration_table_responsive_documentp= {
             {
                 "targets": 0,
                 "width": "0.3%",
-                "className": "text-center",
+                "className": "text-center cell-name",
             },
             {
               "targets": 1,
               "width": "2%",
-              "className": "text-center",
+              "className": "text-center cell-name",
             },
             {
               "targets": 2,
               "width": "0.5%",
-              "className": "text-right",
+              "className": "text-right cell-price",
             },
             {
               "targets": 3,
               "width": "0.5%",
-              "className": "text-right",
+              "className": "text-right cell-price",
             },
             {
               "targets": 4,
               "width": "0.5%",
-              "className": "text-right",
+              "className": "text-right cell-price",
             },
             {
               "targets": 5,
@@ -109,22 +109,22 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 8,
               "width": "0.2%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 9,
               "width": "0.2%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 10,
               "width": "0.2%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 11,
-              "width": "1%",
-              "className": "text-center actions",
+              "width": "2.5%",
+              "className": "text-center actions-button",
             }
         ],
         dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +
