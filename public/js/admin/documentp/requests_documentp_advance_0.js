@@ -65,9 +65,9 @@ function documentp_table(datajson, table){
   $.each(datajson_result, function(index, data){
   vartable.fnAddData([
     data.nombre_proyecto,
-    '<span class="label label-primary">'+Math.floor(data.total_global)+'%</span>',
+    '<span class="badge badge-dark badge-pill">'+Math.floor(data.total_global)+'%</span>',
     '$' + data.total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-    '<span class="label label-success">'+Math.floor(data.presupuesto.slice(0,-1))+'%</span>',
+    '<span class="badge badge-success badge-pill">'+Math.floor(data.presupuesto.slice(0,-1))+'%</span>',
     invertirFecha(data.fecha_inicio),
     invertirFecha(data.fecha_fin),
     data.atraso,
@@ -77,7 +77,7 @@ function documentp_table(datajson, table){
     data.servicio,
     '$' + data.servicio_mensual.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     data.itc,
-    '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fa fa-file-pdf-o"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>',
+    '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fas fa-file-pdf"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>',
     invertirFecha(data.updated_at.split(" ")[0])+" "+ data.updated_at.split(" ")[1]
     ]);
   });
@@ -91,7 +91,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 0,
               "width": "1%",
-              "className": "text-center",
+              "className": "text-center cell-name",
             },
             {
               "targets": 1,
@@ -106,7 +106,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 3,
               "width": "1%",
-              "className": "text-right",
+              "className": "text-center",
             },
             {
               "targets": 4,
@@ -151,13 +151,13 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 12,
               "width": "1%",
-              "className": "text-center",
+              "className": "text-center cell-name",
 
             },
             {
               "targets": 13,
               "width": "4%",
-              "className": "text-center actions",
+              "className": "text-center actions-button",
             },
             {
               "targets": 14,

@@ -313,10 +313,8 @@
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
     <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
     <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
-
     <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
-    <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
-    <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
+
     <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
     <script src="{{ asset('js/admin/documentp/requests_documentp_0.js?v=2.0.1')}}"></script>
 

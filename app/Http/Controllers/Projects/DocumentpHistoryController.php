@@ -191,7 +191,7 @@ class DocumentpHistoryController extends Controller
 
         $docp_advance = Documentp_project::firstOrCreate(
             ['id_doc' => $id_doc],
-            ['id_motivo' => 1]
+            ['id_motivo' => 7]
         );
 
         $motivo = DB::table('documentp_project_advance')

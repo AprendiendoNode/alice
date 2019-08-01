@@ -121,8 +121,8 @@
     <thead style="background:#007369;color:white;height: 10px !important;">
       <tr>
         <th class="text-center">% Instalación</th>
-        <th class="text-center">% Configuración</th>
-        <th class="text-center">% Pruebas y entregas</th>
+        <th class="text-center">% Configuración y pruebas</th>
+        <th class="text-center">% Firma acta de enrega</th>
         <th class="text-center">% Total de proyecto</th>
         <th class="text-center">Motivos</th>
       </tr>

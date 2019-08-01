@@ -485,7 +485,7 @@ input::-webkit-input-placeholder {
 }
 
 .dataTable tr.selected{
-  background-color: #0C74E8 !important;
+  background-color: #D8D6D7 !important;
   color: #fff !important;
 }
 

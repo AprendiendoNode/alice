@@ -19,6 +19,13 @@
                 @foreach (auth()->user()->menus->where('section_id', $menu[0]->section_id) as $submenu)
                   <li class="nav-item {{ Request::is($submenu->url) ? 'active' : '' }}"> <a class="nav-link" href="{{ url($submenu->url) }}"><i class="{{ $submenu->icons }} mr-2"></i>{{ $submenu->display_name }}</a></li>
                 @endforeach
+                @if (App\Section::find($menu[0]->section_id)->id == 11)
+                  <li class="nav-item {{ Request::is('') ? 'active' : 'view_budget' }}"> <a class="nav-link" href="{{ url('/view_budget') }}"><i class="fas fa-chart-line mr-2"></i>Presupuesto Anual</a></li>
+                  <li class="nav-item {{ Request::is('') ? 'active' : 'view_edit_projects' }}"> <a class="nav-link" href="{{ url('/view_edit_projects') }}"><i class="fas fa-edit mr-2"></i>Editar proyectos</a></li>
+                  <li class="nav-item {{ Request::is('') ? 'active' : 'view_project_docp_success' }}"> <a class="nav-link" href="{{ url('/view_project_docp_success') }}"><i class="fas fa-clipboard-check mr-2"></i>Proyectos terminados</a></li>
+                  <li class="nav-item {{ Request::is('') ? 'active' : 'view_budget_report' }}"> <a class="nav-link" href="{{ url('/view_budget_report') }}"><i class="fas fa-money-check-alt mr-2"></i>Reporte de presupuesto</a></li>
+                  <li class="nav-item {{ Request::is('') ? 'active' : 'view_dashboard_project' }}"> <a class="nav-link" href="{{ url('/view_dashboard_project') }}"><i class="fas fa-chart-pie mr-2"></i>Dashboard de proyectos</a></li>
+                @endif
               </ul>
             </div>
           </li>

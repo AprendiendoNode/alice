@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('contentheader_title')
   @if( auth()->user()->can('View projects docp') )
@@ -8,17 +8,12 @@
   @endif
 @endsection
 
-@section('contentheader_description')
-
-
-@endsection
-
-@section('breadcrumb_ubication')
-  @if( auth()->user()->can('View projects docp') )
+@section('breadcrumb_title')
+   @if( auth()->user()->can('View projects docp') )
     Avance de proyectos
-  @else
-    {{ trans('message.denied') }}
-  @endif
+    @else
+      {{ trans('message.denied') }}
+    @endif
 @endsection
 
 @section('content')
@@ -33,13 +28,13 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
+          <h5 class="modal-title">Añadir comentario | Gerencia Instalaciones </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Añadir comentario (Gerencia instalaciones)</h4>
         </div>
         <div class="modal-body">
           <form id="form_add_comment">
             <input id="id_doc" type="hidden" name="id_doc" value="">
-            <textarea id="comment" name="comment" rows="8" cols="80" placeholder="Escriba un comentario"></textarea>
+            <textarea class="form-control" id="comment" name="comment" rows="8" placeholder="Escriba un comentario"></textarea>
           </form>
         </div>
         <div class="modal-footer">
@@ -64,9 +59,9 @@
           <div class="table-responsive">
             <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
               <thead>
-                <tr class="bg-primary" style="background: #088A68;">
+                <tr style="background: #088A68;">
                   <th> <small>Nombre del proyecto</small> </th>
-                  <th> <small>Total de avance</small> </th>
+                  <th> <small>Avance instalai</small> </th>
                   <th> <small>Presupuesto $</small> </th>
                   <th> <small>Presupuesto ejercido %</small> </th>
                   <th> <small>Entrega compromiso</small> </th>
@@ -122,7 +117,7 @@
           <div class="table-responsive">
             <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
               <thead>
-                <tr class="bg-primary" style="background: #088A68;">
+                <tr style="background: #088A68;">
                   <th> <small>Estatus</small> </th>
                   <th> <small>Proyecto</small> </th>
                   <th> <small>Avance instalación</small> </th>
@@ -190,7 +185,7 @@
           <div class="table-responsive">
             <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
               <thead>
-                <tr class="bg-primary" style="background: #088A68;">
+                <tr style="background: #088A68;">
                   <th> <small>Estatus</small> </th>
                   <th> <small>Proyecto</small> </th>
                   <th> <small>Avance instalación</small> </th>
@@ -258,7 +253,7 @@
           <div class="table-responsive">
             <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
               <thead>
-                <tr class="bg-primary" style="background: #088A68;">
+                <tr style="background: #088A68;">
                   <th> <small>Estatus</small> </th>
                   <th> <small>Proyecto</small> </th>
                   <th> <small>Avance instalación</small> </th>
@@ -320,12 +315,11 @@
   @if( auth()->user()->can('View projects docp') )
     <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
-    <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
-    <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
-    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
+    <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
     <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-
+    <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
+    <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
     <style>
       #table_documentp td, #table_documentp th{
         vertical-align: middle;
@@ -333,46 +327,35 @@
 
       #table_documentp  td a.set-alert{
         border-radius: 15px;
-        padding: 2px 7px;
+        padding: 3px 7px;
         color: transparent;
+        border-bottom: none;
       }
 
-      #table_documentp .status .editable-input select option{
+       /* select option{
         color: transparent;
-      }
+      } */
 
-      #table_documentp .status .editable-input select option:nth-child(1){
+      .set-alert  select option:nth-child(1){
         background-color: red !important;
       }
 
-      #table_documentp .status .editable-input select option:nth-child(2){
+      .set-alert  select option:nth-child(2){
         background-color: yellow !important;
       }
 
-      #table_documentp .status .editable-input select option:nth-child(3){
+      .set-alert  select option:nth-child(3){
         background-color: green !important;
       }
 
-      #table_documentp .status .editable-input select option:nth-child(4){
+      .set-alert  select option:nth-child(4){
         background-color: blue !important;
       }
 
-      #table_documentp .status .editable-popup{
+      .editable-popup{
         left: 0px !important;
       }
 
-      .actions a{
-        padding: 2px 4px !important;
-        margin-left: 3px;
-      }
-
-      .actions{
-        width: 80px;
-      }
-
-      #modal-add-comment .modal-dialog{
-        width: 340px !important;
-      }
 
     </style>
     @if( auth()->user()->can('View level zero documentp notification') )
