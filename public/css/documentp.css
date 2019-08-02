@@ -556,8 +556,9 @@ input::-webkit-input-placeholder {
 
 #table_documentp_logs tbody tr td {
   min-width: 120px;
-  padding: 0.2rem 0.5rem;
+  padding: 0.2rem 0.2rem;
 }
+
 
 /*Tabla resumen de pedido*/
 

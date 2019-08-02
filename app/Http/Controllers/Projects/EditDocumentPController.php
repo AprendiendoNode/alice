@@ -90,7 +90,6 @@ class EditDocumentPController extends Controller
     $set_documentp->itc_id = $request->itc_id;
     $set_documentp->grupo_id = $request->grupo_id;
     $set_documentp->anexo_id = $request->anexo_id;
-    $set_documentp->renta_mensual = $request->renta_mensual;
     $set_documentp->save();
     $flag = 1;//ok
     return $flag;

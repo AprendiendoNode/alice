@@ -2568,8 +2568,7 @@ var Configuration_table_responsive_simple_two_asc={
       Filter: true,
       searching: true,
       "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
-      //ordering: false,
-      //"pageLength": 5,
+
       bInfo: false,
       language:{
               "sProcessing":     "Procesando...",

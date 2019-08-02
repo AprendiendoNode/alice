@@ -132,6 +132,7 @@ class DocumentpHistoryController extends Controller
       $id_doc = $id_documentp;
       $cart = $id_cart;
       $status = [];
+
       $data = DB::select('CALL px_docupentop_materialesXcarrito(?)' , array($cart));
       if($data == []){
         return view('permitted.documentp.empty_cart');
@@ -139,6 +140,16 @@ class DocumentpHistoryController extends Controller
       $tipo_cambio = $data[0]->tipo_cambio;
       $collection = collect($data);
       $select_status = DB::table('orders_products')->select('id','name')->get();
+      //dd($select_status);
+      $users_compras = [11,45];
+      $users_delivery = [258,78,40];
+      // if(in_array(Auth::user()->id, $users_compras)){
+      //   $select_status = DB::table('orders_products')->select('id','name')->whereIn('id', [1,2,3,4])->get();
+      // }else if(in_array(Auth::user()->id, $users_delivery)){
+      //   $select_status = DB::table('orders_products')->select('id','name')->whereIn('id', [5,6,7,8,9])->get();
+      // }else{
+      //
+      // }
       for($i=0;$i < count($select_status); $i++){
         array_push($status, [
 					'value' => $select_status[$i]->id,

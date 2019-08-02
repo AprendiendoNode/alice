@@ -129,7 +129,7 @@ function table_atrasos_filterby_servicio(datajson, table){
         key.atraso_compra,
         key.atraso_instalacion,
         key.itc,
-        '<a target="_blank" href="/documentp_invoice/'+ key.id + '/ '+ key.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fa fa-file-pdf-o"></span></a>',
+        '<a target="_blank" href="/documentp_invoice/'+ key.id + '/ '+ key.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fas fa-file-pdf"></span></a>',
       ]);
     });
 
@@ -145,7 +145,7 @@ function table_atrasos_filterby_motivo(datajson, table){
         key.atraso_compra,
         key.atraso_instalacion,
         key.itc,
-        '<a target="_blank" href="/documentp_invoice/'+ key.id + '/ '+ key.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fa fa-file-pdf-o"></span></a>',
+        '<a target="_blank" href="/documentp_invoice/'+ key.id + '/ '+ key.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fas fa-file-pdf"></span></a>',
       ]);
     });
 
@@ -225,7 +225,6 @@ function graph_rentas_perdidas(){
     })
     .then(data => {
       if(data != []){
-        console.log(data);
         graph_barras_rentas_perdidas('graphicRentasDia',data_name, data);
       }
 
@@ -236,8 +235,8 @@ function graph_rentas_perdidas(){
 }
 
 function graph_presupuesto_ejercido_prom(){
-  var data_count = [];
-  var data_name = ['Cliente Nuevo', 'Ampliación', 'Renovación', 'Venta', 'F & F'];
+  // var data_count = [];
+  // var data_name = ['Cliente Nuevo', 'Ampliación', 'Renovación', 'Venta', 'F & F'];
 
   fetch('/get_presupuesto_ejercido_prom', initGet)
     .then(response => {
@@ -245,7 +244,7 @@ function graph_presupuesto_ejercido_prom(){
     })
     .then(data => {
       if(data != []){
-        graph_barras_presupuesto('graphicPresupuestoEjercido',data_name, data);
+        graph_barras_presupuesto('graphicPresupuestoEjercido',data);
       }
 
     })
@@ -306,6 +305,7 @@ function graph_barras_delay_projects(title, data) {
                show:true,
                interval: 'auto',    // {number}
                margin: 10,
+               rotate: 0,
                formatter: '{value}',
                textStyle: {
                   //  color: 'blue',
@@ -607,35 +607,17 @@ function graph_barras_rentas_perdidas(title, campoa, data) {
   });
 }
 
-function graph_barras_presupuesto(title, campoa, data) {
+function graph_barras_presupuesto(title, data) {
   var myChart = echarts.init(document.getElementById(title));
   var option = {
-    title: {
-       text: '',
-       subtext: 'Porcentajes promedio del presupuesto ejercido por tipo de servicio',
-       textStyle: {
-        color: '#449D44',
-        fontStyle: 'normal',
-        fontWeight: 'normal',
-        fontFamily: 'sans-serif',
-        fontSize: 18,
-        align: 'left',
-        verticalAlign: 'top',
-        width: '100%',
-        textBorderColor: 'transparent',
-        textBorderWidth: 0,
-        textShadowColor: 'transparent',
-        textShadowBlur: 0,
-        textShadowOffsetX: 0,
-        textShadowOffsetY: 0,
-      },
-   },
-    color: ['#3398DB'],
     tooltip : {
         trigger: 'axis',
         axisPointer : {            // 坐标轴指示器，坐标轴触发有效
             type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         }
+    },
+    legend: {
+        data: ['% Presupuesto ejercido', '% Instalado']
     },
     toolbox: {
         show : false,
@@ -669,7 +651,7 @@ function graph_barras_presupuesto(title, campoa, data) {
     xAxis : [
         {
             type : 'category',
-            data : campoa,
+            data : ['Cliente Nuevo','Ampliación','Renovación','Venta','F & F'],
             axisTick: {
                 alignWithLabel: true
             },
@@ -677,50 +659,57 @@ function graph_barras_presupuesto(title, campoa, data) {
                show:true,
                interval: 'auto',    // {number}
                margin: 10,
-               rotate: 0,
                formatter: '{value}',
                textStyle: {
                   //  color: 'blue',
                    fontFamily: 'sans-serif',
-                   fontSize: 12,
+                   fontSize: 10,
                    fontStyle: 'normal',
                    fontWeight: 'bold'
                }
             }
-            //
         }
     ],
     yAxis : [
         {
-            type : 'value'
+            type : 'value',
+            boundaryGap: [0, 0.1]
         }
     ],
     series : [
-        {
-            name:'',
-            type:'bar',
-            position: 'top',
-            barWidth: '60%',
-            data: [data[1].presupuesto_prom, data[0].presupuesto_prom, data[4].presupuesto_prom, data[5].presupuesto_prom, data[2].presupuesto_prom],
+      {
+            name: '% Presupuesto ejercido',
+            type: 'bar',
+            barGap: 0,
             itemStyle: {
               normal: {
-                  label : {
-                      show: true,
-                      position: 'top',
-                      textStyle: {
-                        color: '#000'
-                      },
-                  },
-                  color: function(params) {
-                      // build a color map as your need.
-                      var colorList = [
-                          '#D7504B','#27727B','#FAD860','#F0805A','#26C0C0',
-                          '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD'
-                      ];
-                      return colorList[params.dataIndex]
-                  }
+                label : {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                      color: '#000'
+                    },
+                },
               }
-            }
+            },
+            data: [data[1].presupuesto_prom, data[0].presupuesto_prom, data[4].presupuesto_prom, data[5].presupuesto_prom, data[2].presupuesto_prom]
+        },
+        {
+            name: '% Instalado',
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                label : {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                      color: '#000'
+                    }
+                },
+
+              }
+            },
+            data: [data[1].instalacion_prom, data[0].instalacion_prom, data[4].instalacion_prom, data[5].instalacion_prom, data[2].instalacion_prom]
         }
     ]
   };
