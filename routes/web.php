@@ -386,6 +386,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/view_pertain_viatic_ur_n4', 'Viatics\RequestsViaticController@pertain_viatic_four');
     Route::post('/send_item_aprueba', 'Viatics\RequestsViaticController@edit_status_four');
 
+    //Contratos
+    Route::get('cont_filemanager', 'Contracts\CFilemanagerController@index');
+    Route::post('find_fact_pend', 'Contracts\CFilemanagerController@find_fact_pend');
+    Route::post('get_data_fact_by_drive', 'Contracts\CFilemanagerController@get_data_fact_by_drive');
+    Route::post('add_fact_pend_by_drive', 'Contracts\CFilemanagerController@add_fact_pend_by_drive');
 
 });
 
