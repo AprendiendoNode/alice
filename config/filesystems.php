@@ -65,6 +65,12 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'storage' => [
+            'driver' => 'local',
+            'root' => public_path('images/storage/filestore/storage'),
+            'url' => env('APP_URL').'/images/storage/filestore/storage',
+        ],
+
     ],
 
 ];
