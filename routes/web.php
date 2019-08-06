@@ -385,7 +385,41 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/view_request_via_four', 'Viatics\RequestsViaticController@history_four');
     Route::post('/view_pertain_viatic_ur_n4', 'Viatics\RequestsViaticController@pertain_viatic_four');
     Route::post('/send_item_aprueba', 'Viatics\RequestsViaticController@edit_status_four');
+    //Dashboard Contratos
+    Route::get('cont_dashboard', 'Contract\ContratoController@index');
 
+    Route::post('show_dashboard_states', 'Contract\ContratoController@show_dashboard_states');
+    Route::post('show_table_news_contracts', 'Contract\ContratoController@show_table_news_contracts');
+    Route::post('show_table_active_contracts', 'Contract\ContratoController@show_table_active_contracts');
+    Route::post('show_table_expired_contracts', 'Contract\ContratoController@show_table_expired_contracts');
+    Route::post('downloadInvoiceContract', 'Contract\ContratoController@getInvoiceContract');
+
+    Route::post('/show_table_active_contracts_master', 'Contract\ContratoController@info_act_cont_master');
+		Route::post('/show_table_active_anexo_contracts', 'Contract\ContratoController@info_act_cont_anexo');
+
+		Route::post('/show_table_active_contracts_master_now', 'Contract\ContratoController@info_act_cont_master_now');
+		Route::post('/show_table_active_anexo_contracts_now', 'Contract\ContratoController@info_act_cont_anexo_now');
+
+		Route::post('/show_table_expired_contracts_master', 'Contract\ContratoController@info_exp_cont_master_now');
+		Route::post('/show_table_expired_anexo_contracts', 'Contract\ContratoController@info_exp_cont_anexo_now');
+
+		Route::post('/show_table_exp_nov_anexo_contracts', 'Contract\ContratoController@info_expnov_cont_anexo_now');
+		Route::post('/show_table_exp_year_anexo_contracts', 'Contract\ContratoController@info_expyear_cont_anexo_now');
+
+		Route::post('/show_table_pause_contracts_master', 'Contract\ContratoController@info_pause_cont_master');
+		Route::post('/show_table_pause_anexo_contracts', 'Contract\ContratoController@info_pause_cont_anexo');
+
+    Route::post('/show_datavert_contracts_master', 'Contract\ContratoController@info_datavert_cont_master');
+    Route::post('/show_datavert_anexo_contracts', 'Contract\ContratoController@info_datavert_cont_anexo');
+
+
+    Route::post('/show_grap_ap_x_vertical', 'Contract\ContratoController@grap_ap_x_vertical');
+    Route::post('/show_table_ap_x_vertical', 'Contract\ContratoController@table_ap_x_vertical');
+
+    Route::post('/gen_table_vert_cont', 'Contract\ContratoController@table_ap_x_vertical');
+    Route::post('/gen_table_cad_cont', 'Contract\ContratoController@fact_contrat_coin');
+
+    Route::post('/getdata_infomaster_byanexo', 'Contract\ContratoController@get_data_info_master_anexo');
     //Contratos
     Route::get('cont_filemanager', 'Contracts\CFilemanagerController@index');
     Route::post('find_fact_pend', 'Contracts\CFilemanagerController@find_fact_pend');
