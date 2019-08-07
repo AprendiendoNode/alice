@@ -464,6 +464,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/upd_monthly', 'Contracts\PruebasController@update_monthly');
     Route::post('/upd_conceptsat', 'Contracts\PruebasController@upd_conceptsat');
 
+    Route::get('/view_facturados', 'Contracts\ContractFactController@index');
+    Route::post('/cxc_mont_fact_uniq', 'Contracts\ContractFactController@monto_fact');
+    Route::post('/recordmens_fact_all', 'Contracts\ContractFactController@table_facts_all');
+    Route::post('/send_contracts_confirm', 'Contracts\ContractFactController@create_items_confirm');
+
 });
 
 

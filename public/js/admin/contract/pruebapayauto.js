@@ -669,14 +669,7 @@ function generate_table(datajson, table){
         '<a href="javascript:void(0);" onclick="adelete(this)" value="'+data.id+'" class="btn btn-danger btn-xs" role="button" data-target="#modal-deny" title="Eliminar"><span class="far fa-trash-alt"></span></a>',
       ]);
   });
-  document.getElementById("mens_table_wrapper").setAttribute("class", "dataTables_wrapper form-inline dt-bootstrap no-footer");
-  /*var g = document.getElementsByClassName("dt-buttons")[0];
-  console.log(g);
-  g.style.width = "100%";
-  var s = document.getElementsByClassName("dataTables_length")[0].childNodes[0].childNodes[1];
-  console.log(s);
-  //l.style.width = "100%";
-  s.style.display = "inline-block";*/
+  document.getElementById("mens_table_wrapper").setAttribute("class", "dataTables_wrapper form-inline dt-bootstrap4 no-footer");
 }
 
 function suma_totales(datajson){
