@@ -386,40 +386,64 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/view_pertain_viatic_ur_n4', 'Viatics\RequestsViaticController@pertain_viatic_four');
     Route::post('/send_item_aprueba', 'Viatics\RequestsViaticController@edit_status_four');
     //Dashboard Contratos
-    Route::get('cont_dashboard', 'Contract\ContratoController@index');
+    Route::get('cont_dashboard', 'Contracts\ContratoController@index');
 
-    Route::post('show_dashboard_states', 'Contract\ContratoController@show_dashboard_states');
-    Route::post('show_table_news_contracts', 'Contract\ContratoController@show_table_news_contracts');
-    Route::post('show_table_active_contracts', 'Contract\ContratoController@show_table_active_contracts');
-    Route::post('show_table_expired_contracts', 'Contract\ContratoController@show_table_expired_contracts');
-    Route::post('downloadInvoiceContract', 'Contract\ContratoController@getInvoiceContract');
+    Route::post('show_dashboard_states', 'Contracts\ContratoController@show_dashboard_states');
+    Route::post('show_table_news_contracts', 'Contracts\ContratoController@show_table_news_contracts');
+    Route::post('show_table_active_contracts', 'Contracts\ContratoController@show_table_active_contracts');
+    Route::post('show_table_expired_contracts', 'Contracts\ContratoController@show_table_expired_contracts');
+    Route::post('downloadInvoiceContract', 'Contracts\ContratoController@getInvoiceContract');
 
-    Route::post('/show_table_active_contracts_master', 'Contract\ContratoController@info_act_cont_master');
-		Route::post('/show_table_active_anexo_contracts', 'Contract\ContratoController@info_act_cont_anexo');
+    Route::post('/show_table_active_contracts_master', 'Contracts\ContratoController@info_act_cont_master');
+		Route::post('/show_table_active_anexo_contracts', 'Contracts\ContratoController@info_act_cont_anexo');
 
-		Route::post('/show_table_active_contracts_master_now', 'Contract\ContratoController@info_act_cont_master_now');
-		Route::post('/show_table_active_anexo_contracts_now', 'Contract\ContratoController@info_act_cont_anexo_now');
+		Route::post('/show_table_active_contracts_master_now', 'Contracts\ContratoController@info_act_cont_master_now');
+		Route::post('/show_table_active_anexo_contracts_now', 'Contracts\ContratoController@info_act_cont_anexo_now');
 
-		Route::post('/show_table_expired_contracts_master', 'Contract\ContratoController@info_exp_cont_master_now');
-		Route::post('/show_table_expired_anexo_contracts', 'Contract\ContratoController@info_exp_cont_anexo_now');
+		Route::post('/show_table_expired_contracts_master', 'Contracts\ContratoController@info_exp_cont_master_now');
+		Route::post('/show_table_expired_anexo_contracts', 'Contracts\ContratoController@info_exp_cont_anexo_now');
 
-		Route::post('/show_table_exp_nov_anexo_contracts', 'Contract\ContratoController@info_expnov_cont_anexo_now');
-		Route::post('/show_table_exp_year_anexo_contracts', 'Contract\ContratoController@info_expyear_cont_anexo_now');
+		Route::post('/show_table_exp_nov_anexo_contracts', 'Contracts\ContratoController@info_expnov_cont_anexo_now');
+		Route::post('/show_table_exp_year_anexo_contracts', 'Contracts\ContratoController@info_expyear_cont_anexo_now');
 
-		Route::post('/show_table_pause_contracts_master', 'Contract\ContratoController@info_pause_cont_master');
-		Route::post('/show_table_pause_anexo_contracts', 'Contract\ContratoController@info_pause_cont_anexo');
+		Route::post('/show_table_pause_contracts_master', 'Contracts\ContratoController@info_pause_cont_master');
+		Route::post('/show_table_pause_anexo_contracts', 'Contracts\ContratoController@info_pause_cont_anexo');
 
-    Route::post('/show_datavert_contracts_master', 'Contract\ContratoController@info_datavert_cont_master');
-    Route::post('/show_datavert_anexo_contracts', 'Contract\ContratoController@info_datavert_cont_anexo');
+    Route::post('/show_datavert_contracts_master', 'Contracts\ContratoController@info_datavert_cont_master');
+    Route::post('/show_datavert_anexo_contracts', 'Contracts\ContratoController@info_datavert_cont_anexo');
 
 
-    Route::post('/show_grap_ap_x_vertical', 'Contract\ContratoController@grap_ap_x_vertical');
-    Route::post('/show_table_ap_x_vertical', 'Contract\ContratoController@table_ap_x_vertical');
+    Route::post('/show_grap_ap_x_vertical', 'Contracts\ContratoController@grap_ap_x_vertical');
+    Route::post('/show_table_ap_x_vertical', 'Contracts\ContratoController@table_ap_x_vertical');
 
-    Route::post('/gen_table_vert_cont', 'Contract\ContratoController@table_ap_x_vertical');
-    Route::post('/gen_table_cad_cont', 'Contract\ContratoController@fact_contrat_coin');
+    Route::post('/gen_table_vert_cont', 'Contracts\ContratoController@table_ap_x_vertical');
+    Route::post('/gen_table_cad_cont', 'Contracts\ContratoController@fact_contrat_coin');
 
-    Route::post('/getdata_infomaster_byanexo', 'Contract\ContratoController@get_data_info_master_anexo');
+    Route::post('/getdata_infomaster_byanexo', 'Contracts\ContratoController@get_data_info_master_anexo');
+
+		Route::post('/idproy_search_key_one', 'Contracts\IdProyectoController@search_key_one');
+		Route::post('/idproy_search_vertical_by_class', 'Contracts\IdProyectoController@vertical_by_class');
+
+		Route::post('/idproy_search_key_two', 'Contracts\IdProyectoController@search_key_two');
+		Route::post('/idproy_search_cadena_by_vert', 'Contracts\IdProyectoController@cadena_by_vert');
+
+
+		Route::post('/idproy_search_key_three', 'Contracts\IdProyectoController@search_key_three');
+		Route::post('/idproy_search_hotel_by_cadena', 'Contracts\IdProyectoController@hotel_by_cadena');
+
+		Route::post('/idproy_search_key_four', 'Contracts\IdProyectoController@search_key_four');
+
+		Route::post('/idproy_search_key_five', 'Contracts\IdProyectoController@search_key_five');
+		Route::post('/idproy_search_id_hotel', 'Contracts\IdProyectoController@search_idproyect');
+
+		Route::post('/verf_idproyect', 'Contracts\IdProyectoController@verf_idproyect');
+    //Crear id ubicacion-Contratos
+    Route::get('cont_create_idubic', 'Contracts\IdUbicacionController@index');
+		Route::post('find_new_idubication', 'Contracts\IdUbicacionController@find_new_idubication');
+		Route::post('search_info_site_idubicacion', 'Contracts\IdUbicacionController@search_info_site_idubicacion');
+
+		Route::post('cont_create_newidubic', 'Contracts\IdUbicacionController@cont_create_newidubic');
+		Route::post('cont_edit_idubic', 'Contracts\IdUbicacionController@cont_edit_idubic');
     //Contratos
     Route::get('cont_filemanager', 'Contracts\CFilemanagerController@index');
     Route::post('find_fact_pend', 'Contracts\CFilemanagerController@find_fact_pend');
