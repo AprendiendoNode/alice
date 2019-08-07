@@ -29,17 +29,17 @@ use App\cxconcept_cxdescription;*/
 /*use App\Idproyect; No se usa
 use App\hotel_idproyect;*/
 
-//use App\Currency; Si se usa
-//use App\Hotel; Si se usa
-//use App\country; Si se usa
+//use App\Currency; Si se usa cambiado por query builder
+//use App\Hotel; Si se usa cambiado por query builder
+//use App\country; Si se usa cambiado por query builder
 
 /*Si se usan
-use App\Rz_type;
-use App\Rz_nationality;
-use App\Rz_concept_invoice;
-use App\Rz_customer;
-use App\Iva;
-use App\Contract_status;*/
+use App\Rz_type; cambiado por query builder
+use App\Rz_nationality; cambiado por query builder
+use App\Rz_concept_invoice; cambiado por query builder
+use App\Rz_customer; cambiado por query builder
+use App\Iva; cambiado por query builder
+use App\Contract_status; cambiado por query builder*/
 
 //use App\Contract_exchange_range; No se usa
 //use App\Contract_master;//Creo que si se usa
@@ -144,26 +144,26 @@ class ContratoController extends Controller
     // $classifications = Cxclassification::select('id', 'name')->get();
     $verticals = Vertical::select('id', 'name')->get();
     $cadenas = Cadena::select('id', 'name')->get();
-    $contratos = Contrato::select('id', 'id')->get();
-    $sitio= Cxclassification::select('id', 'name')->get();
-    $currency = Currency::select('id','name')->get();
-    $hotels = Hotel::select('id', 'Nombre_hotel')->get();
-    $country = country::select('id', 'name')->get();
+    //$contratos = Contrato::select('id', 'id')->get();
+    $sitio= DB::Table('cxclassifications')->select('id', 'name')->get();
+    $currency = DB::Table('currencies')->select('id','name')->get();
+    $hotels = DB::Table('hotels')->select('id', 'Nombre_hotel')->get();
+    $country = DB::Table('countries')->select('id', 'name')->get();
 
     $classifications = DB::select('CALL px_cxclassifications ()', array(''));
 
-    $rz_type = Rz_type::select('id', 'name')->get();
-    $rz_nationality = Rz_nationality::select('id', 'name')->get();
-    $rz_concept_invoice = Rz_concept_invoice::select('id', 'key', 'name')->get();
-    $rz_customer = Rz_customer::select('id', 'name')->get();
+    $rz_type = DB::Table('rz_types')->select('id', 'name')->get();
+    $rz_nationality = DB::Table('rz_nationalities')->select('id', 'name')->get();
+    $rz_concept_invoice = DB::Table('rz_concept_invoices')->select('id', 'key', 'name')->get();
+    $rz_customer = DB::Table('rz_customers')->select('id', 'name')->get();
 
-    $iva = Iva::select('number')->get();
+    $iva = DB::Table('ivas')->select('number')->get();
 
     $resguardo = DB::select('CALL px_resguardoXgrupo_users (?)', array('1'));
     $vendedores = DB::select('CALL px_resguardoXgrupo_users (?)', array('2'));
     $itconcierge= DB::select('CALL px_ITC_todos ()', array());
 
-    $contract_status = Contract_status::select('id', 'name')->get();
+    $contract_status = DB::Table('contract_statuses')->select('id', 'name')->get();
 
     return view('permitted.contract.cont_create_cont', compact('classifications','verticals','cadenas', 'contratos', 'sitio','currency', 'hotels', 'country', 'rz_type', 'rz_nationality', 'rz_concept_invoice', 'contract_status', 'rz_customer', 'iva', 'resguardo','vendedores','itconcierge'));
   }

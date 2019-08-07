@@ -910,24 +910,7 @@
   padding:0; margin:0;
   font-size: 14px;
 }
-.compact-tab thead tr th{
-  table-layout: fixed !important;
-  width: 80px !important;
-  white-space: pre-wrap !important;
-  padding:5px !important;
-  margin:0 !important;
-  font-size: 14px !important;
-  color:white;
-}
 
-.compact-tab tbody tr td{
-  table-layout: fixed !important;
-  width: 80px !important;
-  white-space: pre-wrap !important;
-  padding:10px !important;
-  margin:0 !important;
-  font-size: 14px !important;
-}
 
   </style>
   <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">

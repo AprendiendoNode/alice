@@ -444,6 +444,29 @@ Route::group(['middleware' => 'auth'], function () {
 
 		Route::post('cont_create_newidubic', 'Contracts\IdUbicacionController@cont_create_newidubic');
 		Route::post('cont_edit_idubic', 'Contracts\IdUbicacionController@cont_edit_idubic');
+    //Crear Contrato
+    Route::get('cont_create_cont', 'Contracts\ContratoController@index_add');
+    Route::post('/count_hotel_by_cadena', 'Contracts\ContratoController@count_hotel_by_cadena');
+    Route::post('/count_cont_by_cadena', 'Contracts\ContratoController@count_cont_by_cadena');
+    Route::post('getcoinname', 'Contracts\ContratoController@getcoinname');
+    Route::post('/get_bankdata_zipcode', 'Contracts\ContratoController@get_bankdata_zipcode');
+    Route::post('/idproy_search_by_cadena', 'Contracts\ContratoController@idproy_search_by_cadena');
+    Route::post('/search_n_master_cadena', 'Contracts\ContratoController@search_n_master_cadena');
+    Route::post('/search_idubicacion', 'Contracts\ContratoController@search_idubicacion');
+    //Crear cadena
+		Route::post('/create_group_by_contract', 'Contracts\ContratoController@create_group_by_contract');
+		Route::post('/find_cadena_by_contract', 'Contracts\ContratoController@find_cadena_by_contract');
+    //Crear Razon social de clientes
+    Route::post('/find_rfc_by_contract', 'Contracts\ContratoController@find_rfc_by_contract');
+    Route::post('/find_namerfc_by_contract', 'Contracts\ContratoController@find_namerfc_by_contract');
+    Route::post('/create_rzcliente_by_contract', 'Contracts\ContratoController@create_rzcliente_by_contract');
+    Route::post('/view_rzcliente_by_contract', 'Contracts\ContratoController@view_rzcliente_by_contract');
+    //Crear Contrato Maestro
+    Route::post('/create_contract_master', 'Contracts\ContratoController@create_contract_master');
+    //Crear Anexo del Contrato Maestro
+    Route::post('/count_anexo_by_cont_maestro', 'Contracts\ContratoController@count_anexo_by_cont_maestro');
+    Route::post('/create_contract_annexes', 'Contracts\ContratoController@create_contract_annexes');
+
     //Contratos
     Route::get('cont_filemanager', 'Contracts\CFilemanagerController@index');
     Route::post('find_fact_pend', 'Contracts\CFilemanagerController@find_fact_pend');
