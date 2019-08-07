@@ -450,6 +450,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_data_fact_by_drive', 'Contracts\CFilemanagerController@get_data_fact_by_drive');
     Route::post('add_fact_pend_by_drive', 'Contracts\CFilemanagerController@add_fact_pend_by_drive');
 
+    Route::get('/view_payauto', 'Contracts\PruebasController@index_pagos');
+    Route::post('/recordmens', 'Contracts\PruebasController@record_a')->name('recordmens');
+    Route::post('/recordmens_data', 'Contracts\PruebasController@creat_payauto');
+    Route::post('/idproyanexo_search_by_cadena', 'Contracts\PruebasController@idproyanexo_search_by_cadena');
+    Route::post('/createtc_gen', 'Contracts\PruebasController@creat_tc_general');
+    Route::post('update_ivacxc','Contracts\PruebasController@create_iva_general');
+    Route::post('/createf_compromise', 'Contracts\PruebasController@create_fc_payauto');
+    Route::post('/send_dates_cxp', 'Contracts\PruebasController@create_fc_payauto_dt');
+    Route::post('/delrecord_data', 'Contracts\PruebasController@delete_payauto');
+    Route::post('/send_conceptsat', 'Contracts\PruebasController@upd_multiple_conceptsat');
+    Route::post('/send_contracts_fact', 'Contracts\PruebasController@create_items_fact');
+    Route::post('/upd_monthly', 'Contracts\PruebasController@update_monthly');
+    Route::post('/upd_conceptsat', 'Contracts\PruebasController@upd_conceptsat');
+
 });
 
 
