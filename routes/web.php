@@ -473,6 +473,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_data_fact_by_drive', 'Contracts\CFilemanagerController@get_data_fact_by_drive');
     Route::post('add_fact_pend_by_drive', 'Contracts\CFilemanagerController@add_fact_pend_by_drive');
 
+    //Lista por facturar
     Route::get('/view_payauto', 'Contracts\PruebasController@index_pagos');
     Route::post('/recordmens', 'Contracts\PruebasController@record_a')->name('recordmens');
     Route::post('/recordmens_data', 'Contracts\PruebasController@creat_payauto');
@@ -487,10 +488,18 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/upd_monthly', 'Contracts\PruebasController@update_monthly');
     Route::post('/upd_conceptsat', 'Contracts\PruebasController@upd_conceptsat');
 
+    //Confirmación de cobro
     Route::get('/view_facturados', 'Contracts\ContractFactController@index');
     Route::post('/cxc_mont_fact_uniq', 'Contracts\ContractFactController@monto_fact');
     Route::post('/recordmens_fact_all', 'Contracts\ContractFactController@table_facts_all');
     Route::post('/send_contracts_confirm', 'Contracts\ContractFactController@create_items_confirm');
+
+    //Antigüedad CXC
+    Route::get('/view_cobrados', 'Contracts\ContractCobController@index');
+    Route::post('/cxc_mont_fact', 'Contracts\ContractCobController@monto_fact');
+    Route::post('/cxc_mont_cob', 'Contracts\ContractCobController@monto_cob');
+    Route::post('/recordmens_cobs_all', 'Contracts\ContractCobController@tabla_cobs_all');
+    Route::post('/recordmens_cobs_date', 'Contracts\ContractCobController@tabla_cobs_date');
 
 });
 
