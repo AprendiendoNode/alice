@@ -54,7 +54,7 @@ class ContratoController extends Controller
   //Dashboard.....
   public function  index()
   {
-      return view('permitted.contract.cont_dashboard', compact('lista'));
+      return view('permitted.contract.cont_dashboard');
   }
   public function info_act_cont_master()
   {
@@ -165,7 +165,7 @@ class ContratoController extends Controller
 
     $contract_status = DB::Table('contract_statuses')->select('id', 'name')->get();
 
-    return view('permitted.contract.cont_create_cont', compact('classifications','verticals','cadenas', 'contratos', 'sitio','currency', 'hotels', 'country', 'rz_type', 'rz_nationality', 'rz_concept_invoice', 'contract_status', 'rz_customer', 'iva', 'resguardo','vendedores','itconcierge'));
+    return view('permitted.contract.cont_create_cont', compact('classifications','verticals','cadenas', 'sitio','currency', 'hotels', 'country', 'rz_type', 'rz_nationality', 'rz_concept_invoice', 'contract_status', 'rz_customer', 'iva', 'resguardo','vendedores','itconcierge'));
   }
 
   public function create_group_by_contract (Request $request) {
@@ -536,24 +536,21 @@ class ContratoController extends Controller
   {
       $verticals = Vertical::select('id', 'name')->get();
       $cadenas = Cadena::select('id', 'name')->get();
-      $contratos = Contrato::select('id', 'id')->get();
-      $sitio= Cxclassification::select('id', 'name')->get();
-      $currency = Currency::select('id','name')->get();
-      $hotels = Hotel::select('id', 'Nombre_hotel')->get();
-      $country = country::select('id', 'name')->get();
-      $contract_status = Contract_status::select('id', 'name')->get();
+      //$contratos = Contrato::select('id', 'id')->get();
+      $sitio= DB::Table('cxclassifications')->select('id', 'name')->get();
+      $currency = DB::Table('currencies')->select('id','name')->get();
+      $hotels = DB::Table('hotels')->select('id', 'Nombre_hotel')->get();
+      $country = DB::Table('countries')->select('id', 'name')->get();
+      $contract_status = DB::Table('contract_statuses')->select('id', 'name')->get();
       $resguardo = DB::select('CALL px_resguardoXgrupo_users (?)', array('1'));
-      $rz_customer = Rz_customer::select('id', 'name')->get();
+      $rz_customer = DB::Table('rz_customers')->select('id', 'name')->get();
       $classifications = DB::select('CALL px_cxclassifications ()', array(''));
       $itconcierge = DB::select('CALL px_ITC_todos ()', array());
       $vendedores = DB::select('CALL px_resguardoXgrupo_users (?)', array('2'));
-
-      $hoteles = DB::table('hotels')->select('id', 'Nombre_hotel')->get();
-      $currency = Currency::select('id','name')->get();
-      $iva = Iva::select('number')->get();
+      $iva = DB::Table('ivas')->select('number')->get();
 
 
-      return view('permitted.contract.cont_edit_cont', compact('iva','currency','hoteles','lista', 'classifications','verticals','cadenas', 'contratos', 'contract_status', 'resguardo', 'rz_customer' , 'sitio', 'itconcierge', 'vendedores'));
+      return view('permitted.contract.cont_edit_cont', compact('iva','currency','hotels','lista', 'classifications','verticals','cadenas', 'contract_status', 'resguardo', 'rz_customer' , 'sitio', 'itconcierge', 'vendedores'));
   }
 
   public function get_digit_contract_master(Request $request)

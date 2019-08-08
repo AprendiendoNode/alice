@@ -466,7 +466,25 @@ Route::group(['middleware' => 'auth'], function () {
     //Crear Anexo del Contrato Maestro
     Route::post('/count_anexo_by_cont_maestro', 'Contracts\ContratoController@count_anexo_by_cont_maestro');
     Route::post('/create_contract_annexes', 'Contracts\ContratoController@create_contract_annexes');
+    //Editar contratos-contratos--------------------------------
+    Route::get('cont_edit_cont', 'Contracts\ContratoController@index_edit');
+    //Editar contratos maestros
+    Route::post('get_digit_contract_master', 'Contracts\ContratoController@get_digit_contract_master');
+    Route::post('get_data_contract_master', 'Contracts\ContratoController@get_data_contract_master');
+    Route::post('update_contract_master', 'Contracts\ContratoController@update_contract_master');
+    //Editar contratos key_anexo_sitio
+    Route::post('get_ids_contract_anexo', 'Contracts\ContratoController@get_ids_contract_anexo');
+    Route::post('get_data_anexos', 'Contracts\ContratoController@get_data_anexos');
+    Route::post('update_contract_anexo', 'Contracts\ContratoController@update_contract_anexo');
 
+    Route::post('/data_contractsite', 'Contracts\ContratoController@all_site_anexo');
+    Route::post('/data_editcontractsite', 'Contracts\ContratoController@edit_site_anexo');
+    Route::post('/addsiteanexocont', 'Contracts\ContratoController@add_site_anexo');
+    Route::post('/delete_hotel_anexo', 'Contracts\ContratoController@delete_site_anexo');
+
+    Route::post('/data_contractcoin', 'Contracts\ContratoController@all_coin_anexo');
+    Route::post('/addcoinanexocont', 'Contracts\ContratoController@add_new_coin_anexo');
+    Route::post('/delete_coin_anexo', 'Contracts\ContratoController@delete_coin_anexo');
     //Contratos
     Route::get('cont_filemanager', 'Contracts\CFilemanagerController@index');
     Route::post('find_fact_pend', 'Contracts\CFilemanagerController@find_fact_pend');
