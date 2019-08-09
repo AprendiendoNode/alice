@@ -385,7 +385,139 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/view_request_via_four', 'Viatics\RequestsViaticController@history_four');
     Route::post('/view_pertain_viatic_ur_n4', 'Viatics\RequestsViaticController@pertain_viatic_four');
     Route::post('/send_item_aprueba', 'Viatics\RequestsViaticController@edit_status_four');
+    //Dashboard Contratos
+    Route::get('cont_dashboard', 'Contracts\ContratoController@index');
 
+    Route::post('show_dashboard_states', 'Contracts\ContratoController@show_dashboard_states');
+    Route::post('show_table_news_contracts', 'Contracts\ContratoController@show_table_news_contracts');
+    Route::post('show_table_active_contracts', 'Contracts\ContratoController@show_table_active_contracts');
+    Route::post('show_table_expired_contracts', 'Contracts\ContratoController@show_table_expired_contracts');
+    Route::post('downloadInvoiceContract', 'Contracts\ContratoController@getInvoiceContract');
+
+    Route::post('/show_table_active_contracts_master', 'Contracts\ContratoController@info_act_cont_master');
+		Route::post('/show_table_active_anexo_contracts', 'Contracts\ContratoController@info_act_cont_anexo');
+
+		Route::post('/show_table_active_contracts_master_now', 'Contracts\ContratoController@info_act_cont_master_now');
+		Route::post('/show_table_active_anexo_contracts_now', 'Contracts\ContratoController@info_act_cont_anexo_now');
+
+		Route::post('/show_table_expired_contracts_master', 'Contracts\ContratoController@info_exp_cont_master_now');
+		Route::post('/show_table_expired_anexo_contracts', 'Contracts\ContratoController@info_exp_cont_anexo_now');
+
+		Route::post('/show_table_exp_nov_anexo_contracts', 'Contracts\ContratoController@info_expnov_cont_anexo_now');
+		Route::post('/show_table_exp_year_anexo_contracts', 'Contracts\ContratoController@info_expyear_cont_anexo_now');
+
+		Route::post('/show_table_pause_contracts_master', 'Contracts\ContratoController@info_pause_cont_master');
+		Route::post('/show_table_pause_anexo_contracts', 'Contracts\ContratoController@info_pause_cont_anexo');
+
+    Route::post('/show_datavert_contracts_master', 'Contracts\ContratoController@info_datavert_cont_master');
+    Route::post('/show_datavert_anexo_contracts', 'Contracts\ContratoController@info_datavert_cont_anexo');
+
+
+    Route::post('/show_grap_ap_x_vertical', 'Contracts\ContratoController@grap_ap_x_vertical');
+    Route::post('/show_table_ap_x_vertical', 'Contracts\ContratoController@table_ap_x_vertical');
+
+    Route::post('/gen_table_vert_cont', 'Contracts\ContratoController@table_ap_x_vertical');
+    Route::post('/gen_table_cad_cont', 'Contracts\ContratoController@fact_contrat_coin');
+
+    Route::post('/getdata_infomaster_byanexo', 'Contracts\ContratoController@get_data_info_master_anexo');
+
+		Route::post('/idproy_search_key_one', 'Contracts\IdProyectoController@search_key_one');
+		Route::post('/idproy_search_vertical_by_class', 'Contracts\IdProyectoController@vertical_by_class');
+
+		Route::post('/idproy_search_key_two', 'Contracts\IdProyectoController@search_key_two');
+		Route::post('/idproy_search_cadena_by_vert', 'Contracts\IdProyectoController@cadena_by_vert');
+
+
+		Route::post('/idproy_search_key_three', 'Contracts\IdProyectoController@search_key_three');
+		Route::post('/idproy_search_hotel_by_cadena', 'Contracts\IdProyectoController@hotel_by_cadena');
+
+		Route::post('/idproy_search_key_four', 'Contracts\IdProyectoController@search_key_four');
+
+		Route::post('/idproy_search_key_five', 'Contracts\IdProyectoController@search_key_five');
+		Route::post('/idproy_search_id_hotel', 'Contracts\IdProyectoController@search_idproyect');
+
+		Route::post('/verf_idproyect', 'Contracts\IdProyectoController@verf_idproyect');
+    //Crear id ubicacion-Contratos
+    Route::get('cont_create_idubic', 'Contracts\IdUbicacionController@index');
+		Route::post('find_new_idubication', 'Contracts\IdUbicacionController@find_new_idubication');
+		Route::post('search_info_site_idubicacion', 'Contracts\IdUbicacionController@search_info_site_idubicacion');
+
+		Route::post('cont_create_newidubic', 'Contracts\IdUbicacionController@cont_create_newidubic');
+		Route::post('cont_edit_idubic', 'Contracts\IdUbicacionController@cont_edit_idubic');
+    //Crear Contrato
+    Route::get('cont_create_cont', 'Contracts\ContratoController@index_add');
+    Route::post('/count_hotel_by_cadena', 'Contracts\ContratoController@count_hotel_by_cadena');
+    Route::post('/count_cont_by_cadena', 'Contracts\ContratoController@count_cont_by_cadena');
+    Route::post('getcoinname', 'Contracts\ContratoController@getcoinname');
+    Route::post('/get_bankdata_zipcode', 'Contracts\ContratoController@get_bankdata_zipcode');
+    Route::post('/idproy_search_by_cadena', 'Contracts\ContratoController@idproy_search_by_cadena');
+    Route::post('/search_n_master_cadena', 'Contracts\ContratoController@search_n_master_cadena');
+    Route::post('/search_idubicacion', 'Contracts\ContratoController@search_idubicacion');
+    //Crear cadena
+		Route::post('/create_group_by_contract', 'Contracts\ContratoController@create_group_by_contract');
+		Route::post('/find_cadena_by_contract', 'Contracts\ContratoController@find_cadena_by_contract');
+    //Crear Razon social de clientes
+    Route::post('/find_rfc_by_contract', 'Contracts\ContratoController@find_rfc_by_contract');
+    Route::post('/find_namerfc_by_contract', 'Contracts\ContratoController@find_namerfc_by_contract');
+    Route::post('/create_rzcliente_by_contract', 'Contracts\ContratoController@create_rzcliente_by_contract');
+    Route::post('/view_rzcliente_by_contract', 'Contracts\ContratoController@view_rzcliente_by_contract');
+    //Crear Contrato Maestro
+    Route::post('/create_contract_master', 'Contracts\ContratoController@create_contract_master');
+    //Crear Anexo del Contrato Maestro
+    Route::post('/count_anexo_by_cont_maestro', 'Contracts\ContratoController@count_anexo_by_cont_maestro');
+    Route::post('/create_contract_annexes', 'Contracts\ContratoController@create_contract_annexes');
+    //Editar contratos-contratos--------------------------------
+    Route::get('cont_edit_cont', 'Contracts\ContratoController@index_edit');
+    //Editar contratos maestros
+    Route::post('get_digit_contract_master', 'Contracts\ContratoController@get_digit_contract_master');
+    Route::post('get_data_contract_master', 'Contracts\ContratoController@get_data_contract_master');
+    Route::post('update_contract_master', 'Contracts\ContratoController@update_contract_master');
+    //Editar contratos key_anexo_sitio
+    Route::post('get_ids_contract_anexo', 'Contracts\ContratoController@get_ids_contract_anexo');
+    Route::post('get_data_anexos', 'Contracts\ContratoController@get_data_anexos');
+    Route::post('update_contract_anexo', 'Contracts\ContratoController@update_contract_anexo');
+
+    Route::post('/data_contractsite', 'Contracts\ContratoController@all_site_anexo');
+    Route::post('/data_editcontractsite', 'Contracts\ContratoController@edit_site_anexo');
+    Route::post('/addsiteanexocont', 'Contracts\ContratoController@add_site_anexo');
+    Route::post('/delete_hotel_anexo', 'Contracts\ContratoController@delete_site_anexo');
+
+    Route::post('/data_contractcoin', 'Contracts\ContratoController@all_coin_anexo');
+    Route::post('/addcoinanexocont', 'Contracts\ContratoController@add_new_coin_anexo');
+    Route::post('/delete_coin_anexo', 'Contracts\ContratoController@delete_coin_anexo');
+    //Contratos
+    Route::get('cont_filemanager', 'Contracts\CFilemanagerController@index');
+    Route::post('find_fact_pend', 'Contracts\CFilemanagerController@find_fact_pend');
+    Route::post('get_data_fact_by_drive', 'Contracts\CFilemanagerController@get_data_fact_by_drive');
+    Route::post('add_fact_pend_by_drive', 'Contracts\CFilemanagerController@add_fact_pend_by_drive');
+
+    //Lista por facturar
+    Route::get('/view_payauto', 'Contracts\PruebasController@index_pagos');
+    Route::post('/recordmens', 'Contracts\PruebasController@record_a')->name('recordmens');
+    Route::post('/recordmens_data', 'Contracts\PruebasController@creat_payauto');
+    Route::post('/idproyanexo_search_by_cadena', 'Contracts\PruebasController@idproyanexo_search_by_cadena');
+    Route::post('/createtc_gen', 'Contracts\PruebasController@creat_tc_general');
+    Route::post('update_ivacxc','Contracts\PruebasController@create_iva_general');
+    Route::post('/createf_compromise', 'Contracts\PruebasController@create_fc_payauto');
+    Route::post('/send_dates_cxp', 'Contracts\PruebasController@create_fc_payauto_dt');
+    Route::post('/delrecord_data', 'Contracts\PruebasController@delete_payauto');
+    Route::post('/send_conceptsat', 'Contracts\PruebasController@upd_multiple_conceptsat');
+    Route::post('/send_contracts_fact', 'Contracts\PruebasController@create_items_fact');
+    Route::post('/upd_monthly', 'Contracts\PruebasController@update_monthly');
+    Route::post('/upd_conceptsat', 'Contracts\PruebasController@upd_conceptsat');
+
+    //Confirmación de cobro
+    Route::get('/view_facturados', 'Contracts\ContractFactController@index');
+    Route::post('/cxc_mont_fact_uniq', 'Contracts\ContractFactController@monto_fact');
+    Route::post('/recordmens_fact_all', 'Contracts\ContractFactController@table_facts_all');
+    Route::post('/send_contracts_confirm', 'Contracts\ContractFactController@create_items_confirm');
+
+    //Antigüedad CXC
+    Route::get('/view_cobrados', 'Contracts\ContractCobController@index');
+    Route::post('/cxc_mont_fact', 'Contracts\ContractCobController@monto_fact');
+    Route::post('/cxc_mont_cob', 'Contracts\ContractCobController@monto_cob');
+    Route::post('/recordmens_cobs_all', 'Contracts\ContractCobController@tabla_cobs_all');
+    Route::post('/recordmens_cobs_date', 'Contracts\ContractCobController@tabla_cobs_date');
 
 });
 
