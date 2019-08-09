@@ -20,11 +20,12 @@
                   <li class="nav-item {{ Request::is($submenu->url) ? 'active' : '' }}"> <a class="nav-link" href="{{ url($submenu->url) }}"><i class="{{ $submenu->icons }} mr-2"></i>{{ $submenu->display_name }}</a></li>
                 @endforeach
                 @if (App\Section::find($menu[0]->section_id)->id == 11)
-                  <li class="nav-item {{ Request::is('') ? 'active' : 'view_budget' }}"> <a class="nav-link" href="{{ url('/view_budget') }}"><i class="fas fa-chart-line mr-2"></i>Presupuesto Anual</a></li>
-                  <li class="nav-item {{ Request::is('') ? 'active' : 'view_edit_projects' }}"> <a class="nav-link" href="{{ url('/view_edit_projects') }}"><i class="fas fa-edit mr-2"></i>Editar proyectos</a></li>
-                  <li class="nav-item {{ Request::is('') ? 'active' : 'view_project_docp_success' }}"> <a class="nav-link" href="{{ url('/view_project_docp_success') }}"><i class="fas fa-clipboard-check mr-2"></i>Proyectos terminados</a></li>
-                  <li class="nav-item {{ Request::is('') ? 'active' : 'view_budget_report' }}"> <a class="nav-link" href="{{ url('/view_budget_report') }}"><i class="fas fa-money-check-alt mr-2"></i>Reporte de presupuesto</a></li>
-                  <li class="nav-item {{ Request::is('') ? 'active' : 'view_dashboard_project' }}"> <a class="nav-link" href="{{ url('/view_dashboard_project') }}"><i class="fas fa-chart-pie mr-2"></i>Dashboard de proyectos</a></li>
+                  <li class="nav-item {{ Request::is('/view_history_documentp') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/view_history_documentp') }}"><i class="fas fa-project-diagram mr-2"></i>Historial Documento P</a></li>
+                  <li class="nav-item {{ Request::is('/view_budget') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/view_budget') }}"><i class="fas fa-chart-line mr-2"></i>Presupuesto Anual</a></li>
+                  <li class="nav-item {{ Request::is('/view_edit_projects') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/view_edit_projects') }}"><i class="fas fa-edit mr-2"></i>Editar proyectos</a></li>
+                  <li class="nav-item {{ Request::is('/view_project_docp_success') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/view_project_docp_success') }}"><i class="fas fa-clipboard-check mr-2"></i>Proyectos terminados</a></li>
+                  <li class="nav-item {{ Request::is('/view_budget_report') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/view_budget_report') }}"><i class="fas fa-money-check-alt mr-2"></i>Reporte de presupuesto</a></li>
+                  <li class="nav-item {{ Request::is('/view_dashboard_project') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/view_dashboard_project') }}"><i class="fas fa-chart-pie mr-2"></i>Dashboard de proyectos</a></li>
                 @endif
               </ul>
             </div>
@@ -46,6 +47,20 @@
               </ul>
             </div>
           </li> --}}
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#section_cotizador" aria-expanded="false" aria-controls="section_cotizador">
+              <i class="fas fa-calculator menu-icon"></i>
+              <span class="menu-title">Cotizador</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="section_cotizador">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item {{ Request::is('/quoting') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/quoting') }}"><i class="fas fa-plus-square mr-2"></i>Cotizador</a></li>
+                <li class="nav-item {{ Request::is('/view_quotig_history') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/view_quotig_history') }}"><i class="fas fa-list-alt mr-2"></i>Historial de cotizaciones</a></li>
+              </ul>
+            </div>
+          </li>
 
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#section_cfdi" aria-expanded="false" aria-controls="section_cfdi">

@@ -272,8 +272,93 @@ function update_price_unit(id, newPrice){
   sumaTotales();
 }
 
+function obtenerProductosLocalStorage(){
+    let productosLS;
+
+    if(localStorage.getItem('productos') === null){
+        productosLS = [];
+    }else{
+        productosLS = JSON.parse(localStorage.getItem('productos'));
+    }
+
+    return productosLS;
+}
+
+// Muestra los productos de LocalStorage en el carrito
+function leerLocalStorage(){
+    let productosLS;
+    productosLS = obtenerProductosLocalStorage();
+}
+
+//Elimina un producto del local storage
+function eliminarProductoLocalStorage(producto){
+    let productosLS;
+    productosLS = obtenerProductosLocalStorage();
+
+    productosLS.forEach((productoLS, index) => {
+        if(productoLS.id == producto){
+
+            productosLS.splice(index, 1);
+        }
+    });
+
+    localStorage.setItem('productos', JSON.stringify(productosLS));
+    sumaTotales();
+    calcular_costo_propuesto();
+}
+
+function calcular_costo_propuesto(){
+
+  var productos = obtenerProductosLocalStorage();
+  var total_eqactivo_prop = 0.0;
+  var total_materiales_prop = 0.0;
+  var total_mo_prop = 0.0;
+
+  if(productos.length != 0){
+    let equipo_activo = productos.filter(producto => producto.categoria_id == 4  || producto.categoria_id == 6 || producto.categoria_id == 14);
+    let materiales= productos.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6 && producto.categoria_id != 7 && producto.categoria_id != 14);
+    let sitwifi= productos.filter(producto => producto.categoria_id == 7 );
+
+    if(equipo_activo.length != 0){
+      equipo_activo.forEach(function(producto) {
+        total_eqactivo_prop += getPriceTotalUsdSug(producto);
+      });
+    }
+
+    if(materiales.length != 0){
+      materiales.forEach(function(producto) {
+        total_materiales_prop += getPriceTotalUsdSug(producto);
+      });
+    }
+
+    if(sitwifi.length != 0){
+      sitwifi.forEach(function(producto) {
+        total_mo_prop += getPriceTotalUsdSug(producto);
+      });
+    }
+
+    document.getElementById('total_eqactivo_footer_prop').innerHTML = total_eqactivo_prop.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    document.getElementById('total_materiales_footer_prop').innerHTML = total_materiales_prop.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    document.getElementById('total_sitwifi_footer_prop').innerHTML = total_mo_prop.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    document.getElementById('total_global_prop').innerHTML = ( total_eqactivo_prop + total_materiales_prop + total_mo_prop ).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  }
+
+}
+
+//Convierte los precios por las cantidades sugeridas de los productos a dolares
+function getPriceTotalUsdSug(producto){
+  var tipo_cambio = document.getElementById('tipo_cambio').value;
+
+  if(producto.currency_id == 1){
+    return ( producto.cant_sug * parseFloat(producto.precio) ) /  parseFloat(tipo_cambio);
+  }else{
+    return ( producto.cant_sug * parseFloat(producto.precio) );
+  }
+
+}
+
 function generate_table_products(){
-  // Tabla de productos del Documento P
   var productos = obtenerProductosLocalStorage();
   //Filtrar productos por categoria
   let equipo_activo = productos.filter(producto => producto.categoria_id == 4  || producto.categoria_id == 6 || producto.categoria_id == 14);
@@ -288,14 +373,14 @@ function generate_table_products(){
     total_eq_activo += parseFloat(key.precio_total_usd);
     $('#tabla_productos tbody').append('<tr id="' + key.id + '"><td>'
       + key.cant_sug + '</td>'
-      + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id + '" data-clave="' + key.codigo + '" data-title="Cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
+      + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id +'" data-clave="' + key.codigo + '" data-title="Cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
       + key.descripcion.toUpperCase() + '</td><td>'
-      + key.categoria.toUpperCase() + '</td><td>'
+      + key.categoria + '</td><td>'
       + key.codigo + '</td><td>'
       + key.proveedor + '</td><td>'
-      + key.num_parte + '</td><td>'
-      + key.descuento + '</td><td>'
-      + key.precio.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
+      + key.num_parte + '</td>'
+      + '<td><a href="#" data-type="text" data-pk="' + key.id + '" data-desc="' + key.descuento + '" data-cant="' + key.cant_req + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td><td class="precio">'
+      + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio + '" data-name="precio" class="set-price"></a></td><td>'
       + key.currency + '</td><td class="precio_total">'
       + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
       + key.precio_total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
@@ -303,7 +388,7 @@ function generate_table_products(){
       + '</td></tr>');
    });
    $('#tabla_productos tbody').append(
-     `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Equipo Activo:</td><td>DLLS</td><td id="total_eqactivo" colspan="2">$</td></tr>`);
+     `<tr style="font-weight:bold !important"; class="bg-secondary text-white"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Equipo Activo:</td><td>DLLS</td><td id="total_eqactivo" colspan="2">$</td></tr>`);
       document.getElementById("total_eqactivo").innerHTML = "$" + (total_eq_activo.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       document.getElementById("total_eqactivo_footer").innerHTML =  (total_eq_activo.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
    $.each(materiales, function( i, key ) {
@@ -312,12 +397,12 @@ function generate_table_products(){
        + key.cant_sug + '</td>'
        + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id + '" data-clave="' + key.codigo + '" data-title="cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
        + key.descripcion.toUpperCase() + '</td><td>'
-       + key.categoria.toUpperCase() + '</td><td>'
+       + key.categoria + '</td><td>'
        + key.codigo + '</td><td>'
        + key.proveedor + '</td><td>'
-       + key.num_parte + '</td><td>'
-       + key.descuento + '</td><td>'
-       + key.precio.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
+       + key.num_parte + '</td>'
+       + '<td><a href="#" data-type="text" data-pk="' + key.id + '" data-desc="' + key.descuento + '" data-cant="' + key.cant_req + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td><td class="precio">'
+       + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio + '" data-name="precio" class="set-price"></a></td><td>'
        + key.currency + '</td><td class="precio_total">'
        + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
        + key.precio_total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
@@ -325,7 +410,7 @@ function generate_table_products(){
        + '</td></tr>');
     });
     $('#tabla_productos tbody').append(
-      `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Materiales:</td><td>DLLS</td><td id="total_materiales" colspan="2">$0.00</td></tr>`);
+      `<tr style="font-weight:bold !important"; class="bg-secondary text-white"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Materiales:</td><td>DLLS</td><td id="total_materiales" colspan="2">$0.00</td></tr>`);
       document.getElementById("total_materiales").innerHTML = "$" + (total_materiales.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       document.getElementById("total_materiales_footer").innerHTML = (total_materiales.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     $.each(sitwifi, function( i, key ) {
@@ -334,11 +419,11 @@ function generate_table_products(){
         + key.cant_sug + '</td>'
         + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id + '" data-clave="' + key.codigo + '" data-title="cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
         + key.descripcion.toUpperCase() + '</td><td>'
-        + key.categoria.toUpperCase() + '</td><td>'
+        + key.categoria + '</td><td>'
         + key.codigo + '</td><td>'
         + key.proveedor + '</td><td>'
-        + key.num_parte + '</td><td>'
-        + key.descuento + '</td><td>'
+        + key.num_parte + '</td>'
+        + '<td><a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td class="precio"><td>'
         + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio+ '" data-name="precio" class="set-price"></a></td class=""><td>'
         + key.currency + '</td><td class="precio_total">'
         + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
@@ -347,7 +432,7 @@ function generate_table_products(){
         + '</td></tr>');
      });
       $('#tabla_productos tbody').append(
-        `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Mano de obra:</td><td>DLLS</td><td id="total_sitwifi" colspan="2">$0.00</td></tr>`);
+        `<tr style="font-weight:bold !important"; class="bg-secondary text-white"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Mano de obra:</td><td>DLLS</td><td id="total_sitwifi" colspan="2">$0.00</td></tr>`);
          document.getElementById("total_sitwifi").innerHTML = "$" + (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
          document.getElementById("total_sitwifi_footer").innerHTML =  (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
          //Total global
@@ -355,6 +440,12 @@ function generate_table_products(){
 
   //  Fix de errorres en validate
   $('.set-cant-req').on('shown', function() {
+      var $innerForm = $(this).data('editable').input.$input.closest('form');
+      var $outerForm = $innerForm.parents('form').eq(0);
+      $innerForm.data('validator', $outerForm.data('validator'));
+  });
+
+  $('.set-descuento').on('shown', function() {
       var $innerForm = $(this).data('editable').input.$input.closest('form');
       var $outerForm = $innerForm.parents('form').eq(0);
       $innerForm.data('validator', $outerForm.data('validator'));
@@ -393,6 +484,24 @@ function generate_table_products(){
 
   });// fin set-cant-req
 
+  //Funcion para detectar cambio en algun descuento de un producto
+  $('.set-descuento').editable({
+      type : 'number',
+      validate: function(newValue) {
+        if($.trim(newValue) == '')
+            return 'Este campo es requerido';
+        else if(!isFinite(newValue))
+            return 'Debe ingresar un valor númerico';
+        else if (newValue % 1 != 0)
+          return 'El valor debe ser un entero';
+      },
+      success: function(response, newValue) {
+        var id = $(this).data('pk');
+        update_decuento(id, newValue);
+        document.getElementById(id).style.background = "#BDD3DE";
+      }
+  });
+
   //Funcion para detectar cambio en algun precio unitario de un producto
   $('.set-price').editable({
       type : 'number',
@@ -411,40 +520,6 @@ function generate_table_products(){
       }
   });
 
-}//Fin funcion
-
-function obtenerProductosLocalStorage(){
-    let productosLS;
-
-    if(localStorage.getItem('productos') === null){
-        productosLS = [];
-    }else{
-        productosLS = JSON.parse(localStorage.getItem('productos'));
-    }
-
-    return productosLS;
-}
-
-// Muestra los productos de LocalStorage en el carrito
-function leerLocalStorage(){
-    let productosLS;
-    productosLS = obtenerProductosLocalStorage();
-}
-
-//Elimina un producto del local storage
-function eliminarProductoLocalStorage(producto){
-    let productosLS;
-    productosLS = obtenerProductosLocalStorage();
-
-    productosLS.forEach((productoLS, index) => {
-        if(productoLS.id == producto){
-
-            productosLS.splice(index, 1);
-        }
-    });
-
-    localStorage.setItem('productos', JSON.stringify(productosLS));
-    sumaTotales();
 }
 
 //Elimino la columna  seleccionada de la tabla de pedidos
@@ -473,20 +548,30 @@ return this.optional(element) || (element.files[0].size <= param)
 var form_master = $(".validation-wizard-master").show();
 
 $(".validation-wizard-master").steps({
-    headerTag: "h6",
+    headerTag: "h5",
     bodyTag: "section",
     transitionEffect: "fade",
     titleTemplate: '<span class="step">#index#</span> #title#',
     labels: {
-        finish: "Submit"
+      finish: "Guardar cotización",
+      next: "Siguiente",
+      previous: "Anterior"
     },
     onStepChanging: function (event, currentIndex, newIndex) {
-      if(newIndex == 1){
+      set_table_rubro();
+      set_table_gastos();
+      set_table_objetivos();
+      set_table_modelos();
+      set_table_servadm();
+
+      if(newIndex == 2){
         // Tabla de productos del Documento P
         var productos = obtenerProductosLocalStorage();
         generate_table_products(productos);
+        calcular_costo_propuesto();
         update_mano_de_obra();
       }
+
       return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form_master.find(".body:eq(" + newIndex + ") label.error").remove(), form_master.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form_master.validate().settings.ignore = ":disabled,:hidden", form_master.valid())
     },
     onFinishing: function (event, currentIndex) {
@@ -496,83 +581,131 @@ $(".validation-wizard-master").steps({
       event.preventDefault();
         // swal("form_master Submitted!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem erat eleifend ex semper, lobortis purus sed.");
       /************************************************************************************/
-        Swal.fire({
-          title: "¿Estás seguro?",
-          text: "Solo se permitirán 3 modificaciones despues de autorizar tu DOCUMENTO",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Confirmar',
-          cancelButtonText: 'Cancelar',
-          showLoaderOnConfirm: true,
-          preConfirm: () => {
-            let productosLS;
-            var _token = $('input[name="_token"]').val();
-            let total_ea = 0.0;
-            let total_ena = 0.0;
-            let total_mo = 0.0;
-            let total = 0.0;
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+          let productosLS;
+             var _token = $('input[name="_token"]').val();
+             let total_ea = 0.0;
+             let total_ena = 0.0;
+             let total_mo = 0.0;
+             let total = 0.0;
 
-             productosLS = localStorage.getItem('productos');
-             total_ea = document.getElementById('total_eqactivo_footer').innerHTML;
-             total_ena = document.getElementById('total_materiales_footer').innerHTML;
-             total_mo = document.getElementById('total_sitwifi_footer').innerHTML;
-             total = document.getElementById('total_global').innerHTML;
+              productosLS = localStorage.getItem('productos');
+              total_ea = document.getElementById('total_eqactivo_footer').innerHTML;
+              total_ena = document.getElementById('total_materiales_footer').innerHTML;
+              total_mo = document.getElementById('total_sitwifi_footer').innerHTML;
+              total = document.getElementById('total_global').innerHTML;
 
-             var form = $('#validation_master')[0];
-             var formData = new FormData(form);
+              var form = $('#validation_master')[0];
+              var formData = new FormData(form);
+              // Carrito | categorias
+              formData.append('shopping_cart',productosLS);
+              formData.append('total_ea',total_ea.replace(/,/g, ""));
+              formData.append('total_ena',total_ena.replace(/,/g, ""));
+              formData.append('total_mo',total_mo.replace(/,/g, ""));
+              formData.append('total',total.replace(/,/g, ""));
+              //Inversion
+              formData.append('rubro_indirectos', (document.getElementById("rubro_indirectos").innerHTML).replace(/,/g, ""));
+              formData.append('rubro_comision', (document.getElementById("rubro_comision").innerHTML).replace(/,/g, ""));
+              formData.append('rubro_ea_percent', (document.getElementById("rubro_ea_percent").innerHTML).replace(/,/g, ""))
+              formData.append('rubro_ena_percent', (document.getElementById("rubro_ena_percent").innerHTML).replace(/,/g, ""))
+              formData.append('rubro_mo_percent', (document.getElementById("rubro_mo_percent").innerHTML).replace(/,/g, ""))
+              formData.append('rubro_indirectos_percent', (document.getElementById("rubro_indirectos_percent").innerHTML).replace(/,/g, ""))
+              formData.append('rubro_comision_percent', (document.getElementById("rubro_comision_percent").innerHTML).replace(/,/g, ""))
+              formData.append('total_rubros', (document.getElementById("total_rubros").innerHTML).replace(/,/g, ""));
+              //Gastos
+              formData.append('credito_mensual', (document.getElementById("credito_mensual").innerHTML).replace(/,/g, ""));
+              formData.append('credito_mensual_percent', (document.getElementById("credito_mensual_percent").value).replace(/,/g, ""));
+              formData.append('gasto_mtto', (document.getElementById("gasto_mtto").innerHTML).replace(/,/g, ""));
+              formData.append('gasto_mtto_percent', (document.getElementById("gasto_mtto_percent").value).replace(/,/g, ""));
+              formData.append('gasto_enlace', (document.getElementById("gasto_enlace").innerHTML).replace(/,/g, ""));
+              formData.append('total_gastos', (document.getElementById("total_gastos").innerHTML).replace(/,/g, ""));
+              //Modelo negocio
+              formData.append('modelo_serv_mens', (document.getElementById("modelo_serv_mens").innerHTML).replace(/,/g, ""));
+              formData.append('modelo_enlace', (document.getElementById("modelo_enlace").innerHTML).replace(/,/g, ""));
+              formData.append('modelo_mensual_hab', (document.getElementById("modelo_mensual_hab").innerHTML).replace(/,/g, ""));
+              formData.append('modelo_hab_enlace', (document.getElementById("modelo_hab_enlace").innerHTML).replace(/,/g, ""));
+              formData.append('modelo_antenas', (document.getElementById("modelo_antenas").innerHTML).replace(/,/g, ""));
+              // Opcionalmente
+              formData.append('opcional_poliza', (document.getElementById("opcional_poliza").value).replace(/,/g, ""));
+              formData.append('utilidad_poliza', (document.getElementById("utilidad_poliza").value).replace(/,/g, ""));
+              formData.append('comision_poliza', (document.getElementById("comision_poliza").value).replace(/,/g, ""));
+              formData.append('precio_poliza', (document.getElementById("precio_poliza").value).replace(/,/g, ""));
+              //Serv. administrado
+              formData.append('renta_enlace', (document.getElementById("renta_enlace").innerHTML).replace(/,/g, ""));
+              formData.append('serv_capex', (document.getElementById("serv_capex").innerHTML).replace(/,/g, ""));
+              formData.append('serv_renta', (document.getElementById("serv_renta").innerHTML).replace(/,/g, ""));
+              formData.append('serv_plazo', (document.getElementById("serv_plazo").innerHTML).replace(/,/g, ""));
+              formData.append('serv_hab_antenas', (document.getElementById("serv_hab_antenas").innerHTML).replace(/,/g, ""));
+              formData.append('serv_adm_habitacion', (document.getElementById("serv_adm_habitacion").innerHTML).replace(/,/g, ""));
+              //Objetivos
+              formData.append('utilidad_mensual', (document.getElementById("utilidad_mensual").innerHTML).replace(/,/g, ""));
+              formData.append('utilidad_proyecto', (document.getElementById("utilidad_proyecto").innerHTML).replace(/,/g, ""));
+              formData.append('renta_mensual_inversion', (document.getElementById("renta_mensual_inversion").innerHTML).replace(/,/g, ""));
+              formData.append('utilidad_inversion', (document.getElementById("utilidad_inversion").innerHTML).replace(/,/g, ""));
+              formData.append('costo_mo_ap', (document.getElementById("costo_mo_ap").innerHTML).replace(/,/g, ""));
+              formData.append('vtc', (document.getElementById("vtc").innerHTML).replace(/,/g, ""));
+              formData.append('serv_ap', (document.getElementById("serv_ap").innerHTML).replace(/,/g, ""));
+              formData.append('tir', (document.getElementById("tir").innerHTML).replace(/,/g, ""));
+              formData.append('utilidad_3_anios', (document.getElementById("utilidad_3_anios").innerHTML).replace(/,/g, ""));
+              formData.append('utilidad_3_anios_percent', (document.getElementById("utilidad_3_anios_percent").innerHTML).replace(/,/g, ""));
+              formData.append('tiempo_retorno', (document.getElementById("tiempo_retorno").innerHTML).replace(/,/g, ""));
+              formData.append('utilidad_renta', (document.getElementById("utilidad_renta").innerHTML).replace(/,/g, ""));
 
-             formData.append('shopping_cart',productosLS);
-             formData.append('total_ea',total_ea.replace(/,/g, ""));
-             formData.append('total_ena',total_ena.replace(/,/g, ""));
-             formData.append('total_mo',total_mo.replace(/,/g, ""));
-             formData.append('total',total.replace(/,/g, ""));
+              const headers = new Headers({
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-TOKEN": _token
+              })
 
-             const headers = new Headers({
-               "Accept": "application/json",
-               "X-Requested-With": "XMLHttpRequest",
-               "X-CSRF-TOKEN": _token
-             })
+              var miInit = { method: 'post',
+                                headers: headers,
+                                credentials: "same-origin",
+                                body:formData,
+                                cache: 'default' };
 
-             var miInit = { method: 'post',
-                               headers: headers,
-                               credentials: "same-origin",
-                               body:formData,
-                               cache: 'default' };
-
-             return fetch('/documentp', miInit)
-                   .then(function(response){
-                     if (!response.ok) {
-                        throw new Error(response.statusText)
-                      }
-                     return response.text();
-                   })
-                   .catch(function(error){
-                     Swal.showValidationMessage(
-                       `Request failed: ${error}`
-                     )
-                   });
-          }//Preconfirm
-        }).then((result) => {
-          console.log(result.value);
-          if (result.value == "true") {
-            localStorage.clear();
-            Swal.fire({
-              title: 'Documento creado',
-              text: "",
-              type: 'success',
-            }).then(function (result) {
-              if (result.value) {
-                window.location = "/documentp_cart";
-              }
-            })
-          }else{
-            Swal.fire(
-              'error al guardar','','error'
-            )
-          }
-        })
+           return fetch('/quoating_create', miInit)
+                 .then(function(response){
+                   if (!response.ok) {
+                      throw new Error(response.statusText)
+                    }
+                   return response.text();
+                 })
+                 .catch(function(error){
+                   Swal.showValidationMessage(
+                     `Request failed: ${error}`
+                   )
+                 });
+        }//Preconfirm
+      }).then((result) => {
+        console.log(result.value);
+        if (result.value == "true") {
+          console.log(result);
+          localStorage.clear();
+          Swal.fire({
+            title: 'Cotización guardada',
+            text: "",
+            type: 'success',
+          }).then(function (result) {
+            if (result.value) {
+              window.location = "/quoting";
+            }
+          })
+        }else{
+          Swal.fire(
+            'error al guardar','','error'
+          )
+        }
+      })
       /************************************************************************************/
     }
 }), $(".validation-wizard-master").validate({
@@ -595,24 +728,61 @@ $(".validation-wizard-master").steps({
         }
     },
     rules: {
-        type_service: {
-          required: true
-        },
-        vertical: {
-          required: true
-        },
-        itc: {
-          required: true
-        },
-        comercial: {
-          required: true
-        },
-        lugar_instalacion: {
-          required: true
-        },
-        tipo_cambio: {
-          required: true
-        },
+      type_service: {
+        required: true
+      },
+      vertical: {
+        required: true
+      },
+      itc: {
+        required: true
+      },
+      servicio: {
+        required: true,
+        min: 1
+      },
+      plazo: {
+        required: true,
+        min: 12
+      },
+      densidad: {
+        required:true,
+        min: 1
+      },
+      comercial: {
+        required: true
+      },
+      lugar_instalacion: {
+        required: true
+      },
+      tipo_cambio: {
+        required: true
+      },
+      credito_mensual_percent:{
+        required: true,
+        min: 1
+      },
+      gasto_mtto_percent: {
+        required: true
+      },
+      capex: {
+        required: true
+      },
+      instalaciones: {
+        required: true
+      },
+      renta: {
+        required: true
+      },
+      indirectos: {
+        required: true
+      },
+      utilidad: {
+        required: true
+      },
+      deposito: {
+        required: true
+      }
     },
 
 })

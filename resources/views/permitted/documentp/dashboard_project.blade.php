@@ -254,8 +254,11 @@
       <div class="row">
         <div class="col-12 card">
           <div class="row">
-            <div class="col-xs-12 col-md-6">
+            <div class="col-12 col-md-6">
               <h4 class="text-title">Estatus de instalación / Facturación</h4>
+            </div>
+            <div class="col-12 col-md-6">
+              <h4 class="text-right pr-4"><span id="calif_projects">0 %</span> </h4>
             </div>
           </div>
           <div class="row d-flex mb-short">
@@ -359,12 +362,12 @@
                     <td class="text-right">{{ number_format($total_ff, 0, '.', ',') }}</td>
                   </tr>
                 </tbody>
-                <tfooter >
+                <tfooter>
                   <tr class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
                     <td><strong>Total</strong> </td>
-                    <td class="text-center p-2"> {{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo + $status_projects[4]->riesgo + $status_projects[5]->riesgo }} </td>
-                    <td class="text-center"> {{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion + $status_projects[4]->atencion + $status_projects[5]->atencion }} </td>
-                    <td class="text-center"> {{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal + $status_projects[4]->normal + $status_projects[5]->normal }} </td>
+                    <td class="text-center p-2"> <span id="total_rojo">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo + $status_projects[4]->riesgo + $status_projects[5]->riesgo }}</span> </td>
+                    <td class="text-center"> <span id="total_amarillo">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion + $status_projects[4]->atencion + $status_projects[5]->atencion }}</span> </td>
+                    <td class="text-center"> <span id="total_verde">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal + $status_projects[4]->normal + $status_projects[5]->normal }}</span> </td>
                     <td class="text-center"> {{$status_projects[0]->instalado + $status_projects[1]->instalado + $status_projects[2]->instalado + $status_projects[4]->instalado + $status_projects[5]->instalado }} </td>
                     <!------------------------->
                     @php
@@ -447,46 +450,52 @@
             <div class="col-12 col-md-6">
               <h3 class="text-title">Motivos de atraso</h3>
             </div>
-            <div class="col-12 col-md-6 ">
-              <form class="form-inline" >
-                <div class="form-group">
-                  <label class="" for="">Filtrar por:</label>
-                    <select id="select_motivo_atraso" class="form-control" name="">
-                      <option value="1">Cliente</option>
-                      <option value="2">Equipo</option>
-                      <option value="3">Comercial</option>
-                      <option value="4">Acceso</option>
-                      <option value="5">Material</option>
-                      <option value="6">Otros</option>
-                      <option value="7">N/A</option>
-                    </select>
-                </div>
-              </form>
-            </div>
           </div>
           <div class="row mb-short">
-            <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="col-12">
               <div class="clearfix">
                   <div id="graphicMotives" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 table-responsive">
-              <table id="tabla_atraso_x_motivo" class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Proyecto</th>
-                    <th>Motivo</th>
-                    <th>Atraso compras</th>
-                    <th>Atraso instalación</th>
-                    <th>IT Concierge</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
 
-                </tbody>
-              </table>
-            </div>
+              <div class="col-3 mt-3">
+                <form class="form-inline" >
+                  <div class="form-group">
+                    <label class="" for="">Filtrar por:</label>
+                      <select id="select_motivo_atraso" class="form-control form-control-sm" name="">
+                        <option value="1">Cliente</option>
+                        <option value="2">Equipo</option>
+                        <option value="3">Comercial</option>
+                        <option value="4">Acceso</option>
+                        <option value="5">Material</option>
+                        <option value="6">Otros</option>
+                        <option value="7">N/A</option>
+                        <option value="8">Configuración</option>
+                        <option value="9">Instalaciones</option>
+                        <option value="10">Coordinación</option>
+                        <option value="11">Mano de obra</option>
+                      </select>
+                  </div>
+                </form>
+              </div>
+              <div class="col-9 mt-3 table-responsive">
+                <table id="tabla_atraso_x_motivo" class="table table-bordered" style="min-width:100%">
+                  <thead>
+                    <tr>
+                      <th>Proyecto</th>
+                      <th>Motivo</th>
+                      <th>Atraso compras</th>
+                      <th>Atraso instalación</th>
+                      <th>IT Concierge</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+
           </div>
         </div>
       </div>

@@ -59,15 +59,12 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  let datajson_result = datajson.filter(data => data.status != 'Denegado');
+  //Filtrando Documento M
+  let datajson_result = datajson.filter(data => data.status != 'Denegado' && data.doc_type == 2);
   $.each(datajson_result, function(index, data){
-    let type_doc = '';
+    let type_doc = 'M';
     let badge = '';
-    if(data.doc_type == 1){
-      type_doc = 'P';
-    }else{
-      type_doc = 'M';
-    }
+
     switch (data.status) {
       case 'Nuevo':
         badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';
@@ -85,7 +82,6 @@ function documentp_table(datajson, table){
          badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
          break;
     }
-
   vartable.fnAddData([
     data.fecha,
     data.nombre_proyecto,
@@ -120,7 +116,7 @@ var Configuration_table_responsive_documentp = {
             success: function(response, newValue) {
               var id = $(this).data('pk');
               console.log(id);
-              //setPriority(id, newValue);
+              setPriority(id, newValue);
             }
           });
         },

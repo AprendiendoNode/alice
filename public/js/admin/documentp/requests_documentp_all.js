@@ -58,7 +58,7 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  let docs_p = datajson.filter(data => data.doc_type == 1);
+  let docs_p = datajson.filter(data => data.doc_type == 1 && data.status != 'Denegado');
   $.each(docs_p, function(index, data){
     let type_doc = 'P';
     let badge = '';
@@ -91,11 +91,14 @@ function documentp_table(datajson, table){
         data.porcentaje_compra + '%',
         data.atraso,
         type_doc,
-        '<a href="" data-type="number" data-pk="'+ data.id +'" data-title="Serv. mensual" data-value="' + data.servicio_mensual + '" class="set-servmensual">',
+        data.prioridad,
         '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a>'+
-        '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a>' +
+        '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Kick-off" role="button"><span class="fas fa-tasks"></span></a>' +
         '<a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>' +
-        '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Cotizador" onclick="editar_cotizador(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-info btn-dark"><span class="fa fa-calculator"></span></a>'
+        '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Cotizador" onclick="editar_cotizador(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-info btn-dark"><span class="fa fa-calculator"></span></a>' +
+        '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a>' +
+        '<a href="javascript:void(0);" onclick="deny_docp(this)" value="'+data.id+'" class="btn btn-warning btn-xs" role="button" data-target="#modal-deny" title="Denegar"><span class="fa fa-ban"></span></a>',
+        data.status
     ]);
   });
 }
@@ -175,12 +178,17 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 11,
               "width": "0.2%",
-              "className": "text-center cell-short",
+              "className": "text-center",
             },
             {
               "targets": 12,
               "width": "1.5%",
               "className": "text-center actions-button cell-large",
+            },
+            {
+              "targets": 13,
+              "width": "1.5%",
+              "visible": false,
             }
         ],
         dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +

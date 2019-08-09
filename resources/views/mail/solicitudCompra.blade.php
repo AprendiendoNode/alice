@@ -112,7 +112,7 @@ background-color: #f6f6f6;
                               color: #74787E;
                               line-height: 1.5em;
                               font-size: 14px;
-                              text-align: left;">Nueva solicitud de compra</p>
+                              text-align: left;">Nuevo Documento generado</p>
 
 
                     <p style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
@@ -131,7 +131,7 @@ background-color: #f6f6f6;
                                             font-size: 14px;
                                             text-align: left;"><strong>Documento P</strong>
                                   </p>
-                               @else
+                               @elseif($param['doc_type'] == 2)
                                  <p style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
                                             margin-top: 20;
                                             color: #74787E;
@@ -139,6 +139,14 @@ background-color: #f6f6f6;
                                             font-size: 14px;
                                             text-align: left;"><strong>Documento M</strong>
                                 </p>
+                              @else
+                                <p style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+                                           margin-top: 20;
+                                           color: #74787E;
+                                           line-height: 1.5em;
+                                           font-size: 14px;
+                                           text-align: left;"><strong>Cotización</strong>
+                               </p>
                                @endif
                     <p style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
                               margin-top: 20;

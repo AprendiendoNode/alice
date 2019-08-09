@@ -476,6 +476,7 @@ input::-webkit-input-placeholder {
 }
 
 .cell-large{
+  min-width: 130px;
   max-width: 200px;
 }
 
@@ -528,7 +529,7 @@ input::-webkit-input-placeholder {
 
 /*Tabla historial y logs*/
 
-#table_documentp thead th, #table_documentp_logs thead th{
+#table_documentp thead th, #table_documentp_logs thead th, #table_quoting thead th{
   width: 100%;
   padding: 0.2rem 0.2rem;
   color: white;
@@ -539,11 +540,11 @@ input::-webkit-input-placeholder {
   vertical-align: middle;
 }
 
-#table_documentp_logs td, #table_documentp_logs th{
+#table_documentp_logs td, #table_documentp_logs th, #table_quoting th{
   vertical-align: middle;
 }
 
-#table_documentp tbody tr td {
+#table_documentp tbody tr td, #table_quoting tbody tr td {
   padding: 0.2rem 0.5rem;
   width: auto !important;
   height: 35px !important;

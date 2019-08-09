@@ -37,7 +37,7 @@
           <div class="form-group">
             <label for="vertical" class="">Vertical</label>
               <select class="form-control form-control-sm" id="vertical" name="vertical">
-                <option value="0">Elegir...</option>
+                <option value="">Elegir...</option>
                 @foreach ($verticals as $vertical_data)
                   <option value="{{$vertical_data->id}}">{{$vertical_data->name}}</option>
                 @endforeach

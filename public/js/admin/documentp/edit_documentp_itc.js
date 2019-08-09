@@ -26,12 +26,13 @@ $(function() {
          })
          .then(function(products){
            localStorage.clear();
+           console.log(products);
            products.forEach(product => {
              let producto = {
                  id: product.product_id,
                  id_key: product.id,
                  descripcion: product.producto,
-                 codigo: product.codigo,
+                 codigo: product.code,
                  precio: product.precio,
                  categoria: product.categoria,
                  categoria_id: product.categoria_id,
@@ -194,6 +195,49 @@ function update_cantidades(id, cant_req, oldValue){
   sumaTotales();
 }
 
+function update_mano_de_obra(){
+
+  var num_aps = 0;
+  var productos = obtenerProductosLocalStorage();
+    //Filtro de antenas
+  var products_aps = productos.filter(producto =>
+                     producto.codigo.substring(0, 3) == 'API' || producto.codigo.substring(0, 3) == 'APE');
+
+    var mo_products = productos.filter(producto => producto.categoria_id == 7);
+    /* Si es mayor a 0 significa que se agrego mano de obra por
+       parte del usuario y se procede a recalcular las cantidades */
+    if(mo_products.length > 0){
+      $.each(products_aps, function( i, key ) {
+        num_aps += key.cant_req;
+      })
+
+      new_products =  productos.filter(producto => producto.categoria_id != 7);
+      localStorage.setItem('productos', JSON.stringify(new_products));
+
+      $.ajax({
+          url : `/items/ajax/four/0/${num_aps}`
+      }).done(function (data) {
+        var productosLS = obtenerProductosLocalStorage();
+          data.forEach(element => {
+            var productosLS = obtenerProductosLocalStorage();
+            var id_product = element.id;
+            if(productosLS == '[]'){
+              //Primer producto del carrito
+              leerDatosProductMO(element);
+            }else {
+              let count =  productosLS.filter(producto => producto.id == id_product);
+              (count.length == 1) ? console.log("producto existe") : leerDatosProductMO(element);
+            }
+          })
+            generate_table_products();
+            menssage_toast('Mensaje', '4', 'Mano de obra actualizada' , '2000');
+          }).fail(function () {
+              Swal.fire("Ocurrio un error al actualizar mano de obra","","error");
+          });//Fin funcion ajax
+
+      }//fin if
+}
+
 function update_price_unit(id, newPrice){
   let tipo_cambio = document.getElementById('tipo_cambio').value;
   let productosLS;
@@ -340,7 +384,6 @@ function generate_table_products(){
   });
 
   // Funcion para detectar cambio en alguna cantidad de un producto
-
   $('.set-cant-req').editable({
       container: 'body',
       type : 'number',
@@ -354,59 +397,19 @@ function generate_table_products(){
       },
       success: function(response, newValue) {
         var id = $(this).data('pk');
-        var oldValue = $(this).text()
+        var oldValue = $(this).text();
         var clave = $(this).data('clave').substring(0, 3);
         var num_aps = 0;
-        var id_doc = $("#id_documentp").val();
         update_cantidades(id, parseFloat(newValue), oldValue);
         document.getElementById(id).style.background = "#BDD3DE";
         if(clave == 'API' || clave == 'APE'){
-          var productos = obtenerProductosLocalStorage();
-          //Filtro de antenas
-          var products_aps = productos.filter(producto =>
-                              producto.codigo.substring(0, 3) == 'API' || producto.codigo.substring(0, 3) == 'APE');
-
-          var mo_products = productos.filter(producto => producto.categoria_id == 7);
-          /* Si es mayor a 0 significa que se agrego mano de obra por
-             parte del usuario y se procede a recalcular las cantidades */
-          if(mo_products.length > 0){
-            $.each(products_aps, function( i, key ) {
-              num_aps += key.cant_req;
-            })
-
-            new_products =  productos.filter(producto => producto.categoria_id != 7);
-            localStorage.setItem('productos', JSON.stringify(new_products));
-
-            $.ajax({
-                url : `/items/ajax/four/0/${num_aps}/${id_doc}`
-            }).done(function (data) {
-              var productosLS = obtenerProductosLocalStorage();
-
-                data.forEach(element => {
-                  var productosLS = obtenerProductosLocalStorage();
-                  var id_product = element.id;
-                  if(productosLS == '[]'){
-                    //Primer producto del carrito
-                    leerDatosProductMO(element);
-                  }else {
-                    let count =  productosLS.filter(producto => producto.id == id_product);
-                    (count.length == 1) ? console.log("producto existe") : leerDatosProductMO(element);
-                  }
-
-                })
-                  generate_table_products();
-                  menssage_toast('Mensaje', '4', 'Mano de obra actualizada' , '2000');
-                }).fail(function () {
-                    swal("Ocurrio un error","","error");
-                });//Fin funcion ajax
-
-              }
-
-            }
+          update_mano_de_obra();
+        }
 
       }// Fin susccess
 
   });// fin set-cant-req
+
 
   //Funcion para detectar cambio en algun precio unitario de un producto
   $('.set-price').editable({
@@ -550,9 +553,12 @@ $(".validation-wizard-master").steps({
         finish: "Submit"
     },
     onStepChanging: function (event, currentIndex, newIndex) {
+      if(newIndex == 1){
         // Tabla de productos del Documento P
         var productos = obtenerProductosLocalStorage();
         generate_table_products(productos);
+        update_mano_de_obra();
+      }
 
         return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form_master.find(".body:eq(" + newIndex + ") label.error").remove(), form_master.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form_master.validate().settings.ignore = ":disabled,:hidden", form_master.valid())
     },
@@ -719,7 +725,7 @@ $(".validation-wizard-master").on('click', '.addButtonAP', function(){
 
     }
     else{
-      swal("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+      Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
     }
   }
   else {
@@ -777,7 +783,7 @@ $(".validation-wizard-master").on('click', '.addButtonFW', function(){
 
     }
     else{
-      swal("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+      Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
     }
   }
   else {
@@ -835,7 +841,7 @@ $(".validation-wizard-master").on('click', '.addButtonSW', function(){
 
     }
     else{
-      swal("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+      Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
     }
   }
   else {

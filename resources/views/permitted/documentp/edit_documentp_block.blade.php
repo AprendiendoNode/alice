@@ -1,22 +1,16 @@
-
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View Edit Document P') )
-    {{ trans('message.document_edit') }}
+  @if( auth()->user()->can('View cover') )
+    {{ trans('message.breadcrumb_document_create') }}
   @else
     {{ trans('message.denied') }}
   @endif
 @endsection
 
-@section('contentheader_description')
-
-
-@endsection
-
-@section('breadcrumb_ubication')
-  @if( auth()->user()->can('View Edit Document P') )
-    {{ trans('message.breadcrumb_document_edit') }}
+@section('breadcrumb_title')
+  @if( auth()->user()->can('View Document P') )
+    {{ trans('message.document_create') }}
   @else
     {{ trans('message.denied') }}
   @endif
@@ -26,12 +20,12 @@
   @if( auth()->user()->can('View Edit Document P') )
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Permission Denied!</div>
-                    <div class="panel-body">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-title p-3"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Permission Denied!</div>
+                    <div class="card-body">
                         <p class="text-primary">{{$folio}}</p>
-                        <p class="text-primary">Última actualización: {{$hour_created}}</p>
+                        <p class="text-primary">Fecha y hora de aprobación: {{$hour_created}}</p>
                         @if( auth()->user()->can('View level zero documentp notification') )
                         <h4 class="text-danger">
                             El tiempo para hacer modificaciones de este Documento ha expirado
@@ -42,6 +36,10 @@
                               Este pedido ya ha sido entregado. No se permiten más modificaciones.
                           </h4>
                         @elseif(auth()->user()->can('View level two documentp notification'))
+                          <h4 class="text-danger">
+                              Este pedido ya ha sido entregado. No se permiten más modificaciones.
+                          </h4>
+                        @elseif(auth()->user()->can('View level three documentp notification'))
                           <h4 class="text-danger">
                               Este pedido ya ha sido entregado. No se permiten más modificaciones.
                           </h4>

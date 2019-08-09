@@ -9,7 +9,7 @@ use \Illuminate\Support\Collection;
 use \Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use App\Documentp;
+use App\Models\Projects\Documentp;
 use Auth;
 use DB;
 

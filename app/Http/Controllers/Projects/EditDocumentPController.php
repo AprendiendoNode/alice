@@ -39,9 +39,10 @@ class EditDocumentPController extends Controller
     $comerciales = DB::select('CALL px_resguardoXgrupo_users(?)', array(2));
     $type_service = DB::table('documentp_type')->select('id', 'name')->get();
     $installation = DB::table('documentp_installation')->select('id', 'name')->get();
+    $priorities = DB::table('documentp_priorities')->select('id', 'name')->get();
     $viewPermitted = view('permitted.documentp.show' ,compact('id_document', 'hour_created','grupos', 'anexos','data_header', 'tipo_cambio', 'categories', 'itc', 'verticals', 'comerciales', 'type_service', 'priorities', 'installation'));
     $viewBlock = view('permitted.documentp.edit_documentp_block', compact('folio', 'hour_created'));
-
+    //dd($this->validateHourEdit($hour_created, $num_edit));
     if($this->check_user_permission() == 0 || $this->check_user_permission() == 1){
         //Se revisa si el documento no ha sido aprobado
       if($this->check_status_document($id_document)){
@@ -55,12 +56,13 @@ class EditDocumentPController extends Controller
         }
       }else {
         //El carrito ya se aprobo, se procede a revisar si esta dentro de las 4 horas permitidas despues de aprobacion
-        ($this->validateHourEdit($hour_created, $num_edit)) ? $view = $viewPermitted  : $view = $viewBlock;
+        ($this->validateHourEdit($hour_created, $num_edit, $id_document)) ? $view = $viewPermitted  : $view = $viewBlock;
           return $view;
       }
     }else {
       //Es un usuario con mayor permiso que un itc, se revisa que el carrito no haya sido entregado
-      ($this->check_status_cart($cart))  ? $view = $viewPermitted  : $view = $viewPermitted;
+
+      ($this->check_status_cart($cart))  ? $view = $viewPermitted  : $view = $viewBlock;
         return $view;
     }
 
@@ -90,6 +92,7 @@ class EditDocumentPController extends Controller
     $set_documentp->itc_id = $request->itc_id;
     $set_documentp->grupo_id = $request->grupo_id;
     $set_documentp->anexo_id = $request->anexo_id;
+    $set_documentp->renta_mensual = $request->renta_mensual;
     $set_documentp->save();
     $flag = 1;//ok
     return $flag;
@@ -158,25 +161,29 @@ class EditDocumentPController extends Controller
 
   }
 
-  public function validateHourEdit($hour_approved, $num_edit)
+  public function validateHourEdit($hour_approved, $num_edit, $id_doc)
   {
-    if($num_edit == 2){
-      $hour_now = \Carbon\Carbon::now();
-      $hour_now = \Carbon\Carbon::parse($hour_now);
-      $diff = $hour_approved->diff($hour_now);
-      //Si se cumple está dentro del tiempo de 4 horas permitido
-      if($diff->d == 0 && $diff->h <= 3 && $diff->i <= 59){
-          return true;
-        }else{
-          return false;
-        }
-    }else if($num_edit == 3){
+    $documentP = Documentp::find($id_doc);
+    if($documentP->status_id == 5){
       return false;
-    }else{
-      return true;
     }
+     if($num_edit == 2){
+       $hour_now = \Carbon\Carbon::now();
+       $hour_now = \Carbon\Carbon::parse($hour_now);
+       $diff = $hour_approved->diff($hour_now);
+       //Si se cumple está dentro del tiempo de 4 horas permitido
+       if($diff->d == 0 && $diff->h <= 3 && $diff->i <= 59){
+           return true;
+         }else{
+           return false;
+         }
+     }else if($num_edit == 3){
+       return false;
+     }else{
+       return true;
+     }
 
-  }
+   }
 
   public function getShoppingCart($id)
   {
@@ -196,7 +203,7 @@ class EditDocumentPController extends Controller
     $documentp = Documentp::find($id);
     $id_document = $documentp->id;
     $totalUsdOld = $documentp->total_usd;
-    $hour_created = $documentp->updated_at;
+    $hour_created = $documentp->fecha_aprobacion;
     $hour_created =  \Carbon\Carbon::parse($hour_created);
     $num_edit = $documentp->num_edit;
 
@@ -308,7 +315,7 @@ class EditDocumentPController extends Controller
     } catch(\Exception $e){
       $e->getMessage();
       DB::rollback();
-      dd($e);
+      return $e;
     }
 
     return $flag;

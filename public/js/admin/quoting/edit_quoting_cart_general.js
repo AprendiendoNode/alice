@@ -15,179 +15,17 @@ $(function () {
     format: 'dd/mm/yyyy'
   })
 
-  $('#grupo_id').select2();
-  $('#anexo_id').select2();
-  $('#itc').select2();
-
   let type_doc = document.getElementById('key_doc').value;
-  let key_anexo = document.getElementById('key_anexo').value;
-  let type = $('#type_service').val();
   if(type_doc == 1){
-    $(".fields_docp").css('display', 'block');
-    $(".fields_docm").css('display', 'none');
-    if(type == 2 || type == 3){
-      $(".fields_docm").css('display', 'block');
-      var _token = $('input[name="_token"]').val();
-      var id_cadena = $('#grupo_id').val();
-      var datax;
-      $.ajax({
-        type: "POST",
-        url: "/get_hotel_cadena_doc",
-        data: { data_one : id_cadena, _token : _token },
-        success: function (data){
-          console.log(data);
-          datax = JSON.parse(data);
-          if ($.trim(data)){
-            $('#anexo_id').empty();
-            $.each(datax, function(i, item) {
-                $('#anexo_id').append("<option value="+item.id+">"+item.Nombre_hotel+"</option>");
-            });
-            $('#anexo_id option[value="'+ key_anexo +'"]').attr('selected','selected');
-          }
-          else{
-            $("#anexo_id").text('');
-          }
-        },
-        error: function (data) {
-          console.log('Error:', data);
-        }
-      });
-    }else{
-      $(".fields_docm").css('display', 'none');
-    }
+    $('#doc_type option[value=1]').attr('selected','selected');
   }else{
-    $(".fields_docp").css('display', 'none');
-    $(".fields_docm").css('display', 'block')
-    $('#doc_type option[value=2]').attr('selected','selected');
-    var _token = $('input[name="_token"]').val();
-    var id_cadena = $('#grupo_id').val();
-    var datax;
-    $.ajax({
-      type: "POST",
-      url: "/get_hotel_cadena_doc",
-      data: { data_one : id_cadena, _token : _token },
-      success: function (data){
-        console.log(data);
-        datax = JSON.parse(data);
-        if ($.trim(data)){
-          $('#anexo_id').empty();
-          $.each(datax, function(i, item) {
-              $('#anexo_id').append("<option value="+item.id+">"+item.Nombre_hotel+"</option>");
-          });
-          $('#anexo_id option[value="'+ key_anexo +'"]').attr('selected','selected');
-        }
-        else{
-          $("#anexo_id").text('');
-        }
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
+    $('#doc_type option[value=3]').attr('selected','selected');
   }
 
+  $('#itc').select2();
+  //Oculto los campos para dicumento M por default
+  $(".fields_docm").css('display', 'none');
 
-  $('#grupo_id').on('change', function(){
-    var id_cadena = $(this).val();
-    var datax;
-
-    $.ajax({
-      type: "POST",
-      url: "/get_hotel_cadena_doc",
-      data: { data_one : id_cadena, _token : _token },
-      success: function (data){
-        datax = JSON.parse(data);
-        if ($.trim(data)){
-          $('#anexo_id').empty();
-          $.each(datax, function(i, item) {
-              $('#anexo_id').append("<option value="+item.id+">"+item.Nombre_hotel+"</option>");
-          });
-          get_vertical_anexo();
-          //get_table_estimation();
-        }
-        else{
-          $("#anexo_id").text('');
-        }
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
-  })
-
-  $('#anexo_id').on('change', function(){
-    //get_table_estimation();
-  });
-
-  function get_table_estimation(){
-    var id_anexo = $('#anexo_id').val();
-    var init = { method: 'get',
-                      headers: headers,
-                      credentials: "same-origin",
-                      cache: 'default' };
-
-    if(id_anexo != null && id_anexo != undefined){
-        fetch(`/estimation_site_table/${id_anexo}/20.00`, init)
-          .then(response => {
-            return response.text();
-          })
-          .then(data => {
-            $('#presupuesto_anual').html('');
-            $('#presupuesto_anual').html(data);
-          })
-          .catch(error => {
-            console.log(error);
-          })
-    }
-
-  }
-
-  function get_vertical_anexo(){
-    let id_anexo = $('#anexo_id').val();
-
-    fetch(`/get_vertical_anexo/anexo/${id_anexo}`, miInit)
-      .then(function(response){
-        return response.json();
-      })
-      .then(function(data){
-        if(data[0].vertical_id != null){
-          $("#vertical").val(data[0].vertical_id);
-        }else{
-          $("#vertical").val(0);
-        }
-      })
-
-  }
-
-  $("#doc_type").on("change", function(){
-    let type_doc = $(this).val();
-    localStorage.clear();
-    if(type_doc == 1){
-      $(".fields_docp").css('display', 'block');
-      $(".fields_docm").css('display', 'none');
-      $('#type_service').val(1);
-    }else if(type_doc == 2){
-      $(".fields_docp").find('input').val('');
-      $(".fields_docp").css('display', 'none');
-      $(".fields_docm").css('display', 'block');
-      $('#type_service').val(4);
-    }else{
-      console.log("Cotizacion nueva");
-      $(".fields_docp").css('display', 'block');
-      $(".fields_docm").css('display', 'none');
-      $('#type_service').val(1);
-    }
-
-  });
-
-  $('#type_service').on('change',function(){
-    let type = $(this).val();
-    if(type == 2 || type == 3){
-      $(".fields_docm").css('display', 'block');
-    }else{
-      $(".fields_docm").css('display', 'none');
-    }
-  })
 
   function get_aps_sites(id_cad){
     fetch(`/get_aps_sites/id/${id_cad}`,  miInit)
@@ -389,7 +227,6 @@ $(function () {
 
     var data_aps= get_aps();
     var data_switches = get_switches();
-    console.log(data_aps);
     var aps = JSON.stringify(data_aps[0]);
     var api = data_aps[1];
     var ape = data_aps[2];
@@ -562,7 +399,6 @@ function leerDatosProductMO(producto){
        precio_total : precioTotal.toFixed(2),
        precio_total_usd : precio_usd.toFixed(2)
    }
-
    insertarMO(infoProducto);
 }
 

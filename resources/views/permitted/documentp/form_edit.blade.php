@@ -153,16 +153,16 @@
       <div  class="row mb-3"></div>
 
       <br>
-      {{-- <div class="row fields_docp">
+      <div class="row fields_docp">
         <h4 class="text-danger">Mano de obra</h4>
-      </div> --}}
-      {{-- <div class="row fields_docp">
+      </div>
+       <div class="row fields_docp">
         <div class="col-md-4">
           <div class="form-group">
-              <a href="#" class="btn btn-danger ml-20" id="get_mo_button" name=""><i class="fas fa-people-carry mr-2"></i> Agregar Mano de obra</a>
+              <a href="#" class="btn btn-danger" id="get_mo_button" name=""><i class="fas fa-people-carry mr-2"></i> Agregar Mano de obra</a>
           </div>
         </div>
-      </div> --}}
+      </div>
       <br>
       <div  class="row fields_docp">
         <section id="products-grid-mo" class="products-grid-mo">

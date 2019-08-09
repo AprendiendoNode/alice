@@ -20,6 +20,11 @@ class DocumentpHistoryController extends Controller
 {
     public function index()
     {
+        return view('permitted.documentp.history_documentm');
+    }
+
+    public function history_docp()
+    {
         return view('permitted.documentp.history_documentp');
     }
 

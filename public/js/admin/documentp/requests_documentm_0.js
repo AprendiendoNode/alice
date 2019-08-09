@@ -58,10 +58,15 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  let docs_p = datajson.filter(data => data.doc_type == 1);
-  $.each(docs_p, function(index, data){
-    let type_doc = 'P';
+  let docs_m = datajson.filter(data => data.doc_type = 2);
+  $.each(docs_m, function(index, data){
+    let type_doc = '';
     let badge = '';
+    if(data.doc_type == 1){
+      type_doc = 'P';
+    }else{
+      type_doc = 'M';
+    }
     switch (data.status) {
       case 'Nuevo':
         badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';
@@ -80,22 +85,19 @@ function documentp_table(datajson, table){
          break;
     }
   vartable.fnAddData([
-        data.fecha,
-        data.nombre_proyecto,
-        '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-        '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-        '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-        data.elaboro,
-        badge,
-        data.num_edit,
-        data.porcentaje_compra + '%',
-        data.atraso,
-        type_doc,
-        '<a href="" data-type="number" data-pk="'+ data.id +'" data-title="Serv. mensual" data-value="' + data.servicio_mensual + '" class="set-servmensual">',
-        '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a>'+
-        '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a>' +
-        '<a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>' +
-        '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Cotizador" onclick="editar_cotizador(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-info btn-dark"><span class="fa fa-calculator"></span></a>'
+    data.fecha,
+    data.nombre_proyecto,
+    '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    data.elaboro,
+    badge,
+    data.num_edit,
+    data.porcentaje_compra + '%',
+    data.atraso,
+    type_doc,
+    '<a href="" data-type="number" data-pk="'+ data.id +'" data-title="Serv. mensual" data-value="' + data.servicio_mensual + '" class="set-servmensual">',
+    '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a><a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>',
     ]);
   });
 }
@@ -180,7 +182,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 12,
               "width": "1.5%",
-              "className": "text-center actions-button cell-large",
+              "className": "text-center actions-button",
             }
         ],
         dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +

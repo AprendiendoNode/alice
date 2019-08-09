@@ -37,9 +37,11 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  let datajson_result = datajson.filter(data => data.status != 'Denegado');
+  //Filtrando documentos M
+  let datajson_result = datajson.filter(data => data.doc_type == 2 && data.status != 'Denegado');
+  let type_doc = 'M';
   $.each(datajson_result, function(index, data){
-    let type_doc = '';
+
     let badge = '';
     switch (data.status) {
       case 'Nuevo':
@@ -58,56 +60,28 @@ function documentp_table(datajson, table){
          badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
          break;
     }
-    if(data.doc_type == 1){
-      type_doc = 'P';
-      vartable.fnAddData([
-        data.id,
-        data.fecha,
-        data.nombre_proyecto,
-        '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-        '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-        '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-        badge,
-        '<span class="label label-primary">'+data.status+'</span>',
-        data.num_edit,
-        data.porcentaje_compra + '%',
-        data.atraso,
-        type_doc,
-        data.prioridad ,
-        '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a>'+
-        '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a>' +
-        '<a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>' +
-        '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Cotizador" onclick="editar_cotizador(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-info btn-dark"><span class="fa fa-calculator"></span></a>' +
-        '<a href="javascript:void(0);" onclick="deny_docp(this)" value="'+data.id+'" class="btn btn-warning btn-xs" role="button" data-target="#modal-deny" title="Denegar"><span class="fa fa-ban"></span></a>',
-        data.status,
-        data.cant_sug_total,
-        data.cant_req_total
-        ]);
-      }else{
-        type_doc = 'M';
-        vartable.fnAddData([
-          data.id,
-          data.fecha,
-          data.nombre_proyecto,
-          '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-          '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-          '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-          badge,
-          '<span class="label label-primary">'+data.status+'</span>',
-          data.num_edit,
-          data.porcentaje_compra + '%',
-          data.atraso,
-          type_doc,
-          data.prioridad ,
-          '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a>'+
-          '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a>' +
-          '<a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>' +
-          '<a href="javascript:void(0);" onclick="deny_docp(this)" value="'+data.id+'" class="btn btn-warning btn-xs" role="button" data-target="#modal-deny" title="Denegar"><span class="fa fa-ban"></span></a>',
-          data.status,
-          data.cant_sug_total,
-          data.cant_req_total
-          ]);
-      }
+    vartable.fnAddData([
+      data.id,
+      data.fecha,
+      data.nombre_proyecto,
+      '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      data.elaboro,
+      badge,
+      data.num_edit,
+      data.porcentaje_compra + '%',
+      data.atraso,
+      type_doc,
+      data.prioridad ,
+      '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a>'+
+      '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a>' +
+      '<a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>' +
+      '<a href="javascript:void(0);" onclick="deny_docp(this)" value="'+data.id+'" class="btn btn-warning btn-xs" role="button" data-target="#modal-deny" title="Denegar"><span class="fa fa-ban"></span></a>',
+      data.status,
+      data.cant_sug_total,
+      data.cant_req_total
+      ]);
   });
 
 }

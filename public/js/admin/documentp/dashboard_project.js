@@ -30,7 +30,30 @@ var initGet = { method: 'get',
   graph_presupuesto_ejercido_prom();
   get_table_filterby_servicio();
   get_table_filterby_atrasos();
+  get_calif_project();
 })()
+
+function get_calif_project(){
+  let total_rojo = document.getElementById('total_rojo').innerHTML;
+  let total_amarillo = document.getElementById('total_amarillo').innerHTML;
+  let total_verde = document.getElementById('total_verde').innerHTML;
+  let total = parseInt(total_rojo) + parseInt(total_amarillo) + parseInt(total_verde)
+
+  let calif = parseInt(total_verde) / total;
+  calif *= 100;
+  calif = parseInt(calif);
+  document.getElementById('calif_projects').innerHTML = `${calif} %`;
+
+  if(calif > 76){
+    document.getElementById('calif_projects').style.color = "green";
+  }else if(calif > 51  && calif < 76){
+    document.getElementById('calif_projects').style.color = "yellow";
+  }else{
+    document.getElementById('calif_projects').style.color = "red";
+  }
+
+
+}
 
 $('#select_tipo_servicio').on('change', function(){
   let tipo_servicio = document.getElementById('select_tipo_servicio').value;
@@ -456,7 +479,8 @@ function graph_barras_motives(title, campoa, campob) {
                   color: function(params) {
                       var colorList = [
                         '#DD4B39','#00C0EF', '#605CA8', '#FF851B',
-                        '#00A65A','#C1232B','#B5C334','#FCCE10'
+                        '#00A65A','#C1232B','#B5C334','#FCCE10',
+                        '#DD4B39','#00C0EF','#605CA8', '#FF851B'
                       ];
                       return colorList[params.dataIndex]
                   }
