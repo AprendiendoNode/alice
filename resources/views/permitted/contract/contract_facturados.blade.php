@@ -49,10 +49,12 @@
               </form>
             </div>
           </div>
-          <div class="col-xs-12 mt-20">
-            <div class="form-inline">
-              <label class="control-label">Total MXN (Facturar)</label>
-              <input id="total_mxn" name="total_mxn" type="text" class="form-control" readonly>
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mt-20">
+            <div class="row form-inline">
+              <label class="control-label col-md-3">Total MXN (Facturados)</label>
+              <input id="total_mxn" name="total_mxn" type="text" class="form-control col-md-2" readonly>
+              <label class="control-label col-md-3">Total USD (Facturados)</label>
+              <input id="total_usd" name="total_usd" type="text" class="form-control col-md-2" readonly>
             </div>
           </div>
         </div>

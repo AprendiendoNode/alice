@@ -62,14 +62,14 @@
       </div>
     -->
     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mt-20">
-      <div class="row form-inline" style="font-size: 12px;">
-        <label class="control-label col-md-1">Total MXN (Pend. por cobrar)</label>
+      <div class="row form-inline">
+        <!--<label class="control-label col-md-1">Total MXN (Pend. por cobrar)</label>
         <input id="total_mxn" name="total_mxn" type="text" class="form-control col-md-2" readonly>
         <label class="control-label col-md-1">Total USD (Pend. por cobrar)</label>
-        <input id="total_cobr" name="total_cobr" type="text" class="form-control col-md-2" readonly>
-        <label class="control-label col-md-1">Total MXN (Cobrados)</label>
+        <input id="total_cobr" name="total_cobr" type="text" class="form-control col-md-2" readonly>-->
+        <label class="control-label col-md-3">Total MXN (Cobrados)</label>
         <input id="total_cobr_mxn" name="total_cobr_mxn" type="text" class="form-control col-md-2" readonly>
-        <label class="control-label col-md-1">Total USD (Cobrados)</label>
+        <label class="control-label col-md-3">Total USD (Cobrados)</label>
         <input id="total_cobr_usd" name="total_cobr_usd" type="text" class="form-control col-md-2" readonly>
       </div>
     </div>

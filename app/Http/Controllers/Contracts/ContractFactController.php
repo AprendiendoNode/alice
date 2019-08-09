@@ -67,6 +67,9 @@ class ContractFactController extends Controller
     }
     public function monto_fact_all(Request $request)
     {
-      # code...
+      $date_a = $request->date_start;
+      $date_b = $request->date_end;
+      $registro = DB::select('CALL px_contract_charges_sum_monto_final_all (?,?,?)', array($date_a, $date_b, 2));
+      return json_encode($registro);
     }
 }

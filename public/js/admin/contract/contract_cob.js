@@ -6,7 +6,7 @@ $(function(){
   //
   //
   //
-  mont_facturar();
+  //mont_facturar();
   mont_cobrar();
   mens_tb_all(token);
   moment.locale('es');
@@ -91,7 +91,8 @@ function mont_cobrar() {
           }
         }
         else {
-          $('#total_cobr').val(0);
+          $('#total_cobr_mxn').val(0);
+          $('#total_cobr_usd').val(0);
         }
       },
       error: function (data) {

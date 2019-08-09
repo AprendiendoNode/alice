@@ -17,7 +17,7 @@ $(function(){
 }());
 
 $("#boton-aplica-filtro").click(function(event) {
-  mont_facturar(token);
+  mont_facturar_all(token);
   mens_tb_all(token);
 });
 
@@ -52,17 +52,26 @@ function mens_tb_all(token) {
 }
 function mont_facturar_all(token) {
   var _token = token;
+  var objData = $('#search_info').find("select,textarea, input").serialize();
   $.ajax({
       type: "POST",
       url: "/cxc_mont_fact_uniq_all",
-      data: { _token : _token },
+      data: objData,
       success: function (data){
+        console.log(data);
         if (data != '' && data != '[]') {
           var data_new = JSON.parse(data);
-          $('#total_mxn').val(data_new[0].suma.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+          if (!data_new[0].suma) {
+            $('#total_mxn').val(0);
+            $('#total_usd').val(0);
+          }else{
+            $('#total_mxn').val(data_new[0].suma_MXN.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            $('#total_usd').val(data_new[0].suma_USD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+          }
         }
         else {
           $('#total_mxn').val(0);
+          $('#total_usd').val(0);
         }
       },
       error: function (data) {

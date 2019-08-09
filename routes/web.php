@@ -520,6 +520,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cxc_mont_fact_uniq', 'Contracts\ContractFactController@monto_fact');
     Route::post('/recordmens_fact_all', 'Contracts\ContractFactController@table_facts_all');
     Route::post('/send_contracts_confirm', 'Contracts\ContractFactController@create_items_confirm');
+    Route::post('/cxc_mont_fact_uniq_all', 'Contracts\ContractFactController@monto_fact_all');
 
     //Antigüedad CXC
     Route::get('/view_cobrados', 'Contracts\ContractCobController@index');
