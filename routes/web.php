@@ -273,8 +273,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/update_purchase_order/{id}/{order}', 'Projects\DocumentpController@update_purchase_order');
   Route::get('/get_comment_documentp_advance/id_doc/{id}', 'Projects\DocumentpHistoryController@get_comment_project');
   Route::post('/set_comment_documentp_advance', 'Projects\DocumentpHistoryController@update_comment_project');
-  //Historial documento P
-  Route::get('/view_history_documentp', 'Projects\DocumentpHistoryController@index');
+  //Historial documento P | M
+  Route::get('/view_history_documentm', 'Projects\DocumentpHistoryController@index');
+  Route::get('/view_history_documentp', 'Projects\DocumentpHistoryController@history_docp');
   Route::get('/view_history_auth_documentp', 'Projects\DocumentpHistoryController@view_auth');
   Route::get('/view_doc_delivery', 'Projects\DocumentpHistoryController@view_delivery');
   Route::get('/view_project_doc_p', 'Projects\DocumentpHistoryController@view_project_advance');
@@ -320,17 +321,25 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/get_presupuesto_ejercido_prom', 'Projects\DocumentpDashboardController@get_presupuesto_ejercido_prom');
   Route::get('/get_table_atraso_filterby_motivo/id/{id}', 'Projects\DocumentpDashboardController@get_table_atraso_filterby_motivo');
   Route::get('/get_table_atraso_filterby_servicio/{tipo_servicio}/{atraso}', 'Projects\DocumentpDashboardController@get_table_atraso_filterby_servicio');
+  //Presupuesto proyectos.
+  Route::get('/view_budget','Projects\BudgetController@index');
+  Route::post('/get_annual_table', 'Projects\BudgetController@get_annual_budget');
+  Route::post('/refresh_tablebudget','Projects\BudgetController@refresh_budget_sites');
+  Route::post('/edit_presupuesto', 'Projects\BudgetController@update_budget');
+  Route::get('/view_budget_report','Projects\BudgetController@index_budget_report');
+  Route::post('/get_budget_report_table','Projects\BudgetController@get_budget_report');
+  Route::post('get_desglose_payments_id','Projects\BudgetController@get_desglose_payments');
   //COTIZADOR
-  Route::get('/quoting', 'QuotingController@index');
-  Route::post('/quoating_create', 'QuotingController@store');
-  Route::get('/view_quotig_history', 'QuotingController@index_history');
-  Route::get('/view_auth_history_quoting', 'QuotingController@view_auth');
-  Route::get('/quoting_table_products/{id_documentp}/{id_cart}', 'QuotingController@get_table_products');
+  Route::get('/quoting', 'Projects\QuotingController@index');
+  Route::post('/quoating_create', 'Projects\QuotingController@store');
+  Route::get('/view_quotig_history', 'Projects\QuotingController@index_history');
+  Route::get('/view_auth_history_quoting', 'Projects\QuotingController@view_auth');
+  Route::get('/quoting_table_products/{id_documentp}/{id_cart}', 'Projects\QuotingController@get_table_products');
   Route::get('/quoting_invoice/{id_documentp}/{id_cart}', 'QuotingController@export_invoice');
-  Route::post('/view_request_quoting', 'QuotingController@get_history_quoting');
-  Route::post('/get_quoting_auth', 'QuotingController@get_history_auth_quoting');
-  Route::post('/edit_cart_quoting', 'QuotingEditController@index'); //Vista del formulario para editar
-  Route::post('/edit_quoting', 'QuotingEditController@edit');
+  Route::post('/view_request_quoting', 'Projects\QuotingController@get_history_quoting');
+  Route::post('/get_quoting_auth', 'Projects\QuotingController@get_history_auth_quoting');
+  Route::post('/edit_cart_quoting', 'Projects\QuotingEditController@index'); //Vista del formulario para editar
+  Route::post('/edit_quoting', 'Projects\QuotingEditController@edit');
 
   //Notificaciones viaticos
   Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');
