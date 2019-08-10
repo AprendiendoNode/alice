@@ -2024,7 +2024,7 @@ var Configuration_table_responsive= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return 'Equipamiento de  '+ $('#select_two :selected').text();
@@ -2032,11 +2032,11 @@ var Configuration_table_responsive= {
         init: function(api, node, config) {
            $(node).removeClass('btn-default')
         },
-        className: 'btn bg-olive custombtntable',
+        className: 'btn btn-success custombtntable btn-xs',
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return 'Equipamiento de  '+ $('#select_two :selected').text();
@@ -2044,7 +2044,24 @@ var Configuration_table_responsive= {
         init: function(api, node, config) {
            $(node).removeClass('btn-default')
         },
-        className: 'btn btn-info',
+        className: 'btn btn-info btn-xs',
+      },
+      {
+        extend: 'pdf',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
+        title: function ( e, dt, node, config ) {
+          return 'Asignación de hoteles';
+        },
+        init: function(api, node, config) {
+           $(node).removeClass('btn-default')
+        },
+        exportOptions: {
+            columns: [ 0, 1],
+            modifier: {
+                page: 'all',
+            }
+        },
+        className: 'btn btn-danger btn-xs',
       }
   ],
   "processing": true,
@@ -2082,7 +2099,7 @@ var Configuration_table_responsive_with_pdf_dashboardNPS= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return 'Resultados de la encuesta.';
@@ -2094,7 +2111,7 @@ var Configuration_table_responsive_with_pdf_dashboardNPS= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return 'Resultados de la encuesta.';
@@ -2106,7 +2123,7 @@ var Configuration_table_responsive_with_pdf_dashboardNPS= {
       },
       {
         extend: 'pdf',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           return 'Resultados de la encuesta.';
         },
@@ -2175,7 +2192,7 @@ var Configuration_table_responsive_with_pdf_two= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return 'Equipamiento de '+ $('#name_htl').text();
@@ -2187,7 +2204,7 @@ var Configuration_table_responsive_with_pdf_two= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return 'Equipamiento de '+ $('#name_htl').text();
@@ -2199,7 +2216,7 @@ var Configuration_table_responsive_with_pdf_two= {
       },
       {
         extend: 'pdf',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           return 'Equipamiento de '+ $('#name_htl').text();
         },
@@ -2280,7 +2297,7 @@ var Configuration_table_responsive_with_pdf= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return 'Equipamiento de '+ $('#client').text();
@@ -2292,7 +2309,7 @@ var Configuration_table_responsive_with_pdf= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           $(node).removeClass('btn-default');
@@ -2305,7 +2322,7 @@ var Configuration_table_responsive_with_pdf= {
       },
       {
         extend: 'pdf',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           $(node).removeClass('btn-default');
           return 'Equipamiento de '+ $('#client').text();
@@ -2408,7 +2425,7 @@ var Configuration_table_responsive_two= {
         init: function(api, node, config) {
            $(node).removeClass('btn-default')
         },
-        text: '<i class="fa fa-file-excel-o margin-r5"></i> Extraer a Excel',
+        text: '<i class="far fa-file-excel margin-r5"></i> Extraer a Excel',
         titleAttr: 'Excel',
         className: 'btn bg-olive custombtntable',
         exportOptions: {
@@ -2421,7 +2438,7 @@ var Configuration_table_responsive_two= {
         init: function(api, node, config) {
            $(node).removeClass('btn-default')
         },
-        text: '<i class="fa fa-file-text-o margin-r5"></i> Extraer a CSV',
+        text: '<i class="far fa-file-alt margin-r5"></i> Extraer a CSV',
         titleAttr: 'CSV',
         className: 'btn btn-info',
         exportOptions: {
@@ -2604,7 +2621,7 @@ var Configuration_table_responsive_distribution= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return 'Distribución de equipamiento';
@@ -2616,7 +2633,7 @@ var Configuration_table_responsive_distribution= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return 'Distribución de equipamiento';
@@ -2661,7 +2678,7 @@ var Configuration_table_responsive_with_cont_one_pdf= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text();
@@ -2670,7 +2687,7 @@ var Configuration_table_responsive_with_cont_one_pdf= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text();
@@ -2680,7 +2697,7 @@ var Configuration_table_responsive_with_cont_one_pdf= {
       {
         extend: 'pdf',
         orientation: 'landscape',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text();
         },
@@ -2761,7 +2778,7 @@ var Configuration_table_responsive_with_cont_two_pdf= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text();
@@ -2770,7 +2787,7 @@ var Configuration_table_responsive_with_cont_two_pdf= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text();
@@ -2780,7 +2797,7 @@ var Configuration_table_responsive_with_cont_two_pdf= {
       {
         extend: 'pdf',
         orientation: 'landscape',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text();
         },
@@ -2861,7 +2878,7 @@ var Configuration_table_responsive_with_pdf_client_hotel= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return 'Relación cliente - hotel';
@@ -2876,7 +2893,7 @@ var Configuration_table_responsive_with_pdf_client_hotel= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return 'Relación cliente - hotel';
@@ -2891,7 +2908,7 @@ var Configuration_table_responsive_with_pdf_client_hotel= {
       },
       {
         extend: 'pdf',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           return 'Relación cliente - hotel';
         },
@@ -2965,7 +2982,7 @@ var Configuration_table_responsive_with_pdf_survey_nps= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return 'Resultados - Encuesta';
@@ -2980,7 +2997,7 @@ var Configuration_table_responsive_with_pdf_survey_nps= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return 'Resultados - Encuesta';
@@ -2997,7 +3014,7 @@ var Configuration_table_responsive_with_pdf_survey_nps= {
         extend: 'pdf',
         orientation: 'landscape',
         pageSize: 'LEGAL',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           return 'Resultados - Encuesta';
         },
@@ -3199,7 +3216,7 @@ var Configuration_table_responsive_with_contenado_a= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text()  +'-'+ $('#title_table1').text();
@@ -3211,7 +3228,7 @@ var Configuration_table_responsive_with_contenado_a= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text()  +'-'+ $('#title_table1').text();
@@ -3224,7 +3241,7 @@ var Configuration_table_responsive_with_contenado_a= {
       {
         extend: 'pdf',
         orientation: 'landscape',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text()  +'-'+ $('#title_table1').text();
         },
@@ -3308,7 +3325,7 @@ var Configuration_table_responsive_with_contenado_b= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text()  +'-'+ $('#title_table2').text();
@@ -3320,7 +3337,7 @@ var Configuration_table_responsive_with_contenado_b= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text()  +'-'+ $('#title_table2').text();
@@ -3333,7 +3350,7 @@ var Configuration_table_responsive_with_contenado_b= {
       {
         extend: 'pdf',
         orientation: 'landscape',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text()  +'-'+ $('#title_table2').text();
         },
@@ -3417,7 +3434,7 @@ var Configuration_table_responsive_with_contenado_c= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text()  +'-'+ $('#title_table3').text();
@@ -3429,7 +3446,7 @@ var Configuration_table_responsive_with_contenado_c= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text()  +'-'+ $('#title_table3').text();
@@ -3442,7 +3459,7 @@ var Configuration_table_responsive_with_contenado_c= {
       {
         extend: 'pdf',
         orientation: 'landscape',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           return $('#title').text() +' '+$('#client_name').text()  +'-'+ $('#title_table3').text();
         },
@@ -3526,7 +3543,7 @@ var Configuration_table_responsive_with_pdf_enc_dominio= {
     buttons: [
       {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Excel',
+        text: '<i class="far fa-file-excel"></i> Excel',
         titleAttr: 'Excel',
         title: function ( e, dt, node, config ) {
           return 'Relación Encuestados';
@@ -3541,7 +3558,7 @@ var Configuration_table_responsive_with_pdf_enc_dominio= {
       },
       {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file-text-o"></i> CSV',
+        text: '<i class="far fa-file-alt"></i> CSV',
         titleAttr: 'CSV',
         title: function ( e, dt, node, config ) {
           return 'Relación Encuestados';
@@ -3557,7 +3574,7 @@ var Configuration_table_responsive_with_pdf_enc_dominio= {
       {
         extend: 'pdf',
         // orientation: 'landscape',
-        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+        text: '<i class="far fa-file-pdf"></i>  PDF',
         title: function ( e, dt, node, config ) {
           return 'Relación Encuestados';
         },
@@ -4770,7 +4787,7 @@ var Configuration_table_responsive_checkbox_one= {
         buttons: [
           {
             extend: 'excelHtml5',
-            text: '<i class="fa fa-file-excel-o"></i> Excel',
+            text: '<i class="far fa-file-excel"></i> Excel',
             titleAttr: 'Excel',
             title: function ( e, dt, node, config ) {
               return 'Reporte de Bajas.';
@@ -4788,7 +4805,7 @@ var Configuration_table_responsive_checkbox_one= {
           },
           {
             extend: 'csvHtml5',
-            text: '<i class="fa fa-file-text-o"></i> CSV',
+            text: '<i class="far fa-file-alt"></i> CSV',
             titleAttr: 'CSV',
             title: function ( e, dt, node, config ) {
               return 'Reporte de Bajas.';
@@ -4806,7 +4823,7 @@ var Configuration_table_responsive_checkbox_one= {
           },
           {
             extend: 'pdf',
-            text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+            text: '<i class="far fa-file-pdf"></i>  PDF',
             title: function ( e, dt, node, config ) {
               return 'Reporte de Bajas.';
             },
@@ -4886,7 +4903,7 @@ var Configuration_table_responsive_checkbox_one= {
             buttons: [
               {
                 extend: 'excelHtml5',
-                text: '<i class="fa fa-file-excel-o"></i> Excel',
+                text: '<i class="far fa-file-excel"></i> Excel',
                 titleAttr: 'Excel',
                 title: function ( e, dt, node, config ) {
                   return 'Reporte de equipamiento.';
@@ -4900,11 +4917,11 @@ var Configuration_table_responsive_checkbox_one= {
                         page: 'all',
                     }
                 },
-                className: 'btn btn-success',
+                className: 'btn btn-success btn-xs',
               },
               {
                 extend: 'csvHtml5',
-                text: '<i class="fa fa-file-text-o"></i> CSV',
+                text: '<i class="far fa-file-alt"></i> CSV',
                 titleAttr: 'CSV',
                 title: function ( e, dt, node, config ) {
                   return 'Reporte de equipamiento.';
@@ -4918,11 +4935,11 @@ var Configuration_table_responsive_checkbox_one= {
                         page: 'all',
                     }
                 },
-                className: 'btn btn-info',
+                className: 'btn btn-info btn-xs',
               },
               {
                 extend: 'pdf',
-                text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+                text: '<i class="far fa-file-pdf"></i>  PDF',
                 title: function ( e, dt, node, config ) {
                   return 'Reporte de equipamiento.';
                 },
@@ -4935,7 +4952,7 @@ var Configuration_table_responsive_checkbox_one= {
                         page: 'all',
                     }
                 },
-                className: 'btn btn-danger',
+                className: 'btn btn-danger btn-xs',
               }
             ],
             language:{
@@ -4987,7 +5004,7 @@ var Configuration_table_responsive_checkbox_one= {
                 buttons: [
                   {
                     extend: 'excelHtml5',
-                    text: '<i class="fa fa-file-excel-o"></i> Excel',
+                    text: '<i class="far fa-file-excel"></i> Excel',
                     titleAttr: 'Excel',
                     title: function ( e, dt, node, config ) {
                       return 'Reporte de bajas - ' + $('input[name="date_start"]').val() +' a '+$('input[name="date_end"]').val();
@@ -5004,7 +5021,7 @@ var Configuration_table_responsive_checkbox_one= {
                   },
                   {
                     extend: 'csvHtml5',
-                    text: '<i class="fa fa-file-text-o"></i> CSV',
+                    text: '<i class="far fa-file-alt"></i> CSV',
                     titleAttr: 'CSV',
                     title: function ( e, dt, node, config ) {
                       return 'Reporte de bajas - ' + $('input[name="date_start"]').val() +' a '+$('input[name="date_end"]').val();
@@ -5021,7 +5038,7 @@ var Configuration_table_responsive_checkbox_one= {
                   },
                   {
                     extend: 'pdf',
-                    text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+                    text: '<i class="far fa-file-pdf"></i>  PDF',
                     title: function ( e, dt, node, config ) {
                       return 'Reporte de bajas - ' + $('input[name="date_start"]').val() +' a '+$('input[name="date_end"]').val();
                     },
@@ -5209,7 +5226,7 @@ var Configuration_table_responsive_checkbox_one= {
                 buttons: [
                   {
                     extend: 'excelHtml5',
-                    text: '<i class="fa fa-file-excel-o"></i> Excel',
+                    text: '<i class="far fa-file-excel"></i> Excel',
                     titleAttr: 'Excel',
                     title: function ( e, dt, node, config ) {
                       return 'Asignación de hoteles';
@@ -5227,7 +5244,7 @@ var Configuration_table_responsive_checkbox_one= {
                   },
                   {
                     extend: 'csvHtml5',
-                    text: '<i class="fa fa-file-text-o"></i> CSV',
+                    text: '<i class="far fa-file-alt"></i> CSV',
                     titleAttr: 'CSV',
                     title: function ( e, dt, node, config ) {
                       return 'Asignación de hoteles';
@@ -5245,7 +5262,7 @@ var Configuration_table_responsive_checkbox_one= {
                   },
                   {
                     extend: 'pdf',
-                    text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+                    text: '<i class="far fa-file-pdf"></i>  PDF',
                     title: function ( e, dt, node, config ) {
                       return 'Asignación de hoteles';
                     },
@@ -5350,7 +5367,7 @@ var Configuration_table_responsive_checkbox_one= {
             buttons: [
               {
                 extend: 'excelHtml5',
-                text: '<i class="fa fa-file-excel-o"></i> Excel',
+                text: '<i class="far fa-file-excel"></i> Excel',
                 titleAttr: 'Excel',
                 title: function ( e, dt, node, config ) {
                   return 'Resumen de viáticos';
@@ -5368,7 +5385,7 @@ var Configuration_table_responsive_checkbox_one= {
               },
               {
                 extend: 'csvHtml5',
-                text: '<i class="fa fa-file-text-o"></i> CSV',
+                text: '<i class="far fa-file-alt"></i> CSV',
                 titleAttr: 'CSV',
                 title: function ( e, dt, node, config ) {
                   return 'Resumen de viáticos';
@@ -5386,7 +5403,7 @@ var Configuration_table_responsive_checkbox_one= {
               },
               {
                 extend: 'pdf',
-                text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+                text: '<i class="far fa-file-pdf"></i>  PDF',
                 title: function ( e, dt, node, config ) {
                   return 'Resumen de viáticos';
                 },
@@ -5484,7 +5501,7 @@ var Configuration_table_responsive_checkbox_one= {
             buttons: [
               {
                 extend: 'excelHtml5',
-                text: '<i class="fa fa-file-excel-o"></i> Excel',
+                text: '<i class="far fa-file-excel"></i> Excel',
                 titleAttr: 'Excel',
                 title: function ( e, dt, node, config ) {
                   return 'Resumen de viáticos';
@@ -5502,7 +5519,7 @@ var Configuration_table_responsive_checkbox_one= {
               },
               {
                 extend: 'csvHtml5',
-                text: '<i class="fa fa-file-text-o"></i> CSV',
+                text: '<i class="far fa-file-alt"></i> CSV',
                 titleAttr: 'CSV',
                 title: function ( e, dt, node, config ) {
                   return 'Resumen de viáticos';
@@ -5520,7 +5537,7 @@ var Configuration_table_responsive_checkbox_one= {
               },
               {
                 extend: 'pdf',
-                text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+                text: '<i class="far fa-file-pdf"></i>  PDF',
                 title: function ( e, dt, node, config ) {
                   return 'Resumen de viáticos';
                 },
@@ -5618,7 +5635,7 @@ var Configuration_table_responsive_checkbox_one= {
             buttons: [
               {
                 extend: 'excelHtml5',
-                text: '<i class="fa fa-file-excel-o"></i> Excel',
+                text: '<i class="far fa-file-excel"></i> Excel',
                 titleAttr: 'Excel',
                 title: function ( e, dt, node, config ) {
                   var ax = '';
@@ -5649,7 +5666,7 @@ var Configuration_table_responsive_checkbox_one= {
               },
               {
                 extend: 'csvHtml5',
-                text: '<i class="fa fa-file-text-o"></i> CSV',
+                text: '<i class="far fa-file-alt"></i> CSV',
                 titleAttr: 'CSV',
                 title: function ( e, dt, node, config ) {
                   var ax = '';
@@ -5679,7 +5696,7 @@ var Configuration_table_responsive_checkbox_one= {
               },
               {
                 extend: 'pdf',
-                text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+                text: '<i class="far fa-file-pdf"></i>  PDF',
                 title: function ( e, dt, node, config ) {
                   var ax = '';
                   if($('input[name="date_to_search"]').val() != ''){
