@@ -235,6 +235,24 @@ Route::group(['middleware' => 'auth'], function () {
 
   //Modulo de reportes - ver reporte concatenado
   Route::get('/viewreportscont' , 'Report\Concatenated@index');
+  //- Equipos
+  Route::get('/up_equipment', 'Equipments\AddEquipmentController@index');
+  Route::post('/search_key_group', 'Equipments\AddEquipmentController@search');
+  Route::post('/search_provider', 'Equipments\AddEquipmentController@search_provider');
+  Route::post('/insertModel', 'Equipments\AddEquipmentController@create_Model');
+  Route::post('/search_modelo', 'Equipments\AddEquipmentController@search_modelo');
+
+  Route::post('/create_equipament_n', 'Equipments\AddEquipmentController@create_equipament_n');
+  Route::post('/create_equipament_nd', 'Equipments\AddEquipmentController@create_equipament_nd');
+  Route::post('/create_equipament_n_massive','Equipments\AddEquipmentController@create_equipament_n_massive');
+  Route::post('/create_equipament_nd_massive','Equipments\AddEquipmentController@create_equipament_nd_massive');
+
+  Route::post('/insertMarca', 'Equipments\AddEquipmentController@create_marca');
+  Route::post('/search_marcas', 'Equipments\AddEquipmentController@search_marca');
+  Route::post('/search_marca_all', 'Equipments\AddEquipmentController@search_marca_all');
+  Route::post('/insertGrupo', 'Equipments\AddEquipmentController@create_group');
+  Route::post('/search_grupo', 'Equipments\AddEquipmentController@search_grupo');
+  Route::post('/insertProveedor', 'Equipments\ProviderController@insertnewprovider');
 
   //- Herramientas
   Route::get('/detailed_guest_review', 'Tools\GuestToolsController@index');

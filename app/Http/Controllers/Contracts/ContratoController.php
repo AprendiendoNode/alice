@@ -550,7 +550,7 @@ class ContratoController extends Controller
       $iva = DB::Table('ivas')->select('number')->get();
 
 
-      return view('permitted.contract.cont_edit_cont', compact('iva','currency','hotels','lista', 'classifications','verticals','cadenas', 'contract_status', 'resguardo', 'rz_customer' , 'sitio', 'itconcierge', 'vendedores'));
+      return view('permitted.contract.cont_edit_cont', compact('iva','currency','hotels', 'classifications','verticals','cadenas', 'contract_status', 'resguardo', 'rz_customer' , 'sitio', 'itconcierge', 'vendedores'));
   }
 
   public function get_digit_contract_master(Request $request)
