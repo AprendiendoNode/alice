@@ -254,6 +254,15 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/search_grupo', 'Equipments\AddEquipmentController@search_grupo');
   Route::post('/insertProveedor', 'Equipments\ProviderController@insertnewprovider');
 
+  //Movimiento de equipos
+Route::get('/move_equipment', 'Equipments\MoveEquipmentController@index');
+Route::post('/search_item_descript_hotels', 'Equipments\MoveEquipmentController@descrip');
+Route::post('/save_description_move_hotels', 'Equipments\MoveEquipmentController@update');
+Route::post('/send_item_move_hotels', 'Equipments\MoveEquipmentController@edit');
+Route::post('/search_rem_equipament_hotel', 'Equipments\RemovedEquipmentController@show');
+Route::post('/search_excel_equipament', 'Equipments\RemovedEquipmentController@show2');
+Route::post('/get_mac_res', 'Equipments\SearchEquipmentController@search_mac');
+
   //- Herramientas
   Route::get('/detailed_guest_review', 'Tools\GuestToolsController@index');
   Route::get('/detailed_server_review', 'Tools\ServerToolsController@index');
