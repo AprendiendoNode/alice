@@ -235,7 +235,7 @@ Route::group(['middleware' => 'auth'], function () {
 
   //Modulo de reportes - ver reporte concatenado
   Route::get('/viewreportscont' , 'Report\Concatenated@index');
-  //- Equipos
+  //- Equipos-ALTAS
   Route::get('/up_equipment', 'Equipments\AddEquipmentController@index');
   Route::post('/search_key_group', 'Equipments\AddEquipmentController@search');
   Route::post('/search_provider', 'Equipments\AddEquipmentController@search_provider');
@@ -253,7 +253,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/insertGrupo', 'Equipments\AddEquipmentController@create_group');
   Route::post('/search_grupo', 'Equipments\AddEquipmentController@search_grupo');
   Route::post('/insertProveedor', 'Equipments\ProviderController@insertnewprovider');
-
+  //Equipos-BAJAS
+  Route::get('/down_equipment', 'Equipments\RemovedEquipmentController@index');
+  Route::post('/send_item_drops_hotels', 'Equipments\RemovedEquipmentController@edit');
   //Movimiento de equipos
 Route::get('/move_equipment', 'Equipments\MoveEquipmentController@index');
 Route::post('/search_item_descript_hotels', 'Equipments\MoveEquipmentController@descrip');

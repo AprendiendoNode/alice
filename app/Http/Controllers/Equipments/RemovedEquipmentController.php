@@ -87,7 +87,7 @@ class RemovedEquipmentController extends Controller
 
     $valor= 'true';
 
-      Mail::to('aperez@sitwifi.com', 'marthaisabel@sitwifi.com')->send(new ConfirmacionBajaEquipo($parametros1, $data_equipos));
+    //  Mail::to('aperez@sitwifi.com', 'marthaisabel@sitwifi.com')->send(new ConfirmacionBajaEquipo($parametros1, $data_equipos));
 
 
     return $valor;
