@@ -279,6 +279,13 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/update_group_equipment', 'Equipments\GroupEquipmentController@update_group');
   Route::post('/move_group', 'Equipments\GroupEquipmentController@update_move_group');
 
+  //Carátula de entrega
+  Route::get('/cover_equipment_delivery', 'Equipments\CoverDeliveryEquipmentController@index');
+  Route::post('/cover_delivery_header', 'Equipments\CoverDeliveryEquipmentController@getHeader');
+  Route::post('/cover_delivery_groups', 'Equipments\CoverDeliveryEquipmentController@table_group');
+  Route::post('/cover_dist_groups_disp', 'Equipments\CoverDeliveryEquipmentController@getCoverDistEquipos');
+  Route::post('/cover_dist_groups_models', 'Equipments\CoverDeliveryEquipmentController@getCoverDistModelos');
+
   //- Herramientas
   Route::get('/detailed_guest_review', 'Tools\GuestToolsController@index');
   Route::get('/detailed_server_review', 'Tools\ServerToolsController@index');
