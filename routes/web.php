@@ -256,6 +256,12 @@ Route::group(['middleware' => 'auth'], function () {
   //Equipos-BAJAS
   Route::get('/down_equipment', 'Equipments\RemovedEquipmentController@index');
   Route::post('/send_item_drops_hotels', 'Equipments\RemovedEquipmentController@edit');
+  //Equipos-BUSCADOR
+  Route::get('/detailed_search', 'Equipments\SearchEquipmentController@index');
+  Route::post('/search_range_equipament_all', 'Equipments\SearchEquipmentController@search_range');
+  Route::post('/get_equip_departure', 'Equipments\SearchEquipmentController@get_equip_departure');
+  Route::post('/search_infoeq_fact', 'Equipments\SearchEquipmentController@search_infoeq_fact');
+  Route::post('/search_infoeq_model', 'Equipments\SearchEquipmentController@search_infoeq_model');
   //Movimiento de equipos
   Route::get('/move_equipment', 'Equipments\MoveEquipmentController@index');
   Route::post('/search_item_descript_hotels', 'Equipments\MoveEquipmentController@descrip');

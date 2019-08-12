@@ -2045,7 +2045,7 @@ var Configuration_table_responsive= {
            $(node).removeClass('btn-default')
         },
         className: 'btn btn-info btn-xs',
-      },
+      } /*,
       {
         extend: 'pdf',
         text: '<i class="far fa-file-pdf"></i>  PDF',
@@ -2062,7 +2062,7 @@ var Configuration_table_responsive= {
             }
         },
         className: 'btn btn-danger btn-xs',
-      }
+      }*/
   ],
   "processing": true,
 
