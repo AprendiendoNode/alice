@@ -126,7 +126,7 @@ class MoveEquipmentController extends Controller
             $valor= 'true';
           }
           //envio de correo.
-          //$this->sentMovements($email_d, $data_origin, $user_d);
+          $this->sentMovements($email_d, $data_origin, $user_d);
         }else{
           for ($i=0; $i <= (count($equipos)-1); $i++) {
             if ($estatus_n == '999') {
@@ -142,8 +142,8 @@ class MoveEquipmentController extends Controller
             }
             $valor= 'true';
           }
-          //$this->sentMovements($email_o, $data_origin, $user_o);
-          //$this->sentMovements($email_d, $data_origin, $user_d);
+          $this->sentMovements($email_o, $data_origin, $user_o);
+          $this->sentMovements($email_d, $data_origin, $user_d);
         }
     }else{
       $email_r = DB::select('CALL get_email_movimientos(?)', array($origen_n));
@@ -172,7 +172,7 @@ class MoveEquipmentController extends Controller
           $valor= 'true';
         }
         //envio de correo.
-        //$this->sentMovements($email_d, $data_origin, $user_d);
+        $this->sentMovements($email_d, $data_origin, $user_d);
       }else{
         for ($i=0; $i <= (count($equipos)-1); $i++) {
           if ($estatus_n == '999') {
@@ -189,8 +189,8 @@ class MoveEquipmentController extends Controller
           $valor= 'true';
         }
         //envio de correos
-        //$this->sentMovements($email_o, $data_origin, $user_o);
-        //$this->sentMovements($email_d, $data_origin, $user_d);
+        $this->sentMovements($email_o, $data_origin, $user_o);
+        $this->sentMovements($email_d, $data_origin, $user_d);
       }
     }
 

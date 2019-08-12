@@ -2200,7 +2200,7 @@ var Configuration_table_responsive_with_pdf_two= {
         init: function(api, node, config) {
            $(node).removeClass('btn-default')
         },
-        className: 'btn bg-olive custombtntable',
+        className: 'btn btn-success custombtntable',
       },
       {
         extend: 'csvHtml5',
