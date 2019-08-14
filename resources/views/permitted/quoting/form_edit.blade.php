@@ -66,7 +66,7 @@
           </div>
           <div class="form-group fields_docp">
             <label for="oportunity" class="">Num. oportunidad</label>
-              <input type="number" class="form-control" id="oportunity" name="oportunity" value="{{$data_header[0]->num_oportunidad}}" placeholder="">
+              <input type="text" class="form-control" id="oportunity" name="oportunity" value="{{$data_header[0]->num_oportunidad}}" placeholder="">
           </div>
         </div>
         <!-------------------------------------------------------------------->
@@ -86,7 +86,9 @@
                     <option value="{{$itc_data->id}}">{{$itc_data->nombre}}</option>
                   @endif
                 @endforeach
-                <option value="310">Roberto Carlos Gomez Martinez</option>
+                @if($data_header[0]->itc_id == "310")
+                  <option selected value="310">Roberto Carlos Gomez Martinez</option>
+                @endif
               </select>
           </div>
           <div class="form-group">

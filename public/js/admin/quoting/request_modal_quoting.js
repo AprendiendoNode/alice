@@ -79,7 +79,18 @@ function editar(e){
   var _token = $('input[name="_token"]').val();
   let id_documentp = element.dataset.id;
   var form = $('#form_edit_docp');
-  $('#id_docp').val(id_documentp);
+  $('#id_docp2').val(id_documentp);
+
+  form.submit();
+
+}
+
+function kickoff(e){
+  var element = e;
+  var _token = $('input[name="_token"]').val();
+  let id_documentp = element.dataset.id;
+  var form = $('#form_edit_kickoff');
+  $('#id_doc_3').val(id_documentp);
 
   form.submit();
 

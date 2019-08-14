@@ -24,7 +24,11 @@
   </form>
   <form id="form_edit_cotizador" class="" action="/edit_cart_quoting" method="post">
     {{ csrf_field() }}
-    <input type="hidden" name="id_docp" id="id_docp_2" value="">
+    <input type="hidden" name="id_docp2" id="id_docp_2" value="">
+  </form>
+  <form id="form_edit_kickoff" class="" action="/edit_kickoff" method="post">
+    {{ csrf_field() }}
+    <input type="hidden" name="id_doc_3" id="id_doc_3" value="">
   </form>
   @include('permitted.documentp.modal_documentp')
   <div class="row">

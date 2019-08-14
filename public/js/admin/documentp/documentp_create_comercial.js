@@ -672,7 +672,7 @@ $(".validation-wizard-master").on('click', '.addButtonAP', function(){
 
     }
     else{
-      swal("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+      Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
     }
   }
   else {
@@ -730,7 +730,7 @@ $(".validation-wizard-master").on('click', '.addButtonFW', function(){
 
     }
     else{
-      swal("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+      Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
     }
   }
   else {
@@ -788,7 +788,7 @@ $(".validation-wizard-master").on('click', '.addButtonSW', function(){
 
     }
     else{
-      swal("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+      Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
     }
   }
   else {

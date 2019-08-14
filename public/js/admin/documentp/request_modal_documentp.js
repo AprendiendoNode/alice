@@ -150,15 +150,24 @@ function editar(e){
 
 }
 
+function kickoff(e){
+  var element = e;
+  var _token = $('input[name="_token"]').val();
+  let id_documentp = element.dataset.id;
+  var form = $('#form_edit_kickoff');
+  $('#id_doc_3').val(id_documentp);
+
+  form.submit();
+
+}
+
 function editar_cotizador(e){
   var element = e;
   var _token = $('input[name="_token"]').val();
   let id_documentp = element.dataset.id;
   var form = $('#form_edit_cotizador');
   $('#id_docp_2').val(id_documentp);
-
   form.submit();
-
 }
 
 function data_header(miInit, id_documentp){

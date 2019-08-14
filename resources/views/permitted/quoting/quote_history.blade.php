@@ -6,12 +6,12 @@
   @else
     {{ trans('message.denied') }}
   @endif --}}
-  Historial de compras
+  Historial de cotizaciones
 @endsection
 
 @section('breadcrumb_title')
    @if( auth()->user()->can('View Document P') )
-    Historial de compras
+    Historial de cotizaciones
     @else
       {{ trans('message.denied') }}
     @endif
@@ -20,7 +20,11 @@
 @section('content')
   <form id="form_edit_docp" class="" action="/edit_cart_quoting" method="post">
     {{ csrf_field() }}
-    <input type="hidden" name="id_docp" id="id_docp" value="">
+    <input type="hidden" name="id_docp2" id="id_docp2" value="">
+  </form>
+  <form id="form_edit_kickoff" class="" action="/edit_kickoff" method="post">
+    {{ csrf_field() }}
+    <input type="hidden" name="id_doc_3" id="id_doc_3" value="">
   </form>
   @include('permitted.documentp.modal_documentp')
       <div class="row">
@@ -58,7 +62,7 @@
                   <th> <small>Solicitó</small> </th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>Versión</small> </th>
-                  <th> <small>Tipo Doc.</small> </th>
+                  <th> <small>Doc.</small> </th>
                   <th> <small></small> </th>
                 </tr>
               </thead>

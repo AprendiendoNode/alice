@@ -244,6 +244,7 @@ class EditDocumentPController extends Controller
       $documentp->total_usd = $request->total;
       $documentp->num_edit = $num_edit;
       $documentp->itc_id = $request->itc;
+      $documentp->doc_type = $request->doc_type;
       $documentp->vertical_id = $request->vertical;
       $documentp->tipo_servicio_id = $request->type_service;
       $documentp->grupo_id = $grupo_id;

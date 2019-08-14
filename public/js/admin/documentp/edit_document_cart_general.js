@@ -167,7 +167,6 @@ $(function () {
       $(".fields_docm").css('display', 'none');
       $('#type_service').val(1);
     }else if(type_doc == 2){
-      $(".fields_docp").find('input').val('');
       $(".fields_docp").css('display', 'none');
       $(".fields_docm").css('display', 'block');
       $('#type_service').val(4);

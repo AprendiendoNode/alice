@@ -391,12 +391,14 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/view_quotig_history', 'Projects\QuotingController@index_history');
   Route::get('/view_auth_history_quoting', 'Projects\QuotingController@view_auth');
   Route::get('/quoting_table_products/{id_documentp}/{id_cart}', 'Projects\QuotingController@get_table_products');
-  Route::get('/quoting_invoice/{id_documentp}/{id_cart}', 'QuotingController@export_invoice');
+  Route::get('/quoting_invoice/{id_documentp}/{id_cart}', 'Projects\QuotingController@export_invoice');
   Route::post('/view_request_quoting', 'Projects\QuotingController@get_history_quoting');
   Route::post('/get_quoting_auth', 'Projects\QuotingController@get_history_auth_quoting');
   Route::post('/edit_cart_quoting', 'Projects\QuotingEditController@index'); //Vista del formulario para editar
   Route::post('/edit_quoting', 'Projects\QuotingEditController@edit');
-
+  //KICK-OFF
+  Route::post('/edit_kickoff', 'Projects\KickoffController@index');
+  Route::post('/update_kickoff', 'Projects\QuotingEditController@update');
   //Notificaciones viaticos
   Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');
   Route::get('/notificaciones_read/{id}', 'Auth\NotificationController@read');

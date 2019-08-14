@@ -20,7 +20,7 @@ class QuotingEditController extends Controller
   {
 
     try{
-      $id = $request->id_docp;
+      $id = $request->id_docp2;
       $documentP = Documentp::find($id);
       $id_document = $documentP->id;
       $itc_id = $documentP->itc_id;
