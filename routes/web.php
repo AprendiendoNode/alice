@@ -286,6 +286,12 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/cover_dist_groups_disp', 'Equipments\CoverDeliveryEquipmentController@getCoverDistEquipos');
   Route::post('/cover_dist_groups_models', 'Equipments\CoverDeliveryEquipmentController@getCoverDistModelos');
 
+  //Licencias Sonic Wall
+  Route::get('/licences_equipment', 'Equipments\LicencesEquipmentController@index');
+  Route::post('/get_licences', 'Equipments\LicencesEquipmentController@licences');
+  Route::post('/get_licence_mac', 'Equipments\LicencesEquipmentController@licence_mac');
+  Route::post('/update_date', 'Equipments\LicencesEquipmentController@update_date');
+
   //- Herramientas
   Route::get('/detailed_guest_review', 'Tools\GuestToolsController@index');
   Route::get('/detailed_server_review', 'Tools\ServerToolsController@index');

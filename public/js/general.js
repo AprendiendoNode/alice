@@ -4906,11 +4906,7 @@ var Configuration_table_responsive_checkbox_one= {
                 {
                     "targets": 4,
                     "className": "text-center",
-                },
-                { //option edit
-                    "targets": 9,
-                    "width": "1%",
-                },
+                }
             ],
             "select": {
                 'style': 'multi',
