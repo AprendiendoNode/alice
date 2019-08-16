@@ -20,7 +20,18 @@
             <h6 class="ellipsis font-weight-normal">Folio: {{ notification.data.folio }}
             </h6>
             <p class="font-weight-light small-text text-muted mb-0"> Estatus:  {{ notification.data.status }}</p>
-            <p class="font-weight-light small-text text-muted text-right mb-0">  {{ notification.data.created_at }} </p>
+            <p class="font-weight-light small-text text-muted text-left mb-0">  {{ notification.data.created_at }} </p>
+          </div>
+        </a>
+        <a class="dropdown-item" v-bind:href="notification.data.link" v-if="notification.type ==  notification_b" >
+          <div class="item-thumbnail bg-dark rounded-circle">
+            <i class="fas fa-tools text-white pt-2 pb-2 pl-2"></i>
+          </div>
+          <div class="item-content flex-grow">
+            <h6 class="ellipsis font-weight-normal">Proyecto: {{ notification.data.proyecto }}
+            </h6>
+            <p class="font-weight-light small-text text-muted mb-0"> Autorizado por comité</p>
+            <p class="font-weight-light small-text text-muted text-left mb-0">  {{ notification.data.created_at }} </p>
           </div>
         </a>
         <a class="dropdown-item" v-else >
@@ -41,6 +52,7 @@
           return {
             key: "",
             notification_a: "App\\Notifications\\MessageViatic",
+            notification_b: "App\\Notifications\\MessageDocumentp",
             'notifications': [],
             interval: null
           }

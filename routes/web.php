@@ -331,7 +331,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/set_comment_documentp_advance', 'Projects\DocumentpHistoryController@update_comment_project');
   //Historial documento P | M
   Route::get('/view_history_documentm', 'Projects\DocumentpHistoryController@index');
-  Route::get('/view_history_documentp', 'Projects\DocumentpHistoryController@history_docp');
+  Route::get('/view_history_documentp', 'Projects\DocumentpHistoryController@history_docp')->name('view_history_documentp');
   Route::get('/view_history_auth_documentp', 'Projects\DocumentpHistoryController@view_auth');
   Route::get('/view_doc_delivery', 'Projects\DocumentpHistoryController@view_delivery');
   Route::get('/view_project_doc_p', 'Projects\DocumentpHistoryController@view_project_advance');
@@ -398,7 +398,13 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/edit_quoting', 'Projects\QuotingEditController@edit');
   //KICK-OFF
   Route::post('/edit_kickoff', 'Projects\KickoffController@index');
-  Route::post('/update_kickoff', 'Projects\QuotingEditController@update');
+  Route::post('/update_kickoff', 'Projects\KickoffController@update');
+  Route::get('/approval_administracion/id_doc/{id}', 'Projects\KickoffController@approval_administracion');
+  Route::get('/approval_comercial/id_doc/{id}', 'Projects\KickoffController@approval_comercial');
+  Route::get('/approval_proyectos/id_doc/{id}', 'Projects\KickoffController@approval_proyectos');
+  Route::get('/approval_soporte/id_doc/{id}', 'Projects\KickoffController@approval_soporte');
+  Route::get('/approval_planeacion/id_doc/{id}', 'Projects\KickoffController@approval_planeacion');
+  Route::get('/notificaciones_read_doc/{id}', 'Auth\NotificationController@read_docp');
   //Notificaciones viaticos
   Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');
   Route::get('/notificaciones_read/{id}', 'Auth\NotificationController@read');

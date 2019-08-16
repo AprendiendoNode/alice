@@ -45,7 +45,7 @@ function documentp_table(datajson, table){
         badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';
         break;
       case 'Reviso':
-        badge= '<span class="badge badge-warning badge-pill text-white">Revisado</span>';
+        badge= '<span class="badge badge-warning badge-pill text-white">En revisión</span>';
         break;
        case 'Autorizado':
          badge= '<span class="badge badge-success badge-pill text-white">Autorizado</span>';
@@ -112,7 +112,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 6,
               "width": "0.3%",
-              "className": "text-center cell-short",
+              "className": "text-center",
             },
             {
               "targets": 7,

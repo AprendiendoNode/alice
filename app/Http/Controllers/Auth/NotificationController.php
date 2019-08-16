@@ -32,6 +32,12 @@ class NotificationController extends Controller
       return redirect()->route('view_request_via');
     }
 
+    public function read_docp($id)
+    {
+      DatabaseNotification::find($id)->markAsRead();
+      return redirect()->route('view_history_documentp');
+    }
+
     public function readbyfolio($id)
     {
       DatabaseNotification::find($id)->markAsRead();
