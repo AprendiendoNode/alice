@@ -458,6 +458,34 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/view_request_via_four', 'Viatics\RequestsViaticController@history_four');
     Route::post('/view_pertain_viatic_ur_n4', 'Viatics\RequestsViaticController@pertain_viatic_four');
     Route::post('/send_item_aprueba', 'Viatics\RequestsViaticController@edit_status_four');
+
+    //Pagos
+    Route::get('/provider', 'Equipments\ProviderController@index');
+    Route::post('/getTableProvider', 'Equipments\ProviderController@getTableProviders');
+    Route::post('/delete_provider', 'Equipments\ProviderController@deleteprov');
+
+    //Solicitud de pagos
+    Route::get('/view_add_req_pay', 'Payments\PayAddController@index3');
+    Route::post('/get_hotel_cadena', 'Payments\PayAddController@hotel_cadena');
+    Route::post('/get_idubication_pay', 'Payments\PayAddController@sitio_ubication');
+      // Cuentas contables.
+      Route::post('/get_class_serv', 'Payments\PayAddController@get_classxservice');
+      Route::post('/get_serv_concept', 'Payments\PayAddController@get_cxconcepts');
+      Route::post('/get_concept_desc', 'Payments\PayAddController@get_cxdescriptions');
+      Route::post('/get_chainxclassif', 'Payments\PayAddController@classif_vertical_chain');
+    Route::post('/get_data_bank', 'Payments\PayAddController@get_bank');
+    Route::post('/get_account_clabe', 'Payments\PayAddController@get_data_account');
+
+    //Pagos solicitud
+    Route::post('get_data_accw', 'Payments\PayAddController@info_account');
+    Route::post('/getStateFactura', 'Payments\PayImportController@getStateFactura');
+
+    //Alta datos bancarios
+    Route::post('/setdata_bank', 'Payments\PayAddController@set_data_bank');
+
+    //Crear pagos
+    Route::post('/create_pay', 'Payments\PayAddController@create_pay_test');
+
     //Dashboard Contratos
     Route::get('cont_dashboard', 'Contracts\ContratoController@index');
 
