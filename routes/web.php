@@ -789,6 +789,25 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::get('/customers/get-customer', 'Sales\CustomerController@getCustomer')->name('customers/get-customer');
     //Notas de credito
     Route::get('/customer-credit-notes', 'Sales\CustomerCreditNoteController@index');
+
+    Route::get('/customer-invoices/autocomplete-cfdi', 'Sales\CustomerInvoiceController@autocompleteCfdi');
+    Route::get('customer-invoices/get-customer-invoice', 'Sales\CustomerInvoiceController@getCustomerInvoice')->name('customer-invoices/get-customer-invoice');
+
+    Route::get('customer-invoices-show', 'Sales\CustomerInvoiceController@show');
+    Route::post('customer-invoices-search', 'Sales\CustomerInvoiceController@search');
+
+    Route::post('/customer-invoices/mark-sent', 'Sales\CustomerInvoiceController@markSent');
+    Route::post('/customer-invoices/mark-paid', 'Sales\CustomerInvoiceController@markPaid');
+
+    Route::post('/customer-invoices/modal-payment-history-head', 'Sales\CustomerInvoiceController@modalPaymentHistoryhead');
+    Route::post('/customer-invoices/modal-payment-history', 'Sales\CustomerInvoiceController@modalPaymentHistory');
+    Route::post('/customer-invoices/modal-status-sat', 'Sales\CustomerInvoiceController@modalStatusSat');
+    Route::post('/customer-invoices/modal-cancel', 'Sales\CustomerInvoiceController@modalCancel');
+    Route::post('/customer-invoices/destroy', 'Sales\CustomerInvoiceController@destroy');
+    Route::get('/customer-invoices/download-xml/{id}', 'Sales\CustomerInvoiceController@downloadXml');
+    Route::post('/customer-invoices/modal-send-mail', 'Sales\CustomerInvoiceController@modalSendMail');
+
+    Route::get('/reset_t', 'Sales\CustomerInvoiceController@store_reset');
 });
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
 {
