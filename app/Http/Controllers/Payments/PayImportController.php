@@ -18,9 +18,9 @@ use App\Payments_venues;
 use App\Payments_comment;
 use App\Payments_states;
 use App\Payments_priority;
-use App\Payments_way_pay;
+use App\Models\Catalogs\PaymentWay;
 use App\Payments;
-use App\Viatic_service;
+use App\Models\Viatics\Viatic_service;
 use File;
 use Storage;
 
@@ -31,15 +31,15 @@ class PayImportController extends Controller
 	public function index()
 	{
 		$cadena = Cadena::select('id', 'name')->get()->sortBy('name');
-		$proveedor = Proveedor::select('id', 'nombre')->get();
+		$proveedor = DB::table('proveedors')->select('id', 'nombre')->get();
 		$currency = Currency::select('id','name')->get();
-		$priority = Payments_priority::select('id', 'name')->get();
-		$banquitos = Banco::select('id', 'nombre')->get();
-		$way = Payments_way_pay::select('id','name')->get();
+		$priority = DB::table('payments_priorities')->select('id', 'name')->get();
+		$banquitos = DB::table('bancos')->select('id', 'nombre')->get();
+		$way = PaymentWay::select('id','name')->get();
 	 	$services = Viatic_service::select('id','name')->get();
 		$cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
 
-		return view('permitted.payments.pay_import',compact('cadena','proveedor', 'options', 'priority', 'banquitos','way','currency','services', 'cxclassifications'));
+		return view('permitted.payments.pay_import',compact('cadena','proveedor', 'priority', 'banquitos','way','currency','services', 'cxclassifications'));
 
 	}
 
@@ -244,33 +244,32 @@ class PayImportController extends Controller
       $check_fact = 3;
     }
 
-		//
-		$new_reg_pay = new Payments;
-		$new_reg_pay->folio = $folio_new;
-		$new_reg_pay->proveedor_id = $id_proveedor;
-		$new_reg_pay->payments_states_id = '1';
-		$new_reg_pay->date_solicitude = date('Y-m-d');
-		$new_reg_pay->date_pay = date('Y-m-d');
-		$new_reg_pay->date_limit = date('Y-m-d', strtotime($date_limit_format));
-		$new_reg_pay->purchase_order = $purchase_order;
-		$new_reg_pay->factura =$factura;
-		$new_reg_pay->amount = $monto;
-		$new_reg_pay->name = $observacion;
-		$new_reg_pay->concept_pay = $concept_pay;
-		$new_reg_pay->way_pay_id = $way_pay_id;
-		$new_reg_pay->currency_id = $coin;
-		$new_reg_pay->prov_bco_ctas_id =$account;
-		$new_reg_pay->priority_id =$id_priority;
-		$new_reg_pay->pay_status_fact_id =$check_fact;
-		$new_reg_pay->created_at = \Carbon\Carbon::now();
-		$new_reg_pay->save();
-		//Ultimo id registrado de payments
-		$id_payment =  $new_reg_pay->id;
+		$id_payment = DB::table('payments')->insertGetId([
+			'folio' => $folio_new,
+      'proveedor_id' => $id_proveedor,
+      'payments_states_id' => '1',
+      'date_solicitude' => date('Y-m-d'),
+			'date_pay' => date('Y-m-d'),
+			'date_limit' => date('Y-m-d', strtotime($date_limit_format)),
+			'purchase_order' => $purchase_order,
+			'factura' => $factura,
+			'amount' => $monto,
+			'name' => $observacion,
+			'concept_pay' => $concept_pay,
+			'way_pay_id' => $way_pay_id,
+			'currency_id' => $coin,
+			'prov_bco_ctas_id' => $account,
+			'priority_id' => $id_priority,
+      'pay_status_fact_id' => $check_fact,
+      'created_at' => \Carbon\Carbon::now()
+		]);
+
 		//  Comentarios
-		$new_reg_pay_comment = new Payments_comment;
-		$new_reg_pay_comment->name = $observacion;
-		$new_reg_pay_comment->payment_id = $new_reg_pay->id;
-		$new_reg_pay_comment->save();
+    DB::table('payments_comments')->insert([
+      'name' => $observacion,
+      'payment_id' => $id_payment
+    ]);
+
 		// //Factura PDF
 		if($request->file('file_pdf') != null )
 		{
@@ -278,10 +277,10 @@ class PayImportController extends Controller
 			$file_extension = $file_pdf->getClientOriginalExtension(); //** get filename extension
 			$fileName = $factura.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
 			$pdf= $request->file('file_pdf')->storeAs('filestore/storage/factura/'.date('Y-m'), $fileName); ;
-			$new_reg_pay_pdf_fact= new Pay_factura;
-			$new_reg_pay_pdf_fact->payment_id = $new_reg_pay->id;
-			$new_reg_pay_pdf_fact->name = $pdf;
-			$new_reg_pay_pdf_fact->save();
+			DB::table('pay_facturas')->insert([
+        'name' => $pdf,
+        'payment_id' => $id_payment
+      ]);
 		}
 		//Factura XML
 		if($request->file('file_xml') != null )
@@ -289,10 +288,10 @@ class PayImportController extends Controller
 			$file_xml = $request->file('file_xml');
 			$fileName = $file_xml->getClientOriginalName();
 			$xml= $request->file('file_xml')->storeAs('filestore/storage/factura/'.date('Y-m'), $fileName); ;
-			$new_reg_pay_pdf_fact= new Pay_factura;
-			$new_reg_pay_pdf_fact->payment_id = $new_reg_pay->id;
-			$new_reg_pay_pdf_fact->name = $xml;
-			$new_reg_pay_pdf_fact->save();
+			DB::table('pay_facturas')->insert([
+        'name' => $xml,
+        'payment_id' => $id_payment
+      ]);
 		}
 
 		for ($i=0; $i < $tam_sites; $i++)
@@ -300,16 +299,16 @@ class PayImportController extends Controller
 			$amount = trim($sites_data[$i]['amount']);
 			$amount_iva = $monto_iva[$i];
 			//Sitios
-			$new_reg_pay_venue = new Payments_venues;
-			$new_reg_pay_venue->cadena_id = (int)$sites_data[$i]['grupo_id'];
-			$new_reg_pay_venue->hotel_id = (int)$sites_data[$i]['anexo_id'];
-			$new_reg_pay_venue->payments_id = $id_payment;
-			$new_reg_pay_venue->created_at = \Carbon\Carbon::now();
-			$new_reg_pay_venue->save();
+			$id_venue = DB::table('payments_venues')->insertGetId([
+	      'cadena_id' => (int)$sites_data[$i]['grupo_id'],
+	      'hotel_id' => (int)$sites_data[$i]['anexo_id'],
+	      'payments_id' => $id_payment,
+	      'created_at' => \Carbon\Carbon::now()
+	    ]);
 
 			//Montos
 			DB::table('payments_montos')->insert(
-					['payments_venue_id' => $new_reg_pay_venue->id,
+					['payments_venue_id' => $id_venue,
 					 'amount' => $amount,
 					 'IVA' => $iva_precent,
 					 'amount_iva' => $amount_iva,
@@ -330,7 +329,7 @@ class PayImportController extends Controller
 											 'updated_at' => \Carbon\Carbon::now()
 										]);
 		$data_cc = DB::table('pay_mov_cc')->insertGetId([
-											 'payments_id' => $new_reg_pay->id,
+											 'payments_id' => $id_payment,
 											 'key_cc' => $real_cc,
 											 'name_cc' => $cc_name,
 											 'created_at' => \Carbon\Carbon::now(),

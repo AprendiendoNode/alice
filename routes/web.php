@@ -486,6 +486,11 @@ Route::group(['middleware' => 'auth'], function () {
     //Crear pagos
     Route::post('/create_pay', 'Payments\PayAddController@create_pay_test');
 
+    //Registro de multiples pagos
+		Route::get('/view_add_req_pay_mult', 'Payments\PayImportController@index');//RUTAS
+    Route::post('/getDataExcel', 'Payments\PayImportController@getDataExcel');
+    Route::post('create_pay_import', 'Payments\PayImportController@create_payment_from_excel');
+
     //Dashboard Contratos
     Route::get('cont_dashboard', 'Contracts\ContratoController@index');
 
