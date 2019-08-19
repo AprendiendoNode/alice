@@ -19,6 +19,9 @@ class CreatePaymentWaysTable extends Migration
           $table->string('code',3)->unique();
           $table->integer('sort_order')->default(0);
           $table->boolean('status')->default(TRUE);
+
+          $table->string('patron_cuenta_ordenante')->nullable();
+          $table->string('patron_cuenta_beneficiaria')->nullable();
           // Operaciones de usuario
           $table->integer('created_uid')->nullable()->unsigned();
           $table->foreign('created_uid')->references('id')->on('users');

@@ -103,7 +103,9 @@ class CompanyController extends Controller
         $file_name = $file_img->getClientOriginalName(); //** get name extension
         $file_extension = $file_img->getClientOriginalExtension(); //** get filename extension
         $fileName = 'logo.'.$file_extension;
-        $img= $request->file('fileInput')->storeAs('default/files/companies',$fileName);
+        $img= $request->file('fileInput')->storeAs($creatRFC.'/files/companies',$fileName); //Dado que la carpeta sera la rfc de compania
+        // $img= $request->file('fileInput')->storeAs('default/files/companies',$fileName);
+
         //Archivos SAT
         //Convertir en CER a PEM
         $path_file_cer_pem = '';
@@ -184,8 +186,8 @@ class CompanyController extends Controller
                   ]);
               }
           }
-          $newId_account1 =DB::select('CALL px_actualiza_settings (?,?)', array('CFDI', $request->select_cfdi));
-          $newId_account2 =DB::select('CALL px_actualiza_settings (?,?)', array('PAC', $request->select_pacs));
+          $newId_account1 =DB::select('CALL px_actualiza_settings (?,?)', array('cfdi_version', $request->select_cfdi));
+          $newId_account2 =DB::select('CALL px_actualiza_settings (?,?)', array('default_pac_id', $request->select_pacs));
           return $newId; // returns id
         }
         //--------------------------------------------------------------------------------
@@ -234,7 +236,9 @@ $taxregimen_id = $request->select_seven;
        $file_name = $file_img->getClientOriginalName(); //** get name extension
        $file_extension = $file_img->getClientOriginalExtension(); //** get filename extension
        $fileName = 'logo.'.$file_extension;
-       $img= $request->file('fileInput')->storeAs('default/files/companies',$fileName);
+
+       $img= $request->file('fileInput')->storeAs($creatRFC.'/files/companies',$fileName);
+       // $img= $request->file('fileInput')->storeAs('default/files/companies',$fileName);
        $update_img = DB::table('companies')
                  ->where('id', '=', '1')
                  ->update([

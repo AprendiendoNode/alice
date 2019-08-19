@@ -2,6 +2,8 @@
 
 namespace App\Models\Base;
 use App\Models\Base\Company;
+use App\Models\Catalogs\Bank;
+use App\Models\Catalogs\Currency;
 use Illuminate\Database\Eloquent\Model;
 
 class CompanyBankAccount extends Model
@@ -22,5 +24,13 @@ class CompanyBankAccount extends Model
   {
       return $this->belongsTo(Company::class);
   }
+  public function bank()
+  {
+      return $this->belongsTo(Bank::class);
+  }
 
+  public function currency()
+  {
+    return $this->belongsTo(Currency::class);
+  }
 }

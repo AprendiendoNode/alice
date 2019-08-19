@@ -50,7 +50,9 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item {{ Request::is('dashboard_cfdi') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/dashboard_cfdi') }}"><i class="fas fa-tachometer-alt mr-2"></i>Dashboard</a></li>
                 <li class="nav-item {{ Request::is('/sales/customer-invoices') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/sales/customer-invoices') }}"><i class="fas fa-file-medical-alt mr-2"></i>Facturación</a></li>
+                <li class="nav-item {{ Request::is('/sales/customer-invoices-show') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/sales/customer-invoices-show') }}"><i class="fas fa-journal-whills mr-2"></i>Todas las facturas</a></li>
                 <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-passport mr-2"></i> Verificador</a></li>
+
                 <li class="nav-item {{ Request::is('') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/') }}"><i class="far fa-handshake mr-2"></i>Creditos</a></li>
                 <li class="nav-item {{ Request::is('/sales/customer-credit-notes') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/sales/customer-credit-notes') }}"><i class="fas fa-file-invoice mr-2"></i>Notas de crédito</a></li>
                 <li class="nav-item {{ Request::is('/base/exchange-rate') ? 'active' : '' }}"> <a class="nav-link" href="{{ url('/base/exchange-rate') }}"><i class="fas fa-passport mr-2"></i> Tipo Cambio</a></li>

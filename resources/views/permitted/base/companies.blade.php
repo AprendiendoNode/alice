@@ -569,7 +569,7 @@
                         <div class="form-group">
                           <label for="select_cfdi" class="control-label">Versión de CFDI<span style="color: red;">*</span></label>
                           <select id="select_cfdi" name="select_cfdi" class="form-control required" style="width:100%;">
-                            <option value="1">CFDI 3.3</option>
+                            <option value="cfdi33">CFDI 3.3</option>
                           </select>
                         </div>
                       </div>

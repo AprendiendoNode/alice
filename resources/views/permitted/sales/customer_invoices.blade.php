@@ -24,7 +24,6 @@
         <div class="card-body">
           <form id="form" name="form" enctype="multipart/form-data">
             {{ csrf_field() }}
-
           {{-- <p class="mt-2 card-title">Nuevo.</p> --}}
           {{-- <div class="d-flex justify-content-center pt-3"></div> --}}
           <input type="hidden"
@@ -38,7 +37,7 @@
               <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
               <div class="input-group">
                 <select class="custom-select" id="customer_id" name="customer_id">
-                  <option selected>Selecciona...</option>
+                  <option value="" selected>Selecciona...</option>
                   @forelse ($customer as $customer_data)
                     {{-- <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option> --}}
                     <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
@@ -46,7 +45,7 @@
                   @endforelse
                 </select>
                 <div class="input-group-append">
-                  <button class="btn btn btn-outline-primary btn-xs" type="button"><i class="fas fa-search"></i></button>
+                  {{-- <button class="btn btn btn-outline-primary btn-xs" type="button"><i class="fas fa-search"></i></button> --}}
                   <button class="btn btn-outline-info btn-xs" type="button"><i class="fas fa-plus-square"></i></button>
                 </div>
               </div>
@@ -88,7 +87,9 @@
             <div class="col-md-3 col-xs-12">
               <div class="form-group">
                 <label for="date">Fecha actual:<span style="color: red;">*</span></label>
-                <input type="text" class="form-control" id="date" name="date" value="@php $date = new DateTime("now", new DateTimeZone('America/Mexico_City'));echo $date->format('Y-m-d H:i:s');@endphp">
+                <input type="text" class="form-control" id="date" name="date">
+
+                {{-- <input type="text" class="form-control" id="date" name="date" value="@php $date = new DateTime("now", new DateTimeZone('America/Mexico_City'));echo $date->format('Y-m-d H:i:s');@endphp"> --}}
               </div>
             </div>
             <div class="col-md-3 col-xs-12">
@@ -105,7 +106,7 @@
             </div>
             <div class="col-md-3 col-xs-12">
               <div class="form-group">
-                <label for="date_due">Fecha Vencimiento:<span style="color: red;">*</span></label>
+                <label for="date_due">Fecha Vencimiento:</label>
                 <input type="text" class="form-control" id="date_due" name="date_due" value="">
               </div>
             </div>
@@ -161,7 +162,7 @@
             </div>
             <div class="col-md-12 col-xs-12">
               <div class="form-group">
-                <label for="reference">Referencia:<span style="color: red;">*</span></label>
+                <label for="reference">Referencia:</label>
                 <input type="text" class="form-control" id="reference" name="reference" value="">
               </div>
             </div>
@@ -327,6 +328,7 @@
                                         required />
                                       </div>
                                     </td>
+                                    <td></td>
                                     <td>
                                       <div class="form-group form-group-sm">
                                         <input type="text" class="form-control input-sm text-center"
@@ -364,12 +366,12 @@
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </td>
-                                    <td class="text-right" colspan="9"></td>
+                                    <td class="text-right" colspan="10"></td>
                                 </tr>
                                 <!-- Totales -->
                                 <tr>
                                     <td></td>
-                                    <td class="text-right" colspan="7" rowspan="3"
+                                    <td class="text-right" colspan="8" rowspan="3"
                                         style="vertical-align: middle">
                                     </td>
                                     <td class="text-right">
@@ -409,7 +411,7 @@
                       <div class="form-group row">
                         <label for="cfdi_relation_id" class="col-md-12 col-form-label ml-0">Tipo de relación<span style="color: red;">*</span></label>
                         <div class="col-md-12 ml-0">
-                          <select  id="cfdi_relation_id" name="cfdi_relation_id" class="form-control form-control-sm required"  style="width: 100%;">
+                          <select  id="cfdi_relation_id" name="cfdi_relation_id" class="form-control form-control-sm"  style="width: 100%;">
                             <option value="">{{ trans('message.selectopt') }}</option>
                             @forelse ($cfdi_relations as $cfdi_relations_data)
                             <option value="{{ $cfdi_relations_data->id }}"> [{{ $cfdi_relations_data->code}}]{{ $cfdi_relations_data->name }} </option>
@@ -421,7 +423,7 @@
                     </div>
                     <div class="col-md-12 col-xs-12">
                       <div class="table-responsive">
-                        <table class="table table-items table-condensed table-hover table-bordered table-striped"
+                        <table class="table table-items table-condensed table-hover table-bordered table-striped mt-5"
                                 id="items_relation">
                             <thead>
                             <tr>
@@ -447,11 +449,6 @@
                                 @php
                                     $tmp_uuid = '';
                                     $tmp_customer_invoice_relations = [];
-                                    if(!empty(old('item_relation.' . $item_relation_row . '.relation_id'))){
-                                        $tmp = \App\Models\Sales\CustomerInvoice::find(old('item_relation.' . $item_relation_row . '.relation_id'));
-                                        $tmp_customer_invoice_relations = $tmp->get()->pluck('text_select2','id');
-                                        $tmp_uuid = !empty($tmp) ? $tmp->customerInvoiceCfdi->uuid : '';
-                                    }
                                 @endphp
                                 <tr id="item_relation_row_{{ $item_relation_row }}">
                                     <td class="text-center"
@@ -463,7 +460,7 @@
                                             <i class="fa fa-trash-o"></i>
                                         </button>
                                         <!-- input hidden -->
-                                        <input type="hidden"
+                                        <input type="text"
                                                 id="item_relation_id_{{ $item_relation_row }}"
                                                 name="item_relation[{{ $item_relation_row }}][id]"
                                                 value="{{ old('item_relation.' . $item_relation_row . '.id') }}">
@@ -510,6 +507,16 @@
           </div>
 
           <!---------------------------------------------------------------------------------->
+          <!-- Footer form -->
+          <div class="ln_solid mt-5"></div>
+          <div class="row">
+            <div class="col-md-12 col-xs-12 text-right footer-form">
+              <button type="submit" class="btn btn-outline-primary">@lang('general.button_save')</button>
+              &nbsp;&nbsp;&nbsp;
+              <button type="button" class="btn btn-outline-danger">@lang('general.button_discard')</button>
+            </div>
+          </div>
+          <!-- /Footer form -->
           </form>
         </div>
       </div>
@@ -548,131 +555,261 @@
   {{-- <link href="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet" type="text/css"> --}}
   {{-- <script src="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script> --}}
   {{-- <script src="{{ asset('js/admin/sales/customers_invoices.js')}}"></script> --}}
+  <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
+  <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
   <script type="text/javascript">
+  $(function() {
+    //-----------------------------------------------------------
+        $("#form").validate({
+          ignore: "input[type=hidden]",
+          errorClass: "text-danger",
+          successClass: "text-success",
+          errorPlacement: function (error, element) {
+              var attr = $('[name="'+element[0].name+'"]').attr('datas');
+              // console.log(element[0].name);
+              // console.log(attr);
+              // console.log($('[name="'+element[0].name+'"]'));
+              if (element[0].id === 'fileInput') {
+                error.insertAfter($('#cont_file'));
+              }
+              else {
+                if(attr == 'sel_estatus'){
+                  error.insertAfter($('#cont_estatus'));
+                }
+                else {
+                  error.insertAfter(element);
+                }
+              }
+            },
+            rules: {
+              cfdi_relation_id: {
+                required: function(element) {
+                  // console.log($(".verCfdiRelation").toArray().length);
+                    if ($(".verCfdiRelation").toArray().length === 0) {
+                      if ( $("#form select[name='cfdi_relation_id']").hasClass('required')){
+                        $("#form select[name='cfdi_relation_id']").removeClass("required");
+                        $("#form select[name='cfdi_relation_id']").removeClass("text-danger");
+                        // console.log('false');
+                        return false;
+                      }
+                    }
+                    else {
+                      $("#form select[name='cfdi_relation_id']").addClass("required");
+                      // console.log('true');
+                      return true;
+                    }
+                },
+              }
+            },
+            messages: {
+            },
+            // debug: true,
+            // errorElement: "label",
+            submitHandler: function(e){
+              var form = $('#form')[0];
+              var formData = new FormData(form);
+              $.ajax({
+                type: "POST",
+                url: "/sales/customer-invoices-store",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data){
+                  if (data == 'success') {
+                    let timerInterval;
+                    Swal.fire({
+                      type: 'success',
+                      title: 'La factura se ha generado con éxito!',
+                      html: 'Se estan aplicando los cambios.',
+                      timer: 2500,
+                      onBeforeOpen: () => {
+                        Swal.showLoading()
+                        timerInterval = setInterval(() => {
+                          Swal.getContent().querySelector('strong')
+                        }, 100)
+                      },
+                      onClose: () => {
+                        clearInterval(timerInterval)
+                      }
+                    }).then((result) => {
+                      if (
+                        // Read more about handling dismissals
+                        result.dismiss === Swal.DismissReason.timer
+                      ) {
+                        window.location.href = "/sales/customer-invoices";
+                      }
+                    });
+                  }
+                  if (data == 'false') {
+                    Swal.fire({
+                       type: 'error',
+                       title: 'Error encontrado..',
+                       text: 'Error al crear el  CFDI!',
+                     });
+                  }
+                  // console.log(data);
+                },
+                error: function (err) {
+                  Swal.fire({
+                     type: 'error',
+                     title: 'Oops...',
+                     text: err.statusText,
+                   });
+                }
+              });
+              // form.submit();
+            }
+        });
+        //-----------------------------------------------------------
+      });
+
       // var currency = {!! json_encode($currency) !!};
       // console.log(currency);
       var item_row = "{{ $item_row }}";
       var item_relation_row = "{{ $item_relation_row }}";
+      var item_row_cfdi_relation = "{{ $item_relation_row }}";
+
       function addItem() {
-          var html = '';
-          html += '<tr id="item_row_' + item_row + '">';
-          html += '<td class="text-center" style="vertical-align: middle;">';
-          html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
-          html += '<i class="fa fa-trash"></i>';
-          html += '</button>';
-          html += '<input type="hidden" name="item[' + item_row + '][id]" id="item_id_' + item_row + '" /> ';
-          html += '</td>';
+          var moneda_val = $('input[name="currency_id"]').val();
+          var tc_val = $('input[name="currency_value"]').val();
+          if (moneda_val == '' || tc_val == '') {
+            Swal.fire({
+               type: 'error',
+               title: 'Oops...',
+               text: 'Selecciona la moneda a usar e ingresa un TC',
+             });
+          }
+          else {
+            //#Solicitamos primero el tc a usar
+            var html = '';
+            html += '<tr id="item_row_' + item_row + '">';
+            html += '<td class="text-center" style="vertical-align: middle;">';
+            html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
+            html += '<i class="fa fa-trash"></i>';
+            html += '</button>';
+            html += '<input type="hidden" name="item[' + item_row + '][id]" id="item_id_' + item_row + '" /> ';
+            html += '</td>';
 
-          html += '<td>';
-          html += '<div class="form-group form-group-sm">';
-          html += '<div class="input-group input-group-sm">';
-          html += '<select class="form-control input-sm col-product-id" name="item[' + item_row + '][product_id]" id="item_product_id_' + item_row + '" data-row="' + item_row + '">';
-          html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-          @forelse ($product as $product_data)
-          html += '<option value="{{ $product_data->id  }}">{{ $product_data->name }}</option>';
-          @empty
-          @endforelse
-          html += '</select>';
-          html += '</div>';
-          html += '</div>';
-          html += '</td>';
-
-          html += '<td>';
-          html += '<div class="form-group form-group-sm">';
-          html += '<textarea class="form-control input-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="2" autocomplete="off" />';
-          html += '</textarea>';
-          html += '</div>';
-          html += '</td>';
-
-          html += '<td>';
-          html += '<div class="form-group form-group-sm">';
-          html += '<select class="form-control input-sm col-unit-measure-id" name="item[' + item_row + '][unit_measure_id]" id="item_unit_measure_id_' + item_row + '" required>';
-          html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-          @forelse ($unitmeasures as $unitmeasures_data)
-            html += '<option value="{{ $unitmeasures_data->id  }}">{{ $unitmeasures_data->name }}</option>';
-          @empty
-          @endforelse
-          html += '</select>';
-          html += '</div>';
-          html += '</td>';
-
-          html += '<td>';
-          html += '<div class="form-group form-group-sm">';
-          html += '<select class="form-control input-sm col-sat-product-id" name="item[' + item_row + '][sat_product_id]" id="item_sat_product_id_' + item_row + '" required>';
-          html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-          @forelse ($satproduct as $satproduct_data)
-            html += '<option value="{{ $satproduct_data->id  }}">{{ $satproduct_data->name }}</option>';
-          @empty
-          @endforelse
-          html += '</select>';
-          html += '</div>';
-          html += '</td>';
-
-          html += '<td>';
-          html += '<div class="form-group form-group-sm">';
-          html += '<input type="number" class="form-control input-sm text-right col-quantity" name="item[' + item_row + '][quantity]" id="item_quantity_' + item_row + '" required step="any" />';
-          html += '</div>';
-          html += '</td>';
-
-          html += '<td>';
-          html += '<div class="form-group form-group-sm">';
-          html += '<input type="number" class="form-control input-sm text-right col-price-unit" name="item[' + item_row + '][price_unit]" id="item_price_unit_' + item_row + '" required step="any" />';
-          html += '</div>';
-          html += '</td>';
-
-          html += '<td>';
-          html += '<div class="form-group form-group-sm">';
-          html += '<input type="number" class="form-control input-sm text-center col-discount" name="item[' + item_row + '][discount]" id="item_discount_' + item_row + '" step="any" />';
-          html += '</div>';
-          html += '</td>';
-
-          //
-          /*<select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
-            <option value="">{{ trans('message.selectopt') }}</option>
-            @forelse ($currency as $currency_data)
-              <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<div class="input-group input-group-sm">';
+            html += '<select class="form-control input-sm col-product-id" name="item[' + item_row + '][product_id]" id="item_product_id_' + item_row + '" data-row="' + item_row + '">';
+            html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+            @forelse ($product as $product_data)
+            html += '<option value="{{ $product_data->id  }}">{{ $product_data->name }}</option>';
             @empty
             @endforelse
-          </select>*/
-
-          html += '<td>';
-          html += '<div class="form-group form-group-sm">';
-
-          html += '<select class="form-control input-sm col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" readonly>';
-          html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-          @forelse ($currency as $currency_data)
-            html += '<option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>';
-          @empty
-          @endforelse
-          html += '</select>';
-          // html += '<input type="number" class="form-control input-sm text-center col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" step="any" />';
-          html += '</div>';
-          html += '</td>';
-
-          //
-
-          html += '<td>';
-          html += '<div class="form-group form-group-sm">';
-          html += '<select class="form-control input-sm my-select2 col-taxes" name="item[' + item_row + '][taxes][]" id="item_taxes_' + item_row + '" multiple>';
-          @forelse ($impuestos as $impuestos_data)
-            html += '<option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>';
-          @empty
-          @endforelse
             html += '</select>';
-          html += '</div>';
-          html += '</td>';
+            html += '</div>';
+            html += '</div>';
+            html += '</td>';
 
-          html += '<td class="text-right" style="padding-top: 11px;">';
-          html += '<span id="item_txt_amount_untaxed_' + item_row + '">0</span>';
-          html += '</td>';
-          html += '</tr>';
-          $("#form #items tbody #add_item").before(html);
-          /* Configura lineas*/
-          initItem();
-          // totalItem();
-          item_row++;
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<textarea class="form-control input-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="2" autocomplete="off" />';
+            html += '</textarea>';
+            html += '</div>';
+            html += '</td>';
+
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<select class="form-control input-sm col-unit-measure-id" name="item[' + item_row + '][unit_measure_id]" id="item_unit_measure_id_' + item_row + '" required>';
+            html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+            @forelse ($unitmeasures as $unitmeasures_data)
+              html += '<option value="{{ $unitmeasures_data->id  }}">{{ $unitmeasures_data->name }}</option>';
+            @empty
+            @endforelse
+            html += '</select>';
+            html += '</div>';
+            html += '</td>';
+
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<select class="form-control input-sm col-sat-product-id" name="item[' + item_row + '][sat_product_id]" id="item_sat_product_id_' + item_row + '" required>';
+            html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+            @forelse ($satproduct as $satproduct_data)
+              html += '<option value="{{ $satproduct_data->id  }}">{{ $satproduct_data->name }}</option>';
+            @empty
+            @endforelse
+            html += '</select>';
+            html += '</div>';
+            html += '</td>';
+
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<input type="number" class="form-control input-sm text-right col-quantity" name="item[' + item_row + '][quantity]" id="item_quantity_' + item_row + '" required step="any" />';
+            html += '</div>';
+            html += '</td>';
+
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<input type="number" class="form-control input-sm text-right col-price-unit" name="item[' + item_row + '][price_unit]" id="item_price_unit_' + item_row + '" required step="any" />';
+            html += '</div>';
+            html += '</td>';
+
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<input type="number" class="form-control input-sm text-center col-discount" name="item[' + item_row + '][discount]" id="item_discount_' + item_row + '" step="any" />';
+            html += '</div>';
+            html += '</td>';
+
+            //
+            /*<select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
+              <option value="">{{ trans('message.selectopt') }}</option>
+              @forelse ($currency as $currency_data)
+                <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
+              @empty
+              @endforelse
+            </select>*/
+
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+
+            html += '<select class="form-control input-sm col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" data-row="' + item_row + '" required>'
+            html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+            @forelse ($currency as $currency_data)
+              html += '<option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>';
+            @empty
+            @endforelse
+            html += '</select>';
+            // html += '<input type="number" class="form-control input-sm text-center col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" step="any" />';
+            html += '</div>';
+            html += '</td>';
+
+            //
+
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<select class="form-control input-sm my-select2 col-taxes" name="item[' + item_row + '][taxes][]" id="item_taxes_' + item_row + '" multiple>';
+            @forelse ($impuestos as $impuestos_data)
+              html += '<option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>';
+            @empty
+            @endforelse
+              html += '</select>';
+            html += '</div>';
+            html += '</td>';
+
+            html += '<td class="text-right" style="padding-top: 11px;">';
+            html += '<span id="item_txt_amount_untaxed_' + item_row + '">0</span>';
+            html += '</td>';
+            html += '</tr>';
+            $("#form #items tbody #add_item").before(html);
+            /* Configura lineas*/
+            initItem();
+            // totalItem();
+            item_row++;
+          }
       }
+      /*Selecciona moneda actual*/
+      $(document).on('change', '#form #items tbody .col-current', function (e) {
+          // let id = $(this).val();
+          // console.log(id);
+          let row = $(this).attr('data-row');
+          console.log(row);
+          totalItem();
+
+      });
       function initItem() {
         /*Para impuestos*/
         $("#form #items tbody .my-select2").select2({
@@ -783,10 +920,12 @@
             timePicker: true,
             timePicker24Hour: true,
             showDropdowns: true,
+            minDate: moment(),
+            maxDate : moment().add(3, 'days'),
             locale: {
                 format: "DD-MM-YYYY HH:mm:ss"
             },
-            autoUpdateInput: false
+            autoUpdateInput: true
         }, function (chosen_date) {
             $("#form input[name='date']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
         });
@@ -794,6 +933,7 @@
         $("#form input[name='date_due']").daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
+            minDate: moment(),
             locale: {
                 format: "DD-MM-YYYY"
             },
@@ -812,6 +952,15 @@
         }).on("change", function () {
           let id = $(this).val();
           if (id) {
+              //Si cambia de cliente necesito reiniciar la pestaña de cfdi, dado que solo las facturas del cliente mismo cliente se pueden enlazar
+              for (var i = 1; i <= item_relation_row; i++) {
+                if ($('#item_relation_row_'+i).length){
+                  $('#item_relation_row_'+i).remove();
+                }
+              }
+              item_relation_row = 1 ;
+
+
               $.ajax({
                   url: "{{ route('customers/get-customer') }}",
                   type: "GET",
@@ -835,7 +984,105 @@
               });
           }
         });
+
+        /* Eventos en items cfdi relation */
+        /*Selecciona factura*/
+        $(document).on('select2:select', '#form #items_relation tbody .col-relation-id', function (e) {
+          let id = $(this).val();
+          let row = $(this).attr('data-row');
+          if (id) {
+              $.ajax({
+                  url: "/sales/customer-invoices/get-customer-invoice",
+                  type: "GET",
+                  dataType: "JSON",
+                  data: "id=" + id,
+                  success: function (data) {
+                      $("#form #item_relation_uuid_" + row).html(data.uuid);
+                  },
+                  error: function (error, textStatus, errorThrown) {
+                      if (error.status == 422) {
+                          var message = error.responseJSON.error;
+                          $("#general_messages").html(alertMessage("danger", message));
+                      } else {
+                          alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                      }
+                  }
+              });
+          }
+        });
       });
+
+      function addItemCfdiRelation() {
+            let client = $("#form select[name='customer_id']").val();
+
+            if (client != '') {
+              var html = '';
+
+              html += '<tr id="item_relation_row_' + item_relation_row + '">';
+              html += '<td class="text-center" style="vertical-align: middle;">';
+              html += '<button type="button" onclick="$(\'#item_relation_row_' + item_relation_row + '\').remove();" class="btn btn-xs btn-danger verCfdiRelation" style="margin-bottom: 0;">';
+              html += '<i class="fa fa-trash"></i>';
+              html += '</button>';
+              html += '<input type="hidden" name="item_relation[' + item_relation_row + '][id]" id="item_relation_id_' + item_relation_row + '" /> ';
+              html += '</td>';
+              html += '<td class="text-center align-middle">';
+              html += '<div class="form-group form-group-sm">';
+              html += '<select class="form-control input-sm col-relation-id" name="item_relation[' + item_relation_row + '][relation_id]" id="item_relation_relation_id_' + item_relation_row + '" data-row="' + item_relation_row + '" required>';
+              html += '<option selected="selected" value="">Elija</option>';
+              html += '</select>';
+              html += '</div>';
+              html += '</td>';
+              html += '<td class="text-center align-middle">';
+              html += '<span id="item_relation_uuid_' + item_relation_row + '"></span>';
+              html += '</td>';
+              html += '</tr>';
+
+              $("#form #items_relation tbody #add_item_relation").before(html);
+
+              /* Configura select2 */
+              initItemCfdiRelation();
+
+              item_relation_row++;
+
+              if ( !$("#form select[name='cfdi_relation_id']").hasClass('required')){
+                $("#form select[name='cfdi_relation_id']").addClass("required");
+              }
+            }
+            else {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Oops...',
+                 text: 'Selecciona un cliente primero',
+               });
+            }
+      }
+      function initItemCfdiRelation() {
+        /*Busqueda de facturas*/
+        $("#form #items_relation tbody .col-relation-id").select2({
+            ajax: {
+                url: "/sales/customer-invoices/autocomplete-cfdi",
+                dataType: "JSON",
+                delay: 250,
+                data: function (params) {
+                    return {
+                        // term: $.trim(params.term),//LA PALABRA A BUSCAR
+                        customer_id: $("#form select[name='customer_id']").val(),
+                    };
+                },
+                processResults: function (data, page) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            placeholder: "Selecciona",
+            theme: "bootstrap",
+            width: "auto",
+            dropdownAutoWidth: true,
+        });
+      }
+
 
   </script>
 

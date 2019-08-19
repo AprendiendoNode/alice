@@ -36,5 +36,7 @@ return [
     'companies' => 'Datos de la empresa',
     'branchoffice' => 'Sucursales',
     'customers_invoices' => 'Facturación',
-    'customers_credit_notes' => 'Notas de credito'
+    'customers_credit_notes' => 'Notas de credito',
+    'customers_invoices_show' => 'Historial de facturación',
+
 ];

@@ -14,10 +14,15 @@ use SoapClient;
 use ZipArchive;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Storage;
+
+use Jenssegers\Date\Date;
+use \Carbon\Carbon;
+use DateTime;
+use DB;
 
 class Helper
 {
-
     /**
      * Funcion para subir archivos solo imagenes
      *
@@ -26,7 +31,7 @@ class Helper
      * @param string $disk
      * @return string
      * @throws \Exception
-     */
+    */
     public static function uploadFileImage($key, $path)
     {
         request()->file($key)->store(self::setDirectory($path));
@@ -40,7 +45,7 @@ class Helper
      * @param string $disk
      * @return string
      * @throws \Exception
-     */
+    */
     public static function directoryCompany(){
         try {
 
@@ -59,7 +64,6 @@ class Helper
             throw $e;
         }
     }
-
     /**
      * Crear directorio con el default de la empresa, si no existe lo crea
      *
@@ -67,7 +71,7 @@ class Helper
      * @param $path
      * @return string
      * @throws \Exception
-     */
+    */
     public static function setDirectory($path){
         $company_path = self::directoryCompany();
         $path = $company_path . '/' . $path;
@@ -75,6 +79,16 @@ class Helper
             \Storage::makeDirectory($path, 0777, true); //creates directory
         }
         return $path;
+    }
+    /**
+     * Estatus a cadena
+     *
+     * @param $status
+     * @return array|null|string
+    */
+    public static function statusHuman($status)
+    {
+      return $status ? __('general.text_enabled') : __('general.text_disabled');
     }
 
     /**
@@ -107,46 +121,192 @@ class Helper
         }
     }
 
+    /**
+     * Formato de numero
+     *
+     * @param $val
+     * @param $decimal_place
+     * @param bool $format
+     * @return string
+     */
+    public static function numberFormat($val, $decimal_place=0, $format = true)
+    {
+        $val = (double)$val;
+        $decimal_place = (int)$decimal_place;
 
-
+        return number_format($val, $decimal_place, '.',
+            $format ? ',' : '');
+    }
+    /**
+     * Formato de numero para porcentajes
+     *
+     * @param $val
+     * @param $decimal_place
+     * @return string
+     */
+    public static function numberFormatPercent($val, $decimal_place)
+    {
+        return self::numberFormat($val, $decimal_place) . '%';
+    }
+    //Fechas --------------------------------------------------------------------------
+    /**
+     * Crea fecha a partir del formato configurado
+     *
+     * @param $date
+     * @return mixed
+    */
+    public static function createDate($date)
+    {
+        return \Date::createFromFormat('d-m-Y', $date);
+    }
+    /**
+     * Crea fecha tiempo a partir del formato configurado
+     *
+     * @param $datetime
+     * @return mixed
+    */
+    public static function createDateTime($datetime)
+    {
+        return \Date::createFromFormat('d-m-Y H:i:s', $datetime);
+    }
+    /**
+     * Crea fecha a partir de una fecha en formato BD
+     *
+     * @param $date
+     * @return mixed
+    */
+    public static function createDateFromSql($date)
+    {
+        return \Date::createFromFormat('!Y-m-d', $date);
+    }
+    /**
+     * Crea fecha tiempo a aprtir de una fecha en formato BD
+     *
+     * @param $datetime
+     * @return mixed
+    */
+    public static function createDateTimeFromSql($datetime)
+    {
+        return \Date::parse($datetime);
+    }
+    /**
+     * Convierte fecha a sql para guardar
+     *
+     * @param $date
+     * @return mixed
+    */
+    public static function dateToSql($date)
+    {
+        return $date->format('Y-m-d');
+    }
+    /**
+     * Convierte fecha tiempo a sql para guardar
+     *
+     * @param $date
+     * @return mixed
+    */
+    public static function dateTimeToSql($date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+    /**
+     * Convierte fecha a sql para guardar
+     *
+     * @param $date
+     * @return mixed
+     */
+    public static function date($date)
+    {
+        return $date->format(setting('date_format', 'd-m-Y'));
+    }
+    /**
+     * Convierte fecha tiempo a sql para guardar
+     *
+     * @param $date
+     * @return mixed
+     */
+    public static function dateTime($date)
+    {
+        return $date->format('d-m-Y H:i:s');
+    }
+    /**
+     * Crear fecha a partir de fecha configurada y convierte a sql para guardar
+     *
+     * @param $date
+     * @return mixed
+    */
+    public static function convertDateToSql($date)
+    {
+        return self::dateToSql(self::createDate($date));
+    }
+    /**
+     * Crear fecha a partir de fecha configurada y convierte a sql para guardar
+     *
+     * @param $datetime
+     * @return mixed
+    */
+    public static function convertDateTimeToSql($datetime)
+    {
+        return self::dateTimeToSql(self::createDateTime($datetime));
+    }
+    /**
+     * Crear fecha a partir de fecha configurada y convierte a sql para guardar
+     *
+     * @param $date
+     * @return mixed
+    */
+    public static function convertSqlToDate($date)
+    {
+        return self::date(self::createDateFromSql($date));
+    }
+    /**
+     * Crear fecha a partir de fecha configurada y convierte a sql para guardar
+     *
+     * @param $datetime
+     * @return mixed
+    */
+    public static function convertSqlToDateTime($datetime)
+    {
+        return self::createDateTimeFromSql($datetime);
+        // return self::dateTime(self::createDateTimeFromSql($datetime));
+    }
+    //Fechas --------------------------------------------------------------------------
     /**
      * Consecutivo por tipo de documento
      *
      * @param $code
      * @return array
      * @throws \Exception
-     */
+    */
     public static function getNextDocumentTypeByCode($code)
     {
-        try {
-            $data = [];
-            $document_type = DocumentType::where('code', '=', $code)->first();
-            if (!empty($document_type)) {
-                $document_type->current_number += $document_type->increment_number;
-                $data['serie'] = $document_type->prefix;
-                $data['folio'] = $document_type->current_number;
-                $data['name'] = $document_type->prefix . $document_type->current_number;
-                $data['id'] = $document_type->id;
-                $document_type->update();
-            } else {
-                throw new \Exception(__('document_type.error_next_document_type'));
-            }
-            if (empty($data['id']) || empty($data['name'])) {
-                throw new \Exception(__('document_type.error_next_document_type'));
-            }
-            return $data;
-        } catch (\Exception $e) {
-            throw $e;
-        }
+       try {
+           $data = [];
+           $document_type = DocumentType::where('code', '=', $code)->first();
+           if (!empty($document_type)) {
+               $document_type->current_number += $document_type->increment_number;
+               $data['serie'] = $document_type->prefix;
+               $data['folio'] = $document_type->current_number;
+               $data['name'] = $document_type->prefix . $document_type->current_number;
+               $data['id'] = $document_type->id;
+               $document_type->update();
+           } else {
+               throw new \Exception(__('document_type.error_next_document_type'));
+           }
+           if (empty($data['id']) || empty($data['name'])) {
+               throw new \Exception(__('document_type.error_next_document_type'));
+           }
+           return $data;
+       } catch (\Exception $e) {
+           throw $e;
+       }
     }
-
-
     /**
      * Crea directorios para CFDI's
      *
      * @return string
      * @throws \Exception
-     */
+    */
     public static function makeDirectoryCfdi($path_xml)
     {
         try {
@@ -222,55 +382,4 @@ class Helper
       return Company::get()->first();
     }
 
-    //Fechas --------------------------------------------------------------------------
-    /**
-     * Convierte fecha tiempo a sql para guardar
-     *
-     * @param $date
-     * @return mixed
-     */
-    public static function dateTimeToSql($date)
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
-    /**
-     * Crea fecha tiempo a apartir de una fecha en formato BD
-     *
-     * @param $datetime
-     * @return mixed
-     */
-    public static function createDateTimeFromSql($datetime)
-    {
-        return \Date::createFromFormat('Y-m-d H:i:s', $datetime);
-    }
-    /**
-     * Crear fecha a partir de fecha configurada y convierte a sql para guardar
-     *
-     * @param $datetime
-     * @return mixed
-    */
-    public static function convertSqlToDateTime($datetime)
-    {
-        return self::dateTime(self::createDateTimeFromSql($datetime));
-    }
-    //CFDI --------------------------------------------------------------------------
-    /**
-     * Crea directorios para CFDI's
-     *
-     * @return string
-     * @throws \Exception
-     */
-    public static function makeDirectoryCfdi($path_xml)
-    {
-        try {
-            $tmp_path = date('Y') . '/' . date('m');
-            if (!\Storage::exists($path_xml . $tmp_path)) {
-                \Storage::makeDirectory($path_xml . $tmp_path, 0777, true, true);
-            }
-
-            return $tmp_path;
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
 }

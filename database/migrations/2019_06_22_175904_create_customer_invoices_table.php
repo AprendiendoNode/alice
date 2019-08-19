@@ -65,7 +65,31 @@ class CreateCustomerInvoicesTable extends Migration
             $table->boolean('mail_sent')->default(FALSE);
             $table->integer('sort_order')->default(0);
             $table->tinyInteger('status')->default(\App\Models\Sales\CustomerInvoice::OPEN);
-            $table->string('confirmacion',34)->nullable();
+            $table->string('confirmacion')->nullable();
+
+            $table->date('date_delivery')->nullable();
+            $table->string('source')->nullable();
+            $table->text('source_name')->nullable();
+            $table->text('source_taxid')->nullable();
+            $table->text('source_address')->nullable();
+            $table->text('source_delivery_on')->nullable();
+            $table->string('destination')->nullable();
+            $table->string('destination_name')->nullable();
+            $table->string('destination_taxid')->nullable();
+            $table->text('destination_address')->nullable();
+            $table->text('destination_delivery_on')->nullable();
+            $table->decimal('valid_amount',15,5)->default(0);
+            $table->boolean('dangerous_material')->default(FALSE);
+            $table->string('compensation')->nullable();
+            $table->string('retainer_name')->nullable();
+            $table->string('retainer_taxid')->nullable();
+            $table->string('driver')->nullable();
+            $table->string('vehicle')->nullable();
+            $table->string('vehicle_number')->nullable();
+            $table->string('vehicle_counter')->nullable();
+            $table->string('cfdi_type2')->nullable(); //invoice, transfer, lease, fee, credit_note, payment
+            $table->string('document_type2')->nullable(); //invoice, transfer
+
 
             // Operaciones de usuario
             $table->integer('created_uid')->nullable()->unsigned();

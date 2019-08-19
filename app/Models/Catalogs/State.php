@@ -25,6 +25,10 @@ class State extends Model
   {
       return $this->hasMany(Hotel::class);
   }
+  public function country()
+  {
+      return $this->belongsTo(Country::class);
+  }
   public function cities()
   {
     return $this->hasMany(City::class);
