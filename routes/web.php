@@ -19,6 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+//VER ENCUESTA DINAMICA
+Route::get('questionary/{data}','QuestionaryController@index');
+
 Route::group(['middleware' => 'auth'], function () {
   //Dashboard
   Route::get('/', 'HomeController@index')->name('/');
@@ -509,7 +512,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get_payment_by_proveedor', 'Payments\FilterPayController@get_payments_proveedor');
     Route::post('/downloadInvoicePay', 'Payments\PayHistoryController@getInvoice');
     Route::post('/downloadInvoicePdf','Payments\PayHistoryController@getInvoicePdf');
-    
+
     //Registro de multiples pagos
 		Route::get('/view_add_req_pay_mult', 'Payments\PayImportController@index');//RUTAS
     Route::post('/getDataExcel', 'Payments\PayImportController@getDataExcel');
@@ -650,7 +653,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/recordmens_cobs_all', 'Contracts\ContractCobController@tabla_cobs_all');
     Route::post('/recordmens_cobs_date', 'Contracts\ContractCobController@tabla_cobs_date');
     // Encuestas hoteles
-    Route::get('/view_dashboard_survey','Survey\DashboardSurveyController@index');
+    Route::get('/view_dashboard_survey_nps','Survey\DashboardSurveyController@index');
     Route::post('/get_dashboard_survey','Survey\DashboardSurveyController@get_headers_survey');
     Route::post('/add_hotel_survey','Survey\DashboardSurveyController@create_hotel_survey');
     Route::post('/get_dashboard_surveydinamic','Survey\ResultsSurveyController@get_headers_graf');
