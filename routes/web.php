@@ -498,6 +498,16 @@ Route::group(['middleware' => 'auth'], function () {
     //Alta datos bancarios
     Route::post('/setdata_bank', 'Payments\PayAddController@set_data_bank');
 
+    //- Pagos Historial
+    Route::get('/view_history_req_pay', 'Payments\PayHistoryController@index');
+
+    //- Pagos Historial N0
+    Route::post('/view_request_pay_zero', 'Payments\PayHistoryController@history_zero');
+    //- Pagos Historial N1
+    Route::post('/send_item_pay_new', 'Payments\PayHistoryController@approval_one');
+    //- Pagos Historial N2
+    Route::post('/send_item_pay_revised', 'Payments\PayHistoryController@approval_two');
+
     //Historial Pagos
     Route::post('/cc_account', 'Payments\PayHistoryController@cc_account');
     Route::post('/view_gen_sol_pay', 'Payments\PayHistoryController@data_basic');

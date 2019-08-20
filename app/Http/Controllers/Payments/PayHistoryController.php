@@ -29,7 +29,7 @@ use App\Payments_financing;
 use App\Payments_project_options;
 use App\Payments_states;
 use App\Payments_verticals;
-use App\Payments_way_pay;
+use App\Models\Catalogs\PaymentWay;
 use App\Payments;
 use Mail;
 use File;
@@ -40,16 +40,17 @@ class PayHistoryController extends Controller
 {
   public function index()
   {
+
     $cadena = Cadena::select('id', 'name')->get()->sortBy('name');
-    $proveedor = Proveedor::select('id', 'nombre')->get();
-    $vertical = Payments_verticals::pluck('name', 'id');
+    $proveedor = DB::table('proveedors')->select('id', 'nombre')->get();
+    $vertical = DB::table('verticals')->pluck('name', 'id')->all();
     $currency = Currency::select('id','name')->get();
-    $way = Payments_way_pay::select('id','name')->get();
-    $area = Payments_area::pluck('name', 'id');
-    $application = Payments_application::pluck('name', 'id');
-    $options = Payments_project_options::pluck('name', 'id');
-    $classification =Payments_classification::select('id','name')->get();
-    $financing = Payments_financing::pluck('name', 'id');
+    $way = PaymentWay::select('id','name')->get();
+    $area = DB::table('payments_areas')->pluck('name', 'id')->all();
+    $application = DB::table('payments_applications')->pluck('name', 'id')->all();
+    $options = DB::table('payments_project_options')->pluck('name', 'id')->all();
+    $classification =DB::table('payments_classifications')->select('id','name')->get();
+    $financing = DB::table('payments_financings')->pluck('name', 'id')->all();
 
     return view('permitted.payments.history_requests_pay',compact('cadena','proveedor','vertical', 'currency', 'way', 'area', 'application', 'options', 'classification', 'financing'));
 
@@ -240,11 +241,13 @@ class PayHistoryController extends Controller
     $valor= 'false';
     for ($i=0; $i <= (count($solicitud_id)-1); $i++) {
       $sql = DB::table('payments')->where('id', '=', $solicitud_id[$i])->update(['payments_states_id' => '2', 'updated_at' => Carbon::now()]);
-      $new_reg_paym = new Pay_status_user;
-      $new_reg_paym->payment_id = $solicitud_id[$i];
-      $new_reg_paym->user_id = $user;
-      $new_reg_paym->status_id = '2';
-      $new_reg_paym->save();
+      DB::table('pay_status_users')->insert([
+        'payment_id'=>$solicitud_id[$i],
+        'user_id'=>$user,
+        'status_id'=>'2',
+        'created_at'=> Carbon::now(),
+        'updated_at'=>Carbon::now()
+      ]);
       $valor= 'true';
     }
     return $valor;
@@ -255,11 +258,13 @@ class PayHistoryController extends Controller
     $valor= 'false';
     for ($i=0; $i <= (count($solicitud_id)-1); $i++) {
       $sql = DB::table('payments')->where('id', '=', $solicitud_id[$i])->update(['payments_states_id' => '3', 'updated_at' => Carbon::now()]);
-      $new_reg_paym = new Pay_status_user;
-      $new_reg_paym->payment_id = $solicitud_id[$i];
-      $new_reg_paym->user_id = $user;
-      $new_reg_paym->status_id = '3';
-      $new_reg_paym->save();
+      DB::table('pay_status_users')->insert([
+        'payment_id'=>$solicitud_id[$i],
+        'user_id'=>$user,
+        'status_id'=>'3',
+        'created_at'=> Carbon::now(),
+        'updated_at'=>Carbon::now()
+      ]);
       $valor= 'true';
     }
     return $valor;
