@@ -520,6 +520,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/history_status_paid_month', 'Payments\PayHistoryPaidController@payments_paid');
     Route::post('/history_status_paid_month_period', 'Payments\PayHistoryPaidController@payments_paid_period');
     Route::post('/history_status_paid_month_sumas', 'Payments\PayHistoryPaidController@payments_paid_sums');
+    //Programar pagos
+    Route::get('/program_date_pay', 'Payments\PayHistoryController@index2');
+    Route::post('/get_program_table', 'Payments\PayHistoryController@program_payment');
+    Route::post('/get_date_pay_program', 'Payments\PayHistoryController@get_date_pay_program');
+    Route::post('/deny_payment', 'Payments\PayHistoryController@deny_payment_act');
+    Route::post('/send_item_pay_program', 'Payments\PayHistoryController@approval_program');
+    Route::post('/send_item_pay_program_check', 'Payments\PayHistoryController@approval_program_all');
     //Registro de multiples pagos
 		Route::get('/view_add_req_pay_mult', 'Payments\PayImportController@index');//RUTAS
     Route::post('/getDataExcel', 'Payments\PayImportController@getDataExcel');

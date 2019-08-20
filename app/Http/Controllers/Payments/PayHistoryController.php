@@ -154,11 +154,18 @@ class PayHistoryController extends Controller
       $sql = DB::table('payments')->where('id','=',$solicitud_id)->update(['date_scheduled_pay' => $date_schedule, 'updated_at' => Carbon::now()]);
     }else{
       $sql = DB::table('payments')->where('id','=',$solicitud_id)->update(['payments_states_id' => '6', 'date_scheduled_pay' => $date_schedule, 'updated_at' => Carbon::now()]);
-        $new_reg_paym = new Pay_status_user;
+        DB::table('pay_status_users')->insert([
+          'payment_id'=>$solicitud_id,
+          'user_id'=>$user,
+          'status_id'=>'6',
+          'created_at'=> Carbon::now(),
+          'updated_at'=>Carbon::now()
+        ]);
+        /*$new_reg_paym = new Pay_status_user;
         $new_reg_paym->payment_id = $solicitud_id;
         $new_reg_paym->user_id = $user;
         $new_reg_paym->status_id = '6';
-        $new_reg_paym->save();
+        $new_reg_paym->save();*/
     }
     $valor = "true";
 
@@ -179,11 +186,18 @@ class PayHistoryController extends Controller
         $sql = DB::table('payments')->where('id','=', $payments_id[$i])->update(['date_scheduled_pay' => $date_schedule, 'updated_at' => Carbon::now()]);
       }else{
         $sql = DB::table('payments')->where('id','=',$payments_id[$i])->update(['payments_states_id' => '6', 'date_scheduled_pay' => $date_schedule, 'updated_at' => Carbon::now()]);
-          $new_reg_paym = new Pay_status_user;
+        DB::table('pay_status_users')->insert([
+          'payment_id'=>$payments_id[$i],
+          'user_id'=>$user,
+          'status_id'=>'6',
+          'created_at'=> Carbon::now(),
+          'updated_at'=>Carbon::now()
+        ]);
+        /*  $new_reg_paym = new Pay_status_user;
           $new_reg_paym->payment_id = $payments_id[$i];
           $new_reg_paym->user_id = $user;
           $new_reg_paym->status_id = '6';
-          $new_reg_paym->save();
+          $new_reg_paym->save();*/
       }
     }
     $valor = "true";
@@ -473,17 +487,32 @@ class PayHistoryController extends Controller
       $count_md = DB::table('payments')->where('id', '=', $pay_id)->where('payments_states_id', '!=', '5')->where('payments_states_id', '!=', '4')->count();
       if ($count_md != '0') {
         $sql = DB::table('payments')->where('id', '=', $pay_id)->update(['payments_states_id' => '5', 'updated_at' => Carbon::now()]);
-        $new_reg_paym = new Pay_status_user;
+        DB::table('pay_status_users')->insert([
+          'payment_id'=>$pay_id,
+          'user_id'=>$user,
+          'status_id'=>'5',
+          'created_at'=> Carbon::now(),
+          'updated_at'=>Carbon::now()
+        ]);
+        /*$new_reg_paym = new Pay_status_user;
         $new_reg_paym->payment_id = $pay_id;
         $new_reg_paym->user_id = $user;
         $new_reg_paym->status_id = '5';
-        $new_reg_paym->save();
+        $new_reg_paym->save();*/
         if($comment != " " && $comment != null){
-          $new_reg_denypay_comm = new Deny_paycomment;
+          DB::table('deny_paycomments')->insert([
+            'name'=>$comment,
+            'payment_id'=>$pay_id,
+            'user_id'=>$user,
+            'created_at'=> Carbon::now(),
+            'updated_at'=>Carbon::now()
+          ]);
+
+        /*  $new_reg_denypay_comm = new Deny_paycomment;
           $new_reg_denypay_comm->name = $comment;
           $new_reg_denypay_comm->payment_id = $pay_id;
           $new_reg_denypay_comm->user_id = $user;
-          $new_reg_denypay_comm->save();
+          $new_reg_denypay_comm->save();*/
         }
         $valor= 'true';
       }
@@ -492,17 +521,31 @@ class PayHistoryController extends Controller
       $count_md = DB::table('payments')->where('id', '=', $pay_id)->where('payments_states_id', '!=', '5')->where('payments_states_id', '!=', '4')->count();
       if ($count_md != '0') {
         $sql = DB::table('payments')->where('id', '=', $pay_id)->update(['payments_states_id' => '5', 'updated_at' => Carbon::now()]);
-        $new_reg_paym = new Pay_status_user;
+        DB::table('pay_status_users')->insert([
+          'payment_id'=>$pay_id,
+          'user_id'=>$user,
+          'status_id'=>'5',
+          'created_at'=> Carbon::now(),
+          'updated_at'=>Carbon::now()
+        ]);
+        /*$new_reg_paym = new Pay_status_user;
         $new_reg_paym->payment_id = $pay_id;
         $new_reg_paym->user_id = $user;
         $new_reg_paym->status_id = '5';
-        $new_reg_paym->save();
+        $new_reg_paym->save();*/
         if($comment != " " && $comment != null){
+          DB::table('deny_paycomments')->insert([
+            'name'=>$comment,
+            'payment_id'=>$pay_id,
+            'user_id'=>$user,
+            'created_at'=> Carbon::now(),
+            'updated_at'=>Carbon::now()
+          ]);/*
           $new_reg_denypay_comm = new Deny_paycomment;
           $new_reg_denypay_comm->name = $comment;
           $new_reg_denypay_comm->payment_id = $pay_id;
           $new_reg_denypay_comm->user_id = $user;
-          $new_reg_denypay_comm->save();
+          $new_reg_denypay_comm->save();*/
         }
         $valor= 'true';
       }

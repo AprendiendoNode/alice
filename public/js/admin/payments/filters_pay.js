@@ -170,7 +170,7 @@ var Configuration_table_responsive_pay= {
         buttons: [
           {
             extend: 'excelHtml5',
-            text: '<i class="fa fa-file-excel-o"></i> Excel',
+            text: '<i class="fas fa-file-excel"></i> Excel',
             titleAttr: 'Excel',
             title: function ( e, dt, node, config ) {
               var ax = '';
@@ -200,7 +200,7 @@ var Configuration_table_responsive_pay= {
           },
           {
             extend: 'csvHtml5',
-            text: '<i class="fa fa-file-text-o"></i> CSV',
+            text: '<i class="fas fa-file-csv"></i> CSV',
             titleAttr: 'CSV',
             title: function ( e, dt, node, config ) {
               var ax = '';
@@ -230,7 +230,7 @@ var Configuration_table_responsive_pay= {
           },
           {
             extend: 'pdf',
-            text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+            text: '<i class="fas fa-file-pdf"></i>  PDF',
             title: function ( e, dt, node, config ) {
               var ax = '';
               if($('input[name="date_to_search"]').val() != ''){
