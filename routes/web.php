@@ -515,6 +515,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/downloadInvoicePay', 'Payments\PayHistoryController@getInvoice');
     Route::post('/downloadInvoicePdf','Payments\PayHistoryController@getInvoicePdf');
 
+    //Ver pagados
+    Route::get('/view_history_all_status_paid', 'Payments\PayHistoryPaidController@index');
+    Route::post('/history_status_paid_month', 'Payments\PayHistoryPaidController@payments_paid');
+    Route::post('/history_status_paid_month_period', 'Payments\PayHistoryPaidController@payments_paid_period');
+    Route::post('/history_status_paid_month_sumas', 'Payments\PayHistoryPaidController@payments_paid_sums');
     //Registro de multiples pagos
 		Route::get('/view_add_req_pay_mult', 'Payments\PayImportController@index');//RUTAS
     Route::post('/getDataExcel', 'Payments\PayImportController@getDataExcel');

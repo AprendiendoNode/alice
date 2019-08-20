@@ -93,14 +93,10 @@
               </div>
             </div>
           </div>
-        </div>
-        </div>
           <br>
         <!--SIERRA END-->
           <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
-              <div class="card">
-                <div class="card-body">
 
                 <table id="table_pays" class="table table-striped table-bordered table-hover text-white compact-tab" style="width:100%">
                   <thead>

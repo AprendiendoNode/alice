@@ -1,6 +1,6 @@
 <div class="modal modal-default fade" id="modal-view-concept" data-backdrop="static" >
     <div class="modal-dialog">
-      <div class="modal-content" >
+      <div class="modal-content" style=" width: 180% !important;margin-left: -30% !important;">
         <div class="modal-header">
           <h4 class="modal-title"><i class="fa fa-eye" style="margin-right: 4px;"></i>Preview</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
