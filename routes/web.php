@@ -493,9 +493,23 @@ Route::group(['middleware' => 'auth'], function () {
     //Alta datos bancarios
     Route::post('/setdata_bank', 'Payments\PayAddController@set_data_bank');
 
+    //Historial Pagos
+    Route::post('/cc_account', 'Payments\PayHistoryController@cc_account');
+    Route::post('/view_gen_sol_pay', 'Payments\PayHistoryController@data_basic');
+    Route::post('/view_gen_sol_venues', 'Payments\PayHistoryController@data_basic_venues');
+    Route::post('/view_gen_sol_pay_bank', 'Payments\PayHistoryController@data_basic_bank');
     //Crear pagos
     Route::post('/create_pay', 'Payments\PayAddController@create_pay_test');
-
+    //Filtrar pagos
+    Route::get('/view_filter_req_pay', 'Payments\FilterPayController@index');
+    Route::post('/get_payment_by_folio', 'Payments\FilterPayController@get_payment_by_folio');
+    Route::post('/search_folio', 'Payments\FilterPayController@autocomplete_folio');
+    Route::post('/get_payment_by_id', 'Payments\FilterPayController@get_paymentId');
+    Route::post('/get_payment_folios', 'Payments\FilterPayController@get_folios');
+    Route::post('/get_payment_by_proveedor', 'Payments\FilterPayController@get_payments_proveedor');
+    Route::post('/downloadInvoicePay', 'Payments\PayHistoryController@getInvoice');
+    Route::post('/downloadInvoicePdf','Payments\PayHistoryController@getInvoicePdf');
+    
     //Registro de multiples pagos
 		Route::get('/view_add_req_pay_mult', 'Payments\PayImportController@index');//RUTAS
     Route::post('/getDataExcel', 'Payments\PayImportController@getDataExcel');
