@@ -119,13 +119,18 @@
       <div class="row">
 
 
-        <div class="col-xl-3 col-md-6">
-                                  <div class="widget-panel widget-style-2 bg-pink">
-                                      <i class="ion-md-eye"></i>
-                                      <h2 class="m-0 text-white" data-plugin="counterup">50</h2>
-                                      <div>Daily Visits</div>
-                                  </div>
-                              </div>
+        <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex flex-row">
+                                    <div class="round round-lg align-self-center round-warning"><i class="mdi mdi-cellphone-link"></i></div>
+                                    <div class="m-l-10 align-self-center">
+                                        <h3 class="m-b-0 font-lgiht">$2376</h3>
+                                        <h5 class="text-muted m-b-0">Online Revenue</h5></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
       </div>

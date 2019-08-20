@@ -625,7 +625,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cxc_mont_cob', 'Contracts\ContractCobController@monto_cob');
     Route::post('/recordmens_cobs_all', 'Contracts\ContractCobController@tabla_cobs_all');
     Route::post('/recordmens_cobs_date', 'Contracts\ContractCobController@tabla_cobs_date');
-
+    // Encuestas hoteles
+    Route::get('/view_dashboard_survey','Survey\DashboardSurveyController@index');
+    Route::post('/get_dashboard_survey','Survey\DashboardSurveyController@get_headers_survey');
+    Route::post('/add_hotel_survey','Survey\DashboardSurveyController@create_hotel_survey');
+    Route::post('/get_dashboard_surveydinamic','Survey\ResultsSurveyController@get_headers_graf');
+    Route::post('/get_pregunta_abierta','Survey\ResultsSurveyController@pregunta_abierta');
+    Route::post('/get_pregunta_multiple','Survey\ResultsSurveyController@pregunta_multiple');
+    Route::post('/get_header_option','Survey\ResultsSurveyController@name_option');
 });
 
 
