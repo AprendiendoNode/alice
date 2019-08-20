@@ -10,13 +10,17 @@
           @forelse (auth()->user()->menus->groupBy('section_id') as $menu)
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#{{ App\Section::find($menu[0]->section_id)->display_name }}" aria-expanded="false" aria-controls="{{ App\Section::find($menu[0]->section_id)->display_name }}">
-              <i class="{{ App\Section::find($menu[0]->section_id)->icons }} menu-icon mr-2"></i>
+              <i class="{{ App\Section::find($menu[0]->section_id)->icons }} menu-icon mr-3"></i>
               <span class="menu-title">{{ App\Section::find($menu[0]->section_id)->display_name }}</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="{{ App\Section::find($menu[0]->section_id)->display_name }}">
               <ul class="nav flex-column sub-menu">
-                @foreach (auth()->user()->menus->where('section_id', $menu[0]->section_id) as $submenu)
+                @php
+                  $menus = auth()->user()->menus->where('section_id', $menu[0]->section_id)->sortBy('order');
+
+                @endphp
+                @foreach ($menus as $submenu)
                   <li class="nav-item {{ Request::is($submenu->url) ? 'active' : '' }}"> <a class="nav-link" href="{{ url($submenu->url) }}"><i class="{{ $submenu->icons }} mr-2"></i>{{ $submenu->display_name }}</a></li>
                 @endforeach
               </ul>

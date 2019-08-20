@@ -36,7 +36,7 @@ class KickoffController extends Controller
       $payments = DB::table('payment_ways')->whereIn('id', [1, 3, 22])->get();
       $vendedores = DB::select(' CALL px_usersXdepto(?)', array(5));
       $inside_sales = DB::select(' CALL px_usersXdepto(?)', array(6));
-
+    
       $vtc = "Proyecto sin cotizador";
       $total_gasto = 0;
       $cotizador = DB::table('cotizador')->select('id', 'id_doc')->where('id_doc', $document[0]->id)->get();
