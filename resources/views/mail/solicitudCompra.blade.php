@@ -105,15 +105,9 @@ background-color: #f6f6f6;
               <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                 <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                   <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-                    <h1 style="margin-top: 0; color: #2F3133;  font-size: 19px;  font-weight: bold;  text-align: left;">Solicitud de compra</h1>
+                    <h1 style="margin-top: 0; color: #2F3133;  font-size: 19px;  font-weight: bold;  text-align: left;">NUEVO DOCUMENTO</h1>
                     <h2 style="margin-top: 0; color: #2F3133;  font-size: 14px;  font-weight: bold;  text-align: left;">Folio: {{$param['folio']}}</h2>
                     <!-- <strong style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">Advertencia</strong> -->
-                    <p style="margin-top: 20;
-                              color: #74787E;
-                              line-height: 1.5em;
-                              font-size: 14px;
-                              text-align: left;">Nuevo Documento generado</p>
-
 
                     <p style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
                               margin-top: 20;
@@ -126,25 +120,25 @@ background-color: #f6f6f6;
                                @if ($param['doc_type'] == 1)
                                  <p style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
                                             margin-top: 20;
-                                            color: #74787E;
+                                            color: #8F1D2C;
                                             line-height: 1.5em;
-                                            font-size: 14px;
+                                            font-size: 16px;
                                             text-align: left;"><strong>Documento P</strong>
                                   </p>
                                @elseif($param['doc_type'] == 2)
                                  <p style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
                                             margin-top: 20;
-                                            color: #74787E;
+                                            color: #8F1D2C;
                                             line-height: 1.5em;
-                                            font-size: 14px;
+                                            font-size: 16px;
                                             text-align: left;"><strong>Documento M</strong>
                                 </p>
                               @else
                                 <p style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
                                            margin-top: 20;
-                                           color: #74787E;
+                                           color: #8F1D2C;
                                            line-height: 1.5em;
-                                           font-size: 14px;
+                                           font-size: 16px;
                                            text-align: left;"><strong>Cotización</strong>
                                </p>
                                @endif

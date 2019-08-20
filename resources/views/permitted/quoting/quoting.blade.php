@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View cover') )
+  @if( auth()->user()->can('Create quoting') )
     Cotizador de proyectos
   @else
     {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View Document P') )
+  @if( auth()->user()->can('Create quoting') )
     Cotizador de proyectos
   @else
     {{ trans('message.denied') }}
@@ -18,7 +18,7 @@
 
 @section('content')
 
-  @if( auth()->user()->can('View Document P') )
+  @if( auth()->user()->can('Create quoting') )
     <div class="container">
       <!-- Validation wizard -->
       <div class="row" id="validation">

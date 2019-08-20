@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View projects docp') )
+  @if( auth()->user()->can('View projects docp success') )
     Avance de proyectos
   @else
     {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-   @if( auth()->user()->can('View projects docp') )
+   @if( auth()->user()->can('View projects docp success') )
     Avance de proyectos
     @else
       {{ trans('message.denied') }}

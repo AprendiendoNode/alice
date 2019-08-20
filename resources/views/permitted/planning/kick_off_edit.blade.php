@@ -17,12 +17,136 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View Edit Document P') )
+  @if( auth()->user()->can('View history quoting') )
       <!-- Validation wizard -->
       <form id="form_edit_cotizador" class="" action="/edit_cart_quoting" method="post">
         {{ csrf_field() }}
         <input type="hidden" name="id_docp2" id="id_docp2" value="{{$document[0]->id}}">
       </form>
+      <!--MODAL LINEA BASE-->
+      <div id="modal_linea_base" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Linea Base</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-12 col-md-5">
+                  <input id="deposito" type="hidden" name="deposito" value="{{$document[0]->deposito_garantia}}">
+                  <input id="plazo" type="hidden"  class="form-control form-control-sm" value="{{$document[0]->plazo}}">
+                  <input id="total_gasto" type="hidden" name="total_gasto" value="{{$total_gasto}}">
+                  <div class="form-row d-flex align-items-center mb-2">
+                    <div class="col-6">
+                      <label class="text-dark font-weight-bold" for="">Equipo Activo</label>
+                    </div>
+                    <div class="col-6">
+                      <input id="" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_ea, 2, '.', ',')}}">
+                    </div>
+                  </div>
+                  <div class="form-row d-flex align-items-center mb-2">
+                    <div class="col-6">
+                      <label class="text-dark font-weight-bold" for="">Equipo No Activo</label>
+                    </div>
+                    <div class="col-6">
+                      <input id="" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_ena, 2, '.', ',')}}">
+                    </div>
+                  </div>
+                  <div class="form-row d-flex align-items-center mb-2">
+                    <div class="col-6">
+                      <label class="text-dark font-weight-bold" for="">Mano de obra</label>
+                    </div>
+                    <div class="col-6">
+                      <input type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_mo, 2, '.', ',')}}">
+                    </div>
+                  </div>
+                  <div class="form-row d-flex align-items-center mb-2">
+                    <div class="col-6">
+                      <label class="text-dark font-weight-bold" for="">Total</label>
+                    </div>
+                    <div class="col-6">
+                      <input id="total_usd_base" type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_usd, 2, '.', ',')}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-7">
+                  <table id="tabla_objetivos" class="table table-striped table-condensed">
+                    <thead class="bg-dark text-white">
+                      <tr>
+                        <th colspan="2">OBJETIVOS DEL PROYECTO (USD)</th>
+                        <th>%</th>
+                        <th></th>
+                      </tr>
+                      <tbody>
+                        <tr>
+                          <td>Utilidad Mensual</td>
+                          <td><span id="utilidad_mensual">0.0</span> </td>
+                          <td> <span id="utilidad_mensual_percent">0</span>%</td>
+                          <td></td>
+                        </tr>
+                        <tr class="text-primary">
+                          <td>Utilidad Proyecto!!</td>
+                          <td><span id="utilidad_proyecto">0.0</span> </td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr class="text-primary">
+                          <td>VTC!!</td>
+                          <td><span id="vtc">0.0</span> </td>
+                          <td><span id="vtc_percent">0</span>% </td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Renta Mensual / Inversión</td>
+                          <td></td>
+                          <td><span id="renta_mensual_inversion">0</span>%</td>
+                          <td id="renta_mensual_inversion_icon"></td>
+                        </tr>
+                        <tr>
+                          <td>% Utilidad / Inversión</td>
+                          <td></td>
+                          <td> <span id="utilidad_inversion">0</span>% </td>
+                          <td id="utilidad_inversion_icon"></td>
+                        </tr>
+                        <tr>
+                          <td>% Utilidad / Renta</td>
+                          <td></td>
+                          <td> <span id="utilidad_renta">0</span>% </td>
+                          <td id="utilidad_renta_icon"></td>
+                        </tr>
+                        <tr>
+                          <td>TIR</td>
+                          <td></td>
+                          <td><span id="tir">0.0</span>%</td>
+                          <td id="tir_icon"></td>
+                        </tr>
+                        <tr>
+                          <td>Utilidad a 3 años</td>
+                          <td><span id="utilidad_3_anios">0.0</span> </td>
+                          <td><span id="utilidad_3_anios_percent">0</span> (MIN)</td>
+                          <td id="utilidad_3_anios_percent_icon"></td>
+                        </tr>
+                        <tr>
+                          <td>Tiempo de retorno</td>
+                          <td><span id="tiempo_retorno">0.0</span> </td>
+                          <td> </td>
+                          <td id="tiempo_retorno_icon"></td>
+                        </tr>
+                      </tbody>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row" id="validation">
           <div class="col-12">
             <div class="card">
@@ -198,7 +322,7 @@
                               <label for="">VTC (USD)</label>
                             </div>
                             <div class="col-8">
-                              <input id="vtc" name="vtc" disabled type="text" class="form-control form-control-sm" value="{{$vtc}}">
+                              <input id="vtc_cotizador" name="vtc_cotizador" disabled type="text" class="form-control form-control-sm" value="{{$vtc}}">
                             </div>
                           </div>
                           <div class="form-row d-flex align-items-center mb-2">
@@ -270,9 +394,13 @@
                             </div>
                             <div class="col-8">
                               <select id="tipo_adquisicion" name="tipo_adquisicion" type="text" class="form-control form-control-sm">
-                                <option value="">Elegir</option>
-                                <option value="Venta directa">Venta directa</option>
-                                <option value="Arrendamiento">Arrendamiento</option>
+                                @foreach ($adquisition as $adquisition_data)
+                                  @if($adquisition_data->id == $kickoff_contrato->tipo_adquisicion)
+                                    <option selected value="{{$adquisition_data->id}}">{{$adquisition_data->name}}</option>
+                                  @else
+                                    <option value="{{$adquisition_data->id}}">{{$adquisition_data->name}}</option>
+                                  @endif
+                                @endforeach
                               </select>
                             </div>
                           </div>
@@ -282,10 +410,13 @@
                             </div>
                             <div class="col-8">
                               <select id="tipo_pago" name="tipo_pago" type="text" class="form-control form-control-sm">
-                                <option value="">Elegir</option>
-                                <option value="Transferencia">Transferencia</option>
-                                <option value="Efectivo">Efectivo</option>
-                                <option value="Contado">Contado</option>
+                                @foreach ($payments as $payments_data)
+                                  @if($payments_data->id == $kickoff_contrato->tipo_pago)
+                                    <option selected value="{{$payments_data->id}}">{{$payments_data->name}}</option>
+                                  @else
+                                    <option value="{{$payments_data->id}}">{{$payments_data->name}}</option>
+                                  @endif
+                                @endforeach
                               </select>
                             </div>
                           </div>
@@ -300,13 +431,18 @@
                             </div>
                             <div class="col-8">
                               <select id="vendedor" name="vendedor" type="text" class="form-control form-control-sm">
-                                <option value="4">Sin asignar</option>
-                                <option value="387">Betzabe Pagaza</option>
-                                <option value="386">Bruno Reyes</option>
-                                <option value="17">Carlos Mata</option>
-                                <option value="379">Estrella Esquivel</option>
-                                <option value="385">Martha Brito</option>
-                                <option value="92">Omar López</option>
+                                @if($kickoff_contrato->vendedor == 4)
+                                  <option selected value="4">Sin asignar</option>
+                                @else
+                                  <option value="4">Sin asignar</option>
+                                @endif
+                                @foreach ($vendedores as $vendedor)
+                                  @if($vendedor->user_id == $kickoff_contrato->vendedor)
+                                    <option selected value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
+                                  @else
+                                    <option value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
+                                  @endif
+                                @endforeach
                               </select>
                             </div>
                           </div>
@@ -316,11 +452,18 @@
                             </div>
                             <div class="col-8">
                               <select id="inside_sales" name="inside_sales" type="text" class="form-control form-control-sm">
-                                <option value="4">Sin asignar</option>
-                                <option value="79">Jaqueline Ramírez</option>
-                                <option value="78">Jessica González</option>
-                                <option value="310">Roberto Gómez</option>
-                                <option value="56">Paola Ku</option>
+                                @if($kickoff_contrato->inside_sales == 4)
+                                  <option selected value="4">Sin asignar</option>
+                                @else
+                                  <option value="4">Sin asignar</option>
+                                @endif
+                                @foreach ($inside_sales as $inside_sales_data)
+                                  @if($inside_sales_data->user_id == $kickoff_contrato->inside_sales)
+                                    <option selected value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
+                                  @else
+                                    <option value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
+                                  @endif
+                                @endforeach
                               </select>
                             </div>
                           </div>
@@ -337,7 +480,7 @@
                               <label  for="">Cierre</label>
                             </div>
                             <div class="col-8">
-                              <input id="cierre" name="cierre" type="text" class="form-control form-control-sm">
+                              <input id="cierre" name="cierre" value="{{ $kickoff_contrato->cierre }}" type="text" class="form-control form-control-sm">
                             </div>
                           </div>
                         </div>
@@ -371,7 +514,7 @@
                           <label for="">Cantidad de Antenas</label>
                         </div>
                         <div class="col-6">
-                          <input readonly type="text" class="form-control form-control-sm">
+                          <input readonly type="text" class="form-control form-control-sm" value="{{$num_aps["total"]}}">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -379,7 +522,7 @@
                           <label for="">Internas</label>
                         </div>
                         <div class="col-6">
-                          <input readonly type="text" class="form-control form-control-sm">
+                          <input readonly type="text" class="form-control form-control-sm" value="{{$num_aps["api"]}}">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -387,7 +530,7 @@
                           <label readonly for="">Externas</label>
                         </div>
                         <div class="col-6">
-                          <input readonly type="text" class="form-control form-control-sm">
+                          <input readonly type="text" class="form-control form-control-sm" value="{{$num_aps["ape"]}}">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -656,6 +799,11 @@
                             <input type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="${{number_format($document[0]->total_usd, 2, '.', ',')}}">
                           </div>
                         </div>
+                        <div class="form-row d-flex">
+                          <div class="col-12">
+                            <button onclick="show_linea_base()" class="btn btn-danger btn-block" type="button" name="button"> <i class="fas fa-chart-line"></i> Ver Linea Base</button>
+                          </div>
+                        </div>
                     </div>
                     <div class="col-12 col-md-4 p-2">
                         <div class="form-row d-flex align-items-center mb-2">
@@ -806,7 +954,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View Edit Document P') )
+  @if( auth()->user()->can('View history quoting') )
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script src="{{ asset('/plugins/momentupdate/moment-with-locales.js')}}"></script>
@@ -826,17 +974,8 @@
     @include('default.denied')
   @endif
   <script type="text/javascript" src="{{asset('js/admin/quoting/kickoff.js')}}"></script>
-  {{-- @if( auth()->user()->can('View level zero documentp notification') )
-    <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_itc.js?v=1.0.2')}}"></script>
-  @elseif ( auth()->user()->can('View level one documentp notification') )
-    <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=1.0.2')}}"></script>
-  @elseif ( auth()->user()->can('View level two documentp notification') )
-    <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=1.0.2')}}"></script>
-  @elseif ( auth()->user()->can('View level three documentp notification') )
-    <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=1.0.2')}}"></script>
-  @else
-    @include('default.denied')
-  @endif --}}
+  <script type="text/javascript" src="{{asset('js/admin/quoting/modal_linea_base.js')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/documentp/request_modal_documentp.js')}}"></script>
   <style media="screen">
 
   input[type="checkbox"]:disabled {
@@ -848,7 +987,10 @@
     form label{
       margin-bottom: 0 !important;
       font-size: 0.85rem;
-      color:
+    }
+
+    select{
+      color: #535352 !important;
     }
 
     .form-control-sm{
@@ -859,6 +1001,10 @@
       background: #0686CC;
       color: white;
       font-weight: bold;
+    }
+
+    #tabla_objetivos th, #tabla_objetivos td{
+      padding: 0.2rem 1.2rem;
     }
   </style>
 @endpush

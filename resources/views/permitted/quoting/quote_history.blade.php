@@ -1,16 +1,16 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{-- @if( auth()->user()->can('View cover') )
-    {{ trans('message.breadcrumb_document_create') }}
+  @if( auth()->user()->can('View history quoting') )
+    Historial de cotizaciones
   @else
     {{ trans('message.denied') }}
-  @endif --}}
-  Historial de cotizaciones
+  @endif
+
 @endsection
 
 @section('breadcrumb_title')
-   @if( auth()->user()->can('View Document P') )
+   @if( auth()->user()->can('View history quoting') )
     Historial de cotizaciones
     @else
       {{ trans('message.denied') }}

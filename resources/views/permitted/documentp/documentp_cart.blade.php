@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View cover') )
+  @if( auth()->user()->can('View Document P') )
     {{ trans('message.breadcrumb_document_create') }}
   @else
     {{ trans('message.denied') }}

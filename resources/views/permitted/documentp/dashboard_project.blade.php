@@ -1,25 +1,24 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  Dashboard de proyectos
-  {{-- @if( auth()->user()->can('View projects docp') )
-    Avance de proyectos
+  @if( auth()->user()->can('View dashboard project') )
+    Dashboard de proyectos
   @else
-    {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+    {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-   {{-- @if( auth()->user()->can('View projects docp') )
-    Avance de proyectos
-    @else
+  @if( auth()->user()->can('View dashboard project') )
+    Dashboard de proyectos
+  @else
       {{ trans('message.denied') }}
-    @endif --}}
+  @endif
 @endsection
 
 @section('content')
 
-  @if( auth()->user()->can('View projects docp') )
+  @if( auth()->user()->can('View dashboard project') )
 
       <div class="row">
         <div class="col-12 card">
@@ -188,41 +187,11 @@
               <div class="row">
                 <div class="container-box col-md-2">
                   <div class="icon_head_dash">
-                    <i class="fa fa-usd text-success" aria-hidden="true"></i>
-                  </div>
-                  <div class="info_head_dash">
-                    <p class="text-default">Total USD</p>
-                    <h4><strong>{{number_format($status_compras[2]->Total_autorizado, 2, '.', ',')}}</strong></h4>
-                  </div>
-                </div>
-
-                <div class="container-box col-md-2">
-                  <div class="icon_head_dash">
                     <i class="fa fa-hashtag text-danger" aria-hidden="true"></i>
                   </div>
                   <div class="info_head_dash">
                     <p class="text-default">Total</p>
-                    <h4><strong>{{ $status_compras[2]->Total_solicitudes }}</strong></h4>
-                  </div>
-                </div>
-
-                <div class="container-box col-md-2">
-                  <div class="icon_head_dash">
-                    <i class="fas fa-check-square text-success"></i>
-                  </div>
-                  <div class="info_head_dash">
-                    <p class="text-default">Autorizado</p>
-                    <h4><strong>{{ $status_compras[2]->Autorizado }}</strong></h4>
-                  </div>
-                </div>
-
-                <div class="container-box col-md-2">
-                  <div class="icon_head_dash">
-                    <i class="fa fa-paper-plane text-primary" aria-hidden="true"></i>
-                  </div>
-                  <div class="info_head_dash">
-                    <p class="text-default">Entregado</p>
-                    <h4><strong>{{ $status_compras[2]->Entregado}}</strong></h4>
+                    <h4><strong>{{ $status_compras[2]->Revisado +  $status_compras[2]->Nuevo}}</strong></h4>
                   </div>
                 </div>
                 <div class="container-box col-md-2">
@@ -230,11 +199,10 @@
                     <i class="fa fa-eye text-warning" aria-hidden="true"></i>
                   </div>
                   <div class="info_head_dash">
-                    <p class="text-default">Revisado</p>
+                    <p class="text-default">En revisión</p>
                     <h4><strong>{{ $status_compras[2]->Revisado}}</strong></h4>
                   </div>
                 </div>
-
                 <div class="container-box col-md-2">
                   <div class="icon_head_dash">
                     <i class="fa fa-plus-square text-info" aria-hidden="true"></i>
@@ -542,7 +510,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View projects docp') )
+  @if( auth()->user()->can('View dashboard project') )
     <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />

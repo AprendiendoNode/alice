@@ -553,44 +553,24 @@
                   <tfoot style="font-size:18px;">
                     <tr class="bg-dark" style="color:white;">
                       <td colspan="3" style="font-weight:bold;"></td>
-                      <td class="text-right" colspan="2" style="font-weight:bold;">Costo Real</td>
-                      <td class="text-right" colspan="2" style="font-weight:bold;">Costo Propuesto</td>
+                      <td class="text-right" colspan="2" style="font-weight:bold;"></td>
                       <td colspan="6"></td>
                     </tr>
                     <tr>
-                      <td class="text-left" colspan="2"></td> <td colspan="3" style="font-weight:bold;">Total Equipo Activo:</td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2">$ <span id="total_eqactivo_footer">0.00</span></td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2">$ <span id="total_eqactivo_footer_prop">0.00</span></td>
+                      <td class="text-left" colspan="2"></td> <td colspan="2" style="font-weight:bold;">Total Equipo Activo:</td>
+                      <td class="text-right"  style="font-weight:bold;" colspan="1">$ <span id="total_eqactivo_footer">0.00</span></td>
                     </tr>
                     <tr>
-                      <td class="text-left" colspan="2"></td> <td colspan="3" style="font-weight:bold;">Total Materiales:</td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2">$ <span id="total_materiales_footer">0.00</span></td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2">$ <span id="total_materiales_footer_prop">0.00</span></td>
+                      <td class="text-left" colspan="2"></td> <td colspan="2" style="font-weight:bold;">Total Materiales:</td>
+                      <td class="text-right"  style="font-weight:bold;" colspan="1">$ <span id="total_materiales_footer">0.00</span></td>
                     </tr>
                     <tr>
-                      <td class="text-left" colspan="2"></td> <td colspan="3" style="font-weight:bold;">Total Mano de Obra:</td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2">$ <span id="total_sitwifi_footer">0.00</span></td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2">$ <span id="total_sitwifi_footer_prop">0.00</span></td>
+                      <td class="text-left" colspan="2"></td> <td colspan="2" style="font-weight:bold;">Total Mano de Obra:</td>
+                      <td class="text-right"  style="font-weight:bold;" colspan="1">$ <span id="total_sitwifi_footer">0.00</span></td>
                     </tr>
                     <tr>
-                      <td class="text-left" colspan="2"></td> <td colspan="3" style="font-weight:bold;">Viaticos:</td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2">$ <span id="total_viaticos">0.00</span></td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2"> <span id="total_viaticos_prop"> - </span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-left" colspan="2"></td> <td colspan="3" style="font-weight:bold;">CAPEX:</td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2">$ <span id="total_capex">0.00</span></td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2"> <span id="total_capex_prop"> - </span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-left" colspan="2"></td> <td colspan="3" style="font-weight:bold;">Renta Anticipada:</td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2">$ <span id="total_renta">0.00</span></td>
-                      <td class="text-right"  style="font-weight:bold;" colspan="2"><span id="total_renta_prop"> - </span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-left" colspan="2"></td> <td colspan="3" style="font-weight:bold;">Total:</td>
-                      <td class="text-danger text-right" style="font-weight:bold;" colspan="2">$<span id="total_global">0.00</span></td>
-                      <td class="text-danger text-right" style="font-weight:bold;" colspan="2">$<span id="total_global_prop">0.00</span></td>
+                      <td class="text-left" colspan="2"></td> <td colspan="2" style="font-weight:bold;">Total:</td>
+                      <td class="text-danger text-right" style="font-weight:bold;" colspan="1">$<span id="total_global">0.00</span></td>
                     </tr>
                   </tfoot>
                 </table>

@@ -106,13 +106,13 @@
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
-                  <label class="text-dark" for="reviso">Revisó: </label>
+                  <label class="text-dark" id="label_reviso" for="reviso">Revisó: </label>
                   <p class="form-control-static" id="reviso"></p>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <label class="text-dark" for="autorizo">Autorizó: </label>
+                  <label class="text-dark" id="label_autorizo" for="autorizo">Autorizó: </label>
                   <p class="form-control-static" id="autorizo"></p>
                 </div>
               </div>

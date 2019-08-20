@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Projects\Documentp_status_user;
-use App\Models\Projects\{Documentp, Documentp_cart, In_Documentp_cart, Cotizador};
+use App\Models\Projects\{Documentp, Documentp_cart, In_Documentp_cart, Cotizador, Cotizador_gastos};
 use App\Models\Projects\{Kickoff_approvals, Kickoff_compras, Kickoff_contrato, Kickoff_instalaciones, Kickoff_lineabase, Kickoff_perfil_cliente, Kickoff_project, Kickoff_soporte};
 use App\Mail\SolicitudCompra;
 use App\Models\Base\Message;
@@ -28,17 +28,26 @@ class KickoffController extends Controller
 
       $documentP = Documentp::find($id);
       $id_document = $documentP->id;
-
       $in_document_cart = In_Documentp_cart::where('documentp_cart_id', $document[0]->documentp_cart_id)->first();
+
       $tipo_cambio = $in_document_cart->tipo_cambio;
       $installation = DB::table('documentp_installation')->select('id', 'name')->get();
+      $adquisition = DB::table('documentp_adquisition')->select('id', 'name')->get();
+      $payments = DB::table('payment_ways')->whereIn('id', [1, 3, 22])->get();
+      $vendedores = DB::select(' CALL px_usersXdepto(?)', array(5));
+      $inside_sales = DB::select(' CALL px_usersXdepto(?)', array(6));
 
       $vtc = "Proyecto sin cotizador";
+      $total_gasto = 0;
       $cotizador = DB::table('cotizador')->select('id', 'id_doc')->where('id_doc', $document[0]->id)->get();
+
+      $num_aps = $this->get_num_aps($document[0]->documentp_cart_id);
 
       if(count($cotizador) == 1) {
         $objetivos = DB::table('cotizador_objetivos')->select()->where('cotizador_id', $cotizador[0]->id)->get();
+        $gastos_mensuales = Cotizador_gastos::findOrFail(['cotizador_id' => $cotizador[0]->id]);
         $vtc = $objetivos[0]->vtc;
+        $total_gasto = $gastos_mensuales[0]->total_gasto_mensual;
       }
       //KICKOFF DATA
       $kickoff = Kickoff_project::firstOrCreate(['id_doc' => $id_document]);
@@ -49,9 +58,35 @@ class KickoffController extends Controller
       $kickoff_lineabase = Kickoff_lineabase::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $kickoff_perfil_cliente = Kickoff_perfil_cliente::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $kickoff_soporte = Kickoff_soporte::firstOrCreate(['kickoff_id' => $kickoff->id]);
-      //dd($kickoff_contrato);
-      return view('permitted.planning.kick_off_edit', compact('document','installation' ,'tipo_cambio', 'vtc', 'kickoff_approvals',
-                  'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte' ));
+
+      return view('permitted.planning.kick_off_edit', compact('document','installation', 'adquisition','inside_sales' ,'vendedores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals',
+                  'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte', 'total_gasto' ));
+    }
+
+    public function get_num_aps($cart_id)
+    {
+      $cart_products = DB::select('CALL px_docupentop_materialesXcarrito(?)' , array($cart_id));
+      $collection_cart = collect($cart_products);
+      $equipo_activo = $collection_cart->whereIn('categoria_id', [4, 6, 14]);
+      $api = 0;
+      $ape = 0;
+      $aps = 0;
+      foreach ($equipo_activo as $product)
+      {
+        if(substr($product->code, 0, 3) == "API"){
+          $api+=$product->cantidad;
+        }elseif (substr($product->code, 0, 3) == "APE") {
+          $ape+=$product->cantidad;
+        }
+      }
+      $aps = $api + $ape;
+      $num_aps = array(
+        'total' => $aps,
+        'api' => $api,
+        'ape' => $ape
+      );
+
+      return $num_aps;
     }
 
     public function update(Request $request)

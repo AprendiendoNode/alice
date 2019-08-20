@@ -126,7 +126,7 @@ var Configuration_table_responsive_documentp= {
             },
             {
               "targets": 9,
-              "width": "1%",
+              "width": "2%",
               "className": "text-center actions-button cell-large",
             }
         ],

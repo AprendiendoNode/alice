@@ -10,7 +10,7 @@
           @forelse (auth()->user()->menus->groupBy('section_id') as $menu)
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#{{ App\Section::find($menu[0]->section_id)->display_name }}" aria-expanded="false" aria-controls="{{ App\Section::find($menu[0]->section_id)->display_name }}">
-              <i class="mdi mdi-equal-box menu-icon"></i>
+              <i class="{{ App\Section::find($menu[0]->section_id)->icons }} menu-icon mr-2"></i>
               <span class="menu-title">{{ App\Section::find($menu[0]->section_id)->display_name }}</span>
               <i class="menu-arrow"></i>
             </a>

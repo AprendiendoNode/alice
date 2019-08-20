@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View cover') )
-    {{ trans('message.breadcrumb_document_create') }}
+  @if( auth()->user()->can('View Edit Document P') )
+    Editar documento
   @else
     {{ trans('message.denied') }}
   @endif
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View Document P') )
+  @if( auth()->user()->can('View Edit Document P') )
     {{ trans('message.document_create') }}
   @else
     {{ trans('message.denied') }}

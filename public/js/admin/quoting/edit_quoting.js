@@ -538,7 +538,6 @@ function eliminarProductoLocalStorage(producto){
 
     localStorage.setItem('productos', JSON.stringify(productosLS));
     sumaTotales();
-    calcular_costo_propuesto();
 }
 
 function calcular_costo_propuesto(){
@@ -631,7 +630,6 @@ $(".validation-wizard-master").steps({
         var productos = obtenerProductosLocalStorage();
         generate_table_products(productos);
         update_mano_de_obra();
-        calcular_costo_propuesto();
       }
 
       return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form_master.find(".body:eq(" + newIndex + ") label.error").remove(), form_master.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form_master.validate().settings.ignore = ":disabled,:hidden", form_master.valid())

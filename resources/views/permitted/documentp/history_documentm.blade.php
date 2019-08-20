@@ -307,7 +307,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View History to Document P') )
+  @if( auth()->user()->can('View History  Document M') )
     <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
