@@ -1,0 +1,22 @@
+<?php
+return [
+    'sol_a' => "Solicitudes nuevas",
+    'sol_b' => "Solicitudes Revisadas",
+    'sol_c' => "Solicitudes Autorizadas",
+    'sol_d' => "Solicitudes Pagadas",
+    'sol_e' => "Solicitudes Denegadas",
+    'sol_f' => "Total de Solicitudes",
+    'sol_g' => "Solicitudes Programadas",
+    '' => "",
+    '' => "",
+    '' => "",
+    '' => "",
+    '' => "",
+    '' => "",
+    '' => "",
+    '' => "",
+    '' => "",
+    '' => "",
+    '' => "",
+    '' => "",
+];

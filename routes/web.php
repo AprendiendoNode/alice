@@ -464,6 +464,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/getTableProvider', 'Equipments\ProviderController@getTableProviders');
     Route::post('/delete_provider', 'Equipments\ProviderController@deleteprov');
 
+    //- Dashboard pagos
+    Route::get('/view_dashboard_req_pay', 'Payments\DashboardPayController@index');
+    Route::post('/search_data_payment_genral' , 'Payments\DashboardPayController@data_header');
+    //Route::post('/search_data_payment_applicat' , 'Payments\DashboardPayController@data_application');
+    Route::post('/search_data_payment_waypay' , 'Payments\DashboardPayController@data_waypay');
+    Route::post('/search_data_payment_current' , 'Payments\DashboardPayController@data_current');
+    //Route::post('/search_data_payment_classifications' , 'Payments\DashboardPayController@data_classifications');
+    //Route::post('/search_data_payment_options' , 'Payments\DashboardPayController@data_options');
+    Route::post('/search_data_payment_six_months' , 'Payments\DashboardPayController@data_month');
+
     //Solicitud de pagos
     Route::get('/view_add_req_pay', 'Payments\PayAddController@index3');
     Route::post('/get_hotel_cadena', 'Payments\PayAddController@hotel_cadena');
@@ -625,14 +635,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cxc_mont_cob', 'Contracts\ContractCobController@monto_cob');
     Route::post('/recordmens_cobs_all', 'Contracts\ContractCobController@tabla_cobs_all');
     Route::post('/recordmens_cobs_date', 'Contracts\ContractCobController@tabla_cobs_date');
-    // Encuestas hoteles
-    Route::get('/view_dashboard_survey','Survey\DashboardSurveyController@index');
-    Route::post('/get_dashboard_survey','Survey\DashboardSurveyController@get_headers_survey');
-    Route::post('/add_hotel_survey','Survey\DashboardSurveyController@create_hotel_survey');
-    Route::post('/get_dashboard_surveydinamic','Survey\ResultsSurveyController@get_headers_graf');
-    Route::post('/get_pregunta_abierta','Survey\ResultsSurveyController@pregunta_abierta');
-    Route::post('/get_pregunta_multiple','Survey\ResultsSurveyController@pregunta_multiple');
-    Route::post('/get_header_option','Survey\ResultsSurveyController@name_option');
+
 });
 
 
