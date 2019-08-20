@@ -466,6 +466,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/provider', 'Equipments\ProviderController@index');
     Route::post('/getTableProvider', 'Equipments\ProviderController@getTableProviders');
     Route::post('/delete_provider', 'Equipments\ProviderController@deleteprov');
+    Route::post('/show_updateinfo', 'Equipments\ProviderController@showUpdate');
+    Route::post('/update_provider', 'Equipments\ProviderController@updateprov');
 
     //- Dashboard pagos
     Route::get('/view_dashboard_req_pay', 'Payments\DashboardPayController@index');

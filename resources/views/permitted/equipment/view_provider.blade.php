@@ -30,11 +30,11 @@
         <div class="modal-dialog" >
           <div class="modal-content">
             <div class="modal-header">
+              <h4 class="modal-title"><i class="far fa-id-card" style="margin-right: 4px;"></i>{{ trans('message.title_provider') }}</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title"><i class="fa fa-id-card-o" style="margin-right: 4px;"></i>{{ trans('message.title_provider') }}</h4>
             </div>
             <div class="modal-body">
-              <div class="card-body table-responsive">
+              <div class="card table-responsive">
                 <div class="card-body">
                   <div class="row">
                   @if( auth()->user()->can('Create provider') )
@@ -42,13 +42,13 @@
                       <form id="reg_provider" name="reg_provider"  class="form-horizontal" action="">
                         {{ csrf_field() }}
                         <div class="input-group">
-                          <span class="input-group-addon">RFC <i class="glyphicon glyphicon-asteris text-danger">*</i></span>
+                          <span class="input-group-addon">RFC <i class="glyphicon glyphicon-asteris text-danger pr-2">*</i></span>
                           <input id="provider_rfc" name="provider_rfc" type="text" class="form-control" placeholder="RFC" maxlength="500" title=""/>
                         </div>
                         <br>
 
                         <div class="input-group">
-                          <span class="input-group-addon">Razón social (Nombre) <i class="glyphicon glyphicon-asteris text-danger">*</i></span>
+                          <span class="input-group-addon">Razón social (Nombre) <i class="glyphicon glyphicon-asteris text-danger pr-2">*</i></span>
                           <input id="provider_name" name="provider_name"  type="text" class="form-control" placeholder="" >
                         </div>
                         <br>
@@ -56,7 +56,7 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="input-group">
-                              <span class="input-group-addon">Régimen fiscal <i class="glyphicon glyphicon-asteris text-danger"></i></span>
+                              <span class="input-group-addon">Régimen fiscal <i class="glyphicon glyphicon-asteris text-danger pr-2"></i></span>
                               <select id="provider_tf" name="provider_tf" class="form-control">
                                 <option value="">Elija...</option>
                                 <option value="1">Persona Fisica</option>
@@ -66,7 +66,7 @@
                           </div>
                           <div class="col-lg-6">
                             <div class="input-group">
-                              <span class="input-group-addon">Delegación o Municipio</span>
+                              <span class="input-group-addon pr-2">Delegación o Municipio</span>
                               <input id="provider_municipality" name="provider_municipality"  type="text" class="form-control" placeholder="">
                             </div>
                           </div>
@@ -74,7 +74,7 @@
 
                         <br>
                         <div class="input-group">
-                          <span class="input-group-addon">Dirección <i class="glyphicon glyphicon-asteris text-danger"></i></span>
+                          <span class="input-group-addon">Dirección <i class="glyphicon glyphicon-asteris text-danger pr-2"></i></span>
                           <input id="provider_address" name="provider_address"  type="text" class="form-control" placeholder="">
                         </div>
                         <br>
@@ -82,13 +82,13 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="input-group">
-                              <span class="input-group-addon">Estado <i class="glyphicon glyphicon-asteris text-danger"></i></span>
+                              <span class="input-group-addon">Estado <i class="glyphicon glyphicon-asteris text-danger pr-2"></i></span>
                               <input id="provider_estate" name="provider_estate"  type="text" class="form-control" placeholder="">
                             </div>
                           </div>
                           <div class="col-lg-6">
                             <div class="input-group">
-                              <span class="input-group-addon">País</span>
+                              <span class="input-group-addon pr-2">País</span>
                               <input id="provider_country" name="provider_country"  type="text" class="form-control" placeholder="">
                             </div>
                           </div>
@@ -98,13 +98,13 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="input-group">
-                              <span class="input-group-addon">C.P <i class="glyphicon glyphicon-asteris text-danger">*</i></span>
+                              <span class="input-group-addon">C.P <i class="glyphicon glyphicon-asteris text-danger pr-2">*</i></span>
                               <input id="provider_postcode" name="provider_postcode"  type="text" class="form-control" placeholder="">
                             </div>
                           </div>
                           <div class="col-lg-6">
                             <div class="input-group">
-                              <span class="input-group-addon">Telefono</span>
+                              <span class="input-group-addon pr-2">Telefono</span>
                               <input id="provider_phone" name="provider_phone"  type="text" class="form-control" placeholder="">
                             </div>
                           </div>
@@ -114,13 +114,13 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="input-group">
-                              <span class="input-group-addon">Fax</span>
+                              <span class="input-group-addon pr-2">Fax</span>
                               <input id="provider_fax" name="provider_fax"  type="text" class="form-control" placeholder="">
                             </div>
                           </div>
                           <div class="col-lg-6">
                             <div class="input-group">
-                              <span class="input-group-addon">Email</span>
+                              <span class="input-group-addon pr-2">Email</span>
                               <input id="provider_email" name="provider_email"  type="text" class="form-control" placeholder="">
                             </div>
                           </div>
@@ -129,13 +129,13 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="input-group">
-                              <span class="input-group-addon">Nombre</span>
+                              <span class="input-group-addon pr-2">Nombre</span>
                               <input id="agent_name" name="agent_name" type="text" class="form-control" placeholder="">
                             </div>
                           </div>
                           <div class="col-lg-6">
                             <div class="input-group">
-                              <span class="input-group-addon">Telefono</span>
+                              <span class="input-group-addon pr-2">Telefono</span>
                               <input id="agent_phone" name="agent_phone" type="text" class="form-control" placeholder="">
                             </div>
                           </div>
@@ -153,7 +153,7 @@
             </div>
             <div class="modal-footer">
               @if( auth()->user()->can('Create provider') )
-                <button type="button" class="btn bg-navy create_provider"><i class="fa fa-plus-square-o" style="margin-right: 4px;"></i>{{ trans('message.create') }}</button>
+                <button type="button" class="btn btn-secondary create_provider"><i class="fas fa-plus-square" style="margin-right: 4px;"></i>{{ trans('message.create') }}</button>
               @endif
               <button type="button" class="btn btn-danger delete_provider" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
             </div>
@@ -165,8 +165,8 @@
         <div class="modal-dialog" >
           <div class="modal-content">
             <div class="modal-header">
+              <h4 class="modal-title"><i class="far fa-id-card" style="margin-right: 4px;"></i>{{ trans('message.edit') }}</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title"><i class="fa fa-id-card-o" style="margin-right: 4px;"></i>{{ trans('message.edit') }}</h4>
             </div>
             <div class="modal-body">
               <div class="card-body table-responsive">
@@ -178,13 +178,13 @@
                           {{ csrf_field() }}
                            <input id='rec_provider' name='rec_provider' type="hidden" class="form-control" placeholder="">
                            <div class="input-group">
-                             <span class="input-group-addon">RFC <i class="glyphicon glyphicon-asteris text-danger">*</i></span>
+                             <span class="input-group-addon">RFC <i class="glyphicon glyphicon-asteris text-danger pr-2">*</i></span>
                              <input name="provider_rfc1" id="provider_rfc1" type="text" class="form-control" placeholder="RFC">
                            </div>
                            <br>
 
                            <div class="input-group">
-                             <span class="input-group-addon">Razón social (Nombre) <i class="glyphicon glyphicon-asteris text-danger">*</i></span>
+                             <span class="input-group-addon">Razón social (Nombre) <i class="glyphicon glyphicon-asteris text-danger pr-2">*</i></span>
                              <input name="provider_name1" id="provider_name1" type="text" class="form-control" placeholder="">
                            </div>
                            <br>
@@ -192,7 +192,7 @@
                            <div class="row">
                              <div class="col-lg-6">
                                <div class="input-group">
-                                 <span class="input-group-addon">Tipo fiscal<i class="glyphicon glyphicon-asteris text-danger"></i></span>
+                                 <span class="input-group-addon">Tipo fiscal<i class="glyphicon glyphicon-asteris text-danger pr-2"></i></span>
                                   <select id="provider_tf" name="provider_tf" class="form-control">
                                     <option value="">Elija...</option>
                                     <option value="1">Persona Fisica</option>
@@ -202,7 +202,7 @@
                              </div>
                              <div class="col-lg-6">
                                <div class="input-group">
-                                 <span class="input-group-addon">Delegación o Municipio</span>
+                                 <span class="input-group-addon pr-2">Delegación o Municipio</span>
                                  <input name="provider_municipality1" id="provider_municipality1" type="text" class="form-control" placeholder="">
                                </div>
                              </div>
@@ -210,7 +210,7 @@
 
                            <br>
                            <div class="input-group">
-                             <span class="input-group-addon">Dirección <i class="glyphicon glyphicon-asteris text-danger"></i></span>
+                             <span class="input-group-addon">Dirección <i class="glyphicon glyphicon-asteris text-danger pr-2"></i></span>
                              <input name="provider_address1" id="provider_address1" type="text" class="form-control" placeholder="">
                            </div>
                            <br>
@@ -218,13 +218,13 @@
                            <div class="row">
                              <div class="col-lg-6">
                                <div class="input-group">
-                                 <span class="input-group-addon">Estado <i class="glyphicon glyphicon-asteris text-danger"></i></span>
+                                 <span class="input-group-addon">Estado <i class="glyphicon glyphicon-asteris text-danger pr-2"></i></span>
                                  <input name="provider_estate1" id="provider_estate1" type="text" class="form-control" placeholder="">
                                </div>
                              </div>
                              <div class="col-lg-6">
                                <div class="input-group">
-                                 <span class="input-group-addon">País <i class="glyphicon glyphicon-asteris text-danger"></i></span>
+                                 <span class="input-group-addon">País <i class="glyphicon glyphicon-asteris text-danger pr-2"></i></span>
                                  <input name="provider_country1" id="provider_country1" type="text" class="form-control" placeholder="">
                                </div>
                              </div>
@@ -234,13 +234,13 @@
                            <div class="row">
                              <div class="col-lg-6">
                                <div class="input-group">
-                                 <span class="input-group-addon">C.P <i class="glyphicon glyphicon-asteris text-danger">*</i></span>
+                                 <span class="input-group-addon">C.P <i class="glyphicon glyphicon-asteris text-danger pr-2">*</i></span>
                                  <input name="provider_postcode1" id="provider_postcode1" type="text" class="form-control" placeholder="">
                                </div>
                              </div>
                              <div class="col-lg-6">
                                <div class="input-group">
-                                 <span class="input-group-addon">Telefono</span>
+                                 <span class="input-group-addon pr-2">Telefono</span>
                                  <input name="provider_phone1" id="provider_phone1" type="text" class="form-control" placeholder="">
                                </div>
                              </div>
@@ -250,13 +250,13 @@
                            <div class="row">
                              <div class="col-lg-6">
                                <div class="input-group">
-                                 <span class="input-group-addon">Fax</span>
+                                 <span class="input-group-addon pr-2">Fax</span>
                                  <input name="provider_fax1" id="provider_fax1" type="text" class="form-control" placeholder="">
                                </div>
                              </div>
                              <div class="col-lg-6">
                                <div class="input-group">
-                                 <span class="input-group-addon">Email</span>
+                                 <span class="input-group-addon pr-2">Email</span>
                                  <input name="provider_email1" id="provider_email1"  type="text" class="form-control" placeholder="">
                                </div>
                              </div>
@@ -265,13 +265,13 @@
                            <div class="row">
                              <div class="col-lg-6">
                                <div class="input-group">
-                                 <span class="input-group-addon">Nombre</span>
+                                 <span class="input-group-addon pr-2">Nombre</span>
                                  <input name="agent_name1" id="agent_name1" type="text" class="form-control" placeholder="">
                                </div>
                              </div>
                              <div class="col-lg-6">
                                <div class="input-group">
-                                 <span class="input-group-addon">Telefono</span>
+                                 <span class="input-group-addon pr-2">Telefono</span>
                                  <input name="agent_phone1" id="agent_phone1" type="text" class="form-control" placeholder="">
                                </div>
                              </div>
@@ -289,7 +289,7 @@
             </div>
             <div class="modal-footer">
               @if( auth()->user()->can('Edit provider') )
-                <button type="button" class="btn bg-navy update_data"><i class="fas fa-pencil-alt" style="margin-right: 4px;"></i>{{ trans('message.actualizar') }}</button>
+                <button type="button" class="btn btn-secondary update_data"><i class="fas fa-pencil-alt" style="margin-right: 4px;"></i>{{ trans('message.actualizar') }}</button>
               @endif
               <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
             </div>
@@ -339,8 +339,9 @@
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
               <div class="card">
                 <div class="card-body">
-                  <div class="pull-right">
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add_provider">
+                  <div class="row">
+                    <div class="col-md-9">&nbsp;</div>
+                    <button type="button" class="btn btn-success col-md-3" data-toggle="modal" data-target="#add_provider">
                       <i class="fa fa-plus-square margin-r5"></i> Nuevo Registro
                     </button>
                   </div>
