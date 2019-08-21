@@ -299,12 +299,18 @@ class PayHistoryController extends Controller
 
         $tamanoGeneral = count($result);
         $parametros2 = [];
-
+        DB::table('pay_status_users')->insert([
+          'payment_id'=>$solicitud_id[$i],
+          'user_id'=>$user,
+          'status_id'=>'4',
+          'created_at'=> Carbon::now(),
+          'updated_at'=>Carbon::now()
+        ]);/*
         $new_reg_paym = new Pay_status_user;
         $new_reg_paym->payment_id = $solicitud_id[$i];
         $new_reg_paym->user_id = $user;
         $new_reg_paym->status_id = '4';
-        $new_reg_paym->save();
+        $new_reg_paym->save();*/
         $valor= 'true';
         //  $parametros1 = [
         //    'folio' => $result[0]->folio,
@@ -351,12 +357,18 @@ class PayHistoryController extends Controller
 
         $tamanoGeneral = count($result);
         $parametros2 = [];
-
+        DB::table('pay_status_users')->insert([
+          'payment_id'=>$solicitud_id[$i],
+          'user_id'=>$user,
+          'status_id'=>'4',
+          'created_at'=> Carbon::now(),
+          'updated_at'=>Carbon::now()
+        ]);/*
         $new_reg_paym = new Pay_status_user;
         $new_reg_paym->payment_id = $solicitud_id[$i];
         $new_reg_paym->user_id = $user;
         $new_reg_paym->status_id = '4';
-        $new_reg_paym->save();
+        $new_reg_paym->save();*/
         $valor= 'true';
 
         //  $parametros1 = [
@@ -409,12 +421,18 @@ class PayHistoryController extends Controller
       $user_email = DB::table('users')->select('email')->where('id', $user_sol)->value('email');
       $user_email = trim($user_email);
       $result = DB::select('CALL px_payments_data (?)', array($solicitud_id));
-
+      DB::table('pay_status_users')->insert([
+        'payment_id'=>$solicitud_id,
+        'user_id'=>$user,
+        'status_id'=>'4',
+        'created_at'=> Carbon::now(),
+        'updated_at'=>Carbon::now()
+      ]);/*
       $new_reg_paym = new Pay_status_user;
       $new_reg_paym->payment_id = $solicitud_id;
       $new_reg_paym->user_id = $user;
       $new_reg_paym->status_id = '4';
-      $new_reg_paym->save();
+      $new_reg_paym->save();*/
 
      //  $parametros1 = [
      //    'folio' => $result[0]->folio,
