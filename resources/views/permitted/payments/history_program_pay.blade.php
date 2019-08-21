@@ -23,7 +23,7 @@
           <div class="modal-dialog" >
             <div class="modal-content resetear_style">
               <div class="modal-header">
-                <h4 class="modal-title"><i class="fa fa-calendar-o" style="margin-right: 4px;"></i>Programar pago.</h4>
+                <h4 class="modal-title"><i class="fas fa-calendar-alt" style="margin-right: 4px;"></i>Programar pago.</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               </div>
               <div class="box-body table-responsive">
@@ -77,20 +77,21 @@
                       <option value="2"></option>
                     </select>
                    </div> -->
-                   <div class="col-sm-2">
+                   <div class="col-sm-3">
                      <div class="input-group">
                        <div class="input-group-prepend bg-secondary">
                        </div>
+                       <i class="fas fa-calendar-alt fa-3x"></i>
                        <input id="date_to_search" type="text" class="form-control input-sm "height="50" name="date_to_search">
                      </div>
                    </div>
-                   <div class="col-sm-4">
+                   <div class="col-sm-3">
                      <button id="boton-aplica-filtro" type="button" class="btn btn-sm btn-info filtrarDashboard">
                       <i class="fas fa-filter"></i> Filtrar
                      </button>
                    </div>
 
-                   <div class="col-sm-2"><label class="control-label">Aplicar fecha a todos</label></div>
+                   <div class="col-sm-3"><label for="date_to_program" class="control-label">Aplicar fecha a todos</label></div>
                    <div class="col-sm-3">
                      <div class="input-group">
                        <input id="date_to_program" type="text" class="form-control pickerTab" name="date_to_program">
