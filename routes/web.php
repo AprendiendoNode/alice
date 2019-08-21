@@ -547,6 +547,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/getDataExcel', 'Payments\PayImportController@getDataExcel');
     Route::post('create_pay_import', 'Payments\PayImportController@create_payment_from_excel');
 
+    //- Modulo de definir cuentas por default
+		Route::get('/view_pay_bank', 'Payments\BankAccountsController@index');
+		Route::post('/get_table_bk', 'Payments\BankAccountsController@generate_table');
+    Route::post('/get_provbco_data','Payments\BankAccountsController@get_prov_bco_cta');
+    Route::post('/edit_prov_cta','Payments\BankAccountsController@edit_prov_bco_cta');
+		Route::post('/reasign_cta_bk', 'Payments\BankAccountsController@set_bank');
+
     //Dashboard Contratos
     Route::get('cont_dashboard', 'Contracts\ContratoController@index');
 
