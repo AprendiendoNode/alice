@@ -508,6 +508,10 @@ Route::group(['middleware' => 'auth'], function () {
     //- Pagos Historial N2
     Route::post('/send_item_pay_revised', 'Payments\PayHistoryController@approval_two');
 
+    //- Pagos Historial All
+    Route::get('/view_history_all_req_pay', 'Payments\PayHistoryAllController@index');
+    Route::post('/history_all_filter', 'Payments\PayHistoryAllController@solicitudes_historic');
+
     //Historial Pagos
     Route::post('/cc_account', 'Payments\PayHistoryController@cc_account');
     Route::post('/view_gen_sol_pay', 'Payments\PayHistoryController@data_basic');
