@@ -106,7 +106,7 @@ function payments_table(datajson, table){
     vartable.fnAddData([
       value.factura,
       value.proveedor,
-      '<span class="label label-primary">'+value.estatus+'</span>',
+      '<span class="badge badge-primary">'+value.estatus+'</span>',
       value.monto_str,
       value.elaboro,
       value.fecha_solicitud,

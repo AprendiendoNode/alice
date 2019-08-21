@@ -29,21 +29,20 @@
            <div class="row">
              <form id="search_info" name="search_info" class="form-inline" method="post">
                {{ csrf_field() }}
-               <div class="col-sm-2">
+               <div class="col-md-2">
                  <div class="input-group">
-                   <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                   <span class="input-group-addon"><i class="fas fa-calendar-alt fa-3x"></i></span>
                    <input id="date_to_search" type="text" class="form-control" name="date_to_search">
                  </div>
                </div>
-               <div class="col-sm-2">
+               <div class="col-md-2">
                  <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard">
-                   <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>  Filtrar
+                   <i class="fas fa-filter" aria-hidden="true"></i>  Filtrar
                  </button>
                </div>
 
-                <div class="form-group">
                   <label class="col-md-1 control-label" for="month_upload_band" style="padding-left: 0px;">Periodo: </label>
-                  <div class="col-md-9">
+                  <div class="col-md-5">
                     <div class="input-group input-daterange">
                       <input id="date_start" name="date_start"  type="text" class="form-control" value="">
                       <div class="input-group-addon" style="padding:10px;">a</div>
@@ -52,10 +51,9 @@
                   </div>
                   <div class="col-md-2">
                      <button id="boton-aplica-periodo" type="button" class="btn btn-info filtrarPeriodo">
-                       <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>  Filtrar
+                       <i class="fas fa-filter" aria-hidden="true"></i>  Filtrar
                      </button>
                   </div>
-                </div>
 
              </form>
            </div>

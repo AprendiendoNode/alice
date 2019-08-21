@@ -25,12 +25,11 @@
               <form id="search_info" name="search_info" class="form-inline" method="post">
                 {{ csrf_field() }}
 
-                  <div class="row">
-                    <div class="col-md-2" style="font-size:90% !important;">
+                  <div class="row form-group w-100">
+                    <div class="col-md-3" style="font-size:90% !important;">
                       <label for="" class="control-label" >Buscar por hotel</label>
                     </div>
-                    <div class="col-md-3">
-                      <select class="form-control select2" id="hotel" name="hotel" >
+                      <select class="form-control col-md-6 select2" id="hotel" name="hotel" >
                         <option value="">Elegir</option>
                         @forelse ($cadena as $data_cadena )
                           <option value="{{ $data_cadena->id }}"> {{ $data_cadena->hotel }} </option>
@@ -38,23 +37,19 @@
 
                         @endforelse
                       </select>
-                    </div>
+                      <div class="col-md-3 pl-3">
 
+                        <input class="form-control" list="folios" name="searchFolio" id="searchFolio" placeholder="Buscar por folio">
+                        <datalist id="folios" name="folios" class="">
+                          @forelse ($folio as $data_folio )
+                            <option value="{{ $data_folio->folio}}"> </option>
+                          @empty
+                            <option value="No se encontraron registros"> </option>
+                          @endforelse
+                        </datalist>
+                      </div>
                   </div>
 
-                  <div class="form-group ">
-                    <div class="col-md-12 pl-3">
-
-                      <input class="form-control" list="folios" name="searchFolio" id="searchFolio" placeholder="Buscar por folio" style="width:60%">
-                      <datalist id="folios" name="folios" class="">
-                        @forelse ($folio as $data_folio )
-                          <option value="{{ $data_folio->folio}}"> </option>
-                        @empty
-                          <option value="No se encontraron registros"> </option>
-                        @endforelse
-                      </datalist>
-                    </div>
-                  </div>
                   <!-- <div class="form-group">
                     <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard">
                       <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>  Filtrar
@@ -67,12 +62,11 @@
         <!--SIERRA BEGIN-->
           <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-              <div class="row">
                 <form id="search_info2" name="search_info" class="form-inline" method="post">
                   {{ csrf_field() }}
                   <div class="">
-                    <div class="form-group row">
-                      <div class="col-md-2">
+                    <div class="form-group">
+                      <div class="col-md-4">
                       <label for="" class="control-label">Buscar por proveedor</label>
                       </div>
                       <div class="col-md-3">
@@ -90,7 +84,6 @@
 
                   </div>
                 </form>
-              </div>
             </div>
           </div>
           <br>

@@ -129,7 +129,7 @@ function gen_payments_table(datajson, table){
       vartable.fnAddData([
         status.factura,
         status.proveedor,
-        '<span class="label label-primary">'+status.estatus+'</span>',
+        '<span class="badge badge-primary">'+status.estatus+'</span>',
         status.elaboro,
         status.monto_str,
         status.fecha_limite,
