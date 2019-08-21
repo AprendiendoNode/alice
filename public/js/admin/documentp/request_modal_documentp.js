@@ -449,3 +449,8 @@ var Configuration_table_responsive_logs= {
        var fechaInvertida = fechaDividida.reverse();
        return fechaInvertida.join("-");
    }
+
+// FIX SCROLLBAR MODAL
+$(document).on('hidden.bs.modal', '.modal', function () {
+    $('.modal:visible').length && $(document.body).addClass('modal-open');
+});

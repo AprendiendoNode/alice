@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-view-concept" data-backdrop="static">
+<div class="modal fade" id="modal-view-concept" role="dialog">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -149,7 +149,7 @@
 
 <!--Modal logs--->
 <div class="col-md-5">
-  <div class="modal fade" id="modal-logs" data-backdrop="static">
+  <div class="modal fade" id="modal-logs" role="dialog">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">

@@ -28,7 +28,12 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Linea Base</h5>
+              <div class="form-row">
+                <select id="select_totales" class="form-control form-control-sm" name="">
+                  <option value="1">Linea Base</option>
+                  <option value="2">Real invetido (Pagos)</option>
+                </select>
+              </div>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -38,13 +43,19 @@
                 <div class="col-12 col-md-5">
                   <input id="deposito" type="hidden" name="deposito" value="{{$document[0]->deposito_garantia}}">
                   <input id="plazo" type="hidden"  class="form-control form-control-sm" value="{{$document[0]->plazo}}">
-                  <input id="total_gasto" type="hidden" name="total_gasto" value="{{$total_gasto}}">
+                  <input id="gasto_mtto_percent" type="hidden" name="gasto_mtto_percent" value="{{$gasto_mtto_percent}}">
+                  <input id="credito_mensual_percent" type="hidden" name="credito_mensual_percent" value="{{$credito_mensual_percent}}">
+                  <input id="total_ea_base" type="hidden" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_ea, 2, '.', ',')}}">
+                  <input id="total_ena_base" type="hidden" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_ena, 2, '.', ',')}}">
+                  <input id="total_mo_base" type="hidden" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_mo, 2, '.', ',')}}">
+                  <input id="total_usd_base" type="hidden" readonly class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_usd, 2, '.', ',')}}">
+                  <!-------------------->
                   <div class="form-row d-flex align-items-center mb-2">
                     <div class="col-6">
                       <label class="text-dark font-weight-bold" for="">Equipo Activo</label>
                     </div>
                     <div class="col-6">
-                      <input id="" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_ea, 2, '.', ',')}}">
+                      <input id="total_ea_objetivo" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="0.00">
                     </div>
                   </div>
                   <div class="form-row d-flex align-items-center mb-2">
@@ -52,7 +63,7 @@
                       <label class="text-dark font-weight-bold" for="">Equipo No Activo</label>
                     </div>
                     <div class="col-6">
-                      <input id="" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_ena, 2, '.', ',')}}">
+                      <input id="total_ena_objetivo" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="0.00">
                     </div>
                   </div>
                   <div class="form-row d-flex align-items-center mb-2">
@@ -60,7 +71,7 @@
                       <label class="text-dark font-weight-bold" for="">Mano de obra</label>
                     </div>
                     <div class="col-6">
-                      <input type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_mo, 2, '.', ',')}}">
+                      <input id="total_mo_objetivo" type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="0.00">
                     </div>
                   </div>
                   <div class="form-row d-flex align-items-center mb-2">
@@ -68,7 +79,7 @@
                       <label class="text-dark font-weight-bold" for="">Total</label>
                     </div>
                     <div class="col-6">
-                      <input id="total_usd_base" type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_usd, 2, '.', ',')}}">
+                      <input id="total_usd_objetivo" type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="0.00">
                     </div>
                   </div>
                 </div>
@@ -772,7 +783,7 @@
                             <label for="">Equipo Activo</label>
                           </div>
                           <div class="col-6">
-                            <input id="" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="${{number_format($document[0]->total_ea, 2, '.', ',')}}">
+                            <input id="" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($document[0]->total_ea, 2, '.', ',')}}">
                           </div>
                         </div>
                         <div class="form-row d-flex align-items-center mb-2">
@@ -780,7 +791,7 @@
                             <label for="">Equipo No Activo</label>
                           </div>
                           <div class="col-6">
-                            <input id="" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="${{number_format($document[0]->total_ena, 2, '.', ',')}}">
+                            <input id="" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($document[0]->total_ena, 2, '.', ',')}}">
                           </div>
                         </div>
                         <div class="form-row d-flex align-items-center mb-2">
@@ -788,7 +799,7 @@
                             <label for="">Mano de obra</label>
                           </div>
                           <div class="col-6">
-                            <input type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="${{number_format($document[0]->total_mo, 2, '.', ',')}}">
+                            <input type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($document[0]->total_mo, 2, '.', ',')}}">
                           </div>
                         </div>
                         <div class="form-row d-flex align-items-center mb-2">
@@ -796,7 +807,7 @@
                             <label for="">Total</label>
                           </div>
                           <div class="col-6">
-                            <input type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="${{number_format($document[0]->total_usd, 2, '.', ',')}}">
+                            <input type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($document[0]->total_usd, 2, '.', ',')}}">
                           </div>
                         </div>
                         <div class="form-row d-flex">
@@ -816,7 +827,7 @@
                             <label for="">Equipo Activo</label>
                           </div>
                           <div class="col-6">
-                            <input id="" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="$0.00">
+                            <input id="total_ea_invertido" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($real_ejercido['total_ea'], 2, '.', ',')}}">
                           </div>
                         </div>
                         <div class="form-row d-flex align-items-center mb-2">
@@ -824,7 +835,7 @@
                             <label for="">Equipo No Activo</label>
                           </div>
                           <div class="col-6">
-                            <input id="" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="$0.00">
+                            <input id="total_ena_invertido" name="" readonly type="text" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($real_ejercido['total_ena'], 2, '.', ',')}}">
                           </div>
                         </div>
                         <div class="form-row d-flex align-items-center mb-2">
@@ -832,7 +843,7 @@
                             <label for="">Mano de obra</label>
                           </div>
                           <div class="col-6">
-                            <input type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="$0.00">
+                            <input type="text" readonly id="total_mo_invertido" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($real_ejercido['total_mo'], 2, '.', ',')}}">
                           </div>
                         </div>
                         <div class="form-row d-flex align-items-center mb-2">
@@ -840,7 +851,7 @@
                             <label for="">Total</label>
                           </div>
                           <div class="col-6">
-                            <input type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="$0.00">
+                            <input type="text" id="total_usd_invertido" readonly class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($real_ejercido['total_ea'] + $real_ejercido['total_ena'] + $real_ejercido['total_mo'], 2, '.', ',')}}">
                           </div>
                         </div>
                         <div class="form-row d-flex align-items-center mb-2">
@@ -848,7 +859,7 @@
                             <label for="">Diferencia</label>
                           </div>
                           <div class="col-6">
-                            <input type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="$0.00">
+                            <input type="text" readonly class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($document[0]->total_usd - ($real_ejercido['total_ea'] + $real_ejercido['total_ena'] + $real_ejercido['total_mo']) , 2, '.', ',')}}">
                           </div>
                         </div>
                     </div>

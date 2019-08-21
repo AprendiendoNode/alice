@@ -1,32 +1,23 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('contentheader_title')
   @if( auth()->user()->can('View annual budget report') )
-    {{ trans('planning.budget_site') }}
+    Reporte de presupuesto
   @else
-    {{ trans('planning.budget_site') }}
+    {{ trans('message.denied') }}
   @endif
 @endsection
 
-@section('contentheader_description')
-  @if( auth()->user()->can('View annual budget report') )
-    {{ trans('planning.subtitle_budget') }}
-  @else
-    {{ trans('planning.subtitle_budget') }}
-  @endif
-@endsection
-
-@section('breadcrumb_ubication')
-  @if( auth()->user()->can('View annual budget report') )
-    {{ trans('planning.breadcrumb_budget_site') }}
-  @else
-    {{ trans('planning.breadcrumb_budget_site') }}
-  @endif
+@section('breadcrumb_title')
+   @if( auth()->user()->can('View annual budget report') )
+    Reporte de presupuesto
+    @else
+      {{ trans('message.denied') }}
+    @endif
 @endsection
 
 @section('content')
   @if( auth()->user()->can('View annual budget report') )
-  <!-- Modal -->
     <div class="modal fade" id="modal-view-algo">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -97,7 +88,7 @@
             <div class="box box-solid">
               <div class="box-header with-border">
                 <i class="fa fa-money"></i>
-                <h3 class="box-title">{{ trans('planning.box_title')}}</h3>
+                <h3 class="box-title"></h3>
               </div>
               <div class="box-body">
                 <div class="row">
@@ -168,34 +159,22 @@
           </div>
       </div>
   </div>
-
   @else
     @include('default.denied')
   @endif
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View annual budget report') )
-  <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
-  <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
-  <!-- FormValidation -->
-  <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
-  <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
-  <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
-
-  <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
-  <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-  <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
-  <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-3-right-offset.css')}}" >
-  <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-extras-margins-padding.css')}}" >
+  @if( auth()->user()->can('View projects docp') )
 
   <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
   <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
-
+  <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
+  <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
+  <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
+  <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
   <script src="{{ asset('js/admin/planning/budget_report.js')}}"></script>
   @else
   @endif
 @endpush
-

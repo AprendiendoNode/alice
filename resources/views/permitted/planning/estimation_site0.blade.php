@@ -43,13 +43,13 @@
            $docp_percent_7 = 0;
           ($data[6]->total_usd != 0) ? $docp_percent_4 = ($data[13]->total_usd / $data[6]->total_usd) * 100 : $docp_percent_4 = 0;
         @endphp
-        <td class="font-weight-bold">{{ number_format( $docp_percent_1, 2, '.', '') }} %</td> <!-- Equipo Activo %-->
-        <td class="font-weight-bold">{{ number_format( $docp_percent_2, 2, '.', '') }} %</td> <!-- Equipo No Activo -->
-        <td class="font-weight-bold">{{ number_format( $docp_percent_3, 2, '.', '') }} %</td> <!-- Mano de obra -->
-        <td class="font-weight-bold">{{ number_format( $docp_percent_4, 2, '.', '') }} %</td> <!-- Licencias (USD) -->
-        <td class="font-weight-bold">{{ number_format( $docp_percent_5, 2, '.', '') }}%</td> <!-- Viáticos -->
-        <td class="font-weight-bold">{{ number_format( $docp_percent_6, 2, '.', '') }} %  </td> <!-- Enlaces -->
-        <td class="font-weight-bold">{{ number_format( $docp_percent_7, 2, '.', '') }} %  </td> <!-- Costo ITC -->
+        <td class="text-bold">{{ number_format( $docp_percent_1, 2, '.', '') }} %</td> <!-- Equipo Activo %-->
+        <td class="text-bold">{{ number_format( $docp_percent_2, 2, '.', '') }} %</td> <!-- Equipo No Activo -->
+        <td class="text-bold">{{ number_format( $docp_percent_3, 2, '.', '') }} %</td> <!-- Mano de obra -->
+        <td class="text-bold">{{ number_format( $docp_percent_4, 2, '.', '') }} %</td> <!-- Licencias (USD) -->
+        <td class="text-bold">{{ number_format( $docp_percent_5, 2, '.', '') }}%</td> <!-- Viáticos -->
+        <td class="text-bold">{{ number_format( $docp_percent_6, 2, '.', '') }} %  </td> <!-- Enlaces -->
+        <td class="text-bold">{{ number_format( $docp_percent_7, 2, '.', '') }} %  </td> <!-- Costo ITC -->
         <td style="font-weight:bold" class="text-danger">
         @php
           $suma_programado_docp = $data[0]->total_usd + $data[1]->total_usd + $data[2]->total_usd + $data[3]->total_usd + $data[4]->total_usd + $data[5]->total_usd + $data[6]->total_usd;
@@ -119,13 +119,13 @@
            $docm_percent_7 = 0;
           ($data[20]->total_usd != 0) ? $docm_percent_7 = ($data[27]->total_usd / $data[20]->total_usd) * 100 : $docm_percent_7 = 0;
         @endphp
-        <td class="font-weight-bold">{{ number_format( $docm_percent_1, 2, '.', '') }} %</td> <!-- Equipo Activo %-->
-        <td class="font-weight-bold">{{ number_format( $docm_percent_2, 2, '.', '') }} %</td> <!-- Equipo No Activo -->
-        <td class="font-weight-bold">{{ number_format( $docm_percent_3, 2, '.', '') }} %</td> <!-- Mano de obra -->
-        <td class="font-weight-bold">{{ number_format( $docm_percent_4, 2, '.', '') }} %</td> <!-- Licencias (USD) -->
-        <td class="font-weight-bold">{{ number_format( $docm_percent_5, 2, '.', '') }}%</td> <!-- Viáticos -->
-        <td class="font-weight-bold">{{ number_format( $docm_percent_6, 2, '.', '') }} %  </td> <!-- Enlaces -->
-        <td class="font-weight-bold">{{ number_format( $docm_percent_7, 2, '.', '') }} %  </td> <!-- Costo ITC -->
+        <td class="text-bold">{{ number_format( $docm_percent_1, 2, '.', '') }} %</td> <!-- Equipo Activo %-->
+        <td class="text-bold">{{ number_format( $docm_percent_2, 2, '.', '') }} %</td> <!-- Equipo No Activo -->
+        <td class="text-bold">{{ number_format( $docm_percent_3, 2, '.', '') }} %</td> <!-- Mano de obra -->
+        <td class="text-bold">{{ number_format( $docm_percent_4, 2, '.', '') }} %</td> <!-- Licencias (USD) -->
+        <td class="text-bold">{{ number_format( $docm_percent_5, 2, '.', '') }}%</td> <!-- Viáticos -->
+        <td class="text-bold">{{ number_format( $docm_percent_6, 2, '.', '') }} %  </td> <!-- Enlaces -->
+        <td class="text-bold">{{ number_format( $docm_percent_7, 2, '.', '') }} %  </td> <!-- Costo ITC -->
         <td style="font-weight:bold" class="text-danger">
           @php
           $suma_programadom = $data[14]->total_usd + $data[15]->total_usd + $data[16]->total_usd + $data[17]->total_usd + $data[18]->total_usd + $data[19]->total_usd + $data[20]->total_usd;
@@ -222,19 +222,5 @@
 
   .text-left{
     text-align: left !important;
-  }
-
-  #estimation_table td{
-    vertical-align: middle !important;
-  }
-
-  #estimation_table thead tr th{
-    vertical-align: middle;
-    padding: 0.6rem;
-  }
-
-  #estimation_table tbody td{
-      vertical-align: middle;
-      padding: 0.6rem;
   }
 </style>

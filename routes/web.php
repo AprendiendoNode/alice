@@ -352,7 +352,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/documentp_table_logs/data/{id_documentp}', 'Projects\DocumentpHistoryController@get_history_logs');
   Route::post('/get_hotel_cadena_doc', 'Projects\DocumentpController@hotel_cadena');
   Route::get('/get_vertical_anexo/anexo/{id}', 'Projects\DocumentpController@get_vertical_anexo');
-  Route::get('/estimation_site_table/{id_anexo}/{tipo_cambio}', 'Projects\DocumentpHistoryController@get_estimation_site');
+  Route::get('/estimation_site_table/id_anexo/{anexo}', 'Projects\DocumentpHistoryController@get_estimation_site_by_site');
+  Route::get('/estimation_site_data/id_anexo/{anexo}', 'Projects\DocumentpHistoryController@get_estimation_site_by_site_data');
   Route::get('/budget_site_table/{id_anexo}/{tipo_cambio}/{date}', 'Projects\DocumentpHistoryController@get_budgettable_site');
   //Editar Documento P
   Route::post('/edit_cart', 'Projects\EditDocumentPController@index'); //Vista del formulario para editar

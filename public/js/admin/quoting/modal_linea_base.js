@@ -1,18 +1,83 @@
+var select_total = document.getElementById("select_totales");
+select_total.addEventListener('change', get_totales);
+
 function show_linea_base(){
   let vtc = parseFloat(document.getElementById('vtc_cotizador').value);
   if(!isNaN(vtc)){
-    set_table_objetivos();
+    let total = get_totales();
+    set_table_objetivos(total);
     $('#modal_linea_base').modal('show');
   }else{
     Swal.fire('Este proyecto no tiene un cotizador asociado','','warning');
   }
+}
 
+function get_totales(){
+  let select_totales = document.getElementById('select_totales').value;
+  let total_usd = 0.0;
+  if(select_totales == 1){
+    total_usd = remove_commas(document.getElementById('total_usd_base').value);// Linea Base
+    set_linea_base();
+    set_table_objetivos(total_usd);
+  }else{
+    total_usd = remove_commas(document.getElementById('total_usd_invertido').value);// Real invertido
+    set_inversion_real();
+    set_table_objetivos(total_usd);
+  }
 
+  return total_usd;
+}
 
+function set_linea_base(){
+  let total_ea = document.getElementById('total_ea_base').value;
+  let total_ena = document.getElementById('total_ena_base').value;
+  let total_mo = document.getElementById('total_mo_base').value;
+  let total_usd_objetivo = document.getElementById('total_usd_base').value;
+
+  document.getElementById('total_ea_objetivo').value = total_ea;
+  document.getElementById('total_ena_objetivo').value = total_ena;
+  document.getElementById('total_mo_objetivo').value = total_mo;
+  document.getElementById('total_usd_objetivo').value = total_usd_objetivo;
+}
+
+function set_inversion_real(){
+  let total_ea = document.getElementById('total_ea_invertido').value;
+  let total_ena = document.getElementById('total_ena_invertido').value;
+  let total_mo = document.getElementById('total_mo_invertido').value;
+  let total_usd_objetivo = document.getElementById('total_usd_invertido').value;
+
+  document.getElementById('total_ea_objetivo').value = total_ea;
+  document.getElementById('total_ena_objetivo').value = total_ena;
+  document.getElementById('total_mo_objetivo').value = total_mo;
+  document.getElementById('total_usd_objetivo').value = total_usd_objetivo;
+}
+
+function get_gastos(total){
+  let mantto = 0.0;
+  let gasto_mtto_percent = parseFloat(document.getElementById("gasto_mtto_percent").value);
+  let enlace = document.getElementById("enlace").value;
+  enlace = parseFloat(enlace) * 1.1;
+  let total_inversion = parseFloat(total);
+  let plazo = parseInt(document.getElementById("plazo").value);
+  let interes = parseFloat(document.getElementById('credito_mensual_percent').value) / 100;
+  interes = interes / 12;
+  let capex = parseFloat(document.getElementById("capex").value);
+  let deposito = parseFloat(document.getElementById("deposito").value);
+  let credito_mensual = 0.0;
+  let total_gastos = 0.0;
+
+  credito_mensual =  ((total_inversion - capex  - deposito) * interes  )  /  (1 - Math.pow(1 + interes, - plazo));
+  mantto = (total_inversion * parseFloat(gasto_mtto_percent)) / 100;
+  enlace += (enlace * 0.10)
+
+  total_gastos = enlace + mantto + credito_mensual;
+console.log(mantto);
+  return total_gastos;
 
 }
 
-function set_table_objetivos(){
+function set_table_objetivos(total){
+  let total_inversion = total;
   let vtc = parseFloat(document.getElementById('vtc_cotizador').value);
   let renta = parseFloat(document.getElementById("servicio_mensual").value);
   let enlace = document.getElementById("enlace").value;
@@ -20,9 +85,7 @@ function set_table_objetivos(){
   let plazo = parseInt(document.getElementById("plazo").value);
   let capex = document.getElementById("capex").value;
   let deposito = document.getElementById("deposito").value;
-  let total_gastos = parseFloat(document.getElementById('total_gasto').value);
-  let total_inversion = remove_commas(document.getElementById('total_usd_base').value);
-
+  let total_gastos = get_gastos(total_inversion);
   let utilidad_mensual = parseFloat(renta) + enlace - parseFloat(total_gastos);
   let utilidad_mensual_percent = utilidad_mensual / (parseFloat(renta) + enlace);
   utilidad_mensual_percent *= 100;
@@ -43,11 +106,12 @@ function set_table_objetivos(){
   vtc_percent *= 100;
 
   let tiempo_retorno = (parseFloat(total_inversion) - parseFloat(capex) - parseFloat(deposito)) / (parseFloat(renta) - enlace);
-
-  let costo_mo_ap = 0.0;
-  let servicio_ap = 0.0;
-  let tir = get_tir();
-
+  let anio = parseInt(plazo) / 12;
+  anio = Math.round(anio);
+  let tir =  (renta * 12 * anio) / parseFloat(total_inversion);
+  tir = tir - 1;
+  tir = tir / anio;
+  tir = tir * 100;
 
   document.getElementById("utilidad_mensual").innerHTML = format_number(utilidad_mensual);
   document.getElementById("utilidad_mensual_percent").innerHTML = Math.round(utilidad_mensual_percent);
@@ -72,7 +136,7 @@ function get_linea_base(){
 function get_tir(){
   let renta = parseFloat(document.getElementById("servicio_mensual").value);
   let plazo = parseInt(document.getElementById("plazo").value);
-  let total_inversion = remove_commas(document.getElementById('total_usd_base').value);
+  let total_inversion = get_totales();
   total_inversion = parseFloat(total_inversion);
   let anio = parseInt(plazo) / 12;
   anio = Math.round(anio);

@@ -296,11 +296,6 @@ class EditDocumentPController extends Controller
         }
 
       }
-      //Check para verificar si el nuevo monto supero +3% al anterior
-      if($this->check_totales($totalUsdOld, $request->total)){
-        $documentp->status_id = 1;
-        $documentp->save();
-      }
 
       $productos_log = $request->productos_log;
 

@@ -36,18 +36,20 @@ class KickoffController extends Controller
       $payments = DB::table('payment_ways')->whereIn('id', [1, 3, 22])->get();
       $vendedores = DB::select(' CALL px_usersXdepto(?)', array(5));
       $inside_sales = DB::select(' CALL px_usersXdepto(?)', array(6));
-    
-      $vtc = "Proyecto sin cotizador";
-      $total_gasto = 0;
-      $cotizador = DB::table('cotizador')->select('id', 'id_doc')->where('id_doc', $document[0]->id)->get();
 
+      $vtc = "Proyecto sin cotizador";
+      $gasto_mtto_percent = 0;
+      $credito_mensual_percent = 0;
+      $cotizador = DB::table('cotizador')->select('id', 'id_doc')->where('id_doc', $document[0]->id)->get();
+      $real_ejercido = $this->get_presupuesto_ejercido($document[0]->id);
       $num_aps = $this->get_num_aps($document[0]->documentp_cart_id);
 
       if(count($cotizador) == 1) {
         $objetivos = DB::table('cotizador_objetivos')->select()->where('cotizador_id', $cotizador[0]->id)->get();
         $gastos_mensuales = Cotizador_gastos::findOrFail(['cotizador_id' => $cotizador[0]->id]);
         $vtc = $objetivos[0]->vtc;
-        $total_gasto = $gastos_mensuales[0]->total_gasto_mensual;
+        $gasto_mtto_percent = $gastos_mensuales[0]->mantto_seg_otro_percent;
+        $credito_mensual_percent = $gastos_mensuales[0]->credito_mensual_percent;
       }
       //KICKOFF DATA
       $kickoff = Kickoff_project::firstOrCreate(['id_doc' => $id_document]);
@@ -60,7 +62,7 @@ class KickoffController extends Controller
       $kickoff_soporte = Kickoff_soporte::firstOrCreate(['kickoff_id' => $kickoff->id]);
 
       return view('permitted.planning.kick_off_edit', compact('document','installation', 'adquisition','inside_sales' ,'vendedores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals',
-                  'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte', 'total_gasto' ));
+                  'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte', 'gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido' ));
     }
 
     public function get_num_aps($cart_id)
@@ -87,6 +89,30 @@ class KickoffController extends Controller
       );
 
       return $num_aps;
+    }
+
+    public function get_presupuesto_ejercido($id_doc)
+    {
+      $document = Documentp::find($id_doc);
+      $id_hotel = $document->anexo_id;
+      $total_ea = 0.00;
+      $total_ena = 0.00;
+      $total_mo = 0.00;
+
+      if($id_hotel != 7){
+        $result = DB::select('CALL px_presupuesto_ejercido_docp(?)' , array($id_hotel));
+        $total_ea = $result[0]->total_usd;
+        $total_ena = $result[1]->total_usd;
+        $total_mo= $result[2]->total_usd;
+      }
+
+      $ejercido = array(
+        'total_ea' => $total_ea,
+        'total_ena' => $total_ena,
+        'total_mo' => $total_mo
+      );
+
+      return $ejercido;
     }
 
     public function update(Request $request)

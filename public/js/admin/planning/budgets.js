@@ -55,7 +55,7 @@ function generate_table_budget(datajson, table) {
       '<a href="javascript:void(0);" id="mt5_'+data.annual_budget_id+'" name="mt5_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.enlaces_monto + '"class="editable_monto5"></a>',
       '<a href="javascript:void(0);" id="mt6_'+data.annual_budget_id+'" name="mt6_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.viaticos_monto + '"class="editable_monto6"></a>',
       //'<a href="javascript:void(0);" id="mt_'+data.annual_budget_id+'" name="mt_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.monto + '"class="editable_monto"></a>',
-      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+data.hotel_id+'" class="btn btn-default btn-sm" role="button" data-target="#modal-concept"><span class="fa fa-pencil-square"></span></a>',
+      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+data.hotel_id+'" class="btn btn-dark btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-edit"></span></a>',
     ]);
   });
 }
@@ -95,7 +95,7 @@ $('.btnupdetc').on('click', function(){
         console.log(error);
       })
   }else{
-    swal("Operación abortada!", "Lleno ambos campos correctamente.", "error");
+    Swal.fire("Operación abortada!", "Lleno ambos campos correctamente.", "error");
   }
 });
 $('.update_proc_sites').on('click', function(){
@@ -122,9 +122,9 @@ $('.update_proc_sites').on('click', function(){
           success: function (data){
             console.log(data);
             if (data === 'OK') {
-              swal("Operación Completada!", "Las solicitudes seleccionadas han sido afectadas.", "success");
+              Swal.fire("Operación Completada!", "Las solicitudes seleccionadas han sido afectadas.", "success");
             }else{
-              swal("Operación abortada!", "La consulta presento un error consulta con los admins.", "error");
+              Swal.fire("Operación abortada!", "La consulta presento un error consulta con los admins.", "error");
             }
           },
           error: function (data) {
@@ -184,7 +184,7 @@ var Configuration_table_responsive_budget= {
       {
         "targets": 1,
         "width": "1%",
-        "className": "text-center",
+        "className": "text-left",
       },
       {
         "targets": 2,
@@ -277,10 +277,10 @@ var Configuration_table_responsive_budget= {
                      success: function (data){
                       //console.log(data);
                        if (data === '1') {
-                         swal("Operación completada!", "Operation complete", "success");
+                         Swal.fire("Operación completada!", "Operation complete", "success");
                        }
                        else{
-                         swal("Operación abortada!", ":)", "success");
+                         Swal.fire("Operación abortada!", ":)", "success");
                        }
                      },
                      error: function (data) {
@@ -312,10 +312,10 @@ var Configuration_table_responsive_budget= {
                      success: function (data){
                       //console.log(data);
                        if (data === '1') {
-                         swal("Operación completada!", "Operation complete", "success");
+                         Swal.fire("Operación completada!", "Operation complete", "success");
                        }
                        else{
-                         swal("Operación abortada!", ":)", "success");
+                         Swal.fire("Operación abortada!", ":)", "success");
                        }
                      },
                      error: function (data) {
@@ -347,10 +347,10 @@ var Configuration_table_responsive_budget= {
                      success: function (data){
                         // console.log(data);
                         if (data === '1') {
-                         swal("Operación completada!", "Operation complete", "success");
+                         Swal.fire("Operación completada!", "Operation complete", "success");
                         }
                         else{
-                         swal("Operación abortada!", ":)", "success");
+                         Swal.fire("Operación abortada!", ":)", "success");
                         }
                      },
                      error: function (data) {
@@ -382,10 +382,10 @@ var Configuration_table_responsive_budget= {
                      success: function (data){
                       //console.log(data);
                        if (data === '1') {
-                         swal("Operación completada!", "Operation complete", "success");
+                         Swal.fire("Operación completada!", "Operation complete", "success");
                        }
                        else{
-                         swal("Operación abortada!", ":)", "success");
+                         Swal.fire("Operación abortada!", ":)", "success");
                        }
                      },
                      error: function (data) {
@@ -417,10 +417,10 @@ var Configuration_table_responsive_budget= {
                      success: function (data){
                       //console.log(data);
                        if (data === '1') {
-                         swal("Operación completada!", "Operation complete", "success");
+                         Swal.fire("Operación completada!", "Operation complete", "success");
                        }
                        else{
-                         swal("Operación abortada!", ":)", "success");
+                         Swal.fire("Operación abortada!", ":)", "success");
                        }
                      },
                      error: function (data) {
@@ -452,10 +452,10 @@ var Configuration_table_responsive_budget= {
                      success: function (data){
                       //console.log(data);
                        if (data === '1') {
-                         swal("Operación completada!", "Operation complete", "success");
+                         Swal.fire("Operación completada!", "Operation complete", "success");
                        }
                        else{
-                         swal("Operación abortada!", ":)", "success");
+                         Swal.fire("Operación abortada!", ":)", "success");
                        }
                      },
                      error: function (data) {

@@ -56,6 +56,22 @@ class DocumentpHistoryController extends Controller
 
         return view('permitted.planning.estimation_site', compact('data'));
     }
+
+    public function get_estimation_site_by_site($anexo)
+    {
+      $data = DB::select('CALL px_presupuesto_vs_ejercido(?)', array($anexo));
+
+      return view('permitted.planning.estimation_site', compact('data'));
+    }
+
+    public function get_estimation_site_by_site_data($anexo)
+    {
+      $data = DB::select('CALL px_presupuesto_vs_ejercido(?)', array($anexo));
+
+      return $data;
+    }
+
+
     public function get_budgettable_site($id_anexo, $tipo_cambio, $date)
     {
       if (empty($tipo_cambio)) {
@@ -63,9 +79,10 @@ class DocumentpHistoryController extends Controller
       }
       $date = $date . '-01';
       $data = DB::select('CALL px_proyectos_categorias(?,?,?)', array($id_anexo, $tipo_cambio, $date));
-      //dd($data);
+      dd($data);
       return view('permitted.planning.estimation_site', compact('data'));
     }
+
     public function get_history_documentp(Request $request)
     {
 

@@ -37,7 +37,7 @@ $(function () {
               $('#anexo_id').append("<option value="+item.id+">"+item.Nombre_hotel+"</option>");
           });
           get_vertical_anexo();
-          //get_table_estimation();
+          get_table_estimation();
         }
         else{
           $("#anexo_id").text('');
@@ -50,7 +50,7 @@ $(function () {
   })
 
   $('#anexo_id').on('change', function(){
-    //get_table_estimation();
+    get_table_estimation();
   });
 
   function get_table_estimation(){
@@ -61,7 +61,7 @@ $(function () {
                       cache: 'default' };
 
     if(id_anexo != null && id_anexo != undefined){
-        fetch(`/estimation_site_table/${id_anexo}/20.00`, init)
+      fetch(`/estimation_site_table/id_anexo/${id_anexo}`, init)
           .then(response => {
             return response.text();
           })
@@ -72,7 +72,7 @@ $(function () {
           .catch(error => {
             console.log(error);
           })
-    }
+      }
 
   }
 

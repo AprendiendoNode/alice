@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View projects docp') )
-    Presupuesto ANual
+    Presupuesto Anual
   @else
     {{ trans('message.denied') }}
   @endif
@@ -10,7 +10,7 @@
 
 @section('breadcrumb_title')
    @if( auth()->user()->can('View projects docp') )
-    Avance de proyectos
+    Presupuesto Anual
     @else
       {{ trans('message.denied') }}
     @endif
@@ -20,12 +20,10 @@
   @if( auth()->user()->can('View projects docp') )
   <!-- Modal -->
   <div class="modal fade" id="modal-view-algo">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Default Modal</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
           <!-- Contenido de modal. -->
@@ -78,7 +76,7 @@
             <div class="box box-solid">
               <div class="box-header with-border">
                 <i class="fa fa-money"></i>
-                <h3 class="box-title">{{ trans('planning.box_title')}}</h3>
+                <h3 class="box-title">Presupuestos de Mantenimiento</h3>
               </div>
               <div class="box-body">
                 <div class="row">
@@ -153,12 +151,13 @@
 @push('scripts')
   @if( auth()->user()->can('View projects docp') )
 
-  <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
-  <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
   <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
   <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
+  <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
   <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
   <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
   <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
   <script src="{{ asset('js/admin/planning/budgets.js')}}"></script>
   @else
