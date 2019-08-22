@@ -20,9 +20,9 @@
   @if( auth()->user()->can('View report') )
   <div class="container">
           <div class="row">
-              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                <div class="box box-solid">
-                  <div class="box-body">
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mb-3">
+                <div class="card">
+                  <div class="card-body">
                     <div class="form-inline">
                         {{ csrf_field() }}
                         <div class="form-group">
@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <button type="button" id="btn_generar" class="btn btn-info btngeneral"><i class="fa fa-bullseye margin-r5"></i> {{ trans('message.generate') }}</button>
-                            <button type="button" class="btn btn-success btn-export hidden-xs"><i class="fa fa-file-pdf-o  margin-r5"></i> {{ trans('message.export') }}</button>
+                            <button type="button" class="btn btn-success btn-export hidden-xs"><i class="fas fa-file-pdf  margin-r5"></i> {{ trans('message.export') }}</button>
                         </div>
                     </div>
                    </div>
