@@ -4,7 +4,7 @@ namespace App\Models\Survey;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use App\Questiondinamic;
+use App\Models\Survey\Questiondinamic;
 
 class Optiondinamic extends Model
 {

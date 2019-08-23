@@ -4,8 +4,8 @@ namespace App\Models\Survey;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use App\Optiondinamic;
-use App\Surveydinamic;
+use App\Models\Survey\Optiondinamic;
+use App\Models\Survey\Surveydinamic;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Questiondinamic extends Model
 {

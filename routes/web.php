@@ -20,7 +20,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //VER ENCUESTA DINAMICA
-Route::get('questionary/{data}','QuestionaryController@index');
+Route::get('questionary/{data}','Survey\QuestionaryController@index');
+//REGISTRAR ENCUESTA DINAMICA
+Route::post('/create_questionary','Survey\QuestionaryController@create_now');
+Route::post('/create_questionaryb','Survey\QuestionaryController@create_now_email');
+//Genero 10 link nuevos de los primeros 10 usuarios - ENCUESTA DINAMICA
+Route::get('create','Survey\QuestionaryController@create');
+// Route::get('create2','QuestionaryController@create2');
 
 Route::group(['middleware' => 'auth'], function () {
   //Dashboard
@@ -704,6 +710,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get_pregunta_abierta','Survey\ResultsSurveyController@pregunta_abierta');
     Route::post('/get_pregunta_multiple','Survey\ResultsSurveyController@pregunta_multiple');
     Route::post('/get_header_option','Survey\ResultsSurveyController@name_option');
+    //Encuestas apartado interface
+    Route::get('/configure_survey_admin_sit' , 'Survey\ConfigurationITController@index');
+    Route::post('/configure_survey_admin_sit_show' , 'Survey\ConfigurationITController@show');
+    Route::post('/send_survey_mail' , 'Survey\ConfigurationITController@send_surveyitc');
+    Route::post('/search_hotel_u' , 'Survey\ConfigurationITController@search_hotel_user'); 
 });
 
 
