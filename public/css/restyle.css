@@ -112,3 +112,11 @@
       margin:0 !important;
       font-size: 14px !important;
             }
+  .compact-tab tfoot tr th{
+      table-layout: fixed !important;
+      width: 80px !important;
+      white-space: pre-wrap !important;
+      padding:5px !important;
+      margin:0 !important;
+      font-size: 14px !important;}
+                      }

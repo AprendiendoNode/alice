@@ -36,6 +36,18 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/data_get_payment_all_week','HomeController@show_payment');
   Route::post('/data_summary_info_nps' , 'HomeController@show_summary_info_nps');
   Route::post('/get_graph_pais_distribution' , 'HomeController@show_apps');
+  //Dashboard -Tesoreria
+  Route::get('/dash_finan', 'Treasury\DashFinancieroController@index');
+  Route::get('/get_info_banks/{date}/{type}', 'Treasury\DashFinancieroController@get_table_banks_mx');
+  Route::post('/get_info_banks_mxn', 'Treasury\DashFinancieroController@get_bank_movements_mxn');
+  Route::post('/get_info_banks_usd', 'Treasury\DashFinancieroController@get_bank_movements_usd');
+  Route::post('/get_info_banks_ex', 'Treasury\DashFinancieroController@get_bank_movements_ext');
+  Route::post('/get_all_banks', 'Treasury\DashFinancieroController@get_top_banks');
+  Route::post('/get_cxc_cxp', 'Treasury\DashFinancieroController@get_cxc_cxp');
+  Route::post('/get_table_bankvals', 'Treasury\DashFinancieroController@get_validaciones');
+  Route::post('/get_cxc_vencidas_306090','Treasury\DashFinancieroController@get_cxc_vencidas_306090');
+  Route::post('/save_comment_by_contract','Treasury\DashFinancieroController@save_comment_by_contract');
+  Route::post('/get_contract_comment','Treasury\DashFinancieroController@get_contract_comment');
   //- Configuración - Mostrar
   Route::get('/Configuration', 'ConfigurationController@index')->name('Configuration');
   Route::post('/data_config', 'ConfigurationController@show');

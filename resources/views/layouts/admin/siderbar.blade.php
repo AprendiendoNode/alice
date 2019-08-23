@@ -7,6 +7,12 @@
               <span class="menu-title">Inicio</span>
             </a>
           </li>
+          <li class="nav-item {{ Request::is('dash_finan') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ url('/dash_finan') }}">
+              <i class="fas fa-money-check-alt menu-icon"></i>
+              <span class="menu-title">Dashboard Tesorería</span>
+            </a>
+          </li>
           @forelse (auth()->user()->menus->groupBy('section_id') as $menu)
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#{{ App\Section::find($menu[0]->section_id)->display_name }}" aria-expanded="false" aria-controls="{{ App\Section::find($menu[0]->section_id)->display_name }}">
