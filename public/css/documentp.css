@@ -544,9 +544,7 @@ input::-webkit-input-placeholder {
   vertical-align: middle;
 }
 
-#table_documentp tbody tr td,
-#table_quoting tbody tr td
-#table_budget tbody tr td{
+#table_documentp tbody tr td, #table_quoting tbody tr td {
   padding: 0.2rem 0.5rem;
   width: auto !important;
   height: 35px !important;

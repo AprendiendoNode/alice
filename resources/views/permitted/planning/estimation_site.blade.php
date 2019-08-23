@@ -64,7 +64,12 @@
         </td>
       </tr>
        <tr class="text-center">
-         <td style="background: #193257;font-weight:bold;" class="text-white text-right">Programado</td>
+         <td style="background: #193257;font-weight:bold;" class="text-white text-right">
+           <a tabindex="0" class="info-product text-warning" role="button" data-toggle="popover" data-trigger="focus" data-content="Presupuesto de cotizador">
+             <i class="fas fa-info"></i>
+           </a>
+           Programado
+         </td>
          <td>$ {{ number_format($data[0]->total_usd, 2, '.', ',') }}</td> <!-- Equipo Activo -->
          <td>$ {{ number_format($data[1]->total_usd, 2, '.', ',') }}</td> <!-- Equipo No Activo -->
          <td>$ {{ number_format($data[2]->total_usd, 2, '.', ',') }}</td> <!-- Mano de obra -->
@@ -80,7 +85,12 @@
          </td>
       </tr>
       <tr class="text-center">
-        <td style="background: #193257;font-weight:bold;" class="text-white text-right">Ejercido</td>
+        <td style="background: #193257;font-weight:bold;" class="text-white text-right">
+          <a tabindex="0" class="info-product text-warning" role="button" data-toggle="popover" data-trigger="focus" data-content="Gasto Real (Pagado)">
+            <i class="fas fa-info"></i>
+          </a>
+          Ejercido
+        </td>
         <td>$ {{ number_format($data[7]->total_usd, 2, '.', ',') }}</td> <!-- Equipo Activo -->
         <td>$ {{ number_format($data[8]->total_usd, 2, '.', ',') }}</td> <!-- Equipo No Activo -->
         <td>$ {{ number_format($data[9]->total_usd, 2, '.', ',') }}</td> <!-- Mano de obra -->
@@ -140,7 +150,12 @@
         </td>
       </tr>
        <tr class="text-center">
-         <td style="background: #193257;font-weight:bold;" class="text-white text-right">Programado</td>
+         <td style="background: #193257;font-weight:bold;" class="text-white text-right">
+           <a tabindex="0" class="info-product text-warning" role="button" data-toggle="popover" data-trigger="focus" data-content="Presupuesto anual de mantenimiento">
+             <i class="fas fa-info"></i>
+           </a>
+           Programado
+         </td>
          <td>$ {{ number_format($data[14]->total_usd, 2, '.', ',') }}</td> <!-- Equipo Activo -->
          <td>$ {{ number_format($data[15]->total_usd, 2, '.', ',') }}</td> <!-- Equipo No Activo -->
          <td>$ {{ number_format($data[16]->total_usd, 2, '.', ',') }}</td> <!-- Mano de obra -->
@@ -157,7 +172,9 @@
       </tr>
       <!--DOC M ENTREGADOS---->
       <tr class="text-center">
-        <td style="background: #193257;font-weight:bold;" class="text-white text-right">Entregado</td>
+        <td style="background: #193257;font-weight:bold;" class="text-white text-right">
+          Entregado
+        </td>
         <td>$ {{ number_format($data[28]->total_usd, 2, '.', ',') }}</td> <!-- Equipo Activo -->
         <td>$ {{ number_format($data[29]->total_usd, 2, '.', ',') }}</td> <!-- Equipo No Activo -->
         <td>$ {{ number_format($data[30]->total_usd, 2, '.', ',') }}</td> <!-- Mano de obra -->
@@ -173,7 +190,12 @@
         </td>
       </tr>
       <tr class="text-center">
-        <td style="background: #193257;font-weight:bold;" class="text-white text-right">Ejercido</td>
+        <td style="background: #193257;font-weight:bold;" class="text-white text-right">
+          <a tabindex="0" class="info-product text-warning" role="button" data-toggle="popover" data-trigger="focus" data-content="Gasto Real (Pagado)">
+            <i class="fas fa-info"></i>
+          </a>
+          Ejercido
+        </td>
         <td>$ {{ number_format($data[21]->total_usd, 2, '.', ',') }}</td> <!-- Equipo Activo -->
         <td>$ {{ number_format($data[22]->total_usd, 2, '.', ',') }}</td> <!-- Equipo No Activo -->
         <td>$ {{ number_format($data[23]->total_usd, 2, '.', ',') }}</td> <!-- Mano de obra -->
@@ -238,3 +260,6 @@
       padding: 0.6rem;
   }
 </style>
+<script type="text/javascript">
+  $("[data-toggle=popover]").popover();
+</script>

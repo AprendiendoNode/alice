@@ -47,7 +47,7 @@ function get_calif_project(){
   if(calif > 76){
     document.getElementById('calif_projects').style.color = "green";
   }else if(calif > 51  && calif < 76){
-    document.getElementById('calif_projects').style.color = "yellow";
+    document.getElementById('calif_projects').style.color = "#FFBE00";
   }else{
     document.getElementById('calif_projects').style.color = "red";
   }

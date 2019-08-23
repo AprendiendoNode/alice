@@ -20,7 +20,6 @@
   @include('permitted.documentp.modal_documentp')
 
   @if( auth()->user()->can('View delivery documents') )
-    <div class="container">
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
           <div class="row">
@@ -57,7 +56,7 @@
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
-                  <th> <small>Dias de atraso</small> </th>
+                  <th> <small>Dias de compra</small> </th>
                   <th> <small>Doc</small> </th>
                   <th> <small></small> </th>
                 </tr>
@@ -84,7 +83,6 @@
           </div>
         </div>
       </div>
-    </div>
 
   @else
     @include('default.denied')

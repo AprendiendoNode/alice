@@ -351,3 +351,8 @@ var Configuration_table_responsive_logs= {
             }
         },
     };
+
+    // FIX SCROLLBAR MODAL
+    $(document).on('hidden.bs.modal', '.modal', function () {
+        $('.modal:visible').length && $(document.body).addClass('modal-open');
+    });

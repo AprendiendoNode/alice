@@ -33,6 +33,7 @@ function data_delete_product(descripcion,precio, cantidad,total){
 }
 
 function data_update_cant_product(descripcion,precio, oldValue, newValue){
+//  console.log(oldValue);
   const updateProduct = {
       descripcion: descripcion,
       precio: precio,

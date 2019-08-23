@@ -214,7 +214,7 @@
                           <label for="">R.F.C.</label>
                         </div>
                         <div class="col-8">
-                          <input id="rfc" name="rfc" value="{{$kickoff_perfil_cliente->rfc}}" type="text" class="form-control form-control-sm">
+                          <input required id="rfc" name="rfc" value="{{$kickoff_perfil_cliente->rfc}}" type="text" class="form-control form-control-sm">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -873,6 +873,8 @@
                             <input id="check_administracion" type="checkbox" class="form-check-input" disabled checked>
                           @elseif(auth()->user()->can('Aprobacion administracion') && $kickoff_approvals->administracion == 0)
                             <input id="check_administracion" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_administracion" type="checkbox" class="form-check-input" disabled>
                           @endif
                           María  de Jesús Ortíz
                       </div>
@@ -890,6 +892,8 @@
                             <input id="check_comercial" type="checkbox" class="form-check-input" disabled checked>
                           @elseif(auth()->user()->can('Aprobacion comercial') && $kickoff_approvals->comercial == 0)
                             <input id="check_comercial" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_comercial" type="checkbox" class="form-check-input" disabled>
                           @endif
                           Carlos Mata
                       </div>
@@ -907,6 +911,8 @@
                             <input id="check_proyectos" type="checkbox" class="form-check-input" disabled checked>
                           @elseif(auth()->user()->can('Aprobacion proyectos') && $kickoff_approvals->proyectos == 0)
                             <input id="check_proyectos" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_proyectos" type="checkbox" class="form-check-input" disabled>
                           @endif
                           Aaron Arciga
                       </div>
@@ -924,6 +930,8 @@
                             <input id="check_soporte" type="checkbox" class="form-check-input" disabled checked>
                           @elseif(auth()->user()->can('Aprobacion soporte') && $kickoff_approvals->soporte == 0)
                             <input id="check_soporte" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_soporte" type="checkbox" class="form-check-input" disabled>
                           @endif
                           Ricardo Delgado
                       </div>
@@ -941,6 +949,8 @@
                             <input id="check_planeacion" type="checkbox" class="form-check-input" disabled checked>
                           @elseif(auth()->user()->can('Aprobacion planeacion') && $kickoff_approvals->planeacion == 0)
                             <input id="check_planeacion" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_planeacion" type="checkbox" class="form-check-input" disabled>
                           @endif
                           Manuel F. Moreno
                       </div>

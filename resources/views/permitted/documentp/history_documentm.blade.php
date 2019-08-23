@@ -6,12 +6,12 @@
   @else
     {{ trans('message.denied') }}
   @endif --}}
-  Historial de compras
+  Historial de Documentos M
 @endsection
 
 @section('breadcrumb_title')
    @if( auth()->user()->can('View Document P') )
-    Historial de compras
+    Historial de Documentos M
     @else
       {{ trans('message.denied') }}
     @endif
@@ -65,7 +65,7 @@
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
-                  <th> <small>Dias de atraso</small> </th>
+                  <th> <small>Dias de compra</small> </th>
                   <th> <small>Doc.</small> </th>
                   <th> <small>Serv. mensual</small> </th>
                   <th> <small></small> </th>
@@ -120,7 +120,7 @@
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
-                  <th> <small>Dias de atraso</small> </th>
+                  <th> <small>Dias de compra</small> </th>
                   <th> <small>Doc.</small> </th>
                   <th> <small>Prioridad</small> </th>
                   <th> <small></small> </th>
@@ -190,7 +190,7 @@
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
-                  <th> <small>Dias de atraso</small> </th>
+                  <th> <small>Dias de compra</small> </th>
                   <th> <small>Doc.</small> </th>
                   <th> <small>Prioridad</small> </th>
                   <th> <small></small> </th>
@@ -226,7 +226,6 @@
         </div>
       </div>
   @elseif ( auth()->user()->can('View level three documentp notification') )
-    <div class="container">
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
           <div class="row">
@@ -264,7 +263,7 @@
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
-                  <th> <small>Dias de atraso</small> </th>
+                  <th> <small>Dias de compra</small> </th>
                   <th> <small>Doc.</small> </th>
                   <th> <small>Prioridad</small> </th>
                   <th> <small></small> </th>
@@ -299,7 +298,6 @@
           </div>
         </div>
       </div>
-    </div>
   @else
 
     @include('default.denied')

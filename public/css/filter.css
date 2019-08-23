@@ -1,0 +1,11 @@
+.nowrap {
+  white-space: nowrap;
+}
+.boton-mini {
+  font-size: 14px;
+  padding: 2px 6px;
+  height: 26px;
+}
+.row-separation{
+  padding-top: 20px;
+}

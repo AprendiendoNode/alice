@@ -66,7 +66,7 @@
                   <th> <small>Presupuesto ejercido %</small> </th>
                   <th> <small>Entrega compromiso</small> </th>
                   <th> <small>Entrega estimada</small> </th>
-                  <th> <small>Dias de atraso compra</small> </th>
+                  <th> <small>Dias de compra</small> </th>
                   <th> <small>Motivos</small> </th>
                   <th> <small>Fecha firma</small> </th>
                   <th> <small>Atraso de proyecto</small> </th>

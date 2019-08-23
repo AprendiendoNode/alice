@@ -380,12 +380,12 @@ function generate_table_products(){
       + key.cant_sug + '</td>'
       + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id +'" data-clave="' + key.codigo + '" data-title="Cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
       + key.descripcion.toUpperCase() + '</td><td>'
-      + key.categoria + '</td><td>'
+      + key.categoria.toUpperCase() + '</td><td>'
       + key.codigo + '</td><td>'
       + key.proveedor + '</td><td>'
       + key.num_parte + '</td>'
       + '<td><a href="#" data-type="text" data-pk="' + key.id + '" data-desc="' + key.descuento + '" data-cant="' + key.cant_req + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td><td class="precio">'
-      + key.precio + '</td><td>'
+      + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio + '" data-name="precio" class="set-price"></a></td><td>'
       + key.currency + '</td><td class="precio_total">'
       + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
       + key.precio_total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
@@ -402,12 +402,12 @@ function generate_table_products(){
        + key.cant_sug + '</td>'
        + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id + '" data-clave="' + key.codigo + '" data-title="cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
        + key.descripcion.toUpperCase() + '</td><td>'
-       + key.categoria + '</td><td>'
+       + key.categoria.toUpperCase() + '</td><td>'
        + key.codigo + '</td><td>'
        + key.proveedor + '</td><td>'
        + key.num_parte + '</td>'
        + '<td><a href="#" data-type="text" data-pk="' + key.id + '" data-desc="' + key.descuento + '" data-cant="' + key.cant_req + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td><td class="precio">'
-       + key.precio + '</td><td>'
+       + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio + '" data-name="precio" class="set-price"></a></td><td>'
        + key.currency + '</td><td class="precio_total">'
        + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
        + key.precio_total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
@@ -429,7 +429,7 @@ function generate_table_products(){
         + key.proveedor + '</td><td>'
         + key.num_parte + '</td>'
         + '<td><a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td class="precio"><td>'
-        + key.precio + '</td><td>'
+        + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio+ '" data-name="precio" class="set-price"></a></td class=""><td>'
         + key.currency + '</td><td class="precio_total">'
         + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
         + key.precio_total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
@@ -456,10 +456,14 @@ function generate_table_products(){
       $innerForm.data('validator', $outerForm.data('validator'));
   });
 
+  $('.set-price').on('shown', function() {
+      var $innerForm = $(this).data('editable').input.$input.closest('form');
+      var $outerForm = $innerForm.parents('form').eq(0);
+      $innerForm.data('validator', $outerForm.data('validator'));
+  });
 
   // Funcion para detectar cambio en alguna cantidad de un producto
 
-  // Funcion para detectar cambio en alguna cantidad de un producto
   $('.set-cant-req').editable({
       container: 'body',
       type : 'number',
@@ -504,7 +508,43 @@ function generate_table_products(){
       }
   });
 
-}// Fin funcion generate_table_products
+  //Funcion para detectar cambio en algun precio unitario de un producto
+  $('.set-price').editable({
+      type : 'number',
+      validate: function(newValue) {
+        if($.trim(newValue) == '')
+            return 'Este campo es requerido';
+        else if(!isFinite(newValue))
+            return 'Debe ingresar un valor númerico';
+        else if(newValue < 0)
+            return 'No puede ingresar una cantidad negativa';
+      },
+      success: function(response, newValue) {
+        var id = $(this).data('pk');
+        update_price_unit(id, newValue);
+        document.getElementById(id).style.background = "#BDD3DE";
+      }
+  });
+
+}
+
+//Funcion para detectar cambio en algun precio unitario de un producto
+$('.set-price').editable({
+    type : 'number',
+    validate: function(newValue) {
+      if($.trim(newValue) == '')
+          return 'Este campo es requerido';
+      else if(!isFinite(newValue))
+          return 'Debe ingresar un valor númerico';
+      else if(newValue < 0)
+          return 'No puede ingresar una cantidad negativa';
+    },
+    success: function(response, newValue) {
+      var id = $(this).data('pk');
+      update_price_unit(id, newValue);
+      document.getElementById(id).style.background = "#BDD3DE";
+    }
+});
 
 function obtenerProductosLocalStorage(){
     let productosLS;
@@ -583,6 +623,7 @@ function calcular_costo_propuesto(){
 
 function deleteRow(fila) {
   var row = fila.parentNode.parentNode;
+  console.log(row);
   var descripcion = row.querySelector(".descripcion").closest("td").innerText;
   var precio = row.querySelector(".precio").closest("td").innerText;
   var cantidad = row.querySelector(".set-cant-req").closest("td a").innerText;

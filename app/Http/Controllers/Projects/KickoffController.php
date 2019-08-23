@@ -444,8 +444,14 @@ class KickoffController extends Controller
     public function sendNotifications($id_doc)
     {
       $documentp = Documentp::findOrFail($id_doc);
-      //NOTIFICACIONES
-      $recipient_users = json_decode(User::find([258, 6, 7])); //Todos los usuarios nivel 1
+      $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+      $kickoff_contrato = Kickoff_contrato::where('kickoff_id', $kickoff->id)->first();
+      //Extrayendo usuarios
+      $itc = $documentp->itc_id;
+      $vendedor = $kickoff_contrato->vendedor;
+      $inside_sales = $kickoff_contrato->inside_sales;
+
+      $recipient_users = json_decode(User::find([258, 18, 36, 16, 17, 87, 332, 333, $itc, $vendedor, $inside_sales])); //Todos los usuarios nivel 1
       array_push($recipient_users, (object) array('id' => Auth::user()->id)); //Creador de la notificación
 
       $recipients = [];

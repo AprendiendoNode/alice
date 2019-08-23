@@ -304,7 +304,6 @@ function eliminarProductoLocalStorage(producto){
 
     localStorage.setItem('productos', JSON.stringify(productosLS));
     sumaTotales();
-    calcular_costo_propuesto();
 }
 
 function calcular_costo_propuesto(){
@@ -457,8 +456,8 @@ function generate_table_products(){
       $innerForm.data('validator', $outerForm.data('validator'));
   });
 
-  // Funcion para detectar cambio en alguna cantidad de un producto
 
+  // Funcion para detectar cambio en alguna cantidad de un producto
   $('.set-cant-req').editable({
       container: 'body',
       type : 'number',
@@ -568,7 +567,6 @@ $(".validation-wizard-master").steps({
         // Tabla de productos del Documento P
         var productos = obtenerProductosLocalStorage();
         generate_table_products(productos);
-        calcular_costo_propuesto();
         update_mano_de_obra();
       }
 

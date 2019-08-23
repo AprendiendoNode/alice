@@ -64,7 +64,7 @@
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
-                  <th> <small>Dias de atraso</small> </th>
+                  <th> <small>Dias de compra</small> </th>
                   <th> <small>Doc</small> </th>
                   <th> <small>Prioridad</small> </th>
                   <th> <small></small> </th>
