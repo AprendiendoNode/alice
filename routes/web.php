@@ -690,6 +690,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get_pregunta_abierta','Survey\ResultsSurveyController@pregunta_abierta');
     Route::post('/get_pregunta_multiple','Survey\ResultsSurveyController@pregunta_multiple');
     Route::post('/get_header_option','Survey\ResultsSurveyController@name_option');
+    Route::get('/configure_survey_admin_nps','Survey\ConfigurationSurveyController@index'); 
+    Route::post('/data_create_client_config', 'Survey\ConfigurationSurveyController@create_client_nps'); 
+    Route::post('/creat_assign_surveyed', 'Survey\ConfigurationSurveyController@creat_assign_client_ht'); 
+    Route::post('/show_assign_surveyed', 'Survey\ConfigurationSurveyController@show_assign_client_nps'); 
+    Route::post('/delete_assign_surveyed', 'Survey\ConfigurationSurveyController@delete_assign_client_nps'); 
+    Route::post('/data_delete_client_config', 'Survey\ConfigurationSurveyController@delete_client_nps'); 
+    Route::post('/user_vertical' , 'Survey\ConfigurationSurveyController@show_nps'); 
+    Route::post('/create_data_client', 'Survey\ConfigurationSurveyController@capture_individual');
+    
     //Post Survey_results.
     Route::post('/survey_viewresults' , 'Survey\ResultsSurveyController@result_survey');
     Route::post('/get_modal_comments' , 'Survey\ResultsSurveyController@comment_survey');
