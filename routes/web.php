@@ -20,6 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //VER ENCUESTA DINAMICA
+Route::get('questionary/{data}','QuestionaryController@index');
+//VER ENCUESTA DINAMICA
 Route::get('questionary/{data}','Survey\QuestionaryController@index');
 //REGISTRAR ENCUESTA DINAMICA
 Route::post('/create_questionary','Survey\QuestionaryController@create_now');
@@ -552,7 +554,20 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/view_add_req_pay_mult', 'Payments\PayImportController@index');//RUTAS
     Route::post('/getDataExcel', 'Payments\PayImportController@getDataExcel');
     Route::post('create_pay_import', 'Payments\PayImportController@create_payment_from_excel');
-
+    //Confirmar Pagos
+    Route::get('/confirm_pay', 'Payments\PayHistoryController@index3');
+    Route::post('/get_confirm_pay_table', 'Payments\PayHistoryController@confirm_payment_table');
+    Route::post('/get_confirm_pay_table_period', 'Payments\PayHistoryController@confirm_payment_table_period');
+    Route::post('/get_confirm_pay_table_sums', 'Payments\PayHistoryController@confirm_pay_sums');
+    Route::post('/get_fact_idpay', 'Payments\PayHistoryController@get_fact_name');
+    Route::post('/send_item_pay_authorized', 'Payments\PayHistoryController@approval_three');
+    //Route::post('/send_item_pay_authorized_indv', 'Payments\PayHistoryController@approval_three_ind');
+  //- Modulo de definir cuentas por default
+    Route::get('/view_pay_bank', 'Payments\BankAccountsController@index');
+    Route::post('/get_table_bk', 'Payments\BankAccountsController@generate_table');
+    Route::post('/get_provbco_data','Payments\BankAccountsController@get_prov_bco_cta');
+    Route::post('/edit_prov_cta','Payments\BankAccountsController@edit_prov_bco_cta');
+    Route::post('/reasign_cta_bk', 'Payments\BankAccountsController@set_bank');
     //Dashboard Contratos
     Route::get('cont_dashboard', 'Contracts\ContratoController@index');
 
