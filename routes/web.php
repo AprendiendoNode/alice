@@ -20,13 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //VER ENCUESTA DINAMICA
-Route::get('questionary/{data}','Survey\QuestionaryController@index');
-//REGISTRAR ENCUESTA DINAMICA
-Route::post('/create_questionary','Survey\QuestionaryController@create_now');
-Route::post('/create_questionaryb','Survey\QuestionaryController@create_now_email');
-//Genero 10 link nuevos de los primeros 10 usuarios - ENCUESTA DINAMICA
-Route::get('create','Survey\QuestionaryController@create');
-// Route::get('create2','QuestionaryController@create2');
+Route::get('questionary/{data}','QuestionaryController@index');
 
 Route::group(['middleware' => 'auth'], function () {
   //Dashboard
@@ -552,7 +546,20 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/view_add_req_pay_mult', 'Payments\PayImportController@index');//RUTAS
     Route::post('/getDataExcel', 'Payments\PayImportController@getDataExcel');
     Route::post('create_pay_import', 'Payments\PayImportController@create_payment_from_excel');
-
+    //Confirmar Pagos
+    Route::get('/confirm_pay', 'Payments\PayHistoryController@index3');
+    Route::post('/get_confirm_pay_table', 'Payments\PayHistoryController@confirm_payment_table');
+    Route::post('/get_confirm_pay_table_period', 'Payments\PayHistoryController@confirm_payment_table_period');
+    Route::post('/get_confirm_pay_table_sums', 'Payments\PayHistoryController@confirm_pay_sums');
+    Route::post('/get_fact_idpay', 'Payments\PayHistoryController@get_fact_name');
+    Route::post('/send_item_pay_authorized', 'Payments\PayHistoryController@approval_three');
+    //Route::post('/send_item_pay_authorized_indv', 'Payments\PayHistoryController@approval_three_ind'); 
+  //- Modulo de definir cuentas por default
+    Route::get('/view_pay_bank', 'Payments\BankAccountsController@index');
+    Route::post('/get_table_bk', 'Payments\BankAccountsController@generate_table');
+    Route::post('/get_provbco_data','Payments\BankAccountsController@get_prov_bco_cta');
+    Route::post('/edit_prov_cta','Payments\BankAccountsController@edit_prov_bco_cta');
+    Route::post('/reasign_cta_bk', 'Payments\BankAccountsController@set_bank');
     //Dashboard Contratos
     Route::get('cont_dashboard', 'Contracts\ContratoController@index');
 
@@ -696,19 +703,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get_pregunta_abierta','Survey\ResultsSurveyController@pregunta_abierta');
     Route::post('/get_pregunta_multiple','Survey\ResultsSurveyController@pregunta_multiple');
     Route::post('/get_header_option','Survey\ResultsSurveyController@name_option');
-    Route::get('/configure_survey_admin_nps','Survey\ConfigurationSurveyController@index');
-    Route::post('/data_create_client_config', 'Survey\ConfigurationSurveyController@create_client_nps');
-    Route::post('/creat_assign_surveyed', 'Survey\ConfigurationSurveyController@creat_assign_client_ht');
-    Route::post('/show_assign_surveyed', 'Survey\ConfigurationSurveyController@show_assign_client_nps');
-    Route::post('/delete_assign_surveyed', 'Survey\ConfigurationSurveyController@delete_assign_client_nps');
-    Route::post('/data_delete_client_config', 'Survey\ConfigurationSurveyController@delete_client_nps');
-    Route::post('/user_vertical' , 'Survey\ConfigurationSurveyController@show_nps');
-    Route::post('/create_data_client', 'Survey\ConfigurationSurveyController@capture_individual');
-    //Encuestas apartado interface
-    Route::get('/configure_survey_admin_sit' , 'Survey\ConfigurationITController@index');
-    Route::post('/configure_survey_admin_sit_show' , 'Survey\ConfigurationITController@show');
-    Route::post('/send_survey_mail' , 'Survey\ConfigurationITController@send_surveyitc');
-    Route::post('/search_hotel_u' , 'Survey\ConfigurationITController@search_hotel_user');
     //Post Survey_results.
     Route::post('/survey_viewresults' , 'Survey\ResultsSurveyController@result_survey');
     Route::post('/get_modal_comments' , 'Survey\ResultsSurveyController@comment_survey');
