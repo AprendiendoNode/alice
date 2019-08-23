@@ -20,7 +20,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //VER ENCUESTA DINAMICA
-Route::get('questionary/{data}','QuestionaryController@index');
+Route::get('questionary/{data}','Survey\QuestionaryController@index');
+//REGISTRAR ENCUESTA DINAMICA
+Route::post('/create_questionary','Survey\QuestionaryController@create_now');
+Route::post('/create_questionaryb','Survey\QuestionaryController@create_now_email');
+//Genero 10 link nuevos de los primeros 10 usuarios - ENCUESTA DINAMICA
+Route::get('create','Survey\QuestionaryController@create');
+// Route::get('create2','QuestionaryController@create2');
 
 Route::group(['middleware' => 'auth'], function () {
   //Dashboard
@@ -690,15 +696,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get_pregunta_abierta','Survey\ResultsSurveyController@pregunta_abierta');
     Route::post('/get_pregunta_multiple','Survey\ResultsSurveyController@pregunta_multiple');
     Route::post('/get_header_option','Survey\ResultsSurveyController@name_option');
-    Route::get('/configure_survey_admin_nps','Survey\ConfigurationSurveyController@index'); 
-    Route::post('/data_create_client_config', 'Survey\ConfigurationSurveyController@create_client_nps'); 
-    Route::post('/creat_assign_surveyed', 'Survey\ConfigurationSurveyController@creat_assign_client_ht'); 
-    Route::post('/show_assign_surveyed', 'Survey\ConfigurationSurveyController@show_assign_client_nps'); 
-    Route::post('/delete_assign_surveyed', 'Survey\ConfigurationSurveyController@delete_assign_client_nps'); 
-    Route::post('/data_delete_client_config', 'Survey\ConfigurationSurveyController@delete_client_nps'); 
-    Route::post('/user_vertical' , 'Survey\ConfigurationSurveyController@show_nps'); 
+    Route::get('/configure_survey_admin_nps','Survey\ConfigurationSurveyController@index');
+    Route::post('/data_create_client_config', 'Survey\ConfigurationSurveyController@create_client_nps');
+    Route::post('/creat_assign_surveyed', 'Survey\ConfigurationSurveyController@creat_assign_client_ht');
+    Route::post('/show_assign_surveyed', 'Survey\ConfigurationSurveyController@show_assign_client_nps');
+    Route::post('/delete_assign_surveyed', 'Survey\ConfigurationSurveyController@delete_assign_client_nps');
+    Route::post('/data_delete_client_config', 'Survey\ConfigurationSurveyController@delete_client_nps');
+    Route::post('/user_vertical' , 'Survey\ConfigurationSurveyController@show_nps');
     Route::post('/create_data_client', 'Survey\ConfigurationSurveyController@capture_individual');
-    
+    //Encuestas apartado interface
+    Route::get('/configure_survey_admin_sit' , 'Survey\ConfigurationITController@index');
+    Route::post('/configure_survey_admin_sit_show' , 'Survey\ConfigurationITController@show');
+    Route::post('/send_survey_mail' , 'Survey\ConfigurationITController@send_surveyitc');
+    Route::post('/search_hotel_u' , 'Survey\ConfigurationITController@search_hotel_user');
     //Post Survey_results.
     Route::post('/survey_viewresults' , 'Survey\ResultsSurveyController@result_survey');
     Route::post('/get_modal_comments' , 'Survey\ResultsSurveyController@comment_survey');
