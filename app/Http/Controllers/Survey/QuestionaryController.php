@@ -259,6 +259,37 @@ class QuestionaryController extends Controller
    */
    public function create()
    {
+     $survey_name = Surveydinamic::where('id', 2)->value('name');
+     $users_sit = User::find(109);
+     $i=1;
+       $name = $users_sit->name;
+       $email = trim($users_sit->email);
+       $id_user = $users_sit->id;
+       $id_survey = 2;
+       $id_status = 1;
+       $id_status_rest = 1;
+       $date_start = '2019-07-01';
+       $date_active = '2019-07-01';
+       $date_end = '2019-07-31';
+
+       $nuevolink = $id_user.'/'.$id_survey.'/'.$date_active.'/'.$date_end.'/'.$id_status;
+       $shell_data= Crypt::encryptString($nuevolink);
+
+       ${"new_survey_type".$i} = new Surveydinamic_user;
+       ${"new_survey_type".$i}->user_id=$id_user;
+       ${"new_survey_type".$i}->survey_id=$id_survey;
+       ${"new_survey_type".$i}->estatus_id=$id_status;
+       ${"new_survey_type".$i}->estatus_res=$id_status_rest;
+       ${"new_survey_type".$i}->fecha_inicial=$date_start;
+       ${"new_survey_type".$i}->fecha_corresponde=$date_active;
+       ${"new_survey_type".$i}->fecha_fin=$date_end;
+       ${"new_survey_type".$i}->shell_data=$shell_data;
+       ${"new_survey_type".$i}->shell_status='';
+       ${"new_survey_type".$i}->save();
+
+   }
+   public function create12()
+   {
       // DB::statement('SET FOREIGN_KEY_CHECKS=0;'); //Deshabilita la revision de foreign key
       //  Surveydinamic_user::truncate();
       // DB::statement('SET FOREIGN_KEY_CHECKS=1;'); //Habilita la revision de foreign key

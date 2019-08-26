@@ -20,14 +20,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //VER ENCUESTA DINAMICA
-Route::get('questionary/{data}','QuestionaryController@index');
-//VER ENCUESTA DINAMICA
 Route::get('questionary/{data}','Survey\QuestionaryController@index');
 //REGISTRAR ENCUESTA DINAMICA
 Route::post('/create_questionary','Survey\QuestionaryController@create_now');
 Route::post('/create_questionaryb','Survey\QuestionaryController@create_now_email');
 //Genero 10 link nuevos de los primeros 10 usuarios - ENCUESTA DINAMICA
-Route::get('create','Survey\QuestionaryController@create');
+// Route::get('create','Survey\QuestionaryController@create');
 // Route::get('create2','QuestionaryController@create2');
 
 Route::group(['middleware' => 'auth'], function () {

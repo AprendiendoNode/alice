@@ -34,7 +34,13 @@ class ConfigurationITController extends Controller
   function _data_first_month_day() {
       $month = date('m');
       $year = date('Y');
-      return date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+      // return date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+
+      $fecha = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+
+      $nuevafecha = strtotime ( '-1 month' , strtotime ( $fecha ) ) ;
+      $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
+      return $nuevafecha;
   }
   /**
    * Display the specified resource.
@@ -44,12 +50,13 @@ class ConfigurationITController extends Controller
    */
    public function show(Request $request)
    {
+
+     $fecha= $this->_data_first_month_day();
+     $user_id = Auth::user()->id;
+     $resultados = DB::select('CALL px_survey_xusers (?, ?)', array($user_id, $fecha));
+
      // $fecha= $this->_data_first_month_day();
-     // $user_id = Auth::user()->id;
-     // $resultados = DB::select('CALL px_surveydinamic_users_data (?, ?)', array($user_id, $fecha));
-     
-     $fecha= '2019-04-01';
-     $resultados = DB::select('CALL px_surveydinamic_users_data (?)', array($fecha));
+     // $resultados = DB::select('CALL px_surveydinamic_users_data (?)', array($fecha));
      return json_encode($resultados);
    }
    public function search_hotel_user(Request $request)
