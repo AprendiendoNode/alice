@@ -741,7 +741,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/configure_survey_admin' , 'Survey\ConfigurationSurveyController@index');
     Route::post('/assign_survey' , 'Survey\ConfigurationSurveyController@create');
     Route::get('/survey_results' , 'Survey\ResultsSurveyController@index');
-
+    //Crear encuestas
+    Route::get('/create_survey_admin' , 'Survey\CreateSurveyController@index');
 });
 
 
