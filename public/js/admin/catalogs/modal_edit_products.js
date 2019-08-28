@@ -27,9 +27,7 @@ $(function() {
         rules: {
           inputEditkey: {
             required: true,
-            number: true,
-            minlength: 2,
-            maxlength: 10
+            minlength: 2
           },
           editfileInput: {
             required: false,

@@ -30,7 +30,6 @@ $(function() {
       rules: {
         inputCreatkey: {
           required: true,
-          number: true,
           minlength: 2,
           maxlength: 10
         },

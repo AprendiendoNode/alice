@@ -84,8 +84,8 @@ class ProductController extends Controller
             $rest_id_marca = DB::select('CALL px_products_id_modelosv2 (?)', array($id_modelo));
             $id_marca = $rest_id_marca[0]->marca_id;
 
-            $rest_id_especification = DB::select('CALL px_products_especification_idv2 (?)', array($id_modelo));
-            $id_especification = $rest_id_especification[0]->especification_id;
+            //$rest_id_especification = DB::select('CALL px_products_especification_idv2 (?)', array($id_modelo));
+            $id_especification = $request->sel_especification;
 
             $file_img = $request->file('fileInput');
             $file_extension = $file_img->getClientOriginalExtension(); //** get filename extension
@@ -168,8 +168,8 @@ class ProductController extends Controller
       $id_name_modelito = DB::select('CALL px_products_modelos_namev2 (?)', array($id_modelo));
       $name_modelo = $id_name_modelito[0]->modelos;
 
-      $rest_id_especification = DB::select('CALL px_products_especification_idv2 (?)', array($id_modelo));
-      $id_especification = $rest_id_especification[0]->especification_id;
+      //$rest_id_especification = DB::select('CALL px_products_especification_idv2 (?)', array($id_modelo));
+      $id_especification = $request->sel_especification_edit;
 
       $rest_id_marca = DB::select('CALL px_products_id_modelosv2 (?)', array($id_modelo));
       $id_marca = $rest_id_marca[0]->marca_id;

@@ -63,13 +63,13 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>Clave:<span style="color: red;">*</span></label>
-                          <input maxlength="10" type="text" class="form-control required" id="inputCreatkey" name="inputCreatkey" placeholder="Ingrese una clave"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                          <input maxlength="30" type="text" class="form-control form-control-sm required" id="inputCreatkey" name="inputCreatkey" placeholder="Ingrese una clave">
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>No. Parte:<span style="color: red;">*</span></label>
-                          <input maxlength="10" type="text" class="form-control required" id="inputCreatpart" name="inputCreatpart" placeholder="Ingrese el núm. de parte">
+                          <input maxlength="30" type="text" class="form-control form-control-sm required" id="inputCreatpart" name="inputCreatpart" placeholder="Ingrese el núm. de parte">
                         </div>
                       </div>
                     </div>
@@ -79,13 +79,13 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>Nombre:<span style="color: red;">*</span></label>
-                          <input type="text" class="form-control required" id="inputCreatname" name="inputCreatname" placeholder="Ingrese el nombre">
+                          <input type="text" class="form-control form-control-sm required" id="inputCreatname" name="inputCreatname" placeholder="Ingrese el nombre">
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>Precio (Default):<span style="color: red;">*</span></label>
-                          <input type="text" class="form-control required" id="inputCreatcoindefault" name="inputCreatcoindefault" placeholder="Ingrese el precio generico" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                          <input type="text" class="form-control form-control-sm required" id="inputCreatcoindefault" name="inputCreatcoindefault" placeholder="Ingrese el precio generico" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
                       </div>
                     </div>
@@ -93,13 +93,29 @@
                   <div class="col-md-12 mt-4">
                     <div class="form-group">
                       <label for="description">Descripcion:</label>
-                      <input type="text" class="form-control" id="description" name="description">
+                      <input type="text" class="form-control form-control-sm" id="description" name="description">
                     </div>
                   </div>
                   <div class="col-md-12 mt-4">
                     <div class="form-group">
                       <label for="comment">Comentario:</label>
-                      <input type="text" class="form-control" id="comment" name="comment">
+                      <input type="text" class="form-control form-control-sm" id="comment" name="comment">
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-4">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="sel_modal_coin" class="control-label">Especificación<span style="color: red;">*</span></label>
+                            <select id="sel_especification" name="sel_especification" class="form-control form-control-sm required" style="width:100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($especificacion as $especificacion_data)
+                              <option value="{{ $especificacion_data->id }}"> {{ $especificacion_data->name }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-md-12 mt-4">
@@ -107,7 +123,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="sel_modal_coin" class="control-label">Moneda (Default)<span style="color: red;">*</span></label>
-                            <select id="sel_modal_coin" name="sel_modal_coin" class="form-control required" style="width:100%;">
+                            <select id="sel_modal_coin" name="sel_modal_coin" class="form-control form-control-sm required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($currency as $data_currency)
                               <option value="{{ $data_currency->id }}"> {{ $data_currency->name }} </option>
@@ -119,7 +135,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="sel_modal_proveedor" class="control-label">Proveedor/Clientes<span style="color: red;">*</span></label>
-                            <select id="sel_modal_proveedor" name="sel_modal_proveedor" class="form-control required" style="width:100%;">
+                            <select id="sel_modal_proveedor" name="sel_modal_proveedor" class="form-control form-control-sm required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($customer as $data_customer)
                               <option value="{{ $data_customer->id }}"> {{ $data_customer->name }} </option>
@@ -137,7 +153,7 @@
                           <span style="color: red;">*</span>
                         </label>
                         <div id="cont_category" class="input-group mb-3">
-                          <select datas="sel_categoria" id="sel_categoria" name="sel_categoria" class="form-control required">
+                          <select datas="sel_categoria" id="sel_categoria" name="sel_categoria" class="form-control form-control-sm required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
                             @forelse ($category as $data_category)
                             <option value="{{ $data_category->id }}"> {{ $data_category->name }} </option>
@@ -145,7 +161,7 @@
                             @endforelse
                           </select>
                           <div class="input-group-append">
-                            <button class="btn btn-primary addcategorias" type="button"><i class="fa fa-plus"></i></button>
+                            <button class="btn btn-primary btn-sm addcategorias" type="button"><i class="fa fa-plus"></i></button>
                           </div>
                         </div>
                       </div>
@@ -154,7 +170,7 @@
                           <span style="color: red;">*</span>
                         </label>
                         <div id="cont_model" class="input-group mb-3">
-                          <select datas="sel_modelo" id="sel_modelo" name="sel_modelo" class="form-control required">
+                          <select datas="sel_modelo" id="sel_modelo" name="sel_modelo" class="form-control form-control-sm required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
                             @forelse ($models as $data_models)
                             <option value="{{ $data_models->id }}"> {{ $data_models->ModeloNombre }} </option>
@@ -162,7 +178,7 @@
                             @endforelse
                           </select>
                           <div class="input-group-append">
-                            <button class="btn btn-primary addmodel" type="button"><i class="fa fa-plus"></i></button>
+                            <button class="btn btn-primary btn-sm addmodel" type="button"><i class="fa fa-plus"></i></button>
                           </div>
                         </div>
                       </div>
@@ -171,7 +187,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="sel_unit" class="control-label">Unidad de medida:<span style="color: red;">*</span></label>
-                          <select id="sel_unit" name="sel_unit" class="form-control required" style="width:100%;">
+                          <select id="sel_unit" name="sel_unit" class="form-control form-control-sm required" style="width:100%;">
                             <option value="">{{ trans('message.selectopt') }}</option>
                             @forelse ($unitmeasures as $data_unitmeasures)
                             <option value="{{ $data_unitmeasures->id }}"> {{ $data_unitmeasures->name }} </option>
@@ -183,7 +199,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="sel_satserv" class="control-label">Productos/Servicios SAT:<span style="color: red;">*</span></label>
-                            <select id="sel_satserv" name="sel_satserv" class="form-control required" style="width:100%;">
+                            <select id="sel_satserv" name="sel_satserv" class="form-control form-control-sm required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($satproduct as $data_satproduct)
                               <option value="{{ $data_satproduct->id }}"> {{ $data_satproduct->name }} </option>
@@ -205,7 +221,7 @@
                           <span style="color: red;">*</span>
                         </label>
                         <div id="cont_estatus" class="input-group mb-3">
-                          <select datas="sel_estatus" id="sel_estatus" name="sel_estatus" class="form-control required">
+                          <select datas="sel_estatus" id="sel_estatus" name="sel_estatus" class="form-control form-control-sm required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
                             @forelse ($estatus as $data_estatus)
                               <option value="{{ $data_estatus->id }}"> {{ $data_estatus->name }} </option>
@@ -213,7 +229,7 @@
                             @endforelse
                           </select>
                           <div class="input-group-append">
-                            <button class="btn btn-primary addstatus" type="button"><i class="fa fa-plus"></i></button>
+                            <button class="btn btn-primary btn-sm addstatus" type="button"><i class="fa fa-plus"></i></button>
                           </div>
                         </div>
                       </div>
@@ -222,7 +238,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Orden:<span style="color: red;">*</span></label>
-                          <input type="text" class="form-control required" id="inputCreatOrden" name="inputCreatOrden" placeholder="Orden de visualización" value="0" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                          <input type="text" class="form-control form-control-sm required" id="inputCreatOrden" name="inputCreatOrden" placeholder="Orden de visualización" value="0" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -299,13 +315,13 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>Clave:<span style="color: red;">*</span></label>
-                          <input maxlength="10" type="text" class="form-control required" id="inputEditkey" name="inputEditkey" placeholder="Ingrese una clave"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                          <input maxlength="30" type="text" class="form-control form-control-sm required" id="inputEditkey" name="inputEditkey" placeholder="Ingrese una clave"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>No. Parte:<span style="color: red;">*</span></label>
-                          <input maxlength="10" type="text" class="form-control required" id="inputEditpart" name="inputEditpart" placeholder="Ingrese el núm. de parte">
+                          <input maxlength="30" type="text" class="form-control form-control-sm required" id="inputEditpart" name="inputEditpart" placeholder="Ingrese el núm. de parte">
                         </div>
                       </div>
                     </div>
@@ -315,13 +331,13 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>Nombre:<span style="color: red;">*</span></label>
-                          <input type="text" class="form-control required" id="inputEditname" name="inputEditname" placeholder="Ingrese el nombre">
+                          <input type="text" class="form-control form-control-sm required" id="inputEditname" name="inputEditname" placeholder="Ingrese el nombre">
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>Precio (Default):<span style="color: red;">*</span></label>
-                          <input type="text" class="form-control required" id="inputEditcoindefault" name="inputEditcoindefault" placeholder="Ingrese el precio generico" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                          <input type="text" class="form-control form-control-sm required" id="inputEditcoindefault" name="inputEditcoindefault" placeholder="Ingrese el precio generico" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
                       </div>
                     </div>
@@ -329,13 +345,29 @@
                   <div class="col-md-12 mt-4">
                     <div class="form-group">
                       <label for="description">Descripcion:</label>
-                      <input type="text" class="form-control" id="inputEditdescription" name="inputEditdescription">
+                      <input type="text" class="form-control form-control-sm" id="inputEditdescription" name="inputEditdescription">
                     </div>
                   </div>
                   <div class="col-md-12 mt-4">
                     <div class="form-group">
                       <label for="comment">Comentario:</label>
-                      <input type="text" class="form-control" id="inputEditcomment" name="inputEditcomment">
+                      <input type="text" class="form-control form-control-sm" id="inputEditcomment" name="inputEditcomment">
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-4">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="sel_especification_edit" class="control-label">Especificación<span style="color: red;">*</span></label>
+                            <select id="sel_especification_edit" name="sel_especification_edit" class="form-control form-control-sm required" style="width:100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($especificacion as $especificacion_data)
+                              <option value="{{ $especificacion_data->id }}"> {{ $especificacion_data->name }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-md-12 mt-4">
@@ -343,7 +375,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="editsel_modal_coin" class="control-label">Moneda (Default)<span style="color: red;">*</span></label>
-                            <select id="editsel_modal_coin" name="editsel_modal_coin" class="form-control required" style="width:100%;">
+                            <select id="editsel_modal_coin" name="editsel_modal_coin" class="form-control form-control-sm required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($currency as $data_currency)
                               <option value="{{ $data_currency->id }}"> {{ $data_currency->name }} </option>
@@ -355,7 +387,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="editsel_modal_proveedor" class="control-label">Proveedor/Clientes<span style="color: red;">*</span></label>
-                            <select id="editsel_modal_proveedor" name="editsel_modal_proveedor" class="form-control required" style="width:100%;">
+                            <select id="editsel_modal_proveedor" name="editsel_modal_proveedor" class="form-control form-control-sm required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($customer as $data_customer)
                               <option value="{{ $data_customer->id }}"> {{ $data_customer->name }} </option>
@@ -373,7 +405,7 @@
                           <span style="color: red;">*</span>
                         </label>
                         <div id="edit_cont_category" class="input-group mb-3">
-                          <select edatas="edit_sel_categoria" id="edit_sel_categoria" name="edit_sel_categoria" class="form-control required">
+                          <select edatas="edit_sel_categoria" id="edit_sel_categoria" name="edit_sel_categoria" class="form-control form-control-sm required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
                             @forelse ($category as $data_category)
                             <option value="{{ $data_category->id }}"> {{ $data_category->name }} </option>
@@ -387,7 +419,7 @@
                           <span style="color: red;">*</span>
                         </label>
                         <div id="edit_cont_model" class="input-group mb-3">
-                          <select edatas="edit_sel_modelo" id="edit_sel_modelo" name="edit_sel_modelo" class="form-control required">
+                          <select edatas="edit_sel_modelo" id="edit_sel_modelo" name="edit_sel_modelo" class="form-control form-control-sm required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
                             @forelse ($models as $data_models)
                             <option value="{{ $data_models->id }}"> {{ $data_models->ModeloNombre }} </option>
@@ -401,7 +433,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="edit_sel_unit" class="control-label">Unidad de medida:<span style="color: red;">*</span></label>
-                          <select id="edit_sel_unit" name="edit_sel_unit" class="form-control required" style="width:100%;">
+                          <select id="edit_sel_unit" name="edit_sel_unit" class="form-control form-control-sm required" style="width:100%;">
                             <option value="">{{ trans('message.selectopt') }}</option>
                             @forelse ($unitmeasures as $data_unitmeasures)
                             <option value="{{ $data_unitmeasures->id }}"> {{ $data_unitmeasures->name }} </option>
@@ -413,7 +445,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="edit_sel_satserv" class="control-label">Productos/Servicios SAT:<span style="color: red;">*</span></label>
-                            <select id="edit_sel_satserv" name="edit_sel_satserv" class="form-control required" style="width:100%;">
+                            <select id="edit_sel_satserv" name="edit_sel_satserv" class="form-control form-control-sm required" style="width:100%;">
                               <option value="">{{ trans('message.selectopt') }}</option>
                               @forelse ($satproduct as $data_satproduct)
                               <option value="{{ $data_satproduct->id }}"> {{ $data_satproduct->name }} </option>
@@ -435,7 +467,7 @@
                           <span style="color: red;">*</span>
                         </label>
                         <div id="edit_cont_estatus" class="input-group mb-3">
-                          <select edatas="edit_sel_estatus" id="edit_sel_estatus" name="edit_sel_estatus" class="form-control required">
+                          <select edatas="edit_sel_estatus" id="edit_sel_estatus" name="edit_sel_estatus" class="form-control form-control-sm required">
                             <option value="" selected>{{ trans('message.selectopt') }}</option>
                             @forelse ($estatus as $data_estatus)
                               <option value="{{ $data_estatus->id }}"> {{ $data_estatus->name }} </option>
@@ -449,7 +481,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Orden:<span style="color: red;">*</span></label>
-                          <input type="text" class="form-control required" id="inputEditOrden" name="inputEditOrden" placeholder="Orden de visualización" value="0" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                          <input type="text" class="form-control form-control-sm required" id="inputEditOrden" name="inputEditOrden" placeholder="Orden de visualización" value="0" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -464,7 +496,7 @@
                   </div>
 
                   <div class="col-md-12 mt-4">
-                      <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.create') }}</button>
+                      <button type="submit" class="btn btn-navy"><i class="far fa-plus-square" style="margin-right: 4px;"></i> {{ trans('message.edit') }}</button>
                       <button type="button" class="btn btn-danger waves-effect form_creat_user" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
                   </div>
                 </div>
@@ -662,9 +694,9 @@
                       <th>Clave</th>
                       <th>Modelo</th>
                       <th>Fabricante</th>
-                      <th>Unidad de medida</th>
+                      <th>Unidad</th>
                       <th>Sat Producto</th>
-                      <th>Order</th>
+                      <th>Orden</th>
                       <th>Estatus</th>
                       <th>Filtrable</th>
                       <th>Opciones</th>
@@ -708,6 +740,20 @@
   <script src="{{ asset('js/admin/catalogs/modal_edit_products.js')}}"></script>
 
   <style media="screen">
+    #table_product tbody tr td{
+      padding: 0.5rem 0.9375rem;
+    }
+
+    #table_product thead th{
+      width: 100%;
+      padding: 0.9rem 0.9rem;
+      white-space: pre-line;
+    }
+
+    .form-control{
+      color:  #535352 !important;
+    }
+
     .select2-selection__rendered {
       line-height: 44px !important;
       padding-left: 20px !important;

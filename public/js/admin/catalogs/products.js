@@ -623,6 +623,7 @@ function edit_product(e){
 
          $('[name="edit_sel_categoria"]').val(data[0].categoria_id).trigger('change');
          $('[name="editsel_modal_coin"]').val(data[0].currency_id).trigger('change');
+         $('[name="sel_especification_edit"]').val(data[0].especifications_id).trigger('change');
          $('[name="edit_sel_modelo"]').val(data[0].modelo_id).trigger('change');
          $('[name="editsel_modal_proveedor"]').val(data[0].proveedor_id).trigger('change');
          $('[name="edit_sel_unit"]').val(data[0].unit_measure_id).trigger('change');
