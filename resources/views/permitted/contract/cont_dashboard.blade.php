@@ -33,7 +33,7 @@
 
                 <div class="row">
                   <div class="col-xs-12 d-flex align-items-center">
-                    <table id="table_noventa_anexo" name='table_noventa_anexo' class="compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="95%">
+                    <table id="table_noventa_anexo" name='table_noventa_anexo' class="compact-tab display nowrap table table-bordered table-hover w-100">
                       <thead>
                         <tr class="bg-primary" style="background: #FF851B; font-size: 11.5px;">
                           <th>IDContrato Anexos</th>
@@ -78,14 +78,13 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
-            <div class="card table-responsive">
-              <div class="card-body">
-
+            <div class="card">
+              <div class="card-body table-responsive">
                 <div class="row">
                   <div class="col-xs-12 d-flex align-items-center">
-                    <table id="table_vencer_anexo" name='table_vencer_anexo' class="compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="95%">
+                    <table id="table_vencer_anexo" name='table_vencer_anexo' class="compact-tab display nowrap table table-bordered table-hover" >
                       <thead>
-                        <tr class="bg-primary" style="background: #00A65A; font-size: 11.5px;">
+                        <tr class="bg-primary" style="background: #00A65A; font-size: 10.5px;">
                           <th>IDContrato Anexos</th>
                           <th>Clasificación</th>
                           <th>Vertical</th>
@@ -142,7 +141,7 @@
                         <div class="tab-pane active" id="tab_1_1nx" name="tab_1_1nx">
                           <div class="row mt-10 tab_one">
                             <div class="col-xs-12 d-flex align-items-center">
-                              <table id="table_act_master_now" name='table_act_master_now' class=" compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="95%">
+                              <table id="table_act_master_now" name='table_act_master_now' class=" compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="120%">
                                 <thead>
                                   <tr class="bg-primary" style="background: #dd4b39;">
                                     <th>IDContrato</th>
@@ -169,7 +168,7 @@
                         <div class="tab-pane" id="tab_2_2nx" name="tab_2_2nx">
                           <div class="row mt-10 tab_two">
                             <div class="col-xs-12">
-                              <table id="table_act_anexo_now" name='table_act_anexo_now' class=" compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="95%">
+                              <table id="table_act_anexo_now" name='table_act_anexo_now' class=" compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="110%">
                                 <thead>
                                   <tr class="bg-primary" style="background: #dd4b39;">
                                     <th>IDContrato Anexos</th>
@@ -230,7 +229,7 @@
                         <div class="tab-pane active" id="tab_1_1" name="tab_1_1">
                           <div class="row mt-10 tab_one">
                             <div class="col-xs-12">
-                              <table id="table_act_master" name='table_act_master' class=" compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="95%">
+                              <table id="table_act_master" name='table_act_master' class=" compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="110%">
                                 <thead>
                                   <tr class="bg-primary" style="background: #00BBF2;">
                                     <th>IDContrato</th>
@@ -257,7 +256,7 @@
                         <div class="tab-pane" id="tab_2_2" name="tab_2_2">
                           <div class="row mt-10 tab_two">
                             <div class="col-xs-12">
-                              <table id="table_act_anexo" name='table_act_anexo' class="compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="95%">
+                              <table id="table_act_anexo" name='table_act_anexo' class="compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="100%">
                                 <thead>
                                   <tr class="bg-primary" style="background: #00BBF2;">
                                     <th>IDContrato Anexos</th>
@@ -321,7 +320,7 @@
                         <div class="tab-pane active" id="tab_ven_1" name="tab_ven_1">
                           <div class="row mt-10 tab_one">
                             <div class="col-xs-12">
-                              <table id="table_ven_master" name='table_ven_master' class="compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="95%">
+                              <table id="table_ven_master" name='table_ven_master' class="compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="120%">
                                 <thead>
                                   <tr class="bg-primary" style="background: #563D7C;">
                                     <th>IDContrato</th>
@@ -348,7 +347,7 @@
                         <div class="tab-pane" id="tab_ven_2" name="tab_ven_2">
                           <div class="row mt-10 tab_two">
                             <div class="col-xs-12">
-                              <table id="table_ven_anexo" name='table_ven_anexo' class="compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="95%">
+                              <table id="table_ven_anexo" name='table_ven_anexo' class="compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="110%">
                                 <thead>
                                   <tr class="bg-primary" style="background: #563D7C;">
                                     <th>IDContrato Anexos</th>
@@ -412,7 +411,7 @@
                         <div class="tab-pane active" id="tab_pause_1nx" name="tab_pause_1nx">
                           <div class="row mt-10 tab_one">
                             <div class="col-xs-12">
-                              <table id="table_pause_master" name='table_pause_master' class="  compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="95%">
+                              <table id="table_pause_master" name='table_pause_master' class="compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="120%">
                                 <thead>
                                   <tr class="bg-primary" style="background: #101D42;">
                                     <th>IDContrato</th>
@@ -439,7 +438,7 @@
                         <div class="tab-pane" id="tab_pause_2nx" name="tab_pause_2nx">
                           <div class="row mt-10 tab_two">
                             <div class="col-xs-12">
-                              <table id="table_pause_anexo" name='table_pause_anexo' class="compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="95%">
+                              <table id="table_pause_anexo" name='table_pause_anexo' class="compact-tab display nowrap table table-bordered table-hover" cellspacing="0" width="100%">
                                 <thead>
                                   <tr class="bg-primary" style="background: #101D42;">
                                     <th>IDContrato Anexos</th>
