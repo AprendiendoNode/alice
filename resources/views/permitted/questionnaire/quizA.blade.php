@@ -110,7 +110,8 @@
 
       <footer class="my-2 pt-1 text-muted text-center text-small">
         <p class="mb-1">
-          Fecha de expiración: {{ \App\Helpers\Helper::convertSqlToDate($date_end) }} <br>
+
+          Fecha de expiración: {{ $date_end }} <br>
           Copyright Sitwifi &copy;  All rights reserved</p>
       </footer>
     </div>

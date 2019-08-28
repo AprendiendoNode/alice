@@ -746,6 +746,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/data_delete_client_config', 'Survey\ConfigurationSurveyController@delete_client_nps');
     Route::post('/user_vertical' , 'Survey\ConfigurationSurveyController@show_nps');
     Route::post('/create_data_client', 'Survey\ConfigurationSurveyController@capture_individual');
+    Route::post('/show_survey_table_month', 'Survey\ConfigurationSurveyController@show_table_resend');
     //Encuestas apartado interface
     Route::get('/configure_survey_admin_sit' , 'Survey\ConfigurationITController@index');
     Route::post('/configure_survey_admin_sit_show' , 'Survey\ConfigurationITController@show');

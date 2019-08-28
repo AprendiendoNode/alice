@@ -9,6 +9,12 @@ use DB;
 use Auth;
 use App\User;
 
+use App\Models\Survey\Surveydinamic_email;
+use App\Models\Survey\Surveydinamic_user;
+
+// use App\Surveydinamic;
+use Illuminate\Support\Facades\Crypt;
+
 class ConfigurationSurveyController extends Controller
 {
     public function index()
@@ -121,47 +127,46 @@ class ConfigurationSurveyController extends Controller
 		$date_e= $request->date_end;
 		$date_m= $request->month_evaluate;
 		$operacion='0';
-
-		return $request;
+		$month=$date_m.'-01';
 
 		for ($i=0; $i < count($clientes); $i++) {
-			$month=$date_m.'-01';
-			$pregunto_a = DB::table('encuesta_users')
+			$pregunto_a = DB::table('surveydinamic_users')
 			                      ->where('user_id', $clientes[$i])
-			                      ->where('encuesta_id', '1') // id encuesta
+			                      ->where('survey_id', '2') // id encuesta
 			                      ->where('estatus_id', '1') //Activa
-			                      ->where('estatus_res', '0') //NO CONTESTADA
+			                      ->where('estatus_res', '2') //NO CONTESTADA
 			                      ->where('fecha_corresponde', $month)
 			                      ->count();
+
 			if ($pregunto_a == '0') {
 			  //Pregunto b- Puede existir pero estar deshabilitada
-			  $pregunto_b = DB::table('encuesta_users')
+			  $pregunto_b = DB::table('surveydinamic_users')
 			                        ->where('user_id', $clientes[$i])
-			                        ->where('encuesta_id', '1') // id encuesta
+			                        ->where('survey_id', '2') // id encuesta
 			                        ->where('estatus_id', '2') //deshabilitada
 			                        ->where('estatus_res', '1') //CONTESTADA
 			                        ->where('fecha_corresponde', $month)
 			                        ->count();
 			  if ($pregunto_b == '0') {
 			    #ENTONCES VOLVEMOS A PREGUNTAR
-			    $pregunto_c = DB::table('encuesta_users')
+			    $pregunto_c = DB::table('surveydinamic_users')
 			                          ->where('user_id', $clientes[$i])
-			                          ->where('encuesta_id', '1') // id encuesta
+			                          ->where('survey_id', '2') // id encuesta
 			                          ->where('estatus_id', '2') //deshabilitada
-			                          ->where('estatus_res', '0') //NO CONTESTADA
+			                          ->where('estatus_res', '2') //NO CONTESTADA
 			                          ->where('fecha_corresponde', $month)
 			                          ->count();
 			    if ($pregunto_c == '1') {
 			      #ESTA DESHABILITADA PERO NO SE CONTESTO EN ESE PERIODO REGISTRO DE NUEVO
-			      $nuevolink = $clientes[$i].'/'.'1'.'/'.$month.'/'.$date_e;
+			      $nuevolink = $clientes[$i].'/'.'2'.'/'.$month.'/'.$date_e.'/'.'1';
 			      $encriptodata= Crypt::encryptString($nuevolink);
 			      $encriptostatus= Crypt::encryptString('1');
 
-			      $new_survey_individual = new Encuesta_user;
+			      $new_survey_individual = new Surveydinamic_user;
 			      $new_survey_individual->user_id=$clientes[$i];
-			      $new_survey_individual->encuesta_id='1';
+			      $new_survey_individual->survey_id='2';
 			      $new_survey_individual->estatus_id='1';
-			      $new_survey_individual->estatus_res='0';
+			      $new_survey_individual->estatus_res='2';
 			      $new_survey_individual->fecha_inicial=$date_i;
 			      $new_survey_individual->fecha_corresponde=$month;
 			      $new_survey_individual->fecha_fin=$date_e;
@@ -176,21 +181,21 @@ class ConfigurationSurveyController extends Controller
 			         'shell_data' => $encriptodata,
 			         'shell_status' => $encriptostatus
 			      ];
-			      $this->sentSurveyEmail($sql[0]->email, $datos);
+			      return $datos;
+			      // $this->sentSurveyEmail($sql[0]->email, $datos);
 			      $operacion='1';
-
 			    }
 			    else{
 			      #De plano no existe
-			      $nuevolink = $clientes[$i].'/'.'1'.'/'.$month.'/'.$date_e;
+			      $nuevolink = $clientes[$i].'/'.'2'.'/'.$month.'/'.$date_e.'/'.'1';
 			      $encriptodata= Crypt::encryptString($nuevolink);
 			      $encriptostatus= Crypt::encryptString('1');
 
-			      $new_survey_individual = new Encuesta_user;
+			      $new_survey_individual = new Surveydinamic_user;
 			      $new_survey_individual->user_id=$clientes[$i];
-			      $new_survey_individual->encuesta_id='1';
+			      $new_survey_individual->survey_id='2';
 			      $new_survey_individual->estatus_id='1';
-			      $new_survey_individual->estatus_res='0';
+			      $new_survey_individual->estatus_res='2';
 			      $new_survey_individual->fecha_inicial=$date_i;
 			      $new_survey_individual->fecha_corresponde=$month;
 			      $new_survey_individual->fecha_fin=$date_e;
@@ -203,7 +208,7 @@ class ConfigurationSurveyController extends Controller
 			         'shell_data' => $encriptodata,
 			         'shell_status' => $encriptostatus
 			      ];
-			      $this->sentSurveyEmail($sql[0]->email, $datos);
+			      // $this->sentSurveyEmail($sql[0]->email, $datos);
 			      $operacion='1';
 			    }
 			  }
@@ -215,11 +220,11 @@ class ConfigurationSurveyController extends Controller
 			else {
 			  //Existe enlace -> Reenvio el link
 			  $sql_data_user = DB::table('users')->select('email', 'name')->where('id', $clientes[$i])->get();
-			  $data_pregunta = DB::table('encuesta_users')
+			  $data_pregunta = DB::table('surveydinamic_users')
 			                        ->where('user_id', $clientes[$i])
-			                        ->where('encuesta_id', '1') // id encuesta
+			                        ->where('survey_id', '2') // id encuesta
 			                        ->where('estatus_id', '1') //Activa
-			                        ->where('estatus_res', '0') //NO CONTESTADA
+			                        ->where('estatus_res', '2') //NO CONTESTADA
 			                        ->where('fecha_corresponde', $month)
 			                        ->get();
 			  $datos = [
@@ -227,13 +232,13 @@ class ConfigurationSurveyController extends Controller
 			     'shell_data' => $data_pregunta[0]->shell_data,
 			     'shell_status' => $data_pregunta[0]->shell_status
 			  ];
-			  $this->sentSurveyEmail($sql_data_user[0]->email, $datos);
+			  // $this->sentSurveyEmail($sql_data_user[0]->email, $datos);
 			  $operacion='2';
 			}
 		}//end del for
 
-
-		if ($operacion == '4') {
+		return $operacion;
+		/*if ($operacion == '4') {
 		    notificationMsg('danger', 'Favor de llenar todos los campos!');
 		    return Redirect::back();
 		}
@@ -252,7 +257,22 @@ class ConfigurationSurveyController extends Controller
 		if ($operacion == '0') {
 		  notificationMsg('danger', 'Operation Abort!');
 		  return Redirect::back();
-		}
+		}*/
 	}
+	public function show_table_resend(Request $request)
+	{
 
+	    $input_date_i= $request->get('data_one');
+	    if ($input_date_i != '') {
+	      $date_current = $input_date_i.'-01';
+	    }
+	    else {
+			$fecha_cur = date('Y-m');
+			$date_current = strtotime ( '-1 month' , strtotime ( $fecha_cur ) ) ;
+			$date_current = date ( 'Y-m-01' , $date_current );
+	    }
+	    
+		$resultados = DB::select('CALL px_surveydinamic_users_data (?)', array($date_current));
+		return $resultados;
+	}
 }

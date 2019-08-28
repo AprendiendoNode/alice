@@ -276,7 +276,7 @@
 
                             <div class="form-group">
                               <label>Mes a evaluar:<span style="color: red;">*</span></label>
-                              <input id="month_evaluate" name="month_evaluate"  type="text"  maxlength="10" placeholder="" class="form-control input-md" required>
+                              <input id="month_evaluate" name="month_evaluate"  type="text"  maxlength="10" placeholder="" class="form-control input-md datepickermonth" required>
                             </div>
 
 
@@ -326,30 +326,104 @@
               </div>
             </div>
             <br>
-            <div class="media">
-              <div class="media-body">
-                <div class="clearfix">
-                  <div class="table-responsive">
-                    <table id="example_survey" name='example_survey' class="display nowrap table table-bordered table-hover" width="100%" cellspacing="0">
-                      <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
-                      <thead>
-                          <tr class="bg-primary" style="background: #789F8A; font-size: 11.5px; ">
-                              <th> <small>Nombre</small> </th>
-                              <th> <small>Email</small> </th>
-                              <th> <small>Estatus</small> </th>
-                              <th> <small>Estado</small> </th>
-                              <th> <small>Fecha corresponde</small> </th>
-                              <th> <small>Fecha inicio</small> </th>
-                              <th> <small>Fecha fin</small> </th>
-                              <th> <small>Operación A</small> </th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
-                  </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="table-responsive">
+                  <table id="example_survey" name='example_survey' class="display nowrap table table-bordered table-hover" width="100%" cellspacing="0">
+                    <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
+                    <thead>
+                        <tr class="bg-primary" style="background: #789F8A; font-size: 11.5px; ">
+                            <th> <small>Nombre</small> </th>
+                            <th> <small>Email</small> </th>
+                            <th> <small>Estatus</small> </th>
+                            <th> <small>Estado</small> </th>
+                            <th> <small>Fecha corresponde</small> </th>
+                            <th> <small>Fecha inicio</small> </th>
+                            <th> <small>Fecha fin</small> </th>
+                            <th> <small>Operación A</small> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal_customer_invoice_send_mail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalmail" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title" id="modalmail"> {{ __('customer_invoice.text_modal_send_mail')}} </h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="white-text">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <form id="form" name="form" enctype="multipart/form-data">
+            {{ csrf_field() }}
+            <input type="hidden" id="tken_b" name="tken_b" value="">
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <div class="form-group form-group-sm">
+                          <label for="to" class="control-label">Para <span class="required text-danger">*</span></label>
+                          <select id='to' name='to[]' class="form-control" multiple="multiple">
+                          </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xs-12">
+                      <div class="form-group form-group-sm">
+                        <label for="attach" class="control-label">CC</label>
+                        <select id='attach' name='attach[]' class="form-control" multiple="multiple">
+                        </select>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <div class="pull-right">
+                <button type="submit" class="btn btn-xs btn-info "> <i class="fa fa-filter"> Enviar</i></button>
+                <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"> <i class="fa fas fa-times"> {{ __('general.button_close') }} </i></button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal_customer_nps" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalmail" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title" id="modalmail"> Hotel asignado </h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="white-text">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12 col-xs-12">
+                  <div class="form-group form-group-sm">
+                    <label for="message_site" class="control-label">Hotel</label>
+                  </div>
+                  <textarea name="message_site" id="message_site" class="form-control" rows="5"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="pull-right">
+              <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"> <i class="fa fas fa-times"> {{ __('general.button_close') }} </i></button>
             </div>
           </div>
         </div>
@@ -363,8 +437,13 @@
 
 @push('scripts')
   @if( auth()->user()->can('View survey configuration') )
-    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
+    <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('plugins/select2/dist/js/i18n/es-MX.js') }}" type="text/javascript"></script>
+    <!-- <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('plugins/select2/dist/js/i18n/es-MX.js') }}" type="text/javascript"></script> -->
 
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
