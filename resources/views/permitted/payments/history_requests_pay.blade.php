@@ -25,6 +25,57 @@
 @endsection
 
 @section('content')
+  <!-- Modal -->
+  <div class="modal fade" id="modal-view-algo">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- Contenido de modal. -->
+          <input type="hidden" id="id_annex" name="id_annex">
+          <form id="form_tc" class="form-inline">
+            <input id="tpgeneral" name="tpgeneral" type="number" class="form-control" placeholder="Tipo de cambio(pagos, viáticos)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10">
+            <div class="input-group">
+             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+             <input id="date_to_search_tc" type="text" class="form-control date_plug" name="date_to_search_tc">
+            </div>
+            <button type="button" class="btn btn-primary btnupdetc">Update</button>
+
+          </form>
+
+            <div class="table-responsive">
+              <div class="row fields_docm">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <h4 class="text-center text-danger">Presupuesto Anual</h4>
+                    <h5 class="text-center text-default">* Montos en USD</h5>
+                    <br>
+                    <div id="presupuesto_anual">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <div class="row ">
+            <div class="col-sm-12">
+              <button type="button" class="btn btn-default closeModal pull-right" data-dismiss="modal">Close</button>
+            </div>
+            <!-- <div class="col-sm-3">
+              <button type="submit" class="btn btn-warning pull-right">Save changes</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
     @if( auth()->user()->can('View history of payment') )
       @include('permitted.payments.modal_payment')
 
@@ -40,12 +91,12 @@
                  {{ csrf_field() }}
                  <div class="col-md-8">
                    <div class="input-group">
-                     <span class="input-group-addon"><i class="fas fa-calendar-alt fa-3x"></i></span>
-                     <input id="date_to_search" type="text" class="form-control" name="date_to_search">
+                     <span class="input-group-addon"><i class="fas fa-calendar-alt fa-2x"></i></span>
+                     <input id="date_to_search" type="text" class="form-control form-control-sm" name="date_to_search">
                    </div>
                  </div>
                  <div class="col-md-4">
-                   <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard">
+                   <button id="boton-aplica-filtro" type="button" class="btn btn-sm btn-info filtrarDashboard">
                      <i class="fas fa-filter" aria-hidden="true"></i>  Filtrar
                    </button>
                  </div>
@@ -99,12 +150,12 @@
                  {{ csrf_field() }}
                  <div class="col-md-8">
                    <div class="input-group">
-                     <span class="input-group-addon"><i class="fas fa-calendar-alt fa-3x"></i></span>
-                     <input id="date_to_search" type="text" class="form-control" name="date_to_search">
+                     <span class="input-group-addon"><i class="fas fa-calendar-alt fa-2x"></i></span>
+                     <input id="date_to_search" type="text" class="form-control form-control-sm" name="date_to_search">
                    </div>
                  </div>
                  <div class="col-md-4">
-                   <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard">
+                   <button id="boton-aplica-filtro" type="button" class="btn btn-sm btn-info filtrarDashboard">
                      <i class="fas fa-filter" aria-hidden="true"></i>  Filtrar
                    </button>
                  </div>
@@ -163,12 +214,12 @@
                  {{ csrf_field() }}
                  <div class="col-md-8">
                    <div class="input-group">
-                     <span class="input-group-addon"><i class="fas fa-calendar-alt fa-3x"></i></span>
-                     <input id="date_to_search" type="text" class="form-control" name="date_to_search">
+                     <span class="input-group-addon"><i class="fas fa-calendar-alt fa-2x"></i></span>
+                     <input id="date_to_search" type="text" class="form-control form-control-sm" name="date_to_search">
                    </div>
                  </div>
                  <div class="col-md-4">
-                   <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard">
+                   <button id="boton-aplica-filtro" type="button" class="btn btn-sm btn-info filtrarDashboard">
                      <i class="fas fa-filter" aria-hidden="true"></i>  Filtrar
                    </button>
                  </div>
@@ -183,12 +234,14 @@
                    <tr class="bg-primary" style="background: #088A68;">
                      <th> <small></small> </th>
                      <th> <small>Factura</small> </th>
+                     <th> <small> Sitio </small> </th>
                      <th> <small>Proveedor</small> </th>
                      <th> <small>Estatus</small> </th>
                      <th> <small>Monto</small> </th>
                      <th> <small>Elaboró</small> </th>
                      <th> <small>Fecha de solicitud</small> </th>
                      <th> <small>Fecha límite de pago</small> </th>
+                     <th> <small>Presupuesto</small> </th>
                      <th> <small>Conceptos</small> </th>
                      <th> <small></small> </th>
                    </tr>

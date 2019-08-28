@@ -312,7 +312,24 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/get_licences', 'Equipments\LicencesEquipmentController@licences');
   Route::post('/get_licence_mac', 'Equipments\LicencesEquipmentController@licence_mac');
   Route::post('/update_date', 'Equipments\LicencesEquipmentController@update_date');
-
+  //Dashboard nps
+  Route::post('/summary_info_nps' , 'Survey\DashboardSurveyController@show_summary_info_nps');
+  Route::post('/show_comparative_year' , 'Survey\DashboardSurveyController@compare_year');
+  Route::post('/get_graph_nps' , 'Survey\DashboardSurveyController@percent_graph_nps');
+  Route::post('/get_graph_ppd' , 'Survey\DashboardSurveyController@cant_graph_ppd');
+  Route::post('get_graph_week','Survey\DashboardSurveyController@cant_graph_week');
+  Route::post('/get_graph_uvsr' , 'Survey\DashboardSurveyController@graph_uvsr');
+  Route::post('/get_graph_avgcal' , 'Survey\DashboardSurveyController@graph_avgcal');
+  Route::post('/get_table_vert' , 'Survey\DashboardSurveyController@table_vert');
+  Route::post('/get_table_results', 'Survey\DashboardSurveyController@table_results_full');
+  Route::post('/get_table_comments_nps', 'Survey\DashboardSurveyController@table_comments_nps');
+  Route::post('/get_table_comments_nps_full', 'Survey\DashboardSurveyController@table_commentsNPS_full');
+  Route::post('/box_total', 'Survey\DashboardSurveyController@box_total');
+  Route::post('/box_con', 'Survey\DashboardSurveyController@box_contestadas');
+  Route::post('/box_sin', 'Survey\DashboardSurveyController@box_sin_contestar');
+  Route::post('/box_promo', 'Survey\DashboardSurveyController@box_promotor');
+  Route::post('/box_pas', 'Survey\DashboardSurveyController@box_pasivo');
+  Route::post('/box_detra', 'Survey\DashboardSurveyController@box_detractor');  
   //- Herramientas
   Route::get('/detailed_guest_review', 'Tools\GuestToolsController@index');
   Route::get('/detailed_server_review', 'Tools\ServerToolsController@index');

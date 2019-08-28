@@ -86,7 +86,7 @@ function gen_payments_conf_table(datajson, table){
         status.id,
         status.factura,
         status.proveedor,
-        '<span class="label label-primary">'+status.estatus+'</span>',
+        '<span class="badge badge-primary badge-pill">'+status.estatus+'</span>',
         status.elaboro,
         status.monto_str,
         status.fecha_solicitud,

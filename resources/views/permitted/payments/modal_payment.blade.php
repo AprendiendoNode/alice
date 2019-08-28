@@ -19,7 +19,7 @@
                           </div>
                           <div class="col-md-5 d-inline text-left">
                             <label class="control-label d-inline">C.C.</label>
-                            <input type="text" class="form-control d-inline input-sm" name="cc_key" id="cc_key" style="font-size:75%;"readonly="">
+                            <input type="text" class="form-control form-control-sm  d-inline" name="cc_key" id="cc_key" style="font-size:75%;"readonly="">
                           </div>
 
 
@@ -41,24 +41,22 @@
                               {{ trans('pay.date_pay') }}:
                               <span id="fecha_pay"></span>
                             </p>
-
                           </div>
 
                         </div>
-
                           <div class="form-group">
                             <div class="row">
                               <div class="col-md-1">
                               <label for="factura" class=" control-label">{{ trans('pay.factura') }}</label>
                               </div>
                               <div class="col-md-4">
-                                <input style="font-size:22px;font-weight: bold;" disabled class="form-control" type="text" name="numfact" id="numfact" value="">
+                                <input style="font-size:22px;font-weight: bold;" disabled class="form-control form-control-sm" type="text" name="numfact" id="numfact" value="">
                               </div>
                               <div class="col-md-2">
                               <label for="customer" class="control-label"> Orden de compra</label>
                               </div>
                               <div class="col-md-4">
-                                <input style="font-size:22px" disabled class="form-control" id="rec_order_purchase" type="text" name="rec_order_purchase" value="">
+                                <input style="font-size:22px" disabled class="form-control form-control-sm" id="rec_order_purchase" type="text" name="rec_order_purchase" value="">
                               </div>
                             </div>
                             <div class="row">
@@ -66,13 +64,13 @@
                               <label for="" class=" control-label">{{ trans('pay.prioridad') }}:</label>
                               </div>
                                 <div class="col-md-4">
-                                  <input disabled class="form-control" id="rec_priority" type="text" name="" value="">
+                                  <input disabled class="form-control form-control-sm" id="rec_priority" type="text" name="" value="">
                                 </div>
                                 <div class="col-md-2">
                                 <label for="" class=" control-label">Folio:</label>
                                 </div>
                                 <div class="col-md-4">
-                                  <input class="form-control" type="text" id="folio" name="folio" value="" disabled="true">
+                                  <input class="form-control form-control-sm" type="text" id="folio" name="folio" value="" disabled="true">
                                 </div>
                             </div>
                           </div>
@@ -84,7 +82,7 @@
                           </div>
 
                           <div class="col-md-10">
-                            <input style="font-size:75%" id="rec_proveedor" disabled class="form-control" type="text" name="" value="">
+                            <input style="font-size:75%" id="rec_proveedor" disabled class="form-control form-control-sm" type="text" name="" value="">
                           </div>
                         </div>
                       </div>
@@ -96,32 +94,29 @@
                           <label for="amount" class="control-label">{{ trans('pay.amount') }}</label>
                           </div>
                           <div class="col-md-7">
-                            <input style="font-size:75%" disabled class="form-control" type="text" name="rec_monto" id="rec_monto" value="$1,100,500.00 MNX">
+                            <input style="font-size:75%" disabled class="form-control form-control-sm" type="text" name="rec_monto" id="rec_monto" value="$1,100,500.00 MNX">
                           </div>
-
                         </div>
                       </div>
 
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-3">
-
                           </div>
                           <div class="col-md-9 col-md-offset-2 margin-top-short">
-                            <input style="font-size:75%;font-weight:bold;" class="form-control" type="text" disabled="true" name="amountText" id="amountText" value="">
+                            <input style="font-size:75%;font-weight:bold;" class="form-control form-control-sm" type="text" disabled="true" name="amountText" id="amountText" value="">
                           </div>
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-12">
-                          <br>
+                        <div class="col-12">
                           <hr>
                           <p>(*) Datos del sitio</p>
                         </div>
                       </div>
-                      <div class="row ">
-                        <div class="">
-                          <table id="rec_venues_table" class="table table-responsive table-striped" style="margin-left: 7%; width:90% !important;">
+                      <div class="row d-flex justify-content-center">
+                        <div class="col-10 col-offset-1">
+                          <table id="rec_venues_table" class="table table-responsive table-striped table-sm" style="margin-left: 7%; width:95% !important;">
                             <thead class="bg-secondary text-white">
                               <tr>
                                 <th>Grupo</th>
@@ -146,18 +141,18 @@
                           <label for="description" class=" control-label">{{ trans('pay.concept_pay') }}</label>
                           </div>
                           <div class="col-md-10">
-                            <textarea style="resize:none;" disabled class="form-control" id="rec_description" name="rec_description" rows="4" cols="40"></textarea>
+                            <textarea style="resize:none;" disabled class="form-control form-control-sm" id="rec_description" name="rec_description" rows="4" cols="40"></textarea>
                           </div>
                         </div>
                       </div>
 
                       <div class="form-group">
-                        <div class="row">
+                        <div class="row mt-2">
                           <div class="col-md-2">
                           <label for="method-pay" class="control-label">{{ trans('pay.way_pay') }}</label>
                           </div>
                           <div class="col-md-10">
-                            <input id="rec_way_pay" disabled class="form-control" type="text" name="" value="">
+                            <input id="rec_way_pay" disabled class="form-control form-control-sm" type="text" name="" value="">
                           </div>
                         </div>
 
@@ -172,18 +167,15 @@
                                   <label for="bank" class=" control-label">{{ trans('pay.bank') }}</label>
                                   </div>
                                   <div class="col-md-8">
-                                    <input style="font-size:22px" id="rec_bank" disabled class="form-control" type="text" name="rec_bank" value="">
+                                    <input style="font-size:22px" id="rec_bank" disabled class="form-control form-control-sm" type="text" name="rec_bank" value="">
                                   </div>
                                 </div>
-
-                                <br>
-
                                 <div class="form-group margin-top-short row">
                                   <div class="col-md-2">
                                   <label for="account" class=" control-label">{{ trans('pay.cuenta') }}</label>
                                   </div>
                                     <div class="col-md-8">
-                                      <input style="font-size:22px" id="rec_cuenta" disabled class="form-control" type="text" name="rec_cuenta" value="">
+                                      <input style="font-size:22px" id="rec_cuenta" disabled class="form-control form-control-sm" type="text" name="rec_cuenta" value="">
                                     </div>
                                 </div>
                                 <div class="form-group margin-top-short row">
@@ -191,7 +183,7 @@
                                   <label for="clabe" class="control-label">{{ trans('pay.clabe') }}</label>
                                   </div>
                                   <div class="col-md-8">
-                                    <input style="font-size:22px" type="text" class="form-control" id="rec_clabe" name="rec_clabe" placeholder="{{ trans('pay.clabe_int') }}" disabled>
+                                    <input style="font-size:22px" type="text" class="form-control form-control-sm" id="rec_clabe" name="rec_clabe" placeholder="{{ trans('pay.clabe_int') }}" disabled>
                                   </div>
                                 </div>
 
@@ -200,7 +192,7 @@
                                   <label for="reference_banc" class="control-label">{{ trans('pay.reference') }}</label>
                                   </div>
                                   <div class="col-md-8">
-                                    <input style="font-size:22px" type="text" class="form-control" id="rec_reference" name="rec_reference" placeholder="{{ trans('pay.reference_bank') }}" disabled>
+                                    <input style="font-size:22px" type="text" class="form-control form-control-sm" id="rec_reference" name="rec_reference" placeholder="{{ trans('pay.reference_bank') }}" disabled>
                                   </div>
                                 </div>
                            </div>
@@ -214,42 +206,36 @@
                         <label for="observaciones" class=" control-label">{{ trans('pay.observation') }}</label>
                         </div>
                         <div class="col-md-9">
-                          <textarea disabled style="resize:none;" class="form-control" id="rec_observation" name="rec_observation" rows="4" cols="40"></textarea>
+                          <textarea disabled style="resize:none;" class="form-control form-control-sm" id="rec_observation" name="rec_observation" rows="4" cols="40"></textarea>
                         </div>
                       </div>
                     </div>
-
-                    <br>
                     <div class="form-group row">
                       <div class="col-md-2">
                       <label  class="control-label">Subtotal:</label>
                       </div>
                       <div class="col-md-4">
-                        <input id="subtotal" type="text" class="form-control" disabled>
+                        <input id="subtotal" type="text" class="form-control form-control-sm" disabled>
                       </div>
                     </div>
 
                     <br>
-                    <div class="form-group  row  pt-10">
+                    <div class="form-group  row  pt-2">
                       <div class="col-md-2">
                       <label  class=" control-label">IVA:</label>
                       </div>
                       <div class="col-md-4">
-                        <input id="iva" type="text" class="form-control" disabled>
+                        <input id="iva" type="text" class="form-control form-control-sm" disabled>
                       </div>
                     </div>
-
-                    <br>
-                    <div class="form-group row pt-10">
+                    <div class="form-group row pt-2">
                       <div class="col-md-2">
                       <label  class="control-label">Total:</label>
                       </div>
                       <div class="col-md-4">
-                        <input id="total" type="text" class="form-control" disabled>
+                        <input id="total" type="text" class="form-control form-control-sm" disabled>
                       </div>
                     </div>
-
-                    <br>
                     <div class="row">
                       <div class="col-sm-12">
                         <p><strong>{{ trans('pay.confpay') }}: </strong> <small id="rec_name_conf">{{ trans('pay.no_data') }}</small></p>

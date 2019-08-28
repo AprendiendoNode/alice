@@ -297,7 +297,7 @@ function gen_payments_table(datajson, table){
         status.id,
         status.factura,
         status.proveedor,
-        '<span class="label bg-primary px-1 text-white">'+status.estatus+'</span>',
+        '<span class="badge badge-primary badge-pill px-1 text-white">'+status.estatus+'</span>',
         status.elaboro,
         status.monto_str,
         status.fecha_solicitud,
