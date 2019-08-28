@@ -331,10 +331,8 @@
         html += '</select>';
       html += '</div>';
 
-      html += '<div id="item[' + item_row + '][question]" class="separator my-4">';
-
       html += '<div id="separator_text' + item_row + '" class="separator my-4">';
-    html += '</div>';
+      html += '</div>';
 
 
     html += '</div>';
@@ -363,12 +361,13 @@
 
     if (valor_option == 2) {
       var html2 = '';
+      html2 += '<div id="content_item_answer_' + data2 + '">';
 
       html2 += '<div class="row">';
         html2 += '<div class="col-md-6">';
           html2 += '<div class="form-group">';
             html2 += '<label>Opcion ' + valor_a + ' <span style="color: red;">*</span></label>';
-            html2 += '<input id="item_answer_' + valor_a + '" name="item[' + valor_a + '][answer]" class="form-control" type="text" value="" required>';
+            html2 += '<input id="item_answer_' + data2 + '_' + valor_a + '" name="item_' + data2 + '[' + valor_a + '][answer]" class="form-control" type="text" value="" required>';
           html2 += '</div>';
         html2 += '</div>';
 
@@ -376,7 +375,7 @@
           html2 += '<div class="form-group">';
           html2 += '<label class="control-label">icono (Opcional)</label>';
 
-          html2 += '<select class="form-control input-sm col-icon-id" name="item[' + valor_a + '][icon]" id="item_answertype_id_' + valor_a + '" data-row="' + valor_a + '" datas2="' + valor_a + '" >';
+          html2 += '<select class="form-control input-sm col-icon-id" name="item_' + data2 + '[' + valor_a + '][icon]" id="item_answertype' + data2 + '_id_' + valor_a + '" data-row="' + valor_a + '" datas2="' + valor_a + '" >';
             html2 += '<option selected="selected" value="">@lang('message.selectopt')</option>';
             @include('permitted.survey.option0')
           html2 += '</select>';
@@ -388,7 +387,7 @@
         html2 += '<div class="col-md-6">';
           html2 += '<div class="form-group">';
             html2 += '<label>Opcion ' + valor_b + ' <span style="color: red;">*</span></label>';
-            html2 += '<input id="item_answer_' + valor_b + '" name="item[' + valor_b + '][answer]" class="form-control" type="text" value="" required>';
+            html2 += '<input id="item_answer_' + data2 + '_' + valor_b + '" name="item_' + data2 + '[' + valor_b + '][answer]" class="form-control" type="text" value="" required>';
           html2 += '</div>';
         html2 += '</div>';
 
@@ -396,7 +395,7 @@
           html2 += '<div class="form-group">';
           html2 += '<label class="control-label">icono (Opcional)</label>';
 
-          html2 += '<select class="form-control input-sm col-icon-id" name="item[' + valor_b + '][icon]" id="item_answertype_id_' + valor_b + '" data-row="' + valor_b + '" datas2="' + valor_b + '" >';
+          html2 += '<select class="form-control input-sm col-icon-id" name="item_' + data2 + '[' + valor_b + '][icon]" id="item_answertype' + data2 + '_id_' + valor_b + '" data-row="' + valor_b + '" datas2="' + valor_b + '" >';
             html2 += '<option selected="selected" value="">@lang('message.selectopt')</option>';
             @include('permitted.survey.option0')
           html2 += '</select>';
@@ -408,7 +407,7 @@
         html2 += '<div class="col-md-6">';
           html2 += '<div class="form-group">';
             html2 += '<label>Opcion ' + valor_c + ' <span style="color: red;">*</span></label>';
-            html2 += '<input id="item_answer_' + valor_c + '" name="item[' + valor_c + '][answer]" class="form-control" type="text" value="" required>';
+            html2 += '<input id="item_answer_' + data2 + '_' + valor_c + '" name="item_' + data2 + '[' + valor_c + '][answer]" class="form-control" type="text" value="" required>';
           html2 += '</div>';
         html2 += '</div>';
 
@@ -416,7 +415,7 @@
           html2 += '<div class="form-group">';
           html2 += '<label class="control-label">icono (Opcional)</label>';
 
-          html2 += '<select class="form-control input-sm col-icon-id" name="item[' + valor_c + '][icon]" id="item_answertype_id_' + valor_c + '" data-row="' + valor_c + '" datas2="' + valor_c + '" >';
+          html2 += '<select class="form-control input-sm col-icon-id" name="item_' + data2 + '[' + valor_c + '][icon]" id="item_answertype' + data2 + '_id_' + valor_c + '" data-row="' + valor_c + '" datas2="' + valor_c + '" >';
             html2 += '<option selected="selected" value="">@lang('message.selectopt')</option>';
             @include('permitted.survey.option0')
           html2 += '</select>';
@@ -424,12 +423,14 @@
         html2 += '</div>';
       html2 += '</div>';
 
+      html2 += '</div>';
+
       $('#separator_text' + data2 + '').before(html2);
     }
     else {
       console.log(1);
-      if ($('#item_row_' + data2 + 'optionmult').length > 0){
-        $('#item_row_' + data2 + 'optionmult').remove();
+      if ($('#content_item_answer_' + data2 ).length > 0){
+        $('#content_item_answer_' + data2).remove();
       }
     }
   }
