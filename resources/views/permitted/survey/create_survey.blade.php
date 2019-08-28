@@ -367,8 +367,8 @@
         html += '<label for="item[' + item_row + '][answertype]" class="control-label">Tipo de respuesta: <span style="color: red;">*</span> </label>';
         html += '<select class="form-control input-sm col-product-id" name="item[' + item_row + '][answertype]" id="item_answertype_id_' + item_row + '" data-row="' + item_row + '" datas2="' + item_row + '" onchange="getanswertype(this);" >';
         html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-        html += '<option value="1">Abierta</option>';
-        html += '<option value="2">Opción múltiple</option>';
+        html += '<option value="1">Opción múltiple</option>';
+        html += '<option value="2">Abierta</option>';
 
         html += '</select>';
       html += '</div>';
@@ -401,7 +401,7 @@
     var valor_b = 2;
     var valor_c = 3;
 
-    if (valor_option == 2) {
+    if (valor_option == 1) {
       var html2 = '';
       html2 += '<div id="content_item_answer_' + data2 + '">';
 
@@ -470,7 +470,6 @@
       $('#separator_text' + data2 + '').before(html2);
     }
     else {
-      console.log(1);
       if ($('#content_item_answer_' + data2 ).length > 0){
         $('#content_item_answer_' + data2).remove();
       }

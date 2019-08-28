@@ -47,10 +47,10 @@ class CreateSurveyController extends Controller
 
            echo '/'.$id.'/'.$title.'/';
 
-           if ($answer_type == 1) { //Abierta
+           if ($answer_type == 2) { //Abierta
              // code...
            }
-           elseif ($answer_type == 2) { //Opción multiple
+           elseif ($answer_type == 1) { //Opción multiple
              // code...
              //${"snmp_aps_a".$i}
              $input_items_option = $request->input('item_'.$id);
