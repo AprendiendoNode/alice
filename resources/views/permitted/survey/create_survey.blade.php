@@ -32,92 +32,9 @@
               <div id="add_item_btn" class="btn-group float-right mt-2" role="group">
                 <a class="btn btn-inverse-info btn-fw btn-sm" href="javascript:void(0);" onclick="addItem();"> <i class="far fa-plus-square" aria-hidden="true"></i> Añadir pregunta</a>
               </div>
+
+
               <!-- Items -->
-              <div class="row">
-                <div class="col-md-12 col-xs-12">
-                  <div class="card">
-                    <div class="card-header" role="tab" id="heading-4">
-                      <h6 class="mb-0">
-                        <span class="badge badge-secondary">Pregunta</span>
-                        <a class="btn btn-danger float-right btn-sm btn-mod" href="javascript:void(0);" onclick="addItem();">
-                          <i class="mdi mdi-close-octagon-outline "></i>
-                        </a>
-                      </h6>
-                    </div>
-                    <div class="card-body">
-                      <div class="form-group mb-5">
-                          <label>Ingrese su pregunta</label>
-                          <input class="form-control" type="text" value="" required>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="salesperson_id" class="control-label">Tipo de respuesta:<span style="color: red;">*</span></label>
-                        <select id="salesperson_id" name="salesperson_id" class="form-control required" style="width:100%;">
-                          <option value="" selected>Elija</option>
-                          <option value="1">Abierta</option>
-                          <option value="2">Opción múltiple</option>
-                        </select>
-                      </div>
-
-                      <div class="separator my-4"></div>
-
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                              <label>Opcion 1 <span style="color: red;">*</span></label>
-                              <input class="form-control" type="text" value="" required>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="salesperson_id" class="control-label">icono (Opcional)</label>
-                            <select id="salesperson_id" name="salesperson_id" class="form-control required" style="width:100%;">
-                              <option value="" selected>Elija</option>
-                              @include('permitted.survey.option')
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                              <label>Opcion 2 <span style="color: red;">*</span></label>
-                              <input class="form-control" type="text" value="" required>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="salesperson_id" class="control-label">icono (Opcional)</label>
-                            <select id="salesperson_id" name="salesperson_id" class="form-control required" style="width:100%;">
-                              <option value="" selected>Elija</option>
-                              @include('permitted.survey.option')
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                              <label>Opcion 3 <span style="color: red;">*</span></label>
-                              <input class="form-control" type="text" value="" required>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="salesperson_id" class="control-label">icono (Opcional)</label>
-                            <select id="salesperson_id" name="salesperson_id" class="form-control required" style="width:100%;">
-                              <option value="" selected>Elija</option>
-                              @include('permitted.survey.option')
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-
-
-                    </div>
-                  </div>
-                </div>
-              </div>
               @php
               $item_row = 0;
               $items = (empty(old('item')) ? [] : old('item'));
@@ -129,7 +46,7 @@
                 <div class="row" id="item_row_{{ $item_row }}">
                   <div class="col-md-12 text-center" style="vertical-align: middle;">
                     <button type="button"
-                    onclick="$('#item_row_{{ $item_row }}').remove(); totalItem();"
+                    onclick="$('#item_row_{{ $item_row }}').remove();"
                     class="btn btn-xs btn-danger"
                     style="margin-bottom: 0;">
                     <i class="fa fa-trash-o"></i>
@@ -139,6 +56,44 @@
                   name="item[{{ $item_row }}][id]"
                   value="{{ old('item.' . $item_row . '.id') }}">
                   <!-- /.input hidden -->
+                </div>
+              </div>
+
+              <div class="row" id="item_row_{{ $item_row }}">
+                <div class="col-md-12 col-xs-12">
+                  <div class="card">
+                    <div class="card-header" role="tab" id="heading-4">
+                      <h6 class="mb-0">
+                        <span class="badge badge-secondary">Pregunta {{ $item_row }}</span>
+                        <a class="btn btn-danger float-right btn-sm btn-mod" href="javascript:void(0);"
+                          onclick="$('#item_row_{{ $item_row }}').remove();">
+                          <i class="mdi mdi-close-octagon-outline "></i>
+                        </a>
+                      </h6>
+                      <input type="hidden" id="item_id_{{ $item_row }}"
+                      name="item[{{ $item_row }}][id]"
+                      value="{{ old('item.' . $item_row . '.id') }}">
+                    </div>
+                    <div class="card-body">
+                      <div class="form-group mb-5">
+                          <label>Ingrese su pregunta</label>
+                          <input id="item{{ $item_row.'[question]'}}" name="item[{{ $item_row }}][question]"
+                          class="form-control" type="text" value="" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="item{{ $item_row.'[answertype]'}}" class="control-label">Tipo de respuesta:<span style="color: red;">*</span></label>
+                        <select  id="item{{ $item_row.'[answertype]'}}" name="item[{{ $item_row }}][answertype]"
+                         class="form-control required" style="width:100%;" onchange="getanswertype(this);" datas="item[{{ $item_row }}][answertype]" datas2="{{ $item_row }}">
+                          <option value="" selected>Elija</option>
+                          <option value="1">Abierta</option>
+                          <option value="2">Opción múltiple</option>
+                        </select>
+                      </div>
+
+                      <div class="separator my-4"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             @endforeach
@@ -176,155 +131,6 @@
     </div>
   </div>
 
-
-  <div class="card question d-flex mb-4 edit-quesiton">
-                                              <div class="d-flex flex-grow-1 min-width-zero">
-
-                                                  <div
-                                                      class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
-                                                      <div class="list-item-heading mb-0 truncate w-80 mb-1 mt-1">
-                                                          <span class="heading-number d-inline-block">
-                                                              1
-                                                          </span>
-                                                          Age
-                                                      </div>
-                                                  </div>
-                                                  <div
-                                                      class="custom-control custom-checkbox pl-1 align-self-center pr-4">
-                                                      <button class="btn btn-outline-theme-3 icon-button edit-button">
-                                                          <i class="simple-icon-pencil"></i>
-                                                      </button>
-                                                      <button class="btn btn-outline-theme-3 icon-button view-button">
-                                                          <i class="simple-icon-eye"></i>
-                                                      </button>
-                                                      <button
-                                                          class="btn btn-outline-theme-3 icon-button rotate-icon-click rotate"
-                                                          type="button" data-toggle="collapse" data-target="#q1"
-                                                          aria-expanded="true" aria-controls="q1">
-                                                          <i class="simple-icon-arrow-down with-rotate-icon"></i>
-                                                      </button>
-                                                  </div>
-                                              </div>
-                                              <div class="question-collapse collapse show" id="q1">
-                                                  <div class="card-body pt-0">
-                                                      <div class="edit-mode">
-                                                          <div class="form-group mb-3">
-                                                              <label>Title</label>
-                                                              <input class="form-control" type="text" value="Age">
-                                                          </div>
-                                                          <div class="form-group mb-5">
-                                                              <label>Question</label>
-                                                              <input class="form-control" type="text"
-                                                                  value="How old are you?">
-                                                          </div>
-
-                                                          <div class="separator mb-4"></div>
-
-                                                          <div class="form-group">
-                                                              <label class="d-block">Answer Type</label>
-                                                              <select class="form-control select2-single">
-                                                                  <option label="&nbsp;">&nbsp;</option>
-                                                                  <option value="0">Text Input</option>
-                                                                  <option value="1" selected>Single Select</option>
-                                                                  <option value="2">Multiple Select</option>
-                                                                  <option value="3">Checkbox</option>
-                                                                  <option value="4">Radiobutton</option>
-                                                              </select>
-                                                          </div>
-
-                                                          <div class="form-group">
-                                                              <label class="d-block">Answers</label>
-                                                              <div class="answers mb-3 sortable">
-                                                                  <div class="mb-1 position-relative">
-                                                                      <input class="form-control" type="text"
-                                                                          value="18-24">
-                                                                      <div class="input-icons">
-                                                                          <span
-                                                                              class="badge badge-pill handle pr-0 mr-0">
-                                                                              <i class="simple-icon-cursor-move"></i>
-                                                                          </span>
-                                                                          <span class="badge badge-pill">
-                                                                              <i class="simple-icon-ban"></i>
-                                                                          </span>
-                                                                      </div>
-                                                                  </div>
-                                                                  <div class="mb-1 position-relative">
-                                                                      <input class="form-control" type="text"
-                                                                          value="24-30">
-                                                                      <div class="input-icons">
-                                                                          <span
-                                                                              class="badge badge-pill handle pr-0 mr-0">
-                                                                              <i class="simple-icon-cursor-move"></i>
-                                                                          </span>
-                                                                          <span class="badge badge-pill">
-                                                                              <i class="simple-icon-ban"></i>
-                                                                          </span>
-                                                                      </div>
-                                                                  </div>
-                                                                  <div class="mb-1 position-relative">
-                                                                      <input class="form-control" type="text"
-                                                                          value="30-40">
-                                                                      <div class="input-icons">
-                                                                          <span
-                                                                              class="badge badge-pill handle pr-0 mr-0">
-                                                                              <i class="simple-icon-cursor-move"></i>
-                                                                          </span>
-                                                                          <span class="badge badge-pill">
-                                                                              <i class="simple-icon-ban"></i>
-                                                                          </span>
-                                                                      </div>
-                                                                  </div>
-                                                                  <div class="mb-1 position-relative">
-                                                                      <input class="form-control" type="text"
-                                                                          value="40-50">
-                                                                      <div class="input-icons">
-                                                                          <span
-                                                                              class="badge badge-pill handle pr-0 mr-0">
-                                                                              <i class="simple-icon-cursor-move"></i>
-                                                                          </span>
-                                                                          <span class="badge badge-pill">
-                                                                              <i class="simple-icon-ban"></i>
-                                                                          </span>
-                                                                      </div>
-                                                                  </div>
-                                                                  <div class="mb-1 position-relative">
-                                                                      <input class="form-control" type="text"
-                                                                          value="50+">
-                                                                      <div class="input-icons">
-                                                                          <span
-                                                                              class="badge badge-pill handle pr-0 mr-0">
-                                                                              <i class="simple-icon-cursor-move"></i>
-                                                                          </span>
-                                                                          <span class="badge badge-pill">
-                                                                              <i class="simple-icon-ban"></i>
-                                                                          </span>
-                                                                      </div>
-                                                                  </div>
-                                                              </div>
-                                                              <div class="text-center">
-                                                                  <button type="button"
-                                                                      class="btn btn-outline-primary btn-sm mb-2">
-                                                                      <i class="simple-icon-plus btn-group-icon"></i>
-                                                                      Add Answer</button>
-                                                              </div>
-                                                          </div>
-                                                      </div>
-
-                                                      <div class="view-mode">
-                                                          <label>How old are you?</label>
-                                                          <select class="form-control select2-single">
-                                                              <option label="&nbsp;">&nbsp;</option>
-                                                              <option value="0">18-24</option>
-                                                              <option value="1">24-30</option>
-                                                              <option value="2">30-40</option>
-                                                              <option value="3">40-50</option>
-                                                              <option value="4">50+</option>
-                                                          </select>
-                                                      </div>
-
-                                                  </div>
-                                              </div>
-                                          </div>
   {{-- @else --}}
   {{-- @endif --}}
 @endsection
@@ -489,26 +295,143 @@
   var item_row = "{{ $item_row }}";
 
   function addItem() {
-    console.log('a');
+
         //#Solicitamos primero el tc a usar
         var html = '';
-        html += '<div class="row" id="item_row_' + item_row + '">';
-        html += '<div class="col-md-12 text-center" style="vertical-align: middle;">';
-        html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); " class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
-        html += '<i class="fa fa-trash"></i>';
-        html += '</button>';
-        html += '<input type="hidden" name="item[' + item_row + '][id]" id="item_id_' + item_row + '" /> ';
-        html += item_row;
-        html += '</div>';
-        html += '</div>';
+
+
+
+ html += '<div class="row mb-4" id="item_row_' + item_row + '">';
+  html += '<div class="col-md-12 col-xs-12">';
+    html += '<div class="card">';
+
+    html += '<div class="card-header">';
+      html += '<h6 class="mb-0">';
+      html += '<span class="badge badge-secondary">Pregunta ' + item_row + '</span>';
+      html += '<a class="btn btn-danger float-right btn-sm btn-mod" href="javascript:void(0);" onclick="$(\'#item_row_' + item_row + '\').remove(); ">';
+        html += '<i class="mdi mdi-close-octagon-outline"></i>';
+      html += '</a>';
+      html += '</h6>';
+      html += '<input type="hidden" name="item[' + item_row + '][id]" id="item_id_' + item_row + '" /> ';
+    html += '</div>';
+
+    html += '<div class="card-body">';
+      html += '<div class="form-group mb-5">';
+        html += '<label>Ingrese su pregunta</label>';
+        html += '<input id="item_question_' + item_row + '" name="item[' + item_row + '][question]" class="form-control" type="text" required/> ';
+      html += '</div>';
+
+      html += '<div class="form-group">';
+        html += '<label for="item[' + item_row + '][answertype]" class="control-label">Tipo de respuesta: <span style="color: red;">*</span> </label>';
+        html += '<select class="form-control input-sm col-product-id" name="item[' + item_row + '][answertype]" id="item_answertype_id_' + item_row + '" data-row="' + item_row + '" datas2="' + item_row + '" onchange="getanswertype(this);" >';
+        html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+        html += '<option value="1">Abierta</option>';
+        html += '<option value="2">Opción múltiple</option>';
+
+        html += '</select>';
+      html += '</div>';
+
+      html += '<div id="item[' + item_row + '][question]" class="separator my-4">';
+
+      html += '<div id="separator_text' + item_row + '" class="separator my-4">';
+    html += '</div>';
+
+
+    html += '</div>';
+  html += '</div>';
+ html += '</div>';
+
+
+
 
         html += '</div>';
-
         $("#validation_master #add_item").before(html);
         /* Configura lineas*/
         // initItem();
         // totalItem();
         item_row++;
+  }
+  function getanswertype(el)
+  {
+    var id = el.id;
+    var name = el.name;
+    var data2 = $('#'+id).attr('datas2');
+    var valor_option = $('option:selected', el).attr('value');
+    var valor_a = 1;
+    var valor_b = 2;
+    var valor_c = 3;
+
+    if (valor_option == 2) {
+      var html2 = '';
+
+      html2 += '<div class="row">';
+        html2 += '<div class="col-md-6">';
+          html2 += '<div class="form-group">';
+            html2 += '<label>Opcion ' + valor_a + ' <span style="color: red;">*</span></label>';
+            html2 += '<input id="item_answer_' + valor_a + '" name="item[' + valor_a + '][answer]" class="form-control" type="text" value="" required>';
+          html2 += '</div>';
+        html2 += '</div>';
+
+        html2 += '<div class="col-md-6">';
+          html2 += '<div class="form-group">';
+          html2 += '<label class="control-label">icono (Opcional)</label>';
+
+          html2 += '<select class="form-control input-sm col-icon-id" name="item[' + valor_a + '][icon]" id="item_answertype_id_' + valor_a + '" data-row="' + valor_a + '" datas2="' + valor_a + '" >';
+            html2 += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+            @include('permitted.survey.option0')
+          html2 += '</select>';
+          html2 += '</div>';
+        html2 += '</div>';
+      html2 += '</div>';
+
+      html2 += '<div class="row">';
+        html2 += '<div class="col-md-6">';
+          html2 += '<div class="form-group">';
+            html2 += '<label>Opcion ' + valor_b + ' <span style="color: red;">*</span></label>';
+            html2 += '<input id="item_answer_' + valor_b + '" name="item[' + valor_b + '][answer]" class="form-control" type="text" value="" required>';
+          html2 += '</div>';
+        html2 += '</div>';
+
+        html2 += '<div class="col-md-6">';
+          html2 += '<div class="form-group">';
+          html2 += '<label class="control-label">icono (Opcional)</label>';
+
+          html2 += '<select class="form-control input-sm col-icon-id" name="item[' + valor_b + '][icon]" id="item_answertype_id_' + valor_b + '" data-row="' + valor_b + '" datas2="' + valor_b + '" >';
+            html2 += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+            @include('permitted.survey.option0')
+          html2 += '</select>';
+          html2 += '</div>';
+        html2 += '</div>';
+      html2 += '</div>';
+
+      html2 += '<div class="row">';
+        html2 += '<div class="col-md-6">';
+          html2 += '<div class="form-group">';
+            html2 += '<label>Opcion ' + valor_c + ' <span style="color: red;">*</span></label>';
+            html2 += '<input id="item_answer_' + valor_c + '" name="item[' + valor_c + '][answer]" class="form-control" type="text" value="" required>';
+          html2 += '</div>';
+        html2 += '</div>';
+
+        html2 += '<div class="col-md-6">';
+          html2 += '<div class="form-group">';
+          html2 += '<label class="control-label">icono (Opcional)</label>';
+
+          html2 += '<select class="form-control input-sm col-icon-id" name="item[' + valor_c + '][icon]" id="item_answertype_id_' + valor_c + '" data-row="' + valor_c + '" datas2="' + valor_c + '" >';
+            html2 += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+            @include('permitted.survey.option0')
+          html2 += '</select>';
+          html2 += '</div>';
+        html2 += '</div>';
+      html2 += '</div>';
+
+      $('#separator_text' + data2 + '').before(html2);
+    }
+    else {
+      console.log(1);
+      if ($('#item_row_' + data2 + 'optionmult').length > 0){
+        $('#item_row_' + data2 + 'optionmult').remove();
+      }
+    }
   }
 </script>
 {{-- @else --}}

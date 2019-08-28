@@ -99,7 +99,6 @@ class QuestionaryController extends Controller
              $date_active = $array_encrypted_user[2];
              $date_end = $array_encrypted_user[3];
              $id_status = $array_encrypted_user[4];
-
              $question = DB::select('CALL GetAllQuestionBySurvey (?)', array($id_survey));
              return view('permitted.questionnaire.quizB', compact('question','id_user','id_survey', 'date_active', 'date_end'));
            }
