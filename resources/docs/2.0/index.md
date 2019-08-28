@@ -3,20 +3,20 @@
 - ## Inicio
     - [Dashboard](/{{route}}/{{version}}/inicio/dashboard)
 - ## Servicios
-    - [Servicio al cliente](/{{route}}/{{version}}/services/clientservice)
-    - [My Tickets](/{{route}}/{{version}}/services/mytickets)
-    - [Estadisticas de tickets](/{{route}}/{{version}}/services/ticketstatics)
+    - [Servicio al cliente](/{{route}}/{{version}}/service/clientservice)
+    - [My Tickets](/{{route}}/{{version}}/service/mytickets)
+    - [Estadisticas de tickets](/{{route}}/{{version}}/service/ticketstatics)
 - ## Inventario
     - [Detallado por hotel](/{{route}}/{{version}}/inventory/detailedbyhotel)
     - [Detallado por proyecto](/{{route}}/{{version}}/inventory/detailedbyproject)
     - [Carta de entrega](/{{route}}/{{version}}/inventory/letter)
     - [Distribución](/{{route}}/{{version}}/inventory/distribution)
 - ## Reportes
-    - [Asignación de reporte](/{{route}}/{{version}}/reports/report)
-    - [Captura Reporte](/{{route}}/{{version}}/reports/addreport)
-    - [Editar Reportes](/{{route}}/{{version}}/reports/editreport)
-    - [Ver Reportes](/{{route}}/{{version}}/reports/viewreport)
-    - [Ver Reportes Cont](/{{route}}/{{version}}/reports/viewreportcont)
+    - [Asignación de reporte](/{{route}}/{{version}}/report/report)
+    - [Captura Reporte](/{{route}}/{{version}}/report/addreport)
+    - [Editar Reportes](/{{route}}/{{version}}/report/editreport)
+    - [Ver Reportes](/{{route}}/{{version}}/report/viewreport)
+    - [Ver Reportes Cont](/{{route}}/{{version}}/report/viewreportcont)
 - ## Encuesta
     - [Dashboard NPS](/{{route}}/{{version}}/survey/survey)
 - ## Equipos
