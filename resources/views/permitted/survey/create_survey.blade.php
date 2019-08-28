@@ -26,14 +26,30 @@
 
           <form id="validation_master" name="validation_master" enctype="multipart/form-data" class="validation-wizard-master wizard-circle m-t-40">
             {{ csrf_field() }}
+            <!-- Step 1 -->
+            <h6>Paso 1 - Nombre</h6>
+            <section>
+              <div class="row">
+                <div class="col-md-12 col-xs-12">
+                  <div class="form-group">
+                    <label for="title">Nombre de la encuesta:</label>
+                    <input type="text" class="form-control" id="title" name="title" value="" required>
+                  </div>
+                </div>
+                <div class="col-md-12 col-xs-12">
+                  <div class="form-group">
+                    <label for="description">Descripción:</label>
+                    <textarea class="form-control" rows="5" id="description" name="description"></textarea>
+                  </div>
+                </div>
+              </div>
+            </section>
             <!-- Step 2 -->
             <h6>Paso 2 - Preguntas</h6>
             <section>
               <div id="add_item_btn" class="btn-group float-right mt-2" role="group">
                 <a class="btn btn-inverse-info btn-fw btn-sm" href="javascript:void(0);" onclick="addItem();"> <i class="far fa-plus-square" aria-hidden="true"></i> Añadir pregunta</a>
               </div>
-
-
               <!-- Items -->
               @php
               $item_row = 0;
@@ -52,77 +68,55 @@
                     <i class="fa fa-trash-o"></i>
                   </button>
                   <!-- input hidden -->
-                  <input type="hidden" id="item_id_{{ $item_row }}"
-                  name="item[{{ $item_row }}][id]"
-                  value="{{ old('item.' . $item_row . '.id') }}">
-                  <!-- /.input hidden -->
+                    <input type="hidden" id="item_id_{{ $item_row }}"
+                    name="item[{{ $item_row }}][id]"
+                    value="{{ old('item.' . $item_row . '.id') }}">
+                    <!-- /.input hidden -->
+                  </div>
                 </div>
-              </div>
 
-              <div class="row" id="item_row_{{ $item_row }}">
-                <div class="col-md-12 col-xs-12">
-                  <div class="card">
-                    <div class="card-header" role="tab" id="heading-4">
-                      <h6 class="mb-0">
-                        <span class="badge badge-secondary">Pregunta {{ $item_row }}</span>
-                        <a class="btn btn-danger float-right btn-sm btn-mod" href="javascript:void(0);"
-                          onclick="$('#item_row_{{ $item_row }}').remove();">
-                          <i class="mdi mdi-close-octagon-outline "></i>
-                        </a>
-                      </h6>
-                      <input type="hidden" id="item_id_{{ $item_row }}"
-                      name="item[{{ $item_row }}][id]"
-                      value="{{ old('item.' . $item_row . '.id') }}">
-                    </div>
-                    <div class="card-body">
-                      <div class="form-group mb-5">
-                          <label>Ingrese su pregunta</label>
-                          <input id="item{{ $item_row.'[question]'}}" name="item[{{ $item_row }}][question]"
-                          class="form-control" type="text" value="" required>
+                <div class="row" id="item_row_{{ $item_row }}">
+                  <div class="col-md-12 col-xs-12">
+                    <div class="card">
+                      <div class="card-header" role="tab" id="heading-4">
+                        <h6 class="mb-0">
+                          <span class="badge badge-secondary">Pregunta {{ $item_row }}</span>
+                          <a class="btn btn-danger float-right btn-sm btn-mod" href="javascript:void(0);"
+                            onclick="$('#item_row_{{ $item_row }}').remove();">
+                            <i class="mdi mdi-close-octagon-outline "></i>
+                          </a>
+                        </h6>
+                        <input type="hidden" id="item_id_{{ $item_row }}"
+                        name="item[{{ $item_row }}][id]"
+                        value="{{ old('item.' . $item_row . '.id') }}">
                       </div>
+                      <div class="card-body">
+                        <div class="form-group mb-5">
+                            <label>Ingrese su pregunta</label>
+                            <input id="item{{ $item_row.'[question]'}}" name="item[{{ $item_row }}][question]"
+                            class="form-control" type="text" value="" required>
+                        </div>
 
-                      <div class="form-group">
-                        <label for="item{{ $item_row.'[answertype]'}}" class="control-label">Tipo de respuesta:<span style="color: red;">*</span></label>
-                        <select  id="item{{ $item_row.'[answertype]'}}" name="item[{{ $item_row }}][answertype]"
-                         class="form-control required" style="width:100%;" onchange="getanswertype(this);" datas="item[{{ $item_row }}][answertype]" datas2="{{ $item_row }}">
-                          <option value="" selected>Elija</option>
-                          <option value="1">Abierta</option>
-                          <option value="2">Opción múltiple</option>
-                        </select>
+                        <div class="form-group">
+                          <label for="item{{ $item_row.'[answertype]'}}" class="control-label">Tipo de respuesta:<span style="color: red;">*</span></label>
+                          <select  id="item{{ $item_row.'[answertype]'}}" name="item[{{ $item_row }}][answertype]"
+                           class="form-control required" style="width:100%;" onchange="getanswertype(this);" datas="item[{{ $item_row }}][answertype]" datas2="{{ $item_row }}">
+                            <option value="" selected>Elija</option>
+                            <option value="1">Abierta</option>
+                            <option value="2">Opción múltiple</option>
+                          </select>
+                        </div>
+
+                        <div class="separator my-4"></div>
                       </div>
-
-                      <div class="separator my-4"></div>
                     </div>
                   </div>
                 </div>
-              </div>
-            @endforeach
-            @php
-            $item_row++;
-            @endphp
-            <div id="add_item"></div>
-          </section>
-            <!-- Step 1 -->
-            <h6>Paso 1 - Nombre</h6>
-            <section>
-              <div class="row">
-                <div class="col-md-12 col-xs-12">
-                  <div class="form-group">
-                    <label for="title">Nombre de la encuesta:</label>
-                    <input type="text" class="form-control" id="title" name="title" value="" required>
-                  </div>
-                </div>
-                <div class="col-md-12 col-xs-12">
-                  <div class="form-group">
-                    <label for="description">Descripción:</label>
-                    <textarea class="form-control" rows="5" id="description"></textarea>
-                  </div>
-                </div>
-              </div>
-            </section>
-            <!-- Step 3 -->
-            <h6>Paso 3 -Vista previa</h6>
-            <section>
+              @endforeach
+              @php
+              $item_row++;
+              @endphp
+              <div id="add_item"></div>
             </section>
           </form>
 
@@ -148,7 +142,8 @@
 <!-- FormValidation plugin and the class supports validating Bootstrap form -->
 <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
 <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
-
+<link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
+<script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
 <style media="screen">
   select {
     font-family: 'FontAwesome', 'sans-serif';
@@ -247,7 +242,53 @@
       },
       onFinished: function (event, currentIndex) {
         event.preventDefault();
+        /************************************************************************************/
+          swal({
+            title: "Estás seguro, estas apunto de crear una encuesta?",
+            text: "Al dar clic en continuar necesita espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Continuar.!",
+            cancelButtonText: "Cancelar.!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            showLoaderOnConfirm: true,
+          },
+          function(isConfirm) {
+            if (isConfirm) {
+                var form = $('#validation_master')[0];
+                var formData = new FormData(form);
+                // var digit = $("#sel_master_digit option:selected").text();
+                // formData.append('digit', digit);
 
+                $.ajax({
+                  type: "POST",
+                  url: "/store_new_survey_admin",
+                  data: formData,
+                  contentType: false,
+                  processData: false,
+                  success: function (data){
+                    console.log(data);
+                    swal.close();
+
+                    // if(data == "true"){
+                    //
+                    // }else{
+                    //   swal("Error al actualizar contrato", "", "Error");
+                    // }
+                  },
+                  error: function (data) {
+                    console.log('Error:', data);
+                    swal.close();
+                  }
+                })
+
+            } else {
+              swal("Operación abortada", "Ningúna operación afectuada :)", "error");
+            }
+          });
+        /************************************************************************************/
       }
   }), $(".validation-wizard-master").validate({
       ignore: "input[type=hidden]",
@@ -312,7 +353,8 @@
         html += '<i class="mdi mdi-close-octagon-outline"></i>';
       html += '</a>';
       html += '</h6>';
-      html += '<input type="hidden" name="item[' + item_row + '][id]" id="item_id_' + item_row + '" /> ';
+      html += '<input type="hidden" name="item[' + item_row + '][id]" id="item_id_' + item_row + '" value="' + item_row + '" /> ';
+
     html += '</div>';
 
     html += '<div class="card-body">';

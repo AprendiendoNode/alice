@@ -35,7 +35,36 @@ class CreateSurveyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $name = !empty($request->title) ? $request->title : '';
+      $description = !empty($request->description) ? $request->description : '';
+      $input_items = $request->item;
+      if (!empty($input_items)) {
+        foreach ($input_items as $key => $item) {
+
+           $id = $item['id']; //ID PREGUNTA
+           $title = $item['question']; //TITULO PREGUNTA
+           $answer_type = $item['answertype']; //TIPO DE PREGUNTA
+
+           echo '/'.$id.'/'.$title.'/';
+
+           if ($answer_type == 1) { //Abierta
+             // code...
+           }
+           elseif ($answer_type == 2) { //Opción multiple
+             // code...
+             //${"snmp_aps_a".$i}
+             $input_items_option = $request->input('item_'.$id);
+             if (!empty($input_items_option)) {
+               foreach ($input_items_option as $key => $item_option) {
+                 echo '/';
+                 echo $item_option['answer'];
+                 echo '/';
+               }
+             }
+             // code...
+           }
+        }
+      }
     }
 
     /**

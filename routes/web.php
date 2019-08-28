@@ -329,7 +329,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/box_sin', 'Survey\DashboardSurveyController@box_sin_contestar');
   Route::post('/box_promo', 'Survey\DashboardSurveyController@box_promotor');
   Route::post('/box_pas', 'Survey\DashboardSurveyController@box_pasivo');
-  Route::post('/box_detra', 'Survey\DashboardSurveyController@box_detractor');  
+  Route::post('/box_detra', 'Survey\DashboardSurveyController@box_detractor');
   //- Herramientas
   Route::get('/detailed_guest_review', 'Tools\GuestToolsController@index');
   Route::get('/detailed_server_review', 'Tools\ServerToolsController@index');
@@ -761,6 +761,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/survey_results' , 'Survey\ResultsSurveyController@index');
     //Crear encuestas
     Route::get('/create_survey_admin' , 'Survey\CreateSurveyController@index');
+    Route::post('/store_new_survey_admin' , 'Survey\CreateSurveyController@store');  
 });
 
 
