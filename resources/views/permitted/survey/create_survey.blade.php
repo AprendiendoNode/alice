@@ -269,14 +269,13 @@
                   contentType: false,
                   processData: false,
                   success: function (data){
-                    console.log(data);
-                    swal.close();
-
-                    // if(data == "true"){
-                    //
-                    // }else{
-                    //   swal("Error al actualizar contrato", "", "Error");
-                    // }
+                    console.log(data.split("/").pop());
+                    if(data.split("/").pop() == "true"){
+                    swal("Operación Completada!", "La encuesta ha sido creada.", "success");
+                    location.reload();
+                    }else{
+                    swal("Error al crear la encuesta", "", "error");
+                    }
                   },
                   error: function (data) {
                     console.log('Error:', data);
@@ -365,10 +364,20 @@
 
       html += '<div class="form-group">';
         html += '<label for="item[' + item_row + '][answertype]" class="control-label">Tipo de respuesta: <span style="color: red;">*</span> </label>';
-        html += '<select class="form-control input-sm col-product-id" name="item[' + item_row + '][answertype]" id="item_answertype_id_' + item_row + '" data-row="' + item_row + '" datas2="' + item_row + '" onchange="getanswertype(this);" >';
+        html += '<select class="form-control input-sm col-product-id" name="item[' + item_row + '][answertype]" id="item_answertype_id_' + item_row + '" data-row="' + item_row + '" datas2="' + item_row + '" onchange="getanswertype(this);" required >';
         html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
         html += '<option value="1">Opción múltiple</option>';
         html += '<option value="2">Abierta</option>';
+
+        html += '</select>';
+      html += '</div>';
+
+      html += '<div class="form-group">';
+        html += '<label for="item[' + item_row + '][answeropcional]" class="control-label">Opcional: <span style="color: red;">*</span> </label>';
+        html += '<select class="form-control input-sm col-product-id" name="item[' + item_row + '][answeropcional]" id="item_answeropcional_id_' + item_row + '" data-row="' + item_row + '" datas2="' + item_row + '" required >';
+        html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+        html += '<option value="1">No</option>';
+        html += '<option value="0">Sí</option>';
 
         html += '</select>';
       html += '</div>';
