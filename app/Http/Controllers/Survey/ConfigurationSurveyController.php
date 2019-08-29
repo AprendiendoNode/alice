@@ -134,7 +134,7 @@ class ConfigurationSurveyController extends Controller
 			                      ->where('user_id', $clientes[$i])
 			                      ->where('survey_id', '2') // id encuesta
 			                      ->where('estatus_id', '1') //Activa
-			                      ->where('estatus_res', '2') //NO CONTESTADA
+			                      ->where('estatus_res', '1') //NO CONTESTADA
 			                      ->where('fecha_corresponde', $month)
 			                      ->count();
 
@@ -144,7 +144,7 @@ class ConfigurationSurveyController extends Controller
 			                        ->where('user_id', $clientes[$i])
 			                        ->where('survey_id', '2') // id encuesta
 			                        ->where('estatus_id', '2') //deshabilitada
-			                        ->where('estatus_res', '1') //CONTESTADA
+			                        ->where('estatus_res', '2') //CONTESTADA
 			                        ->where('fecha_corresponde', $month)
 			                        ->count();
 			  if ($pregunto_b == '0') {
@@ -153,7 +153,7 @@ class ConfigurationSurveyController extends Controller
 			                          ->where('user_id', $clientes[$i])
 			                          ->where('survey_id', '2') // id encuesta
 			                          ->where('estatus_id', '2') //deshabilitada
-			                          ->where('estatus_res', '2') //NO CONTESTADA
+			                          ->where('estatus_res', '1') //NO CONTESTADA
 			                          ->where('fecha_corresponde', $month)
 			                          ->count();
 			    if ($pregunto_c == '1') {
@@ -166,7 +166,7 @@ class ConfigurationSurveyController extends Controller
 			      $new_survey_individual->user_id=$clientes[$i];
 			      $new_survey_individual->survey_id='2';
 			      $new_survey_individual->estatus_id='1';
-			      $new_survey_individual->estatus_res='2';
+			      $new_survey_individual->estatus_res='1';
 			      $new_survey_individual->fecha_inicial=$date_i;
 			      $new_survey_individual->fecha_corresponde=$month;
 			      $new_survey_individual->fecha_fin=$date_e;
@@ -195,7 +195,7 @@ class ConfigurationSurveyController extends Controller
 			      $new_survey_individual->user_id=$clientes[$i];
 			      $new_survey_individual->survey_id='2';
 			      $new_survey_individual->estatus_id='1';
-			      $new_survey_individual->estatus_res='2';
+			      $new_survey_individual->estatus_res='1';
 			      $new_survey_individual->fecha_inicial=$date_i;
 			      $new_survey_individual->fecha_corresponde=$month;
 			      $new_survey_individual->fecha_fin=$date_e;
@@ -224,7 +224,7 @@ class ConfigurationSurveyController extends Controller
 			                        ->where('user_id', $clientes[$i])
 			                        ->where('survey_id', '2') // id encuesta
 			                        ->where('estatus_id', '1') //Activa
-			                        ->where('estatus_res', '2') //NO CONTESTADA
+			                        ->where('estatus_res', '1') //NO CONTESTADA
 			                        ->where('fecha_corresponde', $month)
 			                        ->get();
 			  $datos = [
