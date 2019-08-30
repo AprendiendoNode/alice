@@ -897,6 +897,10 @@
                     </div>
                   </div>
                   <!--Firmas-->
+                  <div class="row mt-3">
+                    <h5 class="text-dark"><i class="fas fa-exclamation-triangle"></i> Para que el Documento A sea aprobado, deberá ser autorizado por todos los departamentos y al menos 2 directivos</h5>
+                    <h5 class="text-dark">*</i> Una vez que el proyecto sea aprobado se convertirá en Documento P</h5>
+                  </div>
                   <div class="row d-flex justify-content-center">
                     <div class="d-block">
                       <div class="form-check form-check-flat form-check-success ml-5">
@@ -1053,7 +1057,9 @@
                     <div class="d-block">
                       <div class="form-check form-check-flat form-check-success ml-5">
                         <label class="form-check-label">
-                          @if (auth()->user()->can('Aprobacion director comercial') && $kickoff_approvals->director_comercial == 1)
+                          @if (auth()->user()->can('Aprobacion director comercial') && $approval_dir[0]->aprobado_direccion == 1)
+                            <input id="check_comercial" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion director comercial') && $kickoff_approvals->director_comercial == 1)
                             <input id="check_comercial" type="checkbox" class="form-check-input" disabled checked>
                           @elseif(auth()->user()->can('Aprobacion director comercial') && $kickoff_approvals->director_comercial == 0)
                             <input id="check_comercial" type="checkbox" class="form-check-input">
@@ -1072,7 +1078,9 @@
                     <div class="d-block">
                       <div class="form-check form-check-flat form-check-success ml-5">
                         <label class="form-check-label">
-                          @if (auth()->user()->can('Aprobacion director operaciones') && $kickoff_approvals->director_operaciones == 1)
+                          @if (auth()->user()->can('Aprobacion director operaciones') && $approval_dir[0]->aprobado_direccion == 1)
+                            <input id="check_director_operaciones" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion director operaciones') && $kickoff_approvals->director_operaciones == 1)
                             <input id="check_director_operaciones" type="checkbox" class="form-check-input" disabled checked>
                           @elseif(auth()->user()->can('Aprobacion director operaciones') && $kickoff_approvals->director_operaciones == 0)
                             <input id="check_director_operaciones" type="checkbox" class="form-check-input">
@@ -1091,7 +1099,9 @@
                     <div class="d-block">
                       <div class="form-check form-check-flat form-check-success ml-5">
                         <label class="form-check-label">
-                          @if (auth()->user()->can('Aprobacion director general') && $kickoff_approvals->director_general == 1)
+                          @if (auth()->user()->can('Aprobacion director general') && $approval_dir[0]->aprobado_direccion == 1)
+                            <input id="check_director_general" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion director general') && $kickoff_approvals->director_general == 1)
                             <input id="check_director_general" type="checkbox" class="form-check-input" disabled checked>
                           @elseif(auth()->user()->can('Aprobacion director general') && $kickoff_approvals->director_general == 0)
                             <input id="check_director_general" type="checkbox" class="form-check-input">
