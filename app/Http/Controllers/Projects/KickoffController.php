@@ -25,7 +25,6 @@ class KickoffController extends Controller
     {
       $id = $request->id_doc_3;
       $document = DB::select('CALL px_documentop_data(?)', array($id));
-
       $documentP = Documentp::find($id);
       $id_document = $documentP->id;
       $in_document_cart = In_Documentp_cart::where('documentp_cart_id', $document[0]->documentp_cart_id)->first();
@@ -159,6 +158,8 @@ class KickoffController extends Controller
            'inside_sales' => $request->inside_sales,
            'cierre' => $request->cierre,
            'contacto' => $request->contacto_comercial,
+           'externo1' => $request->comision_externo,
+           'externo2' => $request->comision_externo_2,
            'updated_at' => \Carbon\Carbon::now()
         ]);
         //INSTALACIONES
@@ -258,7 +259,7 @@ class KickoffController extends Controller
       DB::beginTransaction();
       try {
         DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
-           'comercial' => 1,
+           'director_comercial' => 1,
            'updated_at' => \Carbon\Carbon::now()
         ]);
         //Cambiando status de documento a "EN REVISIÓN"
@@ -376,6 +377,240 @@ class KickoffController extends Controller
       try {
         DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
            'planeacion' => 1,
+           'updated_at' => \Carbon\Carbon::now()
+        ]);
+        //Cambiando status de documento a "EN REVISIÓN"
+        $documentp->status_id = 2;
+        $documentp->save();
+
+        $user = Auth::user()->id;
+        $new_doc_state = new Documentp_status_user;
+        $new_doc_state->documentp_id = $documentp->id;
+        $new_doc_state->user_id = $user;
+        $new_doc_state->status_id = '2';
+        $new_doc_state->save();
+
+        if(!$this->check_approvals($documentp->id)){
+          $flag = "1";
+        }else{
+          $flag = "2";
+        }
+        DB::commit();
+
+    } catch(\Exception $e){
+      $e->getMessage();
+      DB::rollback();
+      return $e;
+    }
+
+      return $flag;
+    }
+
+    public function approval_itconcierge($id)
+    {
+      $flag = "0";
+      $documentp = Documentp::find($id);
+      $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+
+      DB::beginTransaction();
+      try {
+        DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
+           'itconcierge' => 1,
+           'updated_at' => \Carbon\Carbon::now()
+        ]);
+        //Cambiando status de documento a "EN REVISIÓN"
+        $documentp->status_id = 2;
+        $documentp->save();
+
+        $user = Auth::user()->id;
+        $new_doc_state = new Documentp_status_user;
+        $new_doc_state->documentp_id = $documentp->id;
+        $new_doc_state->user_id = $user;
+        $new_doc_state->status_id = '2';
+        $new_doc_state->save();
+
+        if(!$this->check_approvals($documentp->id)){
+          $flag = "1";
+        }else{
+          $flag = "2";
+        }
+        DB::commit();
+
+    } catch(\Exception $e){
+      $e->getMessage();
+      DB::rollback();
+      return $e;
+    }
+
+      return $flag;
+    }
+
+    public function approval_legal($id)
+    {
+      $flag = "0";
+      $documentp = Documentp::find($id);
+      $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+
+      DB::beginTransaction();
+      try {
+        DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
+           'legal' => 1,
+           'updated_at' => \Carbon\Carbon::now()
+        ]);
+        //Cambiando status de documento a "EN REVISIÓN"
+        $documentp->status_id = 2;
+        $documentp->save();
+
+        $user = Auth::user()->id;
+        $new_doc_state = new Documentp_status_user;
+        $new_doc_state->documentp_id = $documentp->id;
+        $new_doc_state->user_id = $user;
+        $new_doc_state->status_id = '2';
+        $new_doc_state->save();
+
+        if(!$this->check_approvals($documentp->id)){
+          $flag = "1";
+        }else{
+          $flag = "2";
+        }
+        DB::commit();
+
+    } catch(\Exception $e){
+      $e->getMessage();
+      DB::rollback();
+      return $e;
+    }
+
+      return $flag;
+    }
+
+    public function approval_facturacion($id)
+    {
+      $flag = "0";
+      $documentp = Documentp::find($id);
+      $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+
+      DB::beginTransaction();
+      try {
+        DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
+           'facturacion' => 1,
+           'updated_at' => \Carbon\Carbon::now()
+        ]);
+        //Cambiando status de documento a "EN REVISIÓN"
+        $documentp->status_id = 2;
+        $documentp->save();
+
+        $user = Auth::user()->id;
+        $new_doc_state = new Documentp_status_user;
+        $new_doc_state->documentp_id = $documentp->id;
+        $new_doc_state->user_id = $user;
+        $new_doc_state->status_id = '2';
+        $new_doc_state->save();
+
+        if(!$this->check_approvals($documentp->id)){
+          $flag = "1";
+        }else{
+          $flag = "2";
+        }
+        DB::commit();
+
+    } catch(\Exception $e){
+      $e->getMessage();
+      DB::rollback();
+      return $e;
+    }
+
+      return $flag;
+    }
+
+    public function approval_servicio_cliente($id)
+    {
+      $flag = "0";
+      $documentp = Documentp::find($id);
+      $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+
+      DB::beginTransaction();
+      try {
+        DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
+           'servicio_cliente' => 1,
+           'updated_at' => \Carbon\Carbon::now()
+        ]);
+        //Cambiando status de documento a "EN REVISIÓN"
+        $documentp->status_id = 2;
+        $documentp->save();
+
+        $user = Auth::user()->id;
+        $new_doc_state = new Documentp_status_user;
+        $new_doc_state->documentp_id = $documentp->id;
+        $new_doc_state->user_id = $user;
+        $new_doc_state->status_id = '2';
+        $new_doc_state->save();
+
+        if(!$this->check_approvals($documentp->id)){
+          $flag = "1";
+        }else{
+          $flag = "2";
+        }
+        DB::commit();
+
+    } catch(\Exception $e){
+      $e->getMessage();
+      DB::rollback();
+      return $e;
+    }
+
+      return $flag;
+    }
+
+    public function approval_director_operaciones($id)
+    {
+      $flag = "0";
+      $documentp = Documentp::find($id);
+      $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+
+      DB::beginTransaction();
+      try {
+        DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
+           'director_operaciones' => 1,
+           'updated_at' => \Carbon\Carbon::now()
+        ]);
+        //Cambiando status de documento a "EN REVISIÓN"
+        $documentp->status_id = 2;
+        $documentp->save();
+
+        $user = Auth::user()->id;
+        $new_doc_state = new Documentp_status_user;
+        $new_doc_state->documentp_id = $documentp->id;
+        $new_doc_state->user_id = $user;
+        $new_doc_state->status_id = '2';
+        $new_doc_state->save();
+
+        if(!$this->check_approvals($documentp->id)){
+          $flag = "1";
+        }else{
+          $flag = "2";
+        }
+        DB::commit();
+
+    } catch(\Exception $e){
+      $e->getMessage();
+      DB::rollback();
+      return $e;
+    }
+
+      return $flag;
+    }
+
+    public function approval_director_general($id)
+    {
+      $flag = "0";
+      $documentp = Documentp::find($id);
+      $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+
+      DB::beginTransaction();
+      try {
+        DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
+           'director_general' => 1,
            'updated_at' => \Carbon\Carbon::now()
         ]);
         //Cambiando status de documento a "EN REVISIÓN"

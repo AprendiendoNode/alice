@@ -444,10 +444,10 @@ function table_comparativa_mes_vertical(datajson, table){
   vartable.fnClearTable();
   $.each(JSON.parse(datajson), function(index, status){
     var span_identificador = '';
-    if (status.Indicador == '0') { span_identificador = '<span class="label label-warning">Mantuvo</span>';}
-    if (status.Indicador == '1') { span_identificador = '<span class="label label-danger">Bajo</span>';}
-    if (status.Indicador == '2') { span_identificador = '<span class="label label-success">Subio</span>';}
-    if (status.Indicador == '3') { span_identificador = '<span class="label label-default">Sin indicador</span>';}
+    if (status.Indicador == '0') { span_identificador = '<span class="badge badge-warning">Mantuvo</span>';}
+    if (status.Indicador == '1') { span_identificador = '<span class="badge badge-danger">Bajo</span>';}
+    if (status.Indicador == '2') { span_identificador = '<span class="badge badge-success">Subio</span>';}
+    if (status.Indicador == '3') { span_identificador = '<span class="badge badge-default">Sin indicador</span>';}
   vartable.fnAddData([
       status.name,
       status.sitios,
@@ -572,19 +572,19 @@ function getValueCurrent(qty) {
   var val=qty;
   switch(val){
     case 'Pr':
-      retval = '<span class="label label-success">Promotor</span>';
+      retval = '<span class="badge badge-success">Promotor</span>';
       break;
     case 'Ps':
-      retval = '<span class="label label-warning">Pasivo</span>';
+      retval = '<span class="badge badge-warning">Pasivo</span>';
       break;
     case 'D':
-      retval = '<span class="label label-danger">Detractor</span>';
+      retval = '<span class="badge badge-danger">Detractor</span>';
       break;
     case 'NA':
-      retval = '<span class="label label-danger">Sin calificación</span>';
+      retval = '<span class="badge badge-danger">Sin calificación</span>';
       break;
     default:
-      retval = '<span class="label label-danger">Sin calificación</span>';
+      retval = '<span class="badge badge-danger">Sin calificación</span>';
   }
   return retval;
 }

@@ -443,6 +443,12 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/approval_proyectos/id_doc/{id}', 'Projects\KickoffController@approval_proyectos');
   Route::get('/approval_soporte/id_doc/{id}', 'Projects\KickoffController@approval_soporte');
   Route::get('/approval_planeacion/id_doc/{id}', 'Projects\KickoffController@approval_planeacion');
+  Route::get('/approval_itconcierge/id_doc/{id}', 'Projects\KickoffController@approval_itconcierge');
+  Route::get('/approval_servicio_cliente/id_doc/{id}', 'Projects\KickoffController@approval_servicio_cliente');
+  Route::get('/approval_facturacion/id_doc/{id}', 'Projects\KickoffController@approval_facturacion');
+  Route::get('/approval_legal/id_doc/{id}', 'Projects\KickoffController@approval_legal');
+  Route::get('/approval_director_operaciones/id_doc/{id}', 'Projects\KickoffController@approval_director_operaciones');
+  Route::get('/approval_director_general/id_doc/{id}', 'Projects\KickoffController@approval_director_general');
   Route::get('/notificaciones_read_doc/{id}', 'Auth\NotificationController@read_docp');
   //Notificaciones viaticos
   Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');
@@ -761,7 +767,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/survey_results' , 'Survey\ResultsSurveyController@index');
     //Crear encuestas
     Route::get('/create_survey_admin' , 'Survey\CreateSurveyController@index');
-    Route::post('/store_new_survey_admin' , 'Survey\CreateSurveyController@store');  
+    Route::post('/store_new_survey_admin' , 'Survey\CreateSurveyController@store');
 });
 
 

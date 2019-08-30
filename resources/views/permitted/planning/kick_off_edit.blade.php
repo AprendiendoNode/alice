@@ -393,6 +393,14 @@
                           </div>
                           <div class="form-row d-flex align-items-center mb-2">
                             <div class="col-4">
+                              <label for="">Deposito de garantía</label>
+                            </div>
+                            <div class="col-8">
+                              <input id="deposito_garantia" name="deposito_garantia" type="text" disabled class="form-control form-control-sm" value="{{$document[0]->deposito_garantia}}">
+                            </div>
+                          </div>
+                          <div class="form-row d-flex align-items-center mb-2">
+                            <div class="col-4">
                               <label for="">Mantenimiento por vigencia</label>
                             </div>
                             <div class="col-8">
@@ -434,6 +442,14 @@
                           <div class="form-row d-flex align-items-center mb-2">
                             <div class="col text-center bg-blue">
                               <label for="">Comisión</label>
+                            </div>
+                          </div>
+                          <div class="form-row d-flex align-items-center mb-2">
+                            <div class="col-4">
+                              <label for="">IT Concierge</label>
+                            </div>
+                            <div class="col-8">
+                              <input id="itconciergecomision" name="itconciergecomision" disabled type="text" class="form-control form-control-sm" value="{{$document[0]->ITC}}">
                             </div>
                           </div>
                           <div class="form-row d-flex align-items-center mb-2">
@@ -492,6 +508,22 @@
                             </div>
                             <div class="col-8">
                               <input id="cierre" name="cierre" value="{{ $kickoff_contrato->cierre }}" type="text" class="form-control form-control-sm">
+                            </div>
+                          </div>
+                          <div class="form-row d-flex align-items-center mb-2">
+                            <div class="col-4">
+                              <label  for="">Externo</label>
+                            </div>
+                            <div class="col-8">
+                              <input id="comision_externo" name="comision_externo" value="{{ $kickoff_contrato->externo1 }}" type="text" class="form-control form-control-sm">
+                            </div>
+                          </div>
+                          <div class="form-row d-flex align-items-center mb-2">
+                            <div class="col-4">
+                              <label  for="">Externo 2</label>
+                            </div>
+                            <div class="col-8">
+                              <input id="comision_externo_2" name="comision_externo_2" value="{{ $kickoff_contrato->externo2}}" type="text" class="form-control form-control-sm">
                             </div>
                           </div>
                         </div>
@@ -865,41 +897,22 @@
                     </div>
                   </div>
                   <!--Firmas-->
-                  <div class="row text">
+                  <div class="row d-flex justify-content-center">
                     <div class="d-block">
                       <div class="form-check form-check-flat form-check-success ml-5">
                         <label class="form-check-label">
-                          @if (auth()->user()->can('Aprobacion administracion') && $kickoff_approvals->administracion == 1)
-                            <input id="check_administracion" type="checkbox" class="form-check-input" disabled checked>
-                          @elseif(auth()->user()->can('Aprobacion administracion') && $kickoff_approvals->administracion == 0)
-                            <input id="check_administracion" type="checkbox" class="form-check-input">
+                          @if (auth()->user()->can('Aprobacion itconcierge') && $kickoff_approvals->itconcierge == 1)
+                            <input id="check_itconcierge" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion itconcierge') && $kickoff_approvals->itconcierge == 0)
+                            <input id="check_itconcierge" type="checkbox" class="form-check-input">
                           @else
-                            <input id="check_administracion" type="checkbox" class="form-check-input" disabled>
+                            <input id="check_itconcierge" type="checkbox" class="form-check-input" disabled>
                           @endif
-                          María  de Jesús Ortíz
+                          {{-- {{$document[0]->ITC}} --}}
                       </div>
                       <div class="text-center">
-                        <p class="text-secondary">Dirección de Administración y Finanzas</p>
-                        @if ($kickoff_approvals->administracion == 1)
-                          <span class="badge badge-success badge-pill text-white">Autorizado</span>
-                        @endif
-                      </div>
-                    </div>
-                    <div class="d-block">
-                      <div class="form-check form-check-flat form-check-success ml-5">
-                        <label class="form-check-label">
-                          @if (auth()->user()->can('Aprobacion comercial') && $kickoff_approvals->comercial == 1)
-                            <input id="check_comercial" type="checkbox" class="form-check-input" disabled checked>
-                          @elseif(auth()->user()->can('Aprobacion comercial') && $kickoff_approvals->comercial == 0)
-                            <input id="check_comercial" type="checkbox" class="form-check-input">
-                          @else
-                            <input id="check_comercial" type="checkbox" class="form-check-input" disabled>
-                          @endif
-                          Carlos Mata
-                      </div>
-                      <div class="text-center">
-                        <p class="text-secondary ml-5">Gerente Comercial</p>
-                        @if ($kickoff_approvals->comercial == 1)
+                        <p class="text-secondary ml-5">IT Concierge</p>
+                        @if ($kickoff_approvals->itconcierge == 1)
                           <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
                         @endif
                       </div>
@@ -955,8 +968,141 @@
                           Manuel F. Moreno
                       </div>
                       <div class="text-center">
-                        <p class="text-secondary ml-5">Planeación y estrategía</p>
+                        <p class="text-secondary ml-5">Compras</p>
                         @if ($kickoff_approvals->planeacion == 1)
+                          <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
+                        @endif
+                      </div>
+                    </div>
+                    <div class="d-block">
+                      <div class="form-check form-check-flat form-check-success ml-5">
+                        <label class="form-check-label">
+                          @if (auth()->user()->can('Aprobacion servicio cliente') && $kickoff_approvals->servicio_cliente == 1)
+                            <input id="check_servicio_cliente" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion servicio cliente') && $kickoff_approvals->servicio_cliente == 0)
+                            <input id="check_servicio_cliente" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_servicio_cliente" type="checkbox" class="form-check-input" disabled>
+                          @endif
+                          Carlos Rangel
+                      </div>
+                      <div class="text-center">
+                        <p class="text-secondary ml-5">Servicio al cliente</p>
+                        @if ($kickoff_approvals->servicio_cliente == 1)
+                          <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
+                        @endif
+                      </div>
+                    </div>
+                    <div class="d-block">
+                      <div class="form-check form-check-flat form-check-success ml-5">
+                        <label class="form-check-label">
+                          @if (auth()->user()->can('Aprobacion facturacion') && $kickoff_approvals->facturacion == 1)
+                            <input id="check_facturacion" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion facturacion') && $kickoff_approvals->facturacion == 0)
+                            <input id="check_facturacion" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_facturacion" type="checkbox" class="form-check-input" disabled>
+                          @endif
+                        Sandra Cruz
+                      </div>
+                      <div class="text-center">
+                        <p class="text-secondary ml-5">Facturación</p>
+                        @if ($kickoff_approvals->facturacion == 1)
+                          <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
+                        @endif
+                      </div>
+                    </div>
+                    <div class="d-block">
+                      <div class="form-check form-check-flat form-check-success ml-5">
+                        <label class="form-check-label">
+                          @if (auth()->user()->can('Aprobacion legal') && $kickoff_approvals->legal == 1)
+                            <input id="check_legal" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion legal') && $kickoff_approvals->legal == 0)
+                            <input id="check_legal" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_legal" type="checkbox" class="form-check-input" disabled>
+                          @endif
+                          Mariana Flores
+                      </div>
+                      <div class="text-center">
+                        <p class="text-secondary ml-5">Legal</p>
+                        @if ($kickoff_approvals->legal == 1)
+                          <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
+                        @endif
+                      </div>
+                    </div>
+                    <div class="d-block">
+                      <div class="form-check form-check-flat form-check-success ml-3">
+                        <label class="form-check-label">
+                          @if (auth()->user()->can('Aprobacion administracion') && $kickoff_approvals->administracion == 1)
+                            <input id="check_administracion" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion administracion') && $kickoff_approvals->administracion == 0)
+                            <input id="check_administracion" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_administracion" type="checkbox" class="form-check-input" disabled>
+                          @endif
+                          María  de Jesús Ortíz
+                      </div>
+                      <div class="text-center">
+                        <p class="text-secondary">Administración y Finanzas</p>
+                        @if ($kickoff_approvals->administracion == 1)
+                          <span class="badge badge-success badge-pill text-white">Autorizado</span>
+                        @endif
+                      </div>
+                    </div>
+                    <div class="d-block">
+                      <div class="form-check form-check-flat form-check-success ml-5">
+                        <label class="form-check-label">
+                          @if (auth()->user()->can('Aprobacion director comercial') && $kickoff_approvals->director_comercial == 1)
+                            <input id="check_comercial" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion director comercial') && $kickoff_approvals->director_comercial == 0)
+                            <input id="check_comercial" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_comercial" type="checkbox" class="form-check-input" disabled>
+                          @endif
+                          John Walker
+                      </div>
+                      <div class="text-center">
+                        <p class="text-secondary ml-5">Director Comercial</p>
+                        @if ($kickoff_approvals->director_comercial == 1)
+                          <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
+                        @endif
+                      </div>
+                    </div>
+                    <div class="d-block">
+                      <div class="form-check form-check-flat form-check-success ml-5">
+                        <label class="form-check-label">
+                          @if (auth()->user()->can('Aprobacion director operaciones') && $kickoff_approvals->director_operaciones == 1)
+                            <input id="check_director_operaciones" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion director operaciones') && $kickoff_approvals->director_operaciones == 0)
+                            <input id="check_director_operaciones" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_director_operaciones" type="checkbox" class="form-check-input" disabled>
+                          @endif
+                          René González
+                      </div>
+                      <div class="text-center">
+                        <p class="text-secondary ml-5">Director operaciones</p>
+                        @if ($kickoff_approvals->director_operaciones == 1)
+                          <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
+                        @endif
+                      </div>
+                    </div>
+                    <div class="d-block">
+                      <div class="form-check form-check-flat form-check-success ml-5">
+                        <label class="form-check-label">
+                          @if (auth()->user()->can('Aprobacion director general') && $kickoff_approvals->director_general == 1)
+                            <input id="check_director_general" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion director general') && $kickoff_approvals->director_general == 0)
+                            <input id="check_director_general" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_director_general" type="checkbox" class="form-check-input" disabled>
+                          @endif
+                          Alejandro Espejo
+                      </div>
+                      <div class="text-center">
+                        <p class="text-secondary ml-5">Director general</p>
+                        @if ($kickoff_approvals->director_general == 1)
                           <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
                         @endif
                       </div>
