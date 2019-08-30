@@ -94,6 +94,7 @@
               @php ($data_survey[] = $id_user)
               @php ($data_survey[] = $id_survey)
               @php ($data_survey[] = $date_active)
+              @php ($data_survey[] = $verify_fecha_corresponde)
 
 
               {{ csrf_field() }}

@@ -37,9 +37,11 @@ class QuestionaryController extends Controller
      $encriptado_data = $data;
      // return $encriptado_data;
      $survey_check_user = Surveydinamic_user::where('shell_data', $encriptado_data)->count();
+
      //return $survey_check_user;
      if ($survey_check_user == '1') {
        $verify_date_of_survey_completion_type_a = Surveydinamic_user::where('shell_data', $encriptado_data)->value('fecha_fin');
+       $verify_fecha_corresponde = Surveydinamic_user::where('shell_data', $encriptado_data)->value('fecha_corresponde');
        $date_of_survey = strtotime($verify_date_of_survey_completion_type_a);
 
        if ($date_current >= $date_of_survey) {
@@ -64,7 +66,7 @@ class QuestionaryController extends Controller
            $id_status = $array_encrypted_user[4];
 
            $question = DB::select('CALL GetAllQuestionBySurvey (?)', array($id_survey));
-           return view('permitted.questionnaire.quizA', compact('question','id_user','id_survey', 'date_active', 'date_end'));
+           return view('permitted.questionnaire.quizA', compact('question','id_user','id_survey', 'date_active', 'date_end', 'verify_fecha_corresponde'));
          }
          else {
            $title = 'Encuesta';
@@ -123,7 +125,7 @@ class QuestionaryController extends Controller
    /**
     * Registrar encuesta A
     */
-   public function create_now(Request $request)
+   public function create_now_anterior(Request $request)
    {
         //Datos encriptados
        $data_survey = Crypt::decryptString($request->ultimapreg);
@@ -183,6 +185,123 @@ class QuestionaryController extends Controller
        // return $actualizo; //0 no & 1 si
        return back();
    }
+   public function create_now(Request $request)
+   {
+        //Datos encriptados
+       $data_survey = Crypt::decryptString($request->ultimapreg);
+       $order_of_questions = Crypt::decryptString($request->ordenpreg);
+       //Datos desencriptados
+       //$data_survey = $request->ultimapreg;
+       $array_of_data_survey= explode (",", $data_survey);
+
+       $number_of_records= $array_of_data_survey[0];
+       $id_user= $array_of_data_survey[1];
+       $id_survey= $array_of_data_survey[2];
+       $date_active= $array_of_data_survey[3];
+       $fecha_corresponde= $array_of_data_survey[4];
+
+       $email_user = User::where('id', '=', $id_user)->value('email');
+       $hasrolesurvey = DB::select('CALL px_user_pa_encuesta (?)', array($id_user));
+
+       $array_of_questions= explode (",", $order_of_questions);
+
+       $inserto= 0;
+       $actualizo= 0;
+
+       if ($hasrolesurvey[0]->pa_encuesta == 1) {
+         $get_all_site = DB::select('CALL px_hotelsXuser (?)', array($id_user));
+         $count_site = count($get_all_site);
+         /*-------------------------------------------------------------------------*/
+         for ($abc=0; $abc < $count_site; $abc++) {
+           $sitio_id =  $get_all_site[$abc]->id;
+           $sitio_name = $get_all_site[$abc]->sitio;
+           /*-------------------------------------------------------------------------*/
+           for ($i=1; $i <= $number_of_records; $i++) {
+             if ( isset( $request->{"pregunta".$array_of_questions[$i-1]} ) ) {
+               $type_question = Questiondinamic::where('id', '=', $array_of_questions[$i-1] )->value('type_id');
+               if ($type_question == '1') {
+                 $new_reg_a = new Qualificationaa;
+                 $new_reg_a->email = $email_user;
+                 $new_reg_a->option_id = $request->{"pregunta".$array_of_questions[$i-1]};
+                 $new_reg_a->question_id = $array_of_questions[$i-1];
+                 $new_reg_a->users_id = $id_user;
+                 $new_reg_a->hotels_id = $sitio_id;
+                 $new_reg_a->fecha = $fecha_corresponde;
+                 $new_reg_a->save();
+               }
+               elseif ($type_question == '2') {
+                 $new_reg_b = new Qualificationab;
+                 $new_reg_b->name = $request->{"pregunta".$array_of_questions[$i-1]};
+                 $new_reg_b->email = $email_user;
+                 $new_reg_b->question_id = $array_of_questions[$i-1];
+                 $new_reg_b->users_id = $id_user;
+                 $new_reg_b->hotels_id = $sitio_id;
+                 $new_reg_b->fecha = $fecha_corresponde;
+                 $new_reg_b->save();
+               }
+               $inserto = 1;
+             }
+           }
+           if ($inserto == 1) {
+             $update_user_reg = DB::table('surveydinamic_users')
+                                ->where('user_id', $id_user)
+                                ->where('survey_id', $id_survey)
+                                ->where('fecha_corresponde', $date_active)
+                                ->update([
+                                  'estatus_id' => '2',
+                                  'estatus_res' => '2',
+                                  'updated_at' => \Carbon\Carbon::now(),
+                                ]);
+              $actualizo = $update_user_reg;
+           }
+           /*-------------------------------------------------------------------------*/
+         }
+         return back();
+         /*-------------------------------------------------------------------------*/
+       }
+       else {
+         // echo "no";
+         /*-------------------------------------------------------------------------*/
+         for ($i=1; $i <= $number_of_records; $i++) {
+           if ( isset( $request->{"pregunta".$array_of_questions[$i-1]} ) ) {
+             $type_question = Questiondinamic::where('id', '=', $array_of_questions[$i-1] )->value('type_id');
+             if ($type_question == '1') {
+               $new_reg_a = new Qualificationaa;
+               $new_reg_a->email = $email_user;
+               $new_reg_a->option_id = $request->{"pregunta".$array_of_questions[$i-1]};
+               $new_reg_a->question_id = $array_of_questions[$i-1];
+               $new_reg_a->users_id = $id_user;
+               $new_reg_a->fecha = $fecha_corresponde;
+               $new_reg_a->save();
+             }
+             elseif ($type_question == '2') {
+               $new_reg_b = new Qualificationab;
+               $new_reg_b->name = $request->{"pregunta".$array_of_questions[$i-1]};
+               $new_reg_b->email = $email_user;
+               $new_reg_b->question_id = $array_of_questions[$i-1];
+               $new_reg_b->users_id = $id_user;
+               $new_reg_b->fecha = $fecha_corresponde;
+               $new_reg_b->save();
+             }
+             $inserto = 1;
+           }
+         }
+         if ($inserto == 1) {
+           $update_user_reg = DB::table('surveydinamic_users')
+                              ->where('user_id', $id_user)
+                              ->where('survey_id', $id_survey)
+                              ->where('fecha_corresponde', $date_active)
+                              ->update([
+                                'estatus_id' => '2',
+                                'estatus_res' => '2',
+                                'updated_at' => \Carbon\Carbon::now(),
+                              ]);
+            $actualizo = $update_user_reg;
+         }
+         return back();
+         /*-------------------------------------------------------------------------*/
+       }
+   }
 
    /**
     * Registrar encuesta B
@@ -215,6 +334,7 @@ class QuestionaryController extends Controller
            $new_reg_a->email = $email_user;
            $new_reg_a->option_id = $request->{"pregunta".$array_of_questions[$i-1]};
            $new_reg_a->question_id = $array_of_questions[$i-1];
+           $new_reg_a->fecha = $date_active;
            $new_reg_a->save();
          }
          elseif ($type_question == '2') {
@@ -222,6 +342,7 @@ class QuestionaryController extends Controller
            $new_reg_b->name = $request->{"pregunta".$array_of_questions[$i-1]};
            $new_reg_b->email = $email_user;
            $new_reg_b->question_id = $array_of_questions[$i-1];
+           $new_reg_b->fecha = $date_active;
            $new_reg_b->save();
          }
          // echo '<br>posicion = '.$i.'<br>';
@@ -259,7 +380,7 @@ class QuestionaryController extends Controller
    public function create()
    {
      $survey_name = Surveydinamic::where('id', 2)->value('name');
-     $users_sit = User::find(109);
+     $users_sit = User::find(297);
      $i=1;
        $name = $users_sit->name;
        $email = trim($users_sit->email);
@@ -267,9 +388,9 @@ class QuestionaryController extends Controller
        $id_survey = 2;
        $id_status = 1;
        $id_status_rest = 1;
-       $date_start = '2019-07-01';
+       $date_start = '2019-08-01';
        $date_active = '2019-07-01';
-       $date_end = '2019-07-31';
+       $date_end = '2019-08-31';
 
        $nuevolink = $id_user.'/'.$id_survey.'/'.$date_active.'/'.$date_end.'/'.$id_status;
        $shell_data= Crypt::encryptString($nuevolink);
