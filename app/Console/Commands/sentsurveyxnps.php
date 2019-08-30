@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use DB;
 
 use Mail;
-use App\Mail\Sentsurveynpsmail;
+use App\Mail\SendEmailSurvey;
 use Illuminate\Support\Facades\Crypt;
 
 class sentsurveyxnps extends Command
@@ -59,50 +59,48 @@ class sentsurveyxnps extends Command
 
         $mesanteriorfull = $mesanterior . '-01';
 
-
         $sql = DB::select('CALL List_User_NPS(?)', array(6));
-        //$sql2 = DB::select('CALL Survey_Question_1(?,?)', array('2018-03-01', 2));
         $sql_count = count($sql);
 
-        // encuesta_user id: 9,656
         for ($i=0; $i < $sql_count; $i++) {
             $this->line('Current Iteration: ' . $i);
-            $nuevolink = $sql[$i]->id.'/'.'1'.'/'.$mesanteriorfull.'/'.$fechafin;
+            $nuevolink = $sql[$i]->id.'/'.'2'.'/'.$mesanteriorfull.'/'.$fechafin.'/'.'1';
             $encriptodata= Crypt::encryptString($nuevolink);
             $encriptostatus= Crypt::encryptString('1');
 
             $data_emails = [
                 'nombre' => $sql[$i]->name,
                 'shell_data' => $encriptodata,
-                'shell_status' => $encriptostatus
             ];
-
             $data_insert = [
                 'user_id' => $sql[$i]->id,
-                'encuesta_id' => 1,
+                'survey_id' => 2,
                 'estatus_id' => 1,
-                'estatus_res' => 0,
+                'estatus_res' => 1,
                 'fecha_inicial' => $fechaini,
                 'fecha_corresponde' => $mesanteriorfull,
                 'fecha_fin' => $fechafin,
                 'shell_data' => $encriptodata,
                 'shell_status' => $encriptostatus
+
             ];
 
             $this->line('email: ' . $sql[$i]->email);
             $this->line('nombre: ' . $sql[$i]->name);
-            $res = DB::table('encuesta_users')->insert($data_insert);
+
+            $res = DB::table('surveydinamic_users')->insert($data_insert);
             if ($res) {
                 $this->line('Datos Insertados.');
             }else{
                 $this->error('no se insertaron datos.');
             }
-            $this->line('http://alice.sitwifi.com/'.$encriptodata.'/'.$encriptostatus);
+
+            $this->line('http://alice.sitwifi.com/'.$encriptodata);
             $this->line('Sending Email to: ' . $sql[$i]->name . ', ' . $sql[$i]->email);
 
             //$this->sentSurveyEmail($sql[$i]->email, $data_emails);
             $correo = trim($sql[$i]->email);
-            Mail::to($correo)->send(new Sentsurveynpsmail($data_emails));
+            Mail::to('jesquinca@sitwifi.com')->send(new SendEmailSurvey($data_emails));
         }
         //dd($sql);
         $this->info('Command Completed.');
