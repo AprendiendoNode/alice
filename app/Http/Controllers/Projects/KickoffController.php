@@ -59,8 +59,9 @@ class KickoffController extends Controller
       $kickoff_lineabase = Kickoff_lineabase::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $kickoff_perfil_cliente = Kickoff_perfil_cliente::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $kickoff_soporte = Kickoff_soporte::firstOrCreate(['kickoff_id' => $kickoff->id]);
+      $approval_dir = DB::select('CALL px_valida_aprobado_direccion(?)', array($kickoff_approvals->id));
 
-      return view('permitted.planning.kick_off_edit', compact('document','installation', 'adquisition','inside_sales' ,'vendedores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals',
+      return view('permitted.planning.kick_off_edit', compact('document','installation','approval_dir' ,'adquisition','inside_sales' ,'vendedores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals',
                   'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte', 'gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido' ));
     }
 
@@ -639,15 +640,18 @@ class KickoffController extends Controller
 
       return $flag;
     }
-
+    //Revisa que todos los departamentos hayan aprobado el kickoff
     public function check_approvals($id_doc)
     {
       $documentp = Documentp::findOrFail($id_doc);
       $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
       $kickoff_approvals = Kickoff_approvals::where('kickoff_id', $kickoff->id)->first();
+      $approval_dir = DB::select('CALL px_valida_aprobado_direccion(?)', array($kickoff_approvals->id));
       //Revisando si todos los departamentos ya revisaron el documento
-      if($kickoff_approvals->administracion == 1 && $kickoff_approvals->comercial == 1 && $kickoff_approvals->proyectos == 1 &&
-          $kickoff_approvals->soporte == 1 && $kickoff_approvals->planeacion == 1){
+      if($kickoff_approvals->administracion == 1 && $kickoff_approvals->proyectos == 1 &&
+          $kickoff_approvals->soporte == 1 && $kickoff_approvals->planeacion == 1 && $kickoff_approvals->servicio_cliente &&
+          $kickoff_approvals->itconcierge && $kickoff_approvals->legal && $kickoff_approvals->facturacion &&
+          $approval_dir[0]->aprobado_direccion == 1){
           $kickoff_approvals->fecha_aprobacion_all = \Carbon\Carbon::now();
           $kickoff_approvals->save();
           //Cambiando status de documento  a "AUTORIZADO"
@@ -686,7 +690,7 @@ class KickoffController extends Controller
       $vendedor = $kickoff_contrato->vendedor;
       $inside_sales = $kickoff_contrato->inside_sales;
 
-      $recipient_users = json_decode(User::find([258, 18, 36, 16, 17, 87, 332, 333, $itc, $vendedor, $inside_sales])); //Todos los usuarios nivel 1
+      $recipient_users = json_decode(User::find([258,11, 13, 14,16, 17, 18, 20, 21,406, 36, 87, 332, 333, $itc, $vendedor, $inside_sales])); //Todos los usuarios nivel 1
       array_push($recipient_users, (object) array('id' => Auth::user()->id)); //Creador de la notificación
 
       $recipients = [];
