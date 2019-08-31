@@ -39,7 +39,7 @@
                 <div class="form-group row">
                   <label for="inputCreatCode" class="col-sm-3 col-form-label">Clave <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputCreatCode" name="inputCreatCode" placeholder="Clave" maxlength="4">
+                    <input type="text" class="form-control form-control-sm required" id="inputCreatCode" name="inputCreatCode" placeholder="Clave" maxlength="3">
                   </div>
                 </div>
                 <div class="form-group row">
@@ -81,7 +81,7 @@
                 <div class="form-group row">
                   <label for="inputCreatThousands" class="col-sm-3 col-form-label">Separador de miles<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required onlynumber" id="inputCreatThousands" name="inputCreatThousands" placeholder="Orden de visualización" value="0" maxlength="3">
+                    <input type="text" class="form-control form-control-sm required" id="inputCreatThousands" name="inputCreatThousands" placeholder="Orden de visualización" value="0" maxlength="3">
                   </div>
                 </div>
                 <div class="form-group row">

@@ -161,7 +161,7 @@ class CurrencyController extends Controller
      public function edit(Request $request)
      {
        $identificador= $request->value;
-       $resultados = DB::select('CALL GetTakesByIdv2 (?)', array($identificador));
+       $resultados = DB::select('CALL GetCurrencyByIdv2 (?)', array($identificador));
        foreach ($resultados as $key) {
          $key->id = Crypt::encryptString($key->id);
        }

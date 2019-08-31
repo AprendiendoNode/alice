@@ -216,7 +216,9 @@ class CustomerInvoiceController extends Controller
                  }
                }
                elseif ( $item['current'] != $currency_id && !empty($item['current']) ) {
-                 $current_rate = DB::table('exchange_rates')->select('current_rate') ->where('currency_id', $item['current'])->latest()->first();
+                 return $item['current'];
+                 $current_rate = DB::table('exchange_rates')->select('current_rate')->where('currency_id', $item['current'])->latest()->first();
+                 $eieie = $current_rate->current_rate;
                  $item_amount_total = $item_amount_total * $current_rate->current_rate;
                  $item_amount_untaxed = round($item_quantity * $item_amount_total, 2); //cantidad del artículo sin impuestos
                }
