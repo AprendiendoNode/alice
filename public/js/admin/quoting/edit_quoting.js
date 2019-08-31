@@ -20,9 +20,9 @@ $(function() {
   setTimeout(function(){
     set_table_rubro();
     set_table_gastos();
-    set_table_objetivos();
     set_table_modelos();
     set_table_servadm();
+    set_table_objetivos();
   }, 3000);
 
  });
@@ -428,7 +428,7 @@ function generate_table_products(){
         + key.codigo + '</td><td>'
         + key.proveedor + '</td><td>'
         + key.num_parte + '</td>'
-        + '<td><a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td class="precio"><td>'
+        + '<td><a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td><td class="precio">'
         + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio+ '" data-name="precio" class="set-price"></a></td class=""><td>'
         + key.currency + '</td><td class="precio_total">'
         + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
@@ -670,7 +670,7 @@ $(".validation-wizard-master").steps({
         // Tabla de productos del Documento P
         var productos = obtenerProductosLocalStorage();
         generate_table_products(productos);
-        update_mano_de_obra();
+        //update_mano_de_obra();
       }
 
       return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form_master.find(".body:eq(" + newIndex + ") label.error").remove(), form_master.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form_master.validate().settings.ignore = ":disabled,:hidden", form_master.valid())

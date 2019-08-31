@@ -47,6 +47,7 @@ class KickoffController extends Controller
         $objetivos = DB::table('cotizador_objetivos')->select()->where('cotizador_id', $cotizador[0]->id)->get();
         $gastos_mensuales = Cotizador_gastos::findOrFail(['cotizador_id' => $cotizador[0]->id]);
         $vtc = $objetivos[0]->vtc;
+        $gasto_mtto = $gastos_mensuales[0]->mantto_seg_otro;
         $gasto_mtto_percent = $gastos_mensuales[0]->mantto_seg_otro_percent;
         $credito_mensual_percent = $gastos_mensuales[0]->credito_mensual_percent;
       }
@@ -62,7 +63,7 @@ class KickoffController extends Controller
       $approval_dir = DB::select('CALL px_valida_aprobado_direccion(?)', array($kickoff_approvals->id));
 
       return view('permitted.planning.kick_off_edit', compact('document','installation','approval_dir' ,'adquisition','inside_sales' ,'vendedores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals',
-                  'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte', 'gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido' ));
+                  'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte','gasto_mtto', 'gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido' ));
     }
 
     public function get_num_aps($cart_id)

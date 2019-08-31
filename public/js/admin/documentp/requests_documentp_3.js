@@ -38,8 +38,8 @@ function documentp_table(datajson, table){
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
   //Filtrando documentos M
-  let datajson_result = datajson.filter(data => data.doc_type == 2 && data.status != 'Denegado');
-  let type_doc = 'M';
+  let datajson_result = datajson.filter(data => data.doc_type == 1 && data.status != 'Denegado');
+  let type_doc = 'P';
   $.each(datajson_result, function(index, data){
 
     let badge = '';
@@ -148,7 +148,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 7,
               "width": "0.1%",
-              "className": "text-center cell-short",
+              "className": "text-center",
             },
             {
               "targets": 8,
@@ -178,7 +178,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 13,
               "width": "3%",
-              "className": "text-center actions",
+              "className": "text-center actions-button cell-large",
             },
             {
               "targets": 14,

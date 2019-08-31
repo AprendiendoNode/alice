@@ -59,8 +59,8 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  let type_doc = 'M';
-  let datajson_result = datajson.filter(data => data.doc_type == 2 && data.status != 'Denegado' && data.status == 'Nuevo');
+  let type_doc = 'P';
+  let datajson_result = datajson.filter(data => data.doc_type == 1 && data.status != 'Denegado' && data.status == 'Nuevo');
   $.each(datajson_result, function(index, data){
   let badge = '';
   switch (data.status) {
@@ -179,7 +179,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 7,
               "width": "0.1%",
-              "className": "text-center cell-short",
+              "className": "text-center",
             },
             {
               "targets": 8,
@@ -209,7 +209,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 13,
               "width": "3%",
-              "className": "text-center actions",
+              "className": "text-center actions-button cell-large",
             },
             {
               "targets": 14,
@@ -273,12 +273,12 @@ var Configuration_table_responsive_documentp= {
                             data: { idents: JSON.stringify(valores), _token : _token },
                             success: function (data){
                               if (data === 'true') {
+                                table_permission_one();
                                 Swal.fire(
                                   'Estatus actualizado!',
                                   'Los documentos han sido revisados!',
                                   'success'
                                 )
-                                table_permission_one();
                               }
                               if (data === 'false') {
                                 Swal.fire(

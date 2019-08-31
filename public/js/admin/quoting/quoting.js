@@ -422,7 +422,7 @@ function generate_table_products(){
         + key.codigo + '</td><td>'
         + key.proveedor + '</td><td>'
         + key.num_parte + '</td>'
-        + '<td><a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td class="precio"><td>'
+        + '<td><a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="descuento" data-value="' + key.descuento + '" data-name="descuento" class="set-descuento"></a>%</td><td class="precio">'
         + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio+ '" data-name="precio" class="set-price"></a></td class=""><td>'
         + key.currency + '</td><td class="precio_total">'
         + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'

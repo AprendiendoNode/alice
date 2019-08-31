@@ -44,6 +44,7 @@
                   <input id="deposito" type="hidden" name="deposito" value="{{$document[0]->deposito_garantia}}">
                   <input id="plazo" type="hidden"  class="form-control form-control-sm" value="{{$document[0]->plazo}}">
                   <input id="gasto_mtto_percent" type="hidden" name="gasto_mtto_percent" value="{{$gasto_mtto_percent}}">
+                  <input id="gasto_mtto" type="hidden" name="gasto_mtto" value="{{$gasto_mtto}}">
                   <input id="credito_mensual_percent" type="hidden" name="credito_mensual_percent" value="{{$credito_mensual_percent}}">
                   <input id="total_ea_base" type="hidden" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_ea, 2, '.', ',')}}">
                   <input id="total_ena_base" type="hidden" class="form-control form-control-sm text-right font-weight-bold" value="{{number_format($kickoff_lineabase->total_ena, 2, '.', ',')}}">
@@ -899,6 +900,7 @@
                   <!--Firmas-->
                   <div class="row mt-3">
                     <h5 class="text-dark"><i class="fas fa-exclamation-triangle"></i> Para que el Documento A sea aprobado, deberá ser autorizado por todos los departamentos y al menos 2 directivos</h5>
+                    <br>
                     <h5 class="text-dark">*</i> Una vez que el proyecto sea aprobado se convertirá en Documento P</h5>
                   </div>
                   <div class="row d-flex justify-content-center">

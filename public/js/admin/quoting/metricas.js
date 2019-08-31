@@ -322,19 +322,31 @@ function get_total_mo(){
 }
 
 function get_tir(){
-  let renta = parseFloat(document.getElementById("servicio").value);
-  let plazo = parseInt(document.getElementById("plazo").value);
-  let total_inversion = remove_commas(document.getElementById('total_rubros').innerHTML);
+  var renta = parseFloat(document.getElementById("servicio").value);
+  var plazo = parseInt(document.getElementById("plazo").value);
+  var total_inversion = remove_commas(document.getElementById('total_rubros').innerHTML);
   total_inversion = parseFloat(total_inversion);
-  let anio = parseInt(plazo) / 12;
-  anio = Math.round(anio);
-  let tir =  (renta * 12 * anio) / total_inversion;
-  tir = tir - 1;
-  tir = tir / anio;
-  tir = tir * 100;
+  var mantenimiento = remove_commas(document.getElementById('gasto_mtto').innerHTML);
+  mantenimiento = parseFloat(mantenimiento);
+  var flujo_neto = renta - mantenimiento;
+  var suma_total = total_inversion;
+  var vpc = 0.0;
+  var tir =  .000000;
+  var tir_anualizado = 0.00;
 
-  return tir;
-
+  while (suma_total >= 1) {
+    tir+=.000001;
+    suma_total= 0.0;
+    for (var i = 1; i <= 48; i++) {
+      vpc = flujo_neto /   Math.pow(1 + tir, i);
+      suma_total+= vpc;
+    }
+    suma_total-= total_inversion;
+  }
+  tir_anualizado = tir * 100 * 12;
+  // console.log("tir: " + tir);
+  // console.log("vpc: " + suma_total);
+  return tir_anualizado;
 }
 
 //parametros de objetivos del proyectos

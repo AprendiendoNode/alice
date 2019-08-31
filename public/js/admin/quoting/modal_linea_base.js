@@ -106,13 +106,24 @@ function set_table_objetivos(total){
   vtc_percent *= 100;
 
   let tiempo_retorno = (parseFloat(total_inversion) - parseFloat(capex) - parseFloat(deposito)) / (parseFloat(renta) - enlace);
-  let anio = parseInt(plazo) / 12;
-  anio = Math.round(anio);
-  let tir =  (renta * 12 * anio) / parseFloat(total_inversion);
-  tir = tir - 1;
-  tir = tir / anio;
-  tir = tir * 100;
-
+  var mantenimiento = remove_commas(document.getElementById('gasto_mtto').value);
+  mantenimiento = parseFloat(mantenimiento);
+  var flujo_neto = renta - mantenimiento;
+  var suma_total = total_inversion;
+  var vpc = 0.0;
+  var tir =  .000000;
+  var tir_anualizado = 0.00;
+  console.log(flujo_neto);
+  while (suma_total >= 1) {
+    tir+=.000001;
+    suma_total= 0.0;
+    for (var i = 1; i <= 48; i++) {
+      vpc = flujo_neto /   Math.pow(1 + tir, i);
+      suma_total+= vpc;
+    }
+    suma_total-= total_inversion;
+  }
+  tir_anualizado = tir * 100 * 12;
   document.getElementById("utilidad_mensual").innerHTML = format_number(utilidad_mensual);
   document.getElementById("utilidad_mensual_percent").innerHTML = Math.round(utilidad_mensual_percent);
   document.getElementById("utilidad_proyecto").innerHTML = format_number(utilidad_proyecto);
@@ -124,7 +135,7 @@ function set_table_objetivos(total){
   document.getElementById("tiempo_retorno").innerHTML = format_number(tiempo_retorno);
   document.getElementById("vtc").innerHTML = format_number(vtc);
   document.getElementById("vtc_percent").innerHTML = parseInt(vtc_percent);
-  document.getElementById("tir").innerHTML = parseInt(tir);
+  document.getElementById("tir").innerHTML = parseInt(tir_anualizado);
 
   parametros_objetivos(Math.round(renta_mensual_inversion), Math.round(utilidad_inversion), tir, utilidad_renta_percent, tiempo_retorno, utilidad_3_anios_minimo);
 }
