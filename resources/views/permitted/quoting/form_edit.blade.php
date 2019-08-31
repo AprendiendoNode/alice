@@ -268,7 +268,7 @@
                   <td>Manto/Seguros/Otros</td>
                   <td>$ <span id="gasto_mtto">0.0</span> </td>
                   <td>
-                    <input id="gasto_mtto_percent" style="width:60px; padding:0.2rem;" class="form-control form-control-sm" type="number" name="" value="{{ $cotizador_gastos_mensuales->mantto_seg_otro_percent }}" min="0" max="100">
+                    <input id="gasto_mtto_percent" style="width:60px; padding:0.2rem;" class="form-control form-control-sm" type="number" name="gasto_mtto_percent" value="{{ $cotizador_gastos_mensuales->mantto_seg_otro_percent }}" min="0.0" max="100">
                   </td>
                 </tr>
                 <tr>
