@@ -55,9 +55,9 @@
                 @endif
               </div>
 
-              <div class="mb-2">
+              <!-- <div class="mb-2">
                 <a href="{{ url('/login/google') }}" class="btn btn-block btn-orange auth-form-btn"> <i class="fab fa-google-plus"></i> {{ __('login.logingoogle') }}</a>
-              </div>
+              </div> -->
 
               <div class="text-center mt-4 font-weight-light">
                 <a href="{{ url('policies') }}" class="auth-link text-black">{{ __('login.Ourpolicies') }}</a>
