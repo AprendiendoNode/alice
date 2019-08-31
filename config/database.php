@@ -59,20 +59,6 @@ return [
             ]) : [],
         ],
 
-        'alicelog' => [
-            'driver' => 'mysql',
-            'host' => '10.3.0.11',
-            'port' => '3306',
-            'database' => 'AliceDB_log',
-            'username' => 'userweb',
-            'password' => 'W3bs1t@2018',
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
-            'strict' => false,
-            'engine' => null,
-        ],
-
         'banks' => [
             'driver' => 'mysql',
             'host' => '35.231.90.64',
