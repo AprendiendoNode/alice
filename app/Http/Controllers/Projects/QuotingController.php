@@ -297,8 +297,8 @@ class QuotingController extends Controller
             'total' => $total
           ];
 
-          //Mail::to('rdelgado@sitwifi.com')->cc('aarciga@sitwifi.com')->send(new SolicitudCompra($parametros1));
-          Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompra($parametros1));
+          Mail::to('rdelgado@sitwifi.com')->cc('aarciga@sitwifi.com')->send(new SolicitudCompra($parametros1));
+          //Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompra($parametros1));
 
           $flag = "true";
 

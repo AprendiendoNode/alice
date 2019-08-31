@@ -505,9 +505,9 @@ class DocumentpHistoryController extends Controller
         'total' => $total
       ];
 
-      //$copias = ['aguevara@sitwifi.com', 'mdeoca@sitwifi.com', 'mmoreno@sitwifi.com'];
-      //Mail::to($itc_email)->cc($copias)->send(new SolicitudCompraAprobada($parametros1));
-      Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompraAprobada($parametros1));
+      $copias = ['aguevara@sitwifi.com', 'mdeoca@sitwifi.com', 'mmoreno@sitwifi.com'];
+      Mail::to($itc_email)->cc($copias)->send(new SolicitudCompraAprobada($parametros1));
+      //Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompraAprobada($parametros1));
     }
 
 }
