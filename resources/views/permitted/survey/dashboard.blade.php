@@ -109,7 +109,8 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">NPS chart</h4>
-            <canvas id="lineChart" width="437" height="218" class="chartjs-render-monitor" style="display: block; width: 437px; height: 218px;"></canvas>
+            <!--<canvas id="lineChart" width="437" height="218" class="chartjs-render-monitor" style="display: block; width: 437px; height: 218px;"></canvas> -->
+            <div id="main_nps" style="width: 100%; min-height: 320px; border:1px solid #ccc;"></div>
           </div>
         </div>
       </div>
@@ -221,9 +222,10 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Encuesta semanal</h4>
-            <div id="sparkline-composite-chart" class="sparkline-demo-chart">
+            <!-- <div id="sparkline-composite-chart" class="sparkline-demo-chart">
               <canvas width="955" height="200" style="display: inline-block; width: 955.75px; height: 200px; vertical-align: top;"></canvas>
-            </div>
+            </div> -->
+            <div id="main_grap_nps_week" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
           </div>
         </div>
       </div>
@@ -234,7 +236,8 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Grafica NPS</h4>
-            <div id="sparkline-pie-chart" class="sparkline-demo-chart"><canvas width="436" height="218" style="display: inline-block; width: 436.875px; height: 218.438px; vertical-align: top;"></canvas></div>
+            <!-- <div id="sparkline-pie-chart" class="sparkline-demo-chart"><canvas width="436" height="218" style="display: inline-block; width: 436.875px; height: 218.438px; vertical-align: top;"></canvas></div> -->
+            <div id="main_grap_nps" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
           </div>
         </div>
       </div>
@@ -242,7 +245,8 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Grafica mensual</h4>
-            <div id="sparkline-bullet-chart" class="sparkline-demo-chart"><canvas width="436" height="238" style="display: inline-block; width: 436.875px; height: 238px; vertical-align: top;"></canvas></div>
+            <!-- <div id="sparkline-bullet-chart" class="sparkline-demo-chart"><canvas width="436" height="238" style="display: inline-block; width: 436.875px; height: 238px; vertical-align: top;"></canvas></div> -->
+            <div id="main_grap_nps_per_month" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
           </div>
         </div>
       </div>
