@@ -26,6 +26,7 @@
           <li class="nav-item dropdown mr-1">
             <notification-component></notification-component>
           </li>
+          <!--
           <li class="nav-item dropdown mr-4">
             <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="mdi mdi-bell mx-0"></i>
@@ -74,16 +75,19 @@
               </a>
             </div>
           </li>
+          -->
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
               <img src="{{ asset('/img/website/user.jpg') }}" alt="profile"/>
               <span class="nav-profile-name">{{ Auth::user()->name }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              @if( auth()->user()->can('View Configuration') )
               <a class="dropdown-item" href="{{ url('/Configuration') }}">
                 <i class="mdi mdi-settings text-primary"></i>
                 {{ __('auth.settings') }}
               </a>
+              @endif
 
               <a class="dropdown-item" onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">

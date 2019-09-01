@@ -48,7 +48,7 @@
                 <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
               </ul>
             </div>
-          </li> --}}
+          </li>
 
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#section_cfdi" aria-expanded="false" aria-controls="section_cfdi">
@@ -122,7 +122,7 @@
               </ul>
             </div>
           </li>
-
+ --}}
           <li class="nav-item {{ Request::is('profile') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('/profile') }}">
               <i class="mdi mdi-account menu-icon"></i>
@@ -130,19 +130,22 @@
             </a>
           </li>
 
+          @if( auth()->user()->can('personnel_classification') )
           <li class="nav-item {{ Request::is('Classification') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('/Classification') }}">
               <i class="mdi mdi-file-tree menu-icon"></i>
               <span class="menu-title">Clasificación</span>
             </a>
           </li>
-
+          @endif
+          @if( auth()->user()->can('View Configuration') )
           <li class="nav-item {{ Request::is('Configuration') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('/Configuration') }}">
               <i class="mdi mdi-settings menu-icon"></i>
               <span class="menu-title">Configuración</span>
             </a>
           </li>
+          @endif
 
         </ul>
       </nav>

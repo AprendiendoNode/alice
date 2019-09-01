@@ -1,14 +1,24 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
+  @if( auth()->user()->can('personnel_classification') )
   {{ trans('header.classification') }}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
+  @if( auth()->user()->can('personnel_classification') )
+
   {{ trans('breadcrumb.classification') }}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
+  @if( auth()->user()->can('personnel_classification') )
 <div class="row">
   <div class="col-12 mb-3">
     <div class="card  card-hover">
@@ -561,34 +571,40 @@
     </div>
   </div>
 </div>
+  @else
+    @include('default.denied')
+  @endif
 @endsection
 
 
 @push('scripts')
-<link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
-<script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
+  @if( auth()->user()->can('personnel_classification') )
+  <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
+  <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
-<link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css')}}" type="text/css" />
-<script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js')}}"></script>
-<script src="{{ asset('bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js')}}"></script>
+  <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css')}}" type="text/css" />
+  <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js')}}"></script>
+  <script src="{{ asset('bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js')}}"></script>
 
-<!-- FormValidation -->
-<link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
-<script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
-<script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
+  <!-- FormValidation -->
+  <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
+  <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
+  <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
 
-<script src="{{ asset('js/admin/classification.js')}}"></script>
-<script src="{{ asset('js/admin/pivot_classification_job.js')}}"></script>
-<script src="{{ asset('js/admin/pivot_classification_itc.js')}}"></script>
+  <script src="{{ asset('js/admin/classification.js')}}"></script>
+  <script src="{{ asset('js/admin/pivot_classification_job.js')}}"></script>
+  <script src="{{ asset('js/admin/pivot_classification_itc.js')}}"></script>
 
-<style media="screen">
-  table th { font-size:  12px !important }
-  table td { font-size:  12px !important }
-  table button { font-size:  12px !important }
-  table tbody { font-size:  12px !important }
-  table a { font-size:  10px !important }
-  table fas { font-size:  10px !important }
-  table span { font-size:  10px !important }
-  .pac-container {  z-index: 1051 !important;  }
-</style>
+  <style media="screen">
+    table th { font-size:  12px !important }
+    table td { font-size:  12px !important }
+    table button { font-size:  12px !important }
+    table tbody { font-size:  12px !important }
+    table a { font-size:  10px !important }
+    table fas { font-size:  10px !important }
+    table span { font-size:  10px !important }
+    .pac-container {  z-index: 1051 !important;  }
+  </style>
+  @else
+  @endif
 @endpush
