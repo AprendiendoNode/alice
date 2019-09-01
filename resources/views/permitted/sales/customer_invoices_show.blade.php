@@ -1,23 +1,23 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View customers invoices show') )
     {{ trans('invoicing.customers_invoices_show') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View customers invoices show') )
     {{ trans('invoicing.customers_invoices_show') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View customers invoices show') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -386,12 +386,13 @@
   </div>
   <!-- /modal about -->
 
-  {{-- @else --}}
-  {{-- @endif --}}
+  @else
+    @include('default.denied')
+  @endif
 @endsection
 
 @push('scripts')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View customers invoices show') )
   <style media="screen">
     .editor-wrapper {
       min-height: 250px;
@@ -438,7 +439,6 @@
 
   <link rel="stylesheet" href="{{ asset('plugins/summernote-develop/dist/summernote-bs4.css') }}" type="text/css" />
   <script src="{{ asset('plugins/summernote-develop/dist/summernote.js') }}"></script>
-  {{-- @if( auth()->user()->can('View cover') ) --}}
   <style media="screen">
     .white {background-color: #ffffff;}
     .select2-selection__rendered {
@@ -1058,6 +1058,6 @@
         })
       }
   </script>
-  {{-- @else --}}
-  {{-- @endif  --}}
+  @else
+  @endif
 @endpush

@@ -1,22 +1,23 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View document types') )
     {{ trans('invoicing.document_types') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View document types') )
     {{ trans('invoicing.document_types') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
+  @if( auth()->user()->can('View document types') )
   <!-- Crear -->
   <div id="modal-CreatNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalbanks" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
@@ -200,7 +201,6 @@
     </div>
   </div>
 
-  {{-- @if( auth()->user()->can('View cover') ) --}}
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -237,12 +237,13 @@
       </div>
     </div>
   </div>
-  {{-- @else --}}
-  {{-- @endif --}}
+  @else
+    @include('default.denied')
+  @endif
 @endsection
 
 @push('scripts')
-    {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View document types') )
     <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
 
@@ -273,6 +274,6 @@
         min-width: 5rem !important;
       }
     </style>
-    {{-- @else --}}
-    {{-- @endif  --}}
+    @else
+    @endif
 @endpush

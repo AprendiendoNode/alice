@@ -1,23 +1,23 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View especificacions') )
     {{ trans('invoicing.especificacions') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View especificacions') )
     {{ trans('invoicing.especificacions') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View especificacions') )
   <!-- Crear -->
   <div id="modal-CreatNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalespecificacions" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
@@ -123,12 +123,13 @@
       </div>
     </div>
   </div>
-  {{-- @else --}}
-  {{-- @endif --}}
+  @else
+  @include('default.denied')
+  @endif
 @endsection
 
 @push('scripts')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View especificacions') )
   <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
   <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
 
@@ -162,6 +163,6 @@
       font-size: 12px !important;
     }
   </style>
-  {{-- @else --}}
-  {{-- @endif  --}}
+  @else
+  @endif
 @endpush

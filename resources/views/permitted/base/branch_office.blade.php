@@ -1,23 +1,23 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View branch office') )
     {{ trans('invoicing.branchoffice') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+    {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View branch office') )
     {{ trans('invoicing.branchoffice') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+    {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View branch office') )
   <div class="col-md-12 col-xl-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body dashboard-tabs p-0">
@@ -447,12 +447,13 @@
 
   <!-- Tabla de sucursales -->
 
-  {{-- @else --}}
-  {{-- @endif --}}
+  @else
+    @include('default.denied')
+  @endif
 @endsection
 
 @push('scripts')
-    {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View branch office') )
     <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
 
@@ -646,6 +647,6 @@
       	box-shadow: 0 0 0 .2rem rgba(220, 53, 69, .25)
       }
     </style>
-    {{-- @else --}}
-    {{-- @endif  --}}
+    @else
+    @endif
 @endpush

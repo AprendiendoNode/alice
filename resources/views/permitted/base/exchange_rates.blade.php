@@ -1,22 +1,23 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View cfdi exchange rate') )
     {{ trans('invoicing.exchange_rate') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View cfdi exchange rate') )
     {{ trans('invoicing.exchange_rate') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+    {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
+  @if( auth()->user()->can('View cfdi exchange rate') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -83,12 +84,13 @@
       </div>
     </div>
   </div>
-  {{-- @else --}}
-  {{-- @endif --}}
+  @else
+    @include('default.denied')
+  @endif
 @endsection
 
 @push('scripts')
-    {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View cfdi exchange rate') )
     <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
 
@@ -119,6 +121,6 @@
         min-width: 5rem !important;
       }
     </style>
-    {{-- @else --}}
-    {{-- @endif  --}}
+    @else
+    @endif
 @endpush

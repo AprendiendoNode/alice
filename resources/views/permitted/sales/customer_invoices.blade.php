@@ -1,23 +1,23 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View customers invoices') )
     {{ trans('invoicing.customers_invoices') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View customers invoices') )
     {{ trans('invoicing.customers_invoices') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View customers invoices') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -522,15 +522,13 @@
       </div>
     </div>
   </div>
-
-
-
-  {{-- @else --}}
-  {{-- @endif --}}
+  @else
+    @include('default.denied')
+  @endif
 @endsection
 
 @push('scripts')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View customers invoices') )
   {{-- <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
   <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script> --}}
   <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
@@ -1109,6 +1107,6 @@
       height: 36px !important;
     } */
   </style>
-  {{-- @else --}}
-  {{-- @endif  --}}
+  @else
+  @endif
 @endpush

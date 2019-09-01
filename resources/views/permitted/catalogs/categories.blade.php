@@ -1,23 +1,23 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View categories') )
     {{ trans('invoicing.categories') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View categories') )
     {{ trans('invoicing.categories') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View categories') )
   <!-- Crear -->
   <div id="modal-CreatNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalbanks" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
@@ -136,8 +136,10 @@
       </div>
     </div>
   </div>
-  {{-- @else --}}
-  {{-- @endif --}}
+  @else
+    @include('default.denied')
+
+  @endif
 @endsection
 
 @push('scripts')

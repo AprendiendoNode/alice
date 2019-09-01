@@ -1,14 +1,23 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{ trans('invoicing.dashboard_cfdi') }}
+  @if( auth()->user()->can('View dashboard cfdi') )
+    {{ trans('invoicing.dashboard_cfdi') }}
+  @else
+    {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-  {{ trans('invoicing.dashboard_cfdi') }}
+  @if( auth()->user()->can('View dashboard cfdi') )
+    {{ trans('invoicing.dashboard_cfdi') }}
+  @else
+    {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
+  @if( auth()->user()->can('View dashboard cfdi') )
   <div class="row">
     <div class="col-md-12 grid-margin">
       <div class="d-flex justify-content-between flex-wrap">
@@ -66,7 +75,13 @@
     </div>
 
   </div>
+  @else
+      @include('default.denied')
+  @endif
 @endsection
 
 @push('scripts')
+  @if( auth()->user()->can('View dashboard cfdi') )
+  @else
+  @endif
 @endpush
