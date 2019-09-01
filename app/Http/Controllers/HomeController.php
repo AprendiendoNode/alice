@@ -72,7 +72,7 @@ class HomeController extends Controller
     public function show_summary_info_nps (Request $request)
     {
       //FAKER
-      $myArray = array();
+      /*$myArray = array();
       array_push($myArray,array("Concepto" => "Promotores","Count" => 165,));
       array_push($myArray,array("Concepto" => "Pasivos","Count" => 33,));
       array_push($myArray,array("Concepto" => "Detractores","Count" => 3,));
@@ -81,9 +81,9 @@ class HomeController extends Controller
       array_push($myArray,array("Concepto" => "Respondieron","Count" => 140,));
       array_push($myArray,array("Concepto" => "Encuestas Enviada","Count" => 200,));
       array_push($myArray,array("Concepto" => "Sitios","Count" => 201,));
-      return json_encode($myArray);
+      return json_encode($myArray);*/
 
-      /* codigo bien
+       // codigo bien
       $input_date_i= $request->get('date_to_search');
       if ($input_date_i != '') {
         $date = $input_date_i.'-01';
@@ -97,7 +97,7 @@ class HomeController extends Controller
       }
       $result = DB::select('CALL NPS_MONTH (?)', array($date));
       return json_encode($result);
-      */
+      
     }
     public function show_apps (Request $request)
     {

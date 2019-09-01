@@ -22,7 +22,7 @@
     <div class="col-md-6 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <p class="card-title">Dashboard NPS del <span id="mes_nps">2019-03</span></p>
+          <p class="card-title">Dashboard NPS del <span id="mes_nps" class="mes_nps"></span></p>
           <div id="cash-deposits-chart-legend" class="d-flex justify-content-center">
             <ul class="dashboard-chart-legend">
               <li><span style="background-color: #E73231 "></span><small id="dash_1" class="lead"></small> </li>

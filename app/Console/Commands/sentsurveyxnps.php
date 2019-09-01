@@ -81,8 +81,7 @@ class sentsurveyxnps extends Command
                 'fecha_corresponde' => $mesanteriorfull,
                 'fecha_fin' => $fechafin,
                 'shell_data' => $encriptodata,
-                'shell_status' => $encriptostatus
-
+                //'shell_status' => $encriptostatus
             ];
 
             $this->line('email: ' . $sql[$i]->email);
@@ -100,7 +99,7 @@ class sentsurveyxnps extends Command
 
             //$this->sentSurveyEmail($sql[$i]->email, $data_emails);
             $correo = trim($sql[$i]->email);
-            Mail::to('jesquinca@sitwifi.com')->send(new SendEmailSurvey($data_emails));
+            Mail::to($correo)->send(new SendEmailSurvey($data_emails));
         }
         //dd($sql);
         $this->info('Command Completed.');
