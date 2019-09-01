@@ -1,24 +1,23 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View unit_measures') )
     {{ trans('invoicing.unit_measures') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View unit_measures') )
     {{ trans('invoicing.unit_measures') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
-  {{-- @else --}}
+  @if( auth()->user()->can('View unit_measures') )
   <!-- Crear -->
   <div id="modal-CreatNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalunitmeasure" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
@@ -157,11 +156,11 @@
       </div>
     </div>
   </div>
-  {{-- @endif --}}
+  @endif
 @endsection
 
 @push('scripts')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View unit_measures') )
   <style media="screen">
     .text_content {
       font-size: 0.875rem;
@@ -181,6 +180,6 @@
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
   <script src="{{ asset('js/admin/catalogs/unit_measures.js')}}"></script>
-  {{-- @else --}}
-  {{-- @endif  --}}
+  @else
+  @endif
 @endpush

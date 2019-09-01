@@ -1,23 +1,23 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View states') )
     {{ trans('invoicing.states') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View states') )
     {{ trans('invoicing.states') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+  {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View states') )
   <!-- Crear -->
   <div id="modal-CreatNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalstates" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
@@ -166,12 +166,12 @@
       </div>
     </div>
   </div>
-  {{-- @else --}}
-  {{-- @endif --}}
+  @else
+  @endif
 @endsection
 
 @push('scripts')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View states') )
   <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
   <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
 
@@ -199,6 +199,6 @@
       height: 36px !important;
     }
   </style>
-  {{-- @else --}}
-  {{-- @endif  --}}
+  @else
+  @endif
 @endpush
