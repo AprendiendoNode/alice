@@ -434,7 +434,7 @@ function graph_barras_three(title, campoa, campob, titlepral, subtitulopral) {
             axisLabel : {
                show:true,
                interval: 'auto',    // {number}
-               rotate: 20,
+               rotate: 90,
                margin: 10,
                formatter: '{value}',
                textStyle: {
@@ -676,7 +676,7 @@ function graph_barras_four(title, campoa, campob, titlepral, subtitulopral, font
             axisLabel : {
                show:true,
                interval: 'auto',    // {number}
-               rotate: 20,
+               rotate: 90,
                margin: 10,
                formatter: '{value}',
                textStyle: {
@@ -903,95 +903,108 @@ function graph_pie_default_three(title, campoa, campob, titlepral, subtitulopral
 function graph_area_one_default(title, campoa, campob){
   var myChart = echarts.init(document.getElementById(title));
   var option = {
-        title : {
-            show: true,
-            text: 'Equipamiento',
-            subtext: 'Modelos & Unidades',
-            textStyle: {
-             color: '#449D44',
-             fontStyle: 'normal',
-             fontWeight: 'normal',
-             fontFamily: 'sans-serif',
-             fontSize: 18,
-             align: 'left',
-             verticalAlign: 'top',
-             width: '100%',
-             textBorderColor: 'transparent',
-             textBorderWidth: 0,
-             textShadowColor: 'transparent',
-             textShadowBlur: 0,
-             textShadowOffsetX: 0,
-             textShadowOffsetY: 0,
-           },
-        },
-        tooltip : {
-          trigger: 'axis',
-          axisPointer: {
-              type: 'cross',
-              label: {
-                  backgroundColor: '#6a7985'
-              }
-          }
-        },
-        legend: {
-            data: campoa
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis : [
-            {
-                type : 'category',
-                boundaryGap : false,
-                data: campoa,
-                axisTick: {
-                    alignWithLabel: true
-                },
-                axisLabel : {
-                   align: 'center',
-                   show:true,
-                   interval: 'auto',    // {number}
-                   rotate: 30,
-                   margin: 30,
-                   formatter: '{value}',
-                   textStyle: {
-                      //  color: 'blue',
-                       fontFamily: 'sans-serif',
-                       fontSize: 8,
-                       fontStyle: 'italic',
-                       fontWeight: 'bold'
-                   }
-                }
-
-            }
-        ],
-        yAxis : [
-            {
-                type : 'value'
-            }
-        ],
-        series : [
-          {
-              name:'Cantidad',
-              type:'line',
-              stack: '总量',
-              itemStyle: {
-                  normal: {
-                      color: 'rgba(63, 191, 142, 1)'
-                  }
+    title: {
+       text: 'Equipamiento',
+       subtext: 'Modelos & Unidades',
+       textStyle: {
+        color: '#449D44',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontFamily: 'sans-serif',
+        fontSize: 18,
+        align: 'left',
+        verticalAlign: 'top',
+        width: '100%',
+        textBorderColor: 'transparent',
+        textBorderWidth: 0,
+        textShadowColor: 'transparent',
+        textShadowBlur: 0,
+        textShadowOffsetX: 0,
+        textShadowOffsetY: 0,
+      },
+   },
+    color: ['#3398DB'],
+    tooltip : {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+    toolbox: {
+        show : false,
+        feature : {
+            dataView : {show: false, readOnly: false, title : 'Datos', lang: ['Vista de datos', 'Cerrar', 'Actualizar']},
+            magicType : {
+              show: true,
+              type: ['line', 'bar'],
+              title : {
+                line : 'Gráfico de líneas',
+                bar : 'Gráfico de barras',
+                stack : 'Acumular',
+                tiled : 'Tiled',
+                force: 'Cambio de diseño orientado a la fuerza',
+                chord: 'Interruptor del diagrama de acordes',
+                pie: 'Gráfico circular',
+                funnel: 'Gráfico de embudo'
               },
-              areaStyle: {
-                normal: {
-                    color: 'rgba(63, 191, 142, 0.5)'
-                }
-
-                },
-              data:campob,
-          }
-        ]
+            },
+            restore : {show: false, title : 'Recargar'},
+            saveAsImage : {show: true , title : 'Guardar'}
+        }
+    },
+    calculable : true,
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis : [
+        {
+            type : 'category',
+            data : campoa,
+            axisTick: {
+                alignWithLabel: true
+            },
+            axisLabel : {
+               show:true,
+               interval: 'auto',    // {number}
+               rotate: 90,
+               margin: 10,
+               formatter: '{value}',
+               textStyle: {
+                  //  color: 'blue',
+                   fontFamily: 'sans-serif',
+                   fontSize: 12,
+                   fontStyle: 'normal',
+                   fontWeight: 'bold'
+               }
+            }
+            //
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'Cantidad',
+            type:'bar',
+            barWidth: '60%',
+            data:campob,
+            itemStyle: {
+              normal: {
+                  color: function(params) {
+                      // build a color map as your need.
+                      var colorList = ['#00A65A'];
+                      return colorList[params.dataIndex]
+                  }
+              }
+            }
+        }
+    ]
   };
   myChart.setOption(option);
 
@@ -1071,13 +1084,13 @@ function graph_area_three_default(title, campoa, campob, titlepral, subtitulopra
             axisLabel : {
                show:true,
                interval: 'auto',    // {number}
-               rotate: 20,
-               margin: 10,
+               rotate: 90,
+               margin: 5,
                formatter: '{value}',
                textStyle: {
                   //  color: 'blue',
                    fontFamily: 'sans-serif',
-                   fontSize: 12,
+                   fontSize: 8,
                    fontStyle: 'normal',
                    fontWeight: 'bold'
                }
@@ -4725,7 +4738,7 @@ function main_gra_grade_avg_per_month(title, campoa, campob, titlepral, subtitul
             axisLabel : {
                show:true,
                interval: 'auto',    // {number}
-               rotate: 20,
+               rotate: 90,
                margin: 10,
                formatter: '{value}',
                textStyle: {
