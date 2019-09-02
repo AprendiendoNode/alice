@@ -974,7 +974,7 @@
                           Manuel F. Moreno
                       </div>
                       <div class="text-center">
-                        <p class="text-secondary ml-5">Compras</p>
+                        <p class="text-secondary ml-5">Gerente de Compras</p>
                         @if ($kickoff_approvals->planeacion == 1)
                           <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
                         @endif

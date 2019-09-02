@@ -59,7 +59,7 @@ class MessageViatic extends Notification
     {
       $mensaje = $this->message->toArray();
       if($mensaje['status'] == 'Denegado' || $mensaje['status'] == 'Pagado') {
-        $mensaje['link'] = "http://localhost:8000/notificaciones_read/".$this->id;
+        $mensaje['link'] = "http://alice.sitwifi.com/notificaciones_read/".$this->id;
       }
       return $mensaje; //Guardo el mensaje en forma de array
       // return []; //Definimos la informacion a almacenar

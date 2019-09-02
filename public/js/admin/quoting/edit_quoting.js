@@ -735,7 +735,7 @@ $(".validation-wizard-master").steps({
             formData.append('credito_mensual', (document.getElementById("credito_mensual").innerHTML).replace(/,/g, ""));
             formData.append('credito_mensual_percent', (document.getElementById("credito_mensual_percent").value).replace(/,/g, ""));
             formData.append('gasto_mtto', (document.getElementById("gasto_mtto").innerHTML).replace(/,/g, ""));
-            formData.append('gasto_mtto_percent', (document.getElementById("gasto_mtto_percent").value).replace(/,/g, ""));
+            formData.append('gasto_mtto_percent', document.getElementById("gasto_mtto_percent").value);
             formData.append('gasto_enlace', (document.getElementById("gasto_enlace").innerHTML).replace(/,/g, ""));
             formData.append('total_gastos', (document.getElementById("total_gastos").innerHTML).replace(/,/g, ""));
             //Modelo negocio

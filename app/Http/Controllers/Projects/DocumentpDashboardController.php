@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Projects;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use DB;
 
 class DocumentpDashboardController extends Controller

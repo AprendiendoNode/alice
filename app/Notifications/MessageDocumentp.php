@@ -59,7 +59,7 @@ class MessageDocumentp extends Notification
     {
       $mensaje = $this->message->toArray();
 
-      $mensaje['link'] = "http://localhost:8000/notificaciones_read_doc/".$this->id;
+      $mensaje['link'] = "http://alice.sitwifi.com/notificaciones_read_doc/".$this->id;
 
       return $mensaje; //Guardo el mensaje en forma de array
 
