@@ -42,7 +42,7 @@ class PayHistoryController extends Controller
   {
 
     $cadena = Cadena::select('id', 'name')->get()->sortBy('name');
-    $proveedor = DB::table('proveedors')->select('id', 'nombre')->get();
+    $proveedor = DB::table('customers')->select('id', 'name')->get();
     $vertical = DB::table('verticals')->pluck('name', 'id')->all();
     $currency = Currency::select('id','name')->get();
     $way = PaymentWay::select('id','name')->get();

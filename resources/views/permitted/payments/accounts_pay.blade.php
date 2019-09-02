@@ -99,7 +99,7 @@
                             <select id="select_one" name="select_one" class="form-control select2">
                               <option value="" selected> Elija </option>
                               @forelse ($proveedor as $data_proveedor)
-                                <option value="{{ $data_proveedor->id }}"> {{ $data_proveedor->nombre }} </option>
+                                <option value="{{ $data_proveedor->id }}"> {{ $data_proveedor->name }} </option>
                               @empty
                               @endforelse
                             </select>

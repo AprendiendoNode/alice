@@ -31,7 +31,7 @@ class FilterPayController extends Controller
       // $cadena = Hotel::select('id', 'Nombre_hotel')->get()->sortBy('Nombre_hotel');
       $cadena = DB::table('listarhoteles_noasignar')->select('id', 'hotel')->get();
       $folio = DB::table('payments')->select('id','folio')->get()->sortBy('folio');
-      $proveedor = DB::table('proveedors')->select('id', 'nombre')->get();
+      $proveedor = DB::table('customers')->select('id', 'name')->get();
       //$vertical = Payments_verticals::pluck('name', 'id');Original verticals
       $vertical = DB::table('verticals')->pluck('id', 'name')->all();// ?
       $currency = Currency::select('id','name')->get();

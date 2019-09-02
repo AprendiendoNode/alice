@@ -12,7 +12,7 @@ class BankAccountsController extends Controller
 {
   public function index()
   {
-    $proveedor = DB::table('proveedors')->select('id', 'nombre')->get();
+    $proveedor = DB::table('customers')->select('id', 'name')->get();
     return view('permitted.payments.accounts_pay',compact('proveedor'));
   }
   public function generate_table(Request $request)

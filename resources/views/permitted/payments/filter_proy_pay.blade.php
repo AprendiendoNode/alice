@@ -73,7 +73,7 @@
                         <select class="form-control select2 pl-2" id="proveedor" name="proveedor">
                           <option value="">Elegir</option>
                           @forelse ($proveedor as $data_proveedor )
-                          <option value="{{ $data_proveedor->id }}"> {{ $data_proveedor->nombre }} </option>
+                          <option value="{{ $data_proveedor->id }}"> {{ $data_proveedor->name }} </option>
                           @empty
 
                           @endforelse
