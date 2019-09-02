@@ -23,7 +23,7 @@ class Basic extends Controller
     $user_role = User::find($user_id)->getRoleNames();
 
     //$hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array(26, 'itconcierge'));
-    $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array($user_id, "'".$user_role[0]."'"));
+    $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array($user_id, $user_role[0].""));
 
     return view('permitted.report.view_reports', compact('hotels'));
   }
