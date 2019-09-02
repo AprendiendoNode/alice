@@ -470,8 +470,8 @@
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
     <script src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
-    <script src="{{ asset('js/admin/payments/pay_import.js')}}"></script>
-    <script src="{{ asset('js/admin/payments/modal_bank.js')}}"></script>
+    <script src="{{ asset('js/admin/payments/pay_import.js?v=2.0.0')}}"></script>
+    <script src="{{ asset('js/admin/payments/modal_bank.js?v=2.0.0')}}"></script>
     <style media="screen">
       .form-control{
         color:  #535352 !important;

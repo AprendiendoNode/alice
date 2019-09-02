@@ -316,7 +316,7 @@
     <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
     @if( auth()->user()->can('View level zero documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_0.js?v=2.0.1')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_0.js?v=2.0.2')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
     @elseif ( auth()->user()->can('View level one documentp notification') )
       <script src="{{ asset('js/admin/documentp/requests_documentp_all.js?v=2.0.0')}}"></script>

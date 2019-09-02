@@ -637,8 +637,8 @@
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
 
-    <!-- <script src="{{ asset('js/admin/payments/request_payment.js')}}"></script> -->
-    <script src="{{ asset('js/admin/payments/payment_request.js')}}"></script>
+    <!-- <script src="{{ asset('js/admin/payments/request_payment.js?v=2.0.0')}}"></script> -->
+    <script src="{{ asset('js/admin/payments/payment_request.js?v=2.0.0')}}"></script>
 
     <script src="{{ asset('js/admin/payments/modal_bank.js')}}"></script>
 

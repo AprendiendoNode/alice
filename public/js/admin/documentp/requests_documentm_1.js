@@ -103,7 +103,7 @@ function documentp_table(datajson, table){
 }
 var Configuration_table_responsive_documentp = {
         "select": true,
-        "order": [[ 1, "asc" ]],
+        "order": [[ 0, "desc" ]],
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
         "fnDrawCallback": function() {
           var source_priority = [{'value': 1, 'text': 'Baja'}, {'value': 2, 'text': 'Normal'}, {'value': 3, 'text': 'Alta'}];

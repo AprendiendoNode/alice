@@ -369,18 +369,18 @@
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
     @if( auth()->user()->can('View level zero payment notification') )
-    <script src="{{ asset('js/admin/payments/request_payment_0.js')}}"></script>
+    <script src="{{ asset('js/admin/payments/request_payment_0.js?v=2.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level one payment notification') )
-    <script src="{{ asset('js/admin/payments/request_payment_1.js')}}"></script>
+    <script src="{{ asset('js/admin/payments/request_payment_1.js?v=2.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level two payment notification') )
     <script type="text/javascript">
 
         var user_id = {!! json_encode(Auth::user()->id) !!};
 
     </script>
-    <script src="{{ asset('js/admin/payments/request_payment_2.js')}}"></script>
+    <script src="{{ asset('js/admin/payments/request_payment_2.js?v=2.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level three payment notification') )
-    <script src="{{ asset('js/admin/payments/request_payment_3.js')}}"></script>
+    <script src="{{ asset('js/admin/payments/request_payment_3.js?v=2.0.0')}}"></script>
     @endif
   @else
     <!--NO VER-->
