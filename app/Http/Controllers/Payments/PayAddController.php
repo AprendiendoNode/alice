@@ -39,7 +39,7 @@ class PayAddController extends Controller
   public function index()
   {
       $cadena = Cadena::select('id', 'name')->get()->sortBy('name');
-      $proveedor = Proveedor::select('id', 'nombre')->get();
+      $proveedor = DB::Table('customers')->select('id', 'name')->get();//Proveedor::select('id', 'nombre')->get();
       $vertical = Payments_verticals::pluck('name', 'id');
       $currency = Currency::select('id','name')->get();
       $way = Payments_way_pay::select('id','name')->get();
@@ -56,7 +56,7 @@ class PayAddController extends Controller
   public function index2()
   {
       $cadena = Cadena::select('id', 'name')->get()->sortBy('name');
-      $proveedor = Proveedor::select('id', 'nombre')->get();
+      $proveedor = DB::Table('customers')->select('id', 'name')->get();//Proveedor::select('id', 'nombre')->get();
       $vertical = Payments_verticals::pluck('name', 'id');
       $currency = Currency::select('id','name')->get();
       $way = Payments_way_pay::select('id','name')->get();
@@ -71,7 +71,7 @@ class PayAddController extends Controller
   }
   public function index3()
   {
-    $proveedor = DB::table('proveedors')->select('id', 'nombre')->get();
+    $proveedor = DB::table('customers')->select('id', 'name')->get();
     $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
     $cxservices = DB::table('cxservices')->select('id', 'name')->get();
     // $cxconcepts = DB::table('cxconcepts')->select('id', 'name')->get();
@@ -168,7 +168,7 @@ class PayAddController extends Controller
     // $count_bk = DB::select('CALL px_prov_bco_ctas_exist(?,?)', array($id_proveedor,$id_bank));
 
     //Datos para correo.
-    $proveedor_n = DB::table('proveedors')->select('nombre')->where('id', $id_proveedor)->value('nombre');
+    $proveedor_n = DB::table('customers')->select('name')->where('id', $id_proveedor)->value('name');
     $banco_n = DB::table('bancos')->select('nombre')->where('id', $id_bank)->value('nombre');
     $moneda_n = DB::table('currencies')->select('name')->where('id', $id_coin)->value('name');
 
@@ -194,7 +194,7 @@ class PayAddController extends Controller
         'status_id' =>  '2'
       ]);
 
-      Mail::to(['mortiz@sitwifi.com','elopez@sitwifi.com'])->send(new CambioCuentaPago($data));
+      //Mail::to(['mortiz@sitwifi.com','elopez@sitwifi.com'])->send(new CambioCuentaPago($data));
 
       $flag = 1;
     }
@@ -210,7 +210,7 @@ class PayAddController extends Controller
         'status_id' =>  '1'
       ]);
 
-      Mail::to(['mortiz@sitwifi.com','elopez@sitwifi.com'])->send(new CambioCuentaPago($data));
+      //Mail::to(['mortiz@sitwifi.com','elopez@sitwifi.com'])->send(new CambioCuentaPago($data));
 
       $flag = 1;
     }
@@ -488,7 +488,7 @@ class PayAddController extends Controller
     $email_actual = trim($email_actual);
     $proyecto_n = DB::table('cadenas')->select('name')->where('id', $id_proyecto)->value('name');
     $sitio_n = DB::table('hotels')->select('Nombre_hotel')->where('id', $id_sitio)->value('Nombre_hotel');
-    $proveedor_n = DB::table('proveedors')->select('nombre')->where('id', $id_proveedor)->value('nombre');
+    $proveedor_n = DB::table('customers')->select('name')->where('id', $id_proveedor)->value('name');
     $moneda_n = DB::table('currencies')->select('name')->where('id', $moneda)->value('name');
     $forma_pago_n = DB::table('payments_way_pays')->select('name')->where('id', $forma_pago)->value('name');
     $application_n = DB::table('payments_applications')->select('name')->where('id', $id_application)->value('name');
@@ -626,7 +626,7 @@ class PayAddController extends Controller
       array_push($parametros2, $data2);
       array_push($parametros2, $data3);
 
-      Mail::to($email_actual)->send(new SolicitudesP($parametros1, $parametros2));
+      //Mail::to($email_actual)->send(new SolicitudesP($parametros1, $parametros2));
       $folioxd = 'Operation complete! - Folio: '. $folio_new;
 
 
@@ -657,7 +657,7 @@ class PayAddController extends Controller
     $email_actual = trim($email_actual);
     $proyecto_n = DB::table('cadenas')->select('name')->where('id', $id_proyecto)->value('name');
     $sitio_n = DB::table('hotels')->select('Nombre_hotel')->where('id', $id_sitio)->value('Nombre_hotel');
-    $proveedor_n = DB::table('proveedors')->select('nombre')->where('id', $id_proveedor)->value('nombre');
+    $proveedor_n = DB::table('customers')->select('name')->where('id', $id_proveedor)->value('name');
     $moneda_n = DB::table('currencies')->select('name')->where('id', $moneda)->value('name');
     $forma_pago_n = DB::table('payments_way_pays')->select('name')->where('id', $forma_pago)->value('name');
     $application_n = DB::table('payments_applications')->select('name')->where('id', $id_application)->value('name');
@@ -767,7 +767,7 @@ class PayAddController extends Controller
     array_push($parametros2, $data2);
     array_push($parametros2, $data3);
 
-    Mail::to($email_actual)->send(new SolicitudesP($parametros1, $parametros2));
+    //Mail::to($email_actual)->send(new SolicitudesP($parametros1, $parametros2));
     $folioxd = 'Operation complete! - Folio: '. $folio_new;
     return back()->with('status', $folioxd);
   }

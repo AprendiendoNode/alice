@@ -31,7 +31,7 @@ class PayImportController extends Controller
 	public function index()
 	{
 		$cadena = Cadena::select('id', 'name')->get()->sortBy('name');
-		$proveedor = DB::table('proveedors')->select('id', 'nombre')->get();
+		$proveedor = DB::table('customers')->select('id', 'name')->get();
 		$currency = Currency::select('id','name')->get();
 		$priority = DB::table('payments_priorities')->select('id', 'name')->get();
 		$banquitos = DB::table('bancos')->select('id', 'nombre')->get();

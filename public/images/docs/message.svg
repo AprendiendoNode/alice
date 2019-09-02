@@ -1,0 +1,15 @@
+<svg width="1473.94" height="964.499" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+ <defs>
+  <style>.cls-1{fill:#49d5a2;fill-rule:evenodd}</style>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="1475.94" height="966.499" id="canvas_background" fill="none"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path stroke="null" fill="#4d83ff" stroke-width="NaN" stroke-opacity="null" d="m1401.673775,131.503961l0,0c0,-57.82972 -67.569586,-104.70996 -150.920881,-104.70996l-68.600439,0l0,0l-329.282006,0l-617.403587,0c-40.026811,0 -78.414101,11.03189 -106.71732,30.66883c-28.303052,19.63694 -44.203655,46.27035 -44.203655,74.04113l0,261.77493l0,0l0,157.06492l0,0c0,57.82975 67.569544,104.70996 150.920933,104.70996l617.403587,0l430.166305,266.2531l-100.884309,-266.2531l68.600439,0c83.351306,0 150.920891,-46.88021 150.920891,-104.70996l0,0l0,-157.06492l0,0l0.000042,-261.77493z" id="svg_9" transform="rotate(-0.6510320901870728 743.109741210921,474.0504455566406) "/>
+  <text stroke="#000" transform="matrix(0.9132987801796552,0,0,1,12.021687961818472,0) " xml:space="preserve" text-anchor="start" font-family="'League Gothic', sans-serif" font-size="250" id="svg_1" y="303.429913" x="155.856999" stroke-width="0" fill="#ffffff">¿Necesitas</text>
+  <text xml:space="preserve" text-anchor="start" font-family="'League Gothic', sans-serif" font-size="250" id="svg_2" y="510.837503" x="360.117795" stroke-width="0" stroke="#000" fill="#ffffff">ayuda?</text>
+ </g>
+</svg>

@@ -385,7 +385,7 @@
                         <select id="provider" name="provider" class="form-control select2 col-md-10">
                           <option value="" selected>{{ trans('pay.select_op') }}</option>
                           @forelse ($proveedor as $data_proveedor)
-                            <option value="{{ $data_proveedor->id }}"> {{ $data_proveedor->nombre }} </option>
+                            <option value="{{ $data_proveedor->id }}"> {{ $data_proveedor->name }} </option>
                           @empty
                           @endforelse
                         </select>

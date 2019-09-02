@@ -116,4 +116,13 @@ class HomeController extends Controller
       */
     }
 
+    //Funcion para redirigir a la documentacion
+    public function getDocumentation(Request $request){
+      $url=$request->url;
+      info($url);
+      $result = DB::select('CALL get_documentation_url (?)', array($url));
+      info(json_encode($result));
+      return json_encode($result);
+    }
+
 }

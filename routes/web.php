@@ -18,7 +18,7 @@ Route::get('/policies', 'PoliceController@index')->name('policies');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+Route::get('/searchDocumentation','HomeController@getDocumentation');
 //VER ENCUESTA DINAMICA
 Route::get('questionary/{data}','Survey\QuestionaryController@index');
 //REGISTRAR ENCUESTA DINAMICA
