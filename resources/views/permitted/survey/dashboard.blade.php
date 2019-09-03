@@ -112,7 +112,7 @@
       <div class="col-md-12 grid-margin-onerem  stretch-card">
         <div class="card">
           <div class="card-body">
-            <form id="search_info" name="search_info" enctype="multipart/form-data">
+            <form id="search_info" name="search_info" class="form-inline" method="post">
               {{ csrf_field() }}
               <div class="row">
                 <div class="col-md-6 col-xs-12">
@@ -145,7 +145,7 @@
                 </div>
 
                 <div class="col-md-3 col-xs-12 pt-4">
-                  <button id="boton-aplica-filtro" name="boton-aplica-filtro" type="submit"
+                  <button id="boton-aplica-filtro" name="boton-aplica-filtro" type="button"
                           class="btn btn-xs btn-info filtrarDashboard"
                           style="margin-top: 4px">
                       <i class="fa fa-filter"> Filtrar</i>
