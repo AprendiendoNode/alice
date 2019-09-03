@@ -26,7 +26,7 @@ class Edition extends Controller
       }
       else {
         //$hotels = DB::select('CALL GetAllCadenaActiveByUserv2 (?)', array(37));
-        $hotels = DB::select('CALL GetAllCadenaActiveByUserv2 (?)', array($user_id));
+        $hotels = DB::select('CALL GetAllHotelActiveByUserv2 (?)', array($user_id));
        //info($hotels);
       }
       return view('permitted.report.edit_reports',compact('hotels'));

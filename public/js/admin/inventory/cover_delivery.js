@@ -1,5 +1,5 @@
 $(function() {
-  $(".select_one").select2();
+  $(".select2").select2();
   document.getElementById("captura_pdf_general").style.display="block";
 });
 
