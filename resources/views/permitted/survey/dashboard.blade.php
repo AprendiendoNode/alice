@@ -19,11 +19,11 @@
 @section('content')
   @if( auth()->user()->can('View dashboard survey nps') )
     <div class="modal modal-default fade" id="modal-view-encuestas" data-backdrop="static">
-        <div class="modal-dialog" >
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
+              <h4 class="modal-title"><i class="far fa-address-card" style="margin-right: 4px;"></i>Encuestas.</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title"><i class="fa fa-id-card-o" style="margin-right: 4px;"></i>Encuestas.</h4>
             </div>
             <div class="box-body table-responsive">
             <div class="box-body">
@@ -68,8 +68,8 @@
         <div class="modal-dialog" >
           <div class="modal-content">
             <div class="modal-header">
+              <h4 class="modal-title"><i class="far fa-address-card" style="margin-right: 4px;"></i>Calificaciones.</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title"><i class="fa fa-id-card-o" style="margin-right: 4px;"></i>Calificaciones.</h4>
             </div>
             <div class="box-body table-responsive">
             <div class="box-body">
