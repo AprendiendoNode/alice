@@ -71,7 +71,7 @@
   </div>
   <table width="100%">
     <tr>
-        <td valign="top"><img width="120" src="{{ public_path('/images/users/logo.svg') }}"/></td>
+        <td valign="top"><img width="140" src="{{ public_path('/img/company/sitwifi_logo.jpg') }}"/></td>
         <td align="right">
             <h3>SITWIFI S.A DE C.V</h3>
             @if ($doc_type == 1)

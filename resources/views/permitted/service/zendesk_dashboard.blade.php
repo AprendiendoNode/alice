@@ -24,7 +24,7 @@
           <div class="row">
             <!--Header------------------------------------------------------------------------->
               <div class="col-lg-3 col-md-3 col-sm-3">
-                  <img class="logo-title mb-2" src="{{ asset('img/company/logo.svg') }}"/>
+                  <img width="180" class=" mb-2" src="{{ asset('/img/company/sitwifi_logo.jpg') }}"/>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 text-center p-4">
                 <h3 class="mb-4 ls-title"><strong> Reporte de atención al cliente</strong></h3>

@@ -63,7 +63,7 @@
         <div class="hojitha"   style="background-color: #fff; border:1px solid #ccc; border-bottom-style:hidden; padding:10px; width: 100%">
             <div class="row pad-top-botm ">
                 <div class="col-lg-3 col-md-3 col-sm-3 ">
-                   <img class="logo-sit" src="{{ asset('/images/users/logo.svg') }}" style="padding-bottom:20px;" />
+                   <img src="{{ asset('/img/company/sitwifi_logo.jpg') }}" style="width:160px ;padding-bottom:20px;" />
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 ">
                   <strong >Cliente: </strong> <small id="client"></small>

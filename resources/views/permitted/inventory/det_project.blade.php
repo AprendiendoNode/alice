@@ -50,7 +50,7 @@
               <div id="hojitha_cont" class="hojitha mt-3"   style="background-color: #fff; border:1px solid #ccc; border-bottom-style:hidden; padding:10px; width: 100%">
                   <div class="row mt-4 d-flex justify-content-between">
                       <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                         <img class="img-fluid" src="{{ asset('/images/users/logo.svg') }}" style="width:120px" />
+                         <img class="img-fluid" src="{{ asset('/img/company/sitwifi_logo.jpg') }}" style="width:160px" />
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 text-center">
                         <h2> <small>Reporte por proyecto</small></h2>
@@ -58,7 +58,7 @@
                         <br />
                       </div>
                       <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                         <img class="img-fluid" id="img_htl" src="{{ asset('images/hotel/Hard_Rock_Punta_Cana.svg') }}" style="width:80%;" />
+                         <img class="img-fluid" id="img_htl" src="{{ asset('images/hotel/Hard_Rock_Punta_Cana.svg') }}" style="width:160px;" />
                       </div>
                   </div>
 
