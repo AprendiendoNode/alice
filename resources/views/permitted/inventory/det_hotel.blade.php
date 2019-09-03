@@ -28,7 +28,7 @@
                   {{ csrf_field() }}
                   <div class="input-group mb-2 mr-sm-4 col-md-3">
                     <label for="select_one">Proyecto</label>
-                    <select class="form-control" id="select_one" name="select_one" style="width: 100%;">
+                    <select class="form-control select2" id="select_one" name="select_one" style="width: 100%;">
                       <option value="" selected>Elija un proyecto</option>
                       @forelse ($cadena as $data_cadena)
                         <option value="{{ $data_cadena->id }}"> {{ $data_cadena->name }} </option>
@@ -38,7 +38,7 @@
                   </div>
                   <div class="input-group mb-2 mr-sm-2 col-md-3">
                     <label for="select_two">Sitio</label>
-                    <select class="form-control" id="select_two" name="select_two" style="width: 100%;">
+                    <select class="form-control select2" id="select_two" name="select_two" style="width: 100%;">
                       <option value="" selected>Elija un sitio</option>
 
                     </select>
