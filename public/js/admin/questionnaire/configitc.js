@@ -79,7 +79,7 @@ function table_config(datajson, table){
     }
 
     var badgetwo = '<span class="badge badge-success badge-pill text-uppercase text-white">Contestada</span>';
-    if (information.estatus_res == '2') {
+    if (information.estatus_res == '1') {
       badgetwo= '<span class="badge badge-danger badge-pill text-uppercase text-white">No contestada</span>';
     }
     var option_a ='<a href="javascript:void(0);" onclick="link_send_mail(this)" datas="'+information.email+'" class="btn btn-info  btn-sm" value="'+information.id+'"><i class="far fa-share-square btn-icon-prepend fastable"></i> Reenviar Mail</a>';
