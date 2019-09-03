@@ -227,6 +227,7 @@ class QuestionaryController extends Controller
                  $new_reg_a->users_id = $id_user;
                  $new_reg_a->hotels_id = $sitio_id;
                  $new_reg_a->fecha = $fecha_corresponde;
+                 $new_reg_a->survey_id = $id_survey;
                  $new_reg_a->save();
                }
                elseif ($type_question == '2') {
@@ -237,6 +238,7 @@ class QuestionaryController extends Controller
                  $new_reg_b->users_id = $id_user;
                  $new_reg_b->hotels_id = $sitio_id;
                  $new_reg_b->fecha = $fecha_corresponde;
+                 $new_reg_b->survey_id = $id_survey;
                  $new_reg_b->save();
                }
                $inserto = 1;
