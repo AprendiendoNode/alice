@@ -1059,6 +1059,27 @@
                     <div class="d-block">
                       <div class="form-check form-check-flat form-check-success ml-5">
                         <label class="form-check-label">
+                          @if (auth()->user()->can('Aprobacion director general') && $approval_dir[0]->aprobado_direccion == 1)
+                            <input id="check_director_general" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion director general') && $kickoff_approvals->director_general == 1)
+                            <input id="check_director_general" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion director general') && $kickoff_approvals->director_general == 0)
+                            <input id="check_director_general" type="checkbox" class="form-check-input">
+                          @else
+                            <input id="check_director_general" type="checkbox" class="form-check-input" disabled>
+                          @endif
+                          Alejandro Espejo
+                      </div>
+                      <div class="text-center">
+                        <p class="text-secondary ml-5">Director General</p>
+                        @if ($kickoff_approvals->director_general == 1)
+                          <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
+                        @endif
+                      </div>
+                    </div>
+                    <div class="d-block">
+                      <div class="form-check form-check-flat form-check-success ml-5">
+                        <label class="form-check-label">
                           @if (auth()->user()->can('Aprobacion director comercial') && $approval_dir[0]->aprobado_direccion == 1)
                             <input id="check_comercial" type="checkbox" class="form-check-input" disabled checked>
                           @elseif(auth()->user()->can('Aprobacion director comercial') && $kickoff_approvals->director_comercial == 1)
@@ -1092,29 +1113,8 @@
                           René González
                       </div>
                       <div class="text-center">
-                        <p class="text-secondary ml-5">Director operaciones</p>
+                        <p class="text-secondary ml-5">Director Operaciones</p>
                         @if ($kickoff_approvals->director_operaciones == 1)
-                          <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
-                        @endif
-                      </div>
-                    </div>
-                    <div class="d-block">
-                      <div class="form-check form-check-flat form-check-success ml-5">
-                        <label class="form-check-label">
-                          @if (auth()->user()->can('Aprobacion director general') && $approval_dir[0]->aprobado_direccion == 1)
-                            <input id="check_director_general" type="checkbox" class="form-check-input" disabled checked>
-                          @elseif(auth()->user()->can('Aprobacion director general') && $kickoff_approvals->director_general == 1)
-                            <input id="check_director_general" type="checkbox" class="form-check-input" disabled checked>
-                          @elseif(auth()->user()->can('Aprobacion director general') && $kickoff_approvals->director_general == 0)
-                            <input id="check_director_general" type="checkbox" class="form-check-input">
-                          @else
-                            <input id="check_director_general" type="checkbox" class="form-check-input" disabled>
-                          @endif
-                          Alejandro Espejo
-                      </div>
-                      <div class="text-center">
-                        <p class="text-secondary ml-5">Director general</p>
-                        @if ($kickoff_approvals->director_general == 1)
                           <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
                         @endif
                       </div>

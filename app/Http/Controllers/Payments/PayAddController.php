@@ -184,14 +184,15 @@ class PayAddController extends Controller
     // if($count_bk[0]->existe == '1'){
     if($count_bk == '1') {
 
-      DB::table('prov_bco_ctas')->insert([
-        'prov_id' => $id_proveedor,
-        'banco_id' => $id_bank,
-        'cuenta' => $cuenta,
+      DB::table('customer_bank_accounts')->insert([
+        'customer_id' => $id_proveedor,
+        'bank_id' => $id_bank,
+        'name' => '-',
+        'account_number' => $cuenta,
         'clabe' => $clabe,
         'referencia' => $referencia,
         'currency_id' => $id_coin,
-        'status_id' =>  '2'
+        'status_prov_id' =>  '2'
       ]);
 
       //Mail::to(['mortiz@sitwifi.com','elopez@sitwifi.com'])->send(new CambioCuentaPago($data));
@@ -200,14 +201,15 @@ class PayAddController extends Controller
     }
     else {
 
-      DB::table('prov_bco_ctas')->insert([
-        'prov_id' => $id_proveedor,
-        'banco_id' => $id_bank,
-        'cuenta' => $cuenta,
+      DB::table('customer_bank_accounts')->insert([
+        'customer_id' => $id_proveedor,
+        'bank_id' => $id_bank,
+        'name' => '-',
+        'account_number' => $cuenta,
         'clabe' => $clabe,
         'referencia' => $referencia,
         'currency_id' => $id_coin,
-        'status_id' =>  '1'
+        'status_prov_id' =>  '1'
       ]);
 
       //Mail::to(['mortiz@sitwifi.com','elopez@sitwifi.com'])->send(new CambioCuentaPago($data));
