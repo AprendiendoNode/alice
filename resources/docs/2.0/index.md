@@ -1,8 +1,8 @@
 - ## Bienvenida
     - [General](/{{route}}/{{version}}/overview)
 - ## Inicio
-    - [Dashboard](/{{route}}/{{version}}/inicio/dashboard)
-    - [Dashboard Financieros](/{{route}}/{{version}}/inicio/dash_finan)
+    - [Dashboard](/{{route}}/{{version}}/home/dash)
+    - [Dashboard Tesorería](/{{route}}/{{version}}/home/dash_finan)
 - ## Servicios
     - [Servicio al cliente](/{{route}}/{{version}}/service/dashboardcust)
     - [My Tickets](/{{route}}/{{version}}/service/mytickets)

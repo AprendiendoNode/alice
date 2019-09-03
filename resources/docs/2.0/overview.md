@@ -1,16 +1,20 @@
-# General :books:
+# Bienvenido/a
 
----
+- [Bienvenido/a](#section-1)
 
-- [First Section](#section-1)
+<a name="section-1"></a>  
+<br>
+<img src="/images/docs/new_version.svg" width="70%"><br>
+Queremos brindarte **la mejor experiencia de usuario posible**, es por ello que aqui encontrarás lo necesario para empezar a usar el nuevo sistema.<br>
 
-<a name="section-1"></a>
-<img src="/images/undraw_to_the_moon_v1mv.svg" width="50%">
-Un pequeño paso para el hombre pero un gran salto para SITWIFI.
-
-
-<figure class="video_container">
-  <video controls="true" allowfullscreen="true" poster="/images/bg-body.jpg">
-    <source src="/videos/html5-demo.mp4" type="video/mp4">
-  </video>
-</figure>
+<larecipe-card>
+    <larecipe-badge type="success" circle class="mr-3" icon="fas fa-users"></larecipe-badge>
+    100% Trabajo en equipo
+    <larecipe-progress type="success" :value="100"></larecipe-progress>
+    <larecipe-badge type="danger" circle class="mr-3" icon="fa fa-heart"></larecipe-badge>
+    100% Pasión
+    <larecipe-progress type="danger" :value="100"></larecipe-progress>
+    <larecipe-badge type="warning" circle class="mr-3" icon="fas fa-coffee"></larecipe-badge>
+    Muchas tazas de café
+    <larecipe-progress type="warning" :value="100"></larecipe-progress>
+</larecipe-card>
