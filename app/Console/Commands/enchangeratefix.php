@@ -43,9 +43,6 @@ class enchangeratefix extends Command
       $banxico_date = str_replace('/', '-', $banxico_date );
       $banxico_date_string = date("Y-m-d", strtotime($banxico_date));
 
-      $banxico_carbon = Carbon::parse($banxico_date);
-      $banxico_carbon_string = Carbon::parse($banxico_date)->format('Y-m-d');
-
       switch ($mutable) {
         case $mutable->isSaturday():
           $latest = DB::table('exchange_rates')->latest()->first();
@@ -80,7 +77,7 @@ class enchangeratefix extends Command
       }
             
       $data_insert = [
-        'current_date' => $banxico_date_string,
+        'current_date' => $mutable->format('Y-m-d'),
         'currency_id' => 2,
         'code_banxico' => $code_banxico,
         'current_rate_fix' => $fix_rate,
@@ -90,7 +87,7 @@ class enchangeratefix extends Command
         'status' => 1,
         'created_uid' => 2,
         'updated_uid' => 2,
-        'created_at' => \Carbon\Carbon::now()
+        'created_at' => Carbon::now()
       ];
       $this->insertExchange($data_insert);
       $this->info('Datos insertados correctamente, comando completado.');
