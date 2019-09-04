@@ -21,12 +21,12 @@
 - ## Encuesta
     - [Dashboard NPS](/{{route}}/{{version}}/survey/view_dashboard_survey_nps)
 - ## Equipos
-    - [Altas](/{{route}}/{{version}}/equipments/up_equipment)
-    - [Bajas](/{{route}}/{{version}}/equipments/down_equipment)
-    - [Buscador](/{{route}}/{{version}}/equipments/detailed_search)
-    - [Movimientos](/{{route}}/{{version}}/equipments/move_equipment)
-    - [Grupos](/{{route}}/{{version}}/equipments/group_equipment)
-    - [Caratula de entrega](/{{route}}/{{version}}/equipments/cover_equipment_delivery)
+    - [Altas](/{{route}}/{{version}}/equipment/up_equipment)
+    - [Bajas](/{{route}}/{{version}}/equipment/down_equipment)
+    - [Buscador](/{{route}}/{{version}}/equipment/detailed_search)
+    - [Movimientos](/{{route}}/{{version}}/equipment/move_equipment)
+    - [Grupos](/{{route}}/{{version}}/equipment/group_equipment)
+    - [Caratula de entrega](/{{route}}/{{version}}/equipment/cover_equipment_delivery)
 - ## Herramientas
     - [Diagnostico de huepedes](/{{route}}/{{version}}/tools/detailed_guest_review)
     - [Diagnostico de servidores](/{{route}}/{{version}}/tools/detailed_server_review)

@@ -29,6 +29,8 @@
       @include('permitted.payments.modal_payment')
 
     <div class="container">
+      <div class="card">
+        <div class="card-body">
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
           <div class="row">
@@ -96,6 +98,8 @@
         </div>
 
       </div>
+    </div>
+  </div>
     </div>
 
 
