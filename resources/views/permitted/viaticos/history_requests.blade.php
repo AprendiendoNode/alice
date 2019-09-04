@@ -197,6 +197,8 @@
 
       @if( auth()->user()->can('View level zero notifications') )
         <div class="container">
+          <div class="card">
+            <div class="card-body">
           <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
               <div class="row">
@@ -219,9 +221,9 @@
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
               <div class="">
-                <table id="table_viatics" class="table table-striped table-bordered table-hover">
+                <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100">
                   <thead>
-                    <tr class="bg-white" >
+                    <tr class="bg-primary" >
                       <th> <small>Folio</small> </th>
                       <th> <small>Servicio</small> </th>
                       <th> <small>Fecha Inicio</small> </th>
@@ -251,6 +253,8 @@
             </div>
 
           </div>
+        </div>
+      </div>
         </div>
       @elseif ( auth()->user()->can('View level one notifications') )
         <div class="modal modal-default fade" id="modal-view-concept-approve" data-backdrop="static">
@@ -341,6 +345,8 @@
         </div>
 
         <div class="container">
+          <div class="card">
+            <div class="card-body">
           <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
               <div class="row">
@@ -363,9 +369,9 @@
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
               <div class="">
-                <table id="table_viatics" class="table table-striped table-bordered table-hover compact"  style="width:100%">
+                <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab"  style="width:100%">
                   <thead>
-                    <tr class="bg-white" style="background: #088A68;">
+                    <tr class="bg-primary" >
                       <th> <small></small> </th>
                       <th> <small>Folio</small> </th>
                       <th> <small>Servicio</small> </th>
@@ -402,6 +408,8 @@
             </div>
 
           </div>
+        </div>
+      </div>
         </div>
       @elseif ( auth()->user()->can('View level two notifications') )
         <div class="modal modal-default fade" id="modal-view-deny" data-backdrop="static">
@@ -438,6 +446,8 @@
         </div>
 
         <div class="container">
+          <div class="card">
+            <div class="card-body">
           <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
               <div class="row">
@@ -460,9 +470,9 @@
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
               <div class="">
-                <table id="table_viatics" class="table table-striped table-bordered table-hover compact" style="width:100%" >
+                <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab" style="width:100%" >
                   <thead>
-                    <tr class="bg-white" style="background: #088A68;">
+                    <tr class="bg-primary">
                       <th> <small></small> </th>
                       <th> <small>Folio</small> </th>
                       <th> <small>Servicio</small> </th>
@@ -501,6 +511,8 @@
 
           </div>
         </div>
+      </div>
+        </div>
       @elseif ( auth()->user()->can('View level three notifications') )
         <div class="modal modal-default fade" id="modal-view-deny" data-backdrop="static">
             <div class="modal-dialog" >
@@ -536,6 +548,8 @@
         </div>
 
         <div class="container">
+          <div class="card">
+            <div class="card-body">
           <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
               <div class="row">
@@ -560,9 +574,9 @@
             <div class="row" >
             <div  class="container-fluid">
 
-                <table id="table_viatics" class="table table-sm table-striped table-bordered table-hover compact" style="width:100%">
+                <table id="table_viatics" class="table table-sm table-striped table-bordered table-hover compact-tab" style="width:100%">
                   <thead  >
-                    <tr class="bg-white" style="background: #088A68; " class="overflow-text" >
+                    <tr class="bg-primary" class="overflow-text" >
                       <th class="overflow-text"> <small></small> </th>
                       <th class="overflow-text"> <small>Folio</small> </th>
                       <th  class="overflow-text"> <small>Servicio</small> </th>
@@ -597,11 +611,13 @@
                 </table>
               </div>
             </div>
-
-
+          </div>
+          </div>
         </div>
       @elseif ( auth()->user()->can('View level four notifications') )
         <div class="container">
+          <div class="card">
+            <div class="card-body">
           <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
               <div class="row">
@@ -625,21 +641,21 @@
             <div class="row" >
             <div  class="container-fluid">
 
-                <table id="table_viatics" class="table table-sm table-striped table-bordered table-hover compact" style="width:100%">
+                <table id="table_viatics" class="table table-sm table-striped table-bordered table-hover w-100" style="width:100% !important;">
                   <thead  >
-                    <tr class="bg-white" style="background: #088A68; " class="overflow-text" >
-                      <th class="overflow-text"> <small></small> </th>
-                      <th class="overflow-text"> <small>Folio</small> </th>
-                      <th  class="overflow-text"> <small>Servicio</small> </th>
-                      <th class="overflow-text"> <small>Fecha Inicio</small> </th>
-                      <th class="overflow-text"> <small>Fecha Fin</small> </th>
-                      <th class="overflow-text"> <small >Monto Solicitado</small> </th>
-                      <th class="overflow-text"> <small>Monto Aprobado</small> </th>
-                      <th class="overflow-text"> <small>Estatus</small> </th>
-                      <th class="overflow-text"> <small>Prioridad</small> </th>
-                      <th class="overflow-text"> <small>Usuario</small> </th>
-                      <th class="overflow-text"> <small>Opciones</small> </th>
-                      <th class="overflow-text"> <small>status</small> </th>
+                    <tr class="bg-primary"class="overflow-text text-white" >
+                      <th class="overflow-text text-white" > <small></small> </th>
+                      <th class="overflow-text text-white"> <small>Folio</small> </th>
+                      <th  class="overflow-text text-white"> <small>Servicio</small> </th>
+                      <th class="overflow-text text-white" > <small>Fecha Inicio</small> </th>
+                      <th class="overflow-text text-white"> <small>Fecha Fin</small> </th>
+                      <th class="overflow-text text-white"> <small >Monto Solicitado</small> </th>
+                      <th class="overflow-text text-white"> <small>Monto Aprobado</small> </th>
+                      <th class="overflow-text text-white"> <small>Estatus</small> </th>
+                      <th class="overflow-text text-white"> <small>Prioridad</small> </th>
+                      <th class="overflow-text text-white"> <small>Usuario</small> </th>
+                      <th class="overflow-text text-white"> <small>Opciones</small> </th>
+                      <th class="overflow-text text-white"> <small>status</small> </th>
                     </tr>
                   </thead>
                   <tbody >
@@ -664,6 +680,8 @@
             </div>
 
           </div>
+        </div>
+      </div>
         </div>
       @endif
     @else

@@ -45,7 +45,7 @@ function viatics_table(datajson, table){
     status.date_end,
     status.solicitado,
     status.aprobado,
-    '<span class="label label-default">'+status.estado+'</span>',
+    '<span class="badge badge-secondary">'+status.estado+'</span>',
     status.usuario,
     '<a href="javascript:void(0);" onclick="enviar(this)" value="'+status.id+'" class="btn btn-default btn-sm" role="button" data-target="#modal-concept"><span class="far fa-edit"></span></a>',
     ]);

@@ -254,6 +254,8 @@
 
 
   <div class="container">
+    <div class="card">
+      <div class="card-body">
     <div class="row">
       <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
         <div class="row">
@@ -276,9 +278,9 @@
       <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
         <form id="egef" name="egef" enctype="multipart/form-data" >
           <div class="">
-            <table id="table_viatics" class="table table-striped table-bordered table-hover">
+            <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100">
               <thead>
-                <tr class="bg-white" style="background: #088A68;">
+                <tr class="bg-primary">
                   <th> <small>Folio</small> </th>
                   <th> <small>Servicio</small> </th>
                   <th> <small>Fecha Inicio</small> </th>
@@ -310,6 +312,8 @@
         </form>
       </div>
     </div>
+  </div>
+</div>
   </div>
     @else
       @include('default.denied')

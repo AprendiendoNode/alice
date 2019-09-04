@@ -177,6 +177,8 @@
     </div>
   </div>
   <div class="container">
+    <div class="card">
+      <div class="card-body">
     <div class="row">
       <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
         <div class="row">
@@ -259,9 +261,9 @@
       <br><br>
       <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
         <div class="table-responsive">
-          <table id="table_viatics" class="table table-striped table-bordered table-hover" style=" padding:0; margin:0;">
+          <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100" style=" padding:0; margin:0;">
             <thead>
-              <tr class="bg-white" style="background: #088A68;">
+              <tr class="bg-primary" >
                 <th> <small>Folio</small> </th>
                 <th> <small>Sitio</small> </th>
                 <th> <small>Fecha Inicio</small> </th>
@@ -303,6 +305,8 @@
       </div>
     </div>
   </div>
+</div>
+</div>
 </div>
 </div>
 
