@@ -378,7 +378,7 @@
         var user_id = {!! json_encode(Auth::user()->id) !!};
 
     </script>
-    <script src="{{ asset('js/admin/payments/request_payment_2.js?v=2.0.0')}}"></script>
+    <script src="{{ asset('js/admin/payments/request_payment_2.js?v=2.0.1')}}"></script>
     @elseif ( auth()->user()->can('View level three payment notification') )
     <script src="{{ asset('js/admin/payments/request_payment_3.js?v=2.0.0')}}"></script>
     @endif

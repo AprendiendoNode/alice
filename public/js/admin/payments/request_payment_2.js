@@ -125,10 +125,10 @@ var Configuration_table_responsive_checkbox_move_payment_n2= {
       "createdCell": function (td, cellData, rowData, row, col){
         if ( cellData > 0 ) {
           if (user_id === 69) {
-            if(rowData[9] != 'Elaboro' && rowData[9] != 'Reviso'){
+            if(rowData[11] != 'Elaboro' && rowData[11] != 'Reviso'){
               this.api().cell(td).checkboxes.disable();
             }
-          }else if(rowData[9] != 'Reviso'){
+          }else if(rowData[11] != 'Reviso'){
             this.api().cell(td).checkboxes.disable();
           }
         }
