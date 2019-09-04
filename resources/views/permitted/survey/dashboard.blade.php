@@ -20,7 +20,7 @@
   @if( auth()->user()->can('View dashboard survey nps') )
     <div class="modal modal-default fade" id="modal-view-encuestas" data-backdrop="static">
         <div class="modal-dialog">
-          <div class="modal-content">
+          <div class="modal-content" style="width: 70vw; margin-left: -15vw;">
             <div class="modal-header">
               <h4 class="modal-title"><i class="far fa-address-card" style="margin-right: 4px;"></i>Encuestas.</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -66,7 +66,7 @@
 
     <div class="modal modal-default fade" id="modal-view-ppd" data-backdrop="static">
         <div class="modal-dialog" >
-          <div class="modal-content">
+          <div class="modal-content" style="width: 70vw; margin-left: -15vw;">
             <div class="modal-header">
               <h4 class="modal-title"><i class="far fa-address-card" style="margin-right: 4px;"></i>Calificaciones.</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -163,7 +163,7 @@
         <div class="col-md-2">
           <div class="row">
             <div class="col-md-12 mb-3">
-              <div class="card" id="box_total_survey">
+              <div class="card" id="box_total_survey" style="cursor: pointer;">
                 <div class="card-body">
                   <div class="ml-sm-3 ml-md-0 ml-xl-0 mt-2 mt-sm-0 mt-md-2 mt-xl-0 text-center">
                     <h4 id="total_survey" class="mb-2 text-primary font-weight-bold">194</h4>
@@ -173,7 +173,7 @@
               </div>
             </div>
             <div class="col-md-12 mb-3">
-              <div class="card" id="box_response" >
+              <div class="card" id="box_response" style="cursor: pointer;">
                 <div class="card-body">
                   <div class="ml-sm-3 ml-md-0 ml-xl-0 mt-2 mt-sm-0 mt-md-2 mt-xl-0 text-center">
                     <h4 id="answered" class="mb-2 text-success font-weight-bold">110</h4>
@@ -183,7 +183,7 @@
               </div>
             </div>
             <div class="col-md-12 mb-3">
-              <div class="card" id="box_sin_response">
+              <div class="card" id="box_sin_response" style="cursor: pointer;">
                 <div class="card-body">
                   <div class="ml-sm-3 ml-md-0 ml-xl-0 mt-2 mt-sm-0 mt-md-2 mt-xl-0 text-center">
                     <h4 id="unanswered" class="mb-2 text-danger font-weight-bold">84</h4>
@@ -208,7 +208,7 @@
         <div class="col-md-2">
           <div class="row">
             <div class="col-md-12 mb-3">
-              <div class="card" id="box_promotores">
+              <div class="card" id="box_promotores" style="cursor: pointer;">
                 <div class="card-body">
                   <div class="d-xl-flex  align-items-center justify-content-center p-0 item">
                     <i class="mdi mdi-emoticon icon-lg mr-3 text-success"></i>
@@ -221,7 +221,7 @@
               </div>
             </div>
             <div class="col-md-12 mb-3">
-              <div class="card" id="box_pasivos">
+              <div class="card" id="box_pasivos" style="cursor: pointer;">
                 <div class="card-body">
                   <div class="d-xl-flex  align-items-center justify-content-center p-0 item">
                     <i class="mdi mdi-emoticon-neutral icon-lg mr-3 text-warning"></i>
@@ -234,7 +234,7 @@
               </div>
             </div>
             <div class="col-md-12 mb-3">
-              <div class="card" id="box_detractores">
+              <div class="card" id="box_detractores" style="cursor: pointer;">
                 <div class="card-body">
                   <div class="d-xl-flex align-items-center justify-content-center p-0 item">
                     <i class="mdi mdi-emoticon-sad icon-lg mr-3 text-danger"></i>
@@ -255,7 +255,7 @@
               <div class="card">
                 <h6 style="background-color:#f7f7f7; text-align: center; padding: 7px 10px; margin-top: 0;">Comparación Anual</h6>
                 <div class="card-body padding-none">
-                  <div class="table-responsive">
+                  <div>
                     <table id="tabla_comparativa" class="table table-striped table-bordered table-hover">
                       <thead>
                           <tr>

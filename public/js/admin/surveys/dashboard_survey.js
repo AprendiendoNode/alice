@@ -81,6 +81,7 @@ function boxes_cali_modal(url1) {
       success: function (data){
         //console.log(data);
         table_boxes_cali(data, $('#table_boxes_ppd'));
+        document.getElementById("table_boxes_ppd_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);
@@ -96,6 +97,7 @@ function boxes_modal(url1) {
       success: function (data){
         //console.log(data);
         table_boxes(data, $('#table_encuestas_boxes'));
+        document.getElementById("table_encuestas_boxes_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);
@@ -472,6 +474,7 @@ function table_comments() {
       success: function (data){
         //console.log(data);
         table_com_nps(data, $("#table_comments"));
+        document.getElementById("table_comments_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);
@@ -501,7 +504,7 @@ function table_comments_full() {
       success: function (data){
         //console.log(data);
         table_com_nps_full(data, $("#table_comments_full"));
-
+        document.getElementById("table_comments_full_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);
@@ -534,6 +537,7 @@ function table_results() {
       success: function (data){
         //console.log(data);
         create_table_results(data, $('#table_results_full'));
+        document.getElementById("table_results_full_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);
