@@ -303,7 +303,7 @@ function enviar(e){
           $("#title_ticket").text(datax['ticket'].subject);
           if (!datax['ticket'].via_from_address) {$("#email_ticket").text('No proveído');}else{$("#email_ticket").text(datax['ticket'].via_from_address);}
           if (!datax['ticket'].via_from_name) {$("#remitente_ticket").text('No proveído');}else{$("#remitente_ticket").text(datax['ticket'].via_from_name);}
-          
+
           $("#hora_levantamiento").text(datax['ticket'].created_at);
           $("#levantamiento_ticket").text(datax['ticket'].via.channel);
           if (!datax['ticket'].custom_fields[0]) {$('#nom_cliente').val('');}else{$('#nom_cliente').val(datax['ticket'].custom_fields[0].value);}
@@ -334,7 +334,7 @@ function enviar(e){
           var cont = size;
           //console.log(datax['comments'][0].author_id);
           $("#global_mensajes").empty();
-          
+
           while(cont--){
             if (datax['comments'][cont].public === true) {
               $("#global_mensajes").append('<p style="padding-left: 20px;">' + datax['comments'][cont].author_id +': </p>' + datax['comments'][cont].html_body);
@@ -407,7 +407,7 @@ $('#submit_ticket').on('click', function(){
       swal("Error", "Llene los campos necesarios para cerrar el ticket (cliente, empresa, tipo y prioridad)", "error");
     }else{
       swal({
-        title: "Estás seguro?",  
+        title: "Estás seguro?",
         text: "El ticket se  marcará como resuelto!",
         type: "warning",
         // html: true,
@@ -553,7 +553,7 @@ var Configuration_table_responsive_ticket= {
         buttons: [
           {
             extend: 'excelHtml5',
-            text: '<i class="fa fa-file-excel-o"></i> Excel',
+            text: '<i class="far fa-file-excel"></i> Excel',
             titleAttr: 'Excel',
             title: function ( e, dt, node, config ) {
               var ax = 'Mis estadisticas';
@@ -572,7 +572,7 @@ var Configuration_table_responsive_ticket= {
           },
           {
             extend: 'csvHtml5',
-            text: '<i class="fa fa-file-text-o"></i> CSV',
+            text: '<i class="far fa-file-code"></i> CSV',
             titleAttr: 'CSV',
             title: function ( e, dt, node, config ) {
               var ax = 'Mis estadisticas';
@@ -591,7 +591,7 @@ var Configuration_table_responsive_ticket= {
           },
           {
             extend: 'pdf',
-            text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+            text: '<i class="far fa-file-pdf"></i>  PDF',
             title: function ( e, dt, node, config ) {
               var ax = 'Mis estadisticas';
               return ax;
