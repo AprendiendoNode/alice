@@ -22,8 +22,8 @@
       <div class="modal-dialog" >
         <div class="modal-content">
           <div class="modal-header">
+            <h4 class="modal-title"><i class="far fa-address-card" style="margin-right: 4px;"></i>Comentario</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"><i class="fa fa-id-card-o" style="margin-right: 4px;"></i>Comentario</h4>
           </div>
           <div class="modal-body">
             <div class="box-body table-responsive">
@@ -32,7 +32,7 @@
 
                   <div class="col-xs-12">
                     <div class="form-group">
-                      <label for="inputEditEmail" class="col-sm-12 control-label">Texto</label>
+                      <label for="inputEditEmail" class="col-sm-12 control-label">Texto:</label>
                       <div class="col-sm-12">
                         <textarea id="comment_a" name="comment_a"  class="form-control" style="min-width: 100%"readonly></textarea>
                       </div>
@@ -58,13 +58,13 @@
               {{ csrf_field() }}
               <div class="col-sm-6">
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                  <span class="input-group-addon"><i class="far fa-calendar-alt fa-3x"></i></span>
                   <input id="date_to_search" type="text" class="form-control" name="date_to_search">
                 </div>
               </div>
               <div class="col-sm-6">
                 <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard">
-                  <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>  Filtrar
+                  <i class="fas fa-filter" aria-hidden="true"></i>  Filtrar
                 </button>
               </div>
             </form>
@@ -73,7 +73,7 @@
 
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
           <div class="table-responsive">
-            <table id="table_qualification" class="table table-striped table-bordered table-hover">
+            <table id="table_qualification" class="table table-striped table-bordered table-hover compact-tab">
               <thead>
                 <tr class="" style="background: #088A68;color:white;">
                   <th> <small>Vertical</small> </th>

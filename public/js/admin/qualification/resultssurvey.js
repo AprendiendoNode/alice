@@ -26,6 +26,7 @@ function table_nps() {
         //console.log(data);
         remplazar_thead_th($("#table_qualification"), 2 ,13);
         table_anual(data, $("#table_qualification"));
+        document.getElementById("table_qualification_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);
