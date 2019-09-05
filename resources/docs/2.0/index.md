@@ -4,7 +4,7 @@
     - [Dashboard](/{{route}}/{{version}}/home/dash)
     - [Dashboard Tesorería](/{{route}}/{{version}}/home/dash_finan)
 - ## Servicios
-    - [Servicio al cliente](/{{route}}/{{version}}/service/dashboardcust)
+    - [Dashboard servicio al cliente](/{{route}}/{{version}}/service/dashboardcust)
     - [My Tickets](/{{route}}/{{version}}/service/mytickets)
     - [Estadisticas de tickets](/{{route}}/{{version}}/service/statistics_tickets)
 - ## Inventario
