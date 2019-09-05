@@ -293,10 +293,10 @@
 
     <style>
     .glyphicon-ok:before {
-        content: "\f00c";
+        content: "OK";
     }
     .glyphicon-remove:before {
-        content: "\f00d";
+        content: "X";
     }
     .glyphicon {
         display: inline-block;
