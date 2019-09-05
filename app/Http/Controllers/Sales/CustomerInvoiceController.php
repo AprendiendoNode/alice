@@ -190,6 +190,7 @@ class CustomerInvoiceController extends Controller
                }
 
                $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;
+               $item_subtotal = $item_amount_untaxed ;
                //Tipo cambio
                if ($item['current'] === $currency_id) {
                    $item_amount_total = $item_amount_total * $currency_value;
@@ -201,6 +202,7 @@ class CustomerInvoiceController extends Controller
                    $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $currency_id)->value('code_banxico');
                    $item_amount_tax = $item_amount_tax * $currency_value;
                    $item_amount_total = $item_amount_total * $currency_value;
+                   $item_subtotal = $item_subtotal * $currency_value;
                  }
                  else { //moneda distinta
                    $currency_value = DB::table('currencies')->select('rate')->where('id', $item['current'])->value('rate');
@@ -208,17 +210,19 @@ class CustomerInvoiceController extends Controller
                    if ($currency_id === '2') { //SI LA MONEDA SELECCIONADA ES DOLAR
                       $item_amount_total = $item_amount_total/$resp_currency_value;
                       $item_amount_tax = $item_amount_tax / $resp_currency_value;
+                      $item_subtotal = $item_subtotal / $resp_currency_value;
                    }
                    else {
                      $item_amount_total = $item_amount_total*$currency_value;
                    }
                  }
                }
+
                $item_amount_untaxed = round($item_quantity * $item_amount_total, 2); //cantidad del artículo sin impuestos
 
                //Sumatoria totales
                $amount_discount += $item_amount_discount;
-               $amount_untaxed += $item_amount_untaxed;
+               $amount_untaxed += $item_subtotal;
                $amount_tax += $item_amount_tax;
                $amount_tax_ret += $item_amount_tax_ret;
                $amount_total += $item_amount_total;
