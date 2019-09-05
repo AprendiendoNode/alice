@@ -199,18 +199,21 @@ class CustomerInvoiceController extends Controller
                    $current_select_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
                    $currency_value = $current_select_rate->current_rate;
                    $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $currency_id)->value('code_banxico');
-
+                   $item_amount_tax = $item_amount_tax * $currency_value;
                    $item_amount_total = $item_amount_total * $currency_value;
                  }
                  else { //moneda distinta
                    $currency_value = DB::table('currencies')->select('rate')->where('id', $item['current'])->value('rate');
                    $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item['current'])->value('code_banxico');
                    if ($currency_id === '2') { //SI LA MONEDA SELECCIONADA ES DOLAR
-                      $item_amount_total = $item_amount_total/$resp_currency_value;
+                      // $item_amount_total = $item_amount_total/$resp_currency_value;
+                      $item_amount_tax = $item_amount_tax / $currency_value;
                    }
                    else {
                      $item_amount_total = $item_amount_total*$currency_value;
                    }
+                   $item_amount_total = $item_amount_total/$resp_currency_value;
+
                  }
                }
                $item_amount_untaxed = round($item_quantity * $item_amount_total, 2); //cantidad del artículo sin impuestos
