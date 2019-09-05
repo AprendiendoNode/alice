@@ -34,7 +34,7 @@ class ProductController extends Controller
       $especificacion = DB::select('CALL GetAllEspecificacionActivev2 ()', array());
 
       return view('permitted.catalogs.products',compact('currency','unitmeasures','satproduct', 'customer', 'category','brands','models',
-      'estatus', 'marcas', 'especificacion', 'currencies', 'marcas', 'list_moneda', 'list_marca', 'list_espec', 'country'));
+      'estatus', 'marcas', 'especificacion', 'marcas', 'list_moneda', 'list_marca', 'list_espec', 'country'));
     }
 
     /**

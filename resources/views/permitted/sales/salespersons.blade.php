@@ -187,8 +187,8 @@
           <div class="row">
             <div class="col-12">
               <div class="table-responsive">
-                <table id="table_salespersons" name='table_salespersons' class="table table-striped border display nowrap" style="width:100%; font-size: 10px;">
-                  <thead>
+                <table id="table_salespersons" name='table_salespersons' class="table table-striped border display nowrap compact-tab" style="width:100%; font-size: 10px;">
+                  <thead class="bg-primary">
                     <tr>
                       <th>Nombre</th>
                       <th>Correo electrónico</th>

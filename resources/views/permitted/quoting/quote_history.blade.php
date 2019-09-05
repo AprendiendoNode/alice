@@ -51,7 +51,7 @@
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
           <div class="table-responsive">
-            <table id="table_quoting" class="table table-striped table-bordered table-hover table-condensed">
+            <table id="table_quoting" class="table table-striped table-bordered table-hover table-condensed compact-tab">
               <thead>
                 <tr style="background: #0E2A38;color: white;">
                   <th> <small>Fecha de solicitud</small> </th>

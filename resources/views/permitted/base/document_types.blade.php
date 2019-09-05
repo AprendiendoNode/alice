@@ -211,8 +211,8 @@
           <div class="row">
             <div class="col-12">
               <div class="table-responsive">
-                <table id="table_document_types" name='table_document_types' class="table table-striped border display nowrap" style="width:100%; font-size: 10px;">
-                  <thead>
+                <table id="table_document_types" name='table_document_types' class="table table-striped border display nowrap compact-tab" style="width:100%; font-size: 10px;">
+                  <thead class="bg-primary">
                     <tr>
                       <th>Clave</th>
                       <th>Nombre</th>
