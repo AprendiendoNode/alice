@@ -193,7 +193,8 @@ class CustomerInvoiceController extends Controller
                $item_subtotal = $item_amount_untaxed ;
                //Tipo cambio
                if ($item['current'] === $currency_id) {
-                   $item_amount_total = $item_amount_total * $currency_value;
+                   // $item_amount_total = $item_amount_total * $currency_value;
+
                }
                elseif ( $item['current'] != $currency_id) {
                  if ( $item['current'] === '2') { //ES DOLAR
