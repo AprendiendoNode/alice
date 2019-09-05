@@ -105,6 +105,7 @@ function get_table_viatics() {
       success: function (data){
         console.log(data);
         viatics_table(data, $("#table_viatics"));
+        document.getElementById("table_viatics_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);

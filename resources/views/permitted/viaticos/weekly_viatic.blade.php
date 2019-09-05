@@ -204,7 +204,7 @@
                 </div>
               </div>
               <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard">
-                <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>  Filtrar
+                <i class="fas fa-filter" aria-hidden="true"></i>  Filtrar
               </button>
             </div>
             <br>

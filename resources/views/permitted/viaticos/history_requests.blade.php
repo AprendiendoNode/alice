@@ -200,13 +200,13 @@
           <div class="card">
             <div class="card-body">
           <div class="row">
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mb-2">
               <div class="row">
                 <form id="search_info" name="search_info" class="form-inline" method="post">
                   {{ csrf_field() }}
                   <div class="col-md-4 col-sm-2">
                     <div class="input-group">
-                      <span class="input-group-addon"></span>
+                      <span class="input-group-addon"><i class="far fa-calendar-alt fa-3x"></i></span>
                       <input id="date_to_search" type="text" class="form-control" name="date_to_search" >
                     </div>
                   </div>
@@ -348,13 +348,13 @@
           <div class="card">
             <div class="card-body">
           <div class="row">
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mb-2">
               <div class="row">
                 <form id="search_info" name="search_info" class="form-inline" method="post">
                   {{ csrf_field() }}
                   <div class="col-md-4 col-sm-2">
                     <div class="input-group">
-                      <span class="input-group-addon"></span>
+                      <span class="input-group-addon"><i class="far fa-calendar-alt fa-3x"></i></span>
                       <input id="date_to_search" type="text" class="form-control" name="date_to_search">
                     </div>
                   </div>
@@ -449,13 +449,13 @@
           <div class="card">
             <div class="card-body">
           <div class="row">
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mb-2">
               <div class="row">
                 <form id="search_info" name="search_info" class="form-inline" method="post">
                   {{ csrf_field() }}
                   <div class=" col-md-4 col-sm-2">
                     <div class="input-group">
-                      <span class="input-group-addon"></span>
+                      <span class="input-group-addon"><i class="far fa-calendar-alt fa-3x"></i></span>
                       <input id="date_to_search" type="text" class="form-control" name="date_to_search">
                     </div>
                   </div>
@@ -551,13 +551,13 @@
           <div class="card">
             <div class="card-body">
           <div class="row">
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mb-2">
               <div class="row">
                 <form id="search_info" name="search_info" class="form-inline" method="post">
                   {{ csrf_field() }}
                   <div class="col-md-4 col-sm-2">
                     <div class="input-group">
-                      <span class="input-group-addon"></i></span>
+                      <span class="input-group-addon"><i class="far fa-calendar-alt fa-3x"></i></span>
                       <input id="date_to_search" type="text" class="form-control" name="date_to_search">
                     </div>
                   </div>
@@ -619,13 +619,13 @@
           <div class="card">
             <div class="card-body">
           <div class="row">
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mb-2">
               <div class="row">
                 <form id="search_info" name="search_info" class="form-inline" method="post">
                   {{ csrf_field() }}
                   <div class="col-md-4 col-sm-2">
                     <div class="input-group">
-                      <span class="input-group-addon"></span>
+                      <span class="input-group-addon"><i class="far fa-calendar-alt fa-3x"></i></span>
                       <input id="date_to_search" type="text" class="form-control" name="date_to_search">
                     </div>
                   </div>

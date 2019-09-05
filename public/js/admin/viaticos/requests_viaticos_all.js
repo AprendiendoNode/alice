@@ -26,6 +26,7 @@ function table_permission_all() {
       data: objData,
       success: function (data){
         viatics_table(data, $("#table_viatics"));
+        document.getElementById("table_viatics_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);

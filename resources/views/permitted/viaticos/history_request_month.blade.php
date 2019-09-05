@@ -263,7 +263,7 @@
             {{ csrf_field() }}
             <div class="col-md-4 col-sm-2">
               <div class="input-group">
-                <span class="input-group-addon"></span>
+                <span class="input-group-addon"><i class="far fa-calendar-alt fa-3x"></i></span>
                 <input id="date_to_search" type="text" class="form-control" name="date_to_search">
               </div>
             </div>
