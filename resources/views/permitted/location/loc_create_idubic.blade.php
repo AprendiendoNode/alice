@@ -46,7 +46,7 @@
                                           <label for="hotel_name" class="control-label">Nombre del sitio:
                                             <span style="color:red;">*</span>
                                           </label>
-                                          <input type="text" class="form-control required" id="hotel_name" name="hotel_name" maxlength="100">
+                                          <input type="text" class="form-control form-control-sm required" id="hotel_name" name="hotel_name" maxlength="100">
                                         </div>
                                       </div>
                                       <div class="col-md-8 col-md-offset-2">
@@ -54,7 +54,7 @@
                                           <label for="hotel_address" class="control-label">Dirección:
                                             <span style="color:red;">*</span>
                                           </label>
-                                          <input type="text" class="form-control required" id="hotel_address" name="hotel_address" maxlength="100">
+                                          <input type="text" class="form-control form-control-sm required" id="hotel_address" name="hotel_address" maxlength="100">
                                         </div>
                                       </div>
                                       <div class="col-md-8 col-md-offset-2">
@@ -62,16 +62,16 @@
                                           <label for="hotel_telephone" class="control-label">Telefono:
                                             <span style="color:red;">*</span>
                                           </label>
-                                          <input type="text" class="form-control required" id="hotel_telephone" name="hotel_telephone" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                          <input type="text" class="form-control form-control-sm required" id="hotel_telephone" name="hotel_telephone" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                         </div>
                                       </div>
 
-                                      <div class="col-md-4 col-md-offset-2">
+                                      <div class="col-md-8 col-md-offset-2">
                                         <div class="form-group">
                                           <label for="hotel_street" class="control-label">Calle:
                                             <span style="color:red;">*</span>
                                           </label>
-                                          <input type="text" class="form-control required" id="hotel_street" name="hotel_street" maxlength="100" >
+                                          <input type="text" class="form-control form-control-sm required" id="hotel_street" name="hotel_street" maxlength="100" >
                                         </div>
                                       </div>
 
@@ -80,7 +80,7 @@
                                           <label for="hotel_noext" class="control-label">No.Ext:
                                             <span style="color:red;">*</span>
                                           </label>
-                                          <input type="text" class="form-control required" id="hotel_noext" name="hotel_noext" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                          <input type="text" class="form-control form-control-sm required" id="hotel_noext" name="hotel_noext" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                         </div>
                                       </div>
 
@@ -89,7 +89,7 @@
                                           <label for="hotel_noint" class="control-label">No.Int:
                                             <span style="color:red;">*</span>
                                           </label>
-                                          <input type="text" class="form-control required" id="hotel_noint" name="hotel_noint" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                          <input type="text" class="form-control form-control-sm required" id="hotel_noint" name="hotel_noint" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                         </div>
                                       </div>
 
@@ -98,7 +98,7 @@
                                           <label for="hotel_cp" class="control-label">CP:
                                             <span style="color:red;">*</span>
                                           </label>
-                                          <input type="text" class="form-control required" id="hotel_cp" name="hotel_cp" maxlength="5" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                          <input type="text" class="form-control form-control-sm required" id="hotel_cp" name="hotel_cp" maxlength="5" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                         </div>
                                       </div>
 
@@ -107,7 +107,7 @@
                                           <label for="sel_master_grupo"> Selecciona el grupo:
                                             <span style="color:red;">*</span>
                                           </label>
-                                          <select class="form-control required" id="sel_master_grupo" name="sel_master_grupo" style="width:100%;">
+                                          <select class="form-control form-control-sm required" id="sel_master_grupo" name="sel_master_grupo" style="width:100%;">
                                             <option value="" selected>{{ trans('pay.select_op') }}</option>
                                             @forelse ($cadenas as $data_cadenas)
                                             <option value="{{ $data_cadenas->id }}"> {{ $data_cadenas->name }} </option>
@@ -119,10 +119,38 @@
                                       <div class="col-md-8 col-md-offset-2">
                                         <div class="form-group">
                                           <label for="id_generate" class="control-label">ID ubicación</label>
-                                          <input type="text" class="form-control" id="id_generate" name="id_generate" readonly>
+                                          <input type="text" class="form-control form-control-sm" id="id_generate" name="id_generate" readonly>
                                         </div>
                                       </div>
                                       <div class="col-md-8 col-md-offset-2">
+                                        <div class="form-group">
+                                          <label for="sel_service"> Tipo de servicio:
+                                            <span style="color:red;">*</span>
+                                          </label>
+                                          <select class="form-control form-control-sm required" id="sel_service" name="sel_service" style="width:100%;">
+                                            <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                            @forelse ($servicios as $servicio)
+                                            <option value="{{ $servicio->id }}"> {{ $servicio->Nombre_servicio }} </option>
+                                            @empty
+                                            @endforelse
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-8 col-md-offset-2">
+                                        <div class="form-group">
+                                          <label for="sel_vertical"> Vertical:
+                                            <span style="color:red;">*</span>
+                                          </label>
+                                          <select class="form-control form-control-sm required" id="sel_vertical" name="sel_vertical" style="width:100%;">
+                                            <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                            @forelse ($verticals as $data_vertical)
+                                            <option value="{{ $data_vertical->id }}"> {{ $data_vertical->name }} </option>
+                                            @empty
+                                            @endforelse
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-8 col-md-offset-2 mt-4">
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-info btngeneralcrear"><i class="fa fa-bullseye margin-r5"></i> Guardar</button>
                                         </div>
@@ -140,7 +168,7 @@
                                         <label for="sel_edit_cadena"> Selecciona el grupo:
                                           <span style="color:red;">*</span>
                                         </label>
-                                        <select class="form-control required" id="sel_edit_cadena" name="sel_edit_cadena" style="width:100%;">
+                                        <select class="form-control form-control-sm required" id="sel_edit_cadena" name="sel_edit_cadena" style="width:100%;">
                                           <option value="" selected>{{ trans('pay.select_op') }}</option>
                                           @forelse ($cadenas as $data_cadenas)
                                           <option value="{{ $data_cadenas->id }}"> {{ $data_cadenas->name }} </option>
@@ -154,7 +182,7 @@
                                           <label for="sel_edit_sitio"> Selecciona el sitio:
                                             <span style="color:red;">*</span>
                                           </label>
-                                          <select class="form-control required" id="sel_edit_sitio" name="sel_edit_sitio" style="width:100%;">
+                                          <select class="form-control form-control-sm required" id="sel_edit_sitio" name="sel_edit_sitio" style="width:100%;">
                                             <option value="" selected>{{ trans('pay.select_op') }}</option>
                                           </select>
                                         </div>
@@ -162,57 +190,85 @@
                                       <div class="col-md-8 col-md-offset-2">
                                         <div class="form-group">
                                           <label for="edit_hotel_name" class="control-label">Nombre del sitio:</label>
-                                          <input type="text" class="form-control required" id="edit_hotel_name" name="edit_hotel_name" readonly>
+                                          <input type="text" class="form-control form-control-sm required" id="edit_hotel_name" name="edit_hotel_name" readonly>
                                         </div>
                                       </div>
                                       <div class="col-md-8 col-md-offset-2">
                                         <div class="form-group">
                                           <label for="edit_hotel_address" class="control-label">Dirección:</label>
-                                          <input type="text" class="form-control required" id="edit_hotel_address" name="edit_hotel_address" readonly>
+                                          <input type="text" class="form-control form-control-sm required" id="edit_hotel_address" name="edit_hotel_address" readonly>
                                         </div>
                                       </div>
                                       <div class="col-md-8 col-md-offset-2">
                                         <div class="form-group">
                                           <label for="edit_hotel_telephone" class="control-label">Telefono:</label>
-                                          <input type="text" class="form-control required" id="edit_hotel_telephone" name="edit_hotel_telephone" maxlength="30" readonly>
+                                          <input type="text" class="form-control form-control-sm required" id="edit_hotel_telephone" name="edit_hotel_telephone" maxlength="30" readonly>
                                         </div>
                                       </div>
                                       <div class="col-md-4 col-md-offset-2">
                                         <div class="form-group">
                                           <label for="edit_hotel_street" class="control-label">Calle:</label>
-                                          <input type="text" class="form-control" id="edit_hotel_street" name="edit_hotel_street" maxlength="100" readonly>
+                                          <input type="text" class="form-control form-control-sm" id="edit_hotel_street" name="edit_hotel_street" maxlength="100" readonly>
                                         </div>
                                       </div>
 
                                       <div class="col-md-4">
                                         <div class="form-group">
                                           <label for="edit_hotel_noext" class="control-label">No.Ext:</label>
-                                          <input type="text" class="form-control" id="edit_hotel_noext" name="edit_hotel_noext" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly>
+                                          <input type="text" class="form-control form-control-sm" id="edit_hotel_noext" name="edit_hotel_noext" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly>
                                         </div>
                                       </div>
 
                                       <div class="col-md-4 col-md-offset-2">
                                         <div class="form-group">
                                           <label for="edit_hotel_noint" class="control-label">No.Int:</label>
-                                          <input type="text" class="form-control" id="edit_hotel_noint" name="edit_hotel_noint" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly>
+                                          <input type="text" class="form-control form-control-sm" id="edit_hotel_noint" name="edit_hotel_noint" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly>
                                         </div>
                                       </div>
 
                                       <div class="col-md-4">
                                         <div class="form-group">
                                           <label for="edit_hotel_cp" class="control-label">CP:</label>
-                                          <input type="text" class="form-control" id="edit_hotel_cp" name="edit_hotel_cp" maxlength="5" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly>
+                                          <input type="text" class="form-control form-control-sm" id="edit_hotel_cp" name="edit_hotel_cp" maxlength="5" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly>
                                         </div>
                                       </div>
 
                                       <div class="col-md-8 col-md-offset-2">
                                         <label  class="control-label">Id de ubicación:</label>
                                         <div class="input-group inputids">
-                                          <input type="text" class="form-control required" name="key_edit_cadena" readonly>
+                                          <input type="text" class="form-control form-control-sm required" name="key_edit_cadena" readonly>
                                           <span class="input-group-btn">
                                             <button class="btn btn-default" type="button">-</button>
                                           </span>
-                                          <input type="text" class="form-control required" name="key_edit_sitio" readonly>
+                                          <input type="text" class="form-control form-control-sm required" name="key_edit_sitio" readonly>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-8 col-md-offset-2">
+                                        <div class="form-group">
+                                          <label for="sel_service_edit"> Tipo de servicio:
+                                            <span style="color:red;">*</span>
+                                          </label>
+                                          <select class="form-control form-control-sm required" id="sel_service_edit" name="sel_service_edit" style="width:100%;">
+                                            <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                            @forelse ($servicios as $servicio)
+                                            <option value="{{ $servicio->id }}"> {{ $servicio->Nombre_servicio }} </option>
+                                            @empty
+                                            @endforelse
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-8 col-md-offset-2">
+                                        <div class="form-group">
+                                          <label for="sel_vertical_edit"> Vertical:
+                                            <span style="color:red;">*</span>
+                                          </label>
+                                          <select class="form-control form-control-sm required" id="sel_vertical_edit" name="sel_vertical_edit" style="width:100%;">
+                                            <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                            @forelse ($verticals as $data_vertical)
+                                            <option value="{{ $data_vertical->id }}"> {{ $data_vertical->name }} </option>
+                                            @empty
+                                            @endforelse
+                                          </select>
                                         </div>
                                       </div>
                                       <div class="col-md-8 col-md-offset-2">
@@ -497,6 +553,8 @@
             $('[name="edit_hotel_name"]').val(datax[0].sitio);
             $('[name="edit_hotel_address"]').val(datax[0].Direccion);
             $('[name="edit_hotel_telephone"]').val(datax[0].Telefono);
+            $('[name="sel_service_edit"]').val(datax[0].servicios_id);
+            $('[name="sel_vertical_edit"]').val(datax[0].vertical_id);
 
             $('[name="key_edit_cadena"]').val(datax[0].key_cadena);
             $('[name="key_edit_sitio"]').val(datax[0].key_sitio);

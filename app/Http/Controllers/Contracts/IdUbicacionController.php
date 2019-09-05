@@ -9,6 +9,7 @@ use Auth;
 use App\User;
 use App\Cadena;
 use App\Vertical;
+use App\Servicio;
 use Carbon\Carbon;
 
 class IdUbicacionController extends Controller
@@ -16,8 +17,9 @@ class IdUbicacionController extends Controller
   public function index()
   {
     $verticals = Vertical::select('id', 'name')->get();
-    $cadenas = Cadena::select('id', 'name')->get();
-    return view('permitted.location.loc_create_idubic', compact('verticals','cadenas'));
+    $servicios = Servicio::select('id', 'Nombre_servicio')->get();
+    $cadenas = Cadena::select('id', 'name')->orderBy('name','ASC')->get();
+    return view('permitted.location.loc_create_idubic', compact('verticals','cadenas', 'servicios'));
   }
 
   public function find_new_idubication(Request $request)
@@ -95,6 +97,8 @@ class IdUbicacionController extends Controller
         'num_ext' => $datanoext,
         'num_int' => $datanoint,
         'codigopostal' => $datacp,
+        'servicios_id' => $request->sel_service,
+        'vertical_id' => $request->sel_vertical,
         'created_at' => \Carbon\Carbon::now()
       ]
     );
@@ -166,6 +170,8 @@ class IdUbicacionController extends Controller
               'num_ext' => $datanoext,
               'num_int' => $datanoint,
               'codigopostal' => $datacp,
+              'servicios_id' => $request->sel_service_edit,
+              'vertical_id' => $request->sel_vertical_edit,
               'updated_at' => \Carbon\Carbon::now()
             ]);
 

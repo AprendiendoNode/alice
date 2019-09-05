@@ -337,7 +337,7 @@ function get_tir(){
   while (suma_total >= 1) {
     tir+=.000001;
     suma_total= 0.0;
-    for (var i = 1; i <= 48; i++) {
+    for (var i = 1; i <= plazo; i++) {
       vpc = flujo_neto /   Math.pow(1 + tir, i);
       suma_total+= vpc;
     }

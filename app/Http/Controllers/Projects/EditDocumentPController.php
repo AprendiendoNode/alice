@@ -203,13 +203,13 @@ class EditDocumentPController extends Controller
     $documentp = Documentp::find($id);
     $id_document = $documentp->id;
     $totalUsdOld = $documentp->total_usd;
-    $hour_created = $documentp->fecha_aprobacion;
+    $hour_created = $documentp->updated_at;
     $hour_created =  \Carbon\Carbon::parse($hour_created);
     $num_edit = $documentp->num_edit;
 
     if($this->check_user_permission() == 0){
-      if($this->validateHourEdit($hour_created, $num_edit)){
-        if(!$this->check_status_document($documentp->id)){
+      if($this->validateHourEdit($hour_created, $num_edit,$documentp->id)){
+        if($documentp->status_id == 3){
           $num_edit++;
         }
       }else{
