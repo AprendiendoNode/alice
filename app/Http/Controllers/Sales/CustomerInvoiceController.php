@@ -132,6 +132,7 @@ class CustomerInvoiceController extends Controller
        $input_items = $request->item;
        $currency_id = $request->currency_id; //Guardo la moneda seleccionada
        $currency_value = $request->currency_value;
+       $resp_currency_value = $request->currency_value;
        // $texto = "";
        if (empty($currency_id)) {
          $currency_id = 1;
@@ -204,11 +205,12 @@ class CustomerInvoiceController extends Controller
                  else { //moneda distinta
                    $currency_value = DB::table('currencies')->select('rate')->where('id', $item['current'])->value('rate');
                    $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item['current'])->value('code_banxico');
-
-                   if (condition) {
-                     // code...
+                   if ($currency_id === '2') { //SI LA MONEDA SELECCIONADA ES DOLAR
+                      $item_amount_total = $item_amount_total/$resp_currency_value;
                    }
-                   $item_amount_total = $item_amount_total/$currency_value;
+                   else {
+                     $item_amount_total = $item_amount_total*$currency_value;
+                   }
                  }
                }
                $item_amount_untaxed = round($item_quantity * $item_amount_total, 2); //cantidad del artículo sin impuestos
