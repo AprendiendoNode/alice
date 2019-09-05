@@ -140,29 +140,13 @@ class CustomerInvoiceController extends Controller
          $currency_value = 1;
        }
        if (empty($currency_value)) {
-         $currency_value = 1;
+         $current_select_rate = DB::table('currencies')->select('rate')->where('id', $currency_id)->first();
+         $currency_value = $current_rate->rate;
        }
 
        $currency_code = 'MXN'; //En caso que no haya moneda le digo por defecto es pesos mexicanos
 
        if ($request->ajax()) {
-           //Datos de moneda - Obtengo moneda seleccionada al principio
-           /*if (!empty($currency_id)) {
-               $currency = Currency::findOrFail($currency_id);
-               $currency_code = $currency->code;
-           }*/
-           /*if ($currency_id != 1) {
-             $texto = 'entre al primero';
-             if ($currency_value === 1 || empty($currency_value)) {
-               $current_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
-               $currency_value = $current_rate->current_rate;
-               $texto = 'entre';
-             }else{
-               $currency_value = $currency_value;
-               $texto = 'no entre';
-             }
-           }*/
-
            //Variables de totales
            $amount_discount = 0;
            $amount_untaxed = 0;
@@ -205,23 +189,30 @@ class CustomerInvoiceController extends Controller
                }
 
                $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;
-
                //Tipo cambio
                if ($item['current'] === $currency_id) {
-                 $current_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
-                 if($currency_value != $current_rate->current_rate){
                    $item_amount_total = $item_amount_total * $currency_value;
-                 }else{
-                   $item_amount_total = $item_amount_total * $current_rate->current_rate;
+               }
+               elseif ( $item['current'] != $currency_id) {
+                 if ( $item['current'] === '2') { //ES DOLAR
+                   $current_select_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+                   $currency_value = $current_select_rate->current_rate;
+                   $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $currency_id)->value('code_banxico');
+
+                   $item_amount_total = $item_amount_total * $currency_value;
+                 }
+                 else { //moneda distinta
+                   $currency_value = DB::table('currencies')->select('rate')->where('id', $item['current'])->value('rate');
+                   $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item['current'])->value('code_banxico');
+
+                   if (condition) {
+                     // code...
+                   }
+                   $item_amount_total = $item_amount_total/$currency_value;
                  }
                }
-               elseif ( $item['current'] != $currency_id && !empty($item['current']) ) {
-                 return $item['current'];
-                 $current_rate = DB::table('exchange_rates')->select('current_rate')->where('currency_id', $item['current'])->latest()->first();
-                 $eieie = $current_rate->current_rate;
-                 $item_amount_total = $item_amount_total * $current_rate->current_rate;
-                 $item_amount_untaxed = round($item_quantity * $item_amount_total, 2); //cantidad del artículo sin impuestos
-               }
+               $item_amount_untaxed = round($item_quantity * $item_amount_total, 2); //cantidad del artículo sin impuestos
+
                //Sumatoria totales
                $amount_discount += $item_amount_discount;
                $amount_untaxed += $item_amount_untaxed;
@@ -232,7 +223,8 @@ class CustomerInvoiceController extends Controller
                //Subtotales por cada item
                // $items[$key] = $currency_id;
                // $items[$key] = $item_amount_total;
-               $items[$key] = moneyFormat($item_amount_total, $currency_code);
+               // $items[$key] = moneyFormat($item_amount_total, $currency_code);
+               $items[$key] = $item_amount_total;
              }
            }
            //Respuesta
