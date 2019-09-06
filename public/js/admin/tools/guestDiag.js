@@ -1,7 +1,7 @@
 $(function() {
 	$('#fila-p').hide();
 	$('#fila-p2').hide();
-	refresh_table();
+	// refresh_table();
 });
 
 $('#btnDiag2').on('click', function(e){
