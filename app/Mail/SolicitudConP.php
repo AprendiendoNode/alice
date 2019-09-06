@@ -12,15 +12,16 @@ class SolicitudConP extends Mailable
     use Queueable, SerializesModels;
 
     public $param; //Variable publica
-//    public $param1; //Variable publica
+    public $totales; //Variable publica
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($param)
+    public function __construct($param, $totales)
     {
         $this->param = $param;
+        $this->totales = $totales;
     }
 
     /**

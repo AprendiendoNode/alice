@@ -130,6 +130,8 @@ background-color: #f6f6f6;
                                 font-size: 14px;
                                 text-align: left;"><strong>No se realizaron pagos esta semana.</strong></p>
                     @else
+                    <label>Total MXN: </label><h4>{{$totales[0]->sum_MXN}}</h4><label> Total USD: </label><h4>{{$totales[0]->sum_USD}}</h4><br>
+                    
                       <table class="greyGridTable">
                         <thead>
                         <tr>
@@ -139,28 +141,28 @@ background-color: #f6f6f6;
                         <th> <small>Concepto</small> </th>
                         <th> <small>Monto</small> </th>
                         <th> <small>Moneda</small> </th>
-                        <th> <small>Realizó solicitud</small> </th>
                         <th> <small>Fecha solicitud</small> </th>
+                        <th> <small>Realizó solicitud</small> </th>
                         <th> <small>Autorizó solicitud</small> </th>
+                        <th> <small>Confirmó pago</small> </th>
                         <th> <small>Fecha Confirmación</small> </th>
-                        <th> <small>Realizó confirmación</small> </th>
                         </tr>
                         </thead>
                         <tbody>
 
                         @for ($i = 0; $i < count($param); $i++)
                         <tr>
-                          <td>{{$param[$i]['factura']}}</td>
-                          <td>{{$param[$i]['folio']}}</td>
-                          <td>{{$param[$i]['proveedor']}}</td>
-                          <td>{{$param[$i]['concepto']}}</td>
-                          <td>{{$param[$i]['monto']}}</td>
-                          <td>{{$param[$i]['monto_str']}}</td>
-                          <td>{{$param[$i]['elaboro']}}</td>
-                          <td>{{$param[$i]['fecha_elaboro']}}</td>
-                          <td>{{$param[$i]['autorizo']}}</td>
-                          <td>{{$param[$i]['fecha']}}</td>
-                          <td>{{$param[$i]['realizo']}}</td>
+                          <td>{{ $param[$i]->factura }}</td>
+                          <td>{{ $param[$i]->folio }}</td>
+                          <td>{{ $param[$i]->proveedor }}</td>
+                          <td>{{ $param[$i]->concepto }}</td>
+                          <td>{{ $param[$i]->monto }}</td>
+                          <td>{{ $param[$i]->monto_str }}</td>
+                          <td>{{ $param[$i]->fecha_elaboro }}</td>
+                          <td>{{ $param[$i]->elaboro }}</td>
+                          <td>{{ $param[$i]->autorizo }}</td>
+                          <td>{{ $param[$i]->realizo }}</td>
+                          <td>{{ $param[$i]->fecha }}</td>
                         </tr>
                         @endfor
 
