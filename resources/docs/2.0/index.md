@@ -32,11 +32,11 @@
     - [Diagnostico de servidores](/{{route}}/{{version}}/tools/detailed_server_review)
     - [Testeo ZD](/{{route}}/{{version}}/tools/testzone)
 - ## Viaticos
-    - [Dashboard Viaticos](/{{route}}/{{version}}/viatics/dashboard_viaticos)
-    - [Solicitud Viaticos](/{{route}}/{{version}}/viatics/add_request_via)
-    - [Historial de Viaticos](/{{route}}/{{version}}/viatics/view_request_via)
-    - [Todos los Viaticos](/{{route}}/{{version}}/viatics/view_request_all_via)
-    - [Reporte Semanal](/{{route}}/{{version}}/viatics/view_viatic_weekly)
+    - [Dashboard Viaticos](/{{route}}/{{version}}/viaticos/dashboard_viaticos)
+    - [Solicitud Viaticos](/{{route}}/{{version}}/viaticos/add_request_via)
+    - [Historial de Viaticos](/{{route}}/{{version}}/viaticos/view_request_via)
+    - [Todos los Viaticos](/{{route}}/{{version}}/viaticos/view_request_all_via)
+    - [Reporte Semanal](/{{route}}/{{version}}/viaticos/view_viatic_weekly)
 - ## Pagos
 
 - ## Proyectos
