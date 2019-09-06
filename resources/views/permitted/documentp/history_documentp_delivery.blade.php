@@ -18,7 +18,7 @@
 
 @section('content')
   @include('permitted.documentp.modal_documentp')
-
+  <div class="card">
   @if( auth()->user()->can('View delivery documents') )
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -44,7 +44,7 @@
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
           <div class="table-responsive">
-            <table id="table_documentp" class="table table-striped table-bordered table-hover nowrap">
+            <table id="table_documentp" class="table table-striped table-bordered table-hover nowrap compact-tab w-100">
               <thead>
                 <tr class="" style="background: #088A68;">
                   <th> <small>Fecha de solicitud</small> </th>
@@ -87,7 +87,7 @@
   @else
     @include('default.denied')
   @endif
-
+</div>
 @endsection
 
 @push('scripts')

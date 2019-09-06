@@ -1,5 +1,5 @@
         <div class="wow bounceInUp" style=" display: none; cursor: pointer; position: fixed; bottom: 10px !important; right: 5px !important;">
-          <img src="/images/docs/message.svg" id="globo" style="width: 8vw; height: 12vh;" alt="">
+          <img src="/images/docs/message.svg" id="globo" style="width: 10vw; height: 12vh;" alt="">
           <img src="/images/docs/cancel.svg" id="globo_close">
         </div>
         <footer class="footer">

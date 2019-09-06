@@ -258,20 +258,20 @@
         </div>
       @elseif ( auth()->user()->can('View level one notifications') )
         <div class="modal modal-default fade" id="modal-view-concept-approve" data-backdrop="static">
-            <div class="modal-dialog" style="width: 800px;">
-              <div class="modal-content">
+            <div class="modal-dialog">
+              <div class="modal-content" style="width: 70vw !important; margin-left: -15vw !important;">
                 <div class="modal-header">
+                  <h4 class="modal-title"><i class="fas fa-id-card" style="margin-right: 4px;"></i>Aprobar conceptos</h4>
                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title"><i class="fa fa-id-card-o" style="margin-right: 4px;"></i>Aprobar conceptos</h4>
                 </div>
                 <div class="modal-body table-responsive">
                   <div class="card-body">
                     <div class="card-body">
                       <div class="row">
                           <!------------------------------------------------------------------------------------------------------------------------------------------------------->
-                          <table id="tableconcept" class="table table-striped table-bordered table-hover">
-                            <thead>
-                              <tr class="bg-white" style="background: #0A2B49;">
+                          <table id="tableconcept" class="table table-striped table-bordered table-hover compact-tab">
+                            <thead class="bg-primary">
+                              <tr style="background: #0A2B49;">
                                 <th> <small>id</small> </th>
                                 <th> <small>Cadena</small> </th>
                                 <th> <small>Sitio</small> </th>

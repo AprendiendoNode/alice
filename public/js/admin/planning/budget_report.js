@@ -31,6 +31,7 @@ function budget_tb(token) {
       success: function (data){
         // console.log(data);
         generate_table_budget(data, $('#table_budget'));
+        document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
         $('#tpgeneral').val('');
         $('#date_to_search').val('');
       },
@@ -79,6 +80,7 @@ function get_desglose_table(id_sitio) {
       success: function (data){
         console.log(data);
         generate_table_desglose(data, $('#table_desglose'));
+        document.getElementById("table_desglose_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);
@@ -96,6 +98,7 @@ $('.btnupdetc').on('click', function(){
       success: function (data){
         console.log(data);
         generate_table_desglose(data, $('#table_desglose'));
+        document.getElementById("table_desglose_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);
@@ -183,7 +186,7 @@ var Configuration_table_responsive_budget= {
   buttons: [
     {
       extend: 'excelHtml5',
-      text: '<i class="fa fa-file-excel-o"></i> Excel',
+      text: '<i class="far fa-file-excel"></i> Excel',
       titleAttr: 'Excel',
       title: function ( e, dt, node, config ) {
         var ax = '';
@@ -492,7 +495,7 @@ var Configuration_table_responsive_budget_desglose= {
   buttons: [
     {
       extend: 'excelHtml5',
-      text: '<i class="fa fa-file-excel-o"></i> Excel',
+      text: '<i class="far fa-file-excel"></i> Excel',
       titleAttr: 'Excel',
       title: function ( e, dt, node, config ) {
         var ax = '';

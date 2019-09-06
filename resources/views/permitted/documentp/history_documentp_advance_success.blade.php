@@ -43,6 +43,8 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+  <div class="card">
+    <p>&nbsp;</p>
   @if( auth()->user()->can('View level zero documentp notification') )
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -56,7 +58,7 @@
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
           <div class="table-responsive">
-            <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
+            <table id="table_documentp" class="table table-striped table-bordered table-condensed compact-tab w-100">
               <thead>
                 <tr style="background: #088A68;">
                   <th> <small>Nombre del proyecto</small> </th>
@@ -113,7 +115,7 @@
       <div class="">
         <div class="">
           <div class="table-responsive">
-            <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
+            <table id="table_documentp" class="table table-striped table-bordered table-condensed compact-tab w-100">
               <thead>
                 <tr style="background: #088A68;">
                   <th> <small>Estatus</small> </th>
@@ -181,7 +183,7 @@
       <div class="">
         <div class="">
           <div class="table-responsive">
-            <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
+            <table id="table_documentp" class="table table-striped table-bordered table-condensed compact-tab w-100">
               <thead>
                 <tr style="background: #088A68;">
                   <th> <small>Estatus</small> </th>
@@ -249,7 +251,7 @@
       <div class="">
         <div class="">
           <div class="table-responsive">
-            <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
+            <table id="table_documentp" class="table table-striped table-bordered table-condensed compact-tab w-100">
               <thead>
                 <tr style="background: #088A68;">
                   <th> <small>Estatus</small> </th>
@@ -307,6 +309,7 @@
     @else
       @include('default.denied')
     @endif
+  </div>
 @endsection
 
 @push('scripts')

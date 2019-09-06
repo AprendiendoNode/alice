@@ -31,7 +31,7 @@
           <form id="form_tc" class="form-inline">
             <input id="tpgeneral" name="tpgeneral" type="number" class="form-control" placeholder="Tipo de cambio(pagos, viáticos)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10">
             <div class="input-group">
-             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+             <span class="input-group-addon"><i class="far fa-calendar-alt fa-3x"></i></span>
              <input id="date_to_search_tc" type="text" class="form-control date_plug" name="date_to_search_tc">
             </div>
             <button type="button" class="btn btn-primary btnupdetc">Update</button>
@@ -73,25 +73,25 @@
   <div class="container" style="width: 100%;">
       <div class="row">
           <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-            <div class="box box-solid">
-              <div class="box-header with-border">
+            <div class="card">
+              <div class="card-header with-border">
                 <i class="fa fa-money"></i>
-                <h3 class="box-title">Presupuestos de Mantenimiento</h3>
+                <h3 class="card-title">Presupuestos de Mantenimiento</h3>
               </div>
-              <div class="box-body">
+              <div class="card-body">
                 <div class="row">
                  <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                    <form id="search_info" name="search_info" class="form-inline" method="post">
                      {{ csrf_field() }}
                      <div class="col-sm-2">
                        <div class="input-group">
-                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                         <span class="input-group-addon"><i class="far fa-calendar-alt fa-3x"></i></span>
                          <input id="date_to_search" type="text" class="form-control date_plug" name="date_to_search">
                        </div>
                      </div>
                      <div class="col-sm-10">
                        <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarBudgets">
-                         <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>  Filtrar
+                         <i class="fas fa-filter" aria-hidden="true"></i>  Filtrar
                        </button>
                      </div>
                    </form>
@@ -103,7 +103,7 @@
                   <!-- <form id="proc_update" class="form-inline"></form> -->
                   <label class="control-label">Actualizar información.</label>
                   <button id="boton-aplica-filtro" type="button" class="btn btn-default update_proc_sites">
-                     <i class="glyphicon glyphicon-refresh" aria-hidden="true"></i>  Refrescar
+                     <i class="fas fa-sync-alt" aria-hidden="true"></i>  Refrescar
                   </button>
                  </div>
                 </div>
@@ -111,7 +111,7 @@
                 <div class="row">
                   <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                     <div class="table-responsive">
-                      <table id="table_budget" name='table_budget' class="display nowrap table table-bordered table-hover" width="100%" cellspacing="0">
+                      <table id="table_budget" name='table_budget' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
                         <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
                         <thead>
                             <tr class="bg-dark" style="color: white">

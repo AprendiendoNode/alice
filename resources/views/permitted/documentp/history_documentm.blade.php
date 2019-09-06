@@ -18,6 +18,7 @@
 @endsection
 
 @section('content')
+  <div class="card">
   <form id="form_edit_docp" class="" action="/edit_cart" method="post">
     {{ csrf_field() }}
     <input type="hidden" name="id_docp" id="id_docp" value="">
@@ -53,7 +54,7 @@
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
           <div class="table-responsive">
-            <table id="table_documentp" class="table table-striped table-bordered table-hover table-condensed">
+            <table id="table_documentp" class="table table-striped table-bordered table-hover table-condensed compact-tab w-100">
               <thead>
                 <tr style="background: #088A68;">
                   <th> <small>Fecha de solicitud</small> </th>
@@ -108,7 +109,7 @@
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
           <div class="table-responsive">
-            <table  id="table_documentp" class="table table-striped table-bordered table-hover nowrap">
+            <table  id="table_documentp" class="table table-striped table-bordered table-hover nowrap compact-tab w-100">
               <thead>
                 <tr class="" style="background: #088A68;">
                   <th> <small>Fecha de solicitud</small> </th>
@@ -177,7 +178,7 @@
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
           <div class="table-responsive">
-            <table id="table_documentp" class="table table-striped table-bordered table-hover table-condensed">
+            <table id="table_documentp" class="table table-striped table-bordered table-hover table-condensed compact-tab w-100">
               <thead>
                 <tr class="" style="background: #088A68;">
                   <th> <small></small> </th>
@@ -250,7 +251,7 @@
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
           <div class="table-responsive">
-            <table id="table_documentp" class="table table-striped table-bordered table-hover table-condensed">
+            <table id="table_documentp" class="table table-striped table-bordered table-hover table-condensed compact-tab w-100">
               <thead>
                 <tr class="" style="background: #088A68;">
                   <th> <small></small> </th>
@@ -302,6 +303,7 @@
 
     @include('default.denied')
   @endif
+  </div>
 @endsection
 
 @push('scripts')
