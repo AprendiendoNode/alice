@@ -44,7 +44,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="inputCreatNumid" class="col-sm-3 col-form-label">Reg. identidad fiscal <span style="color: red;">*</span></label>
+                  <label for="inputCreatNumid" class="col-sm-3 col-form-label">Razón social <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm required" id="inputCreatNumid" name="inputCreatNumid" placeholder="Reg. identidad fiscal" maxlength="20">
                   </div>
@@ -68,10 +68,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="select_one" class="col-sm-3 col-form-label">Termino de pago <span style="color: red;">*</span></label>
+                  <label for="select_one" class="col-sm-3 col-form-label">Término de pago <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <select  id="select_one" name="select_one" class="form-control form-control-sm required"  style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($payment_term as $payment_term_data)
                       <option value="{{ $payment_term_data->id }}"> {{ $payment_term_data->name }} </option>
                       @empty
@@ -83,7 +82,6 @@
                   <label for="select_two" class="col-sm-3 col-form-label">Formas de pago<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <select  id="select_two" name="select_two" class="form-control form-control-sm required"  style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($payment_way as $payment_way_data)
                       <option value="{{ $payment_way_data->id }}"> {{ $payment_way_data->name }} </option>
                       @empty
@@ -95,7 +93,6 @@
                   <label for="select_three" class="col-sm-3 col-form-label">Metodo de pago<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <select  id="select_three" name="select_three" class="form-control form-control-sm required"  style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($payment_methods as $payment_methods_data)
                       <option value="{{ $payment_methods_data->id }}"> {{ $payment_methods_data->name }} </option>
                       @empty
@@ -119,7 +116,6 @@
                   <label for="select_five" class="col-sm-3 col-form-label">Vendedores<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <select  id="select_five" name="select_five" class="form-control form-control-sm required"  style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($salespersons as $salespersons_data)
                       <option value="{{ $salespersons_data->id }}"> {{ $salespersons_data->name }} </option>
                       @empty
@@ -212,7 +208,7 @@
                   </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row" style="display: none;">
                   <label for="inputCreatOrden" class="col-sm-3 col-form-label">Orden<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm required onlynumber" id="inputCreatOrden" name="inputCreatOrden" placeholder="Orden de visualización" value="0" maxlength="3">
@@ -263,7 +259,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="inputEditNumid" class="col-sm-3 col-form-label">Reg. identidad fiscal <span style="color: red;">*</span></label>
+                  <label for="inputEditNumid" class="col-sm-3 col-form-label">Razón social <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm required" id="inputEditNumid" name="inputEditNumid" placeholder="Reg. identidad fiscal" maxlength="20">
                   </div>

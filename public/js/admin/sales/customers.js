@@ -472,6 +472,10 @@ var Configuration_table_responsive_customers = {
             $('#creatcustomers')[0].reset();
             $('#creatcustomers').data('formValidation').resetForm($('#creatcustomers'));
             $('#inputCreatOrden').val(0);
+            $('#select_one').val(5);
+            $('#select_two').val(3);
+            $('#select_three').val(1);
+            $('#select_five').val(1);
           }
         }
       },
