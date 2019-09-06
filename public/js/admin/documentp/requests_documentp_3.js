@@ -26,7 +26,6 @@ function table_permission_one() {
       data: objData,
       success: function (data){
         documentp_table(data, $("#table_documentp"));
-        document.getElementById("table_documentp_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);
@@ -285,7 +284,7 @@ var Configuration_table_responsive_documentp= {
                   },
                   {
                     extend: 'excelHtml5',
-                    text: '<i class="far fa-file-excel"></i> Excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
                     titleAttr: 'Excel',
                     title: function ( e, dt, node, config ) {
                       var ax = '';
@@ -315,7 +314,7 @@ var Configuration_table_responsive_documentp= {
                   },
                   {
                     extend: 'csvHtml5',
-                    text: '<i class="far fa-file-code"></i> CSV',
+                    text: '<i class="fas fa-file-csv"></i> CSV',
                     titleAttr: 'CSV',
                     title: function ( e, dt, node, config ) {
                       var ax = '';
@@ -345,7 +344,7 @@ var Configuration_table_responsive_documentp= {
                   },
                   {
                     extend: 'pdf',
-                    text: '<i class="far fa-file-pdf"></i>  PDF',
+                    text: '<i class="fas fa-file-pdf"></i>  PDF',
                     title: function ( e, dt, node, config ) {
                       var ax = '';
                       if($('input[name="date_to_search"]').val() != ''){

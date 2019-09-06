@@ -26,7 +26,6 @@ function table_permission_zero() {
       data: objData,
       success: function (data){
         documentp_table(data, $("#table_documentp"));
-        document.getElementById("table_documentp_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);

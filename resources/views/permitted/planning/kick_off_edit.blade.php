@@ -1113,7 +1113,7 @@
                           René González
                       </div>
                       <div class="text-center">
-                        <p class="text-secondary ml-5">Director Operaciones</p>
+                        <p class="text-secondary ml-5">Director de Operaciones</p>
                         @if ($kickoff_approvals->director_operaciones == 1)
                           <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
                         @endif

@@ -108,7 +108,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 5,
               "width": "1.6%",
-              "className": "text-center",
+              "className": "text-center cell-name",
             },
             {
               "targets": 6,
@@ -127,7 +127,7 @@ var Configuration_table_responsive_documentp= {
             },
             {
               "targets": 9,
-              "width": "2%",
+              "width": "3%",
               "className": "text-center actions-button cell-large",
             }
         ],

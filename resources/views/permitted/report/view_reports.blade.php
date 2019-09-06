@@ -59,7 +59,7 @@
                 <div class="hojitha"   style="background-color: #fff; border:1px solid #ccc; border-bottom-style:hidden; padding:10px; width: 100%">
                     <div class="row pad-top-botm ">
                         <div class="col-lg-3 col-md-3 col-sm-3 ">
-                           <img class="logo-sit" src="{{ asset('/images/users/logo.svg') }}" style="padding-bottom:20px;" />
+                           <img class="img-fluid" src="{{ asset('/img/company/sitwifi_logo.jpg') }}" style="width:140px" />
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 text-center">
                           <h2><strong> Reporte de uso y estadísticas</strong></h2>
