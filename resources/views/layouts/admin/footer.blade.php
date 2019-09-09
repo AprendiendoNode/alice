@@ -1,10 +1,10 @@
-        <div class="wow bounceIn from-me bubble message1 text-left" data-wow-delay=".8s"  id="globo" style=" display: none;cursor: pointer; position: fixed; bottom: 60px !important; right: 65px !important; font-size:15px;">
+        <div class="wow bounceIn from-me bubble message1 text-left" data-wow-delay=".8s"  style=" display: none;cursor: pointer; position: fixed; bottom: 60px !important; right: 65px !important; font-size:15px;">
           <p class="pt-1">Hey!
         </div>
-        <div class="wow bounceIn from-me bubble text-left" data-wow-delay="2.5s"  id="globo" style=" display: none;cursor: pointer; position: fixed; bottom: 60px !important; right: 65px !important; font-size:15px;">
+        <div class="wow bounceIn from-me bubble text-left" data-wow-delay="2.5s"  id="globo" style=" display: none;cursor: pointer; z-index:10; position: fixed; bottom: 60px !important; right: 65px !important; font-size:15px;">
           <p class="pt-1">¿Necesitas ayuda?</p>
         </div>
-        <div class="wow bounceInUp bubble circle" id="globo" style="display: none; cursor: pointer; position: fixed; bottom: -10px !important; right: 5px !important;">A
+        <div class="wow bounceInUp bubble circle" id="globo" style="display: none; cursor: pointer; z-index:15;position: fixed; bottom: -10px !important; right: 5px !important;">A
           <img src="/images/docs/cancel.svg" id="globo_close">
         </div>
 
@@ -111,7 +111,7 @@
     $(".message1").delay(1300).fadeOut(500);
     $('#globo_close').on('click',function() {
       $('.bubble').hide();
-    }); */
+    });*/
   </script>
 
 @endpush

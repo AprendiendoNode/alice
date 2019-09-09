@@ -24,7 +24,29 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        Gate::define('viewLarecipe', function($user, $documentation) {
+            return in_array($user->email, [
+                'jcanul@sitwifi.com', //Solo los usuarios en el array tienen acceso a la documentación
+                'jsierra@sitwifi.com',
+                'jesquinca@sitwifi.com',
+                'acauich@sitwifi.com',
+                'rkuman@sitwifi.com',
+                'cleon@sitwifi.com',
+            ]);
+        });
+    //Permisos granulares.    
+    /*Gate::define('viewLarecipe', function($user, $documentation) {
+    if($user->email == 'jcanul@sitwifi.com')//Si es este usuario
+    {
+        if($documentation->title == 'Bienvenido/a') {//y si accede solo a esta pagina la puede ver
+            return true;
+        }
 
+        return false;//Si es otra pagina, no tendra acceso
+    }
+
+    return true;
+});*/
         //
     }
 }
