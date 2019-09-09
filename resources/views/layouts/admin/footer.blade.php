@@ -91,6 +91,7 @@
         ventana.focus();
         $('.bubble').hide();
       } else {
+        $('.bubble').hide();
         $.ajax({
           type: "GET",
           url: '/searchDocumentation',
@@ -100,7 +101,6 @@
             var ruta=JSON.parse(data)[0]['name'];
             var ventana= window.open("http://"+urlarray[2]+"/docs/2.0/"+ruta+"/"+url, "_blank");
             ventana.focus();
-            $('.bubble').hide();
           },
           error: function (data) {
             console.log(data);
