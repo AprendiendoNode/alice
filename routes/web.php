@@ -478,6 +478,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/search_data_timeline', 'Viatics\RequestViaticAllController@timeline');
     Route::post('/view_request_total_concept_viatic', 'Viatics\RequestViaticAllController@totales');
 
+    Route::post('/update_data_conp', 'Viatics\RequestsViaticController@ndatos');
     //Viaticos Historial N0
     Route::post('/view_request_via_zero','Viatics\RequestsViaticController@history_zero');
     Route::post('/view_request_show_viatic_up', 'Viatics\RequestsViaticController@show_viatic_up');

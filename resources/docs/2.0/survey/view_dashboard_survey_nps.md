@@ -1,5 +1,5 @@
 #Dashboard NPS
- - [Specification](#head1)
+ - [Instrucciones](#head1)
 
 ## <a name="head1">Instrucciones</a>
 Para visualizar el dashboard NPS debe seleccionar el tipo de encuesta de la lista desplegable y posteriormente seleccionar una fecha para poder filtrar los datos, por ultimo haga click en el botón de "Filtrar".<br>

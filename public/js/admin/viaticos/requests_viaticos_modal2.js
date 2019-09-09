@@ -20,7 +20,7 @@ function table_concept_onex(campoa, campob) {
       url: "/update_data_conp",
       data: { viatic : campoa , _token : campob },
       success: function (data){
-        // console.log(data);
+        //console.log(data);
         viatics_table_concept_newa(data, $("#tableconcept2"));
       },
       error: function (data) {
@@ -123,7 +123,7 @@ function viatics_table_concept_newa(datajson, table){
     var cant = getValueCant(status.cantidad);
     vartable.fnAddData([
       '',
-      '<input class="col-xs-1 hidden" type="text" id="ident[]" name="ident[]" value="'+status.id+'">'+status.cadena,
+      '<input class="col-xs-1 hidden" style="display:none;"type="text" id="ident[]" name="ident[]" value="'+status.id+'">'+status.cadena,
       status.sitio,
       status.Concepto,
       '<select size="1" id="c_cant['+index+']" name="c_cant['+index+']"><option value="">Elija</option>'+cant+'</select>',

@@ -20,6 +20,9 @@
     - [Ver Reportes Cont](/{{route}}/{{version}}/report/viewreportscont)
 - ## Encuesta
     - [Dashboard NPS](/{{route}}/{{version}}/survey/view_dashboard_survey_nps)
+    - [Crear encuesta](/{{route}}/{{version}}/survey/create_survey_admin)
+    - [Resultados NPS](/{{route}}/{{version}}/survey/survey_results)
+    - [Configuración NPS](/{{route}}/{{version}}/survey/configure_survey_admin_nps)
 - ## Equipos
     - [Altas](/{{route}}/{{version}}/equipment/up_equipment)
     - [Bajas](/{{route}}/{{version}}/equipment/down_equipment)

@@ -193,8 +193,8 @@
       <div class="modal-dialog" >
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close btn-all" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"><i class="fa fa-pencil-square-o" style="margin-right: 4px;"></i>Aprobar concepto</h4>
+            <button type="button" class="close btn-all" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
             <div class="card-body">

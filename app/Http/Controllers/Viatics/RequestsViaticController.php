@@ -868,6 +868,7 @@ public function insert_data_1(Request $request)
 public function ndatos (Request $request) {
   $viatic= $request->get('viatic');
   $result = DB::select('CALL history_viatic_user_conceptos_monto0 (?)', array($viatic));
+  info($result);
   return json_encode($result);
 }
 public function upd_datostab (Request $request) {
