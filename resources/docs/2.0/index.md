@@ -19,10 +19,10 @@
     - [Ver Reportes](/{{route}}/{{version}}/report/viewreports)
     - [Ver Reportes Cont](/{{route}}/{{version}}/report/viewreportscont)
 - ## Encuesta
-    - [Dashboard NPS](/{{route}}/{{version}}/survey/view_dashboard_survey_nps)
-    - [Crear encuesta](/{{route}}/{{version}}/survey/create_survey_admin)
-    - [Resultados NPS](/{{route}}/{{version}}/survey/survey_results)
-    - [Configuración NPS](/{{route}}/{{version}}/survey/configure_survey_admin_nps)
+    - [Dashboard NPS](/{{route}}/{{version}}/qualification/view_dashboard_survey_nps)
+    - [Crear encuesta](/{{route}}/{{version}}/qualification/create_survey_admin)
+    - [Resultados NPS](/{{route}}/{{version}}/qualification/survey_results)
+    - [Configuración NPS](/{{route}}/{{version}}/qualification/configure_survey_admin_nps)
 - ## Equipos
     - [Altas](/{{route}}/{{version}}/equipment/up_equipment)
     - [Bajas](/{{route}}/{{version}}/equipment/down_equipment)
@@ -41,7 +41,17 @@
     - [Todos los Viaticos](/{{route}}/{{version}}/viaticos/view_request_all_via)
     - [Reporte Semanal](/{{route}}/{{version}}/viaticos/view_viatic_weekly)
 - ## Pagos
-
+    - [Proveedores](/{{route}}/{{version}}/payments/provider)
+    - [Dashboard de pagos](/{{route}}/{{version}}/payments/view_dashboard_req_pay)
+    - [Solicitud de pagos](/{{route}}/{{version}}/payments/view_add_req_pay)
+    - [Solicitud de pagos multiples](/{{route}}/{{version}}/payments/view_add_req_pay_mult)
+    - [Historial de pagos](/{{route}}/{{version}}/payments/view_history_req_pay)
+    - [Historico mensual](/{{route}}/{{version}}/payments/view_history_all_req_pay)
+    - [Filtro por proyecto](/{{route}}/{{version}}/payments/view_filter_req_pay)
+    - [Ver pagados](/{{route}}/{{version}}/payments/view_history_all_status_paid)
+    - [Programar pagos](/{{route}}/{{version}}/payments/program_date_pay)
+    - [Confirmar pagos](/{{route}}/{{version}}/payments/confirm_pay)
+    - [Cuentas bancarias](/{{route}}/{{version}}/payments/view_pay_bank)
 - ## Proyectos
     - [Administración de productos](/{{route}}/{{version}}/planning/products)
     - [Solicitud de compra](/{{route}}/{{version}}/planning/purchaserequest)
