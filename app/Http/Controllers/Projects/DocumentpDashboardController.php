@@ -10,10 +10,11 @@ class DocumentpDashboardController extends Controller
 {
     public function index()
     {
-      $status_projects = DB::select('CALL px_tipo_servicio_acumulado()', array());
+      $status_projects = DB::select('CALL px_tipo_servicio_acumulado_ejecucion()', array());
+      $status_projects_instalado = DB::select('CALL px_tipo_servicio_acumulado_instalado()', array());
       $status_compras = DB::select('CALL px_documentp_status_doctype()', array());
-      //dd($status_compras);
-      return view('permitted.documentp.dashboard_project', compact('status_projects', 'status_compras'));
+      //dd($status_projects_instalado);
+      return view('permitted.documentp.dashboard_project', compact('status_projects', 'status_compras', 'status_projects_instalado'));
     }
 
     public function get_count_all_doctype()

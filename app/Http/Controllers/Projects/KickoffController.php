@@ -13,6 +13,7 @@ use App\Mail\SolicitudCompra;
 use App\Models\Base\Message;
 use App\Notifications\MessageDocumentp;
 use App\User;
+use App\Cadena;
 use View;
 use PDF;
 use Mail;
@@ -62,7 +63,9 @@ class KickoffController extends Controller
       $kickoff_soporte = Kickoff_soporte::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $approval_dir = DB::select('CALL px_valida_aprobado_direccion(?)', array($kickoff_approvals->id));
 
-      return view('permitted.planning.kick_off_edit', compact('document','installation','approval_dir' ,'adquisition','inside_sales' ,'vendedores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals',
+      $cadenas = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
+
+      return view('permitted.planning.kick_off_edit', compact('document', 'cadenas','installation','approval_dir' ,'adquisition','inside_sales' ,'vendedores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals',
                   'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte','gasto_mtto', 'gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido' ));
     }
 
@@ -679,6 +682,51 @@ class KickoffController extends Controller
       $lineaBase->total_mo = $documentp->total_mo;
       $lineaBase->total_usd = $documentp->total_usd;
       $lineaBase->save();
+    }
+
+    public function update_kickoff_contract(Request $request)
+    {
+      $flag  = "false";
+
+      $id = $request->id;
+
+      DB::beginTransaction();
+      try {
+        //DOCUMENTO P
+        $documentp = Documentp::find($id);
+        $documentp->grupo_id = $request->cadena;
+        $documentp->anexo_id = $request->hotel_id;
+        $documentp->save();
+
+        $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+        //PERFIL CLIENTE
+        DB::table('kickoff_perfil_cliente')->where('kickoff_id', $kickoff->id)->update([
+           'rfc' => $request->rfc,
+           'razon_social' => $request->razon_social,
+           'contacto' => $request->contacto,
+           'telefono' => $request->telefono,
+           'email' => $request->email,
+           'direccion' => $request->direccion,
+           'updated_at' => \Carbon\Carbon::now()
+        ]);
+        //CONTRATO
+        DB::table('kickoff_contrato')->where('kickoff_id', $kickoff->id)->update([
+           'fecha_inicio' => $request->fecha_inicio,
+           'fecha_termino' => $request->fecha_termino,
+           'updated_at' => \Carbon\Carbon::now()
+        ]);
+
+        DB::commit();
+        $flag  = "true";
+
+      } catch(\Exception $e){
+        $e->getMessage();
+        DB::rollback();
+        //dd($e);
+        return $e;
+      }
+
+      return $flag;
     }
 
     public function sendNotifications($id_doc)

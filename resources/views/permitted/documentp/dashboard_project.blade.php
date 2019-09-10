@@ -233,121 +233,136 @@
             <div class="col-xs-12 col-md-12 table-responsive">
               <table id="table-dash" class="table table-sm table-bordered table-striped">
                 <thead>
+                  <tr>
+                    <th style="background:black" class="text-center text-white" colspan="7">
+                      Proyectos en ejecución
+                    </th>
+                    <th style="background:black" class="text-center text-white" colspan="4">
+                      Proyectos instalados
+                    </th>
+                  </tr>
                   <tr style="background: #193257;color:white;">
                     <th>Estatus</th>
                     <th class="text-center">Riesgo</th>
                     <th class="text-center">Atención</th>
                     <th class="text-center">Normal</th>
+                    <th></th>
+                    <th colspan="2" class="text-center">USD</th>
+                    <th>Estatus</th>
                     <th class="text-center">Instalado</th>
-                    <th colspan="4" class="text-center">USD</th>
+                    <th colspan="2" class="text-center">USD</th>
                   </tr>
                   <tr id="status" class="">
                     <th class="text">Tipo de servicio</th>
                     <th class="text-center"><i style="color:red;" class="fa fa-circle" aria-hidden="true"></i></th>
                     <th class="text-center"><i style="color:yellow;" class="fa fa-circle" aria-hidden="true"></i></th>
                     <th class="text-center"><i style="color:green;" class="fa fa-circle" aria-hidden="true"></i></th>
-                    <th class="text-center"><i style="color:blue;" class="fa fa-circle" aria-hidden="true"></i></th>
+                    <th class="text-center" rowspan="">Total</th>
                     <th class="text-center">Inversión</th>
                     <th class="text-center">Por facturar</th>
+                    <th class="text">Tipo de servicio</th>
+                    <th class="text-center"><i style="color:blue;" class="fa fa-circle" aria-hidden="true"></i></th>
+                    <th class="text-center">Inversión</th>
                     <th class="text-center">Facturando</th>
-                    <th class="text-center">Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Cliente Nuevo</td>
+                    <td> <strong>Cliente Nuevo</strong> </td>
                     <td class="text-center p-2">{{ $status_projects[0]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[0]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[0]->normal }}</td>
-                    <td class="text-center">{{ $status_projects[0]->instalado }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[0]->riesgo + $status_projects[0]->atencion + $status_projects[0]->normal }} </td>
                     <!------------------------->
                     <td class="text-right"> <span>{{ $status_projects[0]->total_usd }}</span> </td>
                     <td class="text-right"> <span>{{ $status_projects[0]->por_facturar }} </span> </td>
-                    <td class="text-right"> <span>{{ $status_projects[0]->facturando }}</span> </td>
-                    @php
-                     $total_cliente = str_replace(',','',$status_projects[0]->por_facturar) + str_replace(',','',$status_projects[0]->facturando);
-                    @endphp
-                    <td class="text-right">{{ number_format($total_cliente, 0, '.', ',') }}</td>
+                    <!------------------------>
+                    <td> <strong>Cliente Nuevo</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects_instalado[0]->instalado }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[0]->total_usd }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[0]->facturando }}</td>
                   </tr>
                   <tr>
-                    <td>Ampliación</td>
+                    <td> <strong>Ampliación</strong> </td>
                     <td class="text-center p-2">{{ $status_projects[1]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[1]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[1]->normal }}</td>
-                    <td class="text-center">{{ $status_projects[1]->instalado }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[1]->riesgo + $status_projects[1]->atencion + $status_projects[1]->normal }} </td>
                     <!------------------------->
                     <td class="text-right"> <span>{{ $status_projects[1]->total_usd }}</span> </td>
                     <td class="text-right"> <span>{{ $status_projects[1]->por_facturar }} </span> </td>
-                    <td class="text-right"> <span>{{ $status_projects[1]->facturando }}</span> </td>
-                    @php
-                     $total_ampliacion = str_replace(',','',$status_projects[1]->por_facturar) + str_replace(',','',$status_projects[1]->facturando);
-                    @endphp
-                    <td class="text-right">{{ number_format($total_ampliacion, 0, '.', ',') }}</td>
+                    <!------------------------>
+                    <td> <strong>Ampliación</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects_instalado[1]->instalado }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[1]->total_usd }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[1]->facturando }}</td>
                   </tr>
                   <tr>
-                    <td>Renovación</td>
+                    <td> <strong>Renovación</strong> </td>
                     <td class="text-center p-2">{{ $status_projects[2]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[2]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[2]->normal }}</td>
-                    <td class="text-center">{{ $status_projects[2]->instalado }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[2]->riesgo + $status_projects[2]->atencion + $status_projects[2]->normal }} </td>
                     <!------------------------->
                     <td class="text-right"> <span>{{ $status_projects[2]->total_usd }}</span> </td>
                     <td class="text-right"> <span>{{ $status_projects[2]->por_facturar }} </span> </td>
-                    <td class="text-right"> <span>{{ $status_projects[2]->facturando }}</span> </td>
-                    @php
-                     $total_renovacion = str_replace(',','',$status_projects[2]->por_facturar) + str_replace(',','',$status_projects[2]->facturando);
-                    @endphp
-                    <td class="text-right">{{ number_format($total_renovacion, 0, '.', ',') }}</td>
+                    <!------------------------>
+                    <td> <strong>Renovación</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects_instalado[2]->instalado }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[2]->total_usd }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[2]->facturando }}</td>
                   </tr>
                   <tr>
-                    <td>Venta</td>
+                    <td> <strong>Venta</strong> </td>
                     <td class="text-center p-2">{{ $status_projects[4]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[4]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[4]->normal }}</td>
-                    <td class="text-center">{{ $status_projects[4]->instalado }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[4]->riesgo + $status_projects[4]->atencion + $status_projects[4]->normal }} </td>
                     <!------------------------->
                     <td class="text-right"> <span>{{ $status_projects[4]->total_usd }}</span> </td>
                     <td class="text-right"> <span>{{ $status_projects[4]->por_facturar }} </span> </td>
-                    <td class="text-right"> <span>{{ $status_projects[4]->facturando }}</span> </td>
-                    @php
-                     $total_venta = str_replace(',','',$status_projects[4]->por_facturar) + str_replace(',','',$status_projects[4]->facturando);
-                    @endphp
-                    <td class="text-right">{{ number_format($total_venta, 0, '.', ',') }}</td>
+                    <!------------------------>
+                    <td> <strong>Venta</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects_instalado[4]->instalado }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[4]->total_usd }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[4]->facturando }}</td>
                   </tr>
                   <tr>
-                    <td>F & F</td>
+                    <td> <strong>F & F</strong> </td>
                     <td class="text-center p-2">{{ $status_projects[5]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[5]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[5]->normal }}</td>
-                    <td class="text-center">{{ $status_projects[5]->instalado }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[5]->riesgo + $status_projects[5]->atencion + $status_projects[5]->normal }} </td>
                     <!------------------------->
                     <td class="text-right"> <span>{{ $status_projects[5]->total_usd }}</span> </td>
                     <td class="text-right"> <span>{{ $status_projects[5]->por_facturar }} </span> </td>
-                    <td class="text-right"> <span>{{ $status_projects[5]->facturando }}</span> </td>
-                    @php
-                     $total_ff = str_replace(',','',$status_projects[5]->por_facturar) + str_replace(',','',$status_projects[5]->facturando);
-                    @endphp
-                    <td class="text-right">{{ number_format($total_ff, 0, '.', ',') }}</td>
+                    <!------------------------>
+                    <td> <strong>F & F</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects_instalado[5]->instalado }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[5]->total_usd }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[5]->facturando }}</td>
                   </tr>
                 </tbody>
                 <tfooter>
+                  @php
+                    $total_inversion = str_replace(',','',$status_projects[0]->total_usd) + str_replace(',','',$status_projects[1]->total_usd) + str_replace(',','',$status_projects[2]->total_usd) + str_replace(',','',$status_projects[4]->total_usd) + str_replace(',','',$status_projects[5]->total_usd);
+                    $total_por_facturar = str_replace(',','',$status_projects[0]->por_facturar) + str_replace(',','',$status_projects[1]->por_facturar) + str_replace(',','',$status_projects[2]->por_facturar) + str_replace(',','',$status_projects[4]->por_facturar) + str_replace(',','',$status_projects[5]->por_facturar);
+                    $total_inversion_instalado = str_replace(',','',$status_projects_instalado[0]->total_usd) + str_replace(',','',$status_projects_instalado[1]->total_usd) + str_replace(',','',$status_projects_instalado[2]->total_usd) + str_replace(',','',$status_projects_instalado[4]->total_usd) + str_replace(',','',$status_projects_instalado[5]->total_usd);
+                    $total_facturando = str_replace(',','',$status_projects_instalado[0]->facturando) + str_replace(',','',$status_projects_instalado[1]->facturando) + str_replace(',','',$status_projects_instalado[2]->facturando) + str_replace(',','',$status_projects_instalado[4]->facturando) + str_replace(',','',$status_projects_instalado[5]->facturando)
+                   @endphp
                   <tr class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
                     <td><strong>Total</strong> </td>
                     <td class="text-center p-2"> <span id="total_rojo">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo + $status_projects[4]->riesgo + $status_projects[5]->riesgo }}</span> </td>
                     <td class="text-center"> <span id="total_amarillo">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion + $status_projects[4]->atencion + $status_projects[5]->atencion }}</span> </td>
                     <td class="text-center"> <span id="total_verde">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal + $status_projects[4]->normal + $status_projects[5]->normal }}</span> </td>
-                    <td class="text-center"> {{$status_projects[0]->instalado + $status_projects[1]->instalado + $status_projects[2]->instalado + $status_projects[4]->instalado + $status_projects[5]->instalado }} </td>
+                    <th class="text-center"> <span id="total_project_instalation"></span>  </th>
+                    <td class="text-right"> <span id="">{{  number_format($total_inversion, 0, '.', ',')  }}</span> </td>
+                    <td class="text-right"> <span id="">{{  number_format($total_por_facturar, 0, '.', ',')  }}</span> </td>
                     <!------------------------->
-                    @php
-                     $total_inversion = str_replace(',','',$status_projects[0]->total_usd) + str_replace(',','',$status_projects[1]->total_usd) + str_replace(',','',$status_projects[2]->total_usd) + str_replace(',','',$status_projects[4]->total_usd) + str_replace(',','',$status_projects[5]->total_usd);
-                     $total_por_facturar = str_replace(',','',$status_projects[0]->por_facturar) + str_replace(',','',$status_projects[1]->por_facturar) + str_replace(',','',$status_projects[2]->por_facturar) + str_replace(',','',$status_projects[4]->por_facturar) + str_replace(',','',$status_projects[5]->por_facturar);
-                     $total_facturando = str_replace(',','',$status_projects[0]->facturando) + str_replace(',','',$status_projects[1]->facturando) + str_replace(',','',$status_projects[2]->facturando) + str_replace(',','',$status_projects[4]->facturando) + str_replace(',','',$status_projects[5]->facturando);
-                     $total = $total_cliente + $total_ampliacion + $total_renovacion + $total_venta + $total_ff;
-                    @endphp
-                    <td class="text-right">{{ number_format($total_inversion, 0, '.', ',') }}</td>
-                    <td class="text-right">{{ number_format($total_por_facturar, 0, '.', ',') }}</td>
-                    <td class="text-right">{{ number_format($total_facturando, 0, '.', ',') }}</td>
-                    <td class="text-right">{{ number_format($total, 0, '.', ',') }}</td>
+                    <td><strong>Total</strong> </td>
+                    <td class="text-center"> <span id="">{{ $status_projects_instalado[0]->instalado + $status_projects_instalado[1]->instalado + $status_projects_instalado[2]->instalado + $status_projects_instalado[4]->instalado + $status_projects_instalado[5]->instalado }}</span> </td>
+                    <td class="text-right"> <span id="">{{  number_format($total_inversion_instalado, 0, '.', ',')  }}</span> </td>
+                    <td class="text-right"> <span id="">{{  number_format($total_facturando, 0, '.', ',')  }}</span> </td>
                   </tr>
                 </tfooter>
               </table>
@@ -517,8 +532,7 @@
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-
-    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=1.0.2')}}"></script>
+    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=2.0.0')}}"></script>
     <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
 
 @else

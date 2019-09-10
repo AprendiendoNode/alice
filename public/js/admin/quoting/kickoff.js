@@ -128,10 +128,10 @@ function approval_administracion(e){
     Swal.fire({
       title: "¿Los datos del contrato son correctos?",
       type: "warning",
-      html:
-    `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: ${fecha_inicio}</h6>` +
-    `<h6><i class="fas fa-check text-success"></i> Vigencia: ${plazo} meses</h6>` +
-    `<h6><i class="fas fa-check text-success"></i> RFC: ${rfc}</h6></div>`,
+      //html:
+      // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: ${fecha_inicio}</h6>` +
+      // `<h6><i class="fas fa-check text-success"></i> Vigencia: ${plazo} meses</h6>` +
+      // `<h6><i class="fas fa-check text-success"></i> RFC: ${rfc}</h6></div>`,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -196,12 +196,12 @@ function approval_comercial(e){
     cache: 'default' };
 
     Swal.fire({
-      title: "¿Los datos del contrato son correctos?",
+      title: "¿Las condiciones comerciales son correctas?",
       type: "warning",
-      html:
-      `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
-      `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
-      `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
+      // html:
+      // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
+      // `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
+      // `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -267,10 +267,10 @@ function approval_proyectos(e){
     Swal.fire({
       title: "¿Los datos de instalación son correctos?",
       type: "warning",
-      html:
-      `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio instalación: </h6>` +
-      `<h6><i class="fas fa-check text-success"></i> Fecha de término instalación:  </h6>` +
-      `<h6><i class="fas fa-check text-success"></i> Fecha de Acta de Entrega de la Instalación: </h6></div>`,
+      // html:
+      // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio instalación: </h6>` +
+      // `<h6><i class="fas fa-check text-success"></i> Fecha de término instalación:  </h6>` +
+      // `<h6><i class="fas fa-check text-success"></i> Fecha de Acta de Entrega de la Instalación: </h6></div>`,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -337,10 +337,10 @@ function approval_soporte(e){
     Swal.fire({
       title: "¿Los datos de soporte son correctos?",
       type: "warning",
-      html:
-      `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio instalación: </h6>` +
-      `<h6><i class="fas fa-check text-success"></i> Fecha de término instalación:  </h6>` +
-      `<h6><i class="fas fa-check text-success"></i> Fecha de Acta de Entrega de la Instalación: </h6></div>`,
+      // html:
+      // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio instalación: </h6>` +
+      // `<h6><i class="fas fa-check text-success"></i> Fecha de término instalación:  </h6>` +
+      // `<h6><i class="fas fa-check text-success"></i> Fecha de Acta de Entrega de la Instalación: </h6></div>`,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -407,10 +407,10 @@ function approval_soporte(e){
       Swal.fire({
         title: "¿Los datos de compras son correctos?",
         type: "warning",
-        html:
-        `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha entrega EA: </h6>` +
-        `<h6><i class="fas fa-check text-success"></i> Fecha entrega ENA:  </h6>` +
-        `<h6><i class="fas fa-check text-success"></i> Fecha de contratación de enlace: </h6></div>`,
+        //html:
+        // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha entrega EA: </h6>` +
+        // `<h6><i class="fas fa-check text-success"></i> Fecha entrega ENA:  </h6>` +
+        // `<h6><i class="fas fa-check text-success"></i> Fecha de contratación de enlace: </h6></div>`,
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -477,10 +477,10 @@ function approval_soporte(e){
         Swal.fire({
           title: "¿Los datos de soporte son correctos?",
           type: "warning",
-          html:
-          `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> IT Concierge: </h6>` +
-          `<h6><i class="fas fa-check text-success"></i> Nombre de TI del Cliente:  </h6>` +
-          `<h6><i class="fas fa-check text-success"></i> Licencias: </h6></div>`,
+          // html:
+          // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> IT Concierge: </h6>` +
+          // `<h6><i class="fas fa-check text-success"></i> Nombre de TI del Cliente:  </h6>` +
+          // `<h6><i class="fas fa-check text-success"></i> Licencias: </h6></div>`,
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
@@ -548,10 +548,10 @@ function approval_soporte(e){
           Swal.fire({
             title: "¿Los datos de soporte son correctos?",
             type: "warning",
-            html:
-            `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> IT Concierge: </h6>` +
-            `<h6><i class="fas fa-check text-success"></i> Nombre de TI del Cliente:  </h6>` +
-            `<h6><i class="fas fa-check text-success"></i> Licencias: </h6></div>`,
+            // html:
+            // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> IT Concierge: </h6>` +
+            // `<h6><i class="fas fa-check text-success"></i> Nombre de TI del Cliente:  </h6>` +
+            // `<h6><i class="fas fa-check text-success"></i> Licencias: </h6></div>`,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -618,10 +618,10 @@ function approval_soporte(e){
           Swal.fire({
             title: "¿Los datos del contrato son correctos?",
             type: "warning",
-            html:
-            `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
-            `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
-            `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
+            // html:
+            // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
+            // `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
+            // `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -688,10 +688,10 @@ function approval_soporte(e){
           Swal.fire({
             title: "¿Los datos del contrato son correctos?",
             type: "warning",
-            html:
-            `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
-            `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
-            `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
+            //html:
+            // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
+            // `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
+            // `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -758,10 +758,10 @@ function approval_soporte(e){
             Swal.fire({
               title: "¿Los datos de soporte e instalación son correctos?",
               type: "warning",
-              html:
-              `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
-              `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
-              `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
+              // html:
+              // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
+              // `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
+              // `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
               showCancelButton: true,
               confirmButtonColor: '#3085d6',
               cancelButtonColor: '#d33',
@@ -829,10 +829,10 @@ function approval_soporte(e){
               Swal.fire({
                 title: "¿Los datos son correctos?",
                 type: "warning",
-                html:
-                `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
-                `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
-                `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
+                // html:
+                // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
+                // `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
+                // `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
@@ -887,9 +887,172 @@ function approval_soporte(e){
 
 
 
+
 //Formatea la fecha dd/mm/aaaa
 function invertirFecha(f) {
     var fechaDividida = f.split("-");
     var fechaInvertida = fechaDividida.reverse();
     return fechaInvertida.join("-");
   }
+
+function genTablesite(id_contract) {
+  $.ajax({
+      type: "POST",
+      url: "/data_contractsite",
+      data: { id_contract : id_contract , _token : _token },
+      success: function (data){
+        generate_site(data, $("#table_site"));
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+  });
+}
+
+function get_ids_anexos(cadena, key){
+
+    $.ajax({
+      type: "POST",
+      url: "/get_ids_contract_anexo_v2",
+      data: { id_cadena : cadena, key : key ,  _token : _token },
+      success: function (data){
+        console.log(data);
+        data.forEach(contrato => {
+          $('#sel_anexo').append($('<option>', {
+            value: contrato.contrat_id,
+            text : contrato.key
+          }));
+        });
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+}
+
+$('#cadena').on('change', function(){
+  var cadena = $(this).val();
+  $.ajax({
+    type: "POST",
+    url: "/idproy_search_by_cadena",
+    data: { valor : cadena , _token : _token },
+    success: function (data){
+      count_data = data.length;
+      if (count_data > 0) {
+        // $('#sel_master_to_anexo').append('<option value="1"> Opcion 1</option>');
+        $('[name="sel_master_to_anexo"] option[value!=""]').remove();
+        $.each(JSON.parse(data),function(index, objdata){
+          $('#sel_master_to_anexo').append('<option value="'+objdata.id+'">'+ objdata.key +'</option>');
+        });
+      }
+    },
+    error: function (data) {
+      console.log('Error:', data);
+    }
+  });
+})
+
+
+$("#sel_master_to_anexo").on('change', function(){
+  var cadena = $("#cadena").val();
+  var key = $("#sel_master_to_anexo option:selected").text();
+
+  $('#sel_anexo').empty().append('<option selected="selected" value="test">Elegir</option>');
+  get_ids_anexos(cadena, key);
+
+});
+
+$('#sel_anexo').on('change', function(){
+  var id = $(this).val();
+  get_data_anexos(id);
+})
+
+
+  function get_data_anexos(id_contract){
+
+  $.ajax({
+    type: "POST",
+    url: "/get_data_master_anexo",
+    data: { id_contract : id_contract , _token : _token },
+    success: function (data){
+      document.getElementById('nombre_sitio').value = data[0].sitio;
+      document.getElementById('id_hotel').value = data[0].hotel_id;
+      document.getElementById('id_ubicacion').value = data[0].id_ubicacion;
+      document.getElementById('rfc').value = data[0].rfc;
+      document.getElementById('razon_social').value = data[0].razon_social;
+      document.getElementById('contacto').value = data[0].contacto;
+      document.getElementById('telefono').value = data[0].telefono;
+      document.getElementById('email').value = data[0].email;
+      document.getElementById('direccion').value = data[0].direccion;
+      document.getElementById('fecha_inicio').value = data[0].fecha_inicio;
+      document.getElementById('fecha_termino').value = data[0].fecha_termino;
+    },
+    error: function (data) {
+      console.log('Error:', data);
+    }
+  });
+
+
+}
+
+$('#match_contract_button').on('click', function(){
+  let id = document.getElementById('id').value;
+  let hotel_id = document.getElementById('id_hotel').value;
+  let cadena = document.getElementById('cadena').value;
+  let rfc = document.getElementById('rfc').value;
+  let razon_social = document.getElementById('razon_social').value;
+  let contacto = document.getElementById('contacto').value;
+  let telefono = document.getElementById('telefono').value;
+  let email = document.getElementById('email').value;
+  let direccion = document.getElementById('direccion').value;
+  let fecha_inicio = document.getElementById('fecha_inicio').value;
+  let fecha_termino = document.getElementById('fecha_termino').value;
+
+  const headers2 = new Headers({
+      "Accept": "application/json",
+      'Content-Type': 'application/json',
+      "X-Requested-With": "XMLHttpRequest",
+      "X-CSRF-TOKEN": _token
+  })
+  var data = {
+    id: id,
+    cadena: cadena,
+    hotel_id: hotel_id,
+    rfc: rfc,
+    razon_social: razon_social,
+    contacto: contacto,
+    telefono: telefono,
+    email: email,
+    direccion: direccion,
+    fecha_inicio: fecha_inicio,
+    fecha_termino: fecha_termino
+  }
+  var miInit = {
+    method: 'post',
+    headers: headers2,
+    credentials: "same-origin",
+    body: JSON.stringify(data),
+    cache: 'default' };
+
+
+  if(cadena != '' && hotel_id != ''){
+    fetch('/update_kickoff_contract',miInit)
+      .then(function(response){
+        return response.text();
+      })
+      .then(function(data){
+        if(data == "true"){
+          Swal.fire('Datos guardados','', 'success');
+        }else{
+          Swal.fire('Ocurrio un error al guardar','', 'errr');
+        }
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+  }else{
+    Swal.fire('No se ha seleccionado un contrato','', 'warning')
+  }
+
+
+  });

@@ -438,6 +438,7 @@ Route::group(['middleware' => 'auth'], function () {
   //KICK-OFF
   Route::post('/edit_kickoff', 'Projects\KickoffController@index');
   Route::post('/update_kickoff', 'Projects\KickoffController@update');
+  Route::post('/update_kickoff_contract', 'Projects\KickoffController@update_kickoff_contract');
   Route::get('/approval_administracion/id_doc/{id}', 'Projects\KickoffController@approval_administracion');
   Route::get('/approval_comercial/id_doc/{id}', 'Projects\KickoffController@approval_comercial');
   Route::get('/approval_proyectos/id_doc/{id}', 'Projects\KickoffController@approval_proyectos');
@@ -691,7 +692,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('update_contract_master', 'Contracts\ContratoController@update_contract_master');
     //Editar contratos key_anexo_sitio
     Route::post('get_ids_contract_anexo', 'Contracts\ContratoController@get_ids_contract_anexo');
+    Route::post('get_ids_contract_anexo_v2', 'Contracts\ContratoController@get_ids_contract_anexo_v2');
     Route::post('get_data_anexos', 'Contracts\ContratoController@get_data_anexos');
+    Route::post('get_data_master_anexo', 'Contracts\ContratoController@get_data_master_anexo');
     Route::post('update_contract_anexo', 'Contracts\ContratoController@update_contract_anexo');
 
     Route::post('/data_contractsite', 'Contracts\ContratoController@all_site_anexo');

@@ -593,6 +593,25 @@ class ContratoController extends Controller
      return $data_contracts_anexos;
   }
 
+  public function get_ids_contract_anexo_v2(Request $request)
+  {
+    $cadena = $request->id_cadena;
+    $key = $request->key;
+
+    $data_contracts_anexos = [];
+
+    $contract_anexos = DB::select('CALL px_idcontractsXkeyV2 (?,?)', array($cadena, $key));
+
+    $tamanodata = count($contract_anexos);
+
+    for($i = 0;$i < $tamanodata; $i++)
+    {
+        array_push($data_contracts_anexos, ['contrat_id' => $contract_anexos[$i]->contrat_id , 'key' => $contract_anexos[$i]->key ]);
+    }
+
+     return $data_contracts_anexos;
+  }
+
   public function get_data_contract_master(Request $request)
   {
     $id_contract = $request->id_contract;
@@ -607,6 +626,15 @@ class ContratoController extends Controller
       $id_contract = $request->id_contract;
 
       $result = DB::select('CALL px_contrac_annexes_data(?)', array($id_contract));
+
+      return $result;
+  }
+
+  public function get_data_master_anexo(Request $request)
+  {
+      $id_anexo = $request->id_contract;
+
+      $result = DB::select('CALL px_anexo_contrato_data(?)', array($id_anexo));
 
       return $result;
   }

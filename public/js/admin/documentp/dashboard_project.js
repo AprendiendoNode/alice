@@ -31,6 +31,7 @@ var initGet = { method: 'get',
   get_table_filterby_servicio();
   get_table_filterby_atrasos();
   get_calif_project();
+  count_projects_instalation();
 })()
 
 function get_calif_project(){
@@ -53,6 +54,15 @@ function get_calif_project(){
   }
 
 
+}
+
+function count_projects_instalation(){
+  let total_rojo = document.getElementById('total_rojo').innerHTML;
+  let total_amarillo = document.getElementById('total_amarillo').innerHTML;
+  let total_verde = document.getElementById('total_verde').innerHTML;
+  let total = parseInt(total_rojo) + parseInt(total_amarillo) + parseInt(total_verde)
+
+  document.getElementById('total_project_instalation').innerHTML = total;
 }
 
 $('#select_tipo_servicio').on('change', function(){

@@ -129,7 +129,7 @@
                       <table id="table_budget" name='table_budget' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
                         <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
                         <thead>
-                          <tr class="bg-primary" style="background: #3D82C2">
+                          <tr class="bg-dark">
                             <!-- <th><small>ID</small></th> -->
                             <th> <small>Sitio</small> </th>
                             <th> <small>Anexo</small> </th>

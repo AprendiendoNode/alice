@@ -170,8 +170,44 @@
                 <form id="form_kickoff" method="post">
                   <input type="hidden" name="id" id="id" value="{{$document[0]->id}}">
                   <div class="row">
+                    <div class="col-12">
+                      <div class="card">
+                        <div class="card-header bg-secondary text-white">
+                          <a class="btn btn-sm btn-default p-1" rol="button" data-toggle="collapse" href="#collapseContract" aria-expanded="false" aria-controls="collapseContract">
+                            <i class="fas fa-angle-down"></i>
+                          </a>
+                          Vincular contrato a Documento A
+                        </div>
+                        <div class="collapse" id="collapseContract">
+                          <div class="card-body">
+                            <div class="form-inline d-flex justify-content-space-between align-items-center">
+                              <label class="mr-sm-2">Cadena</label>
+                              <select style="width:150px;" type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="cadena" name="cadena">
+                                <option value="">Elegir</option>
+                                @foreach ($cadenas as $cadena)
+                                  <option value="{{$cadena->id}}">{{ $cadena->name }}</option>
+                                @endforeach
+                              </select>
+                              <label class="mr-sm-2" for="">C. Maestro</label>
+                              <select style="width:150px" type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="sel_master_to_anexo" name="sel_master_to_anexo">
+                                <option value="">Elegir</option>
+                              </select>
+                              <label class="mr-sm-2" for="">C. Anexo</label>
+                              <select style="width:150px" type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="sel_anexo" name="sel_anexo" value="">
+                                <option value="">Elegir</option>
+                              </select>
+                              <input class="form-control form-control-sm" readonly type="text" name="id_ubicacion" id="id_ubicacion" value="">
+                              <input class="form-control form-control-sm" readonly type="text" name="nombre_sitio" id="nombre_sitio" value="">
+                              <input class="form-control form-control-sm" readonly type="hidden" name="id_hotel" id="id_hotel" value="">
+                              <button type="button" id="match_contract_button"  class="btn btn-info btn-danger text-white ml-2"><span class="fas fa-exchange-alt"></span> Relacionar datos </button type="button">
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                      </div>
+                    <br>
                   <!--INFO-->
-                  <div class="col-12">
+                  <div class="col-12 mt-4">
                     <div class="form-inline d-flex justify-content-space-between align-items-center">
                       <label class="mr-sm-2">ID Proyecto (Almacén)</label>
                       <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="id_proyecto_almacen" value="{{$document[0]->id_proyecto_almacen}}" name="id_proyecto_almacen">
@@ -442,89 +478,94 @@
                           </div>
                           <div class="form-row d-flex align-items-center mb-2">
                             <div class="col text-center bg-blue">
+                              <a class="btn btn-sm btn-default p-1" data-toggle="collapse" href="#collapseComision" role="button" aria-expanded="false" aria-controls="collapseComision">
+                                <i class="fas fa-angle-down"></i>
+                              </a>
                               <label for="">Comisión</label>
                             </div>
                           </div>
-                          <div class="form-row d-flex align-items-center mb-2">
-                            <div class="col-4">
-                              <label for="">IT Concierge</label>
+                          <div class="collapse" id="collapseComision">
+                            <div class="form-row d-flex align-items-center mb-2">
+                              <div class="col-4">
+                                <label for="">IT Concierge</label>
+                              </div>
+                              <div class="col-8">
+                                <input id="itconciergecomision" name="itconciergecomision" disabled type="text" class="form-control form-control-sm" value="{{$document[0]->ITC}}">
+                              </div>
                             </div>
-                            <div class="col-8">
-                              <input id="itconciergecomision" name="itconciergecomision" disabled type="text" class="form-control form-control-sm" value="{{$document[0]->ITC}}">
-                            </div>
-                          </div>
-                          <div class="form-row d-flex align-items-center mb-2">
-                            <div class="col-4">
-                              <label  for="">Vendedor</label>
-                            </div>
-                            <div class="col-8">
-                              <select id="vendedor" name="vendedor" type="text" class="form-control form-control-sm">
-                                @if($kickoff_contrato->vendedor == 4)
-                                  <option selected value="4">Sin asignar</option>
-                                @else
-                                  <option value="4">Sin asignar</option>
-                                @endif
-                                @foreach ($vendedores as $vendedor)
-                                  @if($vendedor->user_id == $kickoff_contrato->vendedor)
-                                    <option selected value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
+                            <div class="form-row d-flex align-items-center mb-2">
+                              <div class="col-4">
+                                <label  for="">Vendedor</label>
+                              </div>
+                              <div class="col-8">
+                                <select id="vendedor" name="vendedor" type="text" class="form-control form-control-sm">
+                                  @if($kickoff_contrato->vendedor == 4)
+                                    <option selected value="4">Sin asignar</option>
                                   @else
-                                    <option value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
+                                    <option value="4">Sin asignar</option>
                                   @endif
-                                @endforeach
-                              </select>
+                                  @foreach ($vendedores as $vendedor)
+                                    @if($vendedor->user_id == $kickoff_contrato->vendedor)
+                                      <option selected value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
+                                    @else
+                                      <option value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
+                                    @endif
+                                  @endforeach
+                                </select>
+                              </div>
                             </div>
-                          </div>
-                          <div class="form-row d-flex align-items-center mb-2">
-                            <div class="col-4">
-                              <label  for="">Inside Sales</label>
-                            </div>
-                            <div class="col-8">
-                              <select id="inside_sales" name="inside_sales" type="text" class="form-control form-control-sm">
-                                @if($kickoff_contrato->inside_sales == 4)
-                                  <option selected value="4">Sin asignar</option>
-                                @else
-                                  <option value="4">Sin asignar</option>
-                                @endif
-                                @foreach ($inside_sales as $inside_sales_data)
-                                  @if($inside_sales_data->user_id == $kickoff_contrato->inside_sales)
-                                    <option selected value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
+                            <div class="form-row d-flex align-items-center mb-2">
+                              <div class="col-4">
+                                <label  for="">Inside Sales</label>
+                              </div>
+                              <div class="col-8">
+                                <select id="inside_sales" name="inside_sales" type="text" class="form-control form-control-sm">
+                                  @if($kickoff_contrato->inside_sales == 4)
+                                    <option selected value="4">Sin asignar</option>
                                   @else
-                                    <option value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
+                                    <option value="4">Sin asignar</option>
                                   @endif
-                                @endforeach
-                              </select>
+                                  @foreach ($inside_sales as $inside_sales_data)
+                                    @if($inside_sales_data->user_id == $kickoff_contrato->inside_sales)
+                                      <option selected value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
+                                    @else
+                                      <option value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
+                                    @endif
+                                  @endforeach
+                                </select>
+                              </div>
                             </div>
-                          </div>
-                          <div class="form-row d-flex align-items-center mb-2">
-                            <div class="col-4">
-                              <label  for="">Contácto</label>
+                            <div class="form-row d-flex align-items-center mb-2">
+                              <div class="col-4">
+                                <label  for="">Contácto</label>
+                              </div>
+                              <div class="col-8">
+                                <input id="contacto_comercial" name="contacto_comercial" value="{{ $kickoff_contrato->contacto }}" type="text" class="form-control form-control-sm">
+                              </div>
                             </div>
-                            <div class="col-8">
-                              <input id="contacto_comercial" name="contacto_comercial" value="{{ $kickoff_contrato->contacto }}" type="text" class="form-control form-control-sm">
+                            <div class="form-row d-flex align-items-center mb-2">
+                              <div class="col-4">
+                                <label  for="">Cierre</label>
+                              </div>
+                              <div class="col-8">
+                                <input id="cierre" name="cierre" value="{{ $kickoff_contrato->cierre }}" type="text" class="form-control form-control-sm">
+                              </div>
                             </div>
-                          </div>
-                          <div class="form-row d-flex align-items-center mb-2">
-                            <div class="col-4">
-                              <label  for="">Cierre</label>
+                            <div class="form-row d-flex align-items-center mb-2">
+                              <div class="col-4">
+                                <label  for="">Externo</label>
+                              </div>
+                              <div class="col-8">
+                                <input id="comision_externo" name="comision_externo" value="{{ $kickoff_contrato->externo1 }}" type="text" class="form-control form-control-sm">
+                              </div>
                             </div>
-                            <div class="col-8">
-                              <input id="cierre" name="cierre" value="{{ $kickoff_contrato->cierre }}" type="text" class="form-control form-control-sm">
-                            </div>
-                          </div>
-                          <div class="form-row d-flex align-items-center mb-2">
-                            <div class="col-4">
-                              <label  for="">Externo</label>
-                            </div>
-                            <div class="col-8">
-                              <input id="comision_externo" name="comision_externo" value="{{ $kickoff_contrato->externo1 }}" type="text" class="form-control form-control-sm">
-                            </div>
-                          </div>
-                          <div class="form-row d-flex align-items-center mb-2">
-                            <div class="col-4">
-                              <label  for="">Externo 2</label>
-                            </div>
-                            <div class="col-8">
-                              <input id="comision_externo_2" name="comision_externo_2" value="{{ $kickoff_contrato->externo2}}" type="text" class="form-control form-control-sm">
+                            <div class="form-row d-flex align-items-center mb-2">
+                              <div class="col-4">
+                                <label  for="">Externo 2</label>
+                              </div>
+                              <div class="col-8">
+                                <input id="comision_externo_2" name="comision_externo_2" value="{{ $kickoff_contrato->externo2}}" type="text" class="form-control form-control-sm">
+                              </div>
                             </div>
                           </div>
                         </div>
