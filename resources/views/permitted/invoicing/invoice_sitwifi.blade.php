@@ -2,7 +2,8 @@
 <head>
 <meta charset="UTF-8">
 <title>
-  invoice
+  {{$customer_invoice->serie}}
+  {{$customer_invoice->folio}}
 </title>
 
 <style type="text/css">
@@ -40,7 +41,7 @@
     }
 
     .customer_info{
-      height: 100px;
+      height: 120px;
       border: 1px solid #000;
       border-radius: 5px;
       margin-top: 5px;
@@ -65,7 +66,7 @@
       border-radius: 5px;
       margin-top: 20px;
       font-size: 9px;
-      height: 60px;
+      height: 80px;
     }
 
     .header div{
@@ -81,7 +82,7 @@
     }
 
     .header div p{
-      line-height: .3rem;
+      line-height: .6rem;
       display: block;
     }
 
@@ -126,6 +127,7 @@
       width: 100%;
       margin-top: 5px;
       border: 1px solid black;
+      border-top: 1px solid black !important;
     }
 
     #table_cfdi p{
@@ -136,16 +138,24 @@
       border-bottom: 1px solid black;
       border-right: 1px solid black;
     }
+    #table_cfdi tbody tr td img{
+      width: auto !important;
+      height: auto !important;
+      border-radius: 0px 6px 6px 0px !important;
+    }
 
 
 </style>
 
 </head>
 <body>
-
+  @php
+      //Obtiene datos del Cfdi33
+      $cfdi33 = $data['cfdi33'];
+  @endphp
   <table width="100%">
     <tr>
-        <td style="width:25%;" valign="top"><img width="120" src="{{ public_path('/images/users/logo.svg') }}"/></td>
+        <td style="width:25%;" valign="top"><img width="130" src="{{ public_path('images/storage/SIT070918IXA/files/companies/logo.png') }}"/></td>
         <td class="header_address" style="width:50%;" class="" align="center">
             <h4>SITWIFI, S.A DE C.V.</h4>
             <h5>SIT070918IXA</h5>
@@ -159,38 +169,40 @@
 
   <div  class="header row">
     <div class="">
-        <p>Serie/Folio interno: <span>FASA</span> <span>000234</span></p>
-        <p>UUID: <span>34356568-6284-B532-1212</span></p>
-        <p>No. serie certificado del emisor: <span>000011000400338</span> </p>
-        <p>Lugar de expedición:  <span> 06660 </span></p>
+        <p>Serie/Folio interno: <span>{{$customer_invoice->serie}}</span> <span>{{$customer_invoice->folio}}</span></p>
+        <p>UUID: <span>{{ $customer_invoice->customerInvoiceCfdi->uuid ?? '' }}</span></p>
+        <p>No. serie certificado del emisor: <span>{{ $cfdi33['NoCertificado'] }}</span> </p>
+        <p>Lugar de expedición:  <span> {{ $customer_invoice->branchOffice->name ?? '' }}</span> {!! ( $customer_invoice->branchOffice->postcode ? '<strong> C.P.</strong> <span>' . $customer_invoice->branchOffice->postcode : '') !!}</p>
     </div>
     <div class="">
-        <p>Fecha/Hora expedición: <span>01/04/2019</span> <span>16:16:02</span> </p>
-        <p>Fecha/Hora certificación: <span>01/04/2019</span> <span>16:16:02</span> </p>
-        <p>No. serie certificado del SAT: <span>00000000028238000</span> </p>
+        <p>Fecha/Hora expedición: <span>{{ \App\Helpers\Helper::convertSqlToDateTime($customer_invoice->date) }}</span> </p>
+        <p>Fecha/Hora certificación: <span>{{ \App\Helpers\Helper::convertSqlToDateTime(str_replace('T',' ',$cfdi33->complemento->timbreFiscalDigital['FechaTimbrado'])) }}</span></p>
+        <p>No. serie certificado del SAT: <span>{{ $cfdi33->complemento->timbreFiscalDigital['NoCertificadoSAT'] }}</span> </p>
         <p class="transparent">-</p>
     </div>
     <div class="">
-        <p>Moneda: <span>USD</span></p>
-        <p>Tipo de cambio: <span>19.3779</span> </p>
-        <p class="transparent">-</p>
-        <p class="transparent">-</p>
+        <p>Moneda: <span>{{ $customer_invoice->currency->name }}</span></p>
+        <p>Tipo de cambio: <span>{{ $customer_invoice->currency_value }}</span> </p>
+        <p>Forma de pago: <span>[{{ $customer_invoice->paymentWay->code }}] {{ $customer_invoice->paymentWay->name }}</span></p>
+        <p>Método de pago: <span>[{{ $customer_invoice->paymentMethod->code }}]{{ $customer_invoice->paymentMethod->name }}</span></p>
     </div>
   </div>
   <!--------->
   <div class="customer_info row">
     <div style="border-bottom: 0.1rem solid #000;" class="">
-      <p>Cliente: <span>ARENA DE VERANO S.A. DE C.V.</span> </p>
+      <p>Cliente: <span>{{ mb_strtoupper($customer_invoice->customer->name) }}</span> </p>
     </div>
     <div class="">
-      <p>R.F.C. <span>AVE1211144C0</span> </p>
+      <p>R.F.C.: <span>{{ mb_strtoupper($customer_invoice->customer->taxid) }}</span> </p>
       <p style="line-height:.8rem;">Domicilio:
       <span>
-        BOULEVARD KUKULCAN KILOMETRO 3.5 166, COL. Zona  Hotelera, Cd. Cancún,
-        CP 77500, Benito Juárez, Quintana Roo, México
+        {{ $customer_invoice->customer->address_1 ?? '' }} {{ $customer_invoice->customer->address_2 ?? '' }} {{ $customer_invoice->customer->address_3 ?? '' }} {{ $customer_invoice->customer->address_4 ?? '' }}
       </span>
     </p>
-    <p>Uso CFDI: <span>Por definir</span> </p>
+    <p>C.P: <span>{{ $customer_invoice->customer->postcode ?? '' }}</span> </p>
+
+    <p>Uso de cfdi: <span>[{{ mb_strtoupper( $customer_invoice->customer->cfdiUse->code) }}]{{ $customer_invoice->customer->cfdiUse->name }}</span> </p>
+
     </div>
   </div>
   <!--------->
@@ -202,43 +214,43 @@
         <th align="center">Unidad</th>
         <th colspan="2">Descripción</th>
         <th>Precio Unitario</th>
+        <th>Desc. %</th>
         <th align="center">Importe</th>
       </tr>
     </thead>
     <tbody>
+      @foreach($customer_invoice->customerInvoiceLines as $result)
       <tr>
-        <td>813323</td>
-        <td align="right">1.00</td>
-        <td>PZA</td>
-        <td colspan="2">PRESTACIÓN DE SERVICIOS DE ACCESO A LA RED INTERNET</td>
-        <td align="right">$550.00</td>
-        <td align="right">$550.00</td>
+        <td class="text-center">{{ $result->satProduct->code }}</td>
+        <td class="text-center">{{ number_format($result->quantity, 2,'.', ','),$result->unitMeasure->decimal_place }}</td>
+        <td class="text-center">{{ $result->unitMeasure->name_sat }}</td>
+        <td colspan="2">{{ $result->name }}</td>
+        <td class="text-center">{{number_format($result->price_unit, 2,'.', ',') }}</td>
+        <td class="text-center">{{number_format($result->discount, 2,'.', ',') }}</td>
+        <td align="right">${{ number_format($result->amount_untaxed, 2,'.', ','),$customer_invoice->currency->code }}</td>
       </tr>
+      @endforeach
     </tbody>
   </table>
   <!--------->
   <table id="table_amounts">
     <tbody>
       <tr>
-        <td rowspan="5" valign="top" colspan="3"> <span>(SEISCIENTOS TERINTA Y OCHO DOLARES 00 / 100 USD)</span> </td>
+        <td rowspan="5" valign="top" colspan="3"> <span>( {{$ammount_letter}} {{$customer_invoice->currency->symbol}})</span> </td>
         <td align="right" colspan="2">Sub Total</td>
-        <td align="right" colspan="2">$ <span>550.00</span></td>
+        <td align="right" colspan="2">$ <span>{{ number_format($customer_invoice->amount_untaxed, 2,'.', ','),$customer_invoice->currency->code }}</span></td>
       </tr>
-      <tr>
-        <td align="right" colspan="2">Descuentos</td>
-        <td align="right" colspan="2">$ <span>0.00</span></td>
-      </tr>
-      <tr>
-        <td align="right" colspan="2">Total Impuestos Trasladados</td>
-        <td align="right" colspan="2">$ <span>88.00</span></td>
-      </tr>
-      <tr>
-        <td align="right" colspan="2">Total Impuestos Retenidos</td>
-        <td align="right" colspan="2">$ <span>0.00</span></td>
-      </tr>
+      @if($customer_invoice->customerInvoiceTaxes->isNotEmpty())
+          @foreach($customer_invoice->customerInvoiceTaxes as $result)
+              <tr>
+                  <td align="right" colspan="2">{{$result->name}}</td>
+                  <td align="right" colspan="2">{{number_format(abs($result->amount_tax), 2,'.', ',') ,$customer_invoice->currency->code }}</td>
+              </tr>
+          @endforeach
+      @endif
       <tr>
         <td align="right" colspan="2">Total</td>
-        <td align="right" style="border-top:1px solid black;" colspan="2">$ <span>0.00</span></td>
+        <td align="right" style="border-top:1px solid black;" colspan="2">$ <span>{{number_format($customer_invoice->amount_total, 2,'.', ','),$customer_invoice->currency->code }}</span></td>
       </tr>
     </tbody>
   </table>
@@ -247,37 +259,24 @@
   <!--------->
   <table id="table_cfdi">
     <tbody>
-      <tr>
-        <td rowspan="2" style="width:20%;"> <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Commons_QR_code.png" alt=""> </td>
-        <td valign="top" style="width:80%;">
-          Sello Digital del CFDI
-          <br>
-          <p>E2wQhqOCVzwME4866yVEME/8PD1S1g6AV48D8VrLhKUDq0Sjqnp9IwfMAbX0ggwUCLRKa Hg5q8aYhya63If2HVqH1sA08poer080P1J6Z
-            BwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVT 9mkTb0Xn5Emu5U8=
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td valign="top" style="width:80%;">
-          Versión timbre fiscal digital
-          <br>
-          Cadena original del complemento de certificación digital del sat
-          <br>
-          <p>E2wQhqOCVzwME4866yVEME/8PD1S1g6AV48D8VrLhKUDq0Sjqnp9IwfMAbX0ggwUCLRKa Hg5q8aYhya63If2HVqH1sA08poer080P1J6Z
-            BwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVTBwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVT BwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVT  9mkTb0Xn5Emu5U8=
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="border-bottom:none;"></td>
-        <td style="width:20%;border-bottom:none;" valign="top" style="width:80%;">
-          Sello Digital del SAT
-          <br>
-          <p>E2wQhqOCVzwME4866yVEME/8PD1S1g6AV48D8VrLhKUDq0Sjqnp9IwfMAbX0ggwUCLRKa Hg5q8aYhya63If2HVqH1sA08poer080P1J6Z
-            BwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVTBwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVT BwTrQkhcb5Jw8jENXoErkFE8qdOcIdFFAuZPVT  9mkTb0Xn5Emu5U8=
-          </p>
-        </td>
-      </tr>
+      @if(!empty($cfdi33))
+        <tr style="border-top: 2px solid black !important;">
+            <td width="23%" class="text-center" style="vertical-align: middle; padding: 5px; word-wrap:break-word;">
+                <img src="{{ $data['qr'] }}" width="500px" style="margin: 9px 0;"/>
+            </td>
+            <td width="77%" style="vertical-align: middle; padding: 5px; word-wrap:break-word;">
+                <strong>@lang('general.text_cfdi_tfd_cadena_origen') </strong><br/>
+                <small>{{ $data['tfd_cadena_origen'] }}</small>
+                <br/>
+                <strong>@lang('general.text_cfdi_tfd_sello_cfdi') </strong><br/>
+                <small>{{ $cfdi33->complemento->timbreFiscalDigital['SelloCFD'] }}</small>
+                <br/>
+                <strong>@lang('general.text_cfdi_tfd_sello_sat') </strong><br/>
+                <small>{{ $cfdi33->complemento->timbreFiscalDigital['SelloSAT'] }}</small>
+                <br/>
+            </td>
+        </tr>
+      @endif
     </tbody>
   </table>
 

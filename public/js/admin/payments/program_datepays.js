@@ -189,58 +189,59 @@ var Configuration_table_responsive_checkbox_move_payment_n3= {
       },
       action: function ( e, dt, node, config ) {
         // $('#modal-confirmation').modal('show');
-        swal({
-          title: "Estás seguro?",
-          text: "Se programarán todos las solicitudes seleccionadas.!",
+        Swal.fire({
+          title: "¿Estás seguro?",
+          text: "Se programarán todos las solicitudes seleccionadas!",
           type: "warning",
           showCancelButton: true,
           confirmButtonClass: "btn-danger",
-          confirmButtonText: "Continuar.!",
-          cancelButtonText: "Cancelar.!",
+          confirmButtonText: "Continuar",
+          cancelButtonText: "Cancelar",
           closeOnConfirm: false,
           closeOnCancel: false
-        },
-        function(isConfirm) {
-          if (isConfirm) {
-            $('.cancel').prop('disabled', 'disabled');
-            $('.confirm').prop('disabled', 'disabled');
-            var rows_selected = $("#table_program").DataTable().column(0).checkboxes.selected();
-            var _token = $('input[name="_token"]').val();
-            var date_schedule_all = $('#date_to_program').val();
-            // Iterate over all selected checkboxes
-            var valores= new Array();
-            $.each(rows_selected, function(index, rowId){
-              valores.push(rowId);
-            });
-            if ( valores.length === 0){
-              //console.log(rows_selected);
-              swal("Operación abortada", "Ningúna solicitud de pago seleccionada :(", "error");
-            }
-            else {
-              $.ajax({
-                type: "POST",
-                url: "/send_item_pay_program_check",
-                data: { idents: valores,date_s: date_schedule_all ,_token: _token },
-                success: function (data){
-                  console.log(data);
-                  if (data === 'true') {
-                    swal("Operación Completada!", "Las solicitudes seleccionadas han sido afectadas.", "success");
-                    payments_conf_table();
-                  }
-                  if (data === 'false') {
-                    swal("Operación abortada!", "Las solicitudes seleccionadas no han sido afectadas.", "error");
-                  }
-                },
-                error: function (data) {
-                  console.log('Error:', data);
-                }
+        }).then((result) => {
+            if (result.value) {
+              $('.cancel').prop('disabled', 'disabled');
+              $('.confirm').prop('disabled', 'disabled');
+              var rows_selected = $("#table_program").DataTable().column(0).checkboxes.selected();
+              var _token = $('input[name="_token"]').val();
+              var date_schedule_all = $('#date_to_program').val();
+              // Iterate over all selected checkboxes
+              var valores= new Array();
+              $.each(rows_selected, function(index, rowId){
+                valores.push(rowId);
               });
+              if ( valores.length === 0){
+                //console.log(rows_selected);
+                Swal.fire("Operación abortada", "Ningúna solicitud de pago seleccionada :(", "error");
+              }
+              else {
+                $.ajax({
+                  type: "POST",
+                  url: "/send_item_pay_program_check",
+                  data: { idents: valores,date_s: date_schedule_all ,_token: _token },
+                  success: function (data){
+                    console.log(data);
+                    if (data === 'true') {
+                      Swal.fire("Operación Completada!", "Las solicitudes seleccionadas han sido afectadas.", "success");
+                      payments_conf_table();
+                    }
+                    if (data === 'false') {
+                      Swal.fire("Operación abortada!", "Las solicitudes seleccionadas no han sido afectadas.", "error");
+                    }
+                  },
+                  error: function (data) {
+                    console.log('Error:', data);
+                  }
+                });
             }
 
-          } else {
-            swal("Operación abortada", "Ningúna solicitud de pago afectada :)", "error");
+          }else{
+            Swal.fire("Operación abortada!", "Las solicitudes seleccionadas no han sido afectadas.", "error");
           }
-        });
+
+        })
+
       }
     },
     {

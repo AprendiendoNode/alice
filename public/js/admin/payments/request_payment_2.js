@@ -206,19 +206,16 @@ var Configuration_table_responsive_checkbox_move_payment_n2= {
       },
       action: function ( e, dt, node, config ) {
         // $('#modal-confirmation').modal('show');
-        swal({
+        Swal.fire({
           title: "Estás seguro?",
           text: "Se autorizarán todos las solicitudes seleccionadas.!",
           type: "warning",
           showCancelButton: true,
           confirmButtonClass: "btn-danger",
-          confirmButtonText: "Continuar.!",
-          cancelButtonText: "Cancelar.!",
-          closeOnConfirm: false,
-          closeOnCancel: false
-        },
-        function(isConfirm) {
-          if (isConfirm) {
+          confirmButtonText: "Continuar",
+          cancelButtonText: "Cancelar!"
+        }).then((result) => {
+          if(result.value){
             $('.cancel').prop('disabled', 'disabled');
             $('.confirm').prop('disabled', 'disabled');
             var rows_selected = $("#table_pays").DataTable().column(0).checkboxes.selected();
@@ -229,7 +226,7 @@ var Configuration_table_responsive_checkbox_move_payment_n2= {
               valores.push(rowId);
             });
             if ( valores.length === 0){
-              swal("Operación abortada", "Ningúna solicitud de pago seleccionada :(", "error");
+              Swal.fire("Operación abortada", "Ningúna solicitud de pago seleccionada :(", "error");
             }
             else {
               $.ajax({
@@ -238,11 +235,11 @@ var Configuration_table_responsive_checkbox_move_payment_n2= {
                 data: { idents: JSON.stringify(valores), _token : _token },
                 success: function (data){
                   if (data === 'true') {
-                    swal("Operación Completada!", "Las solicitudes seleccionadas han sido afectadas.", "success");
+                    Swal.fire("Operación Completada!", "Las solicitudes seleccionadas han sido afectadas.", "success");
                     payments_auto_table();
                   }
                   if (data === 'false') {
-                    swal("Operación abortada!", "Las solicitudes seleccionadas no han sido afectadas.", "error");
+                    Swal.fire("Operación abortada!", "Las solicitudes seleccionadas no han sido afectadas.", "error");
                   }
                 },
                 error: function (data) {
@@ -250,11 +247,8 @@ var Configuration_table_responsive_checkbox_move_payment_n2= {
                 }
               });
             }
-
-          } else {
-            swal("Operación abortada", "Ningúna solicitud de pago afectada :)", "error");
           }
-        });
+        })
       }
     },
     {
@@ -383,44 +377,36 @@ function enviartwo(e){
   var valor= e.getAttribute('value');
   var _token = $('input[name="_token"]').val();
 
-  swal({
+  Swal.fire({
     title: "¿Estás seguro?",
-    text: "Se denegara la solicitud.!<br><br><textarea rows='3' placeholder='Añadir comentario' class='form-control' id='comentario'></textarea>",
+    html: "Se denegara la solicitud!<br><br><textarea rows='3' placeholder='Añadir comentario' class='form-control' id='comentario'></textarea>",
     type: "warning",
-    html:true,
     showCancelButton: true,
     confirmButtonClass: "btn-danger",
-    confirmButtonText: "Continuar.!",
-    cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm){
-    if(isConfirm){
-      var comment = $('#comentario').val();
-      if (comment === "") {
-        swal("Operación abortada!", "Añada un comentario de denegación.", "error");
-      }else{
-        $.ajax({
-            type: "POST",
-            url: "/deny_payment",
-            data: { idents: valor, comm: comment, _token : _token },
-            success: function (data){
-              if (data === 'true') {
-                swal("Operación Completada!", "La solicitud ha sido denegado.", "success");
-                payments_auto_table();
-              }
-              if (data === 'false') {
-                swal("Operación abortada!", "No cuenta con el permiso o esta ya se encuentra denegado :) Nota: Si la solicitud ya esta confirmada no se puede denegar", "error");
-              }
-            },
-            error: function (data) {
-              console.log('Error:', data);
-            }
-        });
-      }
+    confirmButtonText: "Continuar",
+    cancelButtonText: "Cancelar!"
+  }).then((result) => {
+    var comment = $('#comentario').val();
+    if (comment === "") {
+      Swal.fire("Operación abortada!", "Añada un comentario de denegación.", "error");
     }else{
-        swal("Operación abortada", "Ningúna solicitud afectada :)", "error");
+      $.ajax({
+          type: "POST",
+          url: "/deny_payment",
+          data: { idents: valor, comm: comment, _token : _token },
+          success: function (data){
+            if (data === 'true') {
+              Swal.fire("Operación Completada!", "La solicitud ha sido denegado.", "success");
+              payments_auto_table();
+            }
+            if (data === 'false') {
+              Swal.fire("Operación abortada!", "No cuenta con el permiso o esta ya se encuentra denegado :) Nota: Si la solicitud ya esta confirmada no se puede denegar", "error");
+            }
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+      });
     }
   })
 }

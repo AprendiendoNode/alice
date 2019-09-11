@@ -49,6 +49,7 @@ use Illuminate\Support\Facades\Schema;
 
 use \CfdiUtils\XmlResolver\XmlResolver;
 use \CfdiUtils\CadenaOrigen\DOMBuilder;
+use App\ConvertNumberToLetters;
 
 class CustomerInvoiceController extends Controller
 {
@@ -70,11 +71,31 @@ class CustomerInvoiceController extends Controller
         ];
     }
 
-    public function generate_invoice()
+    public function generate_invoice($id)
     {
 
+      $customer_invoice = CustomerInvoice::findOrFail($id);
+      $companies = DB::select('CALL px_companies_data ()', array());
+      //Si tiene CFDI obtiene la informacion de los nodos
+      if(!empty($customer_invoice->customerInvoiceCfdi->file_xml_pac) && !empty($customer_invoice->customerInvoiceCfdi->uuid)){
+        $path_xml = Helper::setDirectory(CustomerInvoice::PATH_XML_FILES_CI) . '/';
+          $file_xml_pac = $path_xml . $customer_invoice->customerInvoiceCfdi->file_xml_pac;
+
+          //Valida que el archivo exista
+          if(\Storage::exists($file_xml_pac)) {
+              $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($file_xml_pac));
+              $data = Cfdi33Helper::getQuickArrayCfdi($cfdi);
+
+              //Genera codigo QR
+              $image = QrCode::format('png')->size(150)->margin(0)->generate($data['qr_cadena']);
+              $data['qr'] = 'data:image/png;base64,' . base64_encode($image);
+          }
+      }
+      $format = new ConvertNumberToLetters();
+      $ammount_letter = $format->convertir($customer_invoice->amount_total);
+
       // Enviando datos a la vista de la factura
-      $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi');
+      $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice', 'data', 'ammount_letter'));
       return $pdf->stream();
     }
     /**

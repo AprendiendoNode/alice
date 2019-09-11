@@ -65,21 +65,21 @@
     <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
     <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v=1.0.3')}}" >
 
   @else
     @include('default.denied')
   @endif
-  <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_logs.js')}}"></script>
-  <script type="text/javascript" src="{{asset('js/admin/documentp/edit_document_cart_general.js')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_logs.js?v=1.0.3')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/documentp/edit_document_cart_general.js?v=1.0.3')}}"></script>
   @if( auth()->user()->can('View level zero documentp notification') )
     <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_itc.js?v=1.0.3')}}"></script>
   @elseif ( auth()->user()->can('View level one documentp notification') )
-    <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=1.0.2')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=2.0.2')}}"></script>
   @elseif ( auth()->user()->can('View level two documentp notification') )
-    <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=1.0.2')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=2.0.2')}}"></script>
   @elseif ( auth()->user()->can('View level three documentp notification') )
-    <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=1.0.2')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_comercial.js?v=2.0.2')}}"></script>
   @else
     @include('default.denied')
   @endif

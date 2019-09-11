@@ -1193,7 +1193,7 @@
   @else
     @include('default.denied')
   @endif
-  <script type="text/javascript" src="{{asset('js/admin/quoting/kickoff.js')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/quoting/kickoff.js?v2.0.0')}}"></script>
   <script type="text/javascript" src="{{asset('js/admin/quoting/modal_linea_base.js')}}"></script>
   <script type="text/javascript" src="{{asset('js/admin/documentp/request_modal_documentp.js')}}"></script>
   <style media="screen">

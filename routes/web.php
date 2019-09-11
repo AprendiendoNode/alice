@@ -928,7 +928,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customers-edit', 'Sales\CustomerController@edit');
 
     //Facturacion
-    Route::get('/customer-invoice-pdf', 'Sales\CustomerInvoiceController@generate_invoice');
+    Route::get('/customer-invoice-pdf/{id}', 'Sales\CustomerInvoiceController@generate_invoice');
     Route::get('/customer-invoices', 'Sales\CustomerInvoiceController@index');
     Route::post('/customer-invoices-create', 'Sales\CustomerInvoiceController@create');
     Route::post('/customer-invoices-store', 'Sales\CustomerInvoiceController@store');
@@ -957,7 +957,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices/destroy', 'Sales\CustomerInvoiceController@destroy');
     Route::get('/customer-invoices/download-xml/{id}', 'Sales\CustomerInvoiceController@downloadXml');
     Route::post('/customer-invoices/modal-send-mail', 'Sales\CustomerInvoiceController@modalSendMail');
-    Route::get('/customer-invoices/test', 'Sales\CustomerInvoiceController@verfact'); 
+    Route::get('/customer-invoices/test', 'Sales\CustomerInvoiceController@verfact');
     Route::get('/reset_t', 'Sales\CustomerInvoiceController@store_reset');
 });
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()

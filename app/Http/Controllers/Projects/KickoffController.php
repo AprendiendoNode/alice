@@ -39,6 +39,7 @@ class KickoffController extends Controller
 
       $vtc = "Proyecto sin cotizador";
       $gasto_mtto_percent = 0;
+      $gasto_mtto = 0;
       $credito_mensual_percent = 0;
       $cotizador = DB::table('cotizador')->select('id', 'id_doc')->where('id_doc', $document[0]->id)->get();
       $real_ejercido = $this->get_presupuesto_ejercido($document[0]->id);

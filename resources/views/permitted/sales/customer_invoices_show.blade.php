@@ -610,7 +610,7 @@
         var a01 = '<div class="btn-group">';
         var a02 = '<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></button>';
         var a03 = '<div class="dropdown-menu">';
-        var a04 = '<a class="dropdown-item" href="javascript:void(0);"><i class="fa fa-eye"></i> @lang('general.button_show')</a>';
+        var a04 = '<a class="dropdown-item" target="_blank" href="/sales/customer-invoice-pdf/'+information.id+'"><i class="fa fa-eye"></i> @lang('general.button_show')</a>';
         var a05 = '<a class="dropdown-item" href="/sales/customer-invoices/download-xml/'+information.id+'"><i class="far fa-file-code"></i> @lang('general.button_download_xml')</a>';
         var a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-envelope"></i> @lang('general.button_send_mail')</a>';
         var a07 = '<a class="dropdown-item" href="javascript:void(0);"><i class="fa fa-print"></i> @lang('general.button_print')</a>';
