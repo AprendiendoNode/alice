@@ -23,6 +23,7 @@
     - [Crear encuesta](/{{route}}/{{version}}/qualification/create_survey_admin)
     - [Resultados NPS](/{{route}}/{{version}}/qualification/survey_results)
     - [Configuración NPS](/{{route}}/{{version}}/qualification/configure_survey_admin_nps)
+    - [Envio de encuesta](/{{route}}/{{version}}/qualification/configure_survey_admin_sit)
 - ## Equipos
     - [Altas](/{{route}}/{{version}}/equipment/up_equipment)
     - [Bajas](/{{route}}/{{version}}/equipment/down_equipment)
@@ -52,6 +53,16 @@
     - [Programar pagos](/{{route}}/{{version}}/payments/program_date_pay)
     - [Confirmar pagos](/{{route}}/{{version}}/payments/confirm_pay)
     - [Cuentas bancarias](/{{route}}/{{version}}/payments/view_pay_bank)
+- ## Contratos
+    - [Dashboard contratos](/{{route}}/{{version}}/contracts/cont_dashboard)
+    - [Crear id de ubicación](/{{route}}/{{version}}/contracts/cont_create_idubic)
+    - [Crear contratos](/{{route}}/{{version}}/contracts/cont_create_cont)
+    - [Editar contratos](/{{route}}/{{version}}/contracts/cont_edit_cont)
+    - [Drive contratos](/{{route}}/{{version}}/contracts/cont_filemanager)
+    - [Lista por facturar](/{{route}}/{{version}}/contracts/view_payauto)
+    - [Confirmación de cobro](/{{route}}/{{version}}/contracts/view_facturados)
+    - [Antiguedad CxC](/{{route}}/{{version}}/contracts/view_cobrados)
+
 - ## Proyectos
     - [Administración de productos](/{{route}}/{{version}}/planning/products)
     - [Solicitud de compra](/{{route}}/{{version}}/planning/purchaserequest)
