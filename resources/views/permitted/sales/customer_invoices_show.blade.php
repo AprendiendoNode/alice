@@ -367,11 +367,11 @@
                   </select>
                 </div>
               </div>
-              <div class="col-md-12 col-xs-12">
+              <div class="col-md-12 col-xs-12 editor_quill">
                   <div class="form-group form-group-sm">
                     <label for="attach" class="control-label">{{__('general.entry_mail_message')}} <span class="required text-danger">*</span></label>
                   </div>
-                  <textarea name="message" id="message"></textarea>
+                  <div name="message" id="message" class="mb-4"></div>
               </div>
           </div>
         </div>
@@ -406,6 +406,9 @@
       outline: 0;
       border-radius: 3px;
     }
+    .editor_quill {
+      margin-bottom: 5rem !important;
+    }
   </style>
 
   <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
@@ -437,8 +440,20 @@
   <link rel="stylesheet" href="{{ asset('plugins/google-code-prettify/src/prettify.css') }}" type="text/css" />
   <script src="{{ asset('plugins/google-code-prettify/src/prettify.js') }}"></script> --}}
 
-  <link rel="stylesheet" href="{{ asset('plugins/summernote-develop/dist/summernote-bs4.css') }}" type="text/css" />
-  <script src="{{ asset('plugins/summernote-develop/dist/summernote.js') }}"></script>
+  {{-- <link rel="stylesheet" href="{{ asset('plugins/summernote-develop/dist/summernote-bs4.css') }}" type="text/css" />
+  <script src="{{ asset('plugins/summernote-develop/dist/summernote.js') }}"></script> --}}
+
+  <!-- Main Quill library -->
+  <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+  {{-- <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script> --}}
+
+  <!-- Theme included stylesheets -->
+  <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  {{-- <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet"> --}}
+
+  <!-- Core build with no theme, formatting, non-essential modules -->
+  {{-- <link href="//cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+  <script src="//cdn.quilljs.com/1.3.6/quill.core.js"></script> --}}
   <style media="screen">
     .white {background-color: #ffffff;}
     .select2-selection__rendered {
@@ -457,8 +472,26 @@
 
   </style>
   <script type="text/javascript">
-  $(function() {
-    //-----------------------------------------------------------
+      var quill;
+
+      $(function() {
+        //-----------------------------------------------------------
+        if ($("#message").length) {
+            quill = new Quill('#message', {
+            modules: {
+              toolbar: [
+                [{
+                  header: [1, 2, false]
+                }],
+                ['bold', 'italic', 'underline'],
+                // ['image', 'code-block']
+              ]
+            },
+            placeholder: 'Ingresé su mensaje...',
+            theme: 'snow' // or 'bubble'
+          });
+        }
+        //-----------------------------------------------------------
         $("#form").validate({
           ignore: "input[type=hidden]",
           errorClass: "text-danger",
@@ -537,8 +570,6 @@
             $("#form input[name='filter_date_to']").val(chosen_date.format('DD-MM-YYYY'));
         });
         $("#filter_customer_id").select2();
-
-        //-----------------------------------------------------------
         //-----------------------------------------------------------
       });
 
@@ -986,9 +1017,30 @@
              url: '/sales/customer-invoices/modal-send-mail',
              data: {token_b : valor, _token : _token},
              success: function (data) {
-               console.log(data.custom_message);
+               console.log(data);
                $("#modal_customer_invoice_send_mail").modal("show");
+               /*Quill editor*/
+                  var inicio = 'Le remitimos adjunta la siguiente factura:';
+                  var factura = 'Factura= '+data.customer_invoice.name;
+                  var cliente = 'Cliente= '+data.customer_invoice.customer.name;
+                  var fecha = 'Fecha = '+data.customer_invoice.date;
+                  // quill.setText('Le remitimos adjunta la siguiente factura:\nFAC1!\n');
+                  //
+                  // // quill.formatLine(1, 2, 'align', 'left');   // right aligns the first line
+                  // quill.formatLine(1, 2, 'align', 'center');  // center aligns both lines
+                  //
+                  quill.setContents([
+                      { insert: inicio, attributes: { bold: true } },
+                      { insert: '\n' },
+                      { insert: factura, attributes: { bold: false } },
+                      { insert: '\n' },
+                      { insert: cliente, attributes: { bold: false } },
+                      { insert: '\n' },
+                      { insert: fecha, attributes: { bold: false } },
+                      { insert: '\n' }
+                    ]);
 
+                /*
                //Editor
                $('#message').summernote('reset');
                $('#message').summernote(
@@ -1007,7 +1059,7 @@
                  }
                );
                $('#message').summernote('pasteHTML', data.custom_message);
-
+               */
                //Correos para
                $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").select2({
                    placeholder: "@lang('general.text_select')",

@@ -133,4 +133,5 @@ return [
     'error_download_xml' => 'Error al descargar el archivo XML',
     'error_read_xml' => 'Error al leer el archivo XML',
 
+    'document_title_simple' => 'Factura'
 ];

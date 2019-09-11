@@ -957,7 +957,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices/destroy', 'Sales\CustomerInvoiceController@destroy');
     Route::get('/customer-invoices/download-xml/{id}', 'Sales\CustomerInvoiceController@downloadXml');
     Route::post('/customer-invoices/modal-send-mail', 'Sales\CustomerInvoiceController@modalSendMail');
-
+    Route::get('/customer-invoices/test', 'Sales\CustomerInvoiceController@verfact'); 
     Route::get('/reset_t', 'Sales\CustomerInvoiceController@store_reset');
 });
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
