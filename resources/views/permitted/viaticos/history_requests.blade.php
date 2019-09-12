@@ -740,20 +740,20 @@
 
 
       @if( auth()->user()->can('View level zero notifications'))
-      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js')}}"></script>
-      <script src="{{ asset('js/admin/viaticos/requests_viaticos_0.js')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js?v=2.0.0')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/requests_viaticos_0.js?v=2.0.0')}}"></script>
       @elseif(auth()->user()->can('View level one notifications'))
-      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal_2.js')}}"></script>
-      <script src="{{ asset('js/admin/viaticos/requests_viaticos_1.js')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal_2.js?v=2.0.0')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/requests_viaticos_1.js?v=2.0.0')}}"></script>
       @elseif(auth()->user()->can('View level two notifications'))
-      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js')}}"></script>
-      <script src="{{ asset('js/admin/viaticos/requests_viaticos_2.js')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js?v=2.0.0')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/requests_viaticos_2.js?v=2.0.0')}}"></script>
       @elseif(auth()->user()->can('View level three notifications'))
-      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js')}}"></script>
-      <script src="{{ asset('js/admin/viaticos/requests_viaticos_3.js')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js?v=2.0.0')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/requests_viaticos_3.js?v=2.0.0')}}"></script>
       @elseif(auth()->user()->can('View level four notifications'))
-      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js')}}"></script>
-      <script src="{{ asset('js/admin/viaticos/requests_viaticos_4.js')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js?v=2.0.0')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/requests_viaticos_4.js?v=2.0.0')}}"></script>
     @endif
     @else
       <!--NO VER -->

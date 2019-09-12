@@ -472,6 +472,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/view_request_all_via', 'Viatics\RequestViaticAllController@index');
     Route::get('/view_request_all_via_edit', 'Viatics\RequestViaticAllController@edit');
     Route::post('/view_request_via_all', 'Viatics\RequestViaticAllController@history_all');
+    //Anexo a tiempo de respuesta y solucion
+		Route::post('/update_conceptable', 'Viatics\RequestsViaticController@upd_datostab');
     //- Reporte semanal viaticos
     Route::get('/view_viatic_weekly', 'Viatics\ViaticWeeklyController@index');
     Route::post('/view_request_via_weekly', 'Viatics\ViaticWeeklyController@viatic_historic_weekly');
