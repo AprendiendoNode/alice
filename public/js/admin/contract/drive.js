@@ -86,56 +86,54 @@ $("#validation_modal_fact").validate({
       }
     },
     submitHandler: function(form){
-      /*----------------------------------------------------------------------*/
-        swal({
-          title: "Estás seguro?",
-          text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Continuar.!",
-          cancelButtonText: "Cancelar.!",
-          closeOnConfirm: false,
-          closeOnCancel: false,
-          showLoaderOnConfirm: true,
-        },
-        function(isConfirm) {
-          if (isConfirm) {
-            // The AJAX
-            var form = $('#validation_modal_fact')[0];
-            var formData = new FormData(form);
-            $.ajax({
-              type: 'POST',
-              url: "/add_fact_pend_by_drive",
-              data: formData,
-              contentType: false,
-              processData: false,
-              success: function (data){
-                datax = data;
-                if (datax != '0') {
-                  $('#modalPendiente').modal('toggle');
-                  swal("Operación Completada!", ":)", "success");
-                }
-                else {
-                  $('#modalPendiente').modal('toggle');
-                  swal("Operación abortada", "Error al registrar intente otra vez :(", "error");
-                }
-
-                $("#validation_modal_fact")[0].reset();
-                var validator = $( "#validation_modal_fact" ).validate();
-                validator.resetForm();
-              },
-              error: function (data) {
+            Swal.fire({
+              title: "Estás seguro?",
+              text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonClass: "btn-danger",
+              confirmButtonText: "Continuar.!",
+              cancelButtonText: "Cancelar.!",
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.value) {
+          // The AJAX
+          var form = $('#validation_modal_fact')[0];
+          var formData = new FormData(form);
+          $.ajax({
+            type: 'POST',
+            url: "/add_fact_pend_by_drive",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data){
+              datax = data;
+              if (datax != '0') {
                 $('#modalPendiente').modal('toggle');
-                swal("Operación abortada", "Ningúna operación afectuada :)", "error");
+                Swal.fire("Operación Completada!", ":)", "success");
               }
-            });
-          }
-          else {
-            $('#modalPendiente').modal('toggle');
-            swal("Operación abortada", "Ningúna operación afectuada :)", "error");
-          }
-        });
+              else {
+                $('#modalPendiente').modal('toggle');
+                Swal.fire("Operación abortada", "Error al registrar intente otra vez :(", "error");
+              }
+
+              $("#validation_modal_fact")[0].reset();
+              var validator = $( "#validation_modal_fact" ).validate();
+              validator.resetForm();
+            },
+            error: function (data) {
+              $('#modalPendiente').modal('toggle');
+              Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
+            }
+          });
+        }//Fin if result.value
+        else {
+          $('#modalPendiente').modal('toggle');
+          Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
+        }
+      })
+
       /*----------------------------------------------------------------------*/
     }
 });

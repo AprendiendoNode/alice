@@ -189,7 +189,7 @@
       });
   </script>
 
-  <script src="{{ asset('js/admin/contract/drive.js?v=2.0.0')}}"></script>
+  <script src="{{ asset('js/admin/contract/drive.js?v=2.0.1')}}"></script>
   <script src="{{ asset('vendor/file-manager/js/file-manager.js?v=2.0.0') }}"></script>
 
   @else
