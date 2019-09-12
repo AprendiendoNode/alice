@@ -914,9 +914,9 @@
   </style>
   <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-  <script src="{{ asset('js/admin/contract/graph.js')}}"></script>
-  <script src="{{ asset('js/admin/contract/dashboard_contract.js')}}"></script>
-  <script src="{{ asset('js/admin/contract/graph1.js')}}"></script>
+  <script src="{{ asset('js/admin/contract/graph.js?v1.0')}}"></script>
+  <script src="{{ asset('js/admin/contract/dashboard_contract.js?v1.0')}}"></script>
+  <script src="{{ asset('js/admin/contract/graph1.js?v1.0')}}"></script>
   @else
   @endif
 @endpush

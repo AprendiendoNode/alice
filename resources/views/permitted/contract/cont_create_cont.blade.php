@@ -926,15 +926,15 @@
 
   <script src="{{ asset('/plugins/momentupdate/moment-with-locales.js')}}"></script>
 
-  <script src="{{ asset('js/admin/contract/c_mdrz.js')}}"></script>
-  <script src="{{ asset('js/admin/contract/c_mdgrup.js')}}"></script>
+  <script src="{{ asset('js/admin/contract/c_mdrz.js?v1.0')}}"></script>
+  <script src="{{ asset('js/admin/contract/c_mdgrup.js?v1.0')}}"></script>
 
-  <script src="{{ asset('js/admin/contract/c_contrato_general.js')}}"></script>
+  <script src="{{ asset('js/admin/contract/c_contrato_general.js?v1.0')}}"></script>
 
-  <script src="{{ asset('js/admin/contract/c_contrato_master.js')}}"></script>
-  <script src="{{ asset('js/admin/contract/c_contrato_anexo_s1.js')}}"></script>
-  <script src="{{ asset('js/admin/contract/c_contrato_anexo_s2.js')}}"></script>
-  <script src="{{ asset('js/admin/contract/c_contrato_anexo_s3.js')}}"></script>
+  <script src="{{ asset('js/admin/contract/c_contrato_master.js?v1.0')}}"></script>
+  <script src="{{ asset('js/admin/contract/c_contrato_anexo_s1.js?v1.0')}}"></script>
+  <script src="{{ asset('js/admin/contract/c_contrato_anexo_s2.js?v1.0')}}"></script>
+  <script src="{{ asset('js/admin/contract/c_contrato_anexo_s3.js?v1.0')}}"></script>
 
   <!-- <script src="{{ asset('js/admin/contract/c_contrato2.js')}}"></script> -->
   <!-- <script src="{{ asset('js/admin/contract/c_contrato.js')}}"></script> -->
@@ -1006,67 +1006,67 @@
           event.preventDefault();
             // swal("form_master Submitted!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem erat eleifend ex semper, lobortis purus sed.");
           /************************************************************************************/
-            swal({
-              title: "Estás seguro?",
-              text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonClass: "btn-danger",
-              confirmButtonText: "Continuar.!",
-              cancelButtonText: "Cancelar.!",
-              closeOnConfirm: false,
-              closeOnCancel: false,
-              showLoaderOnConfirm: true,
-            },
-            function(isConfirm) {
-              if (isConfirm) {
+          Swal.fire({
+            title: "Estás seguro?",
+            text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Continuar.!",
+            cancelButtonText: "Cancelar.!",
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            showLoaderOnConfirm: true,
+          }).then((result) => {
+            if (result.value) {
 
-                  var form = $('#validation_master')[0];
-                  var formData = new FormData(form);
+            var form = $('#validation_master')[0];
+            var formData = new FormData(form);
 
-                  formData.append('key_maestro_service', $('input[name="key_maestro_service"]').val() );
-                  formData.append('key_maestro_verticals', $('input[name="key_maestro_verticals"]').val() );
-                  formData.append('key_maestro_cadena', $('input[name="key_maestro_cadena"]').val() );
-                  formData.append('key_maestro_contrato', $('input[name="key_maestro_contrato"]').val() );
-                  formData.append('key_maestro_sitio', $('input[name="key_maestro_sitio"]').val() );
+            formData.append('key_maestro_service', $('input[name="key_maestro_service"]').val() );
+            formData.append('key_maestro_verticals', $('input[name="key_maestro_verticals"]').val() );
+            formData.append('key_maestro_cadena', $('input[name="key_maestro_cadena"]').val() );
+            formData.append('key_maestro_contrato', $('input[name="key_maestro_contrato"]').val() );
+            formData.append('key_maestro_sitio', $('input[name="key_maestro_sitio"]').val() );
 
-                  $.ajax({
+            $.ajax({
                     type: "POST",
                     url: "/create_contract_master",
                     data: formData,
                     contentType: false,
                     processData: false,
                     success: function (data){
-                      datax = data;
-                      if (datax != '0') {
-                        swal("Operación Completada!", ":)", "success");
-                      }
-                      else {
-                        $('#modal_cadena').modal('toggle');
-                        swal("Operación abortada", "Error al registrar intente otra vez :(", "error");
-                      }
-                      $("#validation_master")[0].reset();
-                      var validator = $( "#validation_master" ).validate();
-                      validator.resetForm();
-                      $("#validation_master-t-0").get(0).click();
+                    datax = data;
+                    if (datax != '0') {
+                            Swal.fire("Operación Completada!", ":)", "success");
+                            }
+                    else {
+                            $('#modal_cadena').modal('toggle');
+                            Swal.fire("Operación abortada", "Error al registrar intente otra vez :(", "error");
+                          }
+                            $("#validation_master")[0].reset();
+                            var validator = $( "#validation_master" ).validate();
+                            validator.resetForm();
+                            $("#validation_master-t-0").get(0).click();
 
-                      $('input[name="key_maestro_service"]').val('');
-                      $('input[name="key_maestro_verticals"]').val('');
-                      $('input[name="key_maestro_cadena"]').val('');
-                      $('input[name="key_maestro_contrato"]').val('');
-                      $('input[name="key_maestro_sitio"]').val('');
+                            $('input[name="key_maestro_service"]').val('');
+                            $('input[name="key_maestro_verticals"]').val('');
+                            $('input[name="key_maestro_cadena"]').val('');
+                            $('input[name="key_maestro_contrato"]').val('');
+                            $('input[name="key_maestro_sitio"]').val('');
 
-                    },
-                    error: function (data) {
-                      console.log('Error:', data);
-                      swal.close();
-                    }
-                  })
+                                  },
+                            error: function (data) {
+                            console.log('Error:', data);
+                            Swal.close();
+                                  }
+                                })//Fin ajax
 
-              } else {
-                swal("Operación abortada", "Ningúna operación afectuada :)", "error");
-              }
-            });
+            }//Fin if result.value
+            else {
+             Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
+           }
+          })
           /************************************************************************************/
         }
     }), $(".validation-wizard-master").validate({
@@ -1133,71 +1133,71 @@
           event.preventDefault();
             // swal("form_master Submitted!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem erat eleifend ex semper, lobortis purus sed.");
           /************************************************************************************/
-            swal({
-              title: "Estás seguro?",
-              text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonClass: "btn-danger",
-              confirmButtonText: "Continuar.!",
-              cancelButtonText: "Cancelar.!",
-              closeOnConfirm: false,
-              closeOnCancel: false,
-              showLoaderOnConfirm: true,
-            },
-            function(isConfirm) {
-              if (isConfirm) {
+          Swal.fire({
+            title: "Estás seguro?",
+            text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Continuar.!",
+            cancelButtonText: "Cancelar.!",
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            showLoaderOnConfirm: true,
+        }).then((result) => {
+          if (result.value) {
 
-                  var form = $('#validation_anexo')[0];
-                  var formData = new FormData(form);
+            var form = $('#validation_anexo')[0];
+            var formData = new FormData(form);
 
-                  formData.append('key_anexo_service', $('input[name="key_anexo_service"]').val() );
-                  formData.append('key_anexo_verticals', $('input[name="key_anexo_verticals"]').val() );
-                  formData.append('key_anexo_cadena', $('input[name="key_anexo_cadena"]').val() );
-                  formData.append('key_anexo_contrato', $('input[name="key_anexo_contrato"]').val() );
-                  formData.append('key_anexo_sitio', $('input[name="key_anexo_sitio"]').val() );
+            formData.append('key_anexo_service', $('input[name="key_anexo_service"]').val() );
+            formData.append('key_anexo_verticals', $('input[name="key_anexo_verticals"]').val() );
+            formData.append('key_anexo_cadena', $('input[name="key_anexo_cadena"]').val() );
+            formData.append('key_anexo_contrato', $('input[name="key_anexo_contrato"]').val() );
+            formData.append('key_anexo_sitio', $('input[name="key_anexo_sitio"]').val() );
 
-                  formData.append('contador_max', conceptIndex);
-                  formData.append('contadores_elim', constante_eliminar);
+            formData.append('contador_max', conceptIndex);
+            formData.append('contadores_elim', constante_eliminar);
 
-                  formData.append('site_contador_max', conceptIndexSiteAnexo);
-                  formData.append('site_contadores_elim', constante_eliminar_site_anexo);
+            formData.append('site_contador_max', conceptIndexSiteAnexo);
+            formData.append('site_contadores_elim', constante_eliminar_site_anexo);
 
-                  $.ajax({
-                    type: "POST",
-                    url: "/create_contract_annexes",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function (data){
-                      datax = data;
-                      if (datax != '0') {
-                        swal("Operación Completada!", ":)", "success");
-                      }
-                      else {
-                        $('#modal_cadena').modal('toggle');
-                        swal("Operación abortada", "Error al registrar intente otra vez :(", "error");
-                      }
-                      $("#validation_anexo")[0].reset();
-                      var validator = $( "#validation_anexo" ).validate();
-                      validator.resetForm();
-                      $("#validation_anexo-t-0").get(0).click();
-                      $('input[name="key_anexo_service"]').val('');
-                      $('input[name="key_anexo_verticals"]').val('');
-                      $('input[name="key_anexo_cadena"]').val('');
-                      $('input[name="key_anexo_contrato"]').val('');
-                      $('input[name="key_anexo_sitio"]').val('');
-                    },
-                    error: function (data) {
-                      console.log('Error:', data);
-                      swal.close();
-                    }
-                  })
-
-              } else {
-                swal("Operación abortada", "Ningúna operación afectuada :)", "error");
+            $.ajax({
+              type: "POST",
+              url: "/create_contract_annexes",
+              data: formData,
+              contentType: false,
+              processData: false,
+              success: function (data){
+                datax = data;
+                if (datax != '0') {
+                  Swal.fire("Operación Completada!", ":)", "success");
+                }
+                else {
+                  $('#modal_cadena').modal('toggle');
+                  Swal.fire("Operación abortada", "Error al registrar intente otra vez :(", "error");
+                }
+                $("#validation_anexo")[0].reset();
+                var validator = $( "#validation_anexo" ).validate();
+                validator.resetForm();
+                $("#validation_anexo-t-0").get(0).click();
+                $('input[name="key_anexo_service"]').val('');
+                $('input[name="key_anexo_verticals"]').val('');
+                $('input[name="key_anexo_cadena"]').val('');
+                $('input[name="key_anexo_contrato"]').val('');
+                $('input[name="key_anexo_sitio"]').val('');
+              },
+              error: function (data) {
+                console.log('Error:', data);
+                Swal.close();
               }
-            });
+            })//Fin ajax
+
+          }//Fin if result.value
+          else {
+            Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
+          }
+        })//Fin then
           /************************************************************************************/
 
         }

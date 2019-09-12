@@ -679,10 +679,10 @@
           var rec_a = $('[name="lat"]').val();
           var rec_b = $('[name="lng"]').val();
           if (rec_a =='' || rec_b =='' ) {
-            swal("Operación abortada", "Ningúna operación afectuada, Ingrese la latitud y longitud :)", "error");
+            Swal.fire("Operación abortada", "Ningúna operación afectuada, Ingrese la latitud y longitud :)", "error");
           }
           else{
-            swal({
+            Swal.fire({
               title: "Estás seguro?",
               text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
               type: "warning",
@@ -690,12 +690,12 @@
               confirmButtonClass: "btn-danger",
               confirmButtonText: "Continuar.!",
               cancelButtonText: "Cancelar.!",
-              closeOnConfirm: false,
-              closeOnCancel: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
               showLoaderOnConfirm: true,
-            },
-            function(isConfirm) {
-              if (isConfirm) {
+
+            }).then((result) => {
+              if (result.value) {
                 // The AJAX
                 var form = $('#validation_crear')[0];
                 var formData = new FormData(form);
@@ -711,10 +711,10 @@
                   success: function (data){
                     datax = data;
                     if (datax != '0') {
-                      swal("Operación Completada!", ":)", "success");
+                      Swal.fire("Operación Completada!", ":)", "success");
                     }
                     else {
-                      swal("Operación abortada", "Error al registrar intente otra vez :(", "error");
+                      Swal.fire("Operación abortada", "Error al registrar intente otra vez :(", "error");
                     }
                     // This is a callback that runs if the submission was a success.
                     // Clear the form
@@ -731,15 +731,15 @@
                     validator.resetForm();
                   },
                   error: function (data) {
-                    swal("Operación abortada", "Ningúna operación afectuada :)", "error");
+                    Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
                   }
-                });
-              }
+                });//Fin ajax
+              }//Fin result
               else {
-                swal("Operación abortada", "Ningúna operación afectuada :)", "error");
+                Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
               }
-            });
-          }
+            })//Fin then
+          }//Fin big else
 
 
         }
@@ -759,10 +759,10 @@
           var rec_a = $('[name="lat"]').val();
           var rec_b = $('[name="lng"]').val();
           if (rec_a =='' || rec_b =='' ) {
-            swal("Operación abortada", "Ningúna operación afectuada, Ingrese la latitud y longitud :)", "error");
+            Swal.fire("Operación abortada", "Ningúna operación afectuada, Ingrese la latitud y longitud :)", "error");
           }
           else{
-            swal({
+            Swal.fire({
               title: "Estás seguro?",
               text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
               type: "warning",
@@ -770,58 +770,55 @@
               confirmButtonClass: "btn-danger",
               confirmButtonText: "Continuar.!",
               cancelButtonText: "Cancelar.!",
-              closeOnConfirm: false,
-              closeOnCancel: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
               showLoaderOnConfirm: true,
-            },
-            function(isConfirm) {
-              if (isConfirm) {
-                // The AJAX
-                var form = $('#validation_edit')[0];
-                var formData = new FormData(form);
-                formData.append('latitud', rec_a);
-                formData.append('longitud', rec_b);
-                $.ajax({
-                  type: 'POST',
-                  url: "/cont_edit_idubic",
-                  data: formData,
-                  contentType: false,
-                  processData: false,
-                  success: function (data){
-                    datax = data;
-                    if (datax != '0') {
-                      swal("Operación Completada!", ":)", "success");
-                    }
-                    else {
-                      swal("Operación abortada", "Error al actualizar intente otra vez :(", "error");
-                    }
-                    // This is a callback that runs if the submission was a success.
-                    // Clear the form
-                    var latlng2 = new google.maps.LatLng(21.1484265,-86.8362061);
-                    marker.setPosition(latlng2);
-                    map.setCenter(latlng2);
+}).then((result) => {
+  if (result.value) {
+    // The AJAX
+    var form = $('#validation_edit')[0];
+    var formData = new FormData(form);
+    formData.append('latitud', rec_a);
+    formData.append('longitud', rec_b);
+    $.ajax({
+      type: 'POST',
+      url: "/cont_edit_idubic",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (data){
+        datax = data;
+        if (datax != '0') {
+          Swal.fire("Operación Completada!", ":)", "success");
+        }
+        else {
+          Swal.fire("Operación abortada", "Error al actualizar intente otra vez :(", "error");
+        }
+        // This is a callback that runs if the submission was a success.
+        // Clear the form
+        var latlng2 = new google.maps.LatLng(21.1484265,-86.8362061);
+        marker.setPosition(latlng2);
+        map.setCenter(latlng2);
 
-                    $('[name="lat"]').val('');
-                    $('[name="lng"]').val('');
+        $('[name="lat"]').val('');
+        $('[name="lng"]').val('');
 
-                    $('[name="sel_edit_sitio"] option[value!=""]').remove();
+        $('[name="sel_edit_sitio"] option[value!=""]').remove();
 
-                    $("#validation_edit")[0].reset();
-                    var validator = $( "#validation_edit" ).validate();
-                    validator.resetForm();
-                  },
-                  error: function (data) {
-                    swal("Operación abortada", "Ningúna operación afectuada :)", "error");
-                  }
-                });
-              }
-              else {
-                swal("Operación abortada", "Ningúna operación afectuada :)", "error");
-              }
-            });
-          }
-
-
+        $("#validation_edit")[0].reset();
+        var validator = $( "#validation_edit" ).validate();
+        validator.resetForm();
+      },
+      error: function (data) {
+        Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
+      }
+    });//Fin ajax
+  } //Fin result.value
+  else {
+    Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
+  }
+          }) //Fin then
+          }// Fin big else
         }
     });
 

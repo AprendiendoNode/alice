@@ -78,21 +78,19 @@ $(document).ready( function() {
   })
   .on('success.form.fv', function(e) {
     e.preventDefault();
-    /* --------------------------------------------------------------------- */
-    swal({
-      title: "¿Desea continuar?",
-      text: "Espere mientras se sube la información.",
-      type: "info",
-      showCancelButton: true,
-      confirmButtonClass: "btn-danger",
-      confirmButtonText: "Continuar.!",
-      cancelButtonText: "Cancelar.!",
-      closeOnConfirm: false,
-      closeOnCancel: false,
-      showLoaderOnConfirm: true,
-    },
-    function(isConfirm) {
-      if (isConfirm) {
+        Swal.fire({
+          title: "¿Desea continuar?",
+          text: "Espere mientras se sube la información.",
+          type: "info",
+          showCancelButton: true,
+          confirmButtonClass: "btn-danger",
+          confirmButtonText: "Continuar.!",
+          cancelButtonText: "Cancelar.!",
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          showLoaderOnConfirm: true,
+    }).then((result) => {
+      if (result.value) {
         var form = $('#validate_d')[0];
         var formData = new FormData(form);
         $.ajax({
@@ -124,29 +122,29 @@ $(document).ready( function() {
               });
               /*--------------------------------------------------------------------*/
 
-              swal("Operación Completada!", ":)", "success");
+              Swal.fire("Operación Completada!", ":)", "success");
             }
             else {
               $('#modal_razon').modal('toggle');
-              swal("Operación abortada", "Error al registrar intente otra vez :(", "error");
+              Swal.fire("Operación abortada", "Error al registrar intente otra vez :(", "error");
             }
             $("#validate_d")[0].reset();
             $('#validate_d').data('formValidation').resetForm($('#validate_d'));
           },
           error: function (data) {
             console.log('Error:', data);
-            swal.close();
+            Swal.close();
           }
-        })
+        }) //Fin ajax
 
-      }
+      }//Fin if result.value
       else {
         $("#validate_d")[0].reset();
         $('#validate_d').data('formValidation').resetForm($('#validate_d'));
         $('#modal_razon').modal('toggle');
-        swal("Operación abortada", "Ningún RFC añadido :(", "error");
+        Swal.fire("Operación abortada", "Ningún RFC añadido :(", "error");
       }
-    });
+    })//Fin then
     /* --------------------------------------------------------------------- */
   });
 
@@ -208,7 +206,7 @@ $(document).ready( function() {
         if (data === '1') {
           $('#n_rfc').val('');
           $('#validate_d').data('formValidation').resetField($('#n_rfc'));
-          swal("Operación abortada", "Error RFC ya registrada, intenta nuevamente :(", "error");
+          Swal.fire("Operación abortada", "Error RFC ya registrada, intenta nuevamente :(", "error");
         }
       },
       error: function (data) {
@@ -228,7 +226,7 @@ $(document).ready( function() {
         if (data === '1') {
           $('#rfc_name').val('');
           $('#validate_d').data('formValidation').resetField($('#rfc_name'));
-          swal("Operación abortada", "Error Razon Social ya registrada, intenta nuevamente :(", "error");
+          Swal.fire("Operación abortada", "Error Razon Social ya registrada, intenta nuevamente :(", "error");
         }
       },
       error: function (data) {

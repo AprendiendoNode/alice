@@ -331,7 +331,7 @@
     }
     </style>
 
-    <script type="text/javascript" src="{{asset('js/admin/contract/pruebapayauto.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/contract/pruebapayauto.js?v1.0')}}"></script>
   @else
     @include('default.denied')
   @endif

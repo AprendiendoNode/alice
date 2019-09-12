@@ -29,22 +29,19 @@ $(document).ready( function() {
   })
   .on('success.form.fv', function(e) {
     e.preventDefault();
-
-    /* --------------------------------------------------------------------- */
-    swal({
-      title: "¿Desea continuar?",
-      text: "Espere mientras se sube la información.",
-      type: "info",
-      showCancelButton: true,
-      confirmButtonClass: "btn-danger",
-      confirmButtonText: "Continuar.!",
-      cancelButtonText: "Cancelar.!",
-      closeOnConfirm: false,
-      closeOnCancel: false,
-      showLoaderOnConfirm: true,
-    },
-    function(isConfirm) {
-      if (isConfirm) {
+        Swal.fire({
+          title: "¿Desea continuar?",
+          text: "Espere mientras se sube la información.",
+          type: "info",
+          showCancelButton: true,
+          confirmButtonClass: "btn-danger",
+          confirmButtonText: "Continuar.!",
+          cancelButtonText: "Cancelar.!",
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          showLoaderOnConfirm: true,
+    }).then((result) => {
+      if (result.value) {
         var form = $('#validate_grup')[0];
         var formData = new FormData(form);
         var id_vertical = $('#sel_master_vertical').val();
@@ -65,29 +62,29 @@ $(document).ready( function() {
               $('#sel_master_service').val('').trigger('change');
               $("#sel_master_vertical option[value!='']").remove();
               $("#sel_master_cadenas option[value!='']").remove();
-              swal("Operación Completada!", "Realice la operacion nuevamente, :)", "success");
+              Swal.fire("Operación Completada!", "Realice la operacion nuevamente, :)", "success");
             }
             else {
               $('#modal_cadena').modal('toggle');
-              swal("Operación abortada", "Error al registrar intente otra vez :(", "error");
+              Swal.fire("Operación abortada", "Error al registrar intente otra vez :(", "error");
             }
             $("#validate_grup")[0].reset();
             $('#validate_grup').data('formValidation').resetForm($('#validate_grup'));
           },
           error: function (data) {
             console.log('Error:', data);
-            swal.close();
+            Swal.close();
           }
         })
 
-      }
+      }//Fin if result.value
       else {
         $("#validate_grup")[0].reset();
         $('#validate_grup').data('formValidation').resetForm($('#validate_grup'));
         $('#modal_cadena').modal('toggle');
-        swal("Operación abortada", "Ningún grupo añadido :)", "error");
+        Swal.fire("Operación abortada", "Ningún grupo añadido :)", "error");
       }
-    });
+    })//Fin then
     /* --------------------------------------------------------------------- */
 
     // alert('Pending reset button');
@@ -107,7 +104,7 @@ $('#cadena_name').on('blur', function() {
         $('#cadena_name').val('');
         // $('#validate_grup').data('formValidation').resetForm($('#validate_grup'));
         $('#validate_grup').data('formValidation').resetField($('#cadena_name'));
-        swal("Operación abortada", "Error cadena ya registrada, intenta nuevamente :(", "error");
+        Swal.fire("Operación abortada", "Error cadena ya registrada, intenta nuevamente :(", "error");
         // menssage_toast('Mensaje', '2', 'Error cadena ya registrada, intenta nuevamente.' , '3000');
       }
     },

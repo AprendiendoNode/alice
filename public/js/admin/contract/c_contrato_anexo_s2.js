@@ -209,7 +209,7 @@ function createEvent_Moneda(id){
                 $('[name="c_vtcreal[' + id_donde_toy + '].vtcreal"]').val('');
                 $('[name="c_vtcdinamic[' + id_donde_toy + '].vtcdinamic"]').val('');
                 console.log('coinciden');
-                swal("Operación abortada", "No puedes repetir una modena ya seleccionada  :(", "error");
+                Swal.fire("Operación abortada", "No puedes repetir una modena ya seleccionada  :(", "error");
               }
               else {
                 //--------------------------------------------------------------------------------------------------------------------------
@@ -802,7 +802,7 @@ $(".validation-wizard-anexo").on('click','.addButton',function(){
         createEvent_checkiva(conceptIndex);
     }
     else{
-      swal("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+      Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
     }
   }
   else {
@@ -886,17 +886,17 @@ $(".validation-wizard-anexo").on('change','#sel_no_month',function(){
       }
     }
     else{
-      swal("Operación abortada!", "Ingresa una fecha de inicio. :(", "error");
+      Swal.fire("Operación abortada!", "Ingresa una fecha de inicio. :(", "error");
       $('input[name="date_end_cont_sist"]').val('');
       $('#sel_no_month').val('').trigger('change');
     }
   }
   else {
     if (dateStart==''){
-      swal("Operación abortada!", "Ingresa una fecha de inicio. :(", "error");
+      Swal.fire("Operación abortada!", "Ingresa una fecha de inicio. :(", "error");
     }
     else{
-      swal("Operación abortada!", "Selecciona un mes valido. :(", "error");
+      Swal.fire("Operación abortada!", "Selecciona un mes valido. :(", "error");
     }
   }
 });

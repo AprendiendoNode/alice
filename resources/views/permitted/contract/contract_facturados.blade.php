@@ -107,7 +107,7 @@
   @if( auth()->user()->can('View Reg. Mensual CXC Aprob') )
   <style media="screen">
     .swal-wide {
-      max-height: 80vh;
+      max-height: 95vh;
       overflow: auto !important;
     }
     .compact-tab thead tr th{

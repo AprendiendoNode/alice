@@ -42,17 +42,17 @@ $(function() {
 
       }
       else{
-        swal("Operación abortada!", "Ingresa una fecha de inicio. :(", "error");
+        Swal.fire("Operación abortada!", "Ingresa una fecha de inicio. :(", "error");
         $('input[name="date_end_cont_sist"]').val('');
         $('#sel_no_month').val('').trigger('change');
       }
     }
     else {
       if (dateStart==''){
-        swal("Operación abortada!", "Ingresa una fecha de inicio. :(", "error");
+        Swal.fire("Operación abortada!", "Ingresa una fecha de inicio. :(", "error");
       }
       else{
-        swal("Operación abortada!", "Selecciona un mes valido. :(", "error");
+        Swal.fire("Operación abortada!", "Selecciona un mes valido. :(", "error");
       }
     }
   });
@@ -72,62 +72,61 @@ $(function() {
       // errorElement: "label",
       submitHandler: function(form){
         // swal("Operación abortada", "Ningúna operación afectuada, Ingrese la latitud y longitud :)", "error");
-        swal({
-          title: "Estás seguro?",
-          text: "Se añadira este nuevo sitio al anexo.!",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Continuar.!",
-          cancelButtonText: "Cancelar.!",
-          closeOnConfirm: false,
-          closeOnCancel: false,
-          showLoaderOnConfirm: true,
-        },
-        function(isConfirm) {
-          if (isConfirm) {
-            // The AJAX
-            var form = $('#Creatnewsite')[0];
-            var formData = new FormData(form);
-            var idanexo =$('#sel_anexo option:selected').val();
-            formData.append('id_anexo', idanexo);
-            $.ajax({
-              type: 'POST',
-              url: "/addsiteanexocont",
-              data: formData,
-              contentType: false,
-              processData: false,
-              success: function (data){
-                datax = data;
-                if (datax != '0') {
-                  $('#modal-Creatsite').modal('toggle');
-                  var id_contrat = $('#sel_anexo option:selected').val();
-                  // console.log(id_contrat);
-                  genTablesite(id_contrat);
-                  swal("Operación Completada!", ":)", "success");
-                }
-                else {
-                  $('#modal-Creatsite').modal('toggle');
-                  swal("Operación abortada", "Error al registrar intente otra vez :(", "error");
-                }
-              },
-              error: function (data) {
+              Swal.fire({
+              title: "Estás seguro?",
+              text: "Se añadira este nuevo sitio al anexo.!",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonClass: "btn-danger",
+              confirmButtonText: "Continuar.!",
+              cancelButtonText: "Cancelar.!",
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.value) {
+          // The AJAX
+          var form = $('#Creatnewsite')[0];
+          var formData = new FormData(form);
+          var idanexo =$('#sel_anexo option:selected').val();
+          formData.append('id_anexo', idanexo);
+          $.ajax({
+            type: 'POST',
+            url: "/addsiteanexocont",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data){
+              datax = data;
+              if (datax != '0') {
                 $('#modal-Creatsite').modal('toggle');
-                $("#Creatnewsite")[0].reset();
-                var validator = $( "#Creatnewsite" ).validate();
-                validator.resetForm();
-                swal("Operación abortada", "Ningúna operación afectuada :)", "error");
+                var id_contrat = $('#sel_anexo option:selected').val();
+                // console.log(id_contrat);
+                genTablesite(id_contrat);
+                Swal.fire("Operación Completada!", ":)", "success");
               }
-            });
-          }
-          else {
-            swal("Operación abortada", "Ningúna operación afectuada :)", "error");
-            $("#Creatnewsite")[0].reset();
-            var validator = $( "#Creatnewsite" ).validate();
-            validator.resetForm();
-            $('#modal-CreatProduct').modal('toggle');
-          }
-        });
+              else {
+                $('#modal-Creatsite').modal('toggle');
+                Swal.fire("Operación abortada", "Error al registrar intente otra vez :(", "error");
+              }
+            },
+            error: function (data) {
+              $('#modal-Creatsite').modal('toggle');
+              $("#Creatnewsite")[0].reset();
+              var validator = $( "#Creatnewsite" ).validate();
+              validator.resetForm();
+              Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
+            }
+          });
+        }//ifresult
+        else {
+          Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
+          $("#Creatnewsite")[0].reset();
+          var validator = $( "#Creatnewsite" ).validate();
+          validator.resetForm();
+          $('#modal-CreatProduct').modal('toggle');
+        }
+      })
+//---------------
       }
   });
 });
@@ -480,45 +479,44 @@ $('#site_add').on('change', function(e){
 function deletesite(e){
   var valor= e.getAttribute('value');
   // console.log(valor);
-  swal({
-    title: "Estás seguro?",
-    text: "Espere mientras realiza la operación. Aparecera una ventana de dialogo al terminar.!",
-    type: "warning",
-    showCancelButton: true,
-    confirmButtonClass: "btn-danger",
-    confirmButtonText: "Continuar.!",
-    cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false,
-    showLoaderOnConfirm: false,
-  },
-  function(isConfirm) {
-    if (isConfirm) {
-      $.ajax({
-        type: "POST",
-        url: "/delete_hotel_anexo",
-        data: { valor : valor , _token : _token },
-        success: function (data){
-          datax = JSON.parse(data);
-          if (datax[0].resultado == 1) {
-            var id_contrat = $('#sel_anexo option:selected').val();
-            genTablesite(id_contrat);
-            swal("Operación success", "Cambio efectuado :)", "success");
+      Swal.fire({
+        title: "Estás seguro?",
+        text: "Espere mientras realiza la operación. Aparecera una ventana de dialogo al terminar.!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Continuar.!",
+        cancelButtonText: "Cancelar.!",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+    }).then((result) => {
+      if (result.value) {
+        $.ajax({
+          type: "POST",
+          url: "/delete_hotel_anexo",
+          data: { valor : valor , _token : _token },
+          success: function (data){
+            datax = JSON.parse(data);
+            if (datax[0].resultado == 1) {
+              var id_contrat = $('#sel_anexo option:selected').val();
+              genTablesite(id_contrat);
+              Swal.fire("Operación success", "Cambio efectuado :)", "success");
+            }
+            else{
+              Swal.fire("Operación abortada", "Problema de conexión :(", "error");
+            }
+          },
+          error: function (data) {
+            console.log('Error:', data);
           }
-          else{
-            swal("Operación abortada", "Problema de conexión :(", "error");
-          }
-        },
-        error: function (data) {
-          console.log('Error:', data);
-        }
-      });
-    }
-    else
-    {
-      swal("Operación abortada", "Ningúna cambio efectuado :)", "error");
-    }
-  });
+        });
+      }//if result.value
+      else
+      {
+        Swal.fire("Operación abortada", "Ningúna cambio efectuado :)", "error");
+      }
+    })
+  //------------
 }
 
 function get_ids_anexos(service, vertical, cadena, key){
@@ -641,61 +639,59 @@ $(".validation-wizard-anexo").steps({
     onFinished: function (event, currentIndex) {
       event.preventDefault();
         // swal("form_master Submitted!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem erat eleifend ex semper, lobortis purus sed.");
-      /************************************************************************************/
-        swal({
-          title: "Estás seguro?",
-          text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Continuar.!",
-          cancelButtonText: "Cancelar.!",
-          closeOnConfirm: false,
-          closeOnCancel: false,
-          showLoaderOnConfirm: true,
-        },
-        function(isConfirm) {
-          if (isConfirm) {
 
-            var form = $('#validation_anexo')[0];
-            var formData = new FormData(form);
-            var digit = $("#sel_anexo option:selected").val();
+              Swal.fire({
+                title: "Estás seguro?",
+                text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Continuar.!",
+                cancelButtonText: "Cancelar.!",
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.value) {
+          var form = $('#validation_anexo')[0];
+          var formData = new FormData(form);
+          var digit = $("#sel_anexo option:selected").val();
 
-            formData.append('digit', digit);
+          formData.append('digit', digit);
 
-            $.ajax({
-              type: "POST",
-              url: "/update_contract_anexo",
-              data: formData,
-              contentType: false,
-              processData: false,
-              success: function (data){
+          $.ajax({
+            type: "POST",
+            url: "/update_contract_anexo",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data){
 
-                if(data == "true"){
+              if(data == "true"){
 
-                  swal({title: "Contrato anexo actualizado",  type: "success"},
-                      function(){
-                          location.reload();
-                      }
-                  );
+                Swal.fire({title: "Contrato anexo actualizado",  type: "success"},
+                    function(){
+                        location.reload();
+                    }
+                );
 
-                }else{
-                  swal("Error al actualizar contrato", "", "error");
-                }
-
-
-              },
-              error: function (data) {
-                console.log('Error:', data);
-                swal.close();
+              }else{
+                Swal.fire("Error al actualizar contrato", "", "error");
               }
 
-            })
 
-          } else {
-            swal("Operación abortada", "Ningúna operación efectuada :)", "error");
-          }
-        });
+            },
+            error: function (data) {
+              console.log('Error:', data);
+              Swal.close();
+            }
+
+          })
+
+        }//if result.value
+        else {
+          Swal.fire("Operación abortada", "Ningúna operación efectuada :)", "error");
+        }
+      })
       /************************************************************************************/
 
     }
@@ -990,7 +986,7 @@ $("#Creatnewcoin").validate({
     // errorElement: "label",
     submitHandler: function(form){
       // swal("Operación abortada", "Ningúna operación afectuada, Ingrese la latitud y longitud :)", "error");
-      swal({
+      Swal.fire({
         title: "Estás seguro?",
         text: "Se añadira una nueva moneda al anexo.!",
         type: "warning",
@@ -998,12 +994,10 @@ $("#Creatnewcoin").validate({
         confirmButtonClass: "btn-danger",
         confirmButtonText: "Continuar.!",
         cancelButtonText: "Cancelar.!",
-        closeOnConfirm: false,
-        closeOnCancel: false,
-        showLoaderOnConfirm: true,
-      },
-      function(isConfirm) {
-        if (isConfirm) {
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.value) {
           // The AJAX
           var form = $('#Creatnewcoin')[0];
           var formData = new FormData(form);
@@ -1022,11 +1016,11 @@ $("#Creatnewcoin").validate({
                 $('#modal-Creatcoin').modal('toggle');
                 var id_contrat = $('#sel_anexo option:selected').val();
                 genTablecoin(id_contrat);
-                swal("Operación Completada!", ":)", "success");
+                Swal.fire("Operación Completada!", ":)", "success");
               }
               else {
                 $('#modal-Creatcoin').modal('toggle');
-                swal("Operación abortada", "Error al registrar intente otra vez :(", "error");
+                Swal.fire("Operación abortada", "Error al registrar intente otra vez :(", "error");
               }
             },
             error: function (data) {
@@ -1034,23 +1028,24 @@ $("#Creatnewcoin").validate({
               $("#Creatnewcoin")[0].reset();
               var validator = $( "#Creatnewcoin" ).validate();
               validator.resetForm();
-              swal("Operación abortada", "Ningúna operación afectuada :)", "error");
+              Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
             }
           });
-        }
+        } //if result.value
         else {
-          swal("Operación abortada", "Ningúna operación afectuada :)", "error");
+          Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
           $("#Creatnewcoin")[0].reset();
           var validator = $( "#Creatnewcoin" ).validate();
           validator.resetForm();
           $('#modal-Creatcoin').modal('toggle');
         }
-      });
+      })
+      //------------------
     }
 });
 function deletecoin(e){
   var valor= e.getAttribute('value');
-  swal({
+  Swal.fire({
     title: "Estás seguro?",
     text: "Espere mientras realiza la operación. Aparecera una ventana de dialogo al terminar.!",
     type: "warning",
@@ -1058,12 +1053,10 @@ function deletecoin(e){
     confirmButtonClass: "btn-danger",
     confirmButtonText: "Continuar.!",
     cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false,
-    showLoaderOnConfirm: false,
-  },
-  function(isConfirm) {
-    if (isConfirm) {
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+  }).then((result) => {
+    if (result.value) {
       $.ajax({
         type: "POST",
         url: "/delete_coin_anexo",
@@ -1073,20 +1066,20 @@ function deletecoin(e){
           if (datax[0].resultado == 1) {
             var id_contrat = $('#sel_anexo option:selected').val();
             genTablecoin(id_contrat);
-            swal("Operación success", "Cambio efectuado :)", "success");
+            Swal.fire("Operación success", "Cambio efectuado :)", "success");
           }
           else{
-            swal("Operación abortada", "Problema de conexión :(", "error");
+            Swal.fire("Operación abortada", "Problema de conexión :(", "error");
           }
         },
         error: function (data) {
           console.log('Error:', data);
         }
       });
+    }//if result.value
+    else{
+      Swal.fire("Operación abortada", "Ningúna cambio efectuado :)", "error");
     }
-    else
-    {
-      swal("Operación abortada", "Ningúna cambio efectuado :)", "error");
-    }
-  });
+  })
+  //------------
 }

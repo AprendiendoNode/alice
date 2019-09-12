@@ -142,7 +142,7 @@ $(".validation-wizard-master").on('click','.addcadenamaster',function(){
     else {
       $("#validate_grup")[0].reset();
       $('#validate_grup').data('formValidation').resetForm($('#validate_grup'));
-      swal("Operación abortada", "Seleccione la vertical primero antes de añadir un grupo :(", "error");
+      Swal.fire("Operación abortada", "Seleccione la vertical primero antes de añadir un grupo :(", "error");
     }
 });
 

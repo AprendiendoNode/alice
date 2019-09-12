@@ -249,66 +249,64 @@ $(".validation-wizard-master").steps({
     onFinished: function (event, currentIndex) {
       event.preventDefault();
         // swal("form_master Submitted!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem erat eleifend ex semper, lobortis purus sed.");
-      /************************************************************************************/
-        swal({
-          title: "Estás seguro?",
-          text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Continuar.!",
-          cancelButtonText: "Cancelar.!",
-          closeOnConfirm: false,
-          closeOnCancel: false,
-          showLoaderOnConfirm: true,
-        },
-        function(isConfirm) {
-          if (isConfirm) {
+              Swal.fire({
+                title: "Estás seguro?",
+                text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Continuar.!",
+                cancelButtonText: "Cancelar.!",
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                showLoaderOnConfirm: true,
+      }).then((result) => {
+        if (result.value) {
 
-              var form = $('#validation_master')[0];
-              var formData = new FormData(form);
-              var digit = $("#sel_master_digit option:selected").text();
-              formData.append('digit', digit);
+                        var form = $('#validation_master')[0];
+                        var formData = new FormData(form);
+                        var digit = $("#sel_master_digit option:selected").text();
+                        formData.append('digit', digit);
 
-              $.ajax({
-                type: "POST",
-                url: "/update_contract_master",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (data){
+                        $.ajax({
+                          type: "POST",
+                          url: "/update_contract_master",
+                          data: formData,
+                          contentType: false,
+                          processData: false,
+                          success: function (data){
 
-                  if(data == "true"){
-                    $("#validation_master")[0].reset();
+                            if(data == "true"){
+                              $("#validation_master")[0].reset();
 
-                    $("input[name='key_maestro_service']").val('');
-                    $('input[name="key_maestro_verticals"]').val('');
-                    $('input[name="key_maestro_cadena"]').val('');
-                    $('input[name="key_maestro_contrato"]').val('');
-                    $('input[name="key_maestro_sitio"]').val('');
+                              $("input[name='key_maestro_service']").val('');
+                              $('input[name="key_maestro_verticals"]').val('');
+                              $('input[name="key_maestro_cadena"]').val('');
+                              $('input[name="key_maestro_contrato"]').val('');
+                              $('input[name="key_maestro_sitio"]').val('');
 
-                    swal({title: "Contrato actualizado",  type: "success"},
-                        function(){
-                            location.reload();
-                        }
-                     );
+                              Swal.fire({title: "Contrato actualizado",  type: "success"},
+                                  function(){
+                                      location.reload();
+                                  }
+                               );
 
-                  }else{
-                    swal("Error al actualizar contrato", "", "Error");
-                  }
+                            }else{
+                              Swal.fire("Error al actualizar contrato", "", "Error");
+                            }
 
 
-                },
-                error: function (data) {
-                  console.log('Error:', data);
-                  swal.close();
-                }
-              })
-
-          } else {
-            swal("Operación abortada", "Ningúna operación afectuada :)", "error");
-          }
-        });
+                          },
+                          error: function (data) {
+                            console.log('Error:', data);
+                            Swal.close();
+                          }
+                        })
+        }
+        else {
+         Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
+       }
+      })      
       /************************************************************************************/
     }
 }), $(".validation-wizard-master").validate({

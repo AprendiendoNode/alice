@@ -152,7 +152,7 @@
         // console.log(`is now between monday and friday: ${isNowWeekday}`);
     });
   </script>
-  <script type="text/javascript" src="{{asset('js/admin/contract/contract_cob.js')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/contract/contract_cob.js?v1.0')}}"></script>
   @else
     @include('default.denied')
   @endif

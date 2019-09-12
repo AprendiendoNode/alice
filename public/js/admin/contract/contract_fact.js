@@ -159,25 +159,24 @@ function generate_table(datajson, table){
           },
           action: function ( e, dt, node, config ) {
             // $('#modal-confirmation').modal('show');
-            swal({
-              title: "¿Estás seguro?",
-              text: "Se confirmarán de pago todos los registros seleccionados!"+
-              "<br><br><div><label>Fecha de cobro: </label><input style='display: block;' class='datepicker' type='text' placeholder='Fecha del cobro' id='fecha_cobro'></div>"+
-              "<div><label>Banco: </label><select class='form-control' style='display: block;' id='banco'></select></div>"+
-              "<br><div><label>Factura: </label><input style='display: block;' type='text' placeholder='No. de factura' id='factura'></div>",
-              type: "warning",
-              html: true,
-              showCancelButton: true,
-              confirmButtonClass: "btn-danger",
-              confirmButtonText: "Continuar",
-              cancelButtonText: "Cancelar",
-              closeOnConfirm: false,
-              closeOnCancel: false,
-              customClass: 'swal-wide'
-            },
 
-            function(isConfirm) {
-              if (isConfirm != "") {
+            Swal.fire({
+            title: "¿Estás seguro?",
+            html: "Se confirmarán de pago todos los registros seleccionados!"+
+            "<br><br><div class='d-flex justify-content-center'><label>Fecha de cobro: </label></div><div class='d-flex justify-content-center'><input style='display: block;' class='datepicker' type='text' placeholder='Fecha del cobro' id='fecha_cobro'></div>"+
+            "<div><label>Banco: </label><select class='form-control' style='display: block;' id='banco'></select></div>"+
+            "<br><div class='d-flex justify-content-center'><label>Factura: </label></div><div class='d-flex justify-content-center'><input style='display: block;' type='text' placeholder='No. de factura' id='factura'></div>",
+            type: "warning",
+            //html: true,
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Continuar",
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            customClass: 'swal-wide'
+            }).then((result) => {
+              if (result.value) {
                 var fecha_cobro = $('#fecha_cobro').val();
                 var banco = $('#banco').val();
                 var factura = $('#factura').val();
@@ -194,13 +193,13 @@ function generate_table(datajson, table){
                 });
                 console.log(valores);
                 if (valores.length === 0){
-                  swal("Operación abortada", "Ningún registro seleccionado :(", "error");
+                  Swal.fire("Operación abortada", "Ningún registro seleccionado :(", "error");
                 }else if(fecha_cobro === ''){
-                  swal("Operación abortada", "Debe seleccionar la fecha del cobro.", "error")
+                  Swal.fire("Operación abortada", "Debe seleccionar la fecha del cobro.", "error")
                 }else if(banco === ''){
-                  swal("Operación abortada", "Debe elegir un banco.", "error")
+                  Swal.fire("Operación abortada", "Debe elegir un banco.", "error")
                 }else if(factura === ''){
-                  swal("Operación abortada", "Debe ingresar una factura.", "error")
+                  Swal.fire("Operación abortada", "Debe ingresar una factura.", "error")
                 }
                 else{
                   $.ajax({
@@ -210,10 +209,10 @@ function generate_table(datajson, table){
                     success: function (data){
                       console.log(data);
                       if (data === '1') {
-                        swal("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
+                        Swal.fire("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
                         mens_tb_all(token);
                       }else {
-                        swal("Operación abortada!", "Los registros seleccionados no han sido afectados.", "error");
+                        Swal.fire("Operación abortada!", "Los registros seleccionados no han sido afectados.", "error");
                         mens_tb_all(token);
                       }
                     },
@@ -221,14 +220,13 @@ function generate_table(datajson, table){
                       console.log('Error:', data);
                     }
                   });
-
-
                 }
-
-              } else {
-                swal("Operación abortada", "Ningun registro afectado", "error");
+              }//fin result.value
+              else {
+                Swal.fire("Operación abortada", "Ningun registro afectado", "error");
               }
-            });
+            })
+            //-----
             $(".swal-wide").scrollTop(0);
             var $options = $("#aux > option").clone();
             $('#banco').append($options);
@@ -314,5 +312,5 @@ function getSelectStatus() {
 
 $(".reload_table").click(function () {
   mens_tb(token);
-  swal("Operación Completada!", ":)", "success");
+  Swal.fire("Operación Completada!", ":)", "success");
 });

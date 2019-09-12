@@ -32,7 +32,7 @@ $(".validation-wizard-anexo").on('click','.addButtonsitiobeta',function(){
         createEventListenerSiteAnexo (conceptIndexSiteAnexo);
     }
     else {
-        swal("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+        Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
     }
   }
   else {

@@ -26,12 +26,12 @@ $(".btnsave2").click(function () {
     success: function(data)
     {
       if (data === '1') {
-        swal("Operación Completada!", "El pago ha sido programado.", "success");
+        Swal.fire("Operación Completada!", "El pago ha sido programado.", "success");
         mens_tb(token);
         $('#modal_default').modal('hide');
       }
       else{
-        swal("Operación abortada!", "No se realizo ningun cambio.", "error");
+        Swal.fire("Operación abortada!", "No se realizo ningun cambio.", "error");
         $('#modal_default').modal('hide');
       }
     },
@@ -118,7 +118,7 @@ function generate_table(datajson, table){
           },
           action: function ( e, dt, node, config ) {
             // $('#modal-confirmation').modal('show');
-            swal({
+            Swal.fire({
               title: "Estás seguro?",
               text: "Se aplicará la fecha a los seleccionados.!",
               type: "warning",
@@ -126,11 +126,10 @@ function generate_table(datajson, table){
               confirmButtonClass: "btn-danger",
               confirmButtonText: "Continuar.!",
               cancelButtonText: "Cancelar.!",
-              closeOnConfirm: false,
-              closeOnCancel: false
-            },
-            function(isConfirm) {
-              if (isConfirm) {
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+            }).then((result) => {
+              if (result.value) {
                 $('.cancel').prop('disabled', 'disabled');
                 $('.confirm').prop('disabled', 'disabled');
                 var rows_selected = $("#mens_table").DataTable().column(0).checkboxes.selected();
@@ -143,7 +142,7 @@ function generate_table(datajson, table){
                     valores.push(rowId);
                 });
                 if ( valores.length === 0){
-                  swal("Operación abortada", "Ningún registro seleccionado :(", "error");
+                  Swal.fire("Operación abortada", "Ningún registro seleccionado :(", "error");
                 }
                 else {
                     $.ajax({
@@ -153,11 +152,11 @@ function generate_table(datajson, table){
                         success: function (data){
                           //console.log(data);
                           if (data === '1') {
-                            swal("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
+                            Swal.fire("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
                             mens_tb(token);
                           }
                           if (data === '0') {
-                            swal("Operación abortada!", "Favor de seleccionar una fecha para aplicar la operación.", "error");
+                            Swal.fire("Operación abortada!", "Favor de seleccionar una fecha para aplicar la operación.", "error");
                           }
                         },
                         error: function (data) {
@@ -166,10 +165,11 @@ function generate_table(datajson, table){
                     });
                 }
 
-              } else {
-                swal("Operación abortada", "Ningún registro afectado :)", "error");
+              }//Fin if result.value
+              else {
+                Swal.fire("Operación abortada", "Ningún registro afectado :)", "error");
               }
-            });
+            })
           }
         },
         {
@@ -181,56 +181,55 @@ function generate_table(datajson, table){
           },
           action: function ( e, dt, node, config ) {
             // $('#modal-confirmation').modal('show');
-            swal({
-              title: "Estás seguro?",
-              text: "Se pasaran a facturación todos los registros seleccionados.!",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonClass: "btn-danger",
-              confirmButtonText: "Continuar.!",
-              cancelButtonText: "Cancelar.!",
-              closeOnConfirm: false,
-              closeOnCancel: false
-            },
-            function(isConfirm) {
-              if (isConfirm) {
-                $('.cancel').prop('disabled', 'disabled');
-                $('.confirm').prop('disabled', 'disabled');
-                var rows_selected = $("#mens_table").DataTable().column(0).checkboxes.selected();
-                var _token = $('input[name="_token"]').val();
-                // Iterate over all selected checkboxes
-                var valores= new Array();
-                $.each(rows_selected, function(index, rowId){
-                  valores.push(rowId);
-                });
-                if ( valores.length === 0){
-                  swal("Operación abortada", "Ningún registro seleccionado :(", "error");
-                }
-                else {
-                  $.ajax({
-                    type: "POST",
-                    url: "/send_contracts_fact",
-                    data: { idents: JSON.stringify(valores), _token : _token },
-                    success: function (data){
-                      console.log(data);
-                      if (data === '1') {
-                        swal("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
-                        mens_tb(token);
-                      }else {
-                        swal("Operación abortada!", "Los registros seleccionados no han sido afectados.", "error");
-                        mens_tb(token);
-                      }
-                    },
-                    error: function (data) {
-                      console.log('Error:', data);
-                    }
+                Swal.fire({
+                  title: "Estás seguro?",
+                  text: "Se pasaran a facturación todos los registros seleccionados.!",
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-danger",
+                  confirmButtonText: "Continuar.!",
+                  cancelButtonText: "Cancelar.!",
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+              }).then((result) => {
+                if (result.value) {
+                  $('.cancel').prop('disabled', 'disabled');
+                  $('.confirm').prop('disabled', 'disabled');
+                  var rows_selected = $("#mens_table").DataTable().column(0).checkboxes.selected();
+                  var _token = $('input[name="_token"]').val();
+                  // Iterate over all selected checkboxes
+                  var valores= new Array();
+                  $.each(rows_selected, function(index, rowId){
+                    valores.push(rowId);
                   });
+                  if ( valores.length === 0){
+                    Swal.fire("Operación abortada", "Ningún registro seleccionado :(", "error");
+                  }
+                  else {
+                    $.ajax({
+                      type: "POST",
+                      url: "/send_contracts_fact",
+                      data: { idents: JSON.stringify(valores), _token : _token },
+                      success: function (data){
+                        console.log(data);
+                        if (data === '1') {
+                          Swal.fire("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
+                          mens_tb(token);
+                        }else {
+                          Swal.fire("Operación abortada!", "Los registros seleccionados no han sido afectados.", "error");
+                          mens_tb(token);
+                        }
+                      },
+                      error: function (data) {
+                        console.log('Error:', data);
+                      }
+                    });
+                  }
+                }//Fin if result.value
+                else {
+                  Swal.fire("Operación abortada", "Ningúna registro afectado :)", "error");
                 }
-
-              } else {
-                swal("Operación abortada", "Ningúna registro afectado :)", "error");
-              }
-            });
+              })
           }
         },
         {
@@ -242,7 +241,7 @@ function generate_table(datajson, table){
           },
           action: function ( e, dt, node, config ) {
             // $('#modal-confirmation').modal('show');
-            swal({
+            Swal.fire({
               title: "Estás seguro?",
               text: "Se cambiará el concepto de los elementos seleccionados!",
               type: "warning",
@@ -250,11 +249,10 @@ function generate_table(datajson, table){
               confirmButtonClass: "btn-danger",
               confirmButtonText: "Continuar.!",
               cancelButtonText: "Cancelar.!",
-              closeOnConfirm: false,
-              closeOnCancel: false
-            },
-            function(isConfirm) {
-              if (isConfirm) {
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+            }).then((result) => {
+              if (result.value) {
                 $('.cancel').prop('disabled', 'disabled');
                 $('.confirm').prop('disabled', 'disabled');
                 var rows_selected = $("#mens_table").DataTable().column(0).checkboxes.selected();
@@ -266,7 +264,7 @@ function generate_table(datajson, table){
                   valores.push(rowId);
                 });
                 if ( valores.length === 0 || concept === ""){
-                  swal("Operación abortada", "Ningún registro seleccionado, seleccione un concepto de facturación y un contrato.", "error");
+                  Swal.fire("Operación abortada", "Ningún registro seleccionado, seleccione un concepto de facturación y un contrato.", "error");
                 }
                 else {
                   $.ajax({
@@ -276,11 +274,11 @@ function generate_table(datajson, table){
                     success: function (data){
                       console.log(data);
                       if (data === '1') {
-                        swal("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
+                        Swal.fire("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
                         $('#upd_concept').val('').trigger('change');
                         mens_tb(token);
                       }else {
-                        swal("Operación abortada!", "Los registros seleccionados no han sido afectados.", "error");
+                        Swal.fire("Operación abortada!", "Los registros seleccionados no han sido afectados.", "error");
                         mens_tb(token);
                       }
                     },
@@ -289,10 +287,11 @@ function generate_table(datajson, table){
                     }
                   });
                 }
-              } else {
-                swal("Operación abortada", "Ningúna registro afectado :)", "error");
-              }
-            });
+              }// fin result.value
+              else {
+               Swal.fire("Operación abortada", "Ningúna registro afectado :)", "error");
+             }
+            })
           }
         },
         {
@@ -341,10 +340,10 @@ function generate_table(datajson, table){
                     },
                     success: function (data){
                       if (data === '1') {
-                        swal("Operación completada!", "Operation complete", "success");
+                        Swal.fire("Operación completada!", "Operation complete", "success");
                       }
                       else{
-                        swal("Operación abortada!", ":)", "error");
+                        Swal.fire("Operación abortada!", ":)", "error");
                       }
                     },
                     error: function (data) {
@@ -414,10 +413,10 @@ function generate_table(datajson, table){
                          success: function (data){
                            if (data === '1') {
                              mens_tb(token);
-                             swal("Operación completada!", "Operation complete", "success");
+                             Swal.fire("Operación completada!", "Operation complete", "success");
                            }
                            else{
-                             swal("Operación abortada!", ":)", "success");
+                             Swal.fire("Operación abortada!", ":)", "success");
                            }
                          },
                          error: function (data) {
@@ -477,10 +476,10 @@ function generate_table(datajson, table){
                            success: function (data){
                              if (data === '1') {
                                mens_tb(token);
-                               swal("Operación completada!", "Operation complete", "success");
+                               Swal.fire("Operación completada!", "Operation complete", "success");
                              }
                              else{
-                               swal("Operación abortada!", ":)", "success");
+                               Swal.fire("Operación abortada!", ":)", "success");
                              }
                            },
                            error: function (data) {
@@ -540,10 +539,10 @@ function generate_table(datajson, table){
                           success: function (data){
                             if (data === '1') {
                               mens_tb(token);
-                              swal("Operación completada!", "Operation complete", "success");
+                              Swal.fire("Operación completada!", "Operation complete", "success");
                             }
                             else{
-                              swal("Operación abortada!", ":)", "success");
+                              Swal.fire("Operación abortada!", ":)", "success");
                             }
                           },
                           error: function (data) {
@@ -602,10 +601,10 @@ function generate_table(datajson, table){
                             },
                             success: function (data){
                               if (data === '1') {
-                                swal("Operación completada!", "Operation complete", "success");
+                                Swal.fire("Operación completada!", "Operation complete", "success");
                               }
                               else{
-                                swal("Operación abortada!", ":)", "success");
+                                Swal.fire("Operación abortada!", ":)", "success");
                               }
                             },
                             error: function (data) {
@@ -701,7 +700,7 @@ function getSelectStatus() {
 
 $(".reload_table").click(function () {
   mens_tb(token);
-  swal("Operación Completada!", ":)", "success");
+  Swal.fire("Operación Completada!", ":)", "success");
 });
 
 $(".add_record").click(function () {
@@ -720,7 +719,7 @@ function adelete(e){
   var valor= e.getAttribute('value');
   var _token = $('input[name="_token"]').val();
   var fecha = $('#date_to_search').val();
-  swal({
+  Swal.fire({
     title: "Estás seguro?",
     text: "Se eliminará el registro actual.!",
     type: "warning",
@@ -728,37 +727,36 @@ function adelete(e){
     confirmButtonClass: "btn-danger",
     confirmButtonText: "Continuar.!",
     cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm) {
-    if (isConfirm) {
-      $.ajax({
-          type: "POST",
-          url: "/delrecord_data",
-          data: { val: valor, _token : _token },
-          success: function (data) {
-            if (data == '1') {
-              swal("Operación completada!", " Registrada :)", "success");
-              mens_tb(token);
-            }
-            else {
-              swal("Operación abortada", "No hay conexión a internet :(", "error");
-            }
-          },
-          error: function (data) {
-            console.log('Error:', data);
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+}).then((result) => {
+  if (result.value) {
+    $.ajax({
+        type: "POST",
+        url: "/delrecord_data",
+        data: { val: valor, _token : _token },
+        success: function (data) {
+          if (data == '1') {
+            Swal.fire("Operación completada!", " Registrada :)", "success");
+            mens_tb(token);
           }
-      });
-    }
-    else {
-      swal("Operación abortada", "Ningún registro afectado :)", "error");
-    }
-  });
+          else {
+            Swal.fire("Operación abortada", "No hay conexión a internet :(", "error");
+          }
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
+  }//Fin if result.value
+  else {
+    Swal.fire("Operación abortada", "Ningún registro afectado :)", "error");
+  }
+})
 }
 
 $(".btnupdetc").click(function () {
-  swal({
+  Swal.fire({
     title: "Estás seguro?",
     text: "Se actualizarán todos los tipos de cambio con la moneda seleccionada.!",
     type: "warning",
@@ -766,68 +764,69 @@ $(".btnupdetc").click(function () {
     confirmButtonClass: "btn-danger",
     confirmButtonText: "Continuar.!",
     cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm) {
-    if (isConfirm) {
-      $('.cancel').prop('disabled', 'disabled');
-      $('.confirm').prop('disabled', 'disabled');
-      var tc= $('#tpgeneral').val();
-      var cn= $('#updcurrency').val();
-      var _token = $('input[name="_token"]').val();
-      if (tc != '' && cn != '' ) {
-        var formData = new FormData($('#form_tc')[0]);
-        $.ajax({
-          type: "POST",
-          url: "/createtc_gen",
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: function(data)
-          {
-            if (data === '1') {
-              swal("Operación Completada!", ":)", "success");
-              mens_tb(token);
-            }
-            if (data === '0') {
-              swal("Operación abortada!", ":(", "success");
-            }
-          },
-          error: function (jqXHR, textStatus, errorThrown)
-          {
-            // Our error logic here
-            var msg = '';
-            if (jqXHR.status === 0) {
-              msg = 'Not connect.\n Verify Network.';
-            } else if (jqXHR.status == 404) {
-              msg = 'Requested page not found. [404]';
-            } else if (jqXHR.status == 500) {
-              msg = 'Internal Server Error [500].';
-            } else if (exception === 'parsererror') {
-              msg = 'Requested JSON parse failed.';
-            } else if (exception === 'timeout') {
-              msg = 'Time out error.';
-            } else if (exception === 'abort') {
-              msg = 'Ajax request aborted.';
-            } else {
-              msg = 'Uncaught Error.\n' + jqXHR.responseText;
-            }
-            console.log(msg);
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+}).then((result) => {
+  if (result.value) {
+    $('.cancel').prop('disabled', 'disabled');
+    $('.confirm').prop('disabled', 'disabled');
+    var tc= $('#tpgeneral').val();
+    var cn= $('#updcurrency').val();
+    var _token = $('input[name="_token"]').val();
+    if (tc != '' && cn != '' ) {
+      var formData = new FormData($('#form_tc')[0]);
+      $.ajax({
+        type: "POST",
+        url: "/createtc_gen",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(data)
+        {
+          if (data === '1') {
+            Swal.fire("Operación Completada!", ":)", "success");
+            mens_tb(token);
           }
-        });
-      }
-      else {
-        swal("Operación abortada", "Los dos campos son obligatorios :)", "error");
-      }
+          if (data === '0') {
+            Swal.fire("Operación abortada!", ":(", "success");
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+          // Our error logic here
+          var msg = '';
+          if (jqXHR.status === 0) {
+            msg = 'Not connect.\n Verify Network.';
+          } else if (jqXHR.status == 404) {
+            msg = 'Requested page not found. [404]';
+          } else if (jqXHR.status == 500) {
+            msg = 'Internal Server Error [500].';
+            Swal.fire("Operación abortada", "No existe contrato con esa moneda.<br> Ningún registro afectado :)", "error");
+          } else if (exception === 'parsererror') {
+            msg = 'Requested JSON parse failed.';
+          } else if (exception === 'timeout') {
+            msg = 'Time out error.';
+          } else if (exception === 'abort') {
+            msg = 'Ajax request aborted.';
+          } else {
+            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+          }
+          console.log(msg);
+        }
+      });
     }
     else {
-      swal("Operación abortada", "Ningún registro afectado :)", "error");
+      Swal.fire("Operación abortada", "Los dos campos son obligatorios :)", "error");
     }
-  });
+  }//Fin result.value
+  else {
+    Swal.fire("Operación abortada", "Ningún registro afectado :)", "error");
+  }
+})
+
 });
 $('.btnupdeiva').click(function(){
-  swal({
+  Swal.fire({
     title: "Estás seguro?",
     text: "Se actualizarán todos los campos de iva con lo insertado.!",
     type: "warning",
@@ -835,11 +834,10 @@ $('.btnupdeiva').click(function(){
     confirmButtonClass: "btn-danger",
     confirmButtonText: "Continuar.!",
     cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm) {
-    if (isConfirm) {
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+  }).then((result) => {
+    if (result.value) {
       $('.cancel').prop('disabled', 'disabled');
       $('.confirm').prop('disabled', 'disabled');
       var iva= $('#iva_general').val();
@@ -855,11 +853,11 @@ $('.btnupdeiva').click(function(){
           success: function(data)
           {
             if (data === '1') {
-              swal("Operación Completada!", ":)", "success");
+              Swal.fire("Operación Completada!", ":)", "success");
               mens_tb(token);
             }
             if (data === '0') {
-              swal("Operación abortada!", ":(", "success");
+              Swal.fire("Operación abortada!", ":(", "success");
             }
           },
           error: function (jqXHR, textStatus, errorThrown)
@@ -886,28 +884,28 @@ $('.btnupdeiva').click(function(){
         });
       }
       else {
-        swal("Operación abortada", "El campo de iva es obligatorio :)", "error");
+        Swal.fire("Operación abortada", "El campo de iva es obligatorio :)", "error");
       }
-    }
+    }//fin result.value
     else {
-      swal("Operación abortada", "Ningún registro afectado :)", "error");
+      Swal.fire("Operación abortada", "Ningún registro afectado :)", "error");
     }
-  });
+  })
+
 });
 $(".btnupdefc").click(function(){
-  swal({
-    title: "Estás seguro?",
-    text: "Se actualizarán todas las fechas de compromiso con lo seleccionado.!",
-    type: "warning",
-    showCancelButton: true,
-    confirmButtonClass: "btn-danger",
-    confirmButtonText: "Continuar.!",
-    cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm){
-    if (isConfirm) {
+    Swal.fire({
+      title: "Estás seguro?",
+      text: "Se actualizarán todas las fechas de compromiso con lo seleccionado.!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonClass: "btn-danger",
+      confirmButtonText: "Continuar.!",
+      cancelButtonText: "Cancelar.!",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+  }).then((result) => {
+    if (result.value) {
       $('.cancel').prop('disabled', 'disabled');
       $('.confirm').prop('disabled', 'disabled');
       var fc = $('#date_compromise').val();
@@ -925,11 +923,11 @@ $(".btnupdefc").click(function(){
           {
             //console.log(data);
             if (data === '1') {
-              swal("Operación Completada!", ":)", "success");
+              Swal.fire("Operación Completada!", ":)", "success");
               mens_tb(token);
             }
             if (data === '0') {
-              swal("Operación abortada!", ":(", "success");
+              Swal.fire("Operación abortada!", ":(", "success");
             }
           },
           error: function (jqXHR, textStatus, errorThrown)
@@ -956,13 +954,14 @@ $(".btnupdefc").click(function(){
         });
       }
       else {
-        swal("Operación abortada", "El campo de fecha es obligatorio :)", "error");
+        Swal.fire("Operación abortada", "El campo de fecha es obligatorio :)", "error");
       }
-    }
+    }// fin if result.value
     else {
-      swal("Operación abortada", "Ningún registro afectado :)", "error");
+      Swal.fire("Operación abortada", "Ningún registro afectado :)", "error");
     }
-  });
+  })
+
 });
 /*$(".btnupdconcepts").click(function(){
   console.log('click');
@@ -1096,12 +1095,12 @@ function limpiar1_anexos2() {
       success: function(data)
       {
         if (data === '1') {
-          swal("Operación Completada!", "El pago ha sido programado.", "success");
+          Swal.fire("Operación Completada!", "El pago ha sido programado.", "success");
           mens_tb(token);
           $('#modal_default').modal('hide');
         }
         else{
-          swal("Operación abortada!", "No se realizo ningun cambio.", "error");
+          Swal.fire("Operación abortada!", "No se realizo ningun cambio.", "error");
           $('#modal_default').modal('hide');
         }
       },

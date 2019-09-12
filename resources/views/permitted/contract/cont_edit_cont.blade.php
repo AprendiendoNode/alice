@@ -619,8 +619,8 @@
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
 
 
-    <script src="{{ asset('js/admin/contract/contract_master_edit.js')}}"></script>
-    <script src="{{ asset('js/admin/contract/contract_anexo_edit.js')}}"></script>
+    <script src="{{ asset('js/admin/contract/contract_master_edit.js?v1.0')}}"></script>
+    <script src="{{ asset('js/admin/contract/contract_anexo_edit.js?v1.0')}}"></script>
     <style media="screen">
       .contrato_a{
          display:none;

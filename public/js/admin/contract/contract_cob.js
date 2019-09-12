@@ -232,5 +232,5 @@ function generate_table(datajson, table){
 
 $(".reload_table").click(function () {
   mens_tb_all(token);
-  swal("Operación Completada!", ":)", "success");
+  Swal.fire("Operación Completada!", ":)", "success");
 });
