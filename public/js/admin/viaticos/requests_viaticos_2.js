@@ -107,19 +107,17 @@ var Configuration_table_responsive_checkbox_move_viatic= {
             },
             action: function ( e, dt, node, config ) {
               // $('#modal-confirmation').modal('show');
-              swal({
-                title: "Estás seguro?",
-                text: "Se aprobarán todos los viáticos seleccionados.!",
-                type: "warning",
+              Swal.fire({
+                title: '¿Estás seguro?',
+                text: "!Se aprobarán todos los viáticos seleccionados!",
+                type: 'warning',
                 showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Continuar.!",
-                cancelButtonText: "Cancelar.!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-              },
-              function(isConfirm) {
-                if (isConfirm) {
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Continuar',
+                cancelButtonText: 'Cancelar'
+              }).then((result) => {
+                if (result.value) {
                   $('.cancel').prop('disabled', 'disabled');
                   $('.confirm').prop('disabled', 'disabled');
                   var rows_selected = $("#table_viatics").DataTable().column(0).checkboxes.selected();
@@ -130,7 +128,7 @@ var Configuration_table_responsive_checkbox_move_viatic= {
                       valores.push(rowId);
                   });
                   if ( valores.length === 0){
-                    swal("Operación abortada", "Ningún viático seleccionado :(", "error");
+                    Swal.fire("Operación abortada", "Ningún viático seleccionado :(", "error");
                   }
                   else {
                       $.ajax({
@@ -139,11 +137,11 @@ var Configuration_table_responsive_checkbox_move_viatic= {
                           data: { idents: JSON.stringify(valores), _token : _token },
                           success: function (data){
                             if (data === 'true') {
-                              swal("Operación Completada!", "Los viáticos seleccionados han sido afectados.", "success");
+                              Swal.fire("Operación Completada!", "Los viáticos seleccionados han sido afectados.", "success");
                               table_permission_two();
                             }
                             if (data === 'false') {
-                              swal("Operación Completada!", "Los viáticos seleccionados han sido afectados.", "success");
+                              Swal.fire("Operación Completada!", "Los viáticos seleccionados han sido afectados.", "success");
                             }
                           },
                           error: function (data) {
@@ -151,9 +149,8 @@ var Configuration_table_responsive_checkbox_move_viatic= {
                           }
                       });
                   }
-
                 } else {
-                  swal("Operación abortada", "Ningún viático afectado :)", "error");
+                  Swal.fire("Operación abortada", "Ningún viático afectado :)", "error");
                 }
               });
             }
@@ -386,19 +383,18 @@ $('#dny_viatic').on('click', function(){
 $('#aprv_viatic').on('click', function(){
   var id_viatic = $(this).val();
   var _token = $('input[name="_token"]').val();
-  swal({
-    title: "Estás seguro?",
-    text: "Se aprobarán el viático seleccionado.!",
-    type: "warning",
+
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: "!Se aprobarán el viático seleccionado!",
+    type: 'warning',
     showCancelButton: true,
-    confirmButtonClass: "btn-danger",
-    confirmButtonText: "Continuar.!",
-    cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm) {
-    if (isConfirm) {
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Continuar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.value) {
       $('.cancel').prop('disabled', 'disabled');
       $('.confirm').prop('disabled', 'disabled');
        // Iterate over all selected checkboxes
@@ -406,7 +402,7 @@ $('#aprv_viatic').on('click', function(){
 
       valores.push(id_viatic);
       if ( valores.length === 0){
-        swal("Operación abortada", "Ningún viático seleccionado :(", "error");
+        Swal.fire("Operación abortada", "Ningún viático seleccionado :(", "error");
       }
       else {
         $.ajax({
@@ -415,7 +411,7 @@ $('#aprv_viatic').on('click', function(){
             data: { idents: JSON.stringify(valores), _token : _token, stat: 1},
             success: function (data){
               if (data === 'true') {
-                swal("Operación Completada!", "El viático seleccionado ha sido afectado.", "success");
+                Swal.fire("Operación Completada!", "El viático seleccionado ha sido afectado.", "success");
                 disable_apr_deny(id_viatic);
                 cabecera_viatic(id_viatic, _token);
                 cuerpo_viatic(id_viatic, _token);
@@ -424,7 +420,7 @@ $('#aprv_viatic').on('click', function(){
                 table_permission_two();
               }
               if (data === 'false') {
-                swal("Operación Completada!", "El viático seleccionado no ha sido afectado.", "error");
+                Swal.fire("Operación Completada!", "El viático seleccionado no ha sido afectado.", "error");
               }
             },
             error: function (data) {
@@ -432,8 +428,8 @@ $('#aprv_viatic').on('click', function(){
             }
         });
       }
-    }else {
-      swal("Operación abortada", "Ningún viático afectado :)", "error");
+    } else {
+      Swal.fire("Operación abortada", "Ningún viático afectado :)", "error");
     }
   });
 });
@@ -528,7 +524,7 @@ $('#deny_request_v').on('click', function(){
   var _token = $('input[name="_token"]').val();
   var comment = $('#comment_deny').val();
   if (comment === "") {
-    swal("Operación abortada!", "Escriba un comentario.", "error");
+    Swal.fire("Operación abortada!", "Escriba un comentario.", "error");
   }else{
     $.ajax({
       type: "POST",
@@ -537,13 +533,13 @@ $('#deny_request_v').on('click', function(){
       success: function (data){
         //console.log(data);
         if (data === 'true') {
-          swal("Operación Completada!", "El viatico ha sido denegado.", "success");
+          Swal.fire("Operación Completada!", "El viatico ha sido denegado.", "success");
           table_permission_one();
           $('#comment_deny').val('');
           $('#modal-view-deny').modal('hide');
         }
         if (data === 'false') {
-          swal("Operación abortada!", "No cuenta con el permiso o ya se encuentra denegado :)", "error");
+          Swal.fire("Operación abortada!", "No cuenta con el permiso o ya se encuentra denegado :)", "error");
           $('#comment_deny').val('');
           $('#modal-view-deny').modal('hide');
         }
@@ -559,39 +555,36 @@ $('#deny_request_v').on('click', function(){
 function enviartwo_cambiar(e){
   var valor= e.getAttribute('value');
   var _token = $('input[name="_token"]').val();
-  swal({
-    title: "Estás seguro?",
-    text: "Se denegara la solicitud.!",
-    type: "warning",
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: "!Se denegara la solicitud!",
+    type: 'warning',
     showCancelButton: true,
-    confirmButtonClass: "btn-danger",
-    confirmButtonText: "Continuar.!",
-    cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm) {
-    if (isConfirm) {
-          $.ajax({
-              type: "POST",
-              url: "/deny_viatic",
-              data: { idents: valor, _token : _token },
-              success: function (data){
-                if (data === 'true') {
-                  swal("Operación Completada!", "El viatico ha sido denegado.", "success");
-                  table_permission_two();
-                }
-                if (data === 'false') {
-                  swal("Operación abortada!", "No cuenta con el permiso o esta ya se encuentra denegado :)", "success");
-                }
-              },
-              error: function (data) {
-                console.log('Error:', data);
-              }
-          });
-    }
-    else {
-      swal("Operación abortada", "Ningún viático afectado :)", "error");
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Continuar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+          type: "POST",
+          url: "/deny_viatic",
+          data: { idents: valor, _token : _token },
+          success: function (data){
+            if (data === 'true') {
+              Swal.fire("Operación Completada!", "El viatico ha sido denegado.", "success");
+              table_permission_two();
+            }
+            if (data === 'false') {
+              Swal.fire("Operación abortada!", "No cuenta con el permiso o esta ya se encuentra denegado :)", "success");
+            }
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+      });
+    } else {
+      Swal.fire("Operación abortada", "Ningún viático afectado :)", "error");
     }
   });
 }

@@ -110,19 +110,17 @@ var Configuration_table_responsive_checkbox_move_viatic_n4= {
       },
       action: function ( e, dt, node, config ) {
         // $('#modal-confirmation').modal('show');
-        swal({
-          title: "Estás seguro?",
-          text: "Se aprobarán todos los viáticos seleccionados.!",
-          type: "warning",
+        Swal.fire({
+          title: '¿Estás seguro?',
+          text: "!Se aprobarán todos los viáticos seleccionados!",
+          type: 'warning',
           showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Continuar.!",
-          cancelButtonText: "Cancelar.!",
-          closeOnConfirm: false,
-          closeOnCancel: false
-        },
-        function(isConfirm) {
-          if (isConfirm) {
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Continuar',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.value) {
             $('.cancel').prop('disabled', 'disabled');
             $('.confirm').prop('disabled', 'disabled');
             var rows_selected = $("#table_viatics").DataTable().column(0).checkboxes.selected();
@@ -133,7 +131,7 @@ var Configuration_table_responsive_checkbox_move_viatic_n4= {
               valores.push(rowId);
             });
             if ( valores.length === 0){
-              swal("Operación abortada", "Ningún viático seleccionado :(", "error");
+              Swal.fire("Operación abortada", "Ningún viático seleccionado :(", "error");
             }
             else {
               $.ajax({
@@ -142,11 +140,11 @@ var Configuration_table_responsive_checkbox_move_viatic_n4= {
                 data: { idents: JSON.stringify(valores), _token : _token },
                 success: function (data){
                   if (data === 'true') {
-                    swal("Operación Completada!", "Los viáticos seleccionados han sido afectados.", "success");
+                    Swal.fire("Operación Completada!", "Los viáticos seleccionados han sido afectados.", "success");
                     table_permission_four();
                   }
                   if (data === 'false') {
-                    swal("Operación Completada!", "Los viáticos seleccionados han sido afectados.", "success");
+                    Swal.fire("Operación Completada!", "Los viáticos seleccionados han sido afectados.", "success");
                   }
 
                 },
@@ -155,9 +153,8 @@ var Configuration_table_responsive_checkbox_move_viatic_n4= {
                 }
               });
             }
-
           } else {
-            swal("Operación abortada", "Ningún viático afectado :)", "error");
+            Swal.fire("Operación abortada", "Ningún viático afectado :)", "error");
           }
         });
       }
@@ -386,26 +383,25 @@ function enable_buttons(id_v, date) {
 $('#aprv_viatic').on('click', function(){
   var id_viatic = $(this).val();
   var _token = $('input[name="_token"]').val();
-  swal({
-    title: "Estás seguro?",
-    text: "Se aprobará el viático seleccionado.!",
-    type: "warning",
+
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: "!Se aprobará el viático seleccionado!",
+    type: 'warning',
     showCancelButton: true,
-    confirmButtonClass: "btn-danger",
-    confirmButtonText: "Continuar.!",
-    cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm) {
-    if (isConfirm) {
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Continuar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.value) {
       $('.cancel').prop('disabled', 'disabled');
       $('.confirm').prop('disabled', 'disabled');
        // Iterate over all selected checkboxes
       var valores= new Array();
       valores.push(id_viatic);
       if ( valores.length === 0){
-        swal("Operación abortada", "Ningún viático seleccionado :(", "error");
+        Swal.fire("Operación abortada", "Ningún viático seleccionado :(", "error");
       }
       else {
         $.ajax({
@@ -414,7 +410,7 @@ $('#aprv_viatic').on('click', function(){
             data: { idents: JSON.stringify(valores), _token : _token, stat: 1},
             success: function (data){
               if (data === 'true') {
-                swal("Operación Completada!", "El viático seleccionado ha sido afectado.", "success");
+                Swal.fire("Operación Completada!", "El viático seleccionado ha sido afectado.", "success");
                 disable_apr_deny(id_viatic);
                 cabecera_viatic(id_viatic, _token);
                 cuerpo_viatic(id_viatic, _token);
@@ -423,7 +419,7 @@ $('#aprv_viatic').on('click', function(){
                 table_permission_four();
               }
               if (data === 'false') {
-                swal("Operación Completada!", "El viático seleccionado no ha sido afectado.", "error");
+                Swal.fire("Operación Completada!", "El viático seleccionado no ha sido afectado.", "error");
               }
             },
             error: function (data) {
@@ -431,8 +427,8 @@ $('#aprv_viatic').on('click', function(){
             }
         });
       }
-    }else {
-      swal("Operación abortada", "Ningún viático afectado :)", "error");
+    } else {
+      Swal.fire("Operación abortada", "Ningún viático afectado :)", "error");
     }
   });
 });

@@ -184,12 +184,12 @@ $('.btn-save-conceptnew').on('click', function(){
         if (data === '1') {
           $('#modal-view-concept').modal('toggle');
           $('#modal-view-concept-approve2').modal('toggle');
-          swal("Operación Completada!", "Datos actualizados correctamente", "success");
+          Swal.fire("Operación Completada!", "Datos actualizados correctamente", "success");
         }
         else {
           // $('#modal-view-concept').modal('toggle');
           // $('#modal-view-concept-approve2').modal('toggle');
-          swal("Operación abortada", "Revisa que todos los campos esten correctamente llenados si no consulta al administrador.", "error");
+          Swal.fire("Operación abortada", "Revisa que todos los campos esten correctamente llenados si no consulta al administrador.", "error");
         }
       },
       error: function (data) {
@@ -198,7 +198,7 @@ $('.btn-save-conceptnew').on('click', function(){
     });
   }
   else{
-    swal("Operación abortada", "Ningúna operación afectuada :)", "error");
+    Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
   }
 });
 
@@ -244,19 +244,17 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
           },
           action: function ( e, dt, node, config ) {
             // $('#modal-confirmation').modal('show');
-            swal({
-              title: "Estás seguro?",
-              text: "Se aplicará la fecha a los seleccionados.!",
-              type: "warning",
+            Swal.fire({
+              title: '¿Estás seguro?',
+              text: "!Se aplicará la fecha a los seleccionados!",
+              type: 'warning',
               showCancelButton: true,
-              confirmButtonClass: "btn-danger",
-              confirmButtonText: "Continuar.!",
-              cancelButtonText: "Cancelar.!",
-              closeOnConfirm: false,
-              closeOnCancel: false
-            },
-            function(isConfirm) {
-              if (isConfirm) {
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Continuar',
+              cancelButtonText: 'Cancelar'
+            }).then((result) => {
+              if (result.value) {
                 $('.cancel').prop('disabled', 'disabled');
                 $('.confirm').prop('disabled', 'disabled');
                 var rows_selected = $("#mens_table").DataTable().column(0).checkboxes.selected();
@@ -269,7 +267,7 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
                     valores.push(rowId);
                 });
                 if ( valores.length === 0){
-                  swal("Operación abortada", "Ningún registro seleccionado :(", "error");
+                  Swal.fire("Operación abortada", "Ningún registro seleccionado :(", "error");
                 }
                 else {
                     $.ajax({
@@ -279,11 +277,11 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
                         success: function (data){
                           //console.log(data);
                           if (data === '1') {
-                            swal("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
+                            Swal.fire("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
                             mens_tb(token);
                           }
                           if (data === '0') {
-                            swal("Operación abortada!", "Favor de seleccionar una fecha para aplicar la operación.", "error");
+                            Swal.fire("Operación abortada!", "Favor de seleccionar una fecha para aplicar la operación.", "error");
                           }
                         },
                         error: function (data) {
@@ -291,9 +289,8 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
                         }
                     });
                 }
-
               } else {
-                swal("Operación abortada", "Ningún registro afectado :)", "error");
+                Swal.fire("Operación abortada", "Ningún registro afectado :)", "error");
               }
             });
           }
@@ -307,19 +304,17 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
           },
           action: function ( e, dt, node, config ) {
             // $('#modal-confirmation').modal('show');
-            swal({
-              title: "Estás seguro?",
-              text: "Se pasaran a facturación todos los registros seleccionados.!",
-              type: "warning",
+            Swal.fire({
+              title: '¿Estás seguro?',
+              text: "!Se pasaran a facturación todos los registros seleccionados!",
+              type: 'warning',
               showCancelButton: true,
-              confirmButtonClass: "btn-danger",
-              confirmButtonText: "Continuar.!",
-              cancelButtonText: "Cancelar.!",
-              closeOnConfirm: false,
-              closeOnCancel: false
-            },
-            function(isConfirm) {
-              if (isConfirm) {
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Continuar',
+              cancelButtonText: 'Cancelar'
+            }).then((result) => {
+              if (result.value) {
                 $('.cancel').prop('disabled', 'disabled');
                 $('.confirm').prop('disabled', 'disabled');
                 var rows_selected = $("#mens_table").DataTable().column(0).checkboxes.selected();
@@ -330,7 +325,7 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
                   valores.push(rowId);
                 });
                 if ( valores.length === 0){
-                  swal("Operación abortada", "Ningún registro seleccionado :(", "error");
+                  Swal.fire("Operación abortada", "Ningún registro seleccionado :(", "error");
                 }
                 else {
                   $.ajax({
@@ -340,10 +335,10 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
                     success: function (data){
                       console.log(data);
                       if (data === '1') {
-                        swal("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
+                        Swal.fire("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
                         mens_tb(token);
                       }else {
-                        swal("Operación abortada!", "Los registros seleccionados no han sido afectados.", "error");
+                        Swal.fire("Operación abortada!", "Los registros seleccionados no han sido afectados.", "error");
                         mens_tb(token);
                       }
                     },
@@ -352,9 +347,8 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
                     }
                   });
                 }
-
               } else {
-                swal("Operación abortada", "Ningúna registro afectado :)", "error");
+                Swal.fire("Operación abortada", "Ningúna registro afectado :)", "error");
               }
             });
           }
@@ -368,19 +362,17 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
           },
           action: function ( e, dt, node, config ) {
             // $('#modal-confirmation').modal('show');
-            swal({
-              title: "Estás seguro?",
-              text: "Se cambiará el concepto de los elementos seleccionados!",
-              type: "warning",
+            Swal.fire({
+              title: '¿Estás seguro?',
+              text: "!Se cambiará el concepto de los elementos seleccionados!",
+              type: 'warning',
               showCancelButton: true,
-              confirmButtonClass: "btn-danger",
-              confirmButtonText: "Continuar.!",
-              cancelButtonText: "Cancelar.!",
-              closeOnConfirm: false,
-              closeOnCancel: false
-            },
-            function(isConfirm) {
-              if (isConfirm) {
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Continuar',
+              cancelButtonText: 'Cancelar'
+            }).then((result) => {
+              if (result.value) {
                 $('.cancel').prop('disabled', 'disabled');
                 $('.confirm').prop('disabled', 'disabled');
                 var rows_selected = $("#mens_table").DataTable().column(0).checkboxes.selected();
@@ -392,7 +384,7 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
                   valores.push(rowId);
                 });
                 if ( valores.length === 0 || concept === ""){
-                  swal("Operación abortada", "Ningún registro seleccionado, seleccione un concepto de facturación y un contrato.", "error");
+                  Swal.fire("Operación abortada", "Ningún registro seleccionado, seleccione un concepto de facturación y un contrato.", "error");
                 }
                 else {
                   $.ajax({
@@ -402,11 +394,11 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
                     success: function (data){
                       console.log(data);
                       if (data === '1') {
-                        swal("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
+                        Swal.fire("Operación Completada!", "Los registros seleccionados han sido afectados.", "success");
                         $('#upd_concept').val('').trigger('change');
                         mens_tb(token);
                       }else {
-                        swal("Operación abortada!", "Los registros seleccionados no han sido afectados.", "error");
+                        Swal.fire("Operación abortada!", "Los registros seleccionados no han sido afectados.", "error");
                         mens_tb(token);
                       }
                     },
@@ -416,7 +408,7 @@ var Configuration_table_responsive_simple_concepts_viatic_all = {
                   });
                 }
               } else {
-                swal("Operación abortada", "Ningúna registro afectado :)", "error");
+                Swal.fire("Operación abortada", "Ningúna registro afectado :)", "error");
               }
             });
           }

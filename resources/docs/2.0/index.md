@@ -42,7 +42,7 @@
     - [Todos los Viaticos](/{{route}}/{{version}}/viaticos/view_request_all_via)
     - [Reporte Semanal](/{{route}}/{{version}}/viaticos/view_viatic_weekly)
 - ## Pagos
-    - [Proveedores](/{{route}}/{{version}}/payments/provider)
+    - [Proveedores](/{{route}}/{{version}}/payments/customers)
     - [Dashboard de pagos](/{{route}}/{{version}}/payments/view_dashboard_req_pay)
     - [Solicitud de pagos](/{{route}}/{{version}}/payments/view_add_req_pay)
     - [Solicitud de pagos multiples](/{{route}}/{{version}}/payments/view_add_req_pay_mult)
