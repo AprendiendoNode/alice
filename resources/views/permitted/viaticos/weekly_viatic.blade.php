@@ -343,13 +343,13 @@ white-space: pre-wrap !important;
     @if( auth()->user()->can('View weekly viatic') )
 
       <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
-      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js?v=2.0.0')}}"></script>
       <link rel="stylesheet" type="text/css" href="{{ asset('css/pdf2.css')}}" >
       <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
       <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
       <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
       <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
-      <script src="{{ asset('js/admin/viaticos/filter_weekly.js')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/filter_weekly.js?v=2.0.0')}}"></script>
     @else
     @endif
 @endpush

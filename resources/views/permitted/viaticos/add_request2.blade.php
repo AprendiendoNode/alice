@@ -436,7 +436,7 @@
                background:#E73431
              }
           </style>
-          <script src="{{ asset('js/admin/viaticos/add_request2_via.js')}}"></script>
+          <script src="{{ asset('js/admin/viaticos/add_request2_via.js?v=2.0.0')}}"></script>
 
         @else
           <!--NO VER-->

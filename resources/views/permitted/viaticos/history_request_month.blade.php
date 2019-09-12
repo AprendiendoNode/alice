@@ -332,8 +332,8 @@
   var cadenas = {!! json_encode($cadenas) !!};
   var concepts = {!! json_encode($concepts) !!};
 </script>
-<script src="{{ asset('js/admin/viaticos/requests_viaticos_modal2.js')}}"></script>
-<script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js')}}"></script>
+<script src="{{ asset('js/admin/viaticos/requests_viaticos_modal2.js?v=2.0.0')}}"></script>
+<script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js?v=2.0.0')}}"></script>
 <link rel="stylesheet" type="text/css" href="{{ asset('css/pdf2.css')}}" >
 <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
 <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
@@ -358,7 +358,7 @@
     margin-left: -10% !important;
   }
 </style>
-<script src="{{ asset('js/admin/viaticos/requests_viaticos_all.js')}}"></script>
+<script src="{{ asset('js/admin/viaticos/requests_viaticos_all.js?v=2.0.0')}}"></script>
     @else
     @endif
 @endpush

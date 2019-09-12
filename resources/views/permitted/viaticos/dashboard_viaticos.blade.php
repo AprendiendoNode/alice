@@ -161,7 +161,7 @@
           padding-top: 10px;
         }
       </style>
-      <script src="{{ asset('js/admin/viaticos/dash_viaticos.js')}}"></script>
+      <script src="{{ asset('js/admin/viaticos/dash_viaticos.js?v=2.0.0')}}"></script>
     @else
       <!--NO VER-->
     @endif
