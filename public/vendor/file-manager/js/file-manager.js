@@ -21859,7 +21859,13 @@
                             }
                         }, [n("td", {
                             staticClass: "fm-content-item unselectable",
-                            class: e.acl && 0 === t.acl ? "text-hidden" : ""
+                            class: e.acl && 0 === t.acl ? "text-hidden" : "",
+                            on: {
+                                dblclick: function (n) {
+                                    var url = "http://localhost:8000/images/storage/filestore/storage/"+e._s(t.path);
+                                    modalToggle(url, e._s(t.filename), e._s(e.bytesToHuman(t.size))); //drive.js
+                                }
+                            }
                         }, [n("i", {
                             staticClass: "far",
                             class: e.extensionToIcon(t.extension)

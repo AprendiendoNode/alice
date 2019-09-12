@@ -124,6 +124,40 @@
         </div>
     </div>
 
+    <!-- Modal Preview -->
+    <div class="modal fade" id="previewInfo" tabindex="-1" role="dialog" aria-labelledby="modalSlideUpLabel" aria-hidden="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content-wrapper">
+                <div class="modal-content">
+                    <div class="modal-header clearfix text-left">
+                      <p class="h4"><i class="fas fa-eye"></i> Vista previa</p>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                          <i class="fas fa-window-close"></i>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-9" id="modal-preview">
+
+                            </div>
+                            <div class="col-md-3 b-l b-grey" id="modal-info">
+                                <ul class="no-style">
+                                    <li><b>Name</b>: <p id="modal-name"></p></li>
+                                    <li><b>Size</b>: <p id="modal-size"></p></li>
+                                    <li class="hide"><b>Height</b>: <span id="modal-height"></span></li>
+                                    <li class="hide"><b>Width</b>: <span id="modal-width"></span></li>
+                                </ul>
+                                <button class="btn btn-complete m-t-30 hide">Download file</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+    <!-- End Modal Preview -->
+
     @else
       @include('default.denied')
     @endif
@@ -137,7 +171,6 @@
   <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}">
   <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
   <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
-  <script src="{{ asset('vendor/file-manager/js/file-manager.js') }}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
 
@@ -157,6 +190,7 @@
   </script>
 
   <script src="{{ asset('js/admin/contract/drive.js')}}"></script>
+  <script src="{{ asset('vendor/file-manager/js/file-manager.js') }}"></script>
 
   @else
 

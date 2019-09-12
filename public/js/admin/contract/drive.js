@@ -176,3 +176,11 @@ function createEventListener_fileXml () {
     }
   });
 }
+
+function modalToggle(url, name, size) {
+  $("#modal-preview").html("");
+  $("#modal-preview").append('<embed src="'+url+'" frameborder="0" style="width: 100%; height: 70vh;">');
+  $("#modal-name").text(name);
+  $("#modal-size").text(size);
+  $('#previewInfo').modal('toggle');
+}
