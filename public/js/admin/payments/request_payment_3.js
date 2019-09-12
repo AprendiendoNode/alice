@@ -1,17 +1,14 @@
 $(".btn-aprobar").click(function(event) {
-  swal({
+  Swal.fire({
     title: "Estás seguro?",
     text: "Se aprobarán la solicitud seleccionada.!",
     type: "warning",
     showCancelButton: true,
     confirmButtonClass: "btn-danger",
     confirmButtonText: "Continuar.!",
-    cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm) {
-    if (isConfirm) {
+    cancelButtonText: "Cancelar.!"
+  }).then((result) => {
+    if(result.value){
       var _token = $('input[name="_token"]').val();
       // Iterate over all selected checkboxes
       $.ajax({
@@ -22,26 +19,25 @@ $(".btn-aprobar").click(function(event) {
             console.log(data);
             if (data === '0') {
               $('#modal-view-concept').modal('toggle');
-              swal("Operación abortada!", "La solicitud no esta aprobada por los niveles anteriores.", "error");
+              Swal.fire("Operación abortada!", "La solicitud no esta aprobada por los niveles anteriores.", "error");
             }
             if (data === '1') {
-              swal("Operación Completada!", "La solicitud han sido aprobada.", "success");
+              Swal.fire("Operación Completada!", "La solicitud han sido aprobada.", "success");
               payments_conf_table();
               $('#modal-view-concept').modal('toggle');
             }
             if (data === '2') {
               $('#modal-view-concept').modal('toggle');
-              swal("Operación abortada!", "La solicitud ya esta aprobada.", "error");
+              Swal.fire("Operación abortada!", "La solicitud ya esta aprobada.", "error");
             }
           },
           error: function (data) {
             console.log('Error:', data);
           }
       });
-    } else {
-      swal("Operación abortada", "Ningúna solicitud de pago afectada :)", "error");
     }
-  });
+  })
+
 });
 
 $(function() {
@@ -178,7 +174,7 @@ var Configuration_table_responsive_checkbox_move_payment_n3= {
       },
       action: function ( e, dt, node, config ) {
         // $('#modal-confirmation').modal('show');
-        swal({
+        Swal.fire({
           title: "Estás seguro?",
           text: "Se Confirmar pago de todas las solicitudes seleccionadas.!",
           type: "warning",
@@ -188,9 +184,8 @@ var Configuration_table_responsive_checkbox_move_payment_n3= {
           cancelButtonText: "Cancelar.!",
           closeOnConfirm: false,
           closeOnCancel: false
-        },
-        function(isConfirm) {
-          if (isConfirm) {
+        }).then((result) => {
+          if(result.value){
             $('.cancel').prop('disabled', 'disabled');
             $('.confirm').prop('disabled', 'disabled');
             var rows_selected = $("#table_pays").DataTable().column(0).checkboxes.selected();
@@ -223,11 +218,10 @@ var Configuration_table_responsive_checkbox_move_payment_n3= {
                 }
               });
             }
-
-          } else {
-            swal("Operación abortada", "Ningúna solicitud de pago afectada :)", "error");
           }
-        });
+        })
+
+
       }
     },
     {

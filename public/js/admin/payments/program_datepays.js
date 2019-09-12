@@ -224,7 +224,7 @@ var Configuration_table_responsive_checkbox_move_payment_n3= {
                     console.log(data);
                     if (data === 'true') {
                       Swal.fire("Operación Completada!", "Las solicitudes seleccionadas han sido afectadas.", "success");
-                      payments_conf_table();
+                      payments_program_table();
                     }
                     if (data === 'false') {
                       Swal.fire("Operación abortada!", "Las solicitudes seleccionadas no han sido afectadas.", "error");
@@ -389,20 +389,16 @@ function enviartwo(e){
   var valor= e.getAttribute('value');
   var _token = $('input[name="_token"]').val();
 
-  swal({
+  Swal.fire({
     title: "¿Estás seguro?",
-    text: "Se denegara la solicitud.!<br><br><textarea rows='3' placeholder='Añadir comentario' class='form-control' id='comentario'></textarea>",
+    html: "Se denegara la solicitud.!<br><br><textarea rows='3' placeholder='Añadir comentario' class='form-control' id='comentario'></textarea>",
     type: "warning",
-    html:true,
     showCancelButton: true,
     confirmButtonClass: "btn-danger",
     confirmButtonText: "Continuar.!",
-    cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm){
-    if(isConfirm){
+    cancelButtonText: "Cancelar.!"
+  }).then((result) => {
+    if(result.value){
       var comment = $('#comentario').val();
       $.ajax({
           type: "POST",
@@ -410,22 +406,20 @@ function enviartwo(e){
           data: { idents: valor, comm: comment, _token : _token },
           success: function (data){
             if (data === 'true') {
-              swal("Operación Completada!", "La solicitud ha sido denegado.", "success");
+              Swal.fire("Operación Completada!", "La solicitud ha sido denegado.", "success");
               payments_auto_table();
             }
             if (data === 'false') {
-              swal("Operación abortada!", "No cuenta con el permiso o esta ya se encuentra denegado :) Nota: Si la solicitud ya esta confirmada no se puede denegar", "error");
+              Swal.fire("Operación abortada!", "No cuenta con el permiso o esta ya se encuentra denegado :) Nota: Si la solicitud ya esta confirmada no se puede denegar", "error");
             }
           },
           error: function (data) {
             console.log('Error:', data);
           }
       });
-
-    }else{
-        swal("Operación abortada", "Ningúna solicitud afectada :)", "error");
     }
-  });
+  })
+
 }
 
 function enviarP(e) {

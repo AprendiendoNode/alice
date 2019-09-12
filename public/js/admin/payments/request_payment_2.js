@@ -207,7 +207,7 @@ var Configuration_table_responsive_checkbox_move_payment_n2= {
       action: function ( e, dt, node, config ) {
         // $('#modal-confirmation').modal('show');
         Swal.fire({
-          title: "Estás seguro?",
+          title: "¿Estás seguro?",
           text: "Se autorizarán todos las solicitudes seleccionadas.!",
           type: "warning",
           showCancelButton: true,

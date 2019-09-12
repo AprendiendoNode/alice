@@ -189,7 +189,7 @@
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
 
-    <script src="{{ asset('js/admin/payments/confirm_pays.js')}}"></script>
+    <script src="{{ asset('js/admin/payments/confirm_pays.js?v=2.0.0')}}"></script>
     @else
     <!--NO VER-->
     @endif
