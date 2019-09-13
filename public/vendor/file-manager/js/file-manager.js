@@ -19744,7 +19744,7 @@
                     clear: "Clear",
                     copy: "Copy",
                     cut: "Cut",
-                    delete: "Delete",
+                    //delete: "Delete",
                     edit: "Edit",
                     forward: "Forward",
                     folder: "New folder",
@@ -19768,7 +19768,7 @@
                 contextMenu: {
                     copy: "Copy",
                     cut: "Cut",
-                    delete: "Delete",
+                    //delete: "Delete",
                     download: "Download",
                     info: "Selected:",
                     open: "Open",
@@ -21227,7 +21227,7 @@
                         },
                         on: {
                             click: function (t) {
-                                return e.showModal("Delete")
+                                //return e.showModal("Delete")
                             }
                         }
                     }, [n("i", {
@@ -21862,7 +21862,8 @@
                             class: e.acl && 0 === t.acl ? "text-hidden" : "",
                             on: {
                                 dblclick: function (n) {
-                                    var url = "http://alice.sitwifi.com/images/storage/filestore/storage/"+e._s(t.path);
+                                    //var url = "http://alice.sitwifi.com/images/storage/filestore/storage/"+e._s(t.path);
+                                    var url = "http://localhost:8000/images/storage/filestore/storage/"+e._s(t.path);
                                     if(url.split(".").pop().toUpperCase() == "PDF") {
                                       modalToggle(url, e._s(t.filename), e._s(e.bytesToHuman(t.size))); //drive.js
                                     }
@@ -22679,9 +22680,10 @@
                     }, [e._v(e._s(e.lang.modal.delete.noSelected))])])]), n("div", {
                         staticClass: "modal-footer"
                     }, [n("button", {
-                        staticClass: "btn btn-danger",
+                        staticClass: "btn btn-danger ",
                         on: {
-                            click: e.deleteItems
+                            //click: e.deleteItems
+                            click: e.hideModal
                         }
                     }, [e._v(e._s(e.lang.modal.delete.title) + "\n        ")]), n("button", {
                         staticClass: "btn btn-default",
@@ -22739,7 +22741,8 @@
                 },
                 methods: {
                     deleteItems: function () {
-                        var e = this,
+                      alert("No es posible eliminar el archivo.")
+                      /*  var e = this,
                             t = this.selectedItems.map(function (e) {
                                 return {
                                     path: e.path,
@@ -22748,7 +22751,7 @@
                             });
                         this.$store.dispatch("fm/delete", t).then(function () {
                                 e.hideModal()
-                            })
+                            })*/
                     }
                 }
             },

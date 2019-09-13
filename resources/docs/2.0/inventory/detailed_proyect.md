@@ -11,7 +11,7 @@ En la gráfica de la izquierda puede observar la cantidad de AP's y el estatus q
 ![image](/images/docs/inventory/Proyecto3.png)<br><br>
 En las gráficas de barras se pueden ver los equipos,su distribución y modelos.
 ![image](/images/docs/inventory/Proyecto4.png)<br><br>
-En la tabla anterior podemos observar los equipos que se encuentran repartidos en los sitios del proyecto, asi como determinar en que estatus se encuentran.
+En la tabla anterior podemos observar los equipos que se encuentran repartidos en los sitios del proyecto, asi como determinar en que estatus se encuentran.<br>
 ![image](/images/docs/inventory/Proyecto5.png)<br><br>
 La última tabla muestra un resumen de la cantidad de equipos que tenemos por tipo y por sitio.<br>
 **Nota:** Todas las tablas pueden ser descargadas en los formatos de excel, csv y pdf haciendo clic en sus botones respectivos.
