@@ -21863,7 +21863,9 @@
                             on: {
                                 dblclick: function (n) {
                                     var url = "http://alice.sitwifi.com/images/storage/filestore/storage/"+e._s(t.path);
-                                    modalToggle(url, e._s(t.filename), e._s(e.bytesToHuman(t.size))); //drive.js
+                                    if(url.split(".").pop().toUpperCase() == "PDF") {
+                                      modalToggle(url, e._s(t.filename), e._s(e.bytesToHuman(t.size))); //drive.js
+                                    }
                                 }
                             }
                         }, [n("i", {
