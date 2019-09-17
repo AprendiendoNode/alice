@@ -58,15 +58,12 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  let docs_m = datajson.filter(data => data.doc_type = 2);
+  let docs_m = datajson.filter(data => data.doc_type == 2);
+  console.log(docs_m);
   $.each(docs_m, function(index, data){
-    let type_doc = '';
+    let type_doc = 'M';
     let badge = '';
-    if(data.doc_type == 1){
-      type_doc = 'P';
-    }else{
-      type_doc = 'M';
-    }
+
     switch (data.status) {
       case 'Nuevo':
         badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';

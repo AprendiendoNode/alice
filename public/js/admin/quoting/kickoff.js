@@ -931,6 +931,9 @@ function get_ids_anexos(cadena, key){
 }
 
 $('#cadena').on('change', function(){
+  document.getElementById('nombre_sitio').value = '';
+  document.getElementById('id_hotel').value = '';
+  document.getElementById('id_ubicacion').value = '';
   var cadena = $(this).val();
   $.ajax({
     type: "POST",

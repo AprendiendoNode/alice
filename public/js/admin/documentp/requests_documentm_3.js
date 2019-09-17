@@ -178,7 +178,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 13,
               "width": "3%",
-              "className": "text-center actions",
+              "className": "text-center actions-button cell-large",
             },
             {
               "targets": 14,

@@ -313,15 +313,13 @@
     <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
     <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
-    <script src="{{ asset('js/admin/documentp/requests_documentp_0.js?v=2.0.1')}}"></script>
-
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v=2.0.0')}}" >
     <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
     <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
     <style>
     </style>
       @if( auth()->user()->can('View level zero documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_0.js?v=2.0.1')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_0.js?v=2.0.3')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @elseif ( auth()->user()->can('View level one documentp notification') )
         <script src="{{ asset('js/admin/documentp/requests_documentm_1.js?v=2.0.0')}}"></script>

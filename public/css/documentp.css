@@ -517,6 +517,10 @@ input::-webkit-input-placeholder {
   font-size: .7rem;
 }
 
+.input-mini{
+  padding: 0 !important;
+}
+
 #data_installation .form-row label{
   color: #363636;
   font-size: 0.9rem;

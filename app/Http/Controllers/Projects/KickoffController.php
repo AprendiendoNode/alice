@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Projects\Documentp_status_user;
-use App\Models\Projects\{Documentp, Documentp_cart, In_Documentp_cart, Cotizador, Cotizador_gastos};
+use App\Models\Projects\{Documentp, Documentp_cart, In_Documentp_cart, Cotizador, Cotizador_gastos, Cotizador_inversion};
 use App\Models\Projects\{Kickoff_approvals, Kickoff_compras, Kickoff_contrato, Kickoff_instalaciones, Kickoff_lineabase, Kickoff_perfil_cliente, Kickoff_project, Kickoff_soporte};
 use App\Mail\SolicitudCompra;
 use App\Models\Base\Message;
@@ -29,7 +29,7 @@ class KickoffController extends Controller
       $documentP = Documentp::find($id);
       $id_document = $documentP->id;
       $in_document_cart = In_Documentp_cart::where('documentp_cart_id', $document[0]->documentp_cart_id)->first();
-
+      //dd($document);
       $tipo_cambio = $in_document_cart->tipo_cambio;
       $installation = DB::table('documentp_installation')->select('id', 'name')->get();
       $adquisition = DB::table('documentp_adquisition')->select('id', 'name')->get();
@@ -40,6 +40,7 @@ class KickoffController extends Controller
       $vtc = "Proyecto sin cotizador";
       $gasto_mtto_percent = 0;
       $gasto_mtto = 0;
+      $comision = 0.0;
       $credito_mensual_percent = 0;
       $cotizador = DB::table('cotizador')->select('id', 'id_doc')->where('id_doc', $document[0]->id)->get();
       $real_ejercido = $this->get_presupuesto_ejercido($document[0]->id);
@@ -48,6 +49,8 @@ class KickoffController extends Controller
       if(count($cotizador) == 1) {
         $objetivos = DB::table('cotizador_objetivos')->select()->where('cotizador_id', $cotizador[0]->id)->get();
         $gastos_mensuales = Cotizador_gastos::findOrFail(['cotizador_id' => $cotizador[0]->id]);
+        $inversion = Cotizador_inversion::findOrFail(['cotizador_id' => $cotizador[0]->id]);
+        $comision = $inversion[0]->comision;
         $vtc = $objetivos[0]->vtc;
         $gasto_mtto = $gastos_mensuales[0]->mantto_seg_otro;
         $gasto_mtto_percent = $gastos_mensuales[0]->mantto_seg_otro_percent;
@@ -67,7 +70,7 @@ class KickoffController extends Controller
       $cadenas = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
 
       return view('permitted.planning.kick_off_edit', compact('document', 'cadenas','installation','approval_dir' ,'adquisition','inside_sales' ,'vendedores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals',
-                  'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte','gasto_mtto', 'gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido' ));
+                  'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte','gasto_mtto', 'comision','gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido' ));
     }
 
     public function get_num_aps($cart_id)
@@ -160,12 +163,12 @@ class KickoffController extends Controller
            'mantenimiento_vigencia' => $request->mantenimiento_vigencia,
            'tipo_adquisicion' => $request->tipo_adquisicion,
            'tipo_pago' => $request->tipo_pago,
-           'vendedor' => $request->vendedor,
-           'inside_sales' => $request->inside_sales,
-           'cierre' => $request->cierre,
-           'contacto' => $request->contacto_comercial,
-           'externo1' => $request->comision_externo,
-           'externo2' => $request->comision_externo_2,
+           // 'vendedor' => $request->vendedor,
+           // 'inside_sales' => $request->inside_sales,
+           // 'cierre' => $request->cierre,
+           // 'contacto' => $request->contacto_comercial,
+           // 'externo1' => $request->comision_externo,
+           // 'externo2' => $request->comision_externo_2,
            'updated_at' => \Carbon\Carbon::now()
         ]);
         //INSTALACIONES

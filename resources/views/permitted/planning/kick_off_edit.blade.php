@@ -23,6 +23,228 @@
         {{ csrf_field() }}
         <input type="hidden" name="id_docp2" id="id_docp2" value="{{$document[0]->id}}">
       </form>
+      <!--  MODAL COMISIONES -->
+      <div id="modal_comision" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Cálculo de comisión</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-row">
+                <div class="col-4">
+                  <h6>Proyecto: {{ $document[0]->nombre_proyecto }}</h6>
+                </div>
+                <div class="col-4">
+                  <h6>Tipo servicio: {{ $document[0]->tipo_servicio }}</h6>
+                </div>
+                <div class="col-4">
+                  <h6 class="text-danger">Monto de comisión: $ <span id="total_comision">{{ number_format($comision, 2,'.', ',') }} USD</span> </h6>
+                </div>
+              </div>
+              <div class=" mb-2">
+                <div class="col-12 text-center bg-dark text-white p-1 mb-2">
+                  <label class="mb-0" for="">Comisión</label>
+                </div>
+                <div class="form-row d-flex align-items-center mb-2">
+                  <div class="col-3">
+                    <label for="">IT Concierge</label>
+                  </div>
+                  <div class="col-4">
+                    <input id="itconciergecomision" name="itconciergecomision" disabled type="text" class="form-control form-control-sm" value="{{$document[0]->ITC}}">
+                  </div>
+                  <div class="col-3 input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">$</div>
+                    </div>
+                    <input id="amount_comission_itc" readonly type="text" class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" placeholder="0.00">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">USD</div>
+                    </div>
+                  </div>
+                  <div class="col-2 input-group">
+                    <input id="percent_comission_itc" value="0" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">%</div>
+                    </div>
+                  </div>
+                </div><!------------------------------------------------------->
+                <div class="form-row d-flex align-items-center mb-2">
+                  <div class="col-3">
+                    <label  for="">Vendedor</label>
+                  </div>
+                  <div class="col-4">
+                    <select id="vendedor" name="vendedor" type="text" class="form-control form-control-sm">
+                      @if($kickoff_contrato->vendedor == 4)
+                        <option selected value="4">Sin asignar</option>
+                      @else
+                        <option value="4">Sin asignar</option>
+                      @endif
+                      @foreach ($vendedores as $vendedor)
+                        @if($vendedor->user_id == $kickoff_contrato->vendedor)
+                          <option selected value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
+                        @else
+                          <option value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
+                        @endif
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="col-3 input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">$</div>
+                    </div>
+                    <input id="amount_comision_vendedor" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" placeholder="0.00">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">USD</div>
+                    </div>
+                  </div>
+                  <div class="col-2 input-group">
+                    <input id="percent_comision_vendedor" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="0">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">%</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row d-flex align-items-center mb-2">
+                  <div class="col-3">
+                    <label  for="">Inside Sales</label>
+                  </div>
+                  <div class="col-4">
+                    <select id="inside_sales" name="inside_sales" type="text" class="form-control form-control-sm">
+                      @if($kickoff_contrato->inside_sales == 4)
+                        <option selected value="4">Sin asignar</option>
+                      @else
+                        <option value="4">Sin asignar</option>
+                      @endif
+                      @foreach ($inside_sales as $inside_sales_data)
+                        @if($inside_sales_data->user_id == $kickoff_contrato->inside_sales)
+                          <option selected value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
+                        @else
+                          <option value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
+                        @endif
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="col-3 input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">$</div>
+                    </div>
+                    <input id="amount_inside_sales" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" placeholder="0.00">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">USD</div>
+                    </div>
+                  </div>
+                  <div class="col-2 input-group">
+                    <input id="percent_inside_sales" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="0">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">%</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row d-flex align-items-center mb-2">
+                  <div class="col-3">
+                    <label  for="">Contácto</label>
+                  </div>
+                  <div class="col-4">
+                    <input id="contacto_comercial" name="contacto_comercial" value="{{ $kickoff_contrato->contacto }}" type="text" class="form-control form-control-sm">
+                  </div>
+                  <div class="col-3 input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">$</div>
+                    </div>
+                    <input id="amount_contacto" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" placeholder="0.00">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">USD</div>
+                    </div>
+                  </div>
+                  <div class="col-2 input-group">
+                    <input id="percent_contacto" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="0">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">%</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row d-flex align-items-center mb-2">
+                  <div class="col-3">
+                    <label  for="">Cierre</label>
+                  </div>
+                  <div class="col-4">
+                    <input id="cierre" name="cierre" value="{{ $kickoff_contrato->cierre }}" type="text" class="form-control form-control-sm">
+                  </div>
+                  <div class="col-3 input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">$</div>
+                    </div>
+                    <input id="amount_cierre" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" placeholder="0.00">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">USD</div>
+                    </div>
+                  </div>
+                  <div class="col-2 input-group">
+                    <input id="percent_cierre" type="number" onblur="calcularComision(this);" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="0">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">%</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row d-flex align-items-center mb-2">
+                  <div class="col-3">
+                    <label  for="">Externo</label>
+                  </div>
+                  <div class="col-4">
+                    <input id="comision_externo" name="comision_externo" value="{{ $kickoff_contrato->externo1 }}" type="text" class="form-control form-control-sm">
+                  </div>
+                  <div class="col-3 input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">$</div>
+                    </div>
+                    <input id="amount_externo1" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" placeholder="0.00">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">USD</div>
+                    </div>
+                  </div>
+                  <div class="col-2 input-group">
+                    <input id="percent_externo1" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="0">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">%</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row d-flex align-items-center mb-2">
+                  <div class="col-3">
+                    <label  for="">Externo 2</label>
+                  </div>
+                  <div class="col-4">
+                    <input id="comision_externo_2" name="comision_externo_2" value="{{ $kickoff_contrato->externo2}}" type="text" class="form-control form-control-sm">
+                  </div>
+                  <div class="col-3 input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">$</div>
+                    </div>
+                    <input id="amount_externo2" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" placeholder="0.00">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">USD</div>
+                    </div>
+                  </div>
+                  <div class="col-2 input-group">
+                    <input id="percent_externo2" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="0">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text form-control-sm text-dark">%</div>
+                    </div>
+                  </div>
+                </div>
+             </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+      </div>
+    </div>
       <!--MODAL LINEA BASE-->
       <div id="modal_linea_base" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
@@ -159,6 +381,7 @@
           </div>
         </div>
       </div>
+      <!------------------------------------------------------------------------------------->
       <div class="row" id="validation">
           <div class="col-12">
             <div class="card">
@@ -172,11 +395,11 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="card">
-                        <div class="card-header bg-secondary text-white">
+                        <div style="background: #3E3E42;" class="card-header text-white p-1">
                           <a class="btn btn-sm btn-default p-1" rol="button" data-toggle="collapse" href="#collapseContract" aria-expanded="false" aria-controls="collapseContract">
-                            <i class="fas fa-angle-down"></i>
+                            <i class="fas fa-angle-down text-white"></i>
                           </a>
-                          Vincular contrato a Documento A
+                          Vincular contrato a documento A
                         </div>
                         <div class="collapse" id="collapseContract">
                           <div class="card-body">
@@ -477,100 +700,11 @@
                             </div>
                           </div>
                           <div class="form-row d-flex align-items-center mb-2">
-                            <div class="col text-center bg-blue">
-                              <a class="btn btn-sm btn-default p-1" data-toggle="collapse" href="#collapseComision" role="button" aria-expanded="false" aria-controls="collapseComision">
-                                <i class="fas fa-angle-down"></i>
-                              </a>
-                              <label for="">Comisión</label>
-                            </div>
+                            <button class="btn btn-block btn-success" onclick="show_comision();" type="button" name="button"><i class="fas fa-wallet"></i> Ver comisión</button>
                           </div>
-                          <div class="collapse" id="collapseComision">
-                            <div class="form-row d-flex align-items-center mb-2">
-                              <div class="col-4">
-                                <label for="">IT Concierge</label>
-                              </div>
-                              <div class="col-8">
-                                <input id="itconciergecomision" name="itconciergecomision" disabled type="text" class="form-control form-control-sm" value="{{$document[0]->ITC}}">
-                              </div>
-                            </div>
-                            <div class="form-row d-flex align-items-center mb-2">
-                              <div class="col-4">
-                                <label  for="">Vendedor</label>
-                              </div>
-                              <div class="col-8">
-                                <select id="vendedor" name="vendedor" type="text" class="form-control form-control-sm">
-                                  @if($kickoff_contrato->vendedor == 4)
-                                    <option selected value="4">Sin asignar</option>
-                                  @else
-                                    <option value="4">Sin asignar</option>
-                                  @endif
-                                  @foreach ($vendedores as $vendedor)
-                                    @if($vendedor->user_id == $kickoff_contrato->vendedor)
-                                      <option selected value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
-                                    @else
-                                      <option value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
-                                    @endif
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                            <div class="form-row d-flex align-items-center mb-2">
-                              <div class="col-4">
-                                <label  for="">Inside Sales</label>
-                              </div>
-                              <div class="col-8">
-                                <select id="inside_sales" name="inside_sales" type="text" class="form-control form-control-sm">
-                                  @if($kickoff_contrato->inside_sales == 4)
-                                    <option selected value="4">Sin asignar</option>
-                                  @else
-                                    <option value="4">Sin asignar</option>
-                                  @endif
-                                  @foreach ($inside_sales as $inside_sales_data)
-                                    @if($inside_sales_data->user_id == $kickoff_contrato->inside_sales)
-                                      <option selected value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
-                                    @else
-                                      <option value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
-                                    @endif
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                            <div class="form-row d-flex align-items-center mb-2">
-                              <div class="col-4">
-                                <label  for="">Contácto</label>
-                              </div>
-                              <div class="col-8">
-                                <input id="contacto_comercial" name="contacto_comercial" value="{{ $kickoff_contrato->contacto }}" type="text" class="form-control form-control-sm">
-                              </div>
-                            </div>
-                            <div class="form-row d-flex align-items-center mb-2">
-                              <div class="col-4">
-                                <label  for="">Cierre</label>
-                              </div>
-                              <div class="col-8">
-                                <input id="cierre" name="cierre" value="{{ $kickoff_contrato->cierre }}" type="text" class="form-control form-control-sm">
-                              </div>
-                            </div>
-                            <div class="form-row d-flex align-items-center mb-2">
-                              <div class="col-4">
-                                <label  for="">Externo</label>
-                              </div>
-                              <div class="col-8">
-                                <input id="comision_externo" name="comision_externo" value="{{ $kickoff_contrato->externo1 }}" type="text" class="form-control form-control-sm">
-                              </div>
-                            </div>
-                            <div class="form-row d-flex align-items-center mb-2">
-                              <div class="col-4">
-                                <label  for="">Externo 2</label>
-                              </div>
-                              <div class="col-8">
-                                <input id="comision_externo_2" name="comision_externo_2" value="{{ $kickoff_contrato->externo2}}" type="text" class="form-control form-control-sm">
-                              </div>
-                            </div>
                           </div>
                         </div>
                       </div>
-                  </div>
                   <!--INSTALACIONES-->
                   <div class="col-12 col-md-6 p-2">
                     <div class="row">
@@ -1193,8 +1327,9 @@
   @else
     @include('default.denied')
   @endif
-  <script type="text/javascript" src="{{asset('js/admin/quoting/kickoff.js?v2.0.0')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/quoting/kickoff.js?v?=2.0.0')}}"></script>
   <script type="text/javascript" src="{{asset('js/admin/quoting/modal_linea_base.js')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/quoting/comision.js')}}"></script>
   <script type="text/javascript" src="{{asset('js/admin/documentp/request_modal_documentp.js')}}"></script>
   <style media="screen">
 
