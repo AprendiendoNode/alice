@@ -104,7 +104,7 @@
                     </div>
                   </div>
                   <div class="col-2 input-group">
-                    <input id="percent_comision_vendedor" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="0">
+                    <input id="percent_comision_vendedor" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_vendedor}}">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">%</div>
                     </div>
@@ -140,7 +140,7 @@
                     </div>
                   </div>
                   <div class="col-2 input-group">
-                    <input id="percent_inside_sales" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_itc}}">
+                    <input id="percent_inside_sales" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_inside_sales}}">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">%</div>
                     </div>

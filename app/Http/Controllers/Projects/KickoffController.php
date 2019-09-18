@@ -731,37 +731,39 @@ class KickoffController extends Controller
 
     public function update_kickoff_comision(Request $request)
     {
+      //dd($request);
+      $id = $request->id;
       $documentp = Documentp::find($id);
-
       $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
-      //PERFIL CLIENTE
+
       DB::table('kickoff_comisiones')->where('kickoff_id', $kickoff->id)->update([
          'itconcierge' => $request->itconciergecomision,
-         'vendedor' => $request->razon_social,
-         'inside_sales' => $request->edo_municipio,
-         'colaborador' => $request->contacto,
-         'contacto' => $request->puesto,
-         'cierre' => $request->telefono,
-         'externo1' => $request->email,
-         'externo2' => $request->direccion,
-         'amount_itc' => $request->direccion,
-         'amount_vendedor' => $request->direccion,
-         'amount_inside_sales' => $request->direccion,
-         'amount_colaborador' => $request->direccion,
-         'amount_contacto' => $request->direccion,
-         'amount_cierre' => $request->direccion,
-         'amount_externo1' => $request->direccion,
-         'amount_externo2' => $request->direccion,
-         'percent_itc' => $request->direccion,
-         'percent_vendedor' => $request->direccion,
-         'percent_inside_sales' => $request->direccion,
-         'percent_colaborador' => $request->direccion,
-         'percent_contacto' => $request->direccion,
-         'percent_cierre' => $request->direccion,
-         'percent_externo1' => $request->direccion,
-         'percent_externo2' => $request->direccion,
+         'vendedor' => $request->vendedor,
+         'inside_sales' => $request->inside_sales,
+         'colaborador' => $request->colaborador,
+         'contacto' => $request->contacto_comercial,
+         'cierre' => $request->cierre,
+         'externo1' => $request->comision_externo,
+         'externo2' => $request->comision_externo_2,
+         'amount_itc' => $request->amount_comision_itc,
+         'amount_vendedor' => $request->amount_comision_vendedor,
+         'amount_inside_sales' => $request->amount_inside_sales,
+         'amount_colaborador' => $request->amount_colaborador,
+         'amount_contacto' => $request->amount_contacto,
+         'amount_cierre' => $request->amount_cierre,
+         'amount_externo1' => $request->amount_externo1,
+         'amount_externo2' => $request->amount_externo2,
+         'percent_itc' => $request->percent_comission_itc,
+         'percent_vendedor' => $request->percent_comision_vendedor,
+         'percent_inside_sales' => $request->percent_inside_sales,
+         'percent_colaborador' => $request->percent_colaborador,
+         'percent_contacto' => $request->percent_contacto,
+         'percent_cierre' => $request->percent_cierre,
+         'percent_externo1' => $request->percent_externo1,
+         'percent_externo2' => $request->percent_externo2,
          'updated_at' => \Carbon\Carbon::now()
       ]);
+
     }
 
     public function sendNotifications($id_doc)
