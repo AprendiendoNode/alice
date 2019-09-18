@@ -11,6 +11,7 @@
             <div class="box-body">
               <!------------------------------------------------------------------------------------------------------------------------------------------------------->
                 <form id="form-modal" class="row">
+                  <input type="hidden" name="id_doc" id="id_doc" value="">
                   <div class="col-12">
                     <div class="row">
                       <div class="col-md-5">
@@ -179,6 +180,47 @@
                             <th></th>
                             <th></th>
                             <th></th>
+                            <th></th>
+                            <th></th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal logs advance--->
+<div class="col-md-5">
+  <div class="modal fade" id="modal-logs_advance" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title"><i class="fa fa-history" style="margin-right: 4px;"></i> Historial de actualizaciones de avance de proyecto</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body table-responsive">
+                <div class="row">
+                  <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
+                    <div class="table-responsive">
+                      <table id="table_documentp_logs_advance" class="table table-striped table-bordered table-sm">
+                        <thead style="height:15px !important;">
+                          <tr class="bg-secondary">
+                            <th> <small>Fecha de actualización</small> </th>
+                            <th> <small>Usuario</small> </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot id='tfoot_average'>
+                          <tr>
                             <th></th>
                             <th></th>
                           </tr>

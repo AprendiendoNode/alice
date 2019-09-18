@@ -385,6 +385,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/get_documentp_advance', 'Projects\DocumentpHistoryController@get_history_project_advance');
   Route::post('/get_documentp_delivery', 'Projects\DocumentpHistoryController@get_history_delivery_documentp');
   Route::get('/documentp_table_logs/data/{id_documentp}', 'Projects\DocumentpHistoryController@get_history_logs');
+  Route::get('/documentp_table_logs_advance_projects/data/{id_documentp}', 'Projects\DocumentpHistoryController@get_history_logs_project_advance');
   Route::post('/get_hotel_cadena_doc', 'Projects\DocumentpController@hotel_cadena');
   Route::get('/get_vertical_anexo/anexo/{id}', 'Projects\DocumentpController@get_vertical_anexo');
   Route::get('/estimation_site_table/id_anexo/{anexo}', 'Projects\DocumentpHistoryController@get_estimation_site_by_site');
@@ -466,7 +467,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/search_beneficiary', 'Viatics\AddViaticController@find_user');
   Route::post('/viat_find_concept', 'Viatics\AddViaticController@find_concept');
   //Denegar Viaticos
-    Route::post('/deny_viatic', 'Viatics\RequestsViaticController@deny_viatic');
+      Route::post('/deny_viatic', 'Viatics\RequestsViaticController@deny_viatic');
     //- Viaticos Solicitud
     Route::get('/view_request_via', 'Viatics\RequestsViaticController@index')->name('view_request_via');
     //- Todos los vitaticos

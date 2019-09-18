@@ -134,7 +134,7 @@
       }, '.modal');
     </script>
       @if( auth()->user()->can('View History Auth Document P') )
-        <script src="{{ asset('js/admin/documentp/requests_documentp_auth.js?v=1.0.1')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentp_auth.js?v=2.0.1')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js')}}"></script>
 
       @endif

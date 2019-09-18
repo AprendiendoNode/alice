@@ -276,6 +276,14 @@ class DocumentpHistoryController extends Controller
       $project->updated_at = \Carbon\Carbon::now();
       $project->save();
 
+      $user_name = Auth::user()->name;
+
+      DB::table('documentp_project_advance_logs')->insert(
+          ['name' => $user_name,
+          'id_doc' => $project->id_doc,
+          'created_at' => \Carbon\Carbon::now()]
+      );
+
       $flag = "true";
 
       return $flag;
@@ -306,6 +314,13 @@ class DocumentpHistoryController extends Controller
     public function get_history_logs($id_documentp)
     {
       $result = DB::select('call px_documentp_logs_data(?)', array($id_documentp));
+
+      return $result;
+    }
+
+    public function get_history_logs_project_advance($id_documentp)
+    {
+      $result = DB::select('call px_documentp_logs_advance_project_data(?)', array($id_documentp));
 
       return $result;
     }

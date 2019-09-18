@@ -231,14 +231,14 @@
                   <td>Crédito Mensual</td>
                   <td>$ <span id="credito_mensual">0.0</span> </td>
                   <td>
-                    <input id="credito_mensual_percent" style="width:60px; padding:0.2rem;" class="form-control form-control-sm" type="number" name="" readonly value="15" min="0" max="100">
+                    <input id="credito_mensual_percent" style="width:60px; padding:0.2rem;" class="form-control form-control-sm" type="number" name=""  value="18" min="0" max="100">
                   </td>
                 </tr>
                 <tr>
                   <td>Manto/Seguros/Otros</td>
                   <td>$ <span id="gasto_mtto">0.0</span> </td>
                   <td>
-                    <input id="gasto_mtto_percent" style="width:60px; padding:0.2rem;" class="form-control form-control-sm" type="number" name="" value="0" min="0" max="100">
+                    <input id="gasto_mtto_percent" style="width:60px; padding:0.2rem;" class="form-control form-control-sm" type="number" name="" value="1.6" min="0.0" max="100">
                   </td>
                 </tr>
                 <tr>

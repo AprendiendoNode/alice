@@ -145,7 +145,8 @@ function set_table_gastos(){
   let mantto = 0.0;
   let gasto_mtto_percent = parseFloat(document.getElementById("gasto_mtto_percent").value);
   let total_inversion = remove_commas(document.getElementById('total_rubros').innerHTML);
-  total_inversion = parseFloat(total_inversion);
+  let comision = get_comision();
+  total_inversion = parseFloat(total_inversion - comision);
   let plazo = parseInt(document.getElementById('plazo').value);
   let interes = parseFloat(document.getElementById('credito_mensual_percent').value) / 100;
   interes = interes / 12;
@@ -249,12 +250,12 @@ function set_table_objetivos(){
   }
 
   document.getElementById("utilidad_mensual").innerHTML = format_number(utilidad_mensual);
-  document.getElementById("utilidad_mensual_percent").innerHTML = Math.round(utilidad_mensual_percent);
+  document.getElementById("utilidad_mensual_percent").innerHTML = format_number(utilidad_mensual_percent);
   document.getElementById("utilidad_proyecto").innerHTML = format_number(utilidad_proyecto);
-  document.getElementById("utilidad_inversion").innerHTML = Math.round(utilidad_inversion);
+  document.getElementById("utilidad_inversion").innerHTML = format_number(utilidad_inversion);
   document.getElementById("utilidad_3_anios").innerHTML = format_number(utilidad_3_anios);
   document.getElementById("utilidad_3_anios_percent").innerHTML = format_number(utilidad_3_anios_minimo);
-  document.getElementById("renta_mensual_inversion").innerHTML = Math.round(renta_mensual_inversion);
+  document.getElementById("renta_mensual_inversion").innerHTML = format_number(renta_mensual_inversion);
   document.getElementById("utilidad_renta").innerHTML = format_number(utilidad_renta_percent);
   document.getElementById("tiempo_retorno").innerHTML = format_number(tiempo_retorno);
   document.getElementById("vtc").innerHTML = format_number(vtc);

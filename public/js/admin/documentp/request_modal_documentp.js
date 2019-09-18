@@ -199,6 +199,7 @@ function data_header(miInit, id_documentp){
           var fechainvertida=invertirFecha(data[0].fecha);
           //$('#fecha').text(data[0].fecha);
           $('#fecha').text(fechainvertida);
+          $('#id_doc').val(data[0].id);
           $('#folio').text(data[0].folio);
           $('#itc').text(data[0].ITC);
           $('#comercial').text(data[0].comercial);
@@ -343,6 +344,31 @@ function show_logs(e){
 
 }
 
+function show_logs_projects_advance(e){
+  var element = e;
+  id_documentp = document.getElementById('id_doc').value;
+  var _token = $('input[name="_token"]').val();
+
+  const headers = new Headers({
+    "Accept": "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+    "X-CSRF-TOKEN": _token
+  })
+
+  var miInit = { method: 'get',
+                    headers: headers,
+                    credentials: "same-origin",
+                    cache: 'default' };
+
+  //let id_documentp = element.dataset.id;
+
+  data_table_logs_advance_projects(miInit, id_documentp);
+
+  $('#modal-logs_advance').modal('show');
+
+}
+
+
 
 function data_table_logs(miInit, id_documentp){
 
@@ -360,6 +386,26 @@ function data_table_logs(miInit, id_documentp){
             + key.descripcion + '</td><td>'
             + key.accion + '</td><td>'
             + key.usuario + '</td></tr>'
+            );
+         });
+      })
+      .catch(error => {
+        console.log(error);
+      })
+}
+
+function data_table_logs_advance_projects(miInit, id_documentp){
+
+  fetch(`/documentp_table_logs_advance_projects/data/${id_documentp}`,  miInit)
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        $("#table_documentp_logs_advance tbody").empty();
+        $.each(data, function( i, key ) {
+          $('#table_documentp_logs_advance tbody').append(
+            '<tr><td>' + key.created_at + '</td><td>'
+            + key.name + '</td>'
             );
          });
       })

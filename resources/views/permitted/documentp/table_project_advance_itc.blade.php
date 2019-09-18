@@ -155,13 +155,17 @@
 </tbody>
 </table>
 </div>
-<div class="row">
-<div class="form-group">
-<label class="col-sm-12 control-label">Observaciones - Gerencia Instalaciones:</label>
-  <div class="col-sm-6">
-      <p class="form-control-static"><span id="folio">{{ $docp_advance->comentario_manager }}</span></p>
+<div class="row mt-3 mb-3">
+  <br><br>
+  <div class="form-group col-12 col-sm-6">
+    <label class="col-sm-12 control-label">Observaciones - Gerencia Instalaciones:</label>
+      <div class="col-sm-6">
+          <p class="form-control-static"><span id="folio">{{ $docp_advance->comentario_manager }}</span></p>
+      </div>
   </div>
-</div>
+  <div class="col-sm-6 text-right">
+    <button onclick="show_logs_projects_advance(this)" id="button_advance"  data-id="0" class="btn btn-danger" type="button" name="button">Logs de actualizaciones</button>
+  </div>
 </div>
 <style media="screen">
 

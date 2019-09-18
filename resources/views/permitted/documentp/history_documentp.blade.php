@@ -317,16 +317,16 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v2=2.0.0')}}" >
     @if( auth()->user()->can('View level zero documentp notification') )
       <script src="{{ asset('js/admin/documentp/requests_documentp_0.js?v=2.0.3')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=2.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level one documentp notification') )
       <script src="{{ asset('js/admin/documentp/requests_documentp_all.js?v=2.0.0')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=2.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level two documentp notification') )
       <script src="{{ asset('js/admin/documentp/requests_documentp_2.js?v=2.0.0')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=2.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level three documentp notification') )
       <script src="{{ asset('js/admin/documentp/requests_documentp_3.js?v=2.0.0')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=2.0.0')}}"></script>
     @else
       @include('default.denied')
     @endif
