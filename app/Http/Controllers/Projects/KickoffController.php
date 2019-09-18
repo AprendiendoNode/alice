@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Projects\Documentp_status_user;
 use App\Models\Projects\{Documentp, Documentp_cart, In_Documentp_cart, Cotizador, Cotizador_gastos, Cotizador_inversion};
-use App\Models\Projects\{Kickoff_approvals, Kickoff_compras, Kickoff_contrato, Kickoff_instalaciones, Kickoff_lineabase, Kickoff_perfil_cliente, Kickoff_project, Kickoff_soporte};
+use App\Models\Projects\{Kickoff_approvals, Kickoff_compras, Kickoff_contrato, Kickoff_instalaciones, Kickoff_lineabase, Kickoff_perfil_cliente, Kickoff_project, Kickoff_soporte, Kickoff_comisiones};
 use App\Mail\SolicitudCompra;
 use App\Models\Base\Message;
 use App\Notifications\MessageDocumentp;
@@ -36,6 +36,7 @@ class KickoffController extends Controller
       $payments = DB::table('payment_ways')->whereIn('id', [1, 3, 22])->get();
       $vendedores = DB::select(' CALL px_usersXdepto(?)', array(5));
       $inside_sales = DB::select(' CALL px_usersXdepto(?)', array(6));
+      $colaboradores = DB::select(' CALL px_colaboradores()', array());
 
       $vtc = "Proyecto sin cotizador";
       $gasto_mtto_percent = 0;
@@ -65,12 +66,13 @@ class KickoffController extends Controller
       $kickoff_lineabase = Kickoff_lineabase::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $kickoff_perfil_cliente = Kickoff_perfil_cliente::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $kickoff_soporte = Kickoff_soporte::firstOrCreate(['kickoff_id' => $kickoff->id]);
+      $kickoff_comisiones = Kickoff_comisiones::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $approval_dir = DB::select('CALL px_valida_aprobado_direccion(?)', array($kickoff_approvals->id));
 
       $cadenas = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
 
-      return view('permitted.planning.kick_off_edit', compact('document', 'cadenas','installation','approval_dir' ,'adquisition','inside_sales' ,'vendedores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals',
-                  'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte','gasto_mtto', 'comision','gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido' ));
+      return view('permitted.planning.kick_off_edit', compact('document', 'cadenas','installation','approval_dir' ,'adquisition','inside_sales' ,'vendedores', 'colaboradores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals',
+                  'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte', 'kickoff_comisiones', 'gasto_mtto', 'comision','gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido' ));
     }
 
     public function get_num_aps($cart_id)
@@ -163,12 +165,6 @@ class KickoffController extends Controller
            'mantenimiento_vigencia' => $request->mantenimiento_vigencia,
            'tipo_adquisicion' => $request->tipo_adquisicion,
            'tipo_pago' => $request->tipo_pago,
-           // 'vendedor' => $request->vendedor,
-           // 'inside_sales' => $request->inside_sales,
-           // 'cierre' => $request->cierre,
-           // 'contacto' => $request->contacto_comercial,
-           // 'externo1' => $request->comision_externo,
-           // 'externo2' => $request->comision_externo_2,
            'updated_at' => \Carbon\Carbon::now()
         ]);
         //INSTALACIONES
@@ -731,6 +727,41 @@ class KickoffController extends Controller
       }
 
       return $flag;
+    }
+
+    public function update_kickoff_comision(Request $request)
+    {
+      $documentp = Documentp::find($id);
+
+      $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+      //PERFIL CLIENTE
+      DB::table('kickoff_comisiones')->where('kickoff_id', $kickoff->id)->update([
+         'itconcierge' => $request->itconciergecomision,
+         'vendedor' => $request->razon_social,
+         'inside_sales' => $request->edo_municipio,
+         'colaborador' => $request->contacto,
+         'contacto' => $request->puesto,
+         'cierre' => $request->telefono,
+         'externo1' => $request->email,
+         'externo2' => $request->direccion,
+         'amount_itc' => $request->direccion,
+         'amount_vendedor' => $request->direccion,
+         'amount_inside_sales' => $request->direccion,
+         'amount_colaborador' => $request->direccion,
+         'amount_contacto' => $request->direccion,
+         'amount_cierre' => $request->direccion,
+         'amount_externo1' => $request->direccion,
+         'amount_externo2' => $request->direccion,
+         'percent_itc' => $request->direccion,
+         'percent_vendedor' => $request->direccion,
+         'percent_inside_sales' => $request->direccion,
+         'percent_colaborador' => $request->direccion,
+         'percent_contacto' => $request->direccion,
+         'percent_cierre' => $request->direccion,
+         'percent_externo1' => $request->direccion,
+         'percent_externo2' => $request->direccion,
+         'updated_at' => \Carbon\Carbon::now()
+      ]);
     }
 
     public function sendNotifications($id_doc)

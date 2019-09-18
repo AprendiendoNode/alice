@@ -438,6 +438,7 @@ Route::group(['middleware' => 'auth'], function () {
   //KICK-OFF
   Route::post('/edit_kickoff', 'Projects\KickoffController@index');
   Route::post('/update_kickoff', 'Projects\KickoffController@update');
+  Route::post('/update_kickoff_comision', 'Projects\KickoffController@update_kickoff_comision');
   Route::post('/update_kickoff_contract', 'Projects\KickoffController@update_kickoff_contract');
   Route::get('/approval_administracion/id_doc/{id}', 'Projects\KickoffController@approval_administracion');
   Route::get('/approval_comercial/id_doc/{id}', 'Projects\KickoffController@approval_comercial');
