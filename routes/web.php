@@ -411,12 +411,17 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/view_dashboard_project', 'Projects\DocumentpDashboardController@index');
   Route::get('/get_count_all_doctype', 'Projects\DocumentpDashboardController@get_count_all_doctype');
   Route::get('/get_status_project', 'Projects\DocumentpDashboardController@get_status_project');
-  Route::get('/get_delay_projects', 'Projects\DocumentpDashboardController@get_delay_projects');
-  Route::get('/get_delay_motives', 'Projects\DocumentpDashboardController@get_delay_motives');
+  Route::get('/get_delay_projects_ejecucion', 'Projects\DocumentpDashboardController@get_delay_projects_ejecucion');
+  Route::get('/get_delay_projects_instalado', 'Projects\DocumentpDashboardController@get_delay_projects_instalado');
+  Route::get('/get_delay_motives_ejecucion', 'Projects\DocumentpDashboardController@get_delay_motives_ejecucion');
+  Route::get('/get_delay_motives_instalado', 'Projects\DocumentpDashboardController@get_delay_motives_instalado');
   Route::get('/get_rentas_perdidas', 'Projects\DocumentpDashboardController@get_rentas_perdidas');
+  Route::get('/get_rentas_perdidas_instalado', 'Projects\DocumentpDashboardController@get_rentas_perdidas_instalado');
   Route::get('/get_presupuesto_ejercido_prom', 'Projects\DocumentpDashboardController@get_presupuesto_ejercido_prom');
   Route::get('/get_table_atraso_filterby_motivo/id/{id}', 'Projects\DocumentpDashboardController@get_table_atraso_filterby_motivo');
+  Route::get('/get_table_atraso_filterby_motivo_instalado/id/{id}', 'Projects\DocumentpDashboardController@get_table_atraso_filterby_motivo_instalado');
   Route::get('/get_table_atraso_filterby_servicio/{tipo_servicio}/{atraso}', 'Projects\DocumentpDashboardController@get_table_atraso_filterby_servicio');
+  Route::get('/get_table_atraso_filterby_servicio_instalado/{tipo_servicio}/{atraso}', 'Projects\DocumentpDashboardController@get_table_atraso_filterby_servicio_instalado');
   //Presupuesto proyectos.
   Route::get('/view_budget','Projects\BudgetController@index');
   Route::post('/get_annual_table', 'Projects\BudgetController@get_annual_budget');

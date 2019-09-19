@@ -31,23 +31,44 @@ class DocumentpDashboardController extends Controller
       return $result;
     }
 
-    public function get_delay_projects()
+    public function get_delay_projects_ejecucion()
     {
-      $result = DB::select('CALL px_documentp_atrasoXservicio()', array());
+      $result = DB::select('CALL px_documentp_atrasoXservicio_ejecucion()', array());
 
       return $result;
     }
 
-    public function get_delay_motives()
+    public function get_delay_projects_instalado()
     {
-      $result = DB::select('CALL px_documentp_atrasoXmotivo()', array());
+      $result = DB::select('CALL px_documentp_atrasoXservicio_instalado()', array());
+
+      return $result;
+    }
+
+    public function get_delay_motives_ejecucion()
+    {
+      $result = DB::select('CALL px_documentp_atrasoXmotivo_ejecucion()', array());
+
+      return $result;
+    }
+
+    public function get_delay_motives_instalado()
+    {
+      $result = DB::select('CALL px_documentp_atrasoXmotivo_instalados()', array());
 
       return $result;
     }
 
     public function get_rentas_perdidas()
     {
-      $result = DB::select('CALL px_documentp_servicioXrentaperdida()', array());
+      $result = DB::select('CALL px_documentp_servicioXrentaperdida_ejecucion()', array());
+
+      return $result;
+    }
+
+    public function get_rentas_perdidas_instalado()
+    {
+      $result = DB::select('CALL px_documentp_servicioXrentaperdida_instalados()', array());
 
       return $result;
     }
@@ -66,9 +87,23 @@ class DocumentpDashboardController extends Controller
       return $result;
     }
 
+    public function get_table_atraso_filterby_servicio_instalado($tipo_servicio, $atraso)
+    {
+      $result = DB::select('CALL px_documentp_atraso_filtroXservicio_instalado(?, ?)', array($tipo_servicio, $atraso));
+
+      return $result;
+    }
+
     public function get_table_atraso_filterby_motivo($id)
     {
       $result = DB::select('CALL px_documentp_atraso_filtroXmotivo(?)', array($id));
+
+      return $result;
+    }
+
+    public function get_table_atraso_filterby_motivo_instalado($id)
+    {
+      $result = DB::select('CALL px_documentp_atraso_filtroXmotivo_instalado(?)', array($id));
 
       return $result;
     }

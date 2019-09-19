@@ -380,17 +380,16 @@
 
           </div>
           <div class="row mb-short">
-            <div class="col-12 col-md-12">
+            <div class="col-12 col-md-6">
               <div class="clearfix">
-                  <div id="graphicAtrasos" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
+                  <div id="graphicAtrasos" style="width: 100%; min-height: 370px; border:1px solid #ccc;padding:10px;"></div>
                 </div>
             </div>
-            <div class="col-12 col-md-4">
-              <br><br>
-              <form class="form-inline">
+            <div class="col-12 col-md-6 table-responsive">
+              <form class="form-inline mb-3">
                   <div class="form-group">
                     <label for="">Filtrar por:</label>
-                    <select id="select_tipo_servicio" class="form-control form-control-sm" name="">
+                    <select id="select_tipo_servicio" class="form-control form-control-sm mr-2" name="">
                       <option value="1">Cliente nuevo</option>
                       <option value="2">Ampliación</option>
                       <option value="3">Renovación</option>
@@ -403,15 +402,52 @@
                     </select>
                   </div>
               </form>
-            </div>
-            <div class="col-12 col-md-8 table-responsive">
-              <br>
-              <table id="table_atrasos" class="table table-bordered">
+              <table id="table_atrasos" class="cell-border compact stripe">
                 <thead>
                   <tr>
                     <th>Proyecto</th>
                     <th>Tipo servicio</th>
-                    <th>Atraso compras</th>
+                    <th>Atraso Compras</th>
+                    <th>Atraso instalación</th>
+                    <th>IT Concierge</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+          </div><!------------->
+          <div class="row mb-short">
+            <div class="col-12 col-md-6">
+              <div class="clearfix">
+                  <div id="graphicAtrasosInstalado" style="width: 100%; min-height: 370px; border:1px solid #ccc;padding:10px;"></div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 table-responsive">
+              <form class="form-inline mb-3">
+                  <div class="form-group">
+                    <label for="">Filtrar por:</label>
+                    <select id="select_tipo_servicio_instalado" class="form-control form-control-sm mr-2" name="">
+                      <option value="1">Cliente nuevo</option>
+                      <option value="2">Ampliación</option>
+                      <option value="3">Renovación</option>
+                      <option value="5">Venta</option>
+                      <option value="6">F & F</option>
+                    </select>
+                    <select id="select_atraso_instalado" class="form-control form-control-sm" name="">
+                      <option value="1">Compras</option>
+                      <option value="2">Instalación</option>
+                    </select>
+                  </div>
+              </form>
+              <table id="table_atrasos_instalado" class="cell-border compact stripe">
+                <thead>
+                  <tr>
+                    <th>Proyecto</th>
+                    <th>Tipo servicio</th>
+                    <th>Atraso Compras</th>
                     <th>Atraso instalación</th>
                     <th>IT Concierge</th>
                     <th></th>
@@ -435,50 +471,92 @@
             </div>
           </div>
           <div class="row mb-short">
-            <div class="col-12">
+            <div class="col-12 col-md-6">
               <div class="clearfix">
-                  <div id="graphicMotives" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
+                  <div id="graphicMotives" style="width: 100%; min-height: 350px; border:1px solid #ccc;padding:10px;"></div>
                 </div>
             </div>
+            <div class="col-12 col-md-6">
+              <form class="form-inline" >
+                <div class="form-group">
+                  <label class="" for="">Filtrar por:</label>
+                    <select id="select_motivo_atraso" class="form-control form-control-sm" name="">
+                      <option value="1">Cliente</option>
+                      <option value="2">Equipo</option>
+                      <option value="3">Comercial</option>
+                      <option value="4">Acceso</option>
+                      <option value="5">Material</option>
+                      <option value="6">Otros</option>
+                      <option value="7">N/A</option>
+                      <option value="8">Configuración</option>
+                      <option value="9">Instalaciones</option>
+                      <option value="10">Coordinación</option>
+                      <option value="11">Mano de obra</option>
+                    </select>
+                </div>
+              </form>
+                <div class="table-responsive">
+                  <table id="tabla_atraso_x_motivo" class="table table-bordered" style="min-width:100%">
+                    <thead>
+                      <tr>
+                        <th>Proyecto</th>
+                        <th>Motivo</th>
+                        <th>Atraso compras</th>
+                        <th>Atraso instalación</th>
+                        <th>IT Concierge</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
 
-              <div class="col-3 mt-3">
-                <form class="form-inline" >
-                  <div class="form-group">
-                    <label class="" for="">Filtrar por:</label>
-                      <select id="select_motivo_atraso" class="form-control form-control-sm" name="">
-                        <option value="1">Cliente</option>
-                        <option value="2">Equipo</option>
-                        <option value="3">Comercial</option>
-                        <option value="4">Acceso</option>
-                        <option value="5">Material</option>
-                        <option value="6">Otros</option>
-                        <option value="7">N/A</option>
-                        <option value="8">Configuración</option>
-                        <option value="9">Instalaciones</option>
-                        <option value="10">Coordinación</option>
-                        <option value="11">Mano de obra</option>
-                      </select>
-                  </div>
-                </form>
-              </div>
-              <div class="col-9 mt-3 table-responsive">
-                <table id="tabla_atraso_x_motivo" class="table table-bordered" style="min-width:100%">
-                  <thead>
-                    <tr>
-                      <th>Proyecto</th>
-                      <th>Motivo</th>
-                      <th>Atraso compras</th>
-                      <th>Atraso instalación</th>
-                      <th>IT Concierge</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+          </div><!------>
+          <div class="row mb-short">
+            <div class="col-12 col-md-6">
+              <div class="clearfix">
+                  <div id="graphicMotivesInstalado" style="width: 100%; min-height: 350px; border:1px solid #ccc;padding:10px;"></div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <form class="form-inline" >
+                <div class="form-group">
+                  <label class="" for="">Filtrar por:</label>
+                    <select id="select_motivo_atraso_instalado" class="form-control form-control-sm" name="">
+                      <option value="1">Cliente</option>
+                      <option value="2">Equipo</option>
+                      <option value="3">Comercial</option>
+                      <option value="4">Acceso</option>
+                      <option value="5">Material</option>
+                      <option value="6">Otros</option>
+                      <option value="7">N/A</option>
+                      <option value="8">Configuración</option>
+                      <option value="9">Instalaciones</option>
+                      <option value="10">Coordinación</option>
+                      <option value="11">Mano de obra</option>
+                    </select>
+                </div>
+              </form>
+                <div class="table-responsive">
+                  <table id="tabla_atraso_x_motivo_instalado" class="table table-bordered" style="min-width:100%">
+                    <thead>
+                      <tr>
+                        <th>Proyecto</th>
+                        <th>Motivo</th>
+                        <th>Atraso compras</th>
+                        <th>Atraso instalación</th>
+                        <th>IT Concierge</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
 
-                  </tbody>
-                </table>
-              </div>
-
+                    </tbody>
+                  </table>
+                </div>
+            </div>
           </div>
         </div>
       </div>
@@ -492,9 +570,14 @@
             </div>
           </div>
           <div class="row mb-short">
-            <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="col-12 col-md-6">
               <div class="clearfix">
-                  <div id="graphicRentasDia" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
+                  <div id="graphicRentasDia" style="width: 100%; min-height: 350px; border:1px solid #ccc;padding:10px;"></div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="clearfix">
+                  <div id="graphicRentasDiaInstalados" style="width: 100%; min-height: 350px; border:1px solid #ccc;padding:10px;"></div>
                 </div>
             </div>
           </div>
@@ -510,7 +593,7 @@
             </div>
           </div>
           <div class="row mb-short">
-            <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="col-12">
               <div class="clearfix">
                   <div id="graphicPresupuestoEjercido" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
                 </div>
