@@ -425,7 +425,7 @@ function graph_rentas_perdidas(){
     })
     .then(data => {
       if(data != []){
-        let data_filter = data.filter(m => m.servicio != 'Mantenimiento');
+        let data_filter = data.filter(m => m.servicio != 'Mantenimiento' && m.servicio != 'Venta' && m.servicio != 'F & F');
         data_filter.forEach(key => {
             data_name.push(key.servicio);
             data_count.push(parseFloat(key.renta_perdida));
@@ -450,7 +450,7 @@ function graph_rentas_perdidas_instalado(){
     })
     .then(data => {
       if(data != []){
-        let data_filter = data.filter(m => m.servicio != 'Mantenimiento');
+        let data_filter = data.filter(m => m.servicio != 'Mantenimiento' && m.servicio != 'Venta' && m.servicio != 'F & F');
         data_filter.forEach(key => {
             data_name.push(key.servicio);
             data_count.push(parseFloat(key.renta_perdida));

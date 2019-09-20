@@ -277,8 +277,12 @@
              </div>
             </div>
             <div class="modal-footer">
-              <button id="button_comision" type="button" onclick="save_comision();" class="btn btn-primary">Guardar</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              @if( auth()->user()->can('Kickoff Edit Comission') )
+                <button id="button_comision" type="button" onclick="save_comision();" class="btn btn-primary">Guardar</button>
+              @else
+                <H6 class="text-danger">* No tienes permiso para asignar comisiones</H6>
+              @endif
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
       </div>

@@ -615,7 +615,7 @@
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=2.0.0')}}"></script>
+    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=3.0.1')}}"></script>
     <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
 
 @else
