@@ -97,7 +97,7 @@ class HomeController extends Controller
       }
       $result = DB::select('CALL NPS_MONTH (?)', array($date));
       return json_encode($result);
-      
+
     }
     public function show_apps (Request $request)
     {
@@ -123,6 +123,13 @@ class HomeController extends Controller
       $result = DB::select('CALL get_documentation_url (?)', array($url));
       info(json_encode($result));
       return json_encode($result);
+    }
+    public function vtc_generar (Request $request)
+    {
+
+      $result_a = DB::select('CALL px_crea_vtc ()', array());
+      $result_b = DB::select('CALL px_lista_vtc ()', array());
+
     }
 
 }

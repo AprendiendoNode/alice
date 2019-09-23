@@ -112,6 +112,33 @@
       </div>
     </div>
   </div>
+
+
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-title">VTC.</p>
+          <form class="form-inline">
+            <div class="input-group mb-2 mr-sm-2">
+              <h5>Seleccione un rango de fechas.</h5>
+            </div>
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-daterange input-group" id="datepicker2">
+                <input type="text" class="input-sm form-control required" id="datepickerYearVTC1" name="datepickerYearVTC1" placeholder="Fecha Inicial" />
+                <span class="input-group-prepend"><span class="input-group-text">a</span></span>
+                <input type="text" class="input-sm form-control required" id="datepickerYearVTC2" name="datepickerYearVTC2" placeholder="Fecha Final" />
+              </div>
+            </div>
+            <div class="input-group mb-2 mr-sm-2">
+              <button type="button" class="btn btn-outline-primary btn_graph1"> <i class="fas fa-filter" style="margin-right: 4px;"></i> Filtrar</button>
+            </div>
+          </form>
+          <div id="maingraphicVTC" class="mt-4" style="width: 100%; min-height: 300px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
   @else
     <div class="container">
       <div class="row justify-content-center">
@@ -187,6 +214,22 @@
         graph_apps();
         graph_graph1();
         get_info_payments();
+
+        const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
+        const endOfMonth   = moment().endOf('month').format('YYYY-MM-DD');
+        $('#datepickerYearVTC1').val(startOfMonth);
+        $('#datepickerYearVTC2').val(endOfMonth);
+        $(".input-daterange").datepicker({
+           autoclose: true,
+           rtl: false,
+           format: 'yyyy-mm-dd',
+           orientation: "bottom left",
+           language: 'es',
+           templates: {
+             leftArrow: '<i class="simple-icon-arrow-left"></i>',
+             rightArrow: '<i class="simple-icon-arrow-right"></i>'
+           }
+        });
       });
       var _token = $('meta[name="csrf-token"]').attr('content');
       var d = new Date();
