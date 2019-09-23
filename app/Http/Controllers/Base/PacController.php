@@ -33,7 +33,7 @@ class PacController extends Controller
    $url_cancel= !empty($request->entry_ws_url_cancel) ? $request->entry_ws_url_cancel : '';
    $entry_comment= !empty($request->entry_comment) ? $request->entry_comment : '';
      $username= $request->entry_username;
-     $userpass= $request->entry_password;
+     $userpass=  Crypt::encryptString($request->entry_password);
         $orden= $request->inputCreatOrden;
          $test= !empty($request->test) ? 1 : 0;
        $status= !empty($request->status) ? 1 : 0;
@@ -87,7 +87,7 @@ class PacController extends Controller
            $url_cancel= !empty($request->edit_entry_ws_url_cancel) ? $request->edit_entry_ws_url_cancel : '';
         $entry_comment= !empty($request->edit_entry_comment) ? $request->edit_entry_comment : '';
              $username= $request->edit_entry_username;
-             $userpass= $request->edit_entry_password;
+             $userpass= Crypt::encryptString($request->edit_entry_password);
                 $orden= $request->inputEditOrden;
                  $test= !empty($request->edit_test) ? 1 : 0;
                $status= !empty($request->editstatus) ? 1 : 0;

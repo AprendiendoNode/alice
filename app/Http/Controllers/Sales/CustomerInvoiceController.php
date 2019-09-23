@@ -736,7 +736,7 @@ class CustomerInvoiceController extends Controller
 
           // and throw the error again.
           // throw $e;
-          return 'false';
+          return $e;
           // return __('general.error_cfdi_pac');
       }
      }
