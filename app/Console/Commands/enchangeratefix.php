@@ -42,7 +42,7 @@ class enchangeratefix extends Command
       $banxico_date = $series[0]['fecha'];
       $banxico_date = str_replace('/', '-', $banxico_date );
       $banxico_date_string = date("Y-m-d", strtotime($banxico_date));
-
+      $varx = 0;
       switch ($mutable) {
         case $mutable->isSaturday():
           $latest = DB::table('exchange_rates')->latest()->first();
@@ -50,6 +50,7 @@ class enchangeratefix extends Command
           $dof_rate = 0.0000;
           $current_rate = $latest->current_rate_dof;
           $code_banxico =$data[0]['idSerie'];
+          $varx = 1;
           break;
         case $mutable->isSunday():
           $latest = DB::table('exchange_rates')->latest()->first();
@@ -57,6 +58,7 @@ class enchangeratefix extends Command
           $dof_rate = 0.0000;
           $current_rate = $latest->current_rate;
           $code_banxico =$data[0]['idSerie'];
+          $varx = 2;
           break;
         case $mutable->isMonday():
           $friday = $mutable->subDays(3)->format('Y-m-d');
@@ -65,6 +67,7 @@ class enchangeratefix extends Command
           $dof_rate = $latest->current_rate_fix;
           $current_rate = $latest->current_rate_dof;
           $code_banxico =$data[0]['idSerie'];
+          $varx = 3;
           break;
         default:
           $latest = DB::table('exchange_rates')->latest()->first();
@@ -73,6 +76,7 @@ class enchangeratefix extends Command
           $current_rate = $latest->current_rate_dof;
           $code_banxico =$data[0]['idSerie'];
           // dd('banxico api fix: ' . $fix_rate, 'dof_bd: ' . $latest->current_rate_dof, 'fix_bd: ' . $latest->current_rate_fix);
+          $varx = 4;
           break;
       }
             
