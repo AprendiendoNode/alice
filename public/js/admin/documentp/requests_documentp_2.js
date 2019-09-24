@@ -60,7 +60,7 @@ function documentp_table(datajson, table){
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
   let type_doc = 'P';
-  let datajson_result = datajson.filter(data => data.doc_type == 1 && data.status != 'Denegado' && data.status == 'Nuevo');
+  let datajson_result = datajson.filter(data => data.doc_type == 1 && data.status != 'Denegado');
   $.each(datajson_result, function(index, data){
   let badge = '';
   switch (data.status) {

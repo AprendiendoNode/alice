@@ -218,7 +218,8 @@ function set_table_objetivos(){
   let deposito = document.getElementById("deposito").value;
   let total_gastos = remove_commas(document.getElementById('total_gastos').innerHTML);
   let total_inversion = remove_commas(document.getElementById('total_rubros').innerHTML);
-
+  let comision = get_comision();
+  total_inversion = parseFloat(total_inversion - comision);
   let utilidad_mensual = parseFloat(renta) + enlace - parseFloat(total_gastos);
   let utilidad_mensual_percent = utilidad_mensual / (parseFloat(renta) + enlace);
   utilidad_mensual_percent *= 100;
@@ -327,6 +328,8 @@ function get_tir(){
   var plazo = parseInt(document.getElementById("plazo").value);
   var total_inversion = remove_commas(document.getElementById('total_rubros').innerHTML);
   total_inversion = parseFloat(total_inversion);
+  let comision = get_comision();
+  total_inversion = parseFloat(total_inversion - comision);
   var mantenimiento = remove_commas(document.getElementById('gasto_mtto').innerHTML);
   mantenimiento = parseFloat(mantenimiento);
   var flujo_neto = renta - mantenimiento;

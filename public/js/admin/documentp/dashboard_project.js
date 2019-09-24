@@ -545,7 +545,7 @@ function graph_barras_delay_projects_ejecucion(title, data) {
     xAxis : [
         {
             type : 'category',
-            data : ['Cliente Nuevo','Ampliación','Renovación','Venta','F & F'],
+            data : ['Cliente Nuevo','Ampliación','Renovación'],
             axisTick: {
                 alignWithLabel: true
             },
@@ -558,7 +558,7 @@ function graph_barras_delay_projects_ejecucion(title, data) {
                textStyle: {
                   //  color: 'blue',
                    fontFamily: 'sans-serif',
-                   fontSize: 9,
+                   fontSize: 11,
                    fontStyle: 'normal',
                    fontWeight: 'bold'
                }
@@ -587,7 +587,7 @@ function graph_barras_delay_projects_ejecucion(title, data) {
                 },
               }
             },
-            data: [data[0].atraso_compra, data[1].atraso_compra, data[2].atraso_compra, data[4].atraso_compra, data[5].atraso_compra]
+            data: [data[0].atraso_compra, data[1].atraso_compra, data[2].atraso_compra]
         },
         {
             name: 'Instalación',
@@ -604,7 +604,7 @@ function graph_barras_delay_projects_ejecucion(title, data) {
 
               }
             },
-            data: [data[0].atraso_instalacion, data[1].atraso_instalacion, data[2].atraso_instalacion, data[4].atraso_instalacion, data[5].atraso_instalacion]
+            data: [data[0].atraso_instalacion, data[1].atraso_instalacion, data[2].atraso_instalacion]
         }
     ]
   };
@@ -677,7 +677,7 @@ function graph_barras_delay_projects_instalado(title, data) {
     xAxis : [
         {
             type : 'category',
-            data : ['Cliente Nuevo','Ampliación','Renovación','Venta','F & F'],
+            data : ['Cliente Nuevo','Ampliación','Renovación'],
             axisTick: {
                 alignWithLabel: true
             },
@@ -690,7 +690,7 @@ function graph_barras_delay_projects_instalado(title, data) {
                textStyle: {
                   //  color: 'blue',
                    fontFamily: 'sans-serif',
-                   fontSize: 9,
+                   fontSize: 11,
                    fontStyle: 'normal',
                    fontWeight: 'bold'
                }
@@ -719,7 +719,7 @@ function graph_barras_delay_projects_instalado(title, data) {
                 },
               }
             },
-            data: [data[0].atraso_compra, data[1].atraso_compra, data[2].atraso_compra, data[4].atraso_compra, data[5].atraso_compra]
+            data: [data[0].atraso_compra, data[1].atraso_compra, data[2].atraso_compra]
         },
         {
             name: 'Instalación',
@@ -736,7 +736,7 @@ function graph_barras_delay_projects_instalado(title, data) {
 
               }
             },
-            data: [data[0].atraso_instalacion, data[1].atraso_instalacion, data[2].atraso_instalacion, data[4].atraso_instalacion, data[5].atraso_instalacion]
+            data: [data[0].atraso_instalacion, data[1].atraso_instalacion, data[2].atraso_instalacion]
         }
     ]
   };
@@ -813,7 +813,7 @@ function graph_barras_motives(title, campoa, campob) {
                show:true,
                interval: 'auto',    // {number}
                margin: 10,
-               rotate: 90,
+               rotate: 30,
                formatter: '{value}',
                textStyle: {
                   //  color: 'blue',
@@ -931,7 +931,7 @@ function graph_barras_motives_instalado(title, campoa, campob) {
                show:true,
                interval: 'auto',    // {number}
                margin: 10,
-               rotate: 90,
+               rotate: 30,
                formatter: '{value}',
                textStyle: {
                   //  color: 'blue',
@@ -1059,7 +1059,7 @@ function graph_barras_rentas_perdidas(title, campoa, data) {
                textStyle: {
                   //  color: 'blue',
                    fontFamily: 'sans-serif',
-                   fontSize: 9,
+                   fontSize: 11,
                    fontStyle: 'normal',
                    fontWeight: 'bold'
                }
@@ -1184,7 +1184,7 @@ function graph_barras_rentas_perdidas_instalado(title, campoa, data) {
                textStyle: {
                   //  color: 'blue',
                    fontFamily: 'sans-serif',
-                   fontSize: 9,
+                   fontSize: 11,
                    fontStyle: 'normal',
                    fontWeight: 'bold'
                }
