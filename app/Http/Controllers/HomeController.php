@@ -129,6 +129,7 @@ class HomeController extends Controller
 
       $result_a = DB::select('CALL px_crea_vtc ()', array());
       $result_b = DB::select('CALL px_lista_vtc ()', array());
+      return json_encode($result_b);
 
     }
 

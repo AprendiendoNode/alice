@@ -73,6 +73,33 @@
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
+          <p class="card-title">VTC.</p>
+          <form class="form-inline">
+            {{-- <div class="input-group mb-2 mr-sm-2">
+              <h5>Seleccione un rango de fechas.</h5>
+            </div>
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-daterange input-group" id="datepicker2">
+                <input type="text" class="input-sm form-control required" id="datepickerYearVTC1" name="datepickerYearVTC1" placeholder="Fecha Inicial" />
+                <span class="input-group-prepend"><span class="input-group-text">a</span></span>
+                <input type="text" class="input-sm form-control required" id="datepickerYearVTC2" name="datepickerYearVTC2" placeholder="Fecha Final" />
+              </div>
+            </div> --}}
+            <div class="input-group mb-2 mr-sm-2">
+              <button id="btn_graph1VTC" type="button" class="btn btn-outline-primary btn_graph1VTC"> <i class="fas fa-filter" style="margin-right: 4px;"></i> Generar</button>
+            </div>
+          </form>
+          <div id="maingraphicVTC" class="mt-4" style="width: 100%; min-height: 300px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
           <p class="card-title">Pagos registrados - 1 Semana atras de la fecha actual</p>
           <div class="table-responsive">
             <form name="generate_graph1" class="form-inline">
@@ -112,33 +139,8 @@
       </div>
     </div>
   </div>
+  -->
 
-
-  <div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
-          <p class="card-title">VTC.</p>
-          <form class="form-inline">
-            <div class="input-group mb-2 mr-sm-2">
-              <h5>Seleccione un rango de fechas.</h5>
-            </div>
-            <div class="input-group mb-2 mr-sm-2">
-              <div class="input-daterange input-group" id="datepicker2">
-                <input type="text" class="input-sm form-control required" id="datepickerYearVTC1" name="datepickerYearVTC1" placeholder="Fecha Inicial" />
-                <span class="input-group-prepend"><span class="input-group-text">a</span></span>
-                <input type="text" class="input-sm form-control required" id="datepickerYearVTC2" name="datepickerYearVTC2" placeholder="Fecha Final" />
-              </div>
-            </div>
-            <div class="input-group mb-2 mr-sm-2">
-              <button type="button" class="btn btn-outline-primary btn_graph1"> <i class="fas fa-filter" style="margin-right: 4px;"></i> Filtrar</button>
-            </div>
-          </form>
-          <div id="maingraphicVTC" class="mt-4" style="width: 100%; min-height: 300px;"></div>
-        </div>
-      </div>
-    </div>
-  </div>
   @else
     <div class="container">
       <div class="row justify-content-center">
@@ -213,7 +215,7 @@
         data_nps();
         graph_apps();
         graph_graph1();
-        get_info_payments();
+        // get_info_payments();
 
         const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
         const endOfMonth   = moment().endOf('month').format('YYYY-MM-DD');
@@ -387,6 +389,161 @@
           }
         });
       }
+      $(function() {
+        graph_vtc()
+      });
+      $('#btn_graph1VTC').on('click', function(e){
+        graph_vtc();
+      });
+      function graph_vtc() {
+        var data_count = [];
+        var data_name = [];
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+          type: "POST",
+          url: "/vtc_generar",
+          data: { _token : _token },
+          success: function (data){
+            $.each(JSON.parse(data),function(index, objdata){
+              data_name.push(objdata.AnioMes + ' = ' + objdata.vtc);
+              data_count.push({ value: objdata.vtc, name: objdata.AnioMes + ' = ' + objdata.vtc},);
+            });
+            graph_vtcte('maingraphicVTC', '', '', data_name, data_count);
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+        });
+      }
+      function graph_vtcte(title, titlepral, subtitlepral, campoa, campob){
+            var myChart = echarts.init(document.getElementById(title));
+            var option2 = {
+              title : {
+                show: false,
+                text: titlepral,
+                subtext: subtitlepral,
+                x:'center',
+                textStyle: {
+                  color: '#449D44',
+                  fontStyle: 'normal',
+                  fontWeight: 'normal',
+                  fontFamily: 'sans-serif',
+                  fontSize: 18,
+                  align: 'center',
+                  verticalAlign: 'top',
+                  width: '100%',
+                  textBorderColor: 'transparent',
+                  textBorderWidth: 0,
+                  textShadowColor: 'transparent',
+                  textShadowBlur: 0,
+                  textShadowOffsetX: 0,
+                  textShadowOffsetY: 0,
+                },
+              },
+              grid: {
+                left: 0,
+                top: 0,
+                right: 0,
+                bottom: 0
+              },
+              tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+              },
+              legend: {
+                // type: 'scroll',
+                orient: 'horizontal',
+                // right: 10,
+                // top: 10,
+                bottom: 10,
+                data: campoa
+              },
+              color : ['#bda29a','#91c7ae','#0B610B', '#E73231', '#635CD9','#2f4554', '#2C68FA', '#FFBF00','#d48265', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#6e7074', '#546570', '#c4ccd3'],
+              series : [
+              {
+                name: 'Información',
+                type: 'bar',
+                data:campob,
+              }
+              ]
+            };
+            var option = {
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['VTC']
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        dataView : {show: false, readOnly: false, title : 'Datos', lang: ['Vista de datos', 'Cerrar', 'Actualizar']},
+                        magicType : {
+                          show: true,
+                          type: ['line', 'bar'],
+                          title : {
+                            line : 'Gráfico de líneas',
+                            bar : 'Gráfico de barras',
+                            stack : 'Acumular',
+                            tiled : 'Tiled',
+                            force: 'Cambio de diseño orientado a la fuerza',
+                            chord: 'Interruptor del diagrama de acordes',
+                            pie: 'Gráfico circular',
+                            funnel: 'Gráfico de embudo'
+                          },
+                        },
+                        restore : {show: false, title : 'Recargar'},
+                        saveAsImage : {show: true , title : 'Guardar'}
+                    }
+                },
+                calculable : true,
+                dataZoom : {
+                    show : true,
+                    realtime : true,
+                    start : 5,
+                    end : 95
+                },
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : true,
+                        data: campoa,
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+                        axisLabel : {
+                            show:true,
+                            textStyle : {
+                              fontFamily: 'sans-serif',
+                              fontSize: 8,
+                              fontStyle: 'italic',
+                              fontWeight: 'bold'
+                            }
+                        }
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        name:'VTC',
+                        type:'bar',
+                        barWidth: '20%',
+                        data:campob
+                    }
+                ]
+            };
+            myChart.setOption(option);
+
+            $(window).on('resize', function(){
+              if(myChart != null && myChart != undefined){
+                myChart.resize();
+              }
+            });
+          }
     </script>
   @endif
 @endpush
