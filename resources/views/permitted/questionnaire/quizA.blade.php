@@ -34,7 +34,7 @@
                     <!-- <label class="col-md-12">{{ $loop->iteration }}.- {{ $data_question->name }}</label> -->
                     @php ($position = $data_question->id)
                     <label class="col-md-12">{{ $loop->iteration }}.- {{ $data_question->name }}</label>
-                    <div class="col-md-12 mb-3">
+                    <div class="col-md-12 mb-3 d-flex justify-content-center">
                       @if ($data_question->obligatory == '0')
                         <!-- No obligatory ------------------------------------------------------------------------->
                         @forelse ( App\Models\Survey\Questiondinamic::find($data_question->id)->optiondinamics as $data_option)
@@ -56,6 +56,7 @@
                               <i class="{{$data_option->icon}}"></i><br>
                             @endif
                             {{ $data_option->name}}</label>
+
                         </div>
                         @empty
                         {{ __('reservedwords.notavailable') }}
@@ -63,7 +64,13 @@
                         <!------------------------------------------------------------------------------------------>
                       @endif
                     </div>
+                    <div class="col-12 text-center">
+                      <h3 class="font-weight-bold text-center">
+                          <span class="text-success">10 - 9</span><span class="text-warning ml-5">8 - 7</span><span class="text-danger ml-5">6 - 0</span>
+                      </h3>
+                  	</div>
                   </div>
+
                 @elseif ($data_question->type_id == '2')
                   @php ($position = $loop->iteration)
                   @if ($data_question->obligatory == '0')

@@ -50,15 +50,15 @@
                   <label class="mb-0" for="">Comisión</label>
                 </div>
                 <div class="form-row d-flex align-items-center mb-2">
-                  <div class="col-3">
+                  <div class="col-5 col-md-3">
                     <label for="">IT Concierge</label>
                   </div>
-                  <div class="col-4">
+                  <div class="col-7 col-md-4">
                     <select id="itconciergecomision" name="itconciergecomision" disabled type="text" class="form-control form-control-sm">
                       <option value="{{$document[0]->itc_id}}">{{$document[0]->ITC}}</option>
                     <select>
                   </div>
-                  <div class="col-3 input-group">
+                  <div class="col-8 col-md-3 input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">$</div>
                     </div>
@@ -67,7 +67,7 @@
                       <div class="input-group-text form-control-sm text-dark">USD</div>
                     </div>
                   </div>
-                  <div class="col-2 input-group">
+                  <div class="col-4 col-md-2 input-group">
                     <input id="percent_comission_itc" value="{{$kickoff_comisiones->percent_itc}}" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">%</div>
@@ -75,10 +75,10 @@
                   </div>
                 </div><!------------------------------------------------------->
                 <div class="form-row d-flex align-items-center mb-2">
-                  <div class="col-3">
+                  <div class="col-5 col-md-3">
                     <label  for="">Vendedor</label>
                   </div>
-                  <div class="col-4">
+                  <div class="col-7 col-md-4">
                     <select id="vendedor" name="vendedor" type="text" class="form-control form-control-sm">
                       @if($kickoff_comisiones->vendedor == 4)
                         <option selected value="4">Sin asignar</option>
@@ -94,7 +94,7 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="col-3 input-group">
+                  <div class="col-8 col-md-3 input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">$</div>
                     </div>
@@ -103,7 +103,7 @@
                       <div class="input-group-text form-control-sm text-dark">USD</div>
                     </div>
                   </div>
-                  <div class="col-2 input-group">
+                  <div class="col-4 col-md-2 input-group">
                     <input id="percent_comision_vendedor" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_vendedor}}">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">%</div>
@@ -111,10 +111,10 @@
                   </div>
                 </div>
                 <div class="form-row d-flex align-items-center mb-2">
-                  <div class="col-3">
+                  <div class="col-5 col-md-3">
                     <label  for="">Inside Sales</label>
                   </div>
-                  <div class="col-4">
+                  <div class="col-7 col-md-4">
                     <select id="inside_sales" name="inside_sales" type="text" class="form-control form-control-sm">
                       @if($kickoff_comisiones->inside_sales == 4)
                         <option selected value="4">Sin asignar</option>
@@ -130,7 +130,7 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="col-3 input-group">
+                  <div class="col-8 col-md-3 input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">$</div>
                     </div>
@@ -139,7 +139,7 @@
                       <div class="input-group-text form-control-sm text-dark">USD</div>
                     </div>
                   </div>
-                  <div class="col-2 input-group">
+                  <div class="col-4 col-md-2 input-group">
                     <input id="percent_inside_sales" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_inside_sales}}">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">%</div>
@@ -147,10 +147,10 @@
                   </div>
                 </div>
                 <div class="form-row d-flex align-items-center mb-2">
-                  <div class="col-3">
+                  <div class="col-5 col-md-3">
                     <label  for="">Colaborador</label>
                   </div>
-                  <div class="col-4">
+                  <div class="col-7 col-md-4">
                     <select id="colaborador" name="colaborador" type="text" class="form-control form-control-sm">
                       @if($kickoff_comisiones->colaborador == 4)
                         <option selected value="4">Sin asignar</option>
@@ -166,7 +166,7 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="col-3 input-group">
+                  <div class="col-8 col-md-3 input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">$</div>
                     </div>
@@ -175,7 +175,7 @@
                       <div class="input-group-text form-control-sm text-dark">USD</div>
                     </div>
                   </div>
-                  <div class="col-2 input-group">
+                  <div class="col-4 col-md-2 input-group">
                     <input id="percent_colaborador" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_colaborador}}">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">%</div>
@@ -183,13 +183,13 @@
                   </div>
                 </div>
                 <div class="form-row d-flex align-items-center mb-2">
-                  <div class="col-3">
+                  <div class="col-5 col-md-3">
                     <label  for="">Contácto</label>
                   </div>
-                  <div class="col-4">
+                  <div class="col-7 col-md-4">
                     <input id="contacto_comercial" name="contacto_comercial" value="{{ $kickoff_comisiones->contacto }}" type="text" class="form-control form-control-sm">
                   </div>
-                  <div class="col-3 input-group">
+                  <div class="col-8 col-md-3 input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">$</div>
                     </div>
@@ -198,7 +198,7 @@
                       <div class="input-group-text form-control-sm text-dark">USD</div>
                     </div>
                   </div>
-                  <div class="col-2 input-group">
+                  <div class="col-4 col-md-2 input-group">
                     <input id="percent_contacto" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->percent_contacto }}">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">%</div>
@@ -206,13 +206,13 @@
                   </div>
                 </div>
                 <div class="form-row d-flex align-items-center mb-2">
-                  <div class="col-3">
+                  <div class="col-5 col-md-3">
                     <label  for="">Cierre</label>
                   </div>
-                  <div class="col-4">
+                  <div class="col-7 col-md-4">
                     <input id="cierre" name="cierre" value="{{ $kickoff_comisiones->cierre }}" type="text" class="form-control form-control-sm">
                   </div>
-                  <div class="col-3 input-group">
+                  <div class="col-8 col-md-3 input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">$</div>
                     </div>
@@ -221,7 +221,7 @@
                       <div class="input-group-text form-control-sm text-dark">USD</div>
                     </div>
                   </div>
-                  <div class="col-2 input-group">
+                  <div class="col-4 col-md-2 input-group">
                     <input id="percent_cierre" type="number" onblur="calcularComision(this);" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->percent_cierre }}">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">%</div>
@@ -229,13 +229,13 @@
                   </div>
                 </div>
                 <div class="form-row d-flex align-items-center mb-2">
-                  <div class="col-3">
+                  <div class="col-5 col-md-3">
                     <label  for="">Externo</label>
                   </div>
-                  <div class="col-4">
+                  <div class="col-7 col-md-4">
                     <input id="comision_externo" name="comision_externo" value="{{ $kickoff_comisiones->externo1 }}" type="text" class="form-control form-control-sm">
                   </div>
-                  <div class="col-3 input-group">
+                  <div class="col-8 col-md-3 input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">$</div>
                     </div>
@@ -244,7 +244,7 @@
                       <div class="input-group-text form-control-sm text-dark">USD</div>
                     </div>
                   </div>
-                  <div class="col-2 input-group">
+                  <div class="col-4 col-md-2 input-group">
                     <input id="percent_externo1" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_externo1}}">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">%</div>
@@ -252,13 +252,13 @@
                   </div>
                 </div>
                 <div class="form-row d-flex align-items-center mb-2">
-                  <div class="col-3">
+                  <div class="col-5 col-md-3">
                     <label  for="">Externo 2</label>
                   </div>
-                  <div class="col-4">
+                  <div class="col-7 col-md-4">
                     <input id="comision_externo_2" name="comision_externo_2" value="{{ $kickoff_comisiones->externo2}}" type="text" class="form-control form-control-sm">
                   </div>
-                  <div class="col-3 input-group">
+                  <div class="col-8 col-md-3 input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">$</div>
                     </div>
@@ -267,7 +267,7 @@
                       <div class="input-group-text form-control-sm text-dark">USD</div>
                     </div>
                   </div>
-                  <div class="col-2 input-group">
+                  <div class="col-4 col-md-2 input-group">
                     <input id="percent_externo2" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_externo2}}">
                     <div class="input-group-prepend">
                       <div class="input-group-text form-control-sm text-dark">%</div>
