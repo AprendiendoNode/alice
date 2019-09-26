@@ -1418,4 +1418,33 @@ class CustomerInvoiceController extends Controller
       return view('permitted.sales.customer_invdos', compact('companies', 'customer_invoice', 'data'));
     }
 
+    public function index2()
+    {
+      $customer = DB::select('CALL GetCustomersActivev2 ()', array());
+      $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
+      $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
+      $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
+      $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
+      $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()', array());
+      $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
+      $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
+      $cfdi_relations = DB::select('CALL GetAllCfdiRelationsv2 ()', array());
+
+
+      $product =  DB::select('CALL GetAllProductActivev2 ()', array());
+      $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array());
+      $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
+      $impuestos =  DB::select('CALL GetAllTaxesActivev2 ()', array());
+
+      $cadenas =  DB::select('CALL px_cadenas ()', array());
+
+
+      return view('permitted.sales.customer_invoices_cont',compact(
+        'cadenas',
+        'customer','sucursal','currency',
+        'salespersons','payment_way','payment_term',
+        'payment_methods', 'cfdi_uses', 'cfdi_relations',
+        'product', 'unitmeasures', 'satproduct', 'impuestos'
+      ));
+    }
 }
