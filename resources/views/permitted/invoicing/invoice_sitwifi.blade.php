@@ -236,7 +236,7 @@
   <table id="table_amounts">
     <tbody>
       <tr>
-        <td rowspan="5" valign="top" colspan="3"> <span>( {{$ammount_letter}} {{$customer_invoice->currency->symbol}})</span> </td>
+        <td rowspan="5" valign="top" colspan="3"> <span>( {{$ammount_letter}} {{$customer_invoice->currency->code}})</span> </td>
         <td align="right" colspan="2">Sub Total</td>
         <td align="right" colspan="2">$ <span>{{ number_format($customer_invoice->amount_untaxed, 2,'.', ','),$customer_invoice->currency->code }}</span></td>
       </tr>
