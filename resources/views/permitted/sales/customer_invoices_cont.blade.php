@@ -1113,7 +1113,14 @@
               type: "POST",
               data: { _token : token, id_search: valor },
               success: function (data) {
-                
+                datax = JSON.parse(data);
+                countH = datax.length;
+                $('#cont_maestro_id').empty();
+                $('#cont_maestro_id').append('<option value="" selected>Elije</option>');
+                for (var i = 0; i < countH; i++) {
+                    $("#cont_maestro_id option").prop("selected", false);
+                    $('#cont_maestro_id').append('<option value="'+datax[i].contract_master_id+'">'+ datax[i].key +'</option>');
+                }
               },
               error: function (error, textStatus, errorThrown) {
                   if (error.status == 422) {

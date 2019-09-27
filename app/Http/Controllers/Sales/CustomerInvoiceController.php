@@ -1447,4 +1447,13 @@ class CustomerInvoiceController extends Controller
         'product', 'unitmeasures', 'satproduct', 'impuestos'
       ));
     }
+    public function search_cont(Request $request)
+    {
+      $folio = !empty($request->id_search) ? $request->id_search : '';
+
+      $resultados = DB::select('CALL px_contract_master_Xcadena (?)', array($folio));
+
+      return json_encode($resultados);
+    }
+
 }
