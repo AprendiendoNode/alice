@@ -557,8 +557,8 @@
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
   <script type="text/javascript">
-  $(function() {
-    //-----------------------------------------------------------
+    $(function() {
+      //-----------------------------------------------------------
         $("#form").validate({
           ignore: "input[type=hidden]",
           errorClass: "text-danger",
@@ -659,8 +659,8 @@
               // form.submit();
             }
         });
-        //-----------------------------------------------------------
-      });
+      //-----------------------------------------------------------
+    });
 
       // var currency = {!! json_encode($currency) !!};
       // console.log(currency);
@@ -880,7 +880,6 @@
               }
           });
         }
-
       });
 
       function totalItem() {
@@ -1080,7 +1079,172 @@
             dropdownAutoWidth: true,
         });
       }
+      
+      // Funciones para cuenta contable dinamicas.
+      $('#classif_id').on('change',function(){
+        var id = $(this).val();
 
+        // $('#dyn_field[0]').empty();
+        // $('#dyn_field[0]').append('<option value="">Elegir...</option>');
+        if (conceptIndex === 2) {
+          console.log('Existe nivel 3');
+            var $row  = $('.level2');
+            var $row2  = $('.level1');
+            //Remove field
+            $('#validation')
+                .formValidation('removeField', $row.find('[name="dyn_field[' + conceptIndex + ']"]'))
+                $row.remove()
+                .formValidation('removeField', $row2.find('[name="dyn_field[' + conceptIndex + ']"]'))
+                $row2.remove();
+
+            conceptIndex = 0;
+        }else if(conceptIndex === 1){
+          console.log('Existe nivel 2');
+            var $row  = $('.level1');
+            //Remove field
+            $('#validation')
+                .formValidation('removeField', $row.find('[name="dyn_field[' + conceptIndex + ']"]'))
+                $row.remove();
+            conceptIndex = 0;
+        }
+
+        get_dyn1(id);
+        summarize_chains(id);
+      });
+      function summarize_chains(id_classif) {
+        var _token = $('input[name="_token"]').val();
+        var datax = [];
+
+        $.ajax({
+          type: "POST",
+          url: "/get_chainxclassif",
+          data: { _token : _token, data_one: id_classif},
+          success: function (data){
+            //console.log(data);
+            //cadena_id
+            emptySelect('cadena_id');
+            datax.push({id : "", text : "Elija ..."});
+            $.each(data, function(index, datos){
+              datax.push({id: datos.id, text: datos.cadena});
+            });
+            $('#validation').find('[name="cadena_id"]').select2({
+              data : datax
+            });
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+        });
+      }
+      function get_dyn1(id_classif) {
+        var _token = $('input[name="_token"]').val();
+        var datax = [];
+        $('#validation').find('[name="dyn_field[0]"]').select2();
+        $.ajax({
+          type: "POST",
+          url: "/get_class_serv",
+          data: { _token : _token,  data_one: id_classif},
+          success: function (data){
+            //console.log(data);
+            // $('.changeField0').empty();
+            // $('.changeField0').append('<option value="">Elegir...</option>');
+
+            // $.each(data, function(i, item) {
+            //     $('.changeField0').append("<option value="+item.id+">"+item.name+"</option>");
+            // });
+            // $('#validation').data('formValidation').resetField($('[name="dyn_field[0]"]'));
+            emptySelect('dyn_field[0]');
+            datax.push({id : "", text : "Elija ..."});
+            $.each(data, function(index, datos){
+              datax.push({id: datos.id, text: datos.key+' | '+datos.name});
+            });
+            $('#validation').find('[name="dyn_field[0]"]').select2({
+              data : datax
+            });
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+        });
+      }
+      async function get_dyn2_test(id_serv) {
+        var _token = $('input[name="_token"]').val();
+        var datax = [];
+        var res = 0;
+        await $.ajax({
+          type: "POST",
+          url: "/get_serv_concept",
+          data: { _token : _token,  data_one: id_serv},
+          success: function (data){
+            //console.log(data);
+            if (data === undefined || data.length === 0) {
+              //console.log('data vacia');
+              res = 0;
+            }else{
+              datax.push({id : "", text : "Elija ..."});
+              $.each(data, function(index, datos){
+                datax.push({id: datos.id, text: datos.key+' | '+datos.name});
+              });
+              res = datax;
+            }
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+        });
+        return res;
+      }
+      function fill_dyn2(data) {
+        $('#validation').find('[name="dyn_field[1]"]').select2();
+        emptySelect('dyn_field[1]');
+        $('#validation').find('[name="dyn_field[1]"]').select2({
+          data : data
+        });
+      }
+      async function get_dyn3_test(id_desc) {
+        var _token = $('input[name="_token"]').val();
+        var datax = [];
+        var res = 0;
+        await $.ajax({
+          type: "POST",
+          url: "/get_concept_desc",
+          data: { _token : _token,  data_one: id_desc},
+          success: function (data){
+            if (data === undefined || data.length === 0) {
+              res = 0;
+            }else{
+              datax.push({id : "", text : "Elija ..."});
+              $.each(data, function(index, datos){
+                datax.push({id: datos.id, text: datos.key+' | '+datos.name});
+              });
+              res = datax;
+            }
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+        });
+        return res;
+      }
+      function fill_dyn3(data) {
+        $('#validation').find('[name="dyn_field[2]"]').select2();
+        emptySelect('dyn_field[2]');
+        $('#validation').find('[name="dyn_field[2]"]').select2({
+          data : data
+        });
+      }
+      function emptySelect(selects) {
+        var formV = $('#validation');
+        formV.find('[name="'+selects+'"]').empty();
+        formV.find('[name="'+selects+'"]').select2("destroy");
+        //formV.formValidation('enableValidator', 'dyn_field[1]');
+        //formV.disableValidator('dyn_field[1]');
+        formV.data('formValidation').resetField($('[name="'+selects+'"]'));
+        // $('#'+ selects).empty();
+        // $('#'+ selects).select2("destroy");
+        //$('#validation').formValidation('enableFieldValidators', selects, true);
+        //$('#validation').data('formValidation').resetField($('#'+selects));
+      }
 
   </script>
 

@@ -122,11 +122,13 @@ class CustomerInvoiceController extends Controller
       $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
       $impuestos =  DB::select('CALL GetAllTaxesActivev2 ()', array());
 
+      $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
+
       return view('permitted.sales.customer_invoices',compact(
         'customer','sucursal','currency',
         'salespersons','payment_way','payment_term',
         'payment_methods', 'cfdi_uses', 'cfdi_relations',
-        'product', 'unitmeasures', 'satproduct', 'impuestos'
+        'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications'
       ));
     }
     public function getProduct(Request $request)
@@ -1454,16 +1456,6 @@ class CustomerInvoiceController extends Controller
       $resultados = DB::select('CALL px_contract_master_Xcadena (?)', array($folio));
 
       return json_encode($resultados);
-    }
-
-    public function getDataContractAnnexes(Request $request)
-    {
-      $cadena_id = $request->cadena_id;
-      $contract_master_id = $request->contract_master_id;
-
-      $result = DB::select('CALL px_annexesXcadena_data(?, ?)', array($cadena_id, $contract_master_id));
-
-      return $result;
     }
 
 }
