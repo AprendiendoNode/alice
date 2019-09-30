@@ -652,7 +652,7 @@ class KickoffController extends Controller
       $kickoff_approvals = Kickoff_approvals::where('kickoff_id', $kickoff->id)->first();
       $approval_dir = DB::select('CALL px_valida_aprobado_direccion(?)', array($kickoff_approvals->id));
       //Revisando si todos los departamentos ya revisaron el documento
-      if($kickoff_approvals->administracion == 1 && $kickoff_approvals->proyectos == 1 &&
+      if( $kickoff_approvals->proyectos == 1 &&
           $kickoff_approvals->soporte == 1 && $kickoff_approvals->planeacion == 1 && $kickoff_approvals->servicio_cliente &&
           $kickoff_approvals->itconcierge && $kickoff_approvals->legal && $kickoff_approvals->facturacion &&
           $approval_dir[0]->aprobado_direccion == 1){

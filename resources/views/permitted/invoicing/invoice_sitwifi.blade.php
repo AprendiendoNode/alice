@@ -181,8 +181,8 @@
         <p class="transparent">-</p>
     </div>
     <div class="">
-        <p>Moneda: <span>{{ $customer_invoice->currency->name }}</span></p>
-        <p>Tipo de cambio: <span>{{ $customer_invoice->currency_value }}</span> </p>
+        <p>Moneda: <span>{{ $customer_invoice->currency->code }}</span></p>
+        <p>Tipo de cambio: <span>{{ number_format($customer_invoice->currency_value,4,'.',',') }}</span> </p>
         <p>Forma de pago: <span>[{{ $customer_invoice->paymentWay->code }}] {{ $customer_invoice->paymentWay->name }}</span></p>
         <p>Método de pago: <span>[{{ $customer_invoice->paymentMethod->code }}]{{ $customer_invoice->paymentMethod->name }}</span></p>
     </div>

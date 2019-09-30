@@ -1257,7 +1257,9 @@
                     <div class="d-block">
                       <div class="form-check form-check-flat form-check-success ml-3">
                         <label class="form-check-label">
-                          @if (auth()->user()->can('Aprobacion administracion') && $kickoff_approvals->administracion == 1)
+                          @if (auth()->user()->can('Aprobacion administracion') && $approval_dir[0]->aprobado_direccion == 1)
+                            <input id="check_administracion" type="checkbox" class="form-check-input" disabled checked>
+                          @elseif(auth()->user()->can('Aprobacion administracion') && $kickoff_approvals->administracion == 1)
                             <input id="check_administracion" type="checkbox" class="form-check-input" disabled checked>
                           @elseif(auth()->user()->can('Aprobacion administracion') && $kickoff_approvals->administracion == 0)
                             <input id="check_administracion" type="checkbox" class="form-check-input">

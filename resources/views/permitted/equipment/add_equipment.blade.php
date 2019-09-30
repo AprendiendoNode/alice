@@ -107,7 +107,7 @@
                   <span class="input-group-addon">{{ trans('general.num_serie') }} <i class="glyphicon glyphicon-asteris text-danger">*</i></span>
                    </div>
                    <div class="col-md-11">
-                     <input id="add_num_se"  name="add_num_se"  type="text" class="form-control" placeholder="Núm. Serie. Mínimo 10 caracteres" maxlength="20">
+                     <input id="add_num_se"  name="add_num_se"  type="text" class="form-control" placeholder="Núm. Serie. Mínimo 10 caracteres" maxlength="25">
                    </div>
                  </div>
                  <br>
