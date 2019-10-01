@@ -388,31 +388,34 @@
                                     </td>
                                     <td class="text-right" colspan="10"></td>
                                 </tr>
-                                <!-- Totales -->
-                                <tr>
-                                    <td></td>
-                                    <td class="text-right" colspan="8" rowspan="3"
-                                        style="vertical-align: middle">
-                                    </td>
-                                    <td class="text-right">
-                                        <strong>Subtotal</strong>
-                                    </td>
-                                    <td class="text-right"><span id="txt_amount_untaxed">0</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="text-right">
-                                        <strong>Impuesto</strong></td>
-                                    <td class="text-right"><span id="txt_amount_tax">0</span></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="text-right">
-                                        <strong>Total</strong></td>
-                                    <td class="text-right"><span id="txt_amount_total">0</span></td>
-                                </tr>
+
                                 </tbody>
+                                <tfoot>
+                                  <!-- Totales -->
+                                  <tr>
+                                      <td></td>
+                                      <td class="text-right" colspan="8" rowspan="3"
+                                          style="vertical-align: middle">
+                                      </td>
+                                      <td class="text-right">
+                                          <strong>Subtotal</strong>
+                                      </td>
+                                      <td class="text-right"><span id="txt_amount_untaxed">0</span>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td class="text-right">
+                                          <strong>Impuesto</strong></td>
+                                      <td class="text-right"><span id="txt_amount_tax">0</span></td>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td class="text-right">
+                                          <strong>Total</strong></td>
+                                      <td class="text-right"><span id="txt_amount_total">0</span></td>
+                                  </tr>
+                                </tfoot>
                             </table>
                         </div>
 
@@ -1136,7 +1139,19 @@
       });
 
       $('#cont_maestro_id').on('change', function(){
-        //$("#items > tbody:last").children().remove();
+        $("#items tbody tr").remove();
+        item_row = 0;
+        let html = `<tr id="add_item">
+                      <td class="text-center">
+                            <button type="button" onclick="addItem();"
+                                      class="btn btn-xs btn-primary"
+                                      style="margin-bottom: 0;">
+                                  <i class="fa fa-plus"></i>
+                            </button>
+                          </td>
+                        <td class="text-right" colspan="10"></td>
+                      </tr>`;
+        $("#items tbody").append(html);
         getDataContractAnnexes();
       })
 
