@@ -1458,4 +1458,14 @@ class CustomerInvoiceController extends Controller
       return json_encode($resultados);
     }
 
+    public function getDataContractAnnexes(Request $request)
+    {
+      $cadena_id = $request->cadena_id;
+      $contract_master_id = $request->contract_master_id;
+
+      $result = DB::select('CALL px_annexesXcadena_data(?, ?)', array($cadena_id, $contract_master_id));
+
+      return $result;
+    } 
+
 }
