@@ -168,6 +168,41 @@
             </div>
           </div>
 
+          <div class="row">
+            <div class="col-md-6 col-xs-6">
+              
+              <div class="col-md-12 col-xs-12">
+                <label for="classif_id" class="control-label">Servicio:<span style="color: red;">*</span></label>
+                <select class="custom-select" id="classif_id" name="classif_id" required>
+                  <option value="" selected>Selecciona...</option>
+                  @forelse ($cxclassifications as $data_service)
+                    <option value="{{ $data_service->id }}"> {{ $data_service->name }} </option>
+                  @empty
+                  @endforelse
+                </select>
+              </div>
+
+              <div class="col-md-12 col-xs-12">
+                <label  class="control-label">Nivel 1:<span style="color: red;">*</span></label>
+                <!-- <label class="col-xs-2">Nivel 1:</label> -->
+                <select name="dyn_field[0]" class="form-control select2 changeField0" required>
+                  <option value="">Elija...</option>
+                </select>
+              </div>
+
+              <div class="hide" id="template_cc">
+                <div class="col-md-12 col-xs-12">
+                  <label class="col-xs-2 change_label">xxxx_1.</label>
+                  <select name="dyn_field" class="form-control select2">
+                    <option value="">Elija...</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-xs-6">
+            </div>
+          </div>
           <!---------------------------------------------------------------------------------->
           <div class="row mt-5">
             <div class="col-md-12">
@@ -557,6 +592,7 @@
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
   <script type="text/javascript">
+    var conceptIndex = 0;
     $(function() {
       //-----------------------------------------------------------
         $("#form").validate({
@@ -1081,36 +1117,40 @@
       }
       
       // Funciones para cuenta contable dinamicas.
+      var select2_options = {
+            theme: "bootstrap",
+            placeholder: "Selecciona",
+            dropdownAutoWidth : true,
+            width: "100%",
+            height: "110%"
+      };
+
+      $("#form select[name='classif_id']").select2(select2_options);
+
       $('#classif_id').on('change',function(){
         var id = $(this).val();
-
-        // $('#dyn_field[0]').empty();
-        // $('#dyn_field[0]').append('<option value="">Elegir...</option>');
         if (conceptIndex === 2) {
-          console.log('Existe nivel 3');
+          // console.log('Existe nivel 3');
             var $row  = $('.level2');
             var $row2  = $('.level1');
             //Remove field
-            $('#validation')
-                .formValidation('removeField', $row.find('[name="dyn_field[' + conceptIndex + ']"]'))
-                $row.remove()
-                .formValidation('removeField', $row2.find('[name="dyn_field[' + conceptIndex + ']"]'))
-                $row2.remove();
+            $row.remove();
+            $row2.remove();
 
             conceptIndex = 0;
         }else if(conceptIndex === 1){
-          console.log('Existe nivel 2');
+          // console.log('Existe nivel 2');
             var $row  = $('.level1');
             //Remove field
-            $('#validation')
-                .formValidation('removeField', $row.find('[name="dyn_field[' + conceptIndex + ']"]'))
-                $row.remove();
+            $row.remove();
+
             conceptIndex = 0;
         }
 
         get_dyn1(id);
-        summarize_chains(id);
+        // summarize_chains(id);
       });
+      // Funcion para filtrar sitios por cuenta contable (probablemente se use)
       function summarize_chains(id_classif) {
         var _token = $('input[name="_token"]').val();
         var datax = [];
@@ -1127,7 +1167,7 @@
             $.each(data, function(index, datos){
               datax.push({id: datos.id, text: datos.cadena});
             });
-            $('#validation').find('[name="cadena_id"]').select2({
+            $('#form').find('[name="cadena_id"]').select2({
               data : datax
             });
           },
@@ -1136,29 +1176,23 @@
           }
         });
       }
+      //
       function get_dyn1(id_classif) {
         var _token = $('input[name="_token"]').val();
         var datax = [];
-        $('#validation').find('[name="dyn_field[0]"]').select2();
+        $('#form').find('[name="dyn_field[0]"]').select2(select2_options);
         $.ajax({
           type: "POST",
           url: "/get_class_serv",
           data: { _token : _token,  data_one: id_classif},
           success: function (data){
             //console.log(data);
-            // $('.changeField0').empty();
-            // $('.changeField0').append('<option value="">Elegir...</option>');
-
-            // $.each(data, function(i, item) {
-            //     $('.changeField0').append("<option value="+item.id+">"+item.name+"</option>");
-            // });
-            // $('#validation').data('formValidation').resetField($('[name="dyn_field[0]"]'));
             emptySelect('dyn_field[0]');
             datax.push({id : "", text : "Elija ..."});
             $.each(data, function(index, datos){
               datax.push({id: datos.id, text: datos.key+' | '+datos.name});
             });
-            $('#validation').find('[name="dyn_field[0]"]').select2({
+            $('#form').find('[name="dyn_field[0]"]').select2({
               data : datax
             });
           },
@@ -1195,9 +1229,9 @@
         return res;
       }
       function fill_dyn2(data) {
-        $('#validation').find('[name="dyn_field[1]"]').select2();
+        $('#form').find('[name="dyn_field[1]"]').select2(select2_options);
         emptySelect('dyn_field[1]');
-        $('#validation').find('[name="dyn_field[1]"]').select2({
+        $('#form').find('[name="dyn_field[1]"]').select2({
           data : data
         });
       }
@@ -1227,25 +1261,113 @@
         return res;
       }
       function fill_dyn3(data) {
-        $('#validation').find('[name="dyn_field[2]"]').select2();
+        $('#form').find('[name="dyn_field[2]"]').select2();
         emptySelect('dyn_field[2]');
-        $('#validation').find('[name="dyn_field[2]"]').select2({
+        $('#form').find('[name="dyn_field[2]"]').select2({
           data : data
         });
       }
       function emptySelect(selects) {
-        var formV = $('#validation');
+        var formV = $('#form');
         formV.find('[name="'+selects+'"]').empty();
         formV.find('[name="'+selects+'"]').select2("destroy");
-        //formV.formValidation('enableValidator', 'dyn_field[1]');
-        //formV.disableValidator('dyn_field[1]');
-        formV.data('formValidation').resetField($('[name="'+selects+'"]'));
-        // $('#'+ selects).empty();
-        // $('#'+ selects).select2("destroy");
-        //$('#validation').formValidation('enableFieldValidators', selects, true);
-        //$('#validation').data('formValidation').resetField($('#'+selects));
       }
 
+      $("#form").on('change', '.changeField0', async function(){
+        var id = $(this).val();
+        var name_key = $("option:selected",this).text();
+        // $('#cc_key').val(name_key);
+        // $('#cc_key2').val(name_key);
+        var check_data;
+        //console.log('cambio: ' + id);
+        if (conceptIndex === 0) {
+          check_data = await get_dyn2_test(id);
+          if (check_data === 0) {
+            //console.log('Vacio: ' + check_data);
+          }else{
+            //console.log('datos: ' + check_data);
+            conceptIndex = 1;
+            var $template = $('#template_cc'),
+                $clone    = $template
+                                .clone()
+                                .removeClass('hide')
+                                .removeAttr('id')
+                                .addClass('level1')
+                                .attr('data-book-index', conceptIndex)
+                                .insertBefore($template);
+            $clone
+                .find('[name="dyn_field"]').attr('name', 'dyn_field[' + conceptIndex + ']').attr('data_row', conceptIndex).addClass('changeField1').prop('required',true).end()
+                .find('.change_label').text('Nivel 2:').end();
+            fill_dyn2(check_data);
+          }
+        }else if(conceptIndex > 0){
+          check_data = await get_dyn2_test(id);
+          if (conceptIndex === 2) {
+            console.log('Existe nivel 3');
+              var $row  = $('.level2');
+              //Remove field
+              $row.remove();
+              
+              conceptIndex = 1;
+          }
+          if (check_data === 0) {
+            //console.log('Vacio: ' + check_data);
+            var $row  = $('.level1');
+            //Remove field
+            $row.remove();
+            
+            conceptIndex = 0;
+          }else{
+            //console.log('datos: ' + check_data);
+            fill_dyn2(check_data);
+          }
+        }
+      }).on('change', '.changeField1', async function(){
+        var id = $(this).val();
+        var name_key = $("option:selected",this).text();
+        // $('#cc_key').val(name_key);
+        // $('#cc_key2').val(name_key);
+        var check_data2;
+        //console.log('cambio: ' + id);
+        if (conceptIndex === 1) {
+          check_data2 = await get_dyn3_test(id);
+          if (check_data2 === 0) {
+            //console.log('Vacio Level2: ' + check_data2);
+          }else{
+            conceptIndex = 2;
+            var $template = $('#template_cc'),
+                $clone    = $template
+                                .clone()
+                                .removeClass('hide')
+                                .removeAttr('id')
+                                .addClass('level2')
+                                .attr('data-book-index', conceptIndex)
+                                .insertBefore($template);
+            $clone
+                .find('[name="dyn_field"]').attr('name', 'dyn_field[' + conceptIndex + ']').attr('data_row', conceptIndex).addClass('changeField2').prop('required',true).end()
+                .find('.change_label').text('Nivel 3').end();
+            //createEventListenerField1();
+            fill_dyn3(check_data2);
+            console.log(conceptIndex);
+          }
+        }else if(conceptIndex === 2){
+          check_data2 = await get_dyn3_test(id);
+          if (check_data2 === 0) {
+            //console.log('Vacio: ' + check_data2);
+            var $row  = $('.level2');
+            //Remove field
+            $row.remove();
+            conceptIndex = 1;
+          }else{
+            //console.log('datos: ' + check_data2);
+            fill_dyn3(check_data2);
+          }
+        }
+      }).on('change', '.changeField2', function(){
+          var name_key = $("option:selected",this).text();
+          // $('#cc_key').val(name_key);
+          // $('#cc_key2').val(name_key);
+      });
   </script>
 
   <style media="screen">
