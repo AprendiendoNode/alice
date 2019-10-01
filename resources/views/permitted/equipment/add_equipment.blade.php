@@ -434,14 +434,14 @@
                    </div>
                  </div>
                  <div class="col-lg-6">
-                   <div class="input-group row">
+                   <!--<div class="input-group row">
                      <div class="col-md-3">
-                    <span class="input-group-addon">{{ trans('general.descripcion') }} <i class="glyphicon glyphicon-asteris text-danger">*</i></span>
+                    <span class="input-group-addon">{{ trans('general.descripcion') }}</span>
                      </div>
                      <div class="col-md-9">
                     <input id="add_descrip_masiva" name="add_descrip_masiva" maxlength="150" type="text" class="form-control" placeholder="Descripción. Mínimo 4 caracteres.">
                      </div>
-                   </div>
+                   </div>-->
                  </div>
                </div>
                <br>

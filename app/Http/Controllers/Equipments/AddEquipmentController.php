@@ -203,13 +203,13 @@ class AddEquipmentController extends Controller
 
     $elementoequipo=['mac'=>$eq_mac,'serie'=>$eq_serie];
     array_push($excel_data,$elementoequipo);
-    info($request);
+    //info($request);
     }
     else{
     //  $excel_data=str_split(substr($request->data_excel,1,strlen($request->data_excel)-1),",");
       //$excel_data = $request->data_excel;
       $excel_data=$request->data_excel;
-      info( $request);
+      //info( $request);
 
       $data_object=explode("&",$request->objData);
       $eq_grup = explode("=",$data_object[1])[1];
@@ -231,7 +231,10 @@ class AddEquipmentController extends Controller
     }
       $flag = 0;//Estado inicial
     foreach($excel_data as $elemento){
-
+      if(count($elemento)==3){
+        $eq_descrip=$elemento['descripcion'];
+        //info($eq_descrip);
+      }
 
       //info($elemento['serie']);
       $count_m0 = DB::table('equipos')->where('MAC', $elemento['mac'])->count();
@@ -370,7 +373,7 @@ class AddEquipmentController extends Controller
     $eq_venue = $request->venue;
     $elementoequipo=['mac'=>$eq_mac,'serie'=>$eq_serie];
     array_push($excel_data,$elementoequipo);
-    info($request);
+    //info($request);
     }
     else{
     //  $excel_data=str_split(substr($request->data_excel,1,strlen($request->data_excel)-1),",");
@@ -389,7 +392,10 @@ class AddEquipmentController extends Controller
     }
       $flag = 0;//Estado inicial
     foreach($excel_data as $elemento){
-
+      if(count($elemento)==3){
+        $eq_descrip=$elemento['descripcion'];
+        //info($eq_descrip);
+      }
 
       //info($elemento['serie']);
       $count_m0 = DB::table('equipos')->where('MAC', $elemento['mac'])->count();
@@ -481,7 +487,7 @@ class AddEquipmentController extends Controller
     if($registros_exitosos!=0){
       $flag=5;
     }
-    info($registros_exitosos);
+  //  info($registros_exitosos);
     return $flag;
   }
 

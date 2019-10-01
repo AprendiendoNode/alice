@@ -770,7 +770,7 @@ function handleFile(e) {
                             {"data": "SERIE",
                             "defaultContent": ""},
                            {"data": "DESCRIPCION",
-                            "defaultContent": "No asignado"},
+                            "defaultContent": ""},
                             {"data": "TIPO",
                             "defaultContent": "No asignado"},
                             {"data": "MARCA",
@@ -806,7 +806,7 @@ $(".btn-save-massive").on("click", function () {
   var excelData =[];
   for(i=0;i<result_json.length;i++){
     if(result_json[i]['MAC']!=''){
-    element ={factura:result_json[i]['FACTURA'],nofactura:result_json[i]['NO DE FACTURA'],fecha:result_json[i]['FECHA'],mac:result_json[i]['MAC'].toString().match(/.{2}/g).join(':').toUpperCase(),serie:result_json[i]['SERIE']};
+    element ={factura:result_json[i]['FACTURA'],nofactura:result_json[i]['NO DE FACTURA'],fecha:result_json[i]['FECHA'],mac:result_json[i]['MAC'].toString().match(/.{2}/g).join(':').toUpperCase(),serie:result_json[i]['SERIE'],descripcion:result_json[i]['DESCRIPCION']};
     excelData.push(element);
     //console.log(excelData);
   } else{
@@ -817,7 +817,7 @@ $(".btn-save-massive").on("click", function () {
     $obligatorio_a = validarespacioinputlength('nfactura_masiva',8);
     $obligatorio_b = validarespacioinput('date_fact_masiva');
     $obligatorio_c = validarSelect('select_one_massive');
-    $obligatorio_f = validarespacioinput('add_descrip_masiva');
+    //$obligatorio_f = validarespacioinput('add_descrip_masiva'); //Ya no es necesario, se tomará la descripción del excel
     $obligatorio_g = validarSelect('type_equipment_massive');
     $obligatorio_h = validarSelect('Marcas_masiva');
     $obligatorio_i = validarSelect('mmodelo_masivo');
@@ -829,7 +829,7 @@ $(".btn-save-massive").on("click", function () {
     //console.log("Imprimiendo desde insertar");
     //console.log(result_json);
     if ($obligatorio_a == true && $obligatorio_b == true && $obligatorio_c == true) {
-      if ($obligatorio_f == true && $obligatorio_g == true && $obligatorio_h == true
+      if ($obligatorio_g == true && $obligatorio_h == true
           && $obligatorio_i == true &&  $obligatorio_j == true && $obligatorio_k == true
            && $obligatorio_l1 == true && $obligatorio_l2 == true ) {
               /*------------------------------------------------------------------------------------------------------*/
@@ -840,20 +840,20 @@ $(".btn-save-massive").on("click", function () {
               //var $d_mac = $('#add_mac_eq').val(); no usados, se tomara del json
               //var $d_num = $('#add_num_se').val(); no usados, se tomara del json
               var $d_grup = $("#grupo_masivo").select2('data')[0]['text'];
-              var $d_desc = $('#add_descrip_masiva').val();
+              //var $d_desc = $('#add_descrip_masiva').val();
               var $d_estado = $("#add_estado_masivo").select2('data')[0]['text'];
               var $d_modelo = $("#mmodelo_masivo").select2('data')[0]['text'];
-              var descripcion =$('#add_descrip_masiva').val();
+              //var descripcion =$('#add_descrip_masiva').val();
               var num_factura = $('#nfactura_masiva').val();
               var dat_factura = $('#date_fact_masiva').val();
               var num_proveed = $('#select_one_massive').val();//proveedor
               var order = $('#order_massive').val();
-              var descripcion =$('#add_descrip_masiva').val();
+              //var descripcion =$('#add_descrip_masiva').val();
 
               $.ajax({
                 type: "POST",
                 url: '/create_equipament_n',
-                data:{data_excel: excelData,descripcion_m: descripcion ,objData:objData,masivo:1,nfactura_masiva:num_factura,date_fact_masiva:dat_factura,select_one_massive:num_proveed,order_massive:order,masivo:1, _token : _token },
+                data:{data_excel: excelData,objData:objData,masivo:1,nfactura_masiva:num_factura,date_fact_masiva:dat_factura,select_one_massive:num_proveed,order_massive:order,masivo:1, _token : _token },
                 //data: objData + "&nfactura_masiva=" + num_factura + "&date_fact_masiva=" + dat_factura + "&select_one_massive=" + num_proveed + "&order_massive=" + order,
                 success: function (data) {
                   if (data === "3") { menssage_toast('Mensaje', '2', 'Operation Abort- Serie, already registered' , '3000'); }
@@ -902,14 +902,14 @@ $(".btn-save-massive").on("click", function () {
   if ($("input[name='factura_masiva']:checked").val() == 'no') {
     console.log("Imprimiendo datos excel");
     console.log(excelData);
-    $obligatorio_f = validarespacioinput('add_descrip_masiva');
+    //$obligatorio_f = validarespacioinput('add_descrip_masiva');//Ya no es necesario, se tomará el del excel.
     $obligatorio_g = validarSelect('type_equipment_massive');
     $obligatorio_h = validarSelect('Marcas_masiva');
     $obligatorio_i = validarSelect('mmodelo_masivo');
     $obligatorio_j = validarSelect('add_estado_masivo');
     $obligatorio_k = validarSelect('venue_massive');
 
-    if ( $obligatorio_f == true && $obligatorio_g == true && $obligatorio_h == true
+    if ( $obligatorio_g == true && $obligatorio_h == true
       && $obligatorio_i == true && $obligatorio_j == true && $obligatorio_k == true) {
           /*------------------------------------------------------------------------------------------------------*/
           var objData = $("#add_equipo_masivo").find("select,textarea, input").serialize();
@@ -919,10 +919,10 @@ $(".btn-save-massive").on("click", function () {
           //var $d_mac = $('#add_mac_eq').val();
           //var $d_num = $('#add_num_se').val();
           var $d_grup = $("#grupo_masivo").select2('data')[0]['text'];
-          var $d_desc = $('#add_descrip_masiva').val();
+        //  var $d_desc = $('#add_descrip_masiva').val();
           var $d_estado = $("#add_estado_masivo").select2('data')[0]['text'];
           var $d_modelo = $("#mmodelo_masivo").select2('data')[0]['text'];
-          var descripcion =$('#add_descrip_masiva').val();
+          //var descripcion =$('#add_descrip_masiva').val();
           console.log(objData);
           console.log(JSON.stringify(excelData));
           $.ajax({
@@ -930,7 +930,7 @@ $(".btn-save-massive").on("click", function () {
             url: '/create_equipament_nd',
             //data: objData+"&data_excel="+JSON.stringify(excelData)+"&masivo="+1,//{data_excel: excelData,descripcion_m: descripcion ,objData,nofactura: num_factura,fechafactura: dat_factura,proveedor:num_proveed,orden: order, _token : _token }, //Falta añadir objData
             //data: {data_excel: excelData,descripcion_m: descripcion ,objData,nofactura: num_factura,fechafactura: dat_factura,proveedor:num_proveed,orden: order, _token : _token }, //Falta añadir objData,//
-            data: {data_excel: excelData,descripcion_m: descripcion ,objData:objData,masivo:1, _token : _token }, //Falta añadir objData,//
+            data: {data_excel: excelData ,objData:objData,masivo:1, _token : _token }, //Falta añadir objData,//
             success: function (data) {
               if (data === "3") { menssage_toast('Mensaje', '2', 'Operation Abort- Serie, already registered' , '3000'); }
               else if (data === "2") { menssage_toast('Mensaje', '2', 'Operation Abort- MAC, already registered' , '3000'); }
@@ -978,7 +978,7 @@ $(".btn-clear-massive").on("click", function () {
   reset_select2('mmodelo_masivo');
   reset_select2('add_estado_masivo');
   reset_select2('venue_massive');
-  $('#add_descrip_masiva').val('');
+  //$('#add_descrip_masiva').val('');
 });
 //Cancelar equipos masivo
 $(".btn-cancel-massive").on("click", function () {
