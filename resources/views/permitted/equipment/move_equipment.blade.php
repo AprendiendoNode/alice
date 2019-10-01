@@ -59,6 +59,7 @@
                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                   <div>
                      <form id="table_check" method="POST">
+                       <div class="table-responsive">
                         <table id="table_move" cellspacing="0" class="table table-striped table-bordered table-hover compact-tab w-100">
                            <thead>
                               <tr class="bg-primary" style="background: #088A68;">
@@ -81,6 +82,7 @@
                               </tr>
                            </tfoot>
                         </table>
+                        </div>
                         <div class="row">
                            <div class="form-group col-md-6 col-lg-6">
                               <label for="select_two" class="control-label">{{ trans('general.hotel') }} Destino: </label>
@@ -191,6 +193,7 @@
                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                   <div>
                      <form id="table_check2" method="POST">
+                       <div class="table-responsive">
                         <table id="table_move2" cellspacing="0" class="table table-striped table-bordered table-hover compact-tab">
                            <thead>
                               <tr class="bg-primary" style="background: #088A68;">
@@ -211,6 +214,7 @@
                               </tr>
                            </tfoot>
                         </table>
+                        </div>
                         <div class="row">
                            <div class="form-group col-md-2 col-lg-2">
                               <label for="select_two2" class="control-label">{{ trans('general.hotel') }} Destino: </label>

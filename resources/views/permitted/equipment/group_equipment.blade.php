@@ -52,9 +52,9 @@
                 <button type="button" id="btn_update_group" class="btn btn-info btngeneral col-md-2 ml-3"><i class="fa fa-bullseye margin-r5"></i> {{ trans('message.aplicar') }}</button>
               </div>
 
-            <div class="pt-3">
-              <table id="table_group" class="table table-striped table-bordered table-hover">
-                <thead>
+            <div class=" table-responsive pt-3">
+              <table id="table_group" class="table compact-tab table-striped table-bordered table-hover w-100">
+                <thead class="bg-primary">
                   <tr>
                   <th>Equipo.</th>
                   <th>MAC</th>

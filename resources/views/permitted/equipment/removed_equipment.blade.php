@@ -49,7 +49,7 @@
                  </h4>
                </div>
                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                 <div class="">
+                 <div class="table-responsive">
                    <form id="table_check" method="POST">
                       <table id="table_qualification" cellspacing="0" class="table table-striped table-bordered table-hover text-white compact-tab" style="width:100%">
                         <thead>

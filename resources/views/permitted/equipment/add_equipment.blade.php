@@ -265,9 +265,9 @@
 
                   <div class="col-lg-6">
                     <div class="btn-group">
-                       <button type="button" class="btn btn-primary btn-save"><i class="fa fa-save"></i> {{ trans('general.guardar') }}</button>
-                       <button type="button" class="btn btn-default btn-clear"><i class="fa fa-eraser"></i> {{ trans('general.limpiar') }}</button>
-                       <button type="button" class="btn btn-danger btn-cancel"><i class="fa fa-times"></i> {{ trans('general.cancelar') }}</button>
+                       <button type="button" class="btn  btn-sm btn-primary btn-save"><i class="fa fa-save"></i> {{ trans('general.guardar') }}</button>
+                       <button type="button" class="btn btn-sm btn-default btn-clear"><i class="fa fa-eraser"></i> {{ trans('general.limpiar') }}</button>
+                       <button type="button" class="btn btn-sm btn-danger btn-cancel"><i class="fa fa-times"></i> {{ trans('general.cancelar') }}</button>
                     </div>
                   </div>
                 </div>
@@ -561,9 +561,9 @@
 
                 <div class="col-lg-6">
                   <div class="btn-group">
-                     <button type="button" class="btn btn-primary btn-save-massive"><i class="fa fa-save"></i> {{ trans('general.guardar') }}</button>
-                     <button type="button" class="btn btn-default btn-clear-massive"><i class="fa fa-eraser"></i> {{ trans('general.limpiar') }}</button>
-                     <button type="button" class="btn btn-danger btn-cancel-massive"><i class="fa fa-times"></i> {{ trans('general.cancelar') }}</button>
+                     <button type="button" class="btn btn-sm btn-primary btn-save-massive"><i class="fa fa-save"></i> {{ trans('general.guardar') }}</button>
+                     <button type="button" class="btn btn-sm btn-default btn-clear-massive"><i class="fa fa-eraser"></i> {{ trans('general.limpiar') }}</button>
+                     <button type="button" class="btn btn-sm btn-danger btn-cancel-massive"><i class="fa fa-times"></i> {{ trans('general.cancelar') }}</button>
                   </div>
                 </div>
               </div>
@@ -586,7 +586,7 @@
     <!--Visualización tabla-->
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 ">
           <div class="form-group">
-
+<div class="table-responsive">
               <table class="table table-striped compact-tab" id="preview_excel">
                 <thead class="bg-primary">
                   <tr>
@@ -612,7 +612,7 @@
 
                 </tfoot>
               </table>
-
+</div>
           </div>
         </div>
       </div>

@@ -277,7 +277,7 @@
       </div>
       <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
         <form id="egef" name="egef" enctype="multipart/form-data" >
-          <div class="">
+          <div class="table-responsive">
             <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100">
               <thead>
                 <tr class="bg-primary">
