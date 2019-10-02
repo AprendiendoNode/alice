@@ -43,6 +43,7 @@
               data-currency="{{$product->currency}}"
               data-currency-id="{{$product->currency_id}}"
               data-categoria-id="{{$product->categoria_id}}"
+              data-discount="{{$product->discount}}"
               class="btn btn-danger agregar-carrito-material">
              <i class="fas fa-cart-plus"></i>
           </button>
