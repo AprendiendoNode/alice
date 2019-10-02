@@ -81,35 +81,31 @@ XML;
       return $result1;
   }
 
-  //deprecated
-    public function checkGuest(Request $request)
-    {
-      $hotel_code = $request->input('hotelCode');
+  
+  public function checkGuest(Request $request)
+  {
+    $hotel_code = $request->input('hotelCode');
+    $room = $request->input('roomNum');
 
-      $room = $request->input('roomNum');
-
-      if ($hotel_code === 'PL' || $hotel_code === 'CZ') {
-          $queryPL = DB::connection('cloudrad')->table('userinfo')->select([
-              'username',
-              'creationdate',
-              'expiration'
-          ])->where('username', 'like', '%'.$room.'%')->get();
-
-          return json_encode($queryPL);
-      }else{
-          $queryJP = DB::connection('cloudrad')->table('userinfo')->select([
-              'username',
-              'creationdate',
-              'expiration'
-          ])->where('username', 'like', '%'.$room.'%')->get();
-
-          return json_encode($queryJP);
-      }
+    if ($hotel_code === 'PL' || $hotel_code === 'CZ') {
+      $queryPL = DB::connection('cloudrad')->table('userinfo')->select([
+          'username',
+          'creationdate',
+          'expiration'
+      ])->where('username', 'like', '%'.$room.'%')->get();
+      return json_encode($queryPL);
+    }else{
+      $queryJP = DB::connection('cloudrad')->table('userinfo')->select([
+          'username',
+          'creationdate',
+          'expiration'
+      ])->where('username', 'like', '%'.$room.'%')->get();
+      return json_encode($queryJP);
     }
+  }
 
   public function checkWebSer(Request $request)
   {
-
       $hotel_code = $request->hotelCode;
       $room = $request->roomNum;
 
