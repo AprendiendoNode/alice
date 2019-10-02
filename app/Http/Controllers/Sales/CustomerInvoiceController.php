@@ -1666,14 +1666,14 @@ class CustomerInvoiceController extends Controller
       $impuestos =  DB::select('CALL GetAllTaxesActivev2 ()', array());
 
       $cadenas =  DB::select('CALL px_cadenas ()', array());
-
+      $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
 
       return view('permitted.sales.customer_invoices_cont',compact(
         'cadenas',
         'customer','sucursal','currency',
         'salespersons','payment_way','payment_term',
         'payment_methods', 'cfdi_uses', 'cfdi_relations',
-        'product', 'unitmeasures', 'satproduct', 'impuestos'
+        'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications'
       ));
     }
     public function search_cont(Request $request)
