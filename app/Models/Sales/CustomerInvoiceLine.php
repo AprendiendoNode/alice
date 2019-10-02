@@ -29,7 +29,8 @@ class CustomerInvoiceLine extends Model
       'amount_tax_ret',
       'amount_total',
       'sort_order',
-      'status'
+      'status',
+      'contract_annex_id'
   ];
   public function scopeActive($query)
   {

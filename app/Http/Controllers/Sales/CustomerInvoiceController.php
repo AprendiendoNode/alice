@@ -742,6 +742,233 @@ class CustomerInvoiceController extends Controller
           // return __('general.error_cfdi_pac');
       }
      }
+     public function store_cont2(Request $request)
+     {
+
+     }
+     public function store_cont(Request $request)
+     {
+       // Begin a transaction
+       \DB::beginTransaction();
+
+       // Open a try/catch block
+       try {
+         //Logica
+         $request->merge(['created_uid' => \Auth::user()->id]);
+         $request->merge(['updated_uid' => \Auth::user()->id]);
+         $request->merge(['status' => CustomerInvoice::OPEN]);
+         //Ajusta fecha y genera fecha de vencimiento
+         $date = Helper::createDateTime($request->date);
+         $request->merge(['date' => Helper::dateTimeToSql($date)]);
+         $date_due = $date;
+         $date_due_fix = $request->date_due;//Fix valida si la fecha de vencimiento esta vacia en caso de error
+         if (!empty($request->date_due)) {
+             $date_due = Helper::createDate($request->date_due);
+         } else {
+             $payment_term = PaymentTerm::findOrFail($request->payment_term_id);
+             $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
+         }
+         $request->merge(['date_due' => Helper::dateToSql($date_due)]);
+
+         //Obtiene folio
+         $document_type = Helper::getNextDocumentTypeByCode($this->document_type_code);
+         $request->merge(['document_type_id' => $document_type['id']]);
+         $request->merge(['name' => $document_type['name']]);
+         $request->merge(['serie' => $document_type['serie']]);
+         $request->merge(['folio' => $document_type['folio']]);
+
+         //Guardar
+         //Registro principal
+         $customer_invoice = CustomerInvoice::create($request->input());
+
+         //Registro de lineas
+         $amount_discount = 0;  //Descuento de cantidad
+         $amount_untaxed = 0;   //Cantidad sin impuestos
+         $amount_tax = 0;       //Importe impuesto
+         $amount_tax_ret = 0;   //Importe impuesto ret
+         $amount_total = 0;     //Cantidad total
+         $balance = 0;          //Balance
+         $taxes = array();      //Impuestos
+
+         //Lineas
+         if (!empty($request->item)) {
+             foreach ($request->item as $key => $item) {
+                 //Logica
+                 $item_quantity = (double)$item['quantity'];
+                 $item_price_unit = (double)$item['price_unit'];
+                 $item_discount = (double)$item['discount'];
+
+                 $item_price_reduce = ($item_price_unit * (100 - $item_discount) / 100);
+                 $item_amount_untaxed = round($item_quantity * $item_price_reduce, 2);
+                 $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed;
+                 $item_amount_tax = 0;
+                 $item_amount_tax_ret = 0;
+                 if (!empty($item['taxes'])) {
+                     foreach ($item['taxes'] as $tax_id) {
+                         if (!empty($tax_id)) {
+                             $tax = Tax::findOrFail($tax_id);
+                             $tmp = 0;
+                             if ($tax->factor == 'Tasa') {
+                                 $tmp = $item_amount_untaxed * $tax->rate / 100;
+                             } elseif ($tax->factor == 'Cuota') {
+                                 $tmp = $tax->rate;
+                             }
+                             $tmp = round($tmp, 2);
+                             if ($tmp < 0) { //Retenciones
+                                 $item_amount_tax_ret += $tmp;
+                             } else { //Traslados
+                                 $item_amount_tax += $tmp;
+                             }
+
+                             //Sumatoria de impuestos
+                             $taxes[$tax_id] = array(
+                                 'amount_base' => $item_amount_untaxed + (isset($taxes[$tax_id]['amount_base']) ? $taxes[$tax_id]['amount_base'] : 0),
+                                 'amount_tax' => $tmp + (isset($taxes[$tax_id]['amount_tax']) ? $taxes[$tax_id]['amount_tax'] : 0),
+                             );
+                         }
+                     }
+                 }
+                 $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;
+                 //Sumatoria totales
+                 $amount_discount += $item_amount_discount;
+                 $amount_untaxed += $item_amount_untaxed;
+                 $amount_tax += $item_amount_tax;
+                 $amount_tax_ret += $item_amount_tax_ret;
+                 $amount_total += $item_amount_total;
+
+                 //Guardar linea
+                 $customer_invoice_line = CustomerInvoiceLine::create([
+                     'created_uid' => \Auth::user()->id,
+                     'updated_uid' => \Auth::user()->id,
+                     'customer_invoice_id' => $customer_invoice->id,
+                     'name' => $item['name'],
+                     'sat_product_id' => $item['sat_product_id'],
+                     'unit_measure_id' => $item['unit_measure_id'],
+                     'quantity' => $item_quantity,
+                     'price_unit' => $item_price_unit,
+                     'discount' => $item_discount,
+                     'price_reduce' => $item_price_reduce,
+                     'amount_discount' => $item_amount_discount,
+                     'amount_untaxed' => $item_amount_untaxed,
+                     'amount_tax' => $item_amount_tax,
+                     'amount_tax_ret' => $item_amount_tax_ret,
+                     'amount_total' => $item_amount_total,
+                     'sort_order' => $key,
+                     'status' => 1,
+                     'contract_annex_id' => $item['id_cont']
+                 ]);
+
+                 //Guardar impuestos por linea
+                 if (!empty($item['taxes'])) {
+                     $customer_invoice_line->taxes()->sync($item['taxes']);
+                 } else {
+                     $customer_invoice_line->taxes()->sync([]);
+                 }
+             }
+         }
+
+         //Resumen de impuestos
+         if (!empty($taxes)) {
+             $i = 0;
+             foreach ($taxes as $tax_id => $result) {
+                 $tax = Tax::findOrFail($tax_id);
+                 $customer_invoice_tax = CustomerInvoiceTax::create([
+                     'created_uid' => \Auth::user()->id,
+                     'updated_uid' => \Auth::user()->id,
+                     'customer_invoice_id' => $customer_invoice->id,
+                     'name' => $tax->name,
+                     'tax_id' => $tax_id,
+                     'amount_base' => $result['amount_base'],
+                     'amount_tax' => $result['amount_tax'],
+                     'sort_order' => $i,
+                     'status' => 1,
+                 ]);
+                 $i++;
+             }
+         }
+
+         //Cfdi relacionados
+         if (!empty($request->item_relation)) {
+             foreach ($request->item_relation as $key => $result) {
+                 //Guardar
+                 $customer_invoice_relation = CustomerInvoiceRelation::create([
+                     'created_uid' => \Auth::user()->id,
+                     'updated_uid' => \Auth::user()->id,
+                     'customer_invoice_id' => $customer_invoice->id,
+                     'relation_id' => $result['relation_id'],
+                     'sort_order' => $key,
+                     'status' => 1,
+                 ]);
+             }
+         }
+
+         //Registros de cfdi
+         $customer_invoice_cfdi = CustomerInvoiceCfdi::create([
+             'created_uid' => \Auth::user()->id,
+             'updated_uid' => \Auth::user()->id,
+             'customer_invoice_id' => $customer_invoice->id,
+             'name' => $customer_invoice->name,
+             'status' => 1,
+         ]);
+
+         //Actualiza registro principal con totales
+         $customer_invoice->amount_discount = $amount_discount;
+         $customer_invoice->amount_untaxed = $amount_untaxed;
+         $customer_invoice->amount_tax = $amount_tax;
+         $customer_invoice->amount_tax_ret = $amount_tax_ret;
+         $customer_invoice->amount_total = $amount_total;
+         $customer_invoice->balance = $amount_total;
+         $customer_invoice->update();
+
+         $class_cfdi = setting('cfdi_version');
+         // dd(method_exists($this, $class_cfdi));
+         if (empty($class_cfdi) || $class_cfdi === '0') {
+             throw new \Exception(__('general.error_cfdi_version'));
+         }
+         if (!method_exists($this, $class_cfdi)) {
+             throw new \Exception(__('general.error_cfdi_class_exists'));
+         }
+         //Valida Empresa y PAC para timbrado
+         PacHelper::validateSatActions();
+
+         //Crear XML y timbra
+         $tmp = $this->$class_cfdi($customer_invoice);
+         //Guardar registros de CFDI
+         $customer_invoice_cfdi->fill(array_only($tmp,[
+             'pac_id',
+             'cfdi_version',
+             'uuid',
+             'date',
+             'file_xml',
+             'file_xml_pac',
+         ]));
+         $customer_invoice_cfdi->save();
+         // Commit the transaction
+         DB::commit();
+         return 'success';
+         // return __('general.text_success_customer_invoice_cfdi');
+       } catch (\Exception $e) {
+           $request->merge([
+                 'date' => Helper::convertSqlToDateTime($request->date),
+           ]);
+           if (!empty($date_due_fix)) {
+                 $request->merge([
+                     'date_due' => Helper::convertSqlToDate($request->date_due),
+                 ]);
+           }else{
+                 $request->merge([
+                     'date_due' => '',
+                 ]);
+           }
+           // An error occured; cancel the transaction...
+           DB::rollback();
+
+           // and throw the error again.
+           // throw $e;
+           return $e;
+           // return __('general.error_cfdi_pac');
+       }
+     }
      /**
       * Crear XML y enviar a timbrar CFDI 3.3
       *
@@ -1466,6 +1693,5 @@ class CustomerInvoiceController extends Controller
       $result = DB::select('CALL px_annexesXcadena_data(?, ?)', array($cadena_id, $contract_master_id));
 
       return $result;
-    } 
-
+    }
 }

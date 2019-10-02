@@ -211,6 +211,10 @@
                                         class="text-center">
                                         Opciones
                                     </th>
+                                    <th width="7%"
+                                        class="text-center">
+                                        Id Contrato
+                                    </th>
                                     <th width="12%"
                                         class="text-center">
                                         Sitio
@@ -632,7 +636,7 @@
               var formData = new FormData(form);
               $.ajax({
                 type: "POST",
-                url: "/sales/customer-invoices-store",
+                url: "/sales/customer-invoices-store-cont",
                 data: formData,
                 contentType: false,
                 processData: false,
@@ -1184,6 +1188,15 @@
                   html += '<i class="fa fa-trash"></i>';
                   html += '</button>';
                   html += '<input type="hidden" name="item[' + i + '][id]" id="item_id_' + item_row + '" /> ';
+                  html += '</td>';
+
+                  html += '<td>';
+                  html += '<div class="form-group form-group-sm">';
+                  html += '<div class="input-group input-group-sm">';
+                  html +=  key.key
+                  html += '<input type="hidden" name="item[' + i + '][id_cont]" id="item_id_cont' + item_row + '" value="' + key.contract_annex_id + '" /> ';
+                  html += '</div>';
+                  html += '</div>';
                   html += '</td>';
 
                   html += '<td>';

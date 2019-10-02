@@ -944,6 +944,9 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices-store', 'Sales\CustomerInvoiceController@store');
     Route::post('/customer-invoices-edit', 'Sales\CustomerInvoiceController@edit');
     //
+    Route::post('/customer-invoices-store-cont', 'Sales\CustomerInvoiceController@store_cont');
+
+    //
     Route::get('/products/get-product', 'Sales\CustomerInvoiceController@getproduct');
     Route::post('/customer-invoices/total-lines', 'Sales\CustomerInvoiceController@totallines');
     Route::post('/customer-invoices/currency_now', 'Sales\CustomerInvoiceController@get_currency');
