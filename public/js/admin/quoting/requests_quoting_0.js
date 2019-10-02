@@ -40,18 +40,18 @@ function documentp_table(datajson, table){
   $.each(datajson, function(index, data){
     let type_doc = 'C';
     let badge = '';
-    switch (data.status) {
+    switch (data.cotizador_status) {
       case 'Nuevo':
         badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';
         break;
-      case 'Reviso':
+      case 'En revisión':
         badge= '<span class="badge badge-warning badge-pill text-white">En revisión</span>';
         break;
-       case 'Autorizado':
-         badge= '<span class="badge badge-success badge-pill text-white">Autorizado</span>';
+       case 'En Kick-off':
+         badge= '<span class="badge badge-success badge-pill text-white">En Kick-off</span>';
          break;
-       case 'Entregado':
-          badge= '<span class="badge badge-dark badge-pill text-white">Entregado</span>';
+       case 'Fuera de parametros':
+          badge= '<span class="badge badge-danger badge-pill text-white">Fuera de parametros</span>';
           break;
        default:
          badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';

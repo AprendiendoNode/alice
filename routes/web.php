@@ -436,6 +436,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/quoating_create', 'Projects\QuotingController@store');
   Route::get('/view_quotig_history', 'Projects\QuotingController@index_history');
   Route::get('/view_auth_history_quoting', 'Projects\QuotingController@view_auth');
+  Route::post('/set_status_quoting', 'Projects\QuotingController@set_status_quoting');
   Route::get('/quoting_table_products/{id_documentp}/{id_cart}', 'Projects\QuotingController@get_table_products');
   Route::get('/quoting_invoice/{id_documentp}/{id_cart}', 'Projects\QuotingController@export_invoice');
   Route::post('/view_request_quoting', 'Projects\QuotingController@get_history_quoting');

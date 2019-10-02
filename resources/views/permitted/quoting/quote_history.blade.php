@@ -54,6 +54,7 @@
             <table id="table_quoting" class="table table-striped table-bordered table-hover table-condensed mt-3">
               <thead>
                 <tr style="background: #0E2A38;color: white;">
+                  <th> <small></th>
                   <th> <small>Fecha de solicitud</small> </th>
                   <th> <small>Nombre del proyecto</small> </th>
                   <th> <small>$ EA USD</small> </th>
@@ -61,8 +62,9 @@
                   <th> <small>$ MO USD</small> </th>
                   <th> <small>Solicitó</small> </th>
                   <th> <small>Estatus</small> </th>
-                  <th> <small>Versión</small> </th>
+                  <th> <small>V.</small> </th>
                   <th> <small>Doc.</small> </th>
+                  <th> <small></small> </th>
                   <th> <small></small> </th>
                 </tr>
               </thead>
@@ -92,6 +94,9 @@
   <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
   <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
+  <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
+  <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
+  <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
   <script src="{{ asset('js/admin/quoting/requests_quoting_all.js')}}"></script>
   <script src="{{ asset('js/admin/quoting/request_modal_quoting.js')}}"></script>

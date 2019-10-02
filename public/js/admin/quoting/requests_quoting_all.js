@@ -41,24 +41,25 @@ function documentp_table(datajson, table){
   $.each(datajson, function(index, data){
     let type_doc = 'C';
     let badge = '';
-    switch (data.status) {
+    switch (data.cotizador_status) {
       case 'Nuevo':
         badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';
         break;
-      case 'Reviso':
+      case 'En revisión':
         badge= '<span class="badge badge-warning badge-pill text-white">En revisión</span>';
         break;
-       case 'Autorizado':
-         badge= '<span class="badge badge-success badge-pill text-white">Autorizado</span>';
+       case 'En Kick-off':
+         badge= '<span class="badge badge-success badge-pill text-white">En Kick-off</span>';
          break;
-       case 'Entregado':
-          badge= '<span class="badge badge-dark badge-pill text-white">Entregado</span>';
+       case 'Fuera de parametros':
+          badge= '<span class="badge badge-danger badge-pill text-white">Fuera de parametros</span>';
           break;
        default:
          badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
          break;
     }
     vartable.fnAddData([
+      data.id,
       data.fecha,
       data.nombre_proyecto,
       '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
@@ -69,20 +70,32 @@ function documentp_table(datajson, table){
       data.num_edit,
       type_doc,
       '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a>' +
-      '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Kick-off" onclick="kickoff(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-success btn-sm"><span class="fas fa-tasks"></span></a>' +
       '<a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>' +
-      '<a target="_blank" href="/quoting_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fas fa-file-pdf"></span></a>'
+      '<a target="_blank" href="/quoting_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fas fa-file-pdf"></span></a>',
+      data.cotizador_status
       ]);
     });
 }
+//'<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Kick-off" onclick="kickoff(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-success btn-sm"><span class="fas fa-tasks"></span></a>' +
 var Configuration_table_responsive_documentp= {
-        "order": [[ 0, "desc" ]],
+        "order": [[ 1, "desc" ]],
         "select": true,
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
         "columnDefs": [
             {
                 "targets": 0,
-                "width": "0.3%",
+                "checkboxes": {
+                  'selectRow': true
+                },
+                "width": "0.1%",
+                "createdCell": function (td, cellData, rowData, row, col){
+                  if ( cellData > 0 ) {
+                    if(rowData[11] == 'En Kick-off'){
+                      this.api().cell(td).checkboxes.disable();
+                    }
+
+                  }
+                },
                 "className": "text-center",
             },
             {
@@ -93,7 +106,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 2,
               "width": "0.5%",
-              "className": "text-right cell-price",
+              "className": "text-center",
             },
             {
               "targets": 3,
@@ -108,17 +121,17 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 5,
               "width": "1.6%",
-              "className": "text-center cell-name",
+              "className": "text-right cell-price",
             },
             {
               "targets": 6,
-              "width": "0.3%",
-              "className": "text-center",
+              "width": "1%",
+              "className": "text-center cell-large",
             },
             {
               "targets": 7,
-              "width": "0.1%",
-              "className": "text-center cell-short",
+              "width": "0.3%",
+              "className": "text-center",
             },
             {
               "targets": 8,
@@ -127,6 +140,11 @@ var Configuration_table_responsive_documentp= {
             },
             {
               "targets": 9,
+              "width": "0.2%",
+              "className": "text-center actions-button cell-short",
+            },
+            {
+              "targets": 10,
               "width": "3%",
               "className": "text-center actions-button cell-large",
             }
@@ -136,95 +154,150 @@ var Configuration_table_responsive_documentp= {
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
           {
-            extend: 'excelHtml5',
-            text: '<i class="far fa-file-pdf"></i> Excel',
-            titleAttr: 'Excel',
-            title: function ( e, dt, node, config ) {
-              var ax = '';
-              if($('input[name="date_to_search"]').val() != ''){
-                ax= '- Periodo: ' + $('input[name="date_to_search"]').val();
-              }
-              else {
-                txx='- Periodo: ';
-                var fecha = new Date();
-                var ano = fecha.getFullYear();
-                var mes = fecha.getMonth()+1;
-                var fechita = ano+'-'+mes;
-                ax = txx+fechita;
-              }
-              return 'Historial de cotizaciones';
-            },
+            text: '<i class=""></i> Cambiar estatus de documentos',
+            titleAttr: 'Cambiar estatus de documentos',
+            className: 'btn bg-dark',
             init: function(api, node, config) {
-               $(node).removeClass('btn-default')
+              $(node).removeClass('btn-default')
             },
-            exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8 ],
-                modifier: {
-                    page: 'all',
-                }
-            },
-            className: 'btn btn-success',
+            action: function ( e, dt, node, config ) {
+              var rows_selected = $("#table_quoting").DataTable().column(0).checkboxes.selected();
+              var _token = $('input[name="_token"]').val();
+              // Iterate over all selected checkboxes
+              var valores= new Array();
+              // console.log(factura);
+              $.each(rows_selected, function(index, rowId){
+                valores.push(rowId);
+              });
+
+              if (valores.length === 0){
+                Swal.fire("Operación abortada", "Ningún registro seleccionado :(", "error");
+              }else{
+                Swal.fire({
+                  title: "¿Estás seguro?",
+                  html: `Se cambiara el estatus de los documentos seleccionados!<br><br>
+                        <div>
+                          <select class='form-control' style='display: block;' id='status_cotizador'>
+                          <option value=''>Elegir...</option>
+                            <option value='2'>En revision</option>
+                            <option value='3'>Fuera de parametros</option>
+                            <option value='4'>En kick-off</option>
+                          </select>
+                        </div>`,
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-danger",
+                  confirmButtonText: "Continuar",
+                  cancelButtonText: "Cancelar",
+                  customClass: 'swal-wide'
+                }).then((result) => {
+                  if(result.value){
+
+                    var status_cotizador = $('#status_cotizador').val();
+                    // console.log(semana);
+                    $('.cancel').prop('disabled', 'disabled');
+                    $('.confirm').prop('disabled', 'disabled');
+
+                    if(status_cotizador === ''){
+                      Swal.fire("Operación abortada", "Debe seleccionar un estatus", "error")
+                    }else{
+                      $.ajax({
+                        type: "POST",
+                        url: "/set_status_quoting",
+                        data: { idents: JSON.stringify(valores), status_cotizador: status_cotizador , _token : _token },
+                        success: function (data){
+                          console.log(data);
+                          if (data === 'true') {
+                            Swal.fire("Operación Completada!", "Las solicitudes seleccionadas han sido confirmadas.", "success");
+                            table_permission_zero();
+                          }else{
+                              Swal.fire("Ocurrio un error al cambiar estatus!", "", "error");
+                          }
+
+                        },
+                        error: function (data) {
+                          console.log('Error:', data);
+                        }
+                      });
+                    }
+                  }
+                })
+              }
+
+
+            }
           },
-          {
-            extend: 'csvHtml5',
-            text: '<i class="far fa-file-code"></i> CSV',
-            titleAttr: 'CSV',
-            title: function ( e, dt, node, config ) {
-              var ax = '';
-              if($('input[name="date_to_search"]').val() != ''){
-                ax= '- Periodo: ' + $('input[name="date_to_search"]').val();
-              }
-              else {
-                txx='- Periodo: ';
-                var fecha = new Date();
-                var ano = fecha.getFullYear();
-                var mes = fecha.getMonth()+1;
-                var fechita = ano+'-'+mes;
-                ax = txx+fechita;
-              }
-              return 'Historial de cotizaciones';
-            },
+          /*{
+            text: '<i class=""></i>Fuera de parametros',
+            titleAttr: 'Fuera de parametros',
+            className: 'btn bg-danger',
             init: function(api, node, config) {
-               $(node).removeClass('btn-default')
+              $(node).removeClass('btn-default')
             },
-            exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8 ],
-                modifier: {
-                    page: 'all',
-                }
-            },
-            className: 'btn btn-info',
-          },
-          {
-            extend: 'pdf',
-            orientation: 'landscape',
-            text: '<i class="far fa-file-pdf"></i>  PDF',
-            title: function ( e, dt, node, config ) {
-              var ax = '';
-              if($('input[name="date_to_search"]').val() != ''){
-                ax= '- Periodo: ' + $('input[name="date_to_search"]').val();
-              }
-              else {
-                txx='- Periodo: ';
-                var fecha = new Date();
-                var ano = fecha.getFullYear();
-                var mes = fecha.getMonth()+1;
-                var fechita = ano+'-'+mes;
-                ax = txx+fechita;
-              }
-              return 'Historial de cotizaciones';
-            },
-            init: function(api, node, config) {
-               $(node).removeClass('btn-default')
-            },
-            exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8 ],
-                modifier: {
-                    page: 'all',
-                }
-            },
-            className: 'btn btn-danger',
-          }
+            action: function ( e, dt, node, config ) {
+              Swal.fire({
+              title: '¿Estás seguro?',
+              text: "Se revisarán todos los documentos seleccionados!",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Confirmar',
+              cancelButtonText: 'Cancelar'
+              }).then((result) => {
+
+                if (result.value) {
+                  $('.cancel').prop('disabled', 'disabled');
+                  $('.confirm').prop('disabled', 'disabled');
+                  var rows_selected = $("#table_documentp").DataTable().column(0).checkboxes.selected();
+                  var _token = $('input[name="_token"]').val();
+                  // Iterate over all selected checkboxes
+                  var valores= new Array();
+                  $.each(rows_selected, function(index, rowId){
+                    valores.push(rowId);
+                  });
+                  if ( valores.length === 0){
+                    Swal.fire(
+                      'Debe selecionar al menos un documento',
+                      'Ningun documento afectado!',
+                      'error'
+                    )
+                  }else{
+                    $.ajax({
+                      type: "POST",
+                      url: "/send_item_doc_new",
+                      data: { idents: JSON.stringify(valores), _token : _token },
+                      success: function (data){
+                        if (data === 'true') {
+                          table_permission_one();
+                          Swal.fire(
+                            'Estatus actualizado!',
+                            'Los documentos han sido revisados!',
+                            'success'
+                          )
+                        }
+                        if (data === 'false') {
+                          Swal.fire(
+                            'Ocurrio un error!',
+                            'Ningun documento afectado!',
+                            'error'
+                          )
+                        }
+                      },
+                      error: function (data) {
+                        Swal.fire({
+                           type: 'error',
+                           title: 'Oops...',
+                           text: err.statusText,
+                         });
+                      }
+                    });
+                  }
+                }//value
+              })
+            }
+          },*/
+
         ],
         language:{
             "sProcessing":     "Procesando...",
