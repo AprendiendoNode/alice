@@ -214,7 +214,7 @@ class AddEquipmentController extends Controller
       $data_object=explode("&",$request->objData);
       $eq_grup = explode("=",$data_object[1])[1];
       //$eq_descrip = explode("=",$data_object[2])[1];
-      $eq_descrip= $request->descripcion_m;
+      $eq_descrip= $request->add_descrip;
       $eq_type = explode("=",$data_object[3])[1];
       $eq_marca = explode("=",$data_object[4])[1];
       $eq_modelo = explode("=",$data_object[5])[1];
@@ -383,7 +383,8 @@ class AddEquipmentController extends Controller
 
       $data_object=explode("&",$request->objData);
       $eq_grup = explode("=",$data_object[1])[1];
-      $eq_descrip = urldecode(explode("=",$data_object[2])[1]);
+      $eq_descrip= urldecode($request->add_descrip);
+      //$eq_descrip = urldecode(explode("=",$data_object[2])[1]);
       $eq_type = explode("=",$data_object[3])[1];
       $eq_marca = explode("=",$data_object[4])[1];
       $eq_modelo = explode("=",$data_object[5])[1];
@@ -474,12 +475,12 @@ class AddEquipmentController extends Controller
           array_push($mails, $itc_mail[$i]->email);
         }
         //si se inserto
-        Mail::to('marthaisabel@sitwifi.com')->cc($mails)->send(new ConfirmacionAltaEquipo($parametros1));
+      Mail::to('marthaisabel@sitwifi.com')->cc($mails)->send(new ConfirmacionAltaEquipo($parametros1));
 
         continue;
       } else {
         //El sitio no tiene ITC asignado
-        Mail::to('marthaisabel@sitwifi.com')->send(new ConfirmacionAltaEquipo($parametros1));
+      Mail::to('marthaisabel@sitwifi.com')->send(new ConfirmacionAltaEquipo($parametros1));
         continue;
       }
 

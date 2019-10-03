@@ -434,14 +434,14 @@
                    </div>
                  </div>
                  <div class="col-lg-6">
-                   <!--<div class="input-group row">
+                   <div class="input-group row">
                      <div class="col-md-3">
                     <span class="input-group-addon">{{ trans('general.descripcion') }}</span>
                      </div>
                      <div class="col-md-9">
                     <input id="add_descrip_masiva" name="add_descrip_masiva" maxlength="150" type="text" class="form-control" placeholder="Descripción. Mínimo 4 caracteres.">
                      </div>
-                   </div>-->
+                   </div>
                  </div>
                </div>
                <br>
@@ -1026,8 +1026,8 @@
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
-      <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
-      <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>
+    <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>
     <script src="{{ asset('js/admin/equipment/add_equipment.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
     <link rel="stylesheet" href="{{ asset('plugins/iCheck/square/_all.css') }}" type="text/css" />

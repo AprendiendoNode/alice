@@ -817,7 +817,7 @@ $(".btn-save-massive").on("click", function () {
     $obligatorio_a = validarespacioinputlength('nfactura_masiva',8);
     $obligatorio_b = validarespacioinput('date_fact_masiva');
     $obligatorio_c = validarSelect('select_one_massive');
-    //$obligatorio_f = validarespacioinput('add_descrip_masiva'); //Ya no es necesario, se tomará la descripción del excel
+    //$obligatorio_f = validarespacioinput('add_descrip_masiva'); //Ahora es opcional
     $obligatorio_g = validarSelect('type_equipment_massive');
     $obligatorio_h = validarSelect('Marcas_masiva');
     $obligatorio_i = validarSelect('mmodelo_masivo');
@@ -848,12 +848,12 @@ $(".btn-save-massive").on("click", function () {
               var dat_factura = $('#date_fact_masiva').val();
               var num_proveed = $('#select_one_massive').val();//proveedor
               var order = $('#order_massive').val();
-              //var descripcion =$('#add_descrip_masiva').val();
+              var descripcion =$('#add_descrip_masiva').val();
 
               $.ajax({
                 type: "POST",
                 url: '/create_equipament_n',
-                data:{data_excel: excelData,objData:objData,masivo:1,nfactura_masiva:num_factura,date_fact_masiva:dat_factura,select_one_massive:num_proveed,order_massive:order,masivo:1, _token : _token },
+                data:{data_excel: excelData,add_descrip:descripcion,objData:objData,masivo:1,nfactura_masiva:num_factura,date_fact_masiva:dat_factura,select_one_massive:num_proveed,order_massive:order,masivo:1, _token : _token },
                 //data: objData + "&nfactura_masiva=" + num_factura + "&date_fact_masiva=" + dat_factura + "&select_one_massive=" + num_proveed + "&order_massive=" + order,
                 success: function (data) {
                   if (data === "3") { menssage_toast('Mensaje', '2', 'Operation Abort- Serie, already registered' , '3000'); }
@@ -922,7 +922,7 @@ $(".btn-save-massive").on("click", function () {
         //  var $d_desc = $('#add_descrip_masiva').val();
           var $d_estado = $("#add_estado_masivo").select2('data')[0]['text'];
           var $d_modelo = $("#mmodelo_masivo").select2('data')[0]['text'];
-          //var descripcion =$('#add_descrip_masiva').val();
+          var descripcion =$('#add_descrip_masiva').val();
           console.log(objData);
           console.log(JSON.stringify(excelData));
           $.ajax({
@@ -930,7 +930,7 @@ $(".btn-save-massive").on("click", function () {
             url: '/create_equipament_nd',
             //data: objData+"&data_excel="+JSON.stringify(excelData)+"&masivo="+1,//{data_excel: excelData,descripcion_m: descripcion ,objData,nofactura: num_factura,fechafactura: dat_factura,proveedor:num_proveed,orden: order, _token : _token }, //Falta añadir objData
             //data: {data_excel: excelData,descripcion_m: descripcion ,objData,nofactura: num_factura,fechafactura: dat_factura,proveedor:num_proveed,orden: order, _token : _token }, //Falta añadir objData,//
-            data: {data_excel: excelData ,objData:objData,masivo:1, _token : _token }, //Falta añadir objData,//
+            data: {data_excel: excelData,add_descrip: descripcion,objData:objData,masivo:1, _token : _token }, //Falta añadir objData,//
             success: function (data) {
               if (data === "3") { menssage_toast('Mensaje', '2', 'Operation Abort- Serie, already registered' , '3000'); }
               else if (data === "2") { menssage_toast('Mensaje', '2', 'Operation Abort- MAC, already registered' , '3000'); }
@@ -978,7 +978,7 @@ $(".btn-clear-massive").on("click", function () {
   reset_select2('mmodelo_masivo');
   reset_select2('add_estado_masivo');
   reset_select2('venue_massive');
-  //$('#add_descrip_masiva').val('');
+  $('#add_descrip_masiva').val('');
 });
 //Cancelar equipos masivo
 $(".btn-cancel-massive").on("click", function () {
