@@ -434,7 +434,7 @@ function graph_barras_three(title, campoa, campob, titlepral, subtitulopral) {
             axisLabel : {
                show:true,
                interval: 'auto',    // {number}
-               rotate: 45,
+               rotate: 90,
                margin: 10,
                formatter: '{value}',
                textStyle: {
