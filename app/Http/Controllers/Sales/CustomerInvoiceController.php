@@ -790,6 +790,9 @@ class CustomerInvoiceController extends Controller
          $balance = 0;          //Balance
          $taxes = array();      //Impuestos
 
+         // Guardar cuentas contables de la factura.
+         // 
+
          //Lineas
          if (!empty($request->item)) {
              foreach ($request->item as $key => $item) {
