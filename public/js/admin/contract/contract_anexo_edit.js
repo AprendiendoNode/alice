@@ -567,11 +567,41 @@ function get_data_anexos(id_contract){
       var status_select = document.getElementById("sel_estatus_anexo");
       var option_status;
 
+      var unit_select = document.getElementById("sel_unitmeasure");
+      var option_unit_select;
+
+      var prodsat_select = document.getElementById("sel_satproduct");
+      var option_prodsat_select;
+
+      $("#description_fact").val(data[0].description_fact);
+
       $("#contract_signature_date").val(data[0].date_signature);
       $("#date_start_cont").val(data[0].date_scheduled_start);
       $("#date_end_cont_sist").val(data[0].date_scheduled_end);
       $("#contract_real_date").val(data[0].date_real);
       $("#edit_num_vto").val(data[0].number_expiration);
+
+
+      // Setting unitMeasure
+      for (var i=0; i < unit_select.options.length; i++) {
+          option_unit_select = unit_select.options[i];
+          if (option_unit_select.value == data[0].unit_measure_id) {
+              option_unit_select.setAttribute('selected', true);
+          }else{
+              option_unit_select.removeAttribute('selected');
+          }
+      }
+
+      // Setting satProduct
+      for (var i=0; i < prodsat_select.options.length; i++) {
+          option_prodsat_select = prodsat_select.options[i];
+          if (option_prodsat_select.value == data[0].sat_product_id) {
+              option_prodsat_select.setAttribute('selected', true);
+          }else{
+              option_prodsat_select.removeAttribute('selected');
+          }
+      }
+
       // setting number months
       for (var i=0; i < month_select.options.length; i++) {
           option_month = month_select.options[i];
@@ -668,11 +698,30 @@ $(".validation-wizard-anexo").steps({
 
               if(data == "true"){
 
-                Swal.fire({title: "Contrato anexo actualizado",  type: "success"},
-                    function(){
-                        location.reload();
-                    }
-                );
+                let timerInterval;
+                Swal.fire({
+                  type: 'success',
+                  title: 'Contrato anexo actualizado',
+                  html: 'Se estan aplicando los cambios.',
+                  timer: 2500,
+                  onBeforeOpen: () => {
+                    Swal.showLoading()
+                    timerInterval = setInterval(() => {
+                      Swal.getContent().querySelector('strong')
+                    }, 100)
+                  },
+                  onClose: () => {
+                    clearInterval(timerInterval)
+                  }
+                }).then((result) => {
+                  if (
+                    // Read more about handling dismissals
+                    result.dismiss === Swal.DismissReason.timer
+                  ) {
+                    window.location.href = "/cont_edit_cont";
+                  }
+                });
+
 
               }else{
                 Swal.fire("Error al actualizar contrato", "", "error");

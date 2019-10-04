@@ -392,6 +392,38 @@
                               <input class="form-control required" id="edit_num_vto" name="edit_num_vto" type="number" min="0" max="99" maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                             </div>
                           </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="sel_unitmeasure">  Unidad de medida (Para facturación):
+                              </label>
+                              <select class="form-control required" id="sel_unitmeasure" name="sel_unitmeasure" style="width:100%;">
+                                <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                @forelse ($unitmeasures as $unitmeasures_data)
+                                  <option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>
+                                @empty
+                                @endforelse
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="sel_satproduct">  Prod/Serv SAT (Para facturación):
+                              </label>
+                              <select class="form-control required" id="sel_satproduct" name="sel_satproduct" style="width:100%;">
+                                <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                @forelse ($satproduct as $satproduct_data)
+                                  <option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}] {{ $satproduct_data->name }}</option>
+                                @empty
+                                @endforelse
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label for="description_fact" class="control-label">Descripcion (Para facturación):</label>
+                              <input class="form-control required" id="description_fact" name="description_fact" type="text">
+                            </div>
+                          </div>
                         </div>
                         <div class="row">
                           <div class="col-md-12">

@@ -116,7 +116,7 @@ class PayAddController extends Controller
   {
       $id = $request->data_one;
       //$hotel = DB::table('hotels')->select('id', 'Nombre_hotel')->where('cadena_id', $id)->get();
-      $hotel = DB::select('CALL get_hotel_cadena(?)', array($id));
+      $hotel = DB::select('CALL px_get_hotel_cadena(?)', array($id));
       return json_encode($hotel);
   }
   public function get_proyecto(Request $request)

@@ -791,7 +791,7 @@ class CustomerInvoiceController extends Controller
          $taxes = array();      //Impuestos
 
          // Guardar cuentas contables de la factura.
-         // 
+         //
 
          //Lineas
          if (!empty($request->item)) {

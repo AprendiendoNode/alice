@@ -171,7 +171,7 @@
           <!-- Seccion de cuentas contables de pagos. -->
           <!-- <div class="row">
             <div class="col-md-6 col-xs-6">
-              
+
               <div class="col-md-12 col-xs-12">
                 <label for="classif_id" class="control-label">Servicio:<span style="color: red;">*</span></label>
                 <select class="custom-select" id="classif_id" name="classif_id" required>
@@ -320,7 +320,7 @@
                                         <select class="form-control input-sm"  id="item{{ $item_row.'[unit_measure_id]'}}" name="item[{{ $item_row }}][unit_measure_id]" required>
                                           <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
                                           @forelse ($unitmeasures as $unitmeasures_data)
-                                            <option value="{{ $unitmeasures_data->id  }}">{{ $unitmeasures_data->name }}</option>
+                                            <option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>
                                           @empty
                                           @endforelse
                                         </select>
@@ -331,7 +331,7 @@
                                         <select class="form-control input-sm"  id="item{{ $item_row.'[sat_product_id]'}}" name="item[{{ $item_row }}][sat_product_id]" required>
                                           <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
                                           @forelse ($satproduct as $satproduct_data)
-                                            <option value="{{ $satproduct_data->id  }}">{{ $satproduct_data->name }}</option>
+                                            <option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}] {{ $satproduct_data->name }}</option>
                                           @empty
                                           @endforelse
                                         </select>
@@ -752,7 +752,7 @@
             html += '<select class="form-control input-sm col-unit-measure-id" name="item[' + item_row + '][unit_measure_id]" id="item_unit_measure_id_' + item_row + '" required>';
             html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
             @forelse ($unitmeasures as $unitmeasures_data)
-              html += '<option value="{{ $unitmeasures_data->id  }}">{{ $unitmeasures_data->name }}</option>';
+              html += '<option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
             @empty
             @endforelse
             html += '</select>';
@@ -764,7 +764,7 @@
             html += '<select class="form-control input-sm col-sat-product-id" name="item[' + item_row + '][sat_product_id]" id="item_sat_product_id_' + item_row + '" required>';
             html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
             @forelse ($satproduct as $satproduct_data)
-              html += '<option value="{{ $satproduct_data->id  }}">{{ $satproduct_data->name }}</option>';
+              html += '<option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
             @empty
             @endforelse
             html += '</select>';
@@ -1116,7 +1116,7 @@
             dropdownAutoWidth: true,
         });
       }
-      
+
       // Funciones para cuentas contables dinamicas.
         /*var select2_options = {
               theme: "bootstrap",
@@ -1308,7 +1308,7 @@
                 var $row  = $('.level2');
                 //Remove field
                 $row.remove();
-                
+
                 conceptIndex = 1;
             }
             if (check_data === 0) {
@@ -1316,7 +1316,7 @@
               var $row  = $('.level1');
               //Remove field
               $row.remove();
-              
+
               conceptIndex = 0;
             }else{
               //console.log('datos: ' + check_data);

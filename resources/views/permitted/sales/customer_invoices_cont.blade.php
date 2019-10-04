@@ -191,7 +191,7 @@
           <!-- Seccion de cuentas contables de pagos. -->
           <!-- <div class="row">
             <div class="col-md-6 col-xs-6">
-              
+
               <div class="col-md-12 col-xs-12">
                 <label for="classif_id" class="control-label">Servicio:<span style="color: red;">*</span></label>
                 <select class="custom-select" id="classif_id" name="classif_id" required>
@@ -255,7 +255,7 @@
                                         class="text-center">
                                         Sitio
                                     </th>
-                                    <th class="text-left">
+                                    <th  width="20%" class="text-left">
                                       Descripción
                                       <span class="required text-danger">*</span>
                                     </th>
@@ -609,7 +609,9 @@
   <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
-  <script src="{{ asset('plugins/momentupdate/moment.js')}}"></script>
+  <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
+
   <link href="{{ asset('plugins/daterangepicker-master/daterangepicker.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('plugins/daterangepicker-master/daterangepicker.js')}}"></script>
 
@@ -622,6 +624,7 @@
   <script type="text/javascript">
   var conceptIndex = 0;
   $(function() {
+        moment.locale('es'); //anadir
     //-----------------------------------------------------------
         $("#form").validate({
           ignore: "input[type=hidden]",
@@ -1214,11 +1217,22 @@
                    title: 'Oops...',
                    text: 'Selecciona la moneda a usar e ingresa un TC',
                  });
+                 $("select[name='cont_maestro_id']").val('');
               }
               else {
                 //#Solicitamos primero el tc a usar
                 data.forEach(function(key,i) {
                   var html = '';
+                  var current_unit= key.unit_measure_id;
+                  var current_sat = key.sat_product_id;
+
+                  // var fecha =  moment($("#form input[name='date']").val(), 'DD-MM-YYYY').isValid();
+                  // var fecha2 = moment($("#form input[name='date']").val()).format('MM/DD/YYYY');
+                  var fecha3 = moment($("#form input[name='date']").val(), 'DD-MM-YYYY').format('MMMM YYYY');
+                  // console.log(fecha);
+                  // console.log(fecha2);
+                  // console.log(fecha3);
+
                   html += '<tr id="item_row_' + item_row + '">';
                   html += '<td class="text-center" style="vertical-align: middle;">';
                   html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
@@ -1244,10 +1258,12 @@
                   html += '</div>';
                   html += '</td>';
 
+                  var text_description = key.description_fact +' '+fecha3;
                   html += '<td>';
                   html += '<div class="form-group form-group-sm">';
-                  html += '<input class="form-control form-control-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="2" autocomplete="off" />';
-                  html += '</input>';
+                  html += '<textarea class="form-control form-control-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="4" autocomplete="off" >';
+                  html +=  text_description.toUpperCase();
+                  html += '</textarea>';
                   html += '</div>';
                   html += '</td>';
 
@@ -1256,7 +1272,14 @@
                   html += '<select class="form-control form-control-sm col-unit-measure-id" name="item[' + item_row + '][unit_measure_id]" id="item_unit_measure_id_' + item_row + '" required>';
                   html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
                   @forelse ($unitmeasures as $unitmeasures_data)
-                    html += '<option value="{{ $unitmeasures_data->id  }}">{{ $unitmeasures_data->name }}</option>';
+                  if( current_unit == {{ $unitmeasures_data->id  }})
+                  {
+                    html += '<option value="{{ $unitmeasures_data->id  }}" selected>[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
+                  }
+                  else {
+                    html += '<option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
+
+                  }
                   @empty
                   @endforelse
                   html += '</select>';
@@ -1268,7 +1291,12 @@
                   html += '<select class="form-control form-control-sm col-sat-product-id" name="item[' + item_row + '][sat_product_id]" id="item_sat_product_id_' + item_row + '" required>';
                   html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
                   @forelse ($satproduct as $satproduct_data)
-                    html += '<option value="{{ $satproduct_data->id  }}">{{ $satproduct_data->name }}</option>';
+                  if( current_sat == {{ $satproduct_data->id  }}){
+                    html += '<option value="{{ $satproduct_data->id  }}" selected>[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
+                  }
+                  else {
+                    html += '<option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
+                  }
                   @empty
                   @endforelse
                   html += '</select>';
@@ -1529,7 +1557,7 @@
                 var $row  = $('.level2');
                 //Remove field
                 $row.remove();
-                
+
                 conceptIndex = 1;
             }
             if (check_data === 0) {
@@ -1537,7 +1565,7 @@
               var $row  = $('.level1');
               //Remove field
               $row.remove();
-              
+
               conceptIndex = 0;
             }else{
               //console.log('datos: ' + check_data);

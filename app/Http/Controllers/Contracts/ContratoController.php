@@ -165,7 +165,10 @@ class ContratoController extends Controller
 
     $contract_status = DB::Table('contract_statuses')->select('id', 'name')->get();
 
-    return view('permitted.contract.cont_create_cont', compact('classifications','verticals','cadenas', 'sitio','currency', 'hotels', 'country', 'rz_type', 'rz_nationality', 'rz_concept_invoice', 'contract_status', 'rz_customer', 'iva', 'resguardo','vendedores','itconcierge'));
+    $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array());
+    $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
+
+    return view('permitted.contract.cont_create_cont', compact('unitmeasures','satproduct','classifications','verticals','cadenas', 'sitio','currency', 'hotels', 'country', 'rz_type', 'rz_nationality', 'rz_concept_invoice', 'contract_status', 'rz_customer', 'iva', 'resguardo','vendedores','itconcierge'));
   }
 
   public function create_group_by_contract (Request $request) {
@@ -325,7 +328,6 @@ class ContratoController extends Controller
     $resultado= $result[0]->cantidad;
     return json_encode($result);
   }
-
   public function create_contract_annexes (Request $request) {
     $text_1= $request->key_anexo_service;
     $text_2= $request->key_anexo_verticals;
@@ -376,6 +378,10 @@ class ContratoController extends Controller
       $array_data_dinamic_site_1 = $request->c_cadena_add;
       $array_data_dinamic_site_2 = $request->c_hotel_add;
 
+      //Datos para facturacion
+      $fact_descrip_fact= !empty($request->description_fact) ? $request->description_fact : '';
+      $fact_unidad_medida = $request->sel_unitmeasure;
+      $fact_sat_product = $request->sel_satproduct;
 
     $newAnnexeContMaster = DB::table('contract_annexes')->insertGetId(
       [
@@ -390,7 +396,9 @@ class ContratoController extends Controller
         'business_user_id' => $id_comercial,
         'file' => $pdf,
         'contract_master_id' => $id_contract_master,
-        'contract_status_id' => $id_status,
+        'description_fact' => $fact_descrip_fact,
+        'unit_measure_id' => $fact_unidad_medida,
+        'sat_product_id' => $fact_sat_product,
         'created_at' => \Carbon\Carbon::now()
       ]
     );
@@ -549,8 +557,11 @@ class ContratoController extends Controller
       $vendedores = DB::select('CALL px_resguardoXgrupo_users (?)', array('2'));
       $iva = DB::Table('ivas')->select('number')->get();
 
+      $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array());
+      $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
 
-      return view('permitted.contract.cont_edit_cont', compact('iva','currency','hotels', 'classifications','verticals','cadenas', 'contract_status', 'resguardo', 'rz_customer' , 'sitio', 'itconcierge', 'vendedores'));
+
+      return view('permitted.contract.cont_edit_cont', compact('unitmeasures', 'satproduct', 'iva','currency','hotels', 'classifications','verticals','cadenas', 'contract_status', 'resguardo', 'rz_customer' , 'sitio', 'itconcierge', 'vendedores'));
   }
 
   public function get_digit_contract_master(Request $request)
@@ -692,7 +703,6 @@ class ContratoController extends Controller
     return $flag;
 
   }
-
   public function update_contract_anexo(Request $request)
   {
     $service = $request->sel_anexo_service;
@@ -711,6 +721,9 @@ class ContratoController extends Controller
     $flag = "false";
     $plazo_vencto = $request->edit_num_vto;
 
+    $description_fact= $request->description_fact;
+    $unitmeasures = $request->sel_unitmeasure;
+    $satproduct = $request->sel_satproduct;
 
     $contract_masters = DB::table('idcontracts')->select('contrat_id','key')->where('cxclassification_id', $service)
                                                                             ->where('vertical_id', $vertical)
@@ -725,6 +738,9 @@ class ContratoController extends Controller
                                                  'date_scheduled_end' => $date_end_cont_sist,
                                                  'date_real' => $contract_real_date,
                                                  'business_user_id' => $business_executive,
+                                                 'description_fact' => $description_fact,
+                                                 'unit_measure_id' => $unitmeasures,
+                                                 'sat_product_id' => $satproduct,
                                                  'itconcierge_id' => $itconcierge,
                                                  'contract_status_id' => $status,
                                                  'updated_at' =>  \Carbon\Carbon::now()]);
