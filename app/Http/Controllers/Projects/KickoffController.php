@@ -101,6 +101,15 @@ class KickoffController extends Controller
       return $num_aps;
     }
 
+    public function setComision(Request $request)
+    {
+      $kickoff_comisiones = new Kickoff_comisiones();
+      $comision = $kickoff_comisiones->calculateCommissionByDefault($request->id);
+      $kickoff_comisiones->save_comision_default($request, $comision);
+
+      return $comision;
+    }
+
     public function get_presupuesto_ejercido($id_doc)
     {
       $document = Documentp::find($id_doc);
@@ -731,7 +740,6 @@ class KickoffController extends Controller
 
     public function update_kickoff_comision(Request $request)
     {
-      //dd($request);
       $id = $request->id;
       $documentp = Documentp::find($id);
       $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();

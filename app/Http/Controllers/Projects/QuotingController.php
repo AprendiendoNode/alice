@@ -44,6 +44,16 @@ class QuotingController extends Controller
         return view('permitted.quoting.quote_history');
     }
 
+    public function get_history_quoting_out_parameters()
+    {
+        return view('permitted.quoting.quote_history_out_parameters');
+    }
+
+    public function get_history_quoting_kickoff()
+    {
+        return view('permitted.quoting.quote_history_kickoff');
+    }
+
     public function view_auth()
     {
         return view('permitted.quoting.history_quoting_auth');
@@ -299,7 +309,7 @@ class QuotingController extends Controller
             'total' => $total
           ];
 
-          Mail::to('rdelgado@sitwifi.com')->cc('aarciga@sitwifi.com')->send(new SolicitudCompra($parametros1));
+          //Mail::to('rdelgado@sitwifi.com')->cc('aarciga@sitwifi.com')->send(new SolicitudCompra($parametros1));
           //Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompra($parametros1));
 
           $flag = "true";

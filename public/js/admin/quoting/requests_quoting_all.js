@@ -71,12 +71,13 @@ function documentp_table(datajson, table){
       type_doc,
       '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a>' +
       '<a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>' +
+      '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Kick-off" onclick="kickoff(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-success btn-sm"><span class="fas fa-tasks"></span></a>' +
       '<a target="_blank" href="/quoting_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fas fa-file-pdf"></span></a>',
       data.cotizador_status
       ]);
     });
 }
-//'<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Kick-off" onclick="kickoff(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-success btn-sm"><span class="fas fa-tasks"></span></a>' +
+
 var Configuration_table_responsive_documentp= {
         "order": [[ 1, "desc" ]],
         "select": true,
@@ -141,12 +142,18 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 9,
               "width": "0.2%",
-              "className": "text-center actions-button cell-short",
+              "className": "text-center cell-short",
             },
             {
               "targets": 10,
               "width": "3%",
               "className": "text-center actions-button cell-large",
+            },
+            {
+              "targets": 11,
+              "width": "3%",
+              "className": "text-center actions-button",
+              "visible": false,
             }
         ],
         dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +
@@ -154,8 +161,8 @@ var Configuration_table_responsive_documentp= {
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
           {
-            text: '<i class=""></i> Cambiar estatus de documentos',
-            titleAttr: 'Cambiar estatus de documentos',
+            text: '<i class=""></i> Cambiar estatus de cotizaciones',
+            titleAttr: 'Cambiar estatus de cotizaciones',
             className: 'btn bg-dark',
             init: function(api, node, config) {
               $(node).removeClass('btn-default')
@@ -175,7 +182,7 @@ var Configuration_table_responsive_documentp= {
               }else{
                 Swal.fire({
                   title: "¿Estás seguro?",
-                  html: `Se cambiara el estatus de los documentos seleccionados!<br><br>
+                  html: `Se cambiara el estatus de las cotizaciones seleccionadas!<br><br>
                         <div>
                           <select class='form-control' style='display: block;' id='status_cotizador'>
                           <option value=''>Elegir...</option>
@@ -227,77 +234,6 @@ var Configuration_table_responsive_documentp= {
 
             }
           },
-          /*{
-            text: '<i class=""></i>Fuera de parametros',
-            titleAttr: 'Fuera de parametros',
-            className: 'btn bg-danger',
-            init: function(api, node, config) {
-              $(node).removeClass('btn-default')
-            },
-            action: function ( e, dt, node, config ) {
-              Swal.fire({
-              title: '¿Estás seguro?',
-              text: "Se revisarán todos los documentos seleccionados!",
-              type: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Confirmar',
-              cancelButtonText: 'Cancelar'
-              }).then((result) => {
-
-                if (result.value) {
-                  $('.cancel').prop('disabled', 'disabled');
-                  $('.confirm').prop('disabled', 'disabled');
-                  var rows_selected = $("#table_documentp").DataTable().column(0).checkboxes.selected();
-                  var _token = $('input[name="_token"]').val();
-                  // Iterate over all selected checkboxes
-                  var valores= new Array();
-                  $.each(rows_selected, function(index, rowId){
-                    valores.push(rowId);
-                  });
-                  if ( valores.length === 0){
-                    Swal.fire(
-                      'Debe selecionar al menos un documento',
-                      'Ningun documento afectado!',
-                      'error'
-                    )
-                  }else{
-                    $.ajax({
-                      type: "POST",
-                      url: "/send_item_doc_new",
-                      data: { idents: JSON.stringify(valores), _token : _token },
-                      success: function (data){
-                        if (data === 'true') {
-                          table_permission_one();
-                          Swal.fire(
-                            'Estatus actualizado!',
-                            'Los documentos han sido revisados!',
-                            'success'
-                          )
-                        }
-                        if (data === 'false') {
-                          Swal.fire(
-                            'Ocurrio un error!',
-                            'Ningun documento afectado!',
-                            'error'
-                          )
-                        }
-                      },
-                      error: function (data) {
-                        Swal.fire({
-                           type: 'error',
-                           title: 'Oops...',
-                           text: err.statusText,
-                         });
-                      }
-                    });
-                  }
-                }//value
-              })
-            }
-          },*/
-
         ],
         language:{
             "sProcessing":     "Procesando...",

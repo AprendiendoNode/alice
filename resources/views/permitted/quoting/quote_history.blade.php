@@ -48,13 +48,13 @@
         </div>
       </div>
       <br>
+      @if( auth()->user()->can('View level zero documentp notification') )
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
           <div class="table-responsive">
             <table id="table_quoting" class="table table-striped table-bordered table-hover table-condensed mt-3">
               <thead>
                 <tr style="background: #0E2A38;color: white;">
-                  <th> <small></th>
                   <th> <small>Fecha de solicitud</small> </th>
                   <th> <small>Nombre del proyecto</small> </th>
                   <th> <small>$ EA USD</small> </th>
@@ -64,7 +64,6 @@
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>Doc.</small> </th>
-                  <th> <small></small> </th>
                   <th> <small></small> </th>
                 </tr>
               </thead>
@@ -88,6 +87,52 @@
           </div>
         </div>
       </div>
+    @elseif ( auth()->user()->can('View level one documentp notification') ||
+              auth()->user()->can('View level two documentp notification') ||
+              auth()->user()->can('View level three documentp notification'))
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
+            <div class="table-responsive">
+              <table id="table_quoting" class="table table-striped table-bordered table-hover table-condensed mt-3">
+                <thead>
+                  <tr style="background: #0E2A38;color: white;">
+                    <th> <small></th>
+                    <th> <small>Fecha de solicitud</small> </th>
+                    <th> <small>Nombre del proyecto</small> </th>
+                    <th> <small>$ EA USD</small> </th>
+                    <th> <small>$ ENA USD</small> </th>
+                    <th> <small>$ MO USD</small> </th>
+                    <th> <small>Solicitó</small> </th>
+                    <th> <small>Estatus</small> </th>
+                    <th> <small>V.</small> </th>
+                    <th> <small>Doc.</small> </th>
+                    <th> <small></small> </th>
+                    <th> <small></small> </th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot id='tfoot_average'>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      @else
+        @include('default.denied')
+      @endif
 @endsection
 
 @push('scripts')
@@ -98,7 +143,13 @@
   <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
   <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
-  <script src="{{ asset('js/admin/quoting/requests_quoting_all.js')}}"></script>
-  <script src="{{ asset('js/admin/quoting/request_modal_quoting.js')}}"></script>
-
+  @if( auth()->user()->can('View level zero documentp notification') )
+    <script src="{{ asset('js/admin/quoting/requests_quoting_0.js?v=3.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=3.0.0')}}"></script>
+  @elseif ( auth()->user()->can('View level one documentp notification') ||
+            auth()->user()->can('View level two documentp notification') ||
+            auth()->user()->can('View level three documentp notification'))
+    <script src="{{ asset('js/admin/quoting/requests_quoting_all.js?v=3.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=3.0.0')}}"></script>
+  @endif
 @endpush
