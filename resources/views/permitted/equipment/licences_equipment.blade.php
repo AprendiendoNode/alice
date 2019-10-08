@@ -1,14 +1,23 @@
 @extends('layouts.admin')
+
 @section('contentheader_title')
-Licencias
+  @if( auth()->user()->can('View equipment licences') )
+    Licencias
+  @else
+    {{ trans('message.denied') }}
+  @endif
 @endsection
-@section('contentheader_description')
-Equipos con fecha de vencimiento
-@endsection
+
 @section('breadcrumb_title')
-Licencias
+  @if( auth()->user()->can('View equipment licences') )
+    Licencias
+  @else
+    {{ trans('message.denied') }}
+  @endif
 @endsection
+
 @section('content')
+    @if( auth()->user()->can('View equipment licences') )
   <div class="container">
      <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mb-3">
@@ -113,12 +122,22 @@ Licencias
         </div>
       </div>
   </div>
+
+      @else
+        @include('default.denied')
+      @endif
 @endsection
+
 @push('scripts')
+    @if( auth()->user()->can('View equipment licences') )
 <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js') }}" type="text/javascript"></script>
 <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
 <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
 <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
 <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
 <script src="{{ asset('js/admin/equipment/licences_equipment.js')}}"></script>
+
+  @else
+    <!--NO VER-->
+  @endif
 @endpush
