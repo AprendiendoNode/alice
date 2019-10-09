@@ -228,7 +228,7 @@ function set_table_objetivos(){
   let utilidad_3_anios = utilidad_mensual * 36;
   let utilidad_inversion = (utilidad_mensual / total_inversion) * 100;
 
-  let renta_mensual_inversion = (parseFloat(renta) - enlace ) / ( parseFloat(total_inversion) - parseFloat(capex) - parseFloat(deposito));
+  let renta_mensual_inversion = (parseFloat(renta)) / ( parseFloat(total_inversion) - parseFloat(capex) - parseFloat(deposito));
   renta_mensual_inversion *= 100;
 
   let utilidad_renta_percent =  utilidad_mensual / (parseFloat(renta) - enlace);

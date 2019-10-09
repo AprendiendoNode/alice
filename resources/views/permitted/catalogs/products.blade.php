@@ -749,9 +749,9 @@
   <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
-  <script src="{{ asset('js/admin/catalogs/products.js')}}"></script>
-  <script src="{{ asset('js/admin/catalogs/modal_products.js')}}"></script>
-  <script src="{{ asset('js/admin/catalogs/modal_edit_products.js')}}"></script>
+  <script src="{{ asset('js/admin/catalogs/products.js?v=2.0.0')}}"></script>
+  <script src="{{ asset('js/admin/catalogs/modal_products.js?v=2.0.0')}}"></script>
+  <script src="{{ asset('js/admin/catalogs/modal_edit_products.js?v=2.0.0')}}"></script>
 
   <style media="screen">
     #table_product tbody tr td{

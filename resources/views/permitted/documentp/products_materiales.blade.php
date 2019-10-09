@@ -55,8 +55,8 @@
 
 {{ $products_materiales->render() }}
 
-<script type="text/javascript" src="{{asset('js/admin/documentp/carrito_materiales.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/admin/documentp/carrito_categorias.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/admin/documentp/carrito_materiales.js?v=2.0.0')}}"></script>
+<script type="text/javascript" src="{{asset('js/admin/documentp/carrito_categorias.js?v=2.0.0')}}"></script>
 <script type="text/javascript">
   $("[data-toggle=popover]").popover();
 </script>

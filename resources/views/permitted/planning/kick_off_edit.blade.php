@@ -484,7 +484,12 @@
                             </div>
                           </div>
                           <div class="form-row d-flex align-items-center mb-2">
-                            <button class="btn btn-block btn-success" onclick="show_comision();" type="button" name="button"><i class="fas fa-wallet"></i> Ver comisión</button>
+                            <div class="col-6">
+                              <a href="/view_pdf_propuesta_comercial/{{$document[0]->id}}" target="_blank" class="btn btn-danger" rol="button"><i class="fas fa-file-pdf"></i> Propuesta comercial</a>
+                            </div>
+                            <div class="col-6">
+                              <button class="btn btn-success" onclick="show_comision();" type="button" name="button"><i class="fas fa-wallet"></i> Ver comisiónes</button>
+                            </div>
                           </div>
                           </div>
                         </div>
@@ -1115,7 +1120,7 @@
   @endif
   <script type="text/javascript" src="{{asset('js/admin/quoting/kickoff.js?v?=2.0.0')}}"></script>
   <script type="text/javascript" src="{{asset('js/admin/quoting/modal_linea_base.js')}}"></script>
-  <script type="text/javascript" src="{{asset('js/admin/quoting/comision.js')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/quoting/comision.js?v=2.0.0')}}"></script>
   <script type="text/javascript" src="{{asset('js/admin/documentp/request_modal_documentp.js')}}"></script>
   <style media="screen">
 

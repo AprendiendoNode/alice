@@ -463,6 +463,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/approval_director_operaciones/id_doc/{id}', 'Projects\KickoffController@approval_director_operaciones');
   Route::get('/approval_director_general/id_doc/{id}', 'Projects\KickoffController@approval_director_general');
   Route::get('/notificaciones_read_doc/{id}', 'Auth\NotificationController@read_docp');
+  Route::get('/view_pdf_propuesta_comercial/{id_doc}', 'Projects\KickoffController@generate_pdf_propuesta'); 
+
   //Notificaciones viaticos
   Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');
   Route::get('/notificaciones_read/{id}', 'Auth\NotificationController@read');
