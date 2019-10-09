@@ -525,7 +525,7 @@
                             <select class="form-control required" id="sel_no_month" name="sel_no_month" style="width:100%;">
                               <option value="" selected>{{ trans('pay.select_op') }}</option>
                               @for ($i = 1; $i <= 120; $i++)
-                              <option value="{{ $i }}"> {{ $i }} </option>
+                                <option value="{{ $i }}"> {{ $i }} </option>
                               @endfor
                             </select>
                           </div>
@@ -549,12 +549,12 @@
                             <label for="fileInputAnexo"> Cargar anexo del contrato:</label>
                             <div id="cont_file_anexo" class="">
                               <div class="input-group">
-                                  <label class="input-group-btn">
-                                      <span class="btn btn-primary">
-                                          Contrato (PDF Max 20MB) <input id="fileInputAnexo" name="fileInputAnexo" type="file" style="display: none;" class="required">
-                                      </span>
-                                  </label>
-                                  <input type="text" class="form-control" readonly>
+                                <label class="input-group-btn">
+                                  <span class="btn btn-primary">
+                                    Contrato (PDF Max 20MB) <input id="fileInputAnexo" name="fileInputAnexo" type="file" style="display: none;" class="required">
+                                  </span>
+                                </label>
+                                <input type="text" class="form-control" readonly>
                               </div>
                             </div>
                           </div>
@@ -567,12 +567,9 @@
                             </label>
                             <select class="form-control required" id="sel_itconcierge" name="sel_itconcierge" style="width:100%;">
                               <option value="" selected>{{ trans('pay.select_op') }}</option>
-                              <option value="5">Angel Gabriel</option>
-                              <option value="4">Angel Lopez</option>
-                              <option value="3">Jose Luis</option>
 
                               @forelse ($itconcierge as $data_itconcierge)
-                              <option value="{{ $data_itconcierge->id }}"> {{ $data_itconcierge->nombre }} </option>
+                                <option value="{{ $data_itconcierge->id }}"> {{ $data_itconcierge->nombre }} </option>
                               @empty
                               @endforelse
 
@@ -586,7 +583,7 @@
                             <select class="form-control required" id="sel_business_executive" name="sel_business_executive" style="width:100%;">
                               <option value="" selected>{{ trans('pay.select_op') }}</option>
                               @forelse ($vendedores as $data_vendedores)
-                              <option value="{{ $data_vendedores->id }}"> {{ $data_vendedores->nombre }} </option>
+                                <option value="{{ $data_vendedores->id }}"> {{ $data_vendedores->nombre }} </option>
                               @empty
                               @endforelse
                             </select>
@@ -599,7 +596,7 @@
                             <select class="form-control required" id="sel_estatus_anexo" name="sel_estatus_anexo" style="width:100%;">
                               <option value="" selected>{{ trans('pay.select_op') }}</option>
                               @forelse ($contract_status as $data_contract_status)
-                              <option value="{{ $data_contract_status->id }}"> {{ $data_contract_status->name }} </option>
+                                <option value="{{ $data_contract_status->id }}"> {{ $data_contract_status->name }} </option>
                               @empty
                               @endforelse
                             </select>
@@ -613,146 +610,178 @@
                             <input class="form-control required" id="num_vto" name="num_vto" type="number" min="0" max="99" maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                           </div>
                         </div>
-                      </div>
-
-                  <div class="row pt-3">
-                    <div class="row">
-                      <div class="col-xs-1" style="width: 12.499999995%">
-                        <label for="c_price[0].price" class="col-xs-12">Mensualidad:</label>
-                        <input  maxlength="10" type="text" class="form-control xf moneditas required" name="c_price[0].price" placeholder="Monto Mensual" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" data_row="0"/>
-                      </div>
-                      <div class="col-xs-1" style="width: 12.499999995%">
-                        <label for="c_coin[0].coin" class="control-label">Moneda:</label>
-                        <select name="c_coin[0].coin" class="form-control coin required" style="padding-left: 4px;">
-                          <option value="" selected>{{ trans('pay.select_op') }}</option>
-                          @forelse ($currency as $data_currency)
-                          <option value="{{ $data_currency->id }}"> {{ $data_currency->name }} </option>
-                          @empty
-                          @endforelse
-                        </select>
-                      </div>
-                      <div class="col-xs-1">
-                        <div class="form-group">
-                          <label for="c_tcambopt[0].tcambopt" class="control-label">Tipo de cambio:</label>
-                          <div id="cont_tp" class="input-group">
-                            <span class="input-group-btn">
-                              <select datas="tp_forma" class="form-control required" id="c_tcambopt[0].tcambopt" name="c_tcambopt[0].tcambopt" >
-                                <option value="" selected>{{ trans('pay.select_op') }}</option>
-                                <option value="1"> Fijo</option>
-                                <option value="2"> Al dia</option>
-                              </select>
-                            </span>
-                            <span class="input-group-btn ">
-                              <input datas="tp_valor" type="text" class="form-control" name="c_tcamb[0].tcamb" placeholder="TC" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly />
-                            </span>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="sel_unitmeasure"> Unidad de medida (Para facturación):
+                            </label>
+                            <select class="form-control required" id="sel_unitmeasure" name="sel_unitmeasure" style="width:100%;">
+                              <option value="" selected>{{ trans('pay.select_op') }}</option>
+                              @forelse ($unitmeasures as $unitmeasures_data)
+                                <option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="sel_satproduct"> Prod/Serv SAT (Para facturación):
+                            </label>
+                            <select class="form-control required" id="sel_satproduct" name="sel_satproduct" style="width:100%;">
+                              <option value="" selected>{{ trans('pay.select_op') }}</option>
+                              @forelse ($satproduct as $satproduct_data)
+                                <option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}] {{ $satproduct_data->name }}</option>
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label for="description_fact" class="control-label">Descripcion (Para facturación):</label>
+                            <input class="form-control required" id="description_fact" name="description_fact" type="text" >
                           </div>
                         </div>
                       </div>
-                      <div class="col-xs-1">
-                        <label for="c_valiva[0].valiva" class="control-label">IVA%:</label>
-                        <select name="c_valiva[0].valiva" class="form-control required" style="padding-left: 4px;">
-                          @forelse ($iva as $data_iva)
-                            @if ( $data_iva->number == 16)
-                              <option value="{{ $data_iva->number }}" selected> {{ $data_iva->number }} </option>
-                            @else
-                              <option value="{{ $data_iva->number }}"> {{ $data_iva->number }} </option>
-                            @endif
-                          @empty
-                          @endforelse
-                        </select>
-                      </div>
-                      <div class="col-xs-1" style="width: 12.499999995%">
-                        <label for="c_montoiva[0].montoiva" class="control-label" style="font-size:12px">Mensualidad c/iva:</label>
-                        <input type="text" class="form-control required" name="c_montoiva[0].montoiva" placeholder="Total" readonly/>
-                      </div>
-                      <div class="col-xs-1" style="width: 12.499999995%">
-                        <label for="c_vtcreal[0].vtcreal" class="control-label">VTC S/IVA:</label>
-                        <input type="text" class="form-control totalmoneda required" name="c_vtcreal[0].vtcreal" placeholder="Total" readonly/>
-                      </div>
-                      <div class="col-xs-1" style="width: 12.499999995%">
-                        <label for="c_vtcdinamic[0].vtcdinamic" class="control-label">VTC Dinamico:</label>
-                        <input type="text" class="form-control totalmoneda required" name="c_vtcdinamic[0].vtcdinamic" placeholder="Total" readonly/>
-                      </div>
-                      <div class="col-xs-1 ">
-                        <button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
-                      </div>
-                      <div class="col-xs-3 col-md-offset-9">
-                        <div class="checkbox">
-                          <label>
-                            <input type="checkbox" id="c_checkiva[0].checkiva" name="c_checkiva[0].checkiva">
-                            No calcular IVA.
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row clone hide" id="optionTemplateAnexo">
-                      <div class="col-xs-1" style="width: 12.499999995%">
-                        <input maxlength="10" type="text" class="form-control" name="price" placeholder="Monto Mensual" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" data_row="0"/>
-                      </div>
-                      <div class="col-xs-1" style="width: 12.499999995%">
-                        <select name="coin" class="form-control"  style="padding-left: 4px;">
-                          <option value="" selected>{{ trans('pay.select_op') }}</option>
-                          @forelse ($currency as $data_currency)
-                          <option value="{{ $data_currency->id }}"> {{ $data_currency->name }} </option>
-                          @empty
-                          @endforelse
-                        </select>
-                      </div>
-                      <div class="col-xs-2">
-                        <div class="form-group">
-                          <div id="cont_tp" class="input-group">
-                            <span class="input-group-btn">
-                              <select datas="tp_forma" class="form-control" id="tcambopt" name="tcambopt">
-                                <option value="" selected>{{ trans('pay.select_op') }}</option>
-                                <option value="1"> Fijo</option>
-                                <option value="2"> Al dia</option>
-                              </select>
-                            </span>
-                            <span class="input-group-btn">
-                              <input datas="tp_valor" type="text" class="form-control" name="tcamb" placeholder="TC" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly/>
-                            </span>
+
+                      <div class="row pt-3">
+                        <div class="row">
+                          <div class="col-xs-1" style="width: 12.499999995%">
+                            <label for="c_price[0].price" class="col-xs-12">Mensualidad:</label>
+                            <input  maxlength="10" type="text" class="form-control xf moneditas required" name="c_price[0].price" placeholder="Monto Mensual" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" data_row="0"/>
+                          </div>
+                          <div class="col-xs-1" style="width: 12.499999995%">
+                            <label for="c_coin[0].coin" class="control-label">Moneda:</label>
+                            <select name="c_coin[0].coin" class="form-control coin required" style="padding-left: 4px;">
+                              <option value="" selected>{{ trans('pay.select_op') }}</option>
+                              @forelse ($currency as $data_currency)
+                                <option value="{{ $data_currency->id }}"> {{ $data_currency->name }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                          <div class="col-xs-1">
+                            <div class="form-group">
+                              <label for="c_tcambopt[0].tcambopt" class="control-label">Tipo de cambio:</label>
+                              <div id="cont_tp" class="input-group">
+                                <span class="input-group-btn">
+                                  <select datas="tp_forma" class="form-control required" id="c_tcambopt[0].tcambopt" name="c_tcambopt[0].tcambopt" >
+                                    <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                    <option value="1"> Fijo</option>
+                                    <option value="2"> Al dia</option>
+                                  </select>
+                                </span>
+                                <span class="input-group-btn ">
+                                  <input datas="tp_valor" type="text" class="form-control" name="c_tcamb[0].tcamb" placeholder="TC" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-xs-1">
+                            <label for="c_valiva[0].valiva" class="control-label">IVA%:</label>
+                            <select name="c_valiva[0].valiva" class="form-control required" style="padding-left: 4px;">
+                              @forelse ($iva as $data_iva)
+                                @if ( $data_iva->number == 16)
+                                  <option value="{{ $data_iva->number }}" selected> {{ $data_iva->number }} </option>
+                                @else
+                                  <option value="{{ $data_iva->number }}"> {{ $data_iva->number }} </option>
+                                @endif
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                          <div class="col-xs-1" style="width: 12.499999995%">
+                            <label for="c_montoiva[0].montoiva" class="control-label" style="font-size:12px">Mensualidad c/iva:</label>
+                            <input type="text" class="form-control required" name="c_montoiva[0].montoiva" placeholder="Total" readonly/>
+                          </div>
+                          <div class="col-xs-1" style="width: 12.499999995%">
+                            <label for="c_vtcreal[0].vtcreal" class="control-label">VTC S/IVA:</label>
+                            <input type="text" class="form-control totalmoneda required" name="c_vtcreal[0].vtcreal" placeholder="Total" readonly/>
+                          </div>
+                          <div class="col-xs-1" style="width: 12.499999995%">
+                            <label for="c_vtcdinamic[0].vtcdinamic" class="control-label">VTC Dinamico:</label>
+                            <input type="text" class="form-control totalmoneda required" name="c_vtcdinamic[0].vtcdinamic" placeholder="Total" readonly/>
+                          </div>
+                          <div class="col-xs-1 ">
+                            <button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+                          </div>
+                          <div class="col-xs-3 col-md-offset-9">
+                            <div class="checkbox">
+                              <label>
+                                <input type="checkbox" id="c_checkiva[0].checkiva" name="c_checkiva[0].checkiva">
+                                No calcular IVA.
+                              </label>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-xs-1">
-                        <select name="valiva" class="form-control" style="padding-left: 4px;">
-                          <option value="0">0</option>
-                          <option value="16" selected>16</option>
-                          @forelse ($iva as $data_iva)
-                            @if ( $data_iva->number == 16)
-                              <option value="{{ $data_iva->number }}" selected> {{ $data_iva->number }} </option>
-                            @else
-                              <option value="{{ $data_iva->number }}"> {{ $data_iva->number }} </option>
-                            @endif
-                          @empty
-                          @endforelse
-                        </select>
-                      </div>
-                      <div class="col-xs-1" style="width: 12.499999995%">
-                        <input type="text" class="form-control" name="montoiva" placeholder="Total" readonly/>
-                      </div>
-                      <div class="col-xs-1" style="width: 12.499999995%">
-                        <input type="text" class="form-control" name="vtcreal" placeholder="Total" readonly/>
-                      </div>
-                      <div class="col-xs-1" style="width: 12.499999995%">
-                        <input type="text" class="form-control" name="vtcdinamic" placeholder="Total" readonly/>
-                      </div>
-                      <div class="col-xs-1">
-                        <button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
-                      </div>
-                      <div class="col-xs-3 col-md-offset-9">
-                        <div class="checkbox">
-                          <label>
-                            <input type="checkbox" id="checkiva" name="checkiva">
-                            No calcular IVA.
-                          </label>
+                        <div class="row clone hide" id="optionTemplateAnexo">
+                          <div class="col-xs-1" style="width: 12.499999995%">
+                            <input maxlength="10" type="text" class="form-control" name="price" placeholder="Monto Mensual" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" data_row="0"/>
+                          </div>
+                          <div class="col-xs-1" style="width: 12.499999995%">
+                            <select name="coin" class="form-control"  style="padding-left: 4px;">
+                              <option value="" selected>{{ trans('pay.select_op') }}</option>
+                              @forelse ($currency as $data_currency)
+                                <option value="{{ $data_currency->id }}"> {{ $data_currency->name }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                          <div class="col-xs-2">
+                            <div class="form-group">
+                              <div id="cont_tp" class="input-group">
+                                <span class="input-group-btn">
+                                  <select datas="tp_forma" class="form-control" id="tcambopt" name="tcambopt">
+                                    <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                    <option value="1"> Fijo</option>
+                                    <option value="2"> Al dia</option>
+                                  </select>
+                                </span>
+                                <span class="input-group-btn">
+                                  <input datas="tp_valor" type="text" class="form-control" name="tcamb" placeholder="TC" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly/>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-xs-1">
+                            <select name="valiva" class="form-control" style="padding-left: 4px;">
+                              <option value="0">0</option>
+                              <option value="16" selected>16</option>
+                              @forelse ($iva as $data_iva)
+                                @if ( $data_iva->number == 16)
+                                  <option value="{{ $data_iva->number }}" selected> {{ $data_iva->number }} </option>
+                                @else
+                                  <option value="{{ $data_iva->number }}"> {{ $data_iva->number }} </option>
+                                @endif
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                          <div class="col-xs-1" style="width: 12.499999995%">
+                            <input type="text" class="form-control" name="montoiva" placeholder="Total" readonly/>
+                          </div>
+                          <div class="col-xs-1" style="width: 12.499999995%">
+                            <input type="text" class="form-control" name="vtcreal" placeholder="Total" readonly/>
+                          </div>
+                          <div class="col-xs-1" style="width: 12.499999995%">
+                            <input type="text" class="form-control" name="vtcdinamic" placeholder="Total" readonly/>
+                          </div>
+                          <div class="col-xs-1">
+                            <button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+                          </div>
+                          <div class="col-xs-3 col-md-offset-9">
+                            <div class="checkbox">
+                              <label>
+                                <input type="checkbox" id="checkiva" name="checkiva">
+                                No calcular IVA.
+                              </label>
+                            </div>
+                          </div>
+
+
                         </div>
+
                       </div>
-
-
-                    </div>
-
-                  </div>
 
                     </section>
                     <!-- Step 3 -->

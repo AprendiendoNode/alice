@@ -45,9 +45,9 @@ function leerDatosProduct(producto){
   var cant_req = producto.getElementsByClassName("cant_req")[0].value;
   var currency_id = $(button).attr('data-currency-id');
   var categoria_id = $(button).attr('data-categoria-id');
+  var descuento = $(button).attr('data-discount');
   var precio = $(button).attr('data-price');
   var precioTotal = 0.0;
-
   var precio_usd = 0.0;
 
   if(cant_req == 0){
@@ -58,6 +58,7 @@ function leerDatosProduct(producto){
   }
 
   precioTotal = (parseFloat(cant_req) * parseFloat(precio));
+  precioTotal -= percent(descuento, parseFloat(precioTotal));
 
   if(currency_id == 1){
     precio_usd = precioTotal / parseFloat(tipo_cambio);
@@ -78,7 +79,7 @@ function leerDatosProduct(producto){
        currency: $(button).attr('data-currency'),
        currency_id: currency_id,
        proveedor: $(button).attr('data-proveedor'),
-       descuento: 0,
+       descuento: $(button).attr('data-discount'),
        cant_sug: parseFloat(cant_sug),
        cant_req: cant_req,
        precio_total : precioTotal.toFixed(2),

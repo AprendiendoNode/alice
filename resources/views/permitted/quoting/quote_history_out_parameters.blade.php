@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View history quoting') )
-    Historial de cotizaciones
+    Cotizaciones fuera de parametros
   @else
     {{ trans('message.denied') }}
   @endif
@@ -11,7 +11,7 @@
 
 @section('breadcrumb_title')
    @if( auth()->user()->can('View history quoting') )
-    Historial de cotizaciones
+    Cotizaciones fuera de parametros
     @else
       {{ trans('message.denied') }}
     @endif
@@ -144,12 +144,12 @@
   <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
   @if( auth()->user()->can('View level zero documentp notification') )
-    <script src="{{ asset('js/admin/quoting/requests_quoting_0.js?v=3.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/requests_quoting_out_parameters_0.js?v=1.0.0')}}"></script>
     <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=3.0.0')}}"></script>
   @elseif ( auth()->user()->can('View level one documentp notification') ||
             auth()->user()->can('View level two documentp notification') ||
             auth()->user()->can('View level three documentp notification'))
-    <script src="{{ asset('js/admin/quoting/requests_quoting_all.js?v=3.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/requests_quoting_out_parameters_all.js?v=1.0.0')}}"></script>
     <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=3.0.0')}}"></script>
   @endif
 @endpush

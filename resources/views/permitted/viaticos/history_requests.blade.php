@@ -220,7 +220,7 @@
             </div>
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
-              <div class="">
+              <div class="table-responsive">
                 <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100">
                   <thead>
                     <tr class="bg-primary" >
@@ -368,7 +368,7 @@
             </div>
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
-              <div class="">
+              <div class="table-responsive">
                 <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab"  style="width:100%">
                   <thead>
                     <tr class="bg-primary" >
@@ -469,7 +469,7 @@
             </div>
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
-              <div class="">
+              <div class="table-responsive">
                 <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab" style="width:100%" >
                   <thead>
                     <tr class="bg-primary">
@@ -573,7 +573,7 @@
 
             <div class="row" >
             <div  class="container-fluid">
-
+              <div class="table-responsive">
                 <table id="table_viatics" class="table table-sm table-striped table-bordered table-hover compact-tab" style="width:100%">
                   <thead  >
                     <tr class="bg-primary" class="overflow-text" >
@@ -609,6 +609,7 @@
                     </tr>
                   </tfoot>
                 </table>
+                </div>
               </div>
             </div>
           </div>
@@ -640,7 +641,7 @@
 
             <div class="row" >
             <div  class="container-fluid">
-
+              <div class="table-responsive">
                 <table id="table_viatics" class="table table-sm table-striped table-bordered table-hover w-100" style="width:100% !important;">
                   <thead  >
                     <tr class="bg-primary"class="overflow-text text-white" >
@@ -676,6 +677,7 @@
                     </tr>
                   </tfoot>
                 </table>
+                </div>
               </div>
             </div>
 

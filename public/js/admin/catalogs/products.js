@@ -620,6 +620,7 @@ function edit_product(e){
          $('#inputEditcoindefault').val(data[0].price);
          $('#inputEditdescription').val(data[0].description);
          $('#inputEditcomment').val(data[0].comment);
+         $('#edit_discount').val(data[0].discount);
 
          $('[name="edit_sel_categoria"]').val(data[0].categoria_id).trigger('change');
          $('[name="editsel_modal_coin"]').val(data[0].currency_id).trigger('change');

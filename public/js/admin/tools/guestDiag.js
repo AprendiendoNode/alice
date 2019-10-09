@@ -45,7 +45,6 @@ $('#btnDiag2').on('click', function(e){
 
 		$.get('/DiagHuespedAjax2?hotelCode=' + codigoH + '&roomNum=' + roomNumba, function(data){
 			//console.log(data);
-
 			var parseo2 = JSON.parse(data);
 			//console.log(parseo2);
 			$('#fila-p2').show();
@@ -67,7 +66,7 @@ $('#btnDiag').on('click', function(e){
 	var codigoH = $('#codigoHotel').val();
 	var roomNumba = $('#numeroHab').val();
 	var _token = $('input[name="_token"]').val();
-
+	// console.log(codigoH);
 	if (codigoH == '' || roomNumba == ''){
 		swal({
 			title: "Error",
@@ -81,9 +80,14 @@ $('#btnDiag').on('click', function(e){
 			type: "error",
 		});
 	}else{
-		//console.log('correcto todo');
-		refresh_table2(codigoH, roomNumba);
-		web_service();
+		if (codigoH == 'HE' || codigoH == 'MF') {
+			//console.log('correcto todo');
+			refresh_table2(codigoH, roomNumba);
+		}else{
+			//console.log('correcto todo');
+			refresh_table2(codigoH, roomNumba);
+			web_service();
+		}
 	}
 });
 

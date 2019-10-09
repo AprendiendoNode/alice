@@ -70,7 +70,7 @@
                     </span>
                   <hr />
                   <div class="clearfix mt-10">
-                    <div class=" table_dyn_mx">
+                    <div class="table-responsive table_dyn_mx">
                       <table id="table_banks1" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>
                           <tr style="background: #1B1D23">
@@ -110,7 +110,7 @@
                     </span>
                   <hr />
                   <div class="clearfix mt-10">
-                    <div class=" table_dyn_usd">
+                    <div class="table-responsive table_dyn_usd">
                       <table id="table_banks2" class="table table-bordered table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>
                           <tr style="background: #1B1D23">
@@ -152,7 +152,7 @@
                     </span>
                   <hr />
                   <div class="clearfix mt-10">
-                    <div class=" table_dyn_ext">
+                    <div class="table-responsive table_dyn_ext">
                       <table id="table_banks3" class="table table-bordered table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>
                           <tr style="background: #1B1D23">
@@ -177,33 +177,19 @@
                             <th id="t3_i"></th>
                             <th id="t3_f"></th>
                           </tr>
+                          <tr style="background: #252525; padding:0;" >
+                            <th class="text-white" colspan="5">Gran total</th>
+                            <th class="text-white" id="gt_i"></th>
+                            <th class="text-white" id="gt_f"></th>
+                          </tr>
+
                         </tfoot>
                       </table>
                     </div>
                   </div>
                 </div>
             </div>
-            <div class="col-md-12">
 
-
-            <div class="row"  style="background: #252525; padding:0;">
-              <div class="col-md-8">
-                <span class="text-white" >
-                  <strong> Gran total</strong>
-                </span>
-              </div>
-              <div class="col-md-2 text-center">
-                <span class="  text-white">
-                  <strong id="gt_i">0 </strong>
-                </span>
-              </div>
-              <div class="col-md-2 text-center">
-                <span class="text-white">
-                  <strong id="gt_f">0 </strong>
-                </span>
-              </div>
-            </div>
-            </div>
             <div class="row text-center contact-info">
                 <div class="col-sm-12">
                   <hr />
@@ -213,7 +199,7 @@
                   <hr />
                   <div class="clearfix mt-10">
                     <!-- <div id="main_nps" style="width: 100%; min-height: 400px; border:1px solid #ccc;padding:10px;"></div> -->
-                    <div class="">
+                    <div class="table-responsive">
                       <table id="table_all_banks" class="table table-bordered table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>
                           <!-- <tr class="bg-primary" style="background: #3D82C2">
@@ -279,7 +265,7 @@
                     </span>
                   <hr />
                   <div class="clearfix mt-10">
-                    <div class="">
+                    <div class="table-responsive">
                       <table id="table_cxc" class="table table-bordered table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>
                           <tr>
@@ -355,7 +341,7 @@
                 <div class="col-sm-12">
 
                   <div class="clearfix mt-10">
-                    <div class="">
+                    <div class="table-responsive">
                       <table id="table_validaciones" class="table table-bordered display table-striped table-hover compact-tab" style="width: 100%">
                         <thead>
                           <tr>
@@ -405,7 +391,7 @@
 
             <div class="row text-center contact-info">
                 <div class="col-sm-12">
-                  <div class="clearfix mt-10">
+                  <div class=" table-responsive clearfix mt-10">
                       <table id="table_cxc_vencidas" class="table table-bordered table-striped table-hover display compact-tab" style="width: 100%;">
                         <thead>
                           <tr class="" style="background: #252525">

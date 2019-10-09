@@ -7,6 +7,95 @@ function show_comision(){
   }
 }
 
+function comisionByDefault(){
+  let id = document.getElementById('id').value;
+  let itconciergecomision = document.getElementById('itconciergecomision').value;
+  let vendedor = document.getElementById('vendedor').value;
+  let inside_sales = document.getElementById('inside_sales').value;
+  let colaborador = document.getElementById('colaborador').value;
+  let contacto_comercial = document.getElementById('contacto_comercial').value;
+  let cierre = document.getElementById('cierre').value;
+  let comision_externo = document.getElementById('comision_externo').value;
+  let comision_externo_2 = document.getElementById('comision_externo_2').value;
+
+  var data = {
+    id: id,
+    itconciergecomision: itconciergecomision,
+    vendedor: vendedor,
+    inside_sales: inside_sales,
+    colaborador: colaborador,
+    contacto_comercial: contacto_comercial,
+    cierre: cierre,
+    comision_externo: comision_externo,
+    comision_externo_2: comision_externo_2
+  }
+
+  var _token = $('input[name="_token"]').val();
+
+  const headers2 = new Headers({
+        "Accept": "application/json",
+        'Content-Type': 'application/json',
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRF-TOKEN": _token
+  })
+
+  var miInit = {
+    method: 'post',
+    headers: headers2,
+    credentials: "same-origin",
+    body: JSON.stringify(data),
+    cache: 'default' };
+
+  Swal.fire({
+    title: '¿Estas seguro?',
+    text: "Se calculara los porcentajes deacuerdo a la politica de comisiones",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Continuar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.value) {
+      fetch('/update_kickoff_comisionByDefault', miInit)
+        .then(response => {
+          if(response.ok) {
+            Swal.fire('Comisión guardada','', 'success');
+            return response.json();
+          } else {
+            Swal.fire('Ocurrio un error al guardar','', 'error');
+          }
+        })
+        .then(data => {
+          console.log(data);
+          document.getElementById('amount_comission_itc').value =format_number(data.amount_itc);
+          document.getElementById('amount_inside_sales').value = format_number(data.amount_inside_sales);
+          document.getElementById('amount_contacto').value = format_number(data.amount_contacto);
+          document.getElementById('amount_cierre').value = format_number(data.amount_cierre);
+
+          document.getElementById('percent_comission_itc').value = data.percent_itc;
+          document.getElementById('percent_inside_sales').value = data.percent_inside_sales;
+          document.getElementById('percent_contacto').value = data.percent_contacto;
+          document.getElementById('percent_cierre').value = data.percent_cierre;
+
+          document.getElementById('amount_comision_vendedor').value = 0.00;
+          document.getElementById('amount_colaborador').value = 0.00;
+          document.getElementById('amount_externo1').value = 0.00;
+          document.getElementById('amount_externo2').value = 0.00;
+          document.getElementById('percent_colaborador').value = 0;
+          document.getElementById('percent_comision_vendedor').value = 0;
+          document.getElementById('percent_externo1').value = 0;
+          document.getElementById('percent_externo2').value = 0;
+
+        })
+        .catch( error => {
+          console.log('Hubo un problema con la petición:' + error.message);
+        });
+     }
+  })
+
+}
+
 function calcularComision(e){
   e.value = parseInt(e.value);
   let total_comision = parseFloat(document.getElementById("total_comision").innerHTML.replace(/,/g, ""));
@@ -21,7 +110,6 @@ function calcularComision(e){
   let suma_percent = 0;
 
   suma_percent = percent_comission_itc + percent_comision_vendedor + percent_inside_sales + percent_colaborador + percent_contacto + percent_cierre + percent_externo1 + percent_externo2;
-  console.log(suma_percent);
 
   if(suma_percent > 100){
     Swal.fire(``,'El porcentaje total de la comisión supera el 100%', 'warning');
@@ -121,7 +209,7 @@ function save_comision(){
 
   Swal.fire({
     title: '¿Estas seguro?',
-    text: "",
+    text: "Se guardara la comision personalizada",
     type: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',

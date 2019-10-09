@@ -85,7 +85,7 @@ class weeklyxpayments extends Command
 
         $correos = ['aespejo@sitwifi.com','rgonzalez@sitwifi.com','jwalker@sitwifi.com', 'mmoreno@sitwifi.com', 'mlara@sitwifi.com', 'mortiz@sitwifi.com'];
 
-        Mail::to($correos)->send(new SolicitudConP($data));
+        Mail::to($correos)->send(new SolicitudConP($data, $data2));
         // Mail::to('jesquinca@sitwifi.com')->send(new SolicitudConP($data, $data2));
     }
 }

@@ -33,30 +33,30 @@
           <div class="col-sm-8 invoice-col">
             {{ csrf_field() }}
             <div class="form-group">
-              <label>Seleccione el hotel para diagnosticar.</label>
-              <select id="codigoHotel" name="clienteProyectos" class="form-control select2">
-              <option value="" selected>-----------------</option>
-              <option value="PL">Playacar Palace</option>
-              <option value="ZCJG">Jamaica Palace</option>
-              <option value="CZ">Cozumel Palace</option>
-            </select>
+                <label>Seleccione el hotel para diagnosticar.</label>
+                <select id="codigoHotel" name="clienteProyectos" class="form-control select2">
+                  <option value="" selected>-----------------</option>
+                  <option value="PL">Playacar Palace</option>
+                  <option value="ZCJG">Jamaica Palace</option>
+                  <option value="CZ">Cozumel Palace</option>
+                  <option value="HE">Hacienda Encantada</option>
+                  <option value="MF">Marina Fiesta</option>
+                </select>
+            </div>
+            <div class="form-group">
+              <label>Número de Habitación.</label>
+              <input id="numeroHab" type="number" class="form-control" style="text-align: center;">
+            </div>
+            <div class="form-group m-4" align="center">
+              <button id="btnDiag" type="button" style="width: 200px" class="btn btn-block btn-primary">Diagnosticar</button>
+            </div>
+            <div class="form-group m-4" id="fila-p">
+              <textarea id="results" style="height: 150px" class="form-control" readonly></textarea>
+            </div>
+            <div class="form-group m-4" id="fila-p2">
+              <textarea id="results2" style="height: 150px" class="form-control" readonly></textarea>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Número de Habitación.</label>
-            <input id="numeroHab" type="number" class="form-control" style="text-align: center;">
-          </div>
-          <div class="form-group m-4" align="center">
-            <button id="btnDiag" type="button" style="width: 200px" class="btn btn-block btn-primary">Diagnosticar</button>
-          </div>
-          <div class="form-group m-4" id="fila-p">
-            <textarea id="results" style="height: 150px" class="form-control" readonly></textarea>
-          </div>
-          <div class="form-group m-4" id="fila-p2">
-            <textarea id="results2" style="height: 150px" class="form-control" readonly></textarea>
-          </div>
-
-        </div>
-
 
         <div class="col-sm-2"></div>
           <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mt-3">

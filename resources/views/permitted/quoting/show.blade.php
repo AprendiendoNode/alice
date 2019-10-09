@@ -22,13 +22,19 @@
     <div class="container">
       <!-- Validation wizard -->
       <div class="row" id="validation">
-          <div class="col-sm-12">
+          <div class="col-12">
               <div class="white-box contrato_a">
+                  <form id="form_edit_kickoff" class="" action="/edit_kickoff" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="id_doc_3" id="id_doc_3" value="">
+                  </form>
                   <div class="wizard-content">
                     <input type="hidden" name="id_documentp" id="id_documentp" value="{{$id_document}}">
                     <h4 class="text-danger">{{$data_header[0]->folio}}</h4>
                     <h5 class="text-danger">Última actualización: <span id="hour_created">{{$hour_created}}</span></h5>
                     <p class="text-primary">Número de ediciones: {{$data_header[0]->num_edit}}</p>
+                    <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="KICK-OFF" onclick="kickoff(this)" data-id="{{$id_document}}"  value="{{$id_document}}" class="btn btn-success text-white"><span class="fas fa-tasks"></span> Ir a KICK-OFF</a>
+
                       @include('permitted.quoting.form_edit')
                   </div>
               </div>
@@ -78,5 +84,17 @@
       padding: 0.2rem 1.2rem;
     }
   </style>
+  <script type="text/javascript">
+      function kickoff(e){
+        var element = e;
+        var _token = $('input[name="_token"]').val();
+        let id_documentp = element.dataset.id;
+        var form = $('#form_edit_kickoff');
+        $('#id_doc_3').val(id_documentp);
+
+        form.submit();
+
+      }
+  </script>
   @endif
 @endpush

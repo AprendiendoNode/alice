@@ -107,7 +107,7 @@
                   <span class="input-group-addon">{{ trans('general.num_serie') }} <i class="glyphicon glyphicon-asteris text-danger">*</i></span>
                    </div>
                    <div class="col-md-11">
-                     <input id="add_num_se"  name="add_num_se"  type="text" class="form-control" placeholder="Núm. Serie. Mínimo 10 caracteres" maxlength="20">
+                     <input id="add_num_se"  name="add_num_se"  type="text" class="form-control" placeholder="Núm. Serie. Mínimo 10 caracteres" maxlength="25">
                    </div>
                  </div>
                  <br>
@@ -263,11 +263,25 @@
                      </div>
                    </div>
 
+
+                </div>
+
+                <div class="row pt-2">
+                  <div class="col-lg-6 col-md-6">
+                    <div class="input-group row" id="vencimiento" style="visibility: hidden;">
+                      <div class="col-md-3">
+                      <span class="input-group-addon">Fecha de vencimiento</i></span>
+                      </div>
+                     <div class="col-md-9">
+                     <input type="text" class="form-control" id="date_vencimiento" name="date_vencimiento" placeholder="Solo SonicWall"maxlength="10" style="width:80%;">
+                     </div>
+                    </div>
+                  </div>
                   <div class="col-lg-6">
                     <div class="btn-group">
-                       <button type="button" class="btn btn-primary btn-save"><i class="fa fa-save"></i> {{ trans('general.guardar') }}</button>
-                       <button type="button" class="btn btn-default btn-clear"><i class="fa fa-eraser"></i> {{ trans('general.limpiar') }}</button>
-                       <button type="button" class="btn btn-danger btn-cancel"><i class="fa fa-times"></i> {{ trans('general.cancelar') }}</button>
+                       <button type="button" class="btn  btn-sm btn-primary btn-save"><i class="fa fa-save"></i> {{ trans('general.guardar') }}</button>
+                       <button type="button" class="btn btn-sm btn-default btn-clear"><i class="fa fa-eraser"></i> {{ trans('general.limpiar') }}</button>
+                       <button type="button" class="btn btn-sm btn-danger btn-cancel"><i class="fa fa-times"></i> {{ trans('general.cancelar') }}</button>
                     </div>
                   </div>
                 </div>
@@ -436,7 +450,7 @@
                  <div class="col-lg-6">
                    <div class="input-group row">
                      <div class="col-md-3">
-                    <span class="input-group-addon">{{ trans('general.descripcion') }} <i class="glyphicon glyphicon-asteris text-danger">*</i></span>
+                    <span class="input-group-addon">{{ trans('general.descripcion') }}</span>
                      </div>
                      <div class="col-md-9">
                     <input id="add_descrip_masiva" name="add_descrip_masiva" maxlength="150" type="text" class="form-control" placeholder="Descripción. Mínimo 4 caracteres.">
@@ -559,15 +573,29 @@
                    </div>
                  </div>
 
-                <div class="col-lg-6">
+              </div>
+              <div class="row pt-2">
+                <div class="col-lg-6 col-md-6 ">
+                  <div class="input-group row" id="vencimiento_masivo" style="visibility:hidden;">
+                    <div class="col-md-5">
+                    <span class="input-group-addon">Fecha de vencimiento</i></span>
+                    </div>
+                   <div class="col-md-7">
+                   <input type="text" class="form-control" id="date_vencimiento_masivo" name="date_vencimiento_masivo" placeholder="Solo SonicWall"maxlength="10" style="width:80%;">
+                   </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
                   <div class="btn-group">
-                     <button type="button" class="btn btn-primary btn-save-massive"><i class="fa fa-save"></i> {{ trans('general.guardar') }}</button>
-                     <button type="button" class="btn btn-default btn-clear-massive"><i class="fa fa-eraser"></i> {{ trans('general.limpiar') }}</button>
-                     <button type="button" class="btn btn-danger btn-cancel-massive"><i class="fa fa-times"></i> {{ trans('general.cancelar') }}</button>
+                     <button type="button" class="btn btn-sm btn-primary btn-save-massive"><i class="fa fa-save"></i> {{ trans('general.guardar') }}</button>
+                     <button type="button" class="btn btn-sm btn-default btn-clear-massive"><i class="fa fa-eraser"></i> {{ trans('general.limpiar') }}</button>
+                     <button type="button" class="btn btn-sm btn-danger btn-cancel-massive"><i class="fa fa-times"></i> {{ trans('general.cancelar') }}</button>
                   </div>
                 </div>
               </div>
-
+              <div class="row">
+              <span><i class="glyphicon glyphicon-asteris text-danger">Nota:</i>El formulario tomará como prioridad los datos ingresados en el formulario, si tiene una fecha o descripcion en el excel, dejar los campos correspondientes en blanco.</span>
+              </div>
 
 
                <br>
@@ -586,7 +614,7 @@
     <!--Visualización tabla-->
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 ">
           <div class="form-group">
-
+<div class="table-responsive">
               <table class="table table-striped compact-tab" id="preview_excel">
                 <thead class="bg-primary">
                   <tr>
@@ -603,6 +631,7 @@
                     <th>Sitio</th>
                     <th>Precio/peso</th>
                     <th>Grupo</th>
+                    <th>Vencimiento</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -612,7 +641,7 @@
 
                 </tfoot>
               </table>
-
+</div>
           </div>
         </div>
       </div>
@@ -1026,12 +1055,13 @@
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
-      <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
-      <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>
-    <script src="{{ asset('js/admin/equipment/add_equipment.js')}}"></script>
+    <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>
+    <script src="{{ asset('js/admin/equipment/add_equipment.js?v=2.1.0')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
     <link rel="stylesheet" href="{{ asset('plugins/iCheck/square/_all.css') }}" type="text/css" />
     <script src="{{ asset('plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js" charset="utf-8"></script>
     <!--<script src="{{ asset('bower_components/Bootstrap-3-Typeahead-master/bootstrap3-typeahead.min.js')}}"></script>-->
 
   @else

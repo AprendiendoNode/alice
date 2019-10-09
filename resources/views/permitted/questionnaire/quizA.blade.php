@@ -64,11 +64,6 @@
                         <!------------------------------------------------------------------------------------------>
                       @endif
                     </div>
-                    <div class="col-12 text-center">
-                      <h3 class="font-weight-bold text-center">
-                          <span class="text-success">10 - 9</span><span class="text-warning ml-5">8 - 7</span><span class="text-danger ml-5">6 - 0</span>
-                      </h3>
-                  	</div>
                   </div>
 
                 @elseif ($data_question->type_id == '2')

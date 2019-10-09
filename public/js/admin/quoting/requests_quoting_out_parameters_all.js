@@ -38,7 +38,8 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  $.each(datajson, function(index, data){
+  data = datajson.filter(data => data.cotizador_status == 'Fuera de parametros');
+  $.each(data, function(index, data){
     let type_doc = 'C';
     let badge = '';
     switch (data.cotizador_status) {
@@ -71,13 +72,12 @@ function documentp_table(datajson, table){
       type_doc,
       '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a>' +
       '<a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>' +
-      '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Kick-off" onclick="kickoff(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-success btn-sm"><span class="fas fa-tasks"></span></a>' +
       '<a target="_blank" href="/quoting_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fas fa-file-pdf"></span></a>',
       data.cotizador_status
       ]);
     });
 }
-
+//'<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Kick-off" onclick="kickoff(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-success btn-sm"><span class="fas fa-tasks"></span></a>' +
 var Configuration_table_responsive_documentp= {
         "order": [[ 1, "desc" ]],
         "select": true,
@@ -161,8 +161,8 @@ var Configuration_table_responsive_documentp= {
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
           {
-            text: '<i class=""></i> Cambiar estatus de cotizaciones',
-            titleAttr: 'Cambiar estatus de cotizaciones',
+            text: '<i class=""></i> Cambiar estatus de documentos',
+            titleAttr: 'Cambiar estatus de documentos',
             className: 'btn bg-dark',
             init: function(api, node, config) {
               $(node).removeClass('btn-default')
@@ -182,13 +182,12 @@ var Configuration_table_responsive_documentp= {
               }else{
                 Swal.fire({
                   title: "¿Estás seguro?",
-                  html: `Se cambiara el estatus de las cotizaciones seleccionadas!<br><br>
+                  html: `Se cambiara el estatus de los documentos seleccionados!<br><br>
                         <div>
                           <select class='form-control' style='display: block;' id='status_cotizador'>
                           <option value=''>Elegir...</option>
                             <option value='2'>En revision</option>
-                            <option value='3'>Fuera de parametros</option>
-                            <option value='4'>En kick-off</option>
+                            <option value='4'>En Kick-off</option>
                           </select>
                         </div>`,
                   type: "warning",

@@ -435,7 +435,10 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/quoting', 'Projects\QuotingController@index');
   Route::post('/quoating_create', 'Projects\QuotingController@store');
   Route::get('/view_quotig_history', 'Projects\QuotingController@index_history');
+  Route::get('/view_history_quoting_out_parameters', 'Projects\QuotingController@get_history_quoting_out_parameters');
+  Route::get('/view_history_quoting_kickoff', 'Projects\QuotingController@get_history_quoting_kickoff');
   Route::get('/view_auth_history_quoting', 'Projects\QuotingController@view_auth');
+  Route::post('/set_status_quoting', 'Projects\QuotingController@set_status_quoting');
   Route::get('/quoting_table_products/{id_documentp}/{id_cart}', 'Projects\QuotingController@get_table_products');
   Route::get('/quoting_invoice/{id_documentp}/{id_cart}', 'Projects\QuotingController@export_invoice');
   Route::post('/view_request_quoting', 'Projects\QuotingController@get_history_quoting');
@@ -444,8 +447,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/edit_quoting', 'Projects\QuotingEditController@edit');
   //KICK-OFF
   Route::post('/edit_kickoff', 'Projects\KickoffController@index');
-  Route::post('/update_kickoff', 'Projects\KickoffController@update');
+  Route::post('/update_kickoff', 'Projects\KickoffController@u`pdate');
   Route::post('/update_kickoff_comision', 'Projects\KickoffController@update_kickoff_comision');
+  Route::post('/update_kickoff_comisionByDefault', 'Projects\KickoffController@setComision');
   Route::post('/update_kickoff_contract', 'Projects\KickoffController@update_kickoff_contract');
   Route::get('/approval_administracion/id_doc/{id}', 'Projects\KickoffController@approval_administracion');
   Route::get('/approval_comercial/id_doc/{id}', 'Projects\KickoffController@approval_comercial');
@@ -944,6 +948,9 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices-store', 'Sales\CustomerInvoiceController@store');
     Route::post('/customer-invoices-edit', 'Sales\CustomerInvoiceController@edit');
     //
+    Route::post('/customer-invoices-store-cont', 'Sales\CustomerInvoiceController@store_cont');
+
+    //
     Route::get('/products/get-product', 'Sales\CustomerInvoiceController@getproduct');
     Route::post('/customer-invoices/total-lines', 'Sales\CustomerInvoiceController@totallines');
     Route::post('/customer-invoices/currency_now', 'Sales\CustomerInvoiceController@get_currency');
@@ -951,6 +958,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
 
     Route::get('/customer-invoices-cont', 'Sales\CustomerInvoiceController@index2');
     Route::post('/customer-invoices-cont-search', 'Sales\CustomerInvoiceController@search_cont');
+    Route::post('/customer-data-annexes', 'Sales\CustomerInvoiceController@getDataContractAnnexes');
 
     //Notas de credito
     Route::get('/customer-credit-notes', 'Sales\CustomerCreditNoteController@index');

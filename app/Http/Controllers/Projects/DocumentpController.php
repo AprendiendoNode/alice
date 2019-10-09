@@ -122,7 +122,7 @@ class DocumentpController extends Controller
 
         if($new_documentp->doc_type == 1){
           $new_documentp_project = new Documentp_project;
-          $new_documentp_project->id_motivo = 1; //Motivo cliente por default
+          $new_documentp_project->id_motivo = 7; //NA
           $new_documentp_project->id_doc = $new_documentp->id;
           $new_documentp_project->save();
         }

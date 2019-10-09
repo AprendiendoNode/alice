@@ -54,6 +54,7 @@ class DocumentpCartController extends Controller
 
           }catch(\Illuminate\Database\QueryException $e){
             Schema::dropIfExists('equipo_activo_temp' . $id_user);
+            return $e;
           }
 
         } else if ($type == 'second') {

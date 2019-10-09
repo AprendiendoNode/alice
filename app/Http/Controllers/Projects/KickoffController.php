@@ -101,6 +101,15 @@ class KickoffController extends Controller
       return $num_aps;
     }
 
+    public function setComision(Request $request)
+    {
+      $kickoff_comisiones = new Kickoff_comisiones();
+      $comision = $kickoff_comisiones->calculateCommissionByDefault($request->id);
+      $kickoff_comisiones->save_comision_default($request, $comision);
+
+      return $comision;
+    }
+
     public function get_presupuesto_ejercido($id_doc)
     {
       $document = Documentp::find($id_doc);
@@ -652,7 +661,7 @@ class KickoffController extends Controller
       $kickoff_approvals = Kickoff_approvals::where('kickoff_id', $kickoff->id)->first();
       $approval_dir = DB::select('CALL px_valida_aprobado_direccion(?)', array($kickoff_approvals->id));
       //Revisando si todos los departamentos ya revisaron el documento
-      if($kickoff_approvals->administracion == 1 && $kickoff_approvals->proyectos == 1 &&
+      if( $kickoff_approvals->proyectos == 1 &&
           $kickoff_approvals->soporte == 1 && $kickoff_approvals->planeacion == 1 && $kickoff_approvals->servicio_cliente &&
           $kickoff_approvals->itconcierge && $kickoff_approvals->legal && $kickoff_approvals->facturacion &&
           $approval_dir[0]->aprobado_direccion == 1){
@@ -731,7 +740,6 @@ class KickoffController extends Controller
 
     public function update_kickoff_comision(Request $request)
     {
-      //dd($request);
       $id = $request->id;
       $documentp = Documentp::find($id);
       $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();

@@ -104,7 +104,13 @@
                   </div>
                   <div class="col-md-12 mt-4">
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="discount" class="control-label">Descuento<span style="color: red;">*</span></label>
+                            <input type="number" id="discount" name="discount" min="0" max="100" value="0" class="form-control form-control-sm required" style="width:100%;"/>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
                         <div class="form-group">
                           <label for="sel_modal_coin" class="control-label">Especificación<span style="color: red;">*</span></label>
                             <select id="sel_especification" name="sel_especification" class="form-control form-control-sm required" style="width:100%;">
@@ -356,7 +362,13 @@
                   </div>
                   <div class="col-md-12 mt-4">
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="edit_discount" class="control-label">Descuento<span style="color: red;">*</span></label>
+                            <input type="number" id="edit_discount" name="edit_discount" min="0" max="100" value="0" class="form-control form-control-sm required" style="width:100%;"/>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
                         <div class="form-group">
                           <label for="sel_especification_edit" class="control-label">Especificación<span style="color: red;">*</span></label>
                             <select id="sel_especification_edit" name="sel_especification_edit" class="form-control form-control-sm required" style="width:100%;">
