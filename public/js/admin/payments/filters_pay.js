@@ -97,6 +97,12 @@ function getFoliosByProveedor(){
 
 //SIERRA END
 
+//Busqueda Cuenta contable.
+
+
+
+//
+
 function payments_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_pay);

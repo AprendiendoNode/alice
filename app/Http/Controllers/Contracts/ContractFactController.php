@@ -13,6 +13,11 @@ class ContractFactController extends Controller
       $bancos = DB::connection('banks')->select('select * from bancos');
       return view('permitted.contract.contract_facturados', compact('bancos'));
     }
+    public function index_cxc()
+    {
+      $bancos = DB::connection('banks')->select('select * from bancos');
+      return view('permitted.contract.contract_cxc', compact('bancos'));
+    }
     public function tabla_facts(Request $request)
     {
       $datenow = date('Y-m-d');
@@ -25,6 +30,13 @@ class ContractFactController extends Controller
       $date_a = $request->date_start;
       $date_b = $request->date_end;
       $registro = DB::select('CALL px_contracts_charges_data_fact_all (?,?)', array($date_a, $date_b));
+      return json_encode($registro);
+    }
+    public function table_facts_all_cxc(Request $request)
+    {
+      $date_a = $request->date_start;
+      $date_b = $request->date_end;
+      $registro = DB::select('CALL px_contracts_charges_data_fact_all_cxc (?,?)', array($date_a, $date_b));
       return json_encode($registro);
     }
     public function create_items_confirm(Request $request)
@@ -70,6 +82,13 @@ class ContractFactController extends Controller
       $date_a = $request->date_start;
       $date_b = $request->date_end;
       $registro = DB::select('CALL px_contract_charges_sum_monto_final_all (?,?,?)', array($date_a, $date_b, 2));
+      return json_encode($registro);
+    }
+    public function monto_fact_all_cxc(Request $request)
+    {
+      $date_a = $request->date_start;
+      $date_b = $request->date_end;
+      $registro = DB::select('CALL px_contract_charges_sum_monto_final_all_cxc (?,?)', array($date_a, $date_b));
       return json_encode($registro);
     }
 }

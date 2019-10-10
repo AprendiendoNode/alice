@@ -88,6 +88,31 @@
           </div>
           <br>
         <!--SIERRA END-->
+        <!--Cuenta contable-->
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="">
+                <div class="form-group">
+                  <div class="col-md-4">
+                  <label for="" class="control-label">Buscar por proveedor</label>
+                  </div>
+                  <div class="col-md-3">
+                    <select class="form-control select2 pl-2" id="proveedor" name="proveedor">
+                      <option value="">Elegir</option>
+                      @forelse ($proveedor as $data_proveedor )
+                      <option value="{{ $data_proveedor->id }}"> {{ $data_proveedor->name }} </option>
+                      @empty
+
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+        <!--CC END-->
+
           <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
 
@@ -167,12 +192,12 @@
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
     <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
-    <script src="{{ asset('js/admin/payments/filters_pay.js')}}"></script>
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script src="{{ asset('js/admin/payments/request_modal_payment.js')}}"></script>
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
+    <script src="{{ asset('js/admin/payments/filters_pay.js')}}"></script>
   @else
     <!--NO VER-->
   @endif
