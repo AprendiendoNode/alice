@@ -20276,10 +20276,10 @@
                                 name: "unzip",
                                 icon: "far fa-file-archive"
                             }],
-                            [{
+                            /*[{
                                 name: "delete",
-                                icon: "far fa-trash-alt text-danger"
-                            }],
+                                //icon: "far fa-trash-alt text-danger"
+                            }],*/
                             [{
                                 name: "properties",
                                 icon: "far fa-list-alt"
@@ -21862,8 +21862,9 @@
                             class: e.acl && 0 === t.acl ? "text-hidden" : "",
                             on: {
                                 dblclick: function (n) {
+                                  var urlarray=(window.location.href).split("/");
                                     //var url = "http://alice.sitwifi.com/images/storage/filestore/storage/"+e._s(t.path);
-                                    var url = "http://localhost:8000/images/storage/filestore/storage/"+e._s(t.path);
+                                    var url = "http://"+urlarray[2]+"/images/storage/filestore/storage/"+e._s(t.path);  //URl modal drive                                
                                     if(url.split(".").pop().toUpperCase() == "PDF") {
                                       modalToggle(url, e._s(t.filename), e._s(e.bytesToHuman(t.size))); //drive.js
                                     }
