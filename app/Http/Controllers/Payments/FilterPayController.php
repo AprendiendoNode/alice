@@ -48,7 +48,7 @@ class FilterPayController extends Controller
   {
     $id = $request->id;
     $res =  DB::select('CALL payments_hotel_folio(?)', array($id));
-    return json_encode($res);
+    return $res;
   }
   public function get_payments_proveedor(Request $request)
   {
@@ -59,7 +59,9 @@ class FilterPayController extends Controller
   public function get_payments_cuentacontable(Request $request)
   {
     $id = $request->id;
-    $res =  DB::select('CALL payments_hotel_proveedor(?)', array($id));
+    //call px_payments_cc('1105-006-003')
+    $res =  DB::select('CALL px_payments_cc(?)', array($id));
+    return $res;
   }
   public function autocomplete_folio(Request $request)
   {

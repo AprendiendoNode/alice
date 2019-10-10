@@ -14,20 +14,29 @@ $("#hotel").on('change',function(){
 
   $('#idFolio').empty();
   $('#idFolio').append('<option value="0">Elegir...</option>');
+  $("#proveedor").val('').trigger('change.select2');
+  $("#select_cc").val('').trigger('change.select2');
+  // console.log($(this).val());
   getFoliosByHotel();
 });
 $("#proveedor").on('change',function(){
 
   $('#idFolio').empty();
   $('#idFolio').append('<option value="0">Elegir...</option>');
+  $("#hotel").val('').trigger('change.select2');
+  $("#select_cc").val('').trigger('change.select2');
   getFoliosByProveedor();
 });
 $("#select_cc").on('change',function(){
 
   $('#idFolio').empty();
   $('#idFolio').append('<option value="0">Elegir...</option>');
-  getFoliosByProveedor();
+  $("#hotel").val('').trigger('change.select2');
+  $("#proveedor").val('').trigger('change.select2');
+  // console.log($(this).val());
+  getPaysByCuenta($(this).val());
 });
+
 $("#searchFolio").on('keyup',function(){
   var term = $(this).val();
   var _token = $('input[name="_token"]').val();
@@ -52,12 +61,11 @@ $("#searchFolio").on('keyup',function(){
         console.log('Error:', data);
       }
   });
-
 })
 
 function getFoliosByHotel(){
   var id = parseInt($("#hotel").val());
-  console.log(id);
+  // console.log(id);
   var _token = $('input[name="_token"]').val();
   var datax;
   $.ajax({
@@ -65,10 +73,8 @@ function getFoliosByHotel(){
     url: "/get_payment_folios",
     data: { id : id, _token : _token },
     success: function (data){
-
-      datax = JSON.parse(data);
-      console.log(datax);
-      payments_table(datax, $("#table_pays"));
+      console.log(data);
+      payments_table(data, $("#table_pays"));
 
     },
     error: function (data) {
@@ -89,8 +95,7 @@ function getFoliosByProveedor(){
     url: "/get_payment_by_proveedor",
     data: { id : id, _token : _token },
     success: function (data){
-      // datax = JSON.parse(data);
-      // console.log(data);
+      console.log(data);
       payments_table(data, $("#table_pays"));
 
     },
@@ -104,9 +109,8 @@ function getFoliosByProveedor(){
 
 //Busqueda Cuenta contable.
 
-function getPaysByCuenta(){
-  var id = parseInt($("#select_cc").val());
-  console.log(id);
+function getPaysByCuenta(id){
+  // console.log(id);
   var _token = $('input[name="_token"]').val();
   $.ajax({
     type: "POST",
@@ -114,7 +118,7 @@ function getPaysByCuenta(){
     data: { id : id, _token : _token },
     success: function (data){
       console.log(data);
-      // payments_table(data, $("#table_pays"));
+      payments_table(data, $("#table_pays"));
 
     },
     error: function (data) {
@@ -139,6 +143,8 @@ function payments_table(datajson, table){
       value.elaboro,
       value.fecha_solicitud,
       value.fecha_limite,
+      value.key_cc,
+      value.name_cc,
       '<a href="javascript:void(0);" onclick="enviar(this)" value="'+value.id+'" class="btn btn-default btn-sm" role="button" data-target="#modal-concept"><i class="far fa-edit" aria-hidden="true"></i></a>',
       ]);
   });
@@ -187,6 +193,16 @@ var Configuration_table_responsive_pay= {
             },
             {
                 "targets": 7,
+                "width": "0.4%",
+                "className": "text-center",
+            },
+            {
+                "targets": 8,
+                "width": "0.4%",
+                "className": "text-center",
+            },
+            {
+                "targets": 9,
                 "width": "1%",
                 "className": "text-center",
             }

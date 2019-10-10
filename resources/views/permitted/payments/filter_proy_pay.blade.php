@@ -148,8 +148,10 @@
                       <th> <small>Estatus</small> </th>
                       <th> <small>Monto</small> </th>
                       <th> <small>Elaboró</small> </th>
-                      <th> <small>Fecha de solicitud</small> </th>
-                      <th> <small>Fecha límite de pago</small> </th>
+                      <th> <small>Fecha solicitud</small> </th>
+                      <th> <small>Fecha límite pago</small> </th>
+                      <th> <small>Cuenta</small> </th>
+                      <th> <small>Nombre cuenta</small> </th>
                       <th> <small>Conceptos</small> </th>
                     </tr>
                   </thead>
