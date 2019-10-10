@@ -1,5 +1,5 @@
 $(function() {
-  $(".select2").select2();
+  $(".select2").select2({width: 'resolve'});
 })
 
 $('#boton-aplica-filtro').on('click',function(){
@@ -22,7 +22,12 @@ $("#proveedor").on('change',function(){
   $('#idFolio').append('<option value="0">Elegir...</option>');
   getFoliosByProveedor();
 });
+$("#select_cc").on('change',function(){
 
+  $('#idFolio').empty();
+  $('#idFolio').append('<option value="0">Elegir...</option>');
+  getFoliosByProveedor();
+});
 $("#searchFolio").on('keyup',function(){
   var term = $(this).val();
   var _token = $('input[name="_token"]').val();
@@ -76,7 +81,7 @@ function getFoliosByHotel(){
 
 function getFoliosByProveedor(){
   var id = parseInt($("#proveedor").val());
-  console.log(id);
+  // console.log(id);
   var _token = $('input[name="_token"]').val();
   var datax;
   $.ajax({
@@ -99,7 +104,24 @@ function getFoliosByProveedor(){
 
 //Busqueda Cuenta contable.
 
+function getPaysByCuenta(){
+  var id = parseInt($("#select_cc").val());
+  console.log(id);
+  var _token = $('input[name="_token"]').val();
+  $.ajax({
+    type: "POST",
+    url: "/get_payment_by_cuenta",
+    data: { id : id, _token : _token },
+    success: function (data){
+      console.log(data);
+      // payments_table(data, $("#table_pays"));
 
+    },
+    error: function (data) {
+      console.log('Error:', data);
+    }
+  });
+}
 
 //
 

@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-@if( auth()->user()->can('View Reg. Mensual CXC Aprob') )
+@if( auth()->user()->can('View facturados cxc') )
 
       <div class="container white-box">
         <!-- Validation wizard -->
@@ -104,7 +104,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View Reg. Mensual CXC Aprob') )
+  @if( auth()->user()->can('View facturados cxc') )
   <style media="screen">
     .swal-wide {
       max-height: 95vh;

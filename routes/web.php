@@ -586,6 +586,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get_payment_by_id', 'Payments\FilterPayController@get_paymentId');
     Route::post('/get_payment_folios', 'Payments\FilterPayController@get_folios');
     Route::post('/get_payment_by_proveedor', 'Payments\FilterPayController@get_payments_proveedor');
+    Route::post('/get_payment_by_cuenta', 'Payments\FilterPayController@get_payments_cuentacontable');
     Route::post('/downloadInvoicePay', 'Payments\PayHistoryController@getInvoice');
     Route::post('/downloadInvoicePdf','Payments\PayHistoryController@getInvoicePdf');
 
@@ -748,7 +749,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/recordmens_fact_all', 'Contracts\ContractFactController@table_facts_all');
     Route::post('/send_contracts_confirm', 'Contracts\ContractFactController@create_items_confirm');
     Route::post('/cxc_mont_fact_uniq_all', 'Contracts\ContractFactController@monto_fact_all');
-    Route::get('/view_facturados_all', 'Contracts\ContractFactController@index_cxc');
+    Route::get('/view_facturados_cxc', 'Contracts\ContractFactController@index_cxc');
     Route::post('/recordmens_fact_all_cxc', 'Contracts\ContractFactController@table_facts_all_cxc');
     Route::post('/cxc_mont_fact_uniq_all_cxc', 'Contracts\ContractFactController@monto_fact_all_cxc');
     //Antigüedad CXC

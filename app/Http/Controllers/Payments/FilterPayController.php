@@ -28,20 +28,13 @@ class FilterPayController extends Controller
 {
   public function index()
   {
-      // $cadena = Hotel::select('id', 'Nombre_hotel')->get()->sortBy('Nombre_hotel');
       $cadena = DB::table('listarhoteles_noasignar')->select('id', 'hotel')->get();
       $folio = DB::table('payments')->select('id','folio')->get()->sortBy('folio');
       $proveedor = DB::table('customers')->select('id', 'name')->get();
-      //$vertical = Payments_verticals::pluck('name', 'id');Original verticals
-      $vertical = DB::table('verticals')->pluck('id', 'name')->all();// ?
-      $currency = Currency::select('id','name')->get();
-      $way = PaymentWay::select('id','name')->get();//No existe
-      $area = DB::table('payments_areas')->pluck('name', 'id')->all();
-      $application = DB::table('payments_applications')->pluck('name', 'id')->all();
-      $options = DB::table('payments_project_options')->pluck('name', 'id')->all();
-      $classification =DB::table('payments_classifications')->select('id','name')->get();
-      $financing = DB::table('payments_financings')->pluck('name', 'id')->all();
-      return view('permitted.payments.filter_proy_pay',compact('cadena','folio', 'proveedor','vertical', 'currency', 'way', 'area', 'application', 'options', 'classification', 'financing'));
+      $cuentas = DB::select('CALL px_cc_pagos()');
+
+      return view('permitted.payments.filter_proy_pay',compact('cadena','folio', 'proveedor', 'cuentas'));
+
   }
 
   public function get_proyecto(Request $request)
@@ -62,6 +55,11 @@ class FilterPayController extends Controller
     $id = $request->id;
     $res =  DB::select('CALL payments_hotel_proveedor(?)', array($id));
     return $res;
+  }
+  public function get_payments_cuentacontable(Request $request)
+  {
+    $id = $request->id;
+    $res =  DB::select('CALL payments_hotel_proveedor(?)', array($id));
   }
   public function autocomplete_folio(Request $request)
   {

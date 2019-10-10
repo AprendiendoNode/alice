@@ -79,24 +79,48 @@
                           @endforelse
                         </select>
                       </div>
-
                     </div>
-
                   </div>
                 </form>
             </div>
           </div>
           <br>
         <!--SIERRA END-->
+        
         <!--Cuenta contable-->
           <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-              <div class="">
+                <form class="form-inline" method="post">
+                  <div class="form-group">
+                    <div class="col-md-6">
+                      <label for="" class="control-label">Buscar por cuenta contable</label>
+                    </div>
+                    <div class="col-md-6">
+                      <select class="form-control select2 pl-2" id="select_cc" name="select_cc">
+                        <option value="">Elegir</option>
+                        @forelse ($cuentas as $data_contable )
+                        <option value="{{ $data_contable->cuenta_contable }}"> {{ $data_contable->cuenta_contable }} </option>
+                        @empty
+
+                        @endforelse
+                      </select>
+                    </div>
+                  </div>
+                </form>
+            </div>
+          </div>
+          <br>
+        <!--CC END-->
+
+        <!--Cuenta contable-->
+          <!-- <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <form>
                 <div class="form-group">
-                  <div class="col-md-4">
+                  <div class="col-md-2">
                   <label for="" class="control-label">Buscar por proveedor</label>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-10">
                     <select class="form-control select2 pl-2" id="proveedor" name="proveedor">
                       <option value="">Elegir</option>
                       @forelse ($proveedor as $data_proveedor )
@@ -107,10 +131,10 @@
                     </select>
                   </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
-          <br>
+          <br> -->
         <!--CC END-->
 
           <div class="row">
@@ -171,15 +195,6 @@
   input:disabled,textarea:disabled {
        background: #ffffff !important;
        border-radius: 3px;
-   }
-
-   #amountText{
-     text-transform: uppercase;
-   }
-
-   #rec_monto, #subtotal, #iva, #total{
-     font-size: 18px !important;
-     font-weight: bold;
    }
     .margin-top-short{
       margin-top: 7px;
