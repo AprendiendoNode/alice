@@ -26,6 +26,88 @@
           </div>
           <div class="form-row d-flex align-items-center mb-2">
             <div class="col-5 col-md-3">
+              <label  for="">Contácto</label>
+            </div>
+            <div class="col-7 col-md-4">
+              <input id="contacto_comercial" name="contacto_comercial" value="{{ $kickoff_comisiones->contacto }}" type="text" class="form-control form-control-sm">
+            </div>
+            <div class="col-8 col-md-3 input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text form-control-sm text-dark">$</div>
+              </div>
+              <input id="amount_contacto" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->amount_contacto }}">
+              <div class="input-group-prepend">
+                <div class="input-group-text form-control-sm text-dark">USD</div>
+              </div>
+            </div>
+            <div class="col-4 col-md-2 input-group">
+              <input readonly id="percent_contacto" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->percent_contacto }}">
+              <div class="input-group-prepend">
+                <div class="input-group-text form-control-sm text-dark">%</div>
+              </div>
+            </div>
+          </div><!------------------------------------------------------->
+          <div class="form-row d-flex align-items-center mb-2">
+            <div class="col-5 col-md-3">
+              <label  for="">Cierre</label>
+            </div>
+            <div class="col-7 col-md-4">
+              <input id="cierre" name="cierre" value="{{ $kickoff_comisiones->cierre }}" type="text" class="form-control form-control-sm">
+            </div>
+            <div class="col-8 col-md-3 input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text form-control-sm text-dark">$</div>
+              </div>
+              <input id="amount_cierre" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->amount_cierre }}">
+              <div class="input-group-prepend">
+                <div class="input-group-text form-control-sm text-dark">USD</div>
+              </div>
+            </div>
+            <div class="col-4 col-md-2 input-group">
+              <input readonly id="percent_cierre" type="number" onblur="calcularComision(this);" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->percent_cierre }}">
+              <div class="input-group-prepend">
+                <div class="input-group-text form-control-sm text-dark">%</div>
+              </div>
+            </div>
+          </div><!------------------------------------------------------->
+          <div class="form-row d-flex align-items-center mb-2">
+            <div class="col-5 col-md-3">
+              <label  for="">Inside Sales</label>
+            </div>
+            <div class="col-7 col-md-4">
+              <select readonly id="inside_sales" name="inside_sales" type="text" class="form-control form-control-sm">
+                @if($kickoff_comisiones->inside_sales == 4)
+                  <option selected value="4">Sin asignar</option>
+                @else
+                  <option value="4">Sin asignar</option>
+                @endif
+                @foreach ($inside_sales as $inside_sales_data)
+                  @if($inside_sales_data->user_id == $kickoff_comisiones->inside_sales)
+                    <option selected value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
+                  @else
+                    <option value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
+                  @endif
+                @endforeach
+              </select>
+            </div>
+            <div class="col-8 col-md-3 input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text form-control-sm text-dark">$</div>
+              </div>
+              <input id="amount_inside_sales" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{$kickoff_comisiones->amount_inside_sales}}">
+              <div class="input-group-prepend">
+                <div class="input-group-text form-control-sm text-dark">USD</div>
+              </div>
+            </div>
+            <div class="col-4 col-md-2 input-group">
+              <input readonly id="percent_inside_sales" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_inside_sales}}">
+              <div class="input-group-prepend">
+                <div class="input-group-text form-control-sm text-dark">%</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row d-flex align-items-center mb-2">
+            <div class="col-5 col-md-3">
               <label for="">IT Concierge</label>
             </div>
             <div class="col-7 col-md-4">
@@ -85,42 +167,7 @@
               </div>
             </div>
           </div>
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <label  for="">Inside Sales</label>
-            </div>
-            <div class="col-7 col-md-4">
-              <select readonly id="inside_sales" name="inside_sales" type="text" class="form-control form-control-sm">
-                @if($kickoff_comisiones->inside_sales == 4)
-                  <option selected value="4">Sin asignar</option>
-                @else
-                  <option value="4">Sin asignar</option>
-                @endif
-                @foreach ($inside_sales as $inside_sales_data)
-                  @if($inside_sales_data->user_id == $kickoff_comisiones->inside_sales)
-                    <option selected value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
-                  @else
-                    <option value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
-                  @endif
-                @endforeach
-              </select>
-            </div>
-            <div class="col-8 col-md-3 input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">$</div>
-              </div>
-              <input id="amount_inside_sales" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{$kickoff_comisiones->amount_inside_sales}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">USD</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2 input-group">
-              <input readonly id="percent_inside_sales" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_inside_sales}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">%</div>
-              </div>
-            </div>
-          </div>
+          
           <div class="form-row d-flex align-items-center mb-2">
             <div class="col-5 col-md-3">
               <label  for="">Colaborador</label>
@@ -157,52 +204,8 @@
               </div>
             </div>
           </div>
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <label  for="">Contácto</label>
-            </div>
-            <div class="col-7 col-md-4">
-              <input id="contacto_comercial" name="contacto_comercial" value="{{ $kickoff_comisiones->contacto }}" type="text" class="form-control form-control-sm">
-            </div>
-            <div class="col-8 col-md-3 input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">$</div>
-              </div>
-              <input id="amount_contacto" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->amount_contacto }}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">USD</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2 input-group">
-              <input readonly id="percent_contacto" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->percent_contacto }}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">%</div>
-              </div>
-            </div>
-          </div>
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <label  for="">Cierre</label>
-            </div>
-            <div class="col-7 col-md-4">
-              <input id="cierre" name="cierre" value="{{ $kickoff_comisiones->cierre }}" type="text" class="form-control form-control-sm">
-            </div>
-            <div class="col-8 col-md-3 input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">$</div>
-              </div>
-              <input id="amount_cierre" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->amount_cierre }}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">USD</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2 input-group">
-              <input readonly id="percent_cierre" type="number" onblur="calcularComision(this);" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->percent_cierre }}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">%</div>
-              </div>
-            </div>
-          </div>
+          
+          
           <div class="form-row d-flex align-items-center mb-2">
             <div class="col-5 col-md-3">
               <label  for="">Externo</label>

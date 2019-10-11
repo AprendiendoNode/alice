@@ -25,6 +25,46 @@ function enviar(e){
 
 }
 
+function send_mail_propuesta_comercial(e){
+  var element = e;
+  let id_documentp = element.dataset.id;
+  var _token = $('input[name="_token"]').val();
+
+  const headers = new Headers({
+    "Accept": "application/json",
+    'Content-Type': 'application/json',
+    "X-Requested-With": "XMLHttpRequest",
+    "X-CSRF-TOKEN": _token
+  })
+
+  var miInit = { method: 'post',
+                    headers: headers,
+                    credentials: "same-origin",
+                    body: JSON.stringify({id: id_documentp}),
+                    cache: 'default' };
+
+  
+
+  Swal.queue([{
+    title: 'Confirmar envio de propuesta a mi correo',
+    confirmButtonText: 'Continuar',
+    text: 'Confirmar envio de correo',
+    showLoaderOnConfirm: true,
+    preConfirm: () => {
+      return fetch('/send_pdf_propuesta_comercial', miInit)
+        .then(response => response.json())
+        .then(data => Swal.insertQueueStep())
+        .catch(() => {
+          Swal.insertQueueStep({
+            type: 'error',
+            title: 'ocurrio un error'
+          })
+        })
+    }
+  }])
+
+}
+
 
 function deny_docp(e){
   var valor= e.getAttribute('value');

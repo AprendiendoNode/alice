@@ -741,7 +741,7 @@ $(".validation-wizard-master").steps({
       },
       plazo: {
         required: true,
-        min: 12
+        min: 1
       },
       densidad: {
         required:true,

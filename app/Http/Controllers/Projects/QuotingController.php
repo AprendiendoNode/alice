@@ -10,7 +10,7 @@ use \Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Projects\{Documentp, Documentp_cart, In_Documentp_cart, Cotizador};
-use App\Models\Projects\Cotizador_status_user;
+use App\Models\Projects\{Cotizador_status_user, Cotizador_approvals};
 use App\Mail\SolicitudCompra;
 use App\User;
 use Carbon\Carbon;
@@ -433,6 +433,32 @@ class QuotingController extends Controller
       return $valor;
     }
 
+    public function quoting_approval_directive(Request $request)
+    {
+      $doc_id = json_decode($request->idents);
+      $status = $request->status_cotizador;
+      $user = Auth::user()->id;
+      $valor= 'false';
+
+      for ($i=0; $i <= (count($doc_id)-1); $i++) {
+        $sql = DB::table('documentp')
+                    ->where('id', '=', $doc_id[$i])
+                    ->update(['cotizador_status_id' => $status, 'updated_at' => Carbon::now()]);
+        $new_doc_state = new Cotizador_status_user;
+        $new_doc_state->documentp_id = $doc_id[$i];
+        $new_doc_state->user_id = $user;
+        $new_doc_state->cotizador_status_id = $status;
+        $new_doc_state->save();
+
+        $document = Documentp::find($doc_id[$i]);
+        $document->fecha_aprobacion = \Carbon\Carbon::now();
+        $document->save();
+
+        $valor= 'true';
+      }
+      return $valor;
+    }
+    
     public function createFolio()
     {
       $nomenclatura = "DOC-";

@@ -177,7 +177,7 @@
                 <form id="form_kickoff" method="post">
                   <input type="hidden" name="id" id="id" value="{{$document[0]->id}}">
                   <div class="row">
-                    <div class="col-12">
+                    {{-- <div class="col-12">
                       <div class="card">
                         <div style="background: #3E3E42;" class="card-header text-white p-1">
                           <a class="btn btn-sm btn-default p-1" rol="button" data-toggle="collapse" href="#collapseContract" aria-expanded="false" aria-controls="collapseContract">
@@ -211,7 +211,7 @@
                           </div>
                         </div>
                         </div>
-                      </div>
+                      </div> --}}
                     <br>
                   <!--INFO-->
                   <div class="col-12 mt-4">
@@ -484,9 +484,9 @@
                             </div>
                           </div>
                           <div class="form-row d-flex align-items-center mb-2">
-                            <div class="col-6">
-                              <a href="/view_pdf_propuesta_comercial/{{$document[0]->id}}" target="_blank" class="btn btn-danger" rol="button"><i class="fas fa-file-pdf"></i> Propuesta comercial</a>
-                            </div>
+                            {{-- <div class="col-6">
+                              <a href="/view_pdf_propuesta_comercial/{{$document[0]->id}}" target="_blank" class="btn btn-danger" rol="button"><i class="fas fa-file-pdf"></i> Ver propuesta comercial</a>
+                            </div> --}}
                             <div class="col-6">
                               <button class="btn btn-success" onclick="show_comision();" type="button" name="button"><i class="fas fa-wallet"></i> Ver comisiónes</button>
                             </div>

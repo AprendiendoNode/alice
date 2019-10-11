@@ -220,8 +220,8 @@
           @foreach($equipo_activo as $products)
             <tr>
               <td>{{$products->producto}}</td>
-              <td>{{$products->description}}</td>
-              <td>{{$products->description}}</td>
+              <td>{{$products->description_long}}</td>
+              <td>{{$products->marca}}</td>
               <td align="center">PZA</td>
               <td align="center">{{(int)$products->cantidad}}</td>
             </tr>

@@ -445,6 +445,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/get_quoting_auth', 'Projects\QuotingController@get_history_auth_quoting');
   Route::post('/edit_cart_quoting', 'Projects\QuotingEditController@index'); //Vista del formulario para editar
   Route::post('/edit_quoting', 'Projects\QuotingEditController@edit');
+  Route::post('/quoting_approval_directive', 'Projects\QuotingController@quoting_approval_directive');
   //KICK-OFF
   Route::post('/edit_kickoff', 'Projects\KickoffController@index');
   Route::post('/update_kickoff', 'Projects\KickoffController@u`pdate');
@@ -464,6 +465,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/approval_director_general/id_doc/{id}', 'Projects\KickoffController@approval_director_general');
   Route::get('/notificaciones_read_doc/{id}', 'Auth\NotificationController@read_docp');
   Route::get('/view_pdf_propuesta_comercial/{id_doc}', 'Projects\KickoffController@generate_pdf_propuesta'); 
+  Route::post('/send_pdf_propuesta_comercial/', 'Projects\KickoffController@send_mail_pdf_propuesta');  
 
   //Notificaciones viaticos
   Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');

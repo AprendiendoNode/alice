@@ -143,6 +143,14 @@
   <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
   <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
+  <style>
+    .dataTables_wrapper .dataTable .btn{
+      width: 50px !important;
+    }
+    .dropdown-menu {
+      font-size: 0.8rem !important;
+    }
+  </style>
   @if( auth()->user()->can('View level zero documentp notification') )
     <script src="{{ asset('js/admin/quoting/requests_quoting_kickoff_0.js?v=1.0.0')}}"></script>
     <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=3.0.0')}}"></script>

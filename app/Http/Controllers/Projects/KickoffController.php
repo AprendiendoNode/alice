@@ -816,22 +816,14 @@ class KickoffController extends Controller
     public function generate_pdf_propuesta($id_doc)
     {
       $documentp = Documentp::findOrFail($id_doc);
-      $condiciones_ids = array(1,2,3,4,5,6,7,8,9); 
-
-      $servicios = DB::table('servicios_propuesta')->whereIn('id', $condiciones_ids)->get();
-      $condiciones = Kickoff_project::getConditionsByDocumentp($id_doc);
-      
-      if(count($condiciones) == 0){
-        Kickoff_project::createConditionsByDocumentp($id_doc);
-        $condiciones = Kickoff_project::getConditionsByDocumentp($id_doc);
-      }
-      //$cotizador = DB::table('cotizador')->select('id', 'id_doc')->where('id_doc', $documentp->id)->get();
+      $servicios = DB::table('servicios_propuesta')->get();
+      $condiciones = DB::table('condiciones_comerciales')->get();
+      $user_email = Auth::user()->email;
       $data_cart = DB::select('CALL px_docupentop_materialesXcarrito(?)' , array($documentp->documentp_cart_id));
       
       $collection = collect($data_cart);
       // Filtrando equipo activo
       $equipo_activo = $collection->whereIn('categoria_id', [4, 6, 14]);
-      //dd($equipo_activo);
       // Enviando datos a la vista de la factura
       $pdf = PDF::loadView('permitted.planning.propuesta_comercial_pdf', compact('documentp', 'equipo_activo', 'servicios', 'condiciones'));
 
@@ -841,19 +833,19 @@ class KickoffController extends Controller
 
     public function send_mail_pdf_propuesta(Request $request)
     {
+      dd($$request->id);
+      $documentp = Documentp::findOrFail($request->id);
 
       $data = [
-        'fecha_aprobacion' => 'hrviuh',
-        'folio' => 'vrhniuv',
-       
+        'fecha_aprobacion' => 'test',
+        'folio' => '0000', 
       ];
 
-     
-      Mail::send('mail.test', $parametros1,function ($message) use ($pdf, $documentp){
+      Mail::send('mail.test', $data,function ($message) use ($pdf, $documentp){
           $message->subject('Propuesta Comercial');
-          $message->from('desarrollo@sitwifi.net', 'Propuesta comercial');
-          $message->to('rkuman@sitwifi.com');
-          $message->attachData($pdf->output(), 'propuesta'. $documentp->nombre_proyecto. '.pdf');
+          $message->from('desarrollo@sitwifi.net', 'Propuesta comercial' . $documentp->nombre_proyecto);
+          $message->to($user_email);
+          $message->attachData($pdf->output(), 'Propuesta_'. $documentp->nombre_proyecto. '.pdf');
       });
     }
 

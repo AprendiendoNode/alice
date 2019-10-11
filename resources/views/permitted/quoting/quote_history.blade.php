@@ -62,7 +62,7 @@
                   <th> <small>$ MO USD</small> </th>
                   <th> <small>Solicitó</small> </th>
                   <th> <small>Estatus</small> </th>
-                  <th> <small>V.</small> </th>
+                  <th> <small><i class="fas fa-check-double"></i></small> </th>
                   <th> <small>Doc.</small> </th>
                   <th> <small></small> </th>
                 </tr>
@@ -104,9 +104,8 @@
                     <th> <small>$ MO USD</small> </th>
                     <th> <small>Solicitó</small> </th>
                     <th> <small>Estatus</small> </th>
-                    <th> <small>V.</small> </th>
+                    <th> <small><i class="fas fa-check-double"></i></small> </th>
                     <th> <small>Doc.</small> </th>
-                    <th> <small></small> </th>
                     <th> <small></small> </th>
                   </tr>
                 </thead>
@@ -142,6 +141,15 @@
   <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
   <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
   <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
+  <style>
+    .dataTables_wrapper .dataTable .btn{
+      width: 50px !important;
+    }
+
+    .dropdown-menu {
+      font-size: 0.8rem !important;
+    }
+  </style>
   <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
   @if( auth()->user()->can('View level zero documentp notification') )
     <script src="{{ asset('js/admin/quoting/requests_quoting_0.js?v=3.0.0')}}"></script>

@@ -286,7 +286,7 @@ function get_comision(){
   let tipo_servicio = document.getElementById("type_service").value;
   let comision = 0.0;
 
-  if(tipo_servicio == "1"){
+  if(tipo_servicio == "1" || tipo_servicio == "3"){
     comision = vtc * .03;
   }else{
     comision = vtc * .02;
