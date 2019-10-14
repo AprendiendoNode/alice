@@ -28,7 +28,9 @@ class PruebasController extends Controller
     public function record_a (Request $request)
     {
       $datenow = date('Y-m-d');
+      $datenow = '2019-09-01';
       $registro = DB::select('CALL px_contracts_charges_data (?)', array($datenow));
+      // $registro = DB::select('CALL px_contracts_charges_data_hist ()');
       return json_encode($registro);
     }
     public function creat_payauto (Request $request)

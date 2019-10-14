@@ -652,6 +652,7 @@ function generate_table(datajson, table){
         data.key,
         //data.concepto,
         '<a href="javascript:void(0);" id="conc_'+data.id+'" name="conc_'+data.id+'" data-type="select" data-pk="'+ data.id + '" data-url="" data-title="Cambiar concepto" data-value="'+ data.concepto+'" class="editable_concept"></a>',
+        data.pay_date,
         data.num_mes_actual,
         data.num_mes_saldo,
         data.num_mes_total,

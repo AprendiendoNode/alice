@@ -235,6 +235,7 @@
                           <th>Cadena</th>
                           <th>ID_Contrato</th>
                           <th>Concepto</th>
+                          <th>Mes de pago</th>
                           <th>No. Mensualidad<br>Actual</th>
                           <th>No. Mensualidades<br>Faltantes</th>
                           <th>Meses<br>Totales</th>
