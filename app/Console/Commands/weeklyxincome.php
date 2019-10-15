@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use DB;
 use Mail;
-
+use App\Mail\WeeklyIncomeMail;
 
 class weeklyxincome extends Command
 {
@@ -43,16 +43,15 @@ class weeklyxincome extends Command
         $result = DB::select('CALL px_contracts_charges_ingresado()');
         $sumas = DB::select('CALL px_contracts_charges_ingresado_totales()');
         
-        // $this->sentSurveyEmail($result, $result_sum);
-        // $this->info('Command ended');
-
-        dd($result, $sumas);
+        $this->sentSurveyEmail($result, $sumas);
+        $this->info('Command ended');
+        // dd($result, $sumas);
     }
 
     public function sentSurveyEmail($data, $data2)
     {
         $correos = ['aespejo@sitwifi.com','rgonzalez@sitwifi.com','jwalker@sitwifi.com', 'mmoreno@sitwifi.com', 'mlara@sitwifi.com', 'mortiz@sitwifi.com'];
-        // Mail::to($correos)->send(new SolicitudConP($data, $data2));
-        Mail::to('jesquinca@sitwifi.com')->send(new SolicitudConP($data, $data2));
+        Mail::to($correos)->send(new WeeklyIncomeMail($data, $data2));
+        // Mail::to('jesquinca@sitwifi.com')->send(new WeeklyIncomeMail($data, $data2));
     }
 }

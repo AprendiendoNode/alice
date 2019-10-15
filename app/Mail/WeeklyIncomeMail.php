@@ -31,6 +31,6 @@ class WeeklyIncomeMail extends Mailable
      */
     public function build()
     {
-        // return $this->subject('Confirmación de pago.')->view('mail.solicitudConP_mod');
+        return $this->subject('Ingresos de la semana.')->view('mail.ConfirmWeeklyIncome');
     }
 }
