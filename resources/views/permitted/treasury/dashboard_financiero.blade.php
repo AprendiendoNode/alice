@@ -189,6 +189,75 @@
                   </div>
                 </div>
             </div>
+            <!--Credito revolvente -->
+            <div class="row text-center contact-info">
+                <div class="col-sm-12">
+                  <hr />
+                    <span>
+                        <strong>Crédito Revolvente</strong>
+                    </span>
+                  <hr />
+                  <div class="clearfix mt-10">
+                    <div class="table-responsive table_dyn_ext">
+                      <table id="table_banks4" class="table table-bordered table-striped table-hover display compact-tab" style="width: 100%">
+                        <thead>
+                          <tr style="background: #1B1D23">
+                            <th> <small>Banco</small> </th>
+                            <th class="sum_col"> <small>Saldo inicial</small> </th>
+                            <th class="sum_col"> <small>Depositos</small> </th>
+                            <th class="sum_col"> <small>Retiros</small> </th>
+                            <th class="sum_col"> <small>Saldo final</small> </th>
+                            <th class="sum_col" style="background: #005A96"> <small>Saldo inicial MXN</small> </th>
+                            <th class="sum_col" style="background: #005A96"> <small>Saldo final MXN</small> </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <!--  <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        -->
+                        </tbody>
+                        <tfoot id='tfoot_average'>
+                          <tr >
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th id="t1_i"></th>
+                            <th id="t1_f"></th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
 
             <div class="row text-center contact-info">
                 <div class="col-sm-12">
@@ -541,7 +610,7 @@
 
 
     </style>
-    <script src="{{ asset('js/admin/treasury/dash_finanzas.js?v=1.4')}}"></script>
+    <script src="{{ asset('js/admin/treasury/dash_finanzas.js?v=1.5')}}"></script>
   @else
     <!--NO VER-->
   @endif

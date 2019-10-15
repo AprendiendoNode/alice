@@ -42,6 +42,7 @@ $('.filtrarDashboard').on('click', function(){
     get_info_banks_mxn();
     get_info_banks_usd();
     get_info_banks_ex();
+    get_info_banks_cred_rev();
     get_all_banks();
     get_cxc_cxp();
     get_table_values();
@@ -96,7 +97,7 @@ function get_info_banks_mxn() {
       // console.log(data);
     //  var order=["CH PESOS BX","Santander Pesos","HSBC PESOS","Multiva","Bancomer"];
  var sortedData= data.sort(function(a, b) {
-  var arrayOrder = ["CH PESOS BX", "Santander Pesos", "HSBC PESOS", "Multiva", "Bancomer"];
+  var arrayOrder = ["CH PESOS BX","ULTIMO MOVIMIENTO RENDIMIENTO", "Santander Pesos", "HSBC PESOS", "Multiva", "Bancomer"];
   function getIndex(x) {
     return arrayOrder.indexOf(x.banco);
   }
@@ -157,6 +158,31 @@ function get_info_banks_ex() {
      });
       table_banks(sortedData, $("#table_banks3"));
       total_global();
+    },
+    error: function (data) {
+      console.log('Error:', data);
+    }
+  });
+}
+function get_info_banks_cred_rev() {
+  var _token = $('meta[name="csrf-token"]').attr('content');
+  var datanow = $('#date_to_search').val();
+  $.ajax({
+    type: "POST",
+    url: "/get_info_banks_cred_rev",
+    data: { _token : _token, date: datanow },
+    success: function (data){
+    //  console.log(data);
+    /*  var sortedData= data.sort(function(a, b) {
+       var arrayOrder = ["CH PESOS BX REV","Santander Pesos REV","Dominicana (DOP)","Costa Rica  (CRC)"];
+       function getIndex(x) {
+         return arrayOrder.indexOf(x.banco);
+       }
+
+       return (getIndex(a) - getIndex(b)) ;
+     });*/
+      table_banks(data, $("#table_banks4"));
+      //total_global();
     },
     error: function (data) {
       console.log('Error:', data);

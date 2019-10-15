@@ -34,6 +34,7 @@ class DashFinancieroController extends Controller
     {
 		$date = $request->date;
 		$res = DB::connection('banks')->select('CALL px_bancos1 (?)', array($date));
+    info($res);
 		return $res;
     }
     public function get_bank_movements_usd(Request $request)
@@ -48,9 +49,16 @@ class DashFinancieroController extends Controller
 		$res3 = DB::connection('banks')->select('CALL px_bancos3 (?)', array($date));
 		return $res3;
     }
+    public function get_info_banks_cred_rev(Request $request)
+    {
+    $date = $request->date;
+    $res3 = DB::connection('banks')->select('CALL px_bancos4 (?)', array($date));
+    return $res3;
+    }
+
     public function get_top_banks(Request $request)
     {
-      info($request);
+      //info($request);
     	$date = $request->date;
       $year =$request->year;
 		$res = DB::connection('banks')->select('CALL px_bancos_resumen_top5 (?,?)', array($date,$year));
@@ -73,13 +81,13 @@ class DashFinancieroController extends Controller
     {
       //info('llego');
       $res = DB::select('CALL px_facturas_306090()',array());
-      info($res);
+      //info($res);
     return $res;
     }
     public function get_contract_comment(Request $request){
       $key=$request->key;
       $res=DB::Table('contracts_charges_comments')->select('comment')->where('key',$key)->get();
-      info($res);
+      //info($res);
       return $res;
     }
 

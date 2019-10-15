@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/get_info_banks_mxn', 'Treasury\DashFinancieroController@get_bank_movements_mxn');
   Route::post('/get_info_banks_usd', 'Treasury\DashFinancieroController@get_bank_movements_usd');
   Route::post('/get_info_banks_ex', 'Treasury\DashFinancieroController@get_bank_movements_ext');
+  Route::post('/get_info_banks_cred_rev', 'Treasury\DashFinancieroController@get_info_banks_cred_rev');
   Route::post('/get_all_banks', 'Treasury\DashFinancieroController@get_top_banks');
   Route::post('/get_cxc_cxp', 'Treasury\DashFinancieroController@get_cxc_cxp');
   Route::post('/get_table_bankvals', 'Treasury\DashFinancieroController@get_validaciones');
@@ -464,8 +465,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/approval_director_operaciones/id_doc/{id}', 'Projects\KickoffController@approval_director_operaciones');
   Route::get('/approval_director_general/id_doc/{id}', 'Projects\KickoffController@approval_director_general');
   Route::get('/notificaciones_read_doc/{id}', 'Auth\NotificationController@read_docp');
-  Route::get('/view_pdf_propuesta_comercial/{id_doc}', 'Projects\KickoffController@generate_pdf_propuesta'); 
-  Route::post('/send_pdf_propuesta_comercial/', 'Projects\KickoffController@send_mail_pdf_propuesta');  
+  Route::get('/view_pdf_propuesta_comercial/{id_doc}', 'Projects\KickoffController@generate_pdf_propuesta');
+  Route::post('/send_pdf_propuesta_comercial/', 'Projects\KickoffController@send_mail_pdf_propuesta');
 
   //Notificaciones viaticos
   Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');
