@@ -26,12 +26,16 @@ class LicencesEquipmentController extends Controller
 
     if($filtro == 4) {
       $fecha2 = Carbon::now();
+      $result = DB::select('CALL detail_device_licences(?, ?)', array($fecha1, $fecha2));
     } else if($filtro != 0) {
       $fecha1 = Carbon::now();
       $fecha2 = Carbon::now()->addMonths($filtro);
+      $result = DB::select('CALL detail_device_licences(?, ?)', array($fecha1, $fecha2));
+    }else {
+      $result = DB::select('CALL detail_device_licences_all()');
     }
 
-    $result = DB::select('CALL detail_device_licences(?, ?)', array($fecha1, $fecha2));
+
     return json_encode($result);
   }
 
