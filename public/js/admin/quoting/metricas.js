@@ -236,14 +236,14 @@ function set_table_objetivos(){
 
   let utilidad_3_anios_minimo = total_inversion  / 0.833333;
 
-  let vtc_percent = (utilidad_mensual * plazo) / ( 7500000 * .35 );
+  let vtc_percent = (renta * plazo) / ( 15000000 );
   vtc_percent *= 100;
 
   let tiempo_retorno = (parseFloat(total_inversion) - parseFloat(capex) - parseFloat(deposito)) / (parseFloat(renta) - enlace);
 
   let costo_mo_ap = 0.0;
   let servicio_ap = 0.0;
-  let tir = get_tir();
+  let tir = get_tir(parseFloat(renta));
 
   if(num_aps != 0){
     costo_mo_ap = total_mo / num_aps;
@@ -265,7 +265,7 @@ function set_table_objetivos(){
   document.getElementById("serv_ap").innerHTML = format_number(servicio_ap);
   document.getElementById("tir").innerHTML = tir.toFixed(2);
 
-  parametros_objetivos(Math.round(renta_mensual_inversion), Math.round(utilidad_inversion), tir, utilidad_renta_percent, tiempo_retorno, utilidad_3_anios_minimo);
+  parametros_objetivos(renta_mensual_inversion, utilidad_inversion, tir, utilidad_renta_percent, tiempo_retorno, utilidad_3_anios_minimo);
 }
 
 /*****************************************************************************/
@@ -323,8 +323,8 @@ function get_total_mo(){
    return total_mo;
 }
 
-function get_tir(){
-  var renta = parseFloat(document.getElementById("servicio").value);
+function get_tir(servicio_mensual){
+  var renta = servicio_mensual;
   var plazo = parseInt(document.getElementById("plazo").value);
   var total_inversion = remove_commas(document.getElementById('total_rubros').innerHTML);
   total_inversion = parseFloat(total_inversion);
@@ -347,9 +347,9 @@ function get_tir(){
     }
     suma_total-= total_inversion;
   }
+
   tir_anualizado = tir * 100 * 12;
-  // console.log("tir: " + tir);
-  // console.log("vpc: " + suma_total);
+
   return tir_anualizado;
 }
 
@@ -366,17 +366,19 @@ function parametros_objetivos(percentRentaMensualInversion, percentUtilidadInver
   let tiempo_retorno_icon = document.getElementById('tiempo_retorno_icon');
   let tir_icon = document.getElementById('tir_icon');
 
-  percentRentaMensualInversion >= 7 ? set_icons(renta_mensual_inversion_icon, true) : set_icons(renta_mensual_inversion_icon, false);
+  percentRentaMensualInversion >= 7.0 ? set_icons(renta_mensual_inversion_icon, true) : set_icons(renta_mensual_inversion_icon, false);
 
-  percentUtilidadInversion >= 2 ? set_icons(utilidad_inversion_icon, true) : set_icons(utilidad_inversion_icon, false);
+  percentUtilidadInversion >= 2.0 ? set_icons(utilidad_inversion_icon, true) : set_icons(utilidad_inversion_icon, false);
 
   parseFloat(utilidad_3_anios) >= utilidad_3_anios_min ? set_icons(utilidad_3_anios_percent_icon, true) : set_icons(utilidad_3_anios_percent_icon, false);
 
-  percentUtilidadRenta >= 33 ? set_icons(utilidad_renta_icon, true) : set_icons(utilidad_renta_icon, false);
+  percentUtilidadRenta >= 33.0 ? set_icons(utilidad_renta_icon, true) : set_icons(utilidad_renta_icon, false);
 
   tiempoRetorno <= 18 ? set_icons(tiempo_retorno_icon, true) : set_icons(tiempo_retorno_icon, false);
 
-  percentTir >= 50 ? set_icons(tir_icon, true) : set_icons(tir_icon, false);
+  percentTir >= 50.0 ? set_icons(tir_icon, true) : set_icons(tir_icon, false);
+
+  check_objetives();
 
 }
 
@@ -384,6 +386,85 @@ function set_icons(element, flag){
   element.className = '';
   flag == true ? element.classList.add('fa', 'fa-check', 'text-success') : element.classList.add('fa', 'fa-times', 'text-danger');
 }
+
+function calcularServicioMensual(){
+    let enlace = document.getElementById("enlace").value;
+    enlace = parseFloat(enlace) * 1.1;
+    let plazo = document.getElementById("plazo").value;
+    let capex = document.getElementById("capex").value;
+    let deposito = document.getElementById("deposito").value;
+    let total_gastos = remove_commas(document.getElementById('total_gastos').innerHTML);
+    let total_inversion = remove_commas(document.getElementById('total_rubros').innerHTML);
+    let comision = get_comision();
+    total_inversion = parseFloat(total_inversion - comision);
+    var renta = 0;
+    var flag = false;
+
+    do{
+       renta+=10;
+       let utilidad_mensual = parseFloat(renta) + enlace - parseFloat(total_gastos);
+       let utilidad_mensual_percent = utilidad_mensual / (parseFloat(renta) + enlace);
+       utilidad_mensual_percent *= 100;
+
+       let utilidad_proyecto = utilidad_mensual * parseInt(plazo);
+       let utilidad_3_anios = utilidad_mensual * 36;
+       let utilidad_inversion = (utilidad_mensual / total_inversion) * 100;
+
+       let renta_mensual_inversion = (parseFloat(renta)) / ( parseFloat(total_inversion) - parseFloat(capex) - parseFloat(deposito));
+       renta_mensual_inversion *= 100;
+
+       let utilidad_renta_percent =  utilidad_mensual / (parseFloat(renta) - enlace);
+       utilidad_renta_percent *= 100;
+
+       let utilidad_3_anios_minimo = total_inversion  / 0.833333;
+
+       let tiempo_retorno = (parseFloat(total_inversion) - parseFloat(capex) - parseFloat(deposito)) / (parseFloat(renta) - enlace);
+       let tir = get_tir(renta);    
+       
+       // Verificando que todos los objetivos se cumplan
+      if(renta_mensual_inversion >= 7.0 && utilidad_inversion >= 2.0 &&
+         utilidad_3_anios >= utilidad_3_anios_minimo && utilidad_renta_percent >= 33.0 &&
+         tiempo_retorno <= 18 & tir >= 50.0){
+         flag = true;
+         document.getElementById('servicio').value = renta;
+      }
+    }while(flag != true);
+
+    set_table_rubro();
+    set_table_gastos();
+    set_table_modelos();
+    set_table_servadm();
+    set_table_objetivos();    
+    
+    Swal.fire('Servicio mensual actualizado','','success');
+}
+
+function set_status_objectives(){
+
+}
+
+function check_objetives(){
+
+  let renta_mensual_inversion_icon = document.getElementById('renta_mensual_inversion_icon');
+  let utilidad_inversion_icon = document.getElementById('utilidad_inversion_icon');
+  let utilidad_3_anios_percent_icon = document.getElementById('utilidad_3_anios_percent_icon');
+  let utilidad_renta_icon = document.getElementById('utilidad_renta_icon');
+  let tiempo_retorno_icon = document.getElementById('tiempo_retorno_icon');
+  let tir_icon = document.getElementById('tir_icon');
+
+  if(renta_mensual_inversion_icon.classList.contains('fa-check') &&
+      utilidad_inversion_icon.classList.contains('fa-check') &&
+      utilidad_3_anios_percent_icon.classList.contains('fa-check') &&
+      utilidad_renta_icon.classList.contains('fa-check') &&
+      tiempo_retorno_icon.classList.contains('fa-check') &&
+      tir_icon.classList.contains('fa-check')){
+    document.getElementById('objetivos_cotizador').value = 1;
+  }else{
+    document.getElementById('objetivos_cotizador').value = 0;
+  }
+}
+
+
 
 //Formato numerico: 00,000.00
 function format_number(number){

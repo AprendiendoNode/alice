@@ -28,6 +28,7 @@ class QuotingEditController extends Controller
       $hour_created = $documentP->updated_at;
       $hour_created =  \Carbon\Carbon::parse($hour_created);
       $data_header = DB::select('CALL px_documentop_data(?)', array($documentP->id));
+      //dd($data_header);
       $folio = $documentP->folio;
       $num_edit = $documentP->num_edit;
       $cart = $documentP->documentp_cart_id;
@@ -82,7 +83,7 @@ class QuotingEditController extends Controller
   {
     $flag  = "false";
     $id = $request->id;
-
+    
     DB::beginTransaction();
     try {
       $documentp = Documentp::find($id);
@@ -241,6 +242,10 @@ class QuotingEditController extends Controller
             ['id_motivo' => 1]
         );
       }
+
+      $update_cotizador = new Cotizador();
+      $update_cotizador->set_objetivos_cotizador($documentp->id, $request->objetivos_cotizador);
+      $update_cotizador->set_status_cotizador($documentp->id);
 
       DB::commit();
       $flag  = "true";

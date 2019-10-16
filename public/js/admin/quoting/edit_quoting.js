@@ -769,7 +769,8 @@ $(".validation-wizard-master").steps({
             formData.append('utilidad_3_anios_percent', (document.getElementById("utilidad_3_anios_percent").innerHTML).replace(/,/g, ""));
             formData.append('tiempo_retorno', (document.getElementById("tiempo_retorno").innerHTML).replace(/,/g, ""));
             formData.append('utilidad_renta', (document.getElementById("utilidad_renta").innerHTML).replace(/,/g, ""));
-
+            formData.append('objetivos_cotizador', (document.getElementById("objetivos_cotizador").value));
+            
               const headers = new Headers({
                 "Accept": "application/json",
                 "X-Requested-With": "XMLHttpRequest",

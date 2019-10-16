@@ -154,7 +154,12 @@
 <body>
   <header>
     <table width="100%">
-      <tr>
+      <tr>  
+          @php
+            $date_now = \Carbon\Carbon::now();
+            $date_now = $date_now->format('d-m-Y');
+          @endphp
+          <td align="left" valign="middle" style="font-weight: bold;">{{ $date_now }}</td>
           <td align="right" valign="top"><img width="180" src="{{ public_path('/img/company/sitwifi_logo.jpg') }}"/></td>
       </tr>
     </table>
@@ -176,7 +181,12 @@
       <p>Aeropuertos: Costa Rica y 36 en México</p>
     </div>
     <div class="tipo_propuesta">
-      <h3>Propuesta de Renovación</h3>
+      @if($documentp->tipo_servicio_id == 2)
+        <h3>Propuesta de Ampliación</h3>
+      @elseif($documentp->tipo_servicio_id == 3)
+        <h3>Propuesta de Renovación</h3>
+      @else
+      @endif
     </div>
     <br><br>
 

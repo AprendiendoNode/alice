@@ -59,6 +59,13 @@ function documentp_table(datajson, table){
          badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
          break;
     }
+
+    if(data.objetivos_cotizador == 0){
+      parameters_icon = '<span class="badge badge-danger badge-pill text-white"><i class="fas fa-times"></i></span>';
+    }else{
+      parameters_icon = '<span class="badge badge-success badge-pill text-white"><i class="fas fa-check"></i></span>';
+    }
+
     vartable.fnAddData([
       data.id,
       data.fecha,
@@ -68,16 +75,22 @@ function documentp_table(datajson, table){
       '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       data.elaboro,
       badge,
-      data.num_edit,
+      parameters_icon,
       type_doc,
-      '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a>' +
-      '<a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>' +
-      '<a target="_blank" href="/quoting_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fas fa-file-pdf"></span></a>',
+      `<div class="btn-group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-h"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <a class="dropdown-item" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.id}'" value="${data.id}"><i class="fa fa-edit"></i>Editar cotizador</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
+        </div> 
+       </div>`,
       data.cotizador_status
       ]);
     });
 }
-//'<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Kick-off" onclick="kickoff(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-success btn-sm"><span class="fas fa-tasks"></span></a>' +
+
 var Configuration_table_responsive_documentp= {
         "order": [[ 1, "desc" ]],
         "select": true,
@@ -147,12 +160,12 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 10,
               "width": "3%",
-              "className": "text-center actions-button cell-large",
+              "className": "text-center",
             },
             {
               "targets": 11,
               "width": "3%",
-              "className": "text-center actions-button",
+              "className": "text-center",
               "visible": false,
             }
         ],
@@ -172,7 +185,7 @@ var Configuration_table_responsive_documentp= {
               var _token = $('input[name="_token"]').val();
               // Iterate over all selected checkboxes
               var valores= new Array();
-              // console.log(factura);
+            
               $.each(rows_selected, function(index, rowId){
                 valores.push(rowId);
               });
@@ -185,9 +198,7 @@ var Configuration_table_responsive_documentp= {
                   html: `Se cambiara el estatus de los documentos seleccionados!<br><br>
                         <div>
                           <select class='form-control' style='display: block;' id='status_cotizador'>
-                          <option value=''>Elegir...</option>
-                            <option value='2'>En revision</option>
-                            <option value='4'>En Kick-off</option>
+                            <option value='4'>Autorizado</option>
                           </select>
                         </div>`,
                   type: "warning",
@@ -200,7 +211,7 @@ var Configuration_table_responsive_documentp= {
                   if(result.value){
 
                     var status_cotizador = $('#status_cotizador').val();
-                    // console.log(semana);
+        
                     $('.cancel').prop('disabled', 'disabled');
                     $('.confirm').prop('disabled', 'disabled');
 

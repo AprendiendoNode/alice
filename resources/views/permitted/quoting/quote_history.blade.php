@@ -152,12 +152,12 @@
   </style>
   <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
   @if( auth()->user()->can('View level zero documentp notification') )
-    <script src="{{ asset('js/admin/quoting/requests_quoting_0.js?v=3.0.0')}}"></script>
-    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=3.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/requests_quoting_0.js?v=4.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.0.0')}}"></script>
   @elseif ( auth()->user()->can('View level one documentp notification') ||
             auth()->user()->can('View level two documentp notification') ||
             auth()->user()->can('View level three documentp notification'))
-    <script src="{{ asset('js/admin/quoting/requests_quoting_all.js?v=3.0.0')}}"></script>
-    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=3.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/requests_quoting_all.js?v=4.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.0.0')}}"></script>
   @endif
 @endpush

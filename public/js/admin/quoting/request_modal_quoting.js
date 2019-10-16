@@ -41,27 +41,50 @@ function send_mail_propuesta_comercial(e){
                     headers: headers,
                     credentials: "same-origin",
                     body: JSON.stringify({id: id_documentp}),
-                    cache: 'default' };
+                    cache: 'default' };  
 
-  
+  Swal.fire({
+          title: "Confirmar envio de propuesta comercial",
+          text: "",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Confirmar',
+          cancelButtonText: 'Cancelar',
+          showLoaderOnConfirm: true,
+          preConfirm: () => {
 
-  Swal.queue([{
-    title: 'Confirmar envio de propuesta a mi correo',
-    confirmButtonText: 'Continuar',
-    text: 'Confirmar envio de correo',
-    showLoaderOnConfirm: true,
-    preConfirm: () => {
-      return fetch('/send_pdf_propuesta_comercial', miInit)
-        .then(response => response.json())
-        .then(data => Swal.insertQueueStep())
-        .catch(() => {
-          Swal.insertQueueStep({
-            type: 'error',
-            title: 'ocurrio un error'
-          })
+             return fetch('/send_pdf_propuesta_comercial', miInit)
+                   .then(function(response){
+                     if (!response.ok) {
+                        throw new Error(response.statusText)
+                      }
+                     return response.text();
+                   })
+                   .catch(function(error){
+                     Swal.showValidationMessage(
+                       `Request failed: ${error}`
+                     )
+                   });
+          }//Preconfirm
+        }).then((result) => {
+          if (result.value) {
+            var data = JSON.parse(result.value);
+            console.log();
+            Swal.fire({
+              title: 'Correo enviado a',
+              text: `${data.email}`,
+              type: 'success',
+            }).then(function (result) {
+              
+            })
+          }else{
+            Swal.fire(
+              'Error al enviar correo','','error'
+            )
+          }
         })
-    }
-  }])
 
 }
 

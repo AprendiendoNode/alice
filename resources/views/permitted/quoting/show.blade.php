@@ -32,9 +32,11 @@
                     <input type="hidden" name="id_documentp" id="id_documentp" value="{{$id_document}}">
                     <h4 class="text-danger">{{$data_header[0]->folio}}</h4>
                     <h5 class="text-danger">Última actualización: <span id="hour_created">{{$hour_created}}</span></h5>
-                    <p class="text-primary">Número de ediciones: {{$data_header[0]->num_edit}}</p>
-                    <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="KICK-OFF" onclick="kickoff(this)" data-id="{{$id_document}}"  value="{{$id_document}}" class="btn btn-success text-white"><span class="fas fa-tasks"></span> Ir a KICK-OFF</a>
-
+                    <p class="text-primary">Número de ediciones: {{$data_header[0]->num_edit}}</p> 
+                      <!---Si el estatus del cotizador es AUTORIZADO o EN KICK-OFF  se muestra el boto de enlace al kickoff-->
+                      @if($data_header[0]->cotizador_status_id == 4 || $data_header[0]->cotizador_status_id == 5)
+                        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="KICK-OFF" onclick="kickoff(this)" data-id="{{$id_document}}"  value="{{$id_document}}" class="btn btn-success text-white"><span class="fas fa-tasks"></span> Ir a KICK-OFF</a>
+                      @endif
                       @include('permitted.quoting.form_edit')
                   </div>
               </div>
@@ -72,8 +74,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
     <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_logs.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting_cart_general.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting.js?v=2.0.3')}}"></script>
-    <script type="text/javascript" src="{{asset('js/admin/quoting/metricas.js?v=2.0.4')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting.js?v=4.0.0')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/quoting/metricas.js?v=4.0.0')}}"></script>
     <script type="text/javascript">
     $(function() {
       localStorage.clear();

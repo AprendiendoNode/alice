@@ -37,10 +37,12 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  $.each(datajson, function(index, data){
+  let data_filter = datajson.filter(data => data.cotizador_status == 'Autorizado');
+  $.each(data_filter, function(index, data){
     let type_doc = 'C';
     let badge = '';
     let parameters_icon = '';
+
     switch (data.cotizador_status) {
       case 'Nuevo':
         badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';
@@ -51,15 +53,15 @@ function documentp_table(datajson, table){
       case 'Autorizado':
         badge= '<span class="badge badge-success badge-pill text-white">Autorizado</span>';
         break;
-       case 'En Kick-off':
-         badge= '<span class="badge badge-dark badge-pill text-white">En Kick-off</span>';
-         break;
-       case 'Fuera de parametros':
-          badge= '<span class="badge badge-danger badge-pill text-white">Fuera de parametros</span>';
-          break;
-       default:
-         badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
-         break;
+      case 'En Kick-off':
+        badge= '<span class="badge badge-dark badge-pill text-white">En Kick-off</span>';
+        break;
+      case 'Fuera de parametros':
+        badge= '<span class="badge badge-danger badge-pill text-white">Fuera de parametros</span>';
+        break;
+      default:
+        badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
+        break;
     }
 
     if(data.objetivos_cotizador == 0){
@@ -69,6 +71,7 @@ function documentp_table(datajson, table){
     }
 
     vartable.fnAddData([
+      data.id,
       data.fecha,
       data.nombre_proyecto,
       '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
@@ -83,22 +86,27 @@ function documentp_table(datajson, table){
             <i class="fas fa-ellipsis-h"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.id}'" value="${data.id}"><i class="fa fa-edit"></i>Editar cotizador</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="editar(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.id}'" value="${data.id}"><i class="fa fa-edit"></i>Editar cotizador</a>
             <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="kickoff(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-tasks"></i> Kick-off</a>
+            <a class="dropdown-item" href="/view_pdf_propuesta_comercial/${data.id}" target="_blank"><i class="fas fa-file-pdf"></i> Ver propuesta comercial</a>
+            <a class="dropdown-item" href="#" onclick="send_mail_propuesta_comercial(this)" data-id="${data.id}"><i class="fas fa-envelope-open-text"></i> Enviar propuesta a mi correo</a>
         </div> 
        </div>`,
+      data.cotizador_status
       ]);
     });
 }
+
 var Configuration_table_responsive_documentp= {
-        "order": [[ 0, "desc" ]],
+        "order": [[ 1, "desc" ]],
         "select": true,
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
         "columnDefs": [
             {
                 "targets": 0,
-                "width": "0.3%",
-                "className": "text-center",
+                "width": "0.1%", 
+                "visible": false,
             },
             {
               "targets": 1,
@@ -108,7 +116,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 2,
               "width": "0.5%",
-              "className": "text-right cell-price",
+              "className": "text-center",
             },
             {
               "targets": 3,
@@ -123,123 +131,46 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 5,
               "width": "1.6%",
-              "className": "text-center",
+              "className": "text-right cell-price",
             },
             {
               "targets": 6,
+              "width": "1%",
+              "className": "text-center cell-large",
+            },
+            {
+              "targets": 7,
               "width": "0.3%",
               "className": "text-center",
             },
             {
-              "targets": 7,
-              "width": "0.1%",
-              "className": "text-center cell-short",
+              "targets": 8,
+              "width": "0.3%",
+              "className": "text-center",
             },
             {
-              "targets": 8,
+              "targets": 9,
               "width": "0.2%",
               "className": "text-center cell-short",
             },
             {
-              "targets": 9,
-              "width": "1%",
+              "targets": 10,
+              "width": "3%",
               "className": "text-center",
+            },
+            {
+              "targets": 11,
+              "width": "3%",
+              "className": "text-center",
+              "visible": false,
             }
         ],
         dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +
               "<'row'<'col-sm-12'tr>>" +
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
-          {
-            extend: 'excelHtml5',
-            text: '<i class="fa fa-file-excel-o"></i> Excel',
-            titleAttr: 'Excel',
-            title: function ( e, dt, node, config ) {
-              var ax = '';
-              if($('input[name="date_to_search"]').val() != ''){
-                ax= '- Periodo: ' + $('input[name="date_to_search"]').val();
-              }
-              else {
-                txx='- Periodo: ';
-                var fecha = new Date();
-                var ano = fecha.getFullYear();
-                var mes = fecha.getMonth()+1;
-                var fechita = ano+'-'+mes;
-                ax = txx+fechita;
-              }
-              return 'Historial de cotizaciones';
-            },
-            init: function(api, node, config) {
-               $(node).removeClass('btn-default')
-            },
-            exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8 ],
-                modifier: {
-                    page: 'all',
-                }
-            },
-            className: 'btn btn-success',
-          },
-          {
-            extend: 'csvHtml5',
-            text: '<i class="fa fa-file-text-o"></i> CSV',
-            titleAttr: 'CSV',
-            title: function ( e, dt, node, config ) {
-              var ax = '';
-              if($('input[name="date_to_search"]').val() != ''){
-                ax= '- Periodo: ' + $('input[name="date_to_search"]').val();
-              }
-              else {
-                txx='- Periodo: ';
-                var fecha = new Date();
-                var ano = fecha.getFullYear();
-                var mes = fecha.getMonth()+1;
-                var fechita = ano+'-'+mes;
-                ax = txx+fechita;
-              }
-              return 'Historial de cotizaciones';
-            },
-            init: function(api, node, config) {
-               $(node).removeClass('btn-default')
-            },
-            exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8 ],
-                modifier: {
-                    page: 'all',
-                }
-            },
-            className: 'btn btn-info',
-          },
-          {
-            extend: 'pdf',
-            orientation: 'landscape',
-            text: '<i class="fa fa-file-pdf-o"></i>  PDF',
-            title: function ( e, dt, node, config ) {
-              var ax = '';
-              if($('input[name="date_to_search"]').val() != ''){
-                ax= '- Periodo: ' + $('input[name="date_to_search"]').val();
-              }
-              else {
-                txx='- Periodo: ';
-                var fecha = new Date();
-                var ano = fecha.getFullYear();
-                var mes = fecha.getMonth()+1;
-                var fechita = ano+'-'+mes;
-                ax = txx+fechita;
-              }
-              return 'Historial de cotizaciones';
-            },
-            init: function(api, node, config) {
-               $(node).removeClass('btn-default')
-            },
-            exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8 ],
-                modifier: {
-                    page: 'all',
-                }
-            },
-            className: 'btn btn-danger',
-          }
+          
+          
         ],
         language:{
             "sProcessing":     "Procesando...",

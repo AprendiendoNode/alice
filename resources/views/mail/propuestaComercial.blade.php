@@ -93,8 +93,7 @@ background-color: #f6f6f6;
 
 <body itemscope style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
 
-<h1>hola</h1>
-
+  <h1></h1>
        
-    </body>
+  </body>
 </html>

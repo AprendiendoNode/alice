@@ -22,7 +22,7 @@ function table_permission_zero() {
   var objData = $('#search_info').find("select,textarea, input").serialize();
   $.ajax({
       type: "POST",
-      url: "/view_request_quoting",
+      url: "/get_quoting_auth",
       data: objData,
       success: function (data){
         documentp_table(data, $("#table_quoting"));
@@ -69,6 +69,7 @@ function documentp_table(datajson, table){
     }
 
     vartable.fnAddData([
+      data.id,
       data.fecha,
       data.nombre_proyecto,
       '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
@@ -83,21 +84,29 @@ function documentp_table(datajson, table){
             <i class="fas fa-ellipsis-h"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.id}'" value="${data.id}"><i class="fa fa-edit"></i>Editar cotizador</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="editar(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.id}'" value="${data.id}"><i class="fa fa-edit"></i>Editar cotizador</a>
             <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="kickoff(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-tasks"></i> Kick-off</a>
+            <a class="dropdown-item" href="/view_pdf_propuesta_comercial/${data.id}" target="_blank"><i class="fas fa-file-pdf"></i> Ver propuesta comercial</a>
+            <a class="dropdown-item" href="#" onclick="send_mail_propuesta_comercial(this)" data-id="${data.id}"><i class="fas fa-envelope-open-text"></i> Enviar propuesta a mi correo</a>
         </div> 
        </div>`,
+      data.cotizador_status
       ]);
     });
 }
+
 var Configuration_table_responsive_documentp= {
-        "order": [[ 0, "desc" ]],
+        "order": [[ 1, "desc" ]],
         "select": true,
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
         "columnDefs": [
             {
                 "targets": 0,
-                "width": "0.3%",
+                "checkboxes": {
+                  'selectRow': true
+                },
+                "width": "0.1%",
                 "className": "text-center",
             },
             {
@@ -108,7 +117,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 2,
               "width": "0.5%",
-              "className": "text-right cell-price",
+              "className": "text-center",
             },
             {
               "targets": 3,
@@ -123,27 +132,38 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 5,
               "width": "1.6%",
-              "className": "text-center",
+              "className": "text-right cell-price",
             },
             {
               "targets": 6,
+              "width": "1%",
+              "className": "text-center cell-large",
+            },
+            {
+              "targets": 7,
               "width": "0.3%",
               "className": "text-center",
             },
             {
-              "targets": 7,
-              "width": "0.1%",
-              "className": "text-center cell-short",
+              "targets": 8,
+              "width": "0.3%",
+              "className": "text-center",
             },
             {
-              "targets": 8,
+              "targets": 9,
               "width": "0.2%",
               "className": "text-center cell-short",
             },
             {
-              "targets": 9,
-              "width": "1%",
+              "targets": 10,
+              "width": "3%",
               "className": "text-center",
+            },
+            {
+              "targets": 11,
+              "width": "3%",
+              "className": "text-center",
+              "visible": false,
             }
         ],
         dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +
@@ -151,95 +171,76 @@ var Configuration_table_responsive_documentp= {
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
           {
-            extend: 'excelHtml5',
-            text: '<i class="fa fa-file-excel-o"></i> Excel',
-            titleAttr: 'Excel',
-            title: function ( e, dt, node, config ) {
-              var ax = '';
-              if($('input[name="date_to_search"]').val() != ''){
-                ax= '- Periodo: ' + $('input[name="date_to_search"]').val();
-              }
-              else {
-                txx='- Periodo: ';
-                var fecha = new Date();
-                var ano = fecha.getFullYear();
-                var mes = fecha.getMonth()+1;
-                var fechita = ano+'-'+mes;
-                ax = txx+fechita;
-              }
-              return 'Historial de cotizaciones';
-            },
+            text: '<i class=""></i> Enviar a Kick-off',
+            titleAttr: 'Enviar a Kick-off',
+            className: 'btn bg-dark',
             init: function(api, node, config) {
-               $(node).removeClass('btn-default')
+              $(node).removeClass('btn-default')
             },
-            exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8 ],
-                modifier: {
-                    page: 'all',
-                }
-            },
-            className: 'btn btn-success',
+            action: function ( e, dt, node, config ) {
+              var rows_selected = $("#table_quoting").DataTable().column(0).checkboxes.selected();
+              var _token = $('input[name="_token"]').val();
+              // Iterate over all selected checkboxes
+              var valores= new Array();
+              // console.log(factura);
+              $.each(rows_selected, function(index, rowId){
+                valores.push(rowId);
+              });
+
+              if (valores.length === 0){
+                Swal.fire("Operación abortada", "Ningún registro seleccionado :(", "error");
+              }else{
+                Swal.fire({
+                  title: "¿Estás seguro?",
+                  html: `Se cambiara el estatus de las cotizaciones seleccionadas!<br><br>
+                        <div>
+                          <select class='form-control' style='display: block;' id='status_cotizador'>
+                            <option value='5'>En kick-off</option>
+                          </select>
+                        </div>`,
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-danger",
+                  confirmButtonText: "Continuar",
+                  cancelButtonText: "Cancelar",
+                  customClass: 'swal-wide'
+                }).then((result) => {
+                  if(result.value){
+
+                    var status_cotizador = $('#status_cotizador').val();
+                    // console.log(semana);
+                    $('.cancel').prop('disabled', 'disabled');
+                    $('.confirm').prop('disabled', 'disabled');
+
+                    if(status_cotizador === ''){
+                      Swal.fire("Operación abortada", "Debe seleccionar un estatus", "error")
+                    }else{
+                      $.ajax({
+                        type: "POST",
+                        url: "/set_status_quoting",
+                        data: { idents: JSON.stringify(valores), status_cotizador: status_cotizador , _token : _token },
+                        success: function (data){
+                          console.log(data);
+                          if (data === 'true') {
+                            Swal.fire("Operación Completada!", "Las solicitudes seleccionadas han sido confirmadas.", "success");
+                            table_permission_zero();
+                          }else{
+                              Swal.fire("Ocurrio un error al cambiar estatus!", "", "error");
+                          }
+
+                        },
+                        error: function (data) {
+                          console.log('Error:', data);
+                        }
+                      });
+                    }
+                  }
+                })
+              }
+
+
+            }
           },
-          {
-            extend: 'csvHtml5',
-            text: '<i class="fa fa-file-text-o"></i> CSV',
-            titleAttr: 'CSV',
-            title: function ( e, dt, node, config ) {
-              var ax = '';
-              if($('input[name="date_to_search"]').val() != ''){
-                ax= '- Periodo: ' + $('input[name="date_to_search"]').val();
-              }
-              else {
-                txx='- Periodo: ';
-                var fecha = new Date();
-                var ano = fecha.getFullYear();
-                var mes = fecha.getMonth()+1;
-                var fechita = ano+'-'+mes;
-                ax = txx+fechita;
-              }
-              return 'Historial de cotizaciones';
-            },
-            init: function(api, node, config) {
-               $(node).removeClass('btn-default')
-            },
-            exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8 ],
-                modifier: {
-                    page: 'all',
-                }
-            },
-            className: 'btn btn-info',
-          },
-          {
-            extend: 'pdf',
-            orientation: 'landscape',
-            text: '<i class="fa fa-file-pdf-o"></i>  PDF',
-            title: function ( e, dt, node, config ) {
-              var ax = '';
-              if($('input[name="date_to_search"]').val() != ''){
-                ax= '- Periodo: ' + $('input[name="date_to_search"]').val();
-              }
-              else {
-                txx='- Periodo: ';
-                var fecha = new Date();
-                var ano = fecha.getFullYear();
-                var mes = fecha.getMonth()+1;
-                var fechita = ano+'-'+mes;
-                ax = txx+fechita;
-              }
-              return 'Historial de cotizaciones';
-            },
-            init: function(api, node, config) {
-               $(node).removeClass('btn-default')
-            },
-            exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8 ],
-                modifier: {
-                    page: 'all',
-                }
-            },
-            className: 'btn btn-danger',
-          }
         ],
         language:{
             "sProcessing":     "Procesando...",

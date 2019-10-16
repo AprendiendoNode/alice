@@ -1,6 +1,7 @@
 <form id="validation_master" name="validation_master" class="form-horizontal validation-wizard-master wizard-circle m-t-40">
     {{ csrf_field() }}
     <!-- Step 1 -->
+    <input type="hidden" name="objetivos_cotizador" id="objetivos_cotizador" value="0">
     <h5>Paso 1 - Información del proyecto </h5>
     <section>
       <div class="row">
@@ -161,6 +162,12 @@
             <label for="capex" class="control-label">CAPEX</label>
             <input type="number" class="form-control form-control-sm" id="capex" name="capex" value="0">
           </div>
+        </div>
+      </div>
+      <!---row--->
+      <div class="row mt-3">
+        <div class="col-md-3">
+          <button type="button" onclick="calcularServicioMensual();" class="btn btn-danger"> Calcular servicio mensual</button>
         </div>
       </div>
       <!---row--->

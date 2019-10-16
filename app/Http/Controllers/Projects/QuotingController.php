@@ -286,6 +286,10 @@ class QuotingController extends Controller
               ]
           ]);
 
+          $update_cotizador = new Cotizador();
+          $update_cotizador->set_objetivos_cotizador($new_documentp->id, $request->objetivos_cotizador);
+          $update_cotizador->set_status_cotizador($new_documentp->id);
+
           DB::commit();
 
           $name_project = "";

@@ -62,8 +62,9 @@
                   <th> <small>$ MO USD</small> </th>
                   <th> <small>Solicitó</small> </th>
                   <th> <small>Estatus</small> </th>
-                  <th> <small>V.</small> </th>
+                  <th> <small><i class="fas fa-check-double"></i></small> </th>
                   <th> <small>Doc.</small> </th>
+                  <th> <small></small> </th>
                   <th> <small></small> </th>
                 </tr>
               </thead>
@@ -104,7 +105,7 @@
                     <th> <small>$ MO USD</small> </th>
                     <th> <small>Solicitó</small> </th>
                     <th> <small>Estatus</small> </th>
-                    <th> <small>V.</small> </th>
+                    <th> <small><i class="fas fa-check-double"></i></small> </th>
                     <th> <small>Doc.</small> </th>
                     <th> <small></small> </th>
                     <th> <small></small> </th>
@@ -152,12 +153,12 @@
     }
   </style>
   @if( auth()->user()->can('View level zero documentp notification') )
-    <script src="{{ asset('js/admin/quoting/requests_quoting_kickoff_0.js?v=1.0.0')}}"></script>
-    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=3.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/requests_quoting_kickoff_0.js?v=4.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.0.0')}}"></script>
   @elseif ( auth()->user()->can('View level one documentp notification') ||
             auth()->user()->can('View level two documentp notification') ||
             auth()->user()->can('View level three documentp notification'))
-    <script src="{{ asset('js/admin/quoting/requests_quoting_kickoff_all.js?v=1.0.0')}}"></script>
-    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=3.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/requests_quoting_kickoff_all.js?v=4.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.0.0')}}"></script>
   @endif
 @endpush

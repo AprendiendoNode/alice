@@ -85,15 +85,11 @@ function documentp_table(datajson, table){
             <a class="dropdown-item" href="#" onclick="send_mail_propuesta_comercial(this)" data-id="${data.id}"><i class="fas fa-envelope-open-text"></i> Enviar propuesta a mi correo</a>
         </div> 
        </div>`,
-      /*'<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a>' +
-      '<a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>' +
-      '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Kick-off" onclick="kickoff(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-success btn-sm"><span class="fas fa-tasks"></span></a>' +
-      '<a target="_blank" href="/quoting_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="fas fa-file-pdf"></span></a>',*/
       data.cotizador_status
       ]);
     });
 }
-//'<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Kick-off" onclick="kickoff(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-success btn-sm"><span class="fas fa-tasks"></span></a>' +
+
 var Configuration_table_responsive_documentp= {
         "order": [[ 1, "desc" ]],
         "select": true,
@@ -101,17 +97,9 @@ var Configuration_table_responsive_documentp= {
         "columnDefs": [
             {
                 "targets": 0,
-                "checkboxes": {
-                  'selectRow': true
-                },
                 "width": "0.1%",
-                "createdCell": function (td, cellData, rowData, row, col){
-                  if ( cellData > 0 ) {
-                    
-
-                  }
-                },
                 "className": "text-center",
+                "visible": false
             },
             {
               "targets": 1,
@@ -174,7 +162,7 @@ var Configuration_table_responsive_documentp= {
               "<'row'<'col-sm-12'tr>>" +
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
-          {
+          /*{
             text: '<i class=""></i> Cambiar estatus de documentos',
             titleAttr: 'Cambiar estatus de documentos',
             className: 'btn bg-dark',
@@ -200,8 +188,8 @@ var Configuration_table_responsive_documentp= {
                         <div>
                           <select class='form-control' style='display: block;' id='status_cotizador'>
                           <option value=''>Elegir...</option>
-                            <option value='2'>En revision</option>
                             <option value='3'>Fuera de parametros</option>
+                            <option value='4'>Autorizado</option>
                           </select>
                         </div>`,
                   type: "warning",
@@ -246,7 +234,7 @@ var Configuration_table_responsive_documentp= {
 
 
             }
-          },
+          }*/,
         ],
         language:{
             "sProcessing":     "Procesando...",

@@ -820,33 +820,46 @@ class KickoffController extends Controller
       $condiciones = DB::table('condiciones_comerciales')->get();
       $user_email = Auth::user()->email;
       $data_cart = DB::select('CALL px_docupentop_materialesXcarrito(?)' , array($documentp->documentp_cart_id));
-      
+        
       $collection = collect($data_cart);
       // Filtrando equipo activo
       $equipo_activo = $collection->whereIn('categoria_id', [4, 6, 14]);
       // Enviando datos a la vista de la factura
       $pdf = PDF::loadView('permitted.planning.propuesta_comercial_pdf', compact('documentp', 'equipo_activo', 'servicios', 'condiciones'));
-
       
       return $pdf->stream();
     }
 
     public function send_mail_pdf_propuesta(Request $request)
     {
-      dd($$request->id);
       $documentp = Documentp::findOrFail($request->id);
+      $servicios = DB::table('servicios_propuesta')->get();
+      $condiciones = DB::table('condiciones_comerciales')->get();
+      $user_email = Auth::user()->email;
+      $data_cart = DB::select('CALL px_docupentop_materialesXcarrito(?)' , array($documentp->documentp_cart_id));
+      
+      $collection = collect($data_cart);
+      // Filtrando equipo activo
+      $equipo_activo = $collection->whereIn('categoria_id', [4, 6, 14]);
+      
+      $pdf = PDF::loadView('permitted.planning.propuesta_comercial_pdf', compact('documentp', 'equipo_activo', 'servicios', 'condiciones'));
 
       $data = [
         'fecha_aprobacion' => 'test',
         'folio' => '0000', 
       ];
 
-      Mail::send('mail.test', $data,function ($message) use ($pdf, $documentp){
-          $message->subject('Propuesta Comercial');
-          $message->from('desarrollo@sitwifi.net', 'Propuesta comercial' . $documentp->nombre_proyecto);
+      Mail::send('mail.propuestaComercial', $data,function ($message) use ($pdf, $documentp, $user_email){
+          $message->subject('Propuesta Comercial ' . $documentp->nombre_proyecto);
+          $message->from('desarrollo@sitwifi.com', 'Propuesta comercial');
           $message->to($user_email);
           $message->attachData($pdf->output(), 'Propuesta_'. $documentp->nombre_proyecto. '.pdf');
       });
+
+      return response()->json([
+          'email' => $user_email
+      ]);
+
     }
 
 

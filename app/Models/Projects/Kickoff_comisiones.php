@@ -97,6 +97,4 @@ class Kickoff_comisiones extends Model
     }
 
 
-
-
 }

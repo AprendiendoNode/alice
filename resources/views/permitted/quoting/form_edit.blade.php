@@ -2,6 +2,7 @@
     {{ csrf_field() }}
     <!-- Step 1 -->
     <input type="hidden" name="key_doc" id="key_doc" value="{{$data_header[0]->doc_type}}">
+    <input type="hidden" name="objetivos_cotizador" id="objetivos_cotizador" value="{{$data_header[0]->objetivos_cotizador}}">
     <h5>Paso 1 - Información del proyecto </h5>
     <section>
       <div class="row">
@@ -193,6 +194,11 @@
         </div>
       </div>
       <!---row--->
+      <div class="row mt-3">
+        <div class="col-md-3">
+          <button id="servicioMensualButton" type="button" onclick="calcularServicioMensual();" class="btn btn-danger"> Calcular servicio mensual</button>
+        </div>
+      </div>
       <!---row--->
       <br>
       <div class="row">
