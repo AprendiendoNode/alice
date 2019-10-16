@@ -82,18 +82,7 @@ $('input[name="factura_masiva"]').on('ifClicked', function (event) {
       format: "yyyy-mm-dd",
       autoclose: true
   });
-  $('#date_vencimiento').datepicker({
-      language: 'es',
-      defaultDate: '',
-      format: "yyyy-mm-dd",
-      autoclose: true
-  });
-  $('#date_vencimiento_masivo').datepicker({
-      language: 'es',
-      defaultDate: '',
-      format: "yyyy-mm-dd",
-      autoclose: true
-  });
+
 
   // $('input[name="grupitho"]').typeahead({
   //   minLength: 0,
@@ -339,31 +328,6 @@ $('#Marcas').on('change', function(e){
       $("#mmodelo").select2({placeholder: "Elija", width: '80%'});
   }
 });
-$('#type_equipment').on('change',function(){
-  var id= $(this).val();
-  //console.log(id);
-  if(id==3){
-    $('#date_vencimiento').val('');
-    $('#vencimiento').css('visibility','visible');
-  }else{
-    $('#date_vencimiento').val('');
-    $('#vencimiento').css('visibility','hidden');
-  }
-
-});
-$('#type_equipment_massive').on('change',function(){
-  var id= $(this).val();
-  console.log(id);
-  if(id==3){
-    $('#date_vencimiento_masivo').val('');
-    $('#vencimiento_masivo').css('visibility','visible');
-  }else{
-    $('#date_vencimiento_masivo').val('');
-    $('#vencimiento_masivo').css('visibility','hidden');
-  }
-
-});
-
 function reset_modelithos(){
   var id= $('#Marcas').val();
   var _token = $('input[name="_token"]').val();
@@ -505,7 +469,7 @@ $(".btn-save").on("click", function () {
     $obligatorio_i = validarSelect('mmodelo');
     $obligatorio_j = validarSelect('add_estado');
     $obligatorio_k = validarSelect('venue');
-    //$obligatorio_z = validarespacioinput('date_vencimiento');
+
     $obligatorio_l1 = validarespacioinputcoin('precio');
     $obligatorio_l2 = validarSelect('coinmonto');
 
@@ -583,7 +547,7 @@ $(".btn-save").on("click", function () {
     $obligatorio_d = validarespacioinputlength('add_mac_eq',17);
     $obligatorio_e = validarespacioinputlength('add_num_se', 10);
     $obligatorio_f = validarespacioinput('add_descrip');
-    //$obligatorio_z = validarespacioinput('date_vencimiento');
+
     $obligatorio_g = validarSelect('type_equipment');
     $obligatorio_h = validarSelect('Marcas');
     $obligatorio_i = validarSelect('mmodelo');
@@ -592,7 +556,7 @@ $(".btn-save").on("click", function () {
 
     if ($obligatorio_d == true && $obligatorio_e == true && $obligatorio_f == true &&
         $obligatorio_g == true && $obligatorio_h == true && $obligatorio_i == true &&
-        $obligatorio_j == true && $obligatorio_k == true ) {
+        $obligatorio_j == true && $obligatorio_k == true) {
           /*------------------------------------------------------------------------------------------------------*/
           var objData = $("#add_equipitho").find("select,textarea, input").serialize();
           var $d_venue = $("#venue").select2('data')[0]['text'];
@@ -783,23 +747,14 @@ function handleFile(e) {
                          result = JSON.stringify(datos_raw);
                          console.log(result);
                          result_json=JSON.parse(result);//Necesario
-
-                         for(i=0;i<result_json.length;i++){
-                           if(result_json[i]['VENCIMIENTO']!=null){
-                             const index=[2,0,1];
-                              array=result_json[i]['VENCIMIENTO'].split("/");
-                              result_json[i]['VENCIMIENTO']=index.map(i=>array[i]).join("-");
-                              console.log(result_json[i]['VENCIMIENTO']);
-                           }}
-                         //console.log(result_json);
+                        // console.log(result_json);
                         //Pasamos todo a un arreglo
 
                         //console.log('Elementos en el arreglo');
                         //console.log(excelData);
 
-                      const  dataTable_exc = $("#preview_excel").DataTable({
+                        $("#preview_excel").DataTable({
                           //"ajax":result,
-
                           "pageLength": 5,
                           "bProcessing":true,
                           "data":result_json,
@@ -829,11 +784,7 @@ function handleFile(e) {
                             {"data": "PRECIO /PESOS",
                             "defaultContent": "No asignado"},
                             {"data": "GRUPO",
-                            "defaultContent": "No asignado"},
-                            {"data": "VENCIMIENTO",
-                            "defaultContent": " ",
-                            //render: function(d){return moment(d).format("DD-MM-YYYY HH:mm"); }
-                             }
+                            "defaultContent": "No asignado"}
                           ],
                           "bDestroy": true
                         });
@@ -855,24 +806,9 @@ $(".btn-save-massive").on("click", function () {
   var excelData =[];
   for(i=0;i<result_json.length;i++){
     if(result_json[i]['MAC']!=''){
-    if(result_json[i]['VENCIMIENTO']!=null && result_json[i]['DESCRIPCION']!=null){
-      element ={factura:result_json[i]['FACTURA'],nofactura:result_json[i]['NO DE FACTURA'],fecha:result_json[i]['FECHA'],mac:result_json[i]['MAC'].toString().match(/.{2}/g).join(':').toUpperCase(),serie:result_json[i]['SERIE'],descripcion:result_json[i]['DESCRIPCION'], vencimiento:result_json[i]['VENCIMIENTO'] };
-      excelData.push(element);
-    }else{
-      if(result_json[i]['VENCIMIENTO']==null && result_json[i]['DESCRIPCION']==null){
-        element ={factura:result_json[i]['FACTURA'],nofactura:result_json[i]['NO DE FACTURA'],fecha:result_json[i]['FECHA'],mac:result_json[i]['MAC'].toString().match(/.{2}/g).join(':').toUpperCase(),serie:result_json[i]['SERIE'],descripcion:'', vencimiento:'' };
-        excelData.push(element);
-      }else{
-      if(result_json[i]['DESCRIPCION']!=null){
-        element ={factura:result_json[i]['FACTURA'],nofactura:result_json[i]['NO DE FACTURA'],fecha:result_json[i]['FECHA'],mac:result_json[i]['MAC'].toString().match(/.{2}/g).join(':').toUpperCase(),serie:result_json[i]['SERIE'],descripcion:result_json[i]['DESCRIPCION'], vencimiento:'' };
-        excelData.push(element);
-      }else{
-        element ={factura:result_json[i]['FACTURA'],nofactura:result_json[i]['NO DE FACTURA'],fecha:result_json[i]['FECHA'],mac:result_json[i]['MAC'].toString().match(/.{2}/g).join(':').toUpperCase(),serie:result_json[i]['SERIE'],descripcion:'', vencimiento:result_json[i]['VENCIMIENTO'] };
-        excelData.push(element);
-      }
-      }
-    }
-    console.log(excelData);
+    element ={factura:result_json[i]['FACTURA'],nofactura:result_json[i]['NO DE FACTURA'],fecha:result_json[i]['FECHA'],mac:result_json[i]['MAC'].toString().match(/.{2}/g).join(':').toUpperCase(),serie:result_json[i]['SERIE'],descripcion:result_json[i]['DESCRIPCION']};
+    excelData.push(element);
+    //console.log(excelData);
   } else{
     break
   }
@@ -887,7 +823,7 @@ $(".btn-save-massive").on("click", function () {
     $obligatorio_i = validarSelect('mmodelo_masivo');
     $obligatorio_j = validarSelect('add_estado_masivo');
     $obligatorio_k = validarSelect('venue_massive');
-    //$obligatorio_z = validarespacioinput('date_vencimiento');
+
     $obligatorio_l1 = validarespacioinputcoin('precio_masivo');
     $obligatorio_l2 = validarSelect('coinmonto_masivo');
     //console.log("Imprimiendo desde insertar");
@@ -964,17 +900,17 @@ $(".btn-save-massive").on("click", function () {
     }
   }
   if ($("input[name='factura_masiva']:checked").val() == 'no') {
-    //console.log("Imprimiendo datos excel");
-    //console.log(excelData);
+    console.log("Imprimiendo datos excel");
+    console.log(excelData);
     //$obligatorio_f = validarespacioinput('add_descrip_masiva');//Ya no es necesario, se tomará el del excel.
     $obligatorio_g = validarSelect('type_equipment_massive');
     $obligatorio_h = validarSelect('Marcas_masiva');
     $obligatorio_i = validarSelect('mmodelo_masivo');
     $obligatorio_j = validarSelect('add_estado_masivo');
     $obligatorio_k = validarSelect('venue_massive');
-    //$obligatorio_z = validarespacioinput('date_vencimiento');
+
     if ( $obligatorio_g == true && $obligatorio_h == true
-      && $obligatorio_i == true && $obligatorio_j == true && $obligatorio_k == true ) {
+      && $obligatorio_i == true && $obligatorio_j == true && $obligatorio_k == true) {
           /*------------------------------------------------------------------------------------------------------*/
           var objData = $("#add_equipo_masivo").find("select,textarea, input").serialize();
           var $d_venue = $("#venue_massive").select2('data')[0]['text'];
@@ -987,7 +923,7 @@ $(".btn-save-massive").on("click", function () {
           var $d_estado = $("#add_estado_masivo").select2('data')[0]['text'];
           var $d_modelo = $("#mmodelo_masivo").select2('data')[0]['text'];
           var descripcion =$('#add_descrip_masiva').val();
-          //console.log(objData);
+          console.log(objData);
           console.log(JSON.stringify(excelData));
           $.ajax({
             type: "POST",

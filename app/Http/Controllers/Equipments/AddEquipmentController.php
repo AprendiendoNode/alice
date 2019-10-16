@@ -170,7 +170,6 @@ class AddEquipmentController extends Controller
     $eq_modelo = "";
     $eq_estado = "";
     $eq_venue = "";
-    $eq_date_venci="";
     $excel_data=[];
 //campos de la factura
     $eq_nfactura = "";
@@ -193,7 +192,6 @@ class AddEquipmentController extends Controller
     $eq_modelo = $request->mmodelo;
     $eq_estado = $request->add_estado;
     $eq_venue = $request->venue;
-    $eq_date_venci= $request->date_vencimiento;
     //datos de la factura
     $eq_nfactura = $request->nfactura;
     $eq_date_fact = $request->date_fact;
@@ -216,8 +214,7 @@ class AddEquipmentController extends Controller
       $data_object=explode("&",$request->objData);
       $eq_grup = explode("=",$data_object[1])[1];
       //$eq_descrip = explode("=",$data_object[2])[1];
-      //$eq_descrip= $request->add_descrip;
-      $eq_date_venci= $request->date_vencimiento;
+      $eq_descrip= $request->add_descrip;
       $eq_type = explode("=",$data_object[3])[1];
       $eq_marca = explode("=",$data_object[4])[1];
       $eq_modelo = explode("=",$data_object[5])[1];
@@ -234,32 +231,10 @@ class AddEquipmentController extends Controller
     }
       $flag = 0;//Estado inicial
     foreach($excel_data as $elemento){
-      if($masivo==1){
-      $eq_date_venci= explode("=",$data_object[10])[1];
-      $eq_descrip = urldecode(explode("=",$data_object[2])[1]);
-
-      if(sizeof($elemento)==3 || sizeof($elemento)==4){
-        //checar
-        if($eq_descrip==''){
-        if($elemento['descripcion']!='' ){
+      if(count($elemento)==3){
         $eq_descrip=$elemento['descripcion'];
-        }else{
-          //$eq_descrip='';
-        }
-        }
-        //checar
-        //info("checando valor".$eq_date_venci);
-        if($eq_date_venci == null || $eq_date_venci == '' || empty($eq_date_venci)){
-        if($elemento['vencimiento'] != '' ){
-          $time=$elemento['vencimiento'];
-          $eq_date_venci= \Carbon\Carbon::parse($time)->format('Y-m-d');
-        }
-        else{
-          $eq_date_venci = null;
-        }
-        }
-      }//FIN IF ELEMENTO
-    }//massivo ==1
+        //info($eq_descrip);
+      }
 
       //info($elemento['serie']);
       $count_m0 = DB::table('equipos')->where('MAC', $elemento['mac'])->count();
@@ -291,7 +266,6 @@ class AddEquipmentController extends Controller
             'costo' => $valor_moneda,
             'moneda_id' => $id_moneda,
             'especificacions_id' => $eq_type,
-            'fecha_vencimiento' => $eq_date_venci,
             'created_at' => \Carbon\Carbon::now(),
                     ]);
 
@@ -310,7 +284,6 @@ class AddEquipmentController extends Controller
             'hotel_id' => $eq_venue,
             'costo' => $valor_moneda,
             'moneda_id' => $id_moneda,
-            'fecha_vencimiento' => $eq_date_venci,
             'especificacions_id' => $eq_type,
             'created_at' => \Carbon\Carbon::now(),
                     ]);
@@ -343,8 +316,6 @@ class AddEquipmentController extends Controller
         'Especificacion' => $especificacion[0]->name,
         'User' => $name_user
       ];
-      $eq_descrip='';//Limpiamos los campos
-      $eq_date_venci=null;//Limpiamos los campos
 
       //Envio de mails
 
@@ -358,12 +329,12 @@ class AddEquipmentController extends Controller
           array_push($mails, $itc_mail[$i]->email);
         }
         //si se inserto
-        //Mail::to('marthaisabel@sitwifi.com')->cc($mails)->send(new ConfirmacionAltaEquipo($parametros1));
+        Mail::to('marthaisabel@sitwifi.com')->cc($mails)->send(new ConfirmacionAltaEquipo($parametros1));
 
         continue;
       } else {
         //El sitio no tiene ITC asignado
-        //Mail::to('marthaisabel@sitwifi.com')->send(new ConfirmacionAltaEquipo($parametros1));
+        Mail::to('marthaisabel@sitwifi.com')->send(new ConfirmacionAltaEquipo($parametros1));
         continue;
       }
 
@@ -386,7 +357,6 @@ class AddEquipmentController extends Controller
     $eq_modelo = "";
     $eq_estado = "";
     $eq_venue = "";
-    $eq_date_venci="";
     $excel_data=[];
     $registros_exitosos=0;
     $name_user = Auth::user()->name;
@@ -401,7 +371,6 @@ class AddEquipmentController extends Controller
     $eq_modelo = $request->mmodelo;
     $eq_estado = $request->add_estado;
     $eq_venue = $request->venue;
-    $eq_date_venci=$request->date_vencimiento;
     $elementoequipo=['mac'=>$eq_mac,'serie'=>$eq_serie];
     array_push($excel_data,$elementoequipo);
     //info($request);
@@ -414,7 +383,8 @@ class AddEquipmentController extends Controller
 
       $data_object=explode("&",$request->objData);
       $eq_grup = explode("=",$data_object[1])[1];
-      //$eq_descrip= urldecode($request->add_descrip);
+      $eq_descrip= urldecode($request->add_descrip);
+      //$eq_descrip = urldecode(explode("=",$data_object[2])[1]);
       $eq_type = explode("=",$data_object[3])[1];
       $eq_marca = explode("=",$data_object[4])[1];
       $eq_modelo = explode("=",$data_object[5])[1];
@@ -423,40 +393,10 @@ class AddEquipmentController extends Controller
     }
       $flag = 0;//Estado inicial
     foreach($excel_data as $elemento){
-      if($masivo==1){
-      $eq_date_venci= explode("=",$data_object[10])[1];
-      $eq_descrip = urldecode(explode("=",$data_object[2])[1]);
-
-      if(sizeof($elemento)==3 || sizeof($elemento)==4){
-        //checar
-        if($eq_descrip==''){
-        if($elemento['descripcion']!='' ){
+      if(count($elemento)==3){
         $eq_descrip=$elemento['descripcion'];
-        }else{
-          //$eq_descrip='';
-        }
-        }
-        //checar
-        //info("checando valor".$eq_date_venci);
-        if($eq_date_venci == null || $eq_date_venci == '' || empty($eq_date_venci)){
-        if($elemento['vencimiento'] != '' ){
-          $time=$elemento['vencimiento'];
-          $eq_date_venci= \Carbon\Carbon::parse($time)->format('Y-m-d');
-        }
-        else{
-          $eq_date_venci = null;
-        }
-        }
-
-      }//Fin if elemento == 3
-    }//Fin masivo ==1
-
-      //  info($data_object);
-      //info(explode("=",$data_object[10])[1]);
-      //info(urldecode(explode ("=",$data_object[2])[1]));
-      //info(sizeof($elemento));
-      //info($eq_date_venci);
-      //info($eq_descrip);
+        //info($eq_descrip);
+      }
 
       //info($elemento['serie']);
       $count_m0 = DB::table('equipos')->where('MAC', $elemento['mac'])->count();
@@ -485,7 +425,6 @@ class AddEquipmentController extends Controller
             'check_it_id' => '2',
             'hotel_id' => $eq_venue,
             'especificacions_id' => $eq_type,
-            'fecha_vencimiento' => $eq_date_venci,
             'created_at' => \Carbon\Carbon::now(),
           ]);
           $result_match = DB::table('devices_groups')->insertGetId(['id_equipo' => $insert_eq, 'id_grupo' => $eq_grup]);
@@ -501,7 +440,6 @@ class AddEquipmentController extends Controller
             'check_it_id' => '2',
             'hotel_id' => $eq_venue,
             'especificacions_id' => $eq_type,
-            'fecha_vencimiento' => $eq_date_venci,
             'created_at' => \Carbon\Carbon::now(),
           ]);
           $registros_exitosos+=1;
@@ -524,8 +462,6 @@ class AddEquipmentController extends Controller
         'Especificacion' => $especificacion[0]->name,
         'User' => $name_user
       ];
-      $eq_descrip='';//Limpiamos los campos
-      $eq_date_venci=null;//Limpiamos los campos
 
       //Envio de mails
 
@@ -539,12 +475,12 @@ class AddEquipmentController extends Controller
           array_push($mails, $itc_mail[$i]->email);
         }
         //si se inserto
-      //Mail::to('marthaisabel@sitwifi.com')->cc($mails)->send(new ConfirmacionAltaEquipo($parametros1));
+      Mail::to('marthaisabel@sitwifi.com')->cc($mails)->send(new ConfirmacionAltaEquipo($parametros1));
 
         continue;
       } else {
         //El sitio no tiene ITC asignado
-      //Mail::to('marthaisabel@sitwifi.com')->send(new ConfirmacionAltaEquipo($parametros1));
+      Mail::to('marthaisabel@sitwifi.com')->send(new ConfirmacionAltaEquipo($parametros1));
         continue;
       }
 
