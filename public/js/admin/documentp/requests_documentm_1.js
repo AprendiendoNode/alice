@@ -91,11 +91,20 @@ function documentp_table(datajson, table){
     data.elaboro,
     badge,
     data.num_edit,
-    data.porcentaje_compra + '%',
+    parseInt(data.porcentaje_compra) + '%',
     data.atraso,
     type_doc,
     '<a href="" data-type="select" data-pk="'+ data.id +'" data-title="Prioridad" data-value="' + data.id_prioridad + '" class="set-priority">',
-    '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a><a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a><a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a>',
+    `<div class="btn-group">
+      <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+        <a class="dropdown-item" href="javascript:void(0);" onclick="editar(this)" data-id="${data.id}" data-cart="${data.documentp_cart_id}" value="${data.id}"><span class="fa fa-edit"></span> Editar</a>
+        <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
+        <a class="dropdown-item" target="_blank" href="/documentp_invoice/${data.id}/${data.documentp_cart_id}"><span class="far fa-file-pdf"></span> Imprimir productos</a>
+      </div>
+    </div>`,
     data.status
     ]);
 
@@ -160,6 +169,7 @@ var Configuration_table_responsive_documentp = {
               "targets": 7,
               "width": "0.1%",
               "className": "text-center",
+              "visible": false
             },
             {
               "targets": 8,
@@ -184,7 +194,7 @@ var Configuration_table_responsive_documentp = {
             {
               "targets": 12,
               "width": "3%",
-              "className": "text-center actions-button cell-large",
+              "className": "text-center",
             },
             {
               "targets": 13,

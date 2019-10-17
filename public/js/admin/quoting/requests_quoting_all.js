@@ -107,10 +107,9 @@ var Configuration_table_responsive_documentp= {
                 "width": "0.1%",
                 "createdCell": function (td, cellData, rowData, row, col){
                   if ( cellData > 0 ) {
-                    if(rowData[11] == 'En Kick-off'){
+                    if(rowData[11] == 'En revisión' || rowData[11] == 'Autorizado' || rowData[11] == 'En Kick-off'){
                       this.api().cell(td).checkboxes.disable();
                     }
-
                   }
                 },
                 "className": "text-center",
@@ -177,8 +176,8 @@ var Configuration_table_responsive_documentp= {
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
           {
-            text: '<i class=""></i> Enviar para autorizacion',
-            titleAttr: 'Enviar para autorizacion',
+            text: '<i class=""></i> Enviar para autorización',
+            titleAttr: 'Enviar para autorización',
             className: 'btn bg-dark',
             init: function(api, node, config) {
               $(node).removeClass('btn-default')
@@ -198,15 +197,6 @@ var Configuration_table_responsive_documentp= {
               }else{
                 Swal.fire({
                   title: "¿Estás seguro?",
-                  html: `Se cambiara el estatus de las cotizaciones seleccionadas!<br><br>
-                        <div>
-                          <select class='form-control' style='display: block;' id='status_cotizador'>
-                          <option value=''>Elegir...</option>
-                            <option value='2'>En revision</option>
-                            <option value='3'>Fuera de parametros</option>
-                            <option value='4'>En kick-off</option>
-                          </select>
-                        </div>`,
                   type: "warning",
                   showCancelButton: true,
                   confirmButtonClass: "btn-danger",
@@ -216,8 +206,8 @@ var Configuration_table_responsive_documentp= {
                 }).then((result) => {
                   if(result.value){
 
-                    var status_cotizador = $('#status_cotizador').val();
-                    // console.log(semana);
+                    var status_cotizador = 3 // Estatus en revision;
+ 
                     $('.cancel').prop('disabled', 'disabled');
                     $('.confirm').prop('disabled', 'disabled');
 
@@ -229,14 +219,12 @@ var Configuration_table_responsive_documentp= {
                         url: "/set_status_quoting",
                         data: { idents: JSON.stringify(valores), status_cotizador: status_cotizador , _token : _token },
                         success: function (data){
-                          console.log(data);
                           if (data === 'true') {
-                            Swal.fire("Operación Completada!", "Las solicitudes seleccionadas han sido confirmadas.", "success");
-                            table_permission_zero();
+                            Swal.fire("Operación Completada!", "", "success");
+                            setTimeout("location.reload();", 2000);
                           }else{
                               Swal.fire("Ocurrio un error al cambiar estatus!", "", "error");
                           }
-
                         },
                         error: function (data) {
                           console.log('Error:', data);

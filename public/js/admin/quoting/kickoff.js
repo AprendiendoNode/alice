@@ -109,78 +109,92 @@ form_kickoff.onsubmit = function(e){
     }
   })
 }
+
+function inputs_validation(inputs){
+  $flag = true;
+
+  Array.from(inputs).forEach(function (element) {
+    if(element.value == ''){
+      $flag = false;
+      element.style.borderColor = '#dc3545';
+    }
+  });
+
+  return $flag;
+
+}
+
 /***********************************************************/
 
 function approval_administracion(e){
   e.preventDefault();
   e.stopPropagation();
+
   var id = document.getElementById('id').value;
-  var plazo = document.getElementById('plazo').value;
-  var rfc = document.getElementById('rfc').value;
-  var fecha_inicio = document.getElementById('fecha_inicio').value;
-  fecha_inicio = invertirFecha(fecha_inicio);
+  var inputs = document.getElementsByClassName('input-admin');
+  
   var miInit = {
     method: 'get',
     headers: headers,
     credentials: "same-origin",
     cache: 'default' };
 
-    Swal.fire({
-      title: "¿Los datos del contrato son correctos?",
-      type: "warning",
-      //html:
-      // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: ${fecha_inicio}</h6>` +
-      // `<h6><i class="fas fa-check text-success"></i> Vigencia: ${plazo} meses</h6>` +
-      // `<h6><i class="fas fa-check text-success"></i> RFC: ${rfc}</h6></div>`,
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Confirmar',
-      cancelButtonText: 'Cancelar',
-      showLoaderOnConfirm: true,
-      preConfirm: () => {
+    if(inputs_validation(inputs)){
+        Swal.fire({
+        title: "¿Los datos de Administración son correctos?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
 
-         return fetch(`/approval_administracion/id_doc/${id}`, miInit)
-                   .then(function(response){
-                     if (!response.ok) {
-                        throw new Error(response.statusText)
-                      }
-                     return response.text();
-                   })
-                   .catch(function(error){
-                     Swal.showValidationMessage(
-                       `Request failed: ${error}`
-                     )
-                   });
-      }//Preconfirm
-    }).then((result) => {
-      console.log(result.value);
-      if(result.value == "1"){
-        document.getElementById("check_administracion").checked = true;
-        document.getElementById("check_administracion").disabled = true;
-        Swal.fire({
-          title: 'Aprobado por:',
-          text: "Dirección de Administración y Finanzas",
-          type: 'success',
-        }).then(function (result) {
-          if (result.value) {
-            location.reload();
-          }
-        })
-      }else if(result.value == "2"){
-        document.getElementById("check_administracion").checked = true;
-        document.getElementById("check_administracion").disabled = true;
-        Swal.fire({
-          title: 'Cotizador autorizado por comité',
-          text: "Este documento se ha convertido a Documento P",
-          type: 'success',
-        }).then(function (result) {
-          if (result.value) {
-            location.reload();
-          }
-        })
-      }
-    })
+           return fetch(`/approval_administracion/id_doc/${id}`, miInit)
+                     .then(function(response){
+                       if (!response.ok) {
+                          throw new Error(response.statusText)
+                        }
+                       return response.text();
+                     })
+                     .catch(function(error){
+                       Swal.showValidationMessage(
+                         `Request failed: ${error}`
+                       )
+                     });
+        }//Preconfirm
+      }).then((result) => {
+        console.log(result.value);
+        if(result.value == "1"){
+          document.getElementById("check_administracion").checked = true;
+          document.getElementById("check_administracion").disabled = true;
+          Swal.fire({
+            title: 'Aprobado por:',
+            text: "Dirección de Administración y Finanzas",
+            type: 'success',
+          }).then(function (result) {
+            if (result.value) {
+              location.reload();
+            }
+          })
+        }else if(result.value == "2"){
+          document.getElementById("check_administracion").checked = true;
+          document.getElementById("check_administracion").disabled = true;
+          Swal.fire({
+            title: 'Cotizador autorizado por comité',
+            text: "Este documento se ha convertido a Documento P",
+            type: 'success',
+          }).then(function (result) {
+            if (result.value) {
+              location.reload();
+            }
+          })
+        }
+      })
+    }else{
+      Swal.fire('Los datos de administración estan incompletos', 'Favor de llenar los campos obligatorios', 'error');
+    }  
 
 }
 
@@ -189,6 +203,7 @@ function approval_comercial(e){
   e.preventDefault();
   e.stopPropagation();
   var id = document.getElementById('id').value;
+  
   var miInit = {
     method: 'get',
     headers: headers,
@@ -198,10 +213,6 @@ function approval_comercial(e){
     Swal.fire({
       title: "¿Las condiciones comerciales son correctas?",
       type: "warning",
-      // html:
-      // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
-      // `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
-      // `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -257,20 +268,20 @@ function approval_comercial(e){
 function approval_proyectos(e){
   e.preventDefault();
   e.stopPropagation();
+
   var id = document.getElementById('id').value;
+  var inputs = document.getElementsByClassName('input-instalacion');
+
   var miInit = {
     method: 'get',
     headers: headers,
     credentials: "same-origin",
     cache: 'default' };
 
-    Swal.fire({
+    if(inputs_validation(inputs)){
+      Swal.fire({
       title: "¿Los datos de instalación son correctos?",
       type: "warning",
-      // html:
-      // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio instalación: </h6>` +
-      // `<h6><i class="fas fa-check text-success"></i> Fecha de término instalación:  </h6>` +
-      // `<h6><i class="fas fa-check text-success"></i> Fecha de Acta de Entrega de la Instalación: </h6></div>`,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -321,7 +332,13 @@ function approval_proyectos(e){
       }
     })
 
+  }else{
+    Swal.fire('Los datos de instalación estan incompletos', 'Favor de llenar los campos obligatorios', 'error');
   }
+
+    
+
+}
 
 /***********************************************************/
 function approval_soporte(e){
@@ -337,10 +354,6 @@ function approval_soporte(e){
     Swal.fire({
       title: "¿Los datos de soporte son correctos?",
       type: "warning",
-      // html:
-      // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio instalación: </h6>` +
-      // `<h6><i class="fas fa-check text-success"></i> Fecha de término instalación:  </h6>` +
-      // `<h6><i class="fas fa-check text-success"></i> Fecha de Acta de Entrega de la Instalación: </h6></div>`,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -398,89 +411,18 @@ function approval_soporte(e){
     e.preventDefault();
     e.stopPropagation();
     var id = document.getElementById('id').value;
+    var inputs = document.getElementsByClassName('input-compras');
+
     var miInit = {
       method: 'get',
       headers: headers,
       credentials: "same-origin",
       cache: 'default' };
 
-      Swal.fire({
-        title: "¿Los datos de compras son correctos?",
-        type: "warning",
-        //html:
-        // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha entrega EA: </h6>` +
-        // `<h6><i class="fas fa-check text-success"></i> Fecha entrega ENA:  </h6>` +
-        // `<h6><i class="fas fa-check text-success"></i> Fecha de contratación de enlace: </h6></div>`,
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Confirmar',
-        cancelButtonText: 'Cancelar',
-        showLoaderOnConfirm: true,
-        preConfirm: () => {
-
-           return fetch(`/approval_planeacion/id_doc/${id}`, miInit)
-                     .then(function(response){
-                       if (!response.ok) {
-                          throw new Error(response.statusText)
-                        }
-                       return response.text();
-                     })
-                     .catch(function(error){
-                       Swal.showValidationMessage(
-                         `Request failed: ${error}`
-                       )
-                     });
-        }//Preconfirm
-      }).then((result) => {
-        console.log(result.value);
-        if(result.value == "1"){
-          document.getElementById("check_planeacion").checked = true;
-          document.getElementById("check_planeacion").disabled = true;
+      if(inputs_validation(inputs)){
           Swal.fire({
-            title: 'Aprobado por:',
-            text: "Gerente de Compras",
-            type: 'success',
-          }).then(function (result) {
-            if (result.value) {
-              location.reload();
-            }
-          })
-        }else if(result.value == "2"){
-          document.getElementById("check_planeacion").checked = true;
-          document.getElementById("check_planeacion").disabled = true;
-          Swal.fire({
-            title: 'Cotizador autorizado por comité',
-            text: "Este documento se ha convertido a Documento P",
-            type: 'success',
-          }).then(function (result) {
-            if (result.value) {
-              location.reload();
-            }
-          })
-        }
-      })
-
-    }
-
-/***********************************************************/
-    function approval_itconcierge(e){
-      e.preventDefault();
-      e.stopPropagation();
-      var id = document.getElementById('id').value;
-      var miInit = {
-        method: 'get',
-        headers: headers,
-        credentials: "same-origin",
-        cache: 'default' };
-
-        Swal.fire({
-          title: "¿Los datos de soporte son correctos?",
+          title: "¿Los datos de compras son correctos?",
           type: "warning",
-          // html:
-          // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> IT Concierge: </h6>` +
-          // `<h6><i class="fas fa-check text-success"></i> Nombre de TI del Cliente:  </h6>` +
-          // `<h6><i class="fas fa-check text-success"></i> Licencias: </h6></div>`,
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
@@ -489,7 +431,7 @@ function approval_soporte(e){
           showLoaderOnConfirm: true,
           preConfirm: () => {
 
-             return fetch(`/approval_itconcierge/id_doc/${id}`, miInit)
+             return fetch(`/approval_planeacion/id_doc/${id}`, miInit)
                        .then(function(response){
                          if (!response.ok) {
                             throw new Error(response.statusText)
@@ -505,11 +447,11 @@ function approval_soporte(e){
         }).then((result) => {
           console.log(result.value);
           if(result.value == "1"){
-            document.getElementById("check_itconcierge").checked = true;
-            document.getElementById("check_itconcierge").disabled = true;
+            document.getElementById("check_planeacion").checked = true;
+            document.getElementById("check_planeacion").disabled = true;
             Swal.fire({
               title: 'Aprobado por:',
-              text: "IT Concierge",
+              text: "Gerente de Compras",
               type: 'success',
             }).then(function (result) {
               if (result.value) {
@@ -517,8 +459,8 @@ function approval_soporte(e){
               }
             })
           }else if(result.value == "2"){
-            document.getElementById("check_itconcierge").checked = true;
-            document.getElementById("check_itconcierge").disabled = true;
+            document.getElementById("check_planeacion").checked = true;
+            document.getElementById("check_planeacion").disabled = true;
             Swal.fire({
               title: 'Cotizador autorizado por comité',
               text: "Este documento se ha convertido a Documento P",
@@ -530,8 +472,84 @@ function approval_soporte(e){
             })
           }
         })
-
+      }else{
+        Swal.fire('Los datos de compras estan incompletos', 'Favor de llenar los campos obligatorios', 'error');
       }
+
+}
+
+/***********************************************************/
+    function approval_itconcierge(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var id = document.getElementById('id').value;
+      var inputs = document.getElementsByClassName('input-soporte');
+
+      var miInit = {
+        method: 'get',
+        headers: headers,
+        credentials: "same-origin",
+        cache: 'default' };
+
+        if(inputs_validation(inputs)){
+          Swal.fire({
+            title: "¿Los datos de soporte son correctos?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+
+               return fetch(`/approval_itconcierge/id_doc/${id}`, miInit)
+                         .then(function(response){
+                           if (!response.ok) {
+                              throw new Error(response.statusText)
+                            }
+                           return response.text();
+                         })
+                         .catch(function(error){
+                           Swal.showValidationMessage(
+                             `Request failed: ${error}`
+                           )
+                         });
+            }//Preconfirm
+          }).then((result) => {
+            console.log(result.value);
+            if(result.value == "1"){
+              document.getElementById("check_itconcierge").checked = true;
+              document.getElementById("check_itconcierge").disabled = true;
+              Swal.fire({
+                title: 'Aprobado por:',
+                text: "IT Concierge",
+                type: 'success',
+              }).then(function (result) {
+                if (result.value) {
+                  location.reload();
+                }
+              })
+            }else if(result.value == "2"){
+              document.getElementById("check_itconcierge").checked = true;
+              document.getElementById("check_itconcierge").disabled = true;
+              Swal.fire({
+                title: 'Cotizador autorizado por comité',
+                text: "Este documento se ha convertido a Documento P",
+                type: 'success',
+              }).then(function (result) {
+                if (result.value) {
+                  location.reload();
+                }
+              })
+            }
+          })
+        }else{
+          Swal.fire('Los datos de soporte estan incompletos', 'Favor de llenar los campos obligatorios', 'error');
+        }
+        
+
+  }
 
 
       /***********************************************************/
@@ -548,10 +566,6 @@ function approval_soporte(e){
           Swal.fire({
             title: "¿Los datos de soporte son correctos?",
             type: "warning",
-            // html:
-            // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> IT Concierge: </h6>` +
-            // `<h6><i class="fas fa-check text-success"></i> Nombre de TI del Cliente:  </h6>` +
-            // `<h6><i class="fas fa-check text-success"></i> Licencias: </h6></div>`,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -609,19 +623,18 @@ function approval_soporte(e){
         e.preventDefault();
         e.stopPropagation();
         var id = document.getElementById('id').value;
+        var inputs = document.getElementsByClassName('input-admin');
+
         var miInit = {
           method: 'get',
           headers: headers,
           credentials: "same-origin",
           cache: 'default' };
 
-          Swal.fire({
+          if(inputs_validation(inputs)){
+            Swal.fire({
             title: "¿Los datos del contrato son correctos?",
             type: "warning",
-            // html:
-            // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
-            // `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
-            // `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -672,7 +685,12 @@ function approval_soporte(e){
             }
           })
 
+        }else{
+          Swal.fire('Los datos de administración estan incompletos', 'Favor de llenar los campos obligatorios', 'error');
         }
+
+          
+  }
 
 /***********************************************************/
       function approval_legal(e){
@@ -688,10 +706,6 @@ function approval_soporte(e){
           Swal.fire({
             title: "¿Los datos del contrato son correctos?",
             type: "warning",
-            //html:
-            // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
-            // `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
-            // `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -758,10 +772,6 @@ function approval_soporte(e){
             Swal.fire({
               title: "¿Los datos de soporte e instalación son correctos?",
               type: "warning",
-              // html:
-              // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
-              // `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
-              // `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
               showCancelButton: true,
               confirmButtonColor: '#3085d6',
               cancelButtonColor: '#d33',
@@ -829,10 +839,6 @@ function approval_soporte(e){
               Swal.fire({
                 title: "¿Los datos son correctos?",
                 type: "warning",
-                // html:
-                // `<div class="text-left ml-5"><h6><i class="fas fa-check text-success"></i> Fecha de inicio: </h6>` +
-                // `<h6><i class="fas fa-check text-success"></i> Vigencia:  meses</h6>` +
-                // `<h6><i class="fas fa-check text-success"></i> RFC: </h6></div>`,
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',

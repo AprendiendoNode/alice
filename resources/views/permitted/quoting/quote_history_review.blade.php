@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View auth history quoting') )
-    Cotizaciones autorizadas para propuesta comercial
+  @if( auth()->user()->can('View history quoting') )
+    Cotizaciones por autorizar
   @else
     {{ trans('message.denied') }}
   @endif
@@ -10,8 +10,8 @@
 @endsection
 
 @section('breadcrumb_title')
-   @if( auth()->user()->can('View auth history quoting') )
-    Cotizaciones autorizadas
+   @if( auth()->user()->can('View history quoting') )
+    Cotizaciones por autorizar
     @else
       {{ trans('message.denied') }}
     @endif
@@ -55,17 +55,17 @@
             <table id="table_quoting" class="table table-striped table-bordered table-hover table-condensed mt-3">
               <thead>
                 <tr style="background: #0E2A38;color: white;">
-                  <th> <small></th>
-                    <th> <small>Fecha de solicitud</small> </th>
-                    <th> <small>Nombre del proyecto</small> </th>
-                    <th> <small>$ EA USD</small> </th>
-                    <th> <small>$ ENA USD</small> </th>
-                    <th> <small>$ MO USD</small> </th>
-                    <th> <small>Solicitó</small> </th>
-                    <th> <small>Estatus</small> </th>
-                    <th> <small><i class="fas fa-check-double"></i></small> </th>
-                    <th> <small>Doc.</small> </th>
-                    <th> <small></small> </th>
+                  <th> <small>Fecha de solicitud</small> </th>
+                  <th> <small>Nombre del proyecto</small> </th>
+                  <th> <small>$ EA USD</small> </th>
+                  <th> <small>$ ENA USD</small> </th>
+                  <th> <small>$ MO USD</small> </th>
+                  <th> <small>Solicitó</small> </th>
+                  <th> <small>Estatus</small> </th>
+                  <th> <small><i class="fas fa-check-double"></i></small> </th>
+                  <th> <small>Doc.</small> </th>
+                  <th> <small></small> </th>
+                  <th> <small></small> </th>
                 </tr>
               </thead>
               <tbody>
@@ -153,12 +153,12 @@
     }
   </style>
   @if( auth()->user()->can('View level zero documentp notification') )
-    <script src="{{ asset('js/admin/quoting/requests_quoting_auth_0.js?v=4.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/requests_quoting_review_0.js?v=4.0.0')}}"></script>
     <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.0.0')}}"></script>
   @elseif ( auth()->user()->can('View level one documentp notification') ||
             auth()->user()->can('View level two documentp notification') ||
             auth()->user()->can('View level three documentp notification'))
-    <script src="{{ asset('js/admin/quoting/requests_quoting_auth_all.js?v=4.0.0')}}"></script>
+    <script src="{{ asset('js/admin/quoting/requests_quoting_review_all.js?v=4.0.0')}}"></script>
     <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.0.0')}}"></script>
   @endif
 @endpush

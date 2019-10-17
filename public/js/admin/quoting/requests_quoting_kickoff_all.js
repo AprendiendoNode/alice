@@ -62,6 +62,13 @@ function documentp_table(datajson, table){
          badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
          break;
     }
+
+    if(data.objetivos_cotizador == 0){
+      parameters_icon = '<span class="badge badge-danger badge-pill text-white"><i class="fas fa-times"></i></span>';
+    }else{
+      parameters_icon = '<span class="badge badge-success badge-pill text-white"><i class="fas fa-check"></i></span>';
+    }
+
     vartable.fnAddData([
       data.id,
       data.fecha,
@@ -71,14 +78,13 @@ function documentp_table(datajson, table){
       '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       data.elaboro,
       badge,
-      data.num_edit,
+      parameters_icon,
       type_doc,
       `<div class="btn-group">
         <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-ellipsis-h"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="javascript:void(0);" onclick="editar(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.id}'" value="${data.id}"><i class="fa fa-edit"></i>Editar cotizador</a>
             <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
             <a class="dropdown-item" href="javascript:void(0);" onclick="kickoff(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-tasks"></i> Kick-off</a>
             <a class="dropdown-item" href="/view_pdf_propuesta_comercial/${data.id}" target="_blank"><i class="fas fa-file-pdf"></i> Ver propuesta comercial</a>

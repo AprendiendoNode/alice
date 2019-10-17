@@ -258,7 +258,7 @@
                           <label for="">R.F.C.</label>
                         </div>
                         <div class="col-8">
-                          <input required id="rfc" name="rfc" value="{{$kickoff_perfil_cliente->rfc}}" type="text" class="form-control form-control-sm">
+                          <input required id="rfc" name="rfc" value="{{$kickoff_perfil_cliente->rfc}}" type="text" class="form-control form-control-sm input-admin">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -266,7 +266,7 @@
                           <label for="">Razón social</label>
                         </div>
                         <div class="col-8">
-                          <input id="razon_social" name="razon_social" value="{{$kickoff_perfil_cliente->razon_social}}" type="text" class="form-control form-control-sm">
+                          <input id="razon_social" name="razon_social" value="{{$kickoff_perfil_cliente->razon_social}}" type="text" class="form-control form-control-sm input-admin">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -274,7 +274,7 @@
                           <label for="">Edo/Municipio</label>
                         </div>
                         <div class="col-8">
-                          <input id="edo_municipio" name="edo_municipio" value="{{$kickoff_perfil_cliente->edo_municipio}}" type="text" class="form-control form-control-sm">
+                          <input id="edo_municipio" name="edo_municipio" value="{{$kickoff_perfil_cliente->edo_municipio}}" type="text" class="form-control form-control-sm input-admin">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -282,7 +282,7 @@
                           <label for="">Contácto</label>
                         </div>
                         <div class="col-8">
-                          <input id="contacto" name="contacto" id="contacto" name="contacto" value="{{$kickoff_perfil_cliente->contacto}}" type="text" class="form-control form-control-sm">
+                          <input id="contacto" name="contacto" id="contacto" name="contacto" value="{{$kickoff_perfil_cliente->contacto}}" type="text" class="form-control form-control-sm input-admin">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -306,7 +306,7 @@
                           <label for="">Email</label>
                         </div>
                         <div class="col-8">
-                          <input id="email" name="email" value="{{$kickoff_perfil_cliente->email}}" type="text" class="form-control form-control-sm">
+                          <input id="email" name="email" value="{{$kickoff_perfil_cliente->email}}" type="text" class="form-control form-control-sm input-admin">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -385,7 +385,7 @@
                               <label for="">Servicio</label>
                             </div>
                             <div class="col-8">
-                              <input id="servicio" name="servicio" value="{{$kickoff_contrato->servicio}}" type="text" class="form-control form-control-sm">
+                              <input id="servicio" name="servicio" value="{{$kickoff_contrato->servicio}}" type="text" class="form-control form-control-sm input-comercial">
                             </div>
                           </div>
                           <div class="form-row d-flex align-items-center mb-2">
@@ -393,7 +393,7 @@
                               <label for="">Autorización (Sitwifi)</label>
                             </div>
                             <div class="col-8">
-                              <input id="autorizacion_sitwifi" name="autorizacion_sitwifi" value="{{$kickoff_contrato->autorizacion_sitwifi}}" type="text" class="form-control form-control-sm">
+                              <input id="autorizacion_sitwifi" name="autorizacion_sitwifi" value="{{$kickoff_contrato->autorizacion_sitwifi}}" type="text" class="form-control form-control-sm input-comercial">
                             </div>
                           </div>
                           <div class="form-row d-flex align-items-center mb-2">
@@ -401,7 +401,7 @@
                               <label for="">Autorización (Cliente)</label>
                             </div>
                             <div class="col-8">
-                              <input id="autorizacion_cliente" name="autorizacion_cliente" value="{{$kickoff_contrato->autorizacion_cliente}}" type="text" class="form-control form-control-sm">
+                              <input id="autorizacion_cliente" name="autorizacion_cliente" value="{{$kickoff_contrato->autorizacion_cliente}}" type="text" class="form-control form-control-sm input-comercial">
                             </div>
                           </div>
                         </div>
@@ -487,7 +487,7 @@
                             {{-- <div class="col-6">
                               <a href="/view_pdf_propuesta_comercial/{{$document[0]->id}}" target="_blank" class="btn btn-danger" rol="button"><i class="fas fa-file-pdf"></i> Ver propuesta comercial</a>
                             </div> --}}
-                            <div class="col-6">
+                            <div class="col-12">
                               <button class="btn btn-success" onclick="show_comision();" type="button" name="button"><i class="fas fa-wallet"></i> Ver comisiónes</button>
                             </div>
                           </div>
@@ -506,7 +506,7 @@
                           <label for="">Fecha de inicio de instalación</label>
                         </div>
                         <div class="col-6">
-                          <input id="fecha_inicio_instalacion" name="fecha_inicio_instalacion" value="{{$kickoff_instalaciones->fecha_inicio}}" type="date" class="form-control form-control-sm">
+                          <input id="fecha_inicio_instalacion" name="fecha_inicio_instalacion" value="{{$kickoff_instalaciones->fecha_inicio}}" type="date" class="form-control form-control-sm input-instalacion">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -514,7 +514,7 @@
                           <label for="">Fecha de término de instalación</label>
                         </div>
                         <div class="col-6">
-                          <input id="fecha_termino_instalacion" name="fecha_termino_instalacion" value="{{$kickoff_instalaciones->fecha_termino}}" type="date" class="form-control form-control-sm">
+                          <input id="fecha_termino_instalacion" name="fecha_termino_instalacion" value="{{$kickoff_instalaciones->fecha_termino}}" type="date" class="form-control form-control-sm input-instalacion">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -618,7 +618,7 @@
                           <label for="">Licencias</label>
                         </div>
                         <div class="col-8">
-                          <input id="licencias" name="licencias" value="{{$kickoff_soporte->licencias}}" type="text" class="form-control form-control-sm">
+                          <input id="licencias" name="licencias" value="{{$kickoff_soporte->licencias}}" type="text" class="form-control form-control-sm input-soporte">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -650,7 +650,7 @@
                           <label for="">Fecha de Mantenimiento / Visitas</label>
                         </div>
                         <div class="col-8">
-                          <input id="fecha_mantenimiento_soporte" name="fecha_mantenimiento_soporte" value="{{$kickoff_soporte->fecha_mantenimiento}}" type="text" class="form-control form-control-sm">
+                          <input id="fecha_mantenimiento_soporte" name="fecha_mantenimiento_soporte" value="{{$kickoff_soporte->fecha_mantenimiento}}" type="text" class="form-control form-control-sm input_soporte">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -666,7 +666,7 @@
                           <label for="">Cantidad de equipos monitoreados</label>
                         </div>
                         <div class="col-8">
-                          <input id="cantidad_equipos_monitoriados" name="cantidad_equipos_monitoriados" value="{{$kickoff_soporte->cantidad_equipos_monitoriados}}" type="text" class="form-control form-control-sm">
+                          <input id="cantidad_equipos_monitoriados" name="cantidad_equipos_monitoriados" value="{{$kickoff_soporte->cantidad_equipos_monitoriados}}" type="text" class="form-control form-control-sm input-soporte">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -674,7 +674,7 @@
                           <label for="">Nombre de TI del Cliente</label>
                         </div>
                         <div class="col-8">
-                          <input id="nombre_ti_cliente" name="nombre_ti_cliente" value="{{$kickoff_soporte->nombre_ti_cliente}}" type="text" class="form-control form-control-sm">
+                          <input id="nombre_ti_cliente" name="nombre_ti_cliente" value="{{$kickoff_soporte->nombre_ti_cliente}}" type="text" class="form-control form-control-sm input-soporte">
                         </div>
                       </div>
                       <!--COMPRAS-->
@@ -686,7 +686,7 @@
                           <label for="">Fecha de entrega de Equipo Activo</label>
                         </div>
                         <div class="col-6">
-                          <input id="fecha_entrega_ea" name="fecha_entrega_ea" value="{{$kickoff_compras->fecha_entrega_ea}}" type="date" class="form-control form-control-sm">
+                          <input id="fecha_entrega_ea" name="fecha_entrega_ea" value="{{$kickoff_compras->fecha_entrega_ea}}" type="date" class="form-control form-control-sm input-compras">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -694,7 +694,7 @@
                           <label for="">Tiempo de Entrega de Equipo Activo</label>
                         </div>
                         <div  class="col-6">
-                          <input id="fecha_entrega_ena" name="fecha_entrega_ena" value="{{$kickoff_compras->fecha_entrega_ena}}" type="date" class="form-control form-control-sm">
+                          <input id="fecha_entrega_ena" name="fecha_entrega_ena" value="{{$kickoff_compras->fecha_entrega_ena}}" type="date" class="form-control form-control-sm input-compras">
                         </div>
                       </div>
                       <div class="form-row d-flex align-items-center mb-2">
@@ -733,7 +733,7 @@
                             <label for="">Proveedor 1</label>
                           </div>
                           <div class="col-8">
-                            <input id="proveedor1" name="proveedor1" value="{{$kickoff_compras->proveedor1}}" type="text" class="form-control form-control-sm">
+                            <input id="proveedor1" name="proveedor1" value="{{$kickoff_compras->proveedor1}}" type="text" class="form-control form-control-sm input-compras">
                           </div>
                         </div>
                         <div class="form-row d-flex align-items-center mb-2">

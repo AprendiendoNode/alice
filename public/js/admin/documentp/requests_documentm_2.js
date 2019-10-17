@@ -90,14 +90,21 @@ function documentp_table(datajson, table){
     data.elaboro,
     badge,
     data.num_edit,
-    data.porcentaje_compra + '%',
+    parseInt(data.porcentaje_compra) + '%',
     data.atraso,
     type_doc,
     data.prioridad ,
-    '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="' + data.id +'" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-primary btn-sm"><span class="fa fa-edit"></span></a>'+
-    '<a target="_blank" href="/documentp_invoice/'+ data.id + '/ '+ data.documentp_cart_id +'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir" role="button"><span class="far fa-file-pdf"></span></a>' +
-    '<a href="javascript:void(0);" onclick="enviar(this)" data-id="' + data.id +'"  data-cart="' + data.documentp_cart_id +'" value="'+data.id+'" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Ver pedido"><span class="fa fa-shopping-cart"></span></a>' +
-    '<a href="javascript:void(0);" onclick="deny_docp(this)" value="'+data.id+'" class="btn btn-warning btn-xs" role="button" data-target="#modal-deny" title="Denegar"><span class="fa fa-ban"></span></a>',
+    `<div class="btn-group">
+      <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+        <a class="dropdown-item" href="javascript:void(0);" onclick="editar(this)" data-id="${data.id}" data-cart="${data.documentp_cart_id}" value="${data.id}"><span class="fa fa-edit"></span> Editar</a>
+        <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
+        <a class="dropdown-item" target="_blank" href="/documentp_invoice/${data.id}/${data.documentp_cart_id}"><span class="far fa-file-pdf"></span> Imprimir productos</a>
+        <a class="dropdown-item" href="javascript:void(0);" onclick="deny_docp(this)" value="${data.id}" role="button" data-target="#modal-deny"><span class="fa fa-ban"></span> Denegar</a>
+      </div>
+    </div>`,
     data.status,
     data.cant_sug_total,
     data.cant_req_total
@@ -179,12 +186,13 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 7,
               "width": "0.1%",
-              "className": "text-center cell-short",
+              "className": "text-center",
             },
             {
               "targets": 8,
               "width": "0.1%",
               "className": "text-center cell-short",
+              "visible": false
             },
             {
               "targets": 9,
@@ -209,7 +217,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 13,
               "width": "3%",
-              "className": "text-center actions-button cell-large",
+              "className": "text-center",
             },
             {
               "targets": 14,

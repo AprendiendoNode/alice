@@ -312,7 +312,7 @@
                     <td class="text-right">{{ $status_projects_instalado[2]->total_usd }}</td>
                     <td class="text-right">{{ $status_projects_instalado[2]->facturando }}</td>
                   </tr>
-                  {{-- <tr>
+                   <tr>
                     <td> <strong>Venta</strong> </td>
                     <td class="text-center p-2">{{ $status_projects[4]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[4]->atencion }}</td>
@@ -327,7 +327,7 @@
                     <td class="text-right">{{ $status_projects_instalado[4]->total_usd }}</td>
                     <td class="text-right">{{ $status_projects_instalado[4]->facturando }}</td>
                   </tr>
-                  <tr>
+                  {{--<tr>
                     <td> <strong>F & F</strong> </td>
                     <td class="text-center p-2">{{ $status_projects[5]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[5]->atencion }}</td>
@@ -345,22 +345,22 @@
                 </tbody>
                 <tfooter>
                   @php
-                    $total_inversion = str_replace(',','',$status_projects[0]->total_usd) + str_replace(',','',$status_projects[1]->total_usd) + str_replace(',','',$status_projects[2]->total_usd);
-                    $total_por_facturar = str_replace(',','',$status_projects[0]->por_facturar) + str_replace(',','',$status_projects[1]->por_facturar) + str_replace(',','',$status_projects[2]->por_facturar);
-                    $total_inversion_instalado = str_replace(',','',$status_projects_instalado[0]->total_usd) + str_replace(',','',$status_projects_instalado[1]->total_usd) + str_replace(',','',$status_projects_instalado[2]->total_usd);
-                    $total_facturando = str_replace(',','',$status_projects_instalado[0]->facturando) + str_replace(',','',$status_projects_instalado[1]->facturando) + str_replace(',','',$status_projects_instalado[2]->facturando);
+                    $total_inversion = str_replace(',','',$status_projects[0]->total_usd) + str_replace(',','',$status_projects[1]->total_usd) + str_replace(',','',$status_projects[2]->total_usd) + str_replace(',','',$status_projects[4]->total_usd);
+                    $total_por_facturar = str_replace(',','',$status_projects[0]->por_facturar) + str_replace(',','',$status_projects[1]->por_facturar) + str_replace(',','',$status_projects[2]->por_facturar) + str_replace(',','',$status_projects[4]->por_facturar);
+                    $total_inversion_instalado = str_replace(',','',$status_projects_instalado[0]->total_usd) + str_replace(',','',$status_projects_instalado[1]->total_usd) + str_replace(',','',$status_projects_instalado[2]->total_usd) + str_replace(',','',$status_projects_instalado[4]->total_usd);
+                    $total_facturando = str_replace(',','',$status_projects_instalado[0]->facturando) + str_replace(',','',$status_projects_instalado[1]->facturando) + str_replace(',','',$status_projects_instalado[2]->facturando) + str_replace(',','',$status_projects_instalado[4]->facturando);
                    @endphp
                   <tr class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
                     <td><strong>Total</strong> </td>
-                    <td class="text-center p-2"> <span id="total_rojo">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo }}</span> </td>
-                    <td class="text-center"> <span id="total_amarillo">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion }}</span> </td>
-                    <td class="text-center"> <span id="total_verde">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal }}</span> </td>
+                    <td class="text-center p-2"> <span id="total_rojo">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo + $status_projects[4]->riesgo }}</span> </td>
+                    <td class="text-center"> <span id="total_amarillo">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion + $status_projects[4]->atencion }}</span> </td>
+                    <td class="text-center"> <span id="total_verde">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal + $status_projects[4]->normal }}</span> </td>
                     <th class="text-center"> <span id="total_project_instalation"></span>  </th>
                     <td class="text-right"> <span id="">{{  number_format($total_inversion, 0, '.', ',')  }}</span> </td>
                     <td class="text-right"> <span id="">{{  number_format($total_por_facturar, 0, '.', ',')  }}</span> </td>
                     <!------------------------->
                     <td><strong>Total</strong> </td>
-                    <td class="text-center"> <span id="">{{ $status_projects_instalado[0]->instalado + $status_projects_instalado[1]->instalado + $status_projects_instalado[2]->instalado }}</span> </td>
+                    <td class="text-center"> <span id="">{{ $status_projects_instalado[0]->instalado + $status_projects_instalado[1]->instalado + $status_projects_instalado[2]->instalado + $status_projects_instalado[4]->instalado }}</span> </td>
                     <td class="text-right"> <span id="">{{  number_format($total_inversion_instalado, 0, '.', ',')  }}</span> </td>
                     <td class="text-right"> <span id="">{{  number_format($total_facturando, 0, '.', ',')  }}</span> </td>
                   </tr>

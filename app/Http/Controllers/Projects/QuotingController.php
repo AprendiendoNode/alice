@@ -27,7 +27,7 @@ class QuotingController extends Controller
       $categories = DB::table('categories')->select('id', 'name')->get();
       $grupos = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
       $verticals = DB::table('verticals')->select('id','name')->get();
-      $itc = DB::select('CALL px_ITC_todos');
+      $itc = DB::select('CALL px_ITC_todos_V2');
       $comerciales = DB::select('CALL px_resguardoXgrupo_users(?)', array(2));
       $type_service = DB::table('documentp_type')->select('id', 'name')->get();
       $installation = DB::table('documentp_installation')->select('id', 'name')->get();
@@ -57,6 +57,11 @@ class QuotingController extends Controller
     public function view_auth()
     {
         return view('permitted.quoting.history_quoting_auth');
+    }
+
+    public function view_review()
+    {
+        return view('permitted.quoting.quote_history_review');
     }
 
     public function get_history_quoting(Request $request)

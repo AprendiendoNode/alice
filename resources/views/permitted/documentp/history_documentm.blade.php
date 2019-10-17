@@ -317,18 +317,29 @@
     <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
     <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
     <style>
+      .cell-large{
+          min-width: 200px !important;
+        }
+
+        .dataTables_wrapper .dataTable .btn{
+          width: 50px !important;
+        }
+
+        .dropdown-menu {
+          font-size: 0.8rem !important;
+        }
     </style>
       @if( auth()->user()->can('View level zero documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_0.js?v=2.0.3')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_0.js?v=3.0.3')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @elseif ( auth()->user()->can('View level one documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_1.js?v=2.0.0')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_1.js?v=3.0.0')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @elseif ( auth()->user()->can('View level two documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_2.js?v=2.0.1')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_2.js?v=3.0.1')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @elseif ( auth()->user()->can('View level three documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_3.js?v=2.0.0')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_3.js?v=3.0.0')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @endif
   @else

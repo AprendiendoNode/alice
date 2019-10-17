@@ -18,6 +18,7 @@ $(function() {
   get_shopping_cart();
 
   setTimeout(function(){
+    document.getElementById('servicioMensualButton').removeAttribute("disabled");
     set_table_rubro();
     set_table_gastos();
     set_table_modelos();

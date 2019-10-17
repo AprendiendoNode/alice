@@ -84,9 +84,7 @@ function documentp_table(datajson, table){
             <i class="fas fa-ellipsis-h"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="javascript:void(0);" onclick="editar(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.id}'" value="${data.id}"><i class="fa fa-edit"></i>Editar cotizador</a>
             <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
-            <a class="dropdown-item" href="javascript:void(0);" onclick="kickoff(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-tasks"></i> Kick-off</a>
             <a class="dropdown-item" href="/view_pdf_propuesta_comercial/${data.id}" target="_blank"><i class="fas fa-file-pdf"></i> Ver propuesta comercial</a>
             <a class="dropdown-item" href="#" onclick="send_mail_propuesta_comercial(this)" data-id="${data.id}"><i class="fas fa-envelope-open-text"></i> Enviar propuesta a mi correo</a>
         </div> 
@@ -108,6 +106,7 @@ var Configuration_table_responsive_documentp= {
                 },
                 "width": "0.1%",
                 "className": "text-center",
+                "visible" : false
             },
             {
               "targets": 1,
@@ -192,13 +191,6 @@ var Configuration_table_responsive_documentp= {
               }else{
                 Swal.fire({
                   title: "¿Estás seguro?",
-                  html: `Se cambiara el estatus de las cotizaciones seleccionadas!<br><br>
-                        <div>
-                          <select class='form-control' style='display: block;' id='status_cotizador'>
-                            <option value='5'>En kick-off</option>
-                          </select>
-                        </div>`,
-                  type: "warning",
                   showCancelButton: true,
                   confirmButtonClass: "btn-danger",
                   confirmButtonText: "Continuar",
@@ -207,7 +199,7 @@ var Configuration_table_responsive_documentp= {
                 }).then((result) => {
                   if(result.value){
 
-                    var status_cotizador = $('#status_cotizador').val();
+                    var status_cotizador = 5; // Estatus EN-KICKOFF
                     // console.log(semana);
                     $('.cancel').prop('disabled', 'disabled');
                     $('.confirm').prop('disabled', 'disabled');
@@ -222,7 +214,7 @@ var Configuration_table_responsive_documentp= {
                         success: function (data){
                           console.log(data);
                           if (data === 'true') {
-                            Swal.fire("Operación Completada!", "Las solicitudes seleccionadas han sido confirmadas.", "success");
+                            Swal.fire("Operación Completada!", "", "success");
                             table_permission_zero();
                           }else{
                               Swal.fire("Ocurrio un error al cambiar estatus!", "", "error");

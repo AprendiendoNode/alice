@@ -26,7 +26,6 @@ function table_permission_zero() {
       data: objData,
       success: function (data){
         documentp_table(data, $("#table_quoting"));
-        document.getElementById("table_quoting_wrapper").childNodes[0].setAttribute("class", "form-inline");
       },
       error: function (data) {
         console.log('Error:', data);
@@ -38,27 +37,11 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  data = datajson.filter(data => data.cotizador_status == 'Fuera de parametros');
-  $.each(data, function(index, data){
+  datareview = datajson.filter(data => data.cotizador_status == 'En revisión');
+  $.each(datareview, function(index, data){
     let type_doc = 'C';
-    let badge = '';
-    switch (data.cotizador_status) {
-      case 'Nuevo':
-        badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';
-        break;
-      case 'En revisión':
-        badge= '<span class="badge badge-warning badge-pill text-white">En revisión</span>';
-        break;
-       case 'En Kick-off':
-         badge= '<span class="badge badge-success badge-pill text-white">En Kick-off</span>';
-         break;
-       case 'Fuera de parametros':
-          badge= '<span class="badge badge-danger badge-pill text-white">Fuera de parametros</span>';
-          break;
-       default:
-         badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
-         break;
-    }
+    let badge = '<span class="badge badge-warning badge-pill text-white">En revisión</span>';
+    let parameters_icon = '';
 
     if(data.objetivos_cotizador == 0){
       parameters_icon = '<span class="badge badge-danger badge-pill text-white"><i class="fas fa-times"></i></span>';
@@ -84,6 +67,8 @@ function documentp_table(datajson, table){
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
             <a class="dropdown-item" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.id}'" value="${data.id}"><i class="fa fa-edit"></i>Editar cotizador</a>
             <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
+            <a class="dropdown-item" href="/view_pdf_propuesta_comercial/${data.id}" target="_blank"><i class="fas fa-file-pdf"></i> Ver propuesta comercial</a>
+            <a class="dropdown-item" href="#" onclick="send_mail_propuesta_comercial(this)" data-id="${data.id}"><i class="fas fa-envelope-open-text"></i> Enviar propuesta a mi correo</a>
         </div> 
        </div>`,
       data.cotizador_status
@@ -102,16 +87,7 @@ var Configuration_table_responsive_documentp= {
                   'selectRow': true
                 },
                 "width": "0.1%",
-                "createdCell": function (td, cellData, rowData, row, col){
-                  if ( cellData > 0 ) {
-                    if(rowData[11] == 'En Kick-off'){
-                      this.api().cell(td).checkboxes.disable();
-                    }
-
-                  }
-                },
-                "className": "text-center",
-                "visible" : false
+                "className": "text-center"
             },
             {
               "targets": 1,
@@ -150,8 +126,8 @@ var Configuration_table_responsive_documentp= {
             },
             {
               "targets": 8,
-              "width": "0.2%",
-              "className": "text-center cell-short",
+              "width": "0.3%",
+              "className": "text-center",
             },
             {
               "targets": 9,
@@ -174,19 +150,19 @@ var Configuration_table_responsive_documentp= {
               "<'row'<'col-sm-12'tr>>" +
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
-          /*{
-            text: '<i class=""></i> Cambiar estatus de documentos',
-            titleAttr: 'Cambiar estatus de documentos',
+          {
+            text: '<i class=""></i> Autorizar cotizador',
+            titleAttr: 'Autorizar cotizador',
             className: 'btn bg-dark',
             init: function(api, node, config) {
-              $(node).removeClass('btn-default')
+              $(node).removeClass('Autorizar')
             },
             action: function ( e, dt, node, config ) {
               var rows_selected = $("#table_quoting").DataTable().column(0).checkboxes.selected();
               var _token = $('input[name="_token"]').val();
               // Iterate over all selected checkboxes
               var valores= new Array();
-            
+              // console.log(factura);
               $.each(rows_selected, function(index, rowId){
                 valores.push(rowId);
               });
@@ -196,12 +172,6 @@ var Configuration_table_responsive_documentp= {
               }else{
                 Swal.fire({
                   title: "¿Estás seguro?",
-                  html: `Se cambiara el estatus de los documentos seleccionados!<br><br>
-                        <div>
-                          <select class='form-control' style='display: block;' id='status_cotizador'>
-                            <option value='4'>Autorizado</option>
-                          </select>
-                        </div>`,
                   type: "warning",
                   showCancelButton: true,
                   confirmButtonClass: "btn-danger",
@@ -211,8 +181,8 @@ var Configuration_table_responsive_documentp= {
                 }).then((result) => {
                   if(result.value){
 
-                    var status_cotizador = $('#status_cotizador').val();
-        
+                    var status_cotizador = 4; // Estatus autorizado
+                    // console.log(semana);
                     $('.cancel').prop('disabled', 'disabled');
                     $('.confirm').prop('disabled', 'disabled');
 
@@ -226,7 +196,7 @@ var Configuration_table_responsive_documentp= {
                         success: function (data){
                           console.log(data);
                           if (data === 'true') {
-                            Swal.fire("Operación Completada!", "Las solicitudes seleccionadas han sido confirmadas.", "success");
+                            Swal.fire("Operación Completada!", "", "success");
                             table_permission_zero();
                           }else{
                               Swal.fire("Ocurrio un error al cambiar estatus!", "", "error");
@@ -244,7 +214,7 @@ var Configuration_table_responsive_documentp= {
 
 
             }
-          },*/
+          },
         ],
         language:{
             "sProcessing":     "Procesando...",

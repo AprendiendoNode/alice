@@ -444,12 +444,13 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/quoting_invoice/{id_documentp}/{id_cart}', 'Projects\QuotingController@export_invoice');
   Route::post('/view_request_quoting', 'Projects\QuotingController@get_history_quoting');
   Route::post('/get_quoting_auth', 'Projects\QuotingController@get_history_auth_quoting');
+  Route::get('/view_history_quoting_inreview', 'Projects\QuotingController@view_review');
   Route::post('/edit_cart_quoting', 'Projects\QuotingEditController@index'); //Vista del formulario para editar
   Route::post('/edit_quoting', 'Projects\QuotingEditController@edit');
   Route::post('/quoting_approval_directive', 'Projects\QuotingController@quoting_approval_directive');
   //KICK-OFF
   Route::post('/edit_kickoff', 'Projects\KickoffController@index');
-  Route::post('/update_kickoff', 'Projects\KickoffController@u`pdate');
+   Route::post('/update_kickoff', 'Projects\KickoffController@update');
   Route::post('/update_kickoff_comision', 'Projects\KickoffController@update_kickoff_comision');
   Route::post('/update_kickoff_comisionByDefault', 'Projects\KickoffController@setComision');
   Route::post('/update_kickoff_contract', 'Projects\KickoffController@update_kickoff_contract');

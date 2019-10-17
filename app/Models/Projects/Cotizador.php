@@ -22,7 +22,7 @@ class Cotizador extends Model
   	$documentp = Documentp::findOrFail($id_documentp);
   	$cotizador_status = $documentp->cotizador_status_id;
 
-  	if($cotizador_status != 4 && $cotizador_status != 5){
+  	if($cotizador_status != 5){
   		($documentp->objetivos_cotizador == 0 || $documentp->total_usd > 50000) ?  $documentp->cotizador_status_id = 2 : $documentp->cotizador_status_id = 4;
   		$documentp->save();
   	}

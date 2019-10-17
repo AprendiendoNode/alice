@@ -196,7 +196,7 @@
       <!---row--->
       <div class="row mt-3">
         <div class="col-md-3">
-          <button id="servicioMensualButton" type="button" onclick="calcularServicioMensual();" class="btn btn-danger"> Calcular servicio mensual</button>
+          <button disabled="true" id="servicioMensualButton" type="button" onclick="calcularServicioMensual();" class="btn btn-danger"> Calcular servicio mensual</button>
         </div>
       </div>
       <!---row--->
