@@ -4,6 +4,7 @@ function enviar(e){
    data_basic_venues(valor, _token);
    data_basic(valor, _token);
    data_basic_bank(valor, _token);
+   data_basic_firmas(valor, _token);
    accounting_account(valor, _token);
 
   $("input[type=checkbox]").prop('checked', '');
@@ -77,9 +78,7 @@ $(".btn-print-invoice").on('click',function(){
               error: function (response) {
 
               }
-
         });
-
 });
 
 
@@ -143,10 +142,8 @@ $(".btn-print-pdf").on('click',function(){
               error: function (response) {
 
               }
-
         });
-
-    });
+});
 
 //
 //
@@ -313,6 +310,36 @@ function  data_basic_venues(campoa, campob){
                                         '</td><td>'+  venue.amount_iva + '</td></tr>');
         });
 
+      }
+    },
+    error: function (data) {
+      console.log('Error:', data);
+    }
+  });
+}
+
+function data_basic_firmas(campoa, campob){
+  $.ajax({
+    type: "POST",
+    url: "/view_gen_sol_firmas",
+    data: { pay : campoa , _token : campob },
+    success: function (data){
+
+      if (data == null || data == '[]') {
+          console.log('nada-statuses');
+      }
+      else {
+        if ($.trim(data)){
+          datax = JSON.parse(data);
+          $("#rec_name_elaboro").text(datax[0].nombre1);
+          $("#rec_name_reviso").text(datax[0].nombre2);
+          $("#rec_name_auth").text(datax[0].nombre3);
+          $("#rec_name_conf").text(datax[0].nombre4);
+          $("#rec_name_conf_del").text(datax[0].nombre5);
+        }
+        else{
+          //$("#rec_observation").text('No disponible.');
+        }
       }
     },
     error: function (data) {

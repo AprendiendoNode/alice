@@ -580,6 +580,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/view_gen_sol_pay', 'Payments\PayHistoryController@data_basic');
     Route::post('/view_gen_sol_venues', 'Payments\PayHistoryController@data_basic_venues');
     Route::post('/view_gen_sol_pay_bank', 'Payments\PayHistoryController@data_basic_bank');
+    Route::post('/view_gen_sol_firmas','Payments\PayHistoryController@data_basic_firmas');
     //Crear pagos
     Route::post('/create_pay', 'Payments\PayAddController@create_pay_test');
     //Filtrar pagos

@@ -236,14 +236,32 @@
                         <input id="total" type="text" class="form-control form-control-sm" disabled>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="col-sm-12">
-                        <p><strong>{{ trans('pay.confpay') }}: </strong> <small id="rec_name_conf">{{ trans('pay.no_data') }}</small></p>
+                        <p><strong>{{ trans('pay.elaboropay') }}: </strong><small id="rec_name_elaboro">{{ trans('pay.no_data') }}</small></p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <p><strong>{{ trans('pay.revisopay') }}: </strong><small id="rec_name_reviso">{{ trans('pay.no_data') }}</small></p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <p><strong>{{ trans('pay.authpay') }}: </strong><small id="rec_name_auth">{{ trans('pay.no_data') }}</small></p>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-sm-12">
-                        <p><strong>{{ trans('pay.delconfpay') }}: </strong> <small id="rec_name_conf_del">{{ trans('pay.no_data') }}</small></p>
+                        <p><strong>{{ trans('pay.confpay') }}: </strong><small id="rec_name_conf">{{ trans('pay.no_data') }}</small></p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <p><strong>{{ trans('pay.delconfpay') }}: </strong><small id="rec_name_conf_del">{{ trans('pay.no_data') }}</small></p>
                       </div>
                     </div>
                   </div>
