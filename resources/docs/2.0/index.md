@@ -31,6 +31,7 @@
     - [Movimientos](/{{route}}/{{version}}/equipment/move_equipment)
     - [Grupos](/{{route}}/{{version}}/equipment/group_equipment)
     - [Caratula de entrega](/{{route}}/{{version}}/equipment/cover_equipment_delivery)
+    - [Licencias](/{{route}}/{{version}}/equipment/licences_equipment)
 - ## Herramientas
     - [Diagnostico de huepedes](/{{route}}/{{version}}/tools/detailed_guest_review)
     - [Diagnostico de servidores](/{{route}}/{{version}}/tools/detailed_server_review)
@@ -60,8 +61,8 @@
     - [Editar contratos](/{{route}}/{{version}}/contracts/cont_edit_cont)
     - [Drive contratos](/{{route}}/{{version}}/contracts/cont_filemanager)
     - [Lista por facturar](/{{route}}/{{version}}/contracts/view_payauto)
-    - [Confirmación de cobro](/{{route}}/{{version}}/contracts/view_facturados)
-    - [Antiguedad CxC](/{{route}}/{{version}}/contracts/view_cobrados)
+    - [Antiguedad CxC](/{{route}}/{{version}}/contracts/view_facturados)
+    - [Cobros aplicados](/{{route}}/{{version}}/contracts/view_cobrados)
 
 - ## Proyectos
     - [Administración de productos](/{{route}}/{{version}}/planning/products)
