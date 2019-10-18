@@ -45,7 +45,8 @@ function payments_table(datajson, table){
     status.monto_str,
     status.fecha_solicitud,
     status.fecha_limite,
-    '<a href="javascript:void(0);" onclick="enviar(this)" value="'+status.id+'" class="btn btn-default btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-pen-square"></span></a>',
+    '<a href="javascript:void(0);" onclick="enviar(this, false)" value="'+status.id+'" class="btn btn-default btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-eye"></span></a>'+
+    (puedeEditar ? '<a href="javascript:void(0);" onclick="enviar(this, true)" value="'+status.id+'" class="btn btn-default btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-edit"></span></a>' : ''),
     ]);
   });
 }

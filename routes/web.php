@@ -564,6 +564,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     //- Pagos Historial
     Route::get('/view_history_req_pay', 'Payments\PayHistoryController@index');
+    Route::post('/edit_pay_ways', 'Payments\PayHistoryController@edit_pay_ways');
+    Route::post('/get_proveedor_banks', 'Payments\PayHistoryController@get_proveedor_banks');
 
     //- Pagos Historial N0
     Route::post('/view_request_pay_zero', 'Payments\PayHistoryController@history_zero');
@@ -578,10 +580,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Historial Pagos
     Route::post('/cc_account', 'Payments\PayHistoryController@cc_account');
+    Route::post('/get_coins', 'Payments\PayHistoryController@get_coins');
     Route::post('/view_gen_sol_pay', 'Payments\PayHistoryController@data_basic');
     Route::post('/view_gen_sol_venues', 'Payments\PayHistoryController@data_basic_venues');
     Route::post('/view_gen_sol_pay_bank', 'Payments\PayHistoryController@data_basic_bank');
     Route::post('/view_gen_sol_firmas','Payments\PayHistoryController@data_basic_firmas');
+    Route::post('/update_pay', 'Payments\PayHistoryController@update_pay');
     //Crear pagos
     Route::post('/create_pay', 'Payments\PayAddController@create_pay_test');
     //Filtrar pagos

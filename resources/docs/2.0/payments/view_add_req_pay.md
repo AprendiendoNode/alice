@@ -61,3 +61,17 @@ Debes subir tanto el PDF como el XML de la factura.
 - Monto:
 
 Especifica el monto total del pago.
+
+<br>
+![imagen](/images/docs/payments/solicitud3.png)<br><br>
+
+- Banco:
+
+Dependiendo del proveedor elegido se seleccionará el banco de manera dinámica, así como los datos de la cuenta, clabe y referencia bancaria. Puede hacer clic en Añadir datos bancarios para cambiar estos datos o crear uno nuevo.
+
+- Observaciones:
+
+Detalles de la solicitud.
+
+<br>
+Una vez llenados todos los campos se procede a dar clic en Finish para completar la solicitud. Esta será procesada al nivel superior para su seguimiento.

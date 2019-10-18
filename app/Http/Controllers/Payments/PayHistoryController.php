@@ -66,11 +66,23 @@ class PayHistoryController extends Controller
     $bancos = DB::connection('banks')->select('select * from bancos');
     return view('permitted.payments.history_confirm_pay', compact('bancos'));
   }
+  //edit_pay_ways
+  public function edit_pay_ways(Request $request)
+  {
+    $way = PaymentWay::select('id','name')->get();
+    return $way;
+  }
   public function cc_account(Request $request)
   {
     $pay_id= $request->get('idpay');
     $result = DB::select('CALL px_pay_mov_keyname (?)',array($pay_id));
     return json_encode($result);
+  }
+  public function get_proveedor_banks(Request $request)
+  {
+    $pay_id = $request -> get('pay_id');
+    $result = DB::select('CALL px_get_customer_bank (?)',array($pay_id));
+    return $result;
   }
   public function program_payment(Request $request)
   {
@@ -474,6 +486,11 @@ class PayHistoryController extends Controller
     return $result;
   }
 
+  public function get_coins (Request $request) {
+    $result = Currency::select('id','name')->get();
+    return $result;
+  }
+
   public function data_basic_comments (Request $request) {
     $pay_id= $request->get('pay');
     $result = DB::select('CALL payments_comments (?)',array($pay_id));
@@ -676,5 +693,63 @@ public function getInvoicePdf(Request $request)
 
 }
 
+public function update_pay (Request $request) {
+
+  $ordenDeCompra = $request -> get('ordenDeCompra');
+  $concepto = $request -> get('concepto');
+  $formaDePago = $request -> get('formaDePago');
+  $banco = $request -> get('banco'); //
+  $cuenta = $request -> get('cuenta'); //
+  $clabe = $request -> get('clabe'); //
+  $referencia = $request -> get('referencia'); //
+  $observacion = $request -> get('observacion'); //
+  $monto = $request -> get('monto'); //
+  $tasa = $request -> get('tasa'); //
+  $montoIVA = $request -> get('montoIVA'); //
+  $total = $request -> get('total'); //
+  $currency = $request -> get('currency');
+
+  $payment = $request -> get('payment');
+
+  //Checar cambios
+  $total_ant = DB::table('payments')->select('amount')->where('id', $payment)->get();
+
+  //SÓLO FUNCIONA CORRECTAMENTE EN PAGOS QUE NO SEAN MÚLTIPLES
+  DB::table('payments_montos')->where('payments_id', $payment)->update([
+    'amount' => $monto,
+    'IVA' => $tasa,
+    'amount_iva' => $montoIVA,
+    'updated_at' => \Carbon\Carbon::now()
+  ]);
+
+  DB::table('payments')->where('id', $payment)->update([
+    'purchase_order' => $ordenDeCompra,
+    'concept_pay' => $concepto,
+    'way_pay_id' => $formaDePago,
+    'amount' => $total,
+    'prov_bco_ctas_id' => $cuenta,
+    'currency_id' => $currency,
+    'name' => $observacion,
+    'updated_at' => \Carbon\Carbon::now()
+  ]);
+
+  DB::table('payments_comments')->where('payment_id', $payment)->update([
+    'name' => $observacion,
+    'updated_at' => \Carbon\Carbon::now()
+  ]);
+
+  //Save logs
+  DB::connection('alicelog')->table('edit_payments_log')->insert([
+    'quantity' => 0,
+    'CamposModificados' => "amount (".$total_ant." -> ".$total.")",
+    'user' => Auth::user()->name,
+    'user_id' => Auth::user()->id,
+    'action' => "Updated",
+    'db' => DB::connection()->getDatabaseName(),
+    'created_at' => \Carbon\Carbon::now()
+  ]);
+
+  return "OK";
+}
 
 }

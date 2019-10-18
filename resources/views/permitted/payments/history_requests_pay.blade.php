@@ -355,6 +355,15 @@
            border-radius: 3px;
        }
     </style>
+  @if( auth()->user()->can('Edit payments') )
+    <script>
+      var puedeEditar = true;
+    </script>
+  @else
+    <script>
+      var puedeEditar = false;
+    </script>
+  @endif
   @if( auth()->user()->can('View history of payment') )
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>

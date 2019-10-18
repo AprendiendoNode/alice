@@ -125,12 +125,33 @@
                                 <th>Ubicacion ID</th>
                                 <th>Monto</th>
                                 <th>IVA</th>
-                                <th>Monto IVA</th>
+                                <th id="column_title">Monto IVA</th>
                               </tr>
                             </thead>
                             <tbody>
                             </tbody>
                           </table>
+                        </div>
+                      </div>
+                      <div class="ivas row my-3 d-none" style="font-size: 14px;">
+                        <label class="mr-5"><strong>El IVA se calcula al 16%</strong></label>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" id="check_otros" name="check_otros">
+                            Otros impuestos.&nbsp;
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" id="check_isr" name="check_isr">
+                            Retención ISR/IVA.&nbsp;
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" id="check_iva" name="check_iva">
+                            No calcular IVA.&nbsp;
+                          </label>
                         </div>
                       </div>
                     <!--  Fin del header de pago -->
@@ -153,6 +174,7 @@
                           </div>
                           <div class="col-md-10">
                             <input id="rec_way_pay" disabled class="form-control form-control-sm" type="text" name="" value="">
+                            <select id="rec_way_pay_edit" class="form-control d-none"></select>
                           </div>
                         </div>
 
@@ -168,6 +190,7 @@
                                   </div>
                                   <div class="col-md-8">
                                     <input style="font-size:22px" id="rec_bank" disabled class="form-control form-control-sm" type="text" name="rec_bank" value="">
+                                    <select id="rec_bank_edit" class="form-control d-none"></select>
                                   </div>
                                 </div>
                                 <div class="form-group margin-top-short row">
@@ -176,6 +199,7 @@
                                   </div>
                                     <div class="col-md-8">
                                       <input style="font-size:22px" id="rec_cuenta" disabled class="form-control form-control-sm" type="text" name="rec_cuenta" value="">
+                                      <select id="rec_cuenta_edit" class="form-control d-none"></select>
                                     </div>
                                 </div>
                                 <div class="form-group margin-top-short row">
@@ -225,7 +249,7 @@
                       <label  class=" control-label">IVA:</label>
                       </div>
                       <div class="col-md-4">
-                        <input id="iva" type="text" class="form-control form-control-sm" disabled>
+                        <input id="iva2" type="text" class="form-control form-control-sm" disabled>
                       </div>
                     </div>
                     <div class="form-group row pt-2">
@@ -263,6 +287,9 @@
                       <div class="col-sm-12">
                         <p><strong>{{ trans('pay.delconfpay') }}: </strong><small id="rec_name_conf_del">{{ trans('pay.no_data') }}</small></p>
                       </div>
+                    </div>
+                    <div class="row">
+                        <button id="actualizar_solicitud" type="button" class="btn btn-warning mx-auto d-none"><i class="fas fa-edit"></i> Actualizar solicitud</button>
                     </div>
                   </div>
 

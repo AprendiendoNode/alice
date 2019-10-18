@@ -1,5 +1,12 @@
-function enviar(e){
+var modificando, sitios, payment, proveedor_id, moneda;
+
+function enviar(e, editing){
+  //If editing...just edit by users with edit permie and if the payments have status 1 or 2
+   modificando = editing;
+
    var valor= e.getAttribute('value');
+   payment = valor;
+
    var _token = $('input[name="_token"]').val();
    data_basic_venues(valor, _token);
    data_basic(valor, _token);
@@ -78,7 +85,9 @@ $(".btn-print-invoice").on('click',function(){
               error: function (response) {
 
               }
+
         });
+
 });
 
 
@@ -142,8 +151,10 @@ $(".btn-print-pdf").on('click',function(){
               error: function (response) {
 
               }
+
         });
-});
+
+    });
 
 //
 //
@@ -176,10 +187,12 @@ function data_basic(campoa, campob){
         var total = 0.0;
         var monto_iva = 0.0;
         var percent_iva = 0;
+        moneda = data[0].moneda;
         if ($.trim(data)){
                   console.log(data);
                   $("#fecha_ini").text(data[0].date_solicitude);
                   $("#fecha_pay").text(data[0].date_limit);
+                  $("#fecha_pay_edit").val(data[0].date_limit);
                   $("#rec_priority").val(data[0].priority);
                   $("#rec_order_purchase").val(data[0].purchase_order);
                   $("#rec_proy").val(data[0].cadena);
@@ -200,7 +213,7 @@ function data_basic(campoa, campob){
 
                   monto = parseFloat(data[0].monto);
                   iva = parseFloat(data[0].monto_iva).toFixed(2);
-                  $('#iva').val("$" + iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                  $('#iva2').val("$" + iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                   subtotal = monto -  iva;
                   total = data[0].monto_str;
 
@@ -217,6 +230,8 @@ function data_basic(campoa, campob){
                   $("#subtotal").val("$" + subtotal);
                   $("#total").val("$" + total);
 
+                  $("#totales_format").val(monto);
+                  $("#totales").val(monto);
 
         }
         else{
@@ -281,12 +296,12 @@ function data_basic_bank(campoa, campob){
 
 
 function  data_basic_venues(campoa, campob){
-  console.log(campoa);
   $.ajax({
     type: "POST",
     url: "/view_gen_sol_venues",
     data: { pay : campoa , _token : campob },
     success: function (data){
+      sitios = 0;
       if (data == null || data == '[]') {
         console.log("No disponible");
       }
@@ -301,21 +316,485 @@ function  data_basic_venues(campoa, campob){
             venue.id_ubicacion = "No disponible";
           }
           var amount = parseFloat(venue.amount).toFixed(2);
-          $('#rec_venues_table').append('<tr><td>' + venue.cadena +
-                                        '</td><td>' + venue.Sitio +
-                                        '</td><td>' + venue.id_anexo  +
-                                        '</td><td>'+  venue.id_ubicacion +
-                                        '</td><td>'+  "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-                                        '</td><td>'+  venue.iva  +
-                                        '</td><td>'+  venue.amount_iva + '</td></tr>');
+          if(modificando && datax.length <= 1) {
+            $('#column_title').text("Total");
+            $('#rec_venues_table').append('<tr><td>' + venue.cadena +
+                                          '</td><td>' + venue.Sitio +
+                                          '</td><td>' + venue.id_anexo  +
+                                          '</td><td>'+  venue.id_ubicacion +
+                                          '</td><td><input type="text" style="width: 100%;" id="price" onkeyup="sumar();" value="'+amount.toString()+'"/>' +
+                                          '</td><td><input type="text" style="width: 100%;" id="iva_format" value="'+venue.amount_iva+'" readonly/>' + '<input type="text" name="iva" style="width: 100%;" id="iva" value="'+venue.amount_iva+'" onkeyup="sumariva();" readonly/>' +
+                                          '</td><td><input type="text" style="width: 100%;" id="totales_format" value="'+amount.toString()+'" readonly/>' + '<input type="text" style="width: 100%;" id="totales" value="'+amount.toString()+'" name="totales" readonly/>' +
+                                          '</td><td><select id="rec_coin" style="width: 100%;" disabled></select></td></tr>');
+          } else {
+            $('#column_title').text("Monto IVA");
+            $('#rec_venues_table').append('<tr><td>' + venue.cadena +
+                                          '</td><td>' + venue.Sitio +
+                                          '</td><td>' + venue.id_anexo  +
+                                          '</td><td>'+  venue.id_ubicacion +
+                                          '</td><td>'+  "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                                          '</td><td>'+  venue.iva  +
+                                          '</td><td>'+  venue.amount_iva + '</td></tr>');
+          }
+          sitios++;
         });
-
+        $('#iva').hide();
+        $('#totales').hide();
       }
     },
     error: function (data) {
       console.log('Error:', data);
     }
   });
+}
+
+function sumar() { //Cambiando el monto
+    var total = 0.00;
+    var total_format = "";
+    var subtotal = 0.00;
+    var iva = 0.00;
+    var iva_format = "";
+    var tasa = 16;
+    var isr = 0;
+    var iva_reten = 0;
+    var checkbox = document.getElementById('check_iva');
+    var checkbox_isr = document.getElementById('check_isr');
+    var check_isr = checkbox_isr.checked == true;
+    var check_iva = checkbox.checked == true;
+
+    $("#price").each(function() {
+      console.log($(this).val());
+        if (isNaN(parseFloat($(this).val()))) {
+            subtotal += 0;
+            $('#price').val(0);
+        } else {
+            subtotal += parseFloat($(this).val());
+        }
+    });
+
+    $('#subtotal').val("$ " + subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+    if (!check_iva && !check_isr) {
+        iva = parseFloat((subtotal * tasa) / 100).toFixed(2);
+        iva = parseFloat(iva);
+        total = parseFloat(subtotal + iva).toFixed(2);
+        $('#iva').val(iva);
+        $('#totales').val(total);
+        $('#totales_format').val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#rec_monto').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#total').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#iva_format').val(iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#iva2').val("$ " + iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    } else {
+        if (check_iva) {
+            $('#iva').val(0);
+            $('#totales_format').val(subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            $('#rec_monto').val("$ " + subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            $('#total').val("$ " + subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            $('#totales').val(subtotal);
+        } else {
+            //console.log('no entro aqui!!!');
+            iva = parseFloat((subtotal * tasa) / 100);
+            isr = parseFloat((subtotal * 10) / 100);
+            //console.log("ISR: " + isr);
+            iva_reten = parseFloat((iva * 2) / 3);
+            //console.log("iva_reten: " + iva_reten);
+            total = parseFloat(((subtotal + iva) - isr) - iva_reten).toFixed(2);
+            $('#iva').val(iva);
+            $('#totales').val(total);
+            $('#iva_format').val(iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            $('#iva2').val("$ " + iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            $('#totales_format').val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            $('#rec_monto').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            $('#total').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        }
+    }
+
+}
+
+function sumariva() {
+    var total = 0.00;
+    var total_format = "";
+    var subtotal = 0.00;
+    var subtotal_format = "";
+    var iva = 0.00;
+    var iva_format = "";
+    var tasa = 16;
+    var checkbox = document.getElementById('check_iva');
+
+    $("#price").each(function() {
+        if (isNaN(parseFloat($(this).val()))) {
+            subtotal += 0;
+        } else {
+            subtotal += parseFloat($(this).val());
+        }
+    });
+
+    if (parseFloat($('#iva').val()) >= 0) {
+        iva = parseFloat($('#iva').val()); console.log("ok");
+    } else {
+        iva = 0;
+        $('#iva').val(0);
+    }
+
+    total = parseFloat(subtotal + iva).toFixed(2);
+    $('#totales').val(total);
+    $('#rec_monto').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    $('#iva2').val("$ " + iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    $('#total').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+}
+$('#check_isr').on('change', function() {
+    var checkbox = document.getElementById('check_isr');
+    var monto = parseFloat($('#price').val()); //subtotal
+    var iva = 0;
+    var tasa = 16;
+    var total = 0;
+    var isr = 0;
+    var iva_reten = 0;
+    if (checkbox.checked != true) {
+        //console.log('No esta marcado');
+        iva = parseFloat((monto * tasa) / 100);
+        total = parseFloat(monto + iva).toFixed(2);
+        $('#iva').val(iva);
+        $('#totales').val(total);
+        $('#iva_format').val(iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#iva2').val("$ " + iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#totales_format').val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#rec_monto').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#total').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        //$('#validation').formValidation('revalidateField', 'iva');
+    } else {
+        $('#check_iva').prop('checked', false);
+        iva = parseFloat((monto * tasa) / 100);
+        isr = parseFloat((monto * 10) / 100);
+        //console.log("ISR: " + isr);
+        iva_reten = parseFloat((iva * 2) / 3);
+        //console.log("iva_reten: " + iva_reten);
+        total = parseFloat(((monto + iva) - isr) - iva_reten).toFixed(2);
+        $('#iva').val(iva);
+        $('#totales').val(total);
+        $('#iva_format').val(iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#iva2').val("$ " + iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#totales_format').val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#rec_monto').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#total').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        //$('#validation').formValidation('revalidateField', 'iva');
+    }
+});
+$('#check_otros').on('change', function() {
+    var checkbox = document.getElementById('check_otros');
+    var monto = parseFloat($('#price').val());
+    var iva = 0;
+    var tasa = 16;
+    var total = 0;
+    if (checkbox.checked != true) {
+        //console.log('No esta marcado');
+        iva = parseFloat($('#iva').val());
+        total = parseFloat($('#totales').val());
+        $('#iva_format').val(iva);
+        $('#iva2').val("$ " + iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#totales_format').val(total);
+        $('#rec_monto').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#total').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#iva_format').show();
+        $('#totales_format').show();
+        $('#iva').hide();
+        $('#totales').hide();
+        $('#iva').prop("readonly", true);
+        $('#totales').prop("readonly", true);
+        //$('#validation').formValidation('revalidateField', 'iva');
+    } else {
+        //console.log('Esta marcado');
+        $('#iva_format').hide();
+        $('#totales_format').hide();
+        $('#iva').show();
+        $('#totales').show();
+        $('#iva').prop("readonly", false);
+        //$('#totales').prop("readonly", false);
+        //$('#validation').formValidation('revalidateField', 'iva');
+    }
+});
+$('#check_iva').on('change', function() {
+    var checkbox = document.getElementById('check_iva');
+    var monto = parseFloat($('#price').val());
+    var iva = 0;
+    var tasa = 16;
+    var total = 0;
+    if (checkbox.checked != true) {
+        //console.log('no esta marcado');
+        iva = parseFloat((monto * tasa) / 100);
+        total = parseFloat(monto + iva).toFixed(2);
+        $('#iva').val(iva);
+        $('#iva_format').val(iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#iva2').val("$ " + iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#totales').val(total);
+        $('#totales_format').val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#rec_monto').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#total').val("$ " + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        //$('#validation').formValidation('revalidateField', 'iva');
+    } else {
+        $('#check_isr').prop('checked', false);
+        //console.log('esta marcado');
+        $('#iva').val(0);
+        $('#iva_format').val(0);
+        $('#iva2').val("$ " + iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#totales').val(monto);
+        $('#totales_format').val(monto.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#rec_monto').val("$ " + monto.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('#total').val("$ " + monto.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        //$('#validation').formValidation('revalidateField', 'iva');
+    }
+});
+
+$("#actualizar_solicitud").on('click', function() {
+  var ordenDeCompra = $('#rec_order_purchase').val();
+  var monto = parseFloat($('#price').val().replace(/,/g,""));
+  var tasa = 16;
+  var checkbox = document.getElementById('check_otros');
+  var montoIVA, total;
+  if (checkbox.checked != true) {
+    montoIVA = parseFloat($('#iva_format').val().replace(/,/g,""));
+    total = parseFloat($('#totales_format').val().replace(/,/g,""));
+  } else {
+    montoIVA = parseFloat($('#iva').val().replace(/,/g,""));
+    total = parseFloat($('#totales').val().replace(/,/g,""));
+  }
+  //Monto, IVA (TASA), MontoIVA y total
+  var concepto = $('#rec_description').val();
+  var formaDePago = $('#rec_way_pay_edit').val();
+  var banco = $('#rec_bank_edit').val();
+  var cuenta = $('#rec_cuenta_edit').val();
+  var clabe = $('#rec_clabe').val();
+  var referencia = $('#rec_reference').val();
+  var observacion = $('#rec_observation').val();
+  var currency = $('#rec_coin').val();
+  console.log("Enviar actualizaciones...");
+  //console.log(montoIVA);
+  //Subtotal ISR
+  var token = $('input[name="_token"]').val();
+  $.ajax({
+      type: "POST",
+      url: "/update_pay",
+      data: { ordenDeCompra: ordenDeCompra, concepto: concepto, formaDePago: formaDePago, banco: banco, cuenta: cuenta, clabe: clabe, referencia: referencia,
+        observacion: observacion, monto: monto, tasa: tasa, montoIVA: montoIVA, total: total, currency: currency, payment: payment, _token: token },
+      success: function(data) {
+          console.log(data);
+          if (data === undefined || data.length === 0) {
+            console.log("Pendiente...");
+              swal({
+                      title: "Operación abortada!",
+                      text: "Error al actualizar intente otra vez :( ",
+                      type: "error",
+                      showCancelButton: false,
+                      confirmButtonClass: "btn-danger",
+                      confirmButtonText: "Continuar.!",
+                      closeOnConfirm: true,
+                      closeOnCancel: false
+                  });
+          } else {
+              swal({
+                      title: "Operación Completada!",
+                      text: "Solicitud actualizada",
+                      type: "success",
+                      showCancelButton: false,
+                      confirmButtonClass: "btn-danger",
+                      confirmButtonText: "Continuar.!",
+                      closeOnConfirm: true,
+                      closeOnCancel: false
+                  },
+                  function(isConfirm) {
+                      location.reload(true);
+                  });
+          }
+      },
+      error: function(data) {
+          console.log('Error:', data);
+          swal({
+                  title: "Operación abortada!",
+                  text: "Error al actualizar intente otra vez :( ",
+                  type: "error",
+                  showCancelButton: false,
+                  confirmButtonClass: "btn-danger",
+                  confirmButtonText: "Continuar.!",
+                  closeOnConfirm: true,
+                  closeOnCancel: false
+              });
+      }
+  });
+});
+
+async function disable_buttons(status) {
+  if( status == 3 || status == 4 || status == 6) {
+    $('.btn-print-invoice').prop( "disabled", false);
+    $('.btn-print-pdf').prop( "disabled", false);
+    $('.btn-export').prop( "disabled", false);
+  } else {
+    $('.btn-print-invoice').prop( "disabled", true);
+    $('.btn-print-pdf').prop( "disabled", true);
+    $('.btn-export').prop( "disabled", true);
+    if(modificando && sitios <= 1) {
+      console.log("Editando...");
+      $('#rec_order_purchase').prop( "disabled", false);
+      $('#rec_description').prop( "disabled", false);
+      $('#rec_observation').prop( "disabled", false);
+      $('#iva_format').prop( "disabled", false);
+      $('#price').prop( "disabled", false);
+      $('.ivas').removeClass("d-none");
+      $("#amountText").addClass("d-none");
+      $("#rec_coin").removeClass("d-none");
+      $('#actualizar_solicitud').removeClass("d-none");
+      //Facturas
+      var token = $('input[name="_token"]').val();
+      await $.ajax({
+        type: "POST",
+        url: "/get_coins",
+        data: { _token : token },
+        success: function (data){
+          $('#rec_coin').empty();
+          data.forEach(function(d) {
+            $('#rec_coin').append("<option value="+d.id+">"+d.name+"</option>");
+          });
+          $("#rec_coin option:contains("+moneda+")").attr("selected", true);
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+      });
+      await $.ajax({
+        type: "POST",
+        url: "/edit_pay_ways",
+        data: { _token : token },
+        success: function (data){
+          $('#rec_way_pay').addClass("d-none");
+          $('#rec_way_pay_edit').removeClass("d-none");
+          $('#rec_way_pay_edit').empty();
+          data.forEach(function(d) {
+            $('#rec_way_pay_edit').append("<option value="+d.id+">"+d.name+"</option>");
+          });
+          $("#rec_way_pay_edit option:contains("+$('#rec_way_pay').val()+")").attr("selected", true);
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+      });
+      await $.ajax({
+        type: "POST",
+        url: "/get_proveedor_banks",
+        data: { pay_id: payment, _token : token },
+        success: function (data){
+          $('#rec_bank').addClass("d-none");
+          $('#rec_bank_edit').removeClass("d-none");
+          $('#rec_bank_edit').empty();
+          data.forEach(function(d) {
+            $('#rec_bank_edit').append("<option value="+d.id+">"+d.bank+"</option>");
+            proveedor_id = d.proveedor_id;
+          });
+          $("#rec_bank_edit option:contains("+$('#rec_bank').val()+")").attr("selected", true);
+          getCuentaClabe();
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+      });
+    } else {
+      console.log("No se puede modificar / Pago realizado / Solicitud múltiple");
+      $('#rec_order_purchase').prop( "disabled", true);
+      $('#rec_description').prop( "disabled", true);
+      $('#rec_observation').prop( "disabled", true);
+      $('#rec_way_pay').removeClass("d-none");
+      $('#rec_way_pay_edit').addClass("d-none");
+      $('#rec_bank').removeClass("d-none");
+      $('#rec_bank_edit').addClass("d-none");
+      $('#rec_cuenta').removeClass("d-none");
+      $('#rec_cuenta_edit').addClass("d-none");
+      $('.ivas').addClass("d-none");
+      $('#iva_format').prop( "disabled", true);
+      $('#price').prop( "disabled", true);
+      $("#amountText").removeClass("d-none");
+      $("#rec_coin").addClass("d-none");
+      $('#actualizar_solicitud').addClass("d-none");
+    }
+  }
+}
+
+$('#rec_bank_edit').on('change', function() {
+  getCuentaClabe();
+});
+
+function getCuentaClabe() {
+  var id_bank = $('#rec_bank_edit').val();
+  var id_prov = proveedor_id;
+  var _token = $('input[name="_token"]').val();
+  var datax;
+  $.ajax({
+      type: "POST",
+      url: "/get_account_clabe",
+      data: {
+          data_one: id_prov,
+          data_two: id_bank,
+          _token: _token
+      },
+      success: function(data) {
+        $('#rec_cuenta_edit').empty();
+        $('#rec_cuenta').addClass("d-none");
+        $('#rec_cuenta_edit').removeClass("d-none");
+        if (data == null || data == '[]') {
+            $('#rec_cuenta_edit').append('<option value="">Elegir...</option>');
+        } else {
+            datax = JSON.parse(data);
+            if ($.trim(data)) {
+                $.each(datax, function(i, item) {
+                    $('#rec_cuenta_edit').append("<option value=" + item.id + ">" + item.cuenta + "</option>");
+                });
+                $("#rec_cuenta_edit option:contains("+$('#rec_cuenta').val()+")").attr("selected", true);
+            }
+            var id_account = $('#rec_cuenta_edit').val();
+            getdataCuenta(id_account, _token);
+        }
+      },
+      error: function(data) {
+          console.log('Error:', data);
+      }
+  });
+}
+
+$('#rec_cuenta_edit').on('change', function(e) {
+    var id = $(this).val();
+    var _token = $('input[name="_token"]').val();
+    getdataCuenta(id, _token);
+});
+
+function getdataCuenta(campoa, campob) {
+    $.ajax({
+        type: "POST",
+        url: "/get_data_accw",
+        data: {
+            data_one: campoa,
+            _token: campob
+        },
+        success: function(data) {
+            if (data == null || data == '[]') {
+                $('#rec_clabe').val('');
+                $('#rec_reference').val('');
+            } else {
+                if ($.trim(data)) {
+                    datax = JSON.parse(data);
+                    var currency = document.getElementById('rec_clabe');
+                    currency.dataset.currency = datax[0].currency_id;
+                    console.log("$" + currency.dataset.currency);
+                    $('#rec_clabe').val(datax[0].clabe);
+                    $("#rec_reference").val(datax[0].referencia);
+                    checkCurrency();
+                } else {
+                    $('#rec_clabe').val('');
+                    $('#rec_reference').val('');
+                }
+            }
+        },
+        error: function(data) {
+            console.log('Error:', data);
+        }
+    });
 }
 
 function data_basic_firmas(campoa, campob){
@@ -349,19 +828,6 @@ function data_basic_firmas(campoa, campob){
 }
 
 //Funcionalidad para convertir numero a letras
-
-function disable_buttons(status){
-  if( status == 3 || status == 4 || status == 6){
-    $('.btn-print-invoice').prop( "disabled", false);
-    $('.btn-print-pdf').prop( "disabled", false);
-    $('.btn-export').prop( "disabled", false);
-  }else{
-    $('.btn-print-invoice').prop( "disabled", true);
-    $('.btn-print-pdf').prop( "disabled", true);
-    $('.btn-export').prop( "disabled", true);
-  }
-
-}
 
 function Unidades(num){
 
@@ -536,4 +1002,27 @@ function accounting_account(campoa, campob){
       console.log('Error:', data);
     }
   });
+}
+
+function checkCurrency() {
+    var coinBank;
+    var coinId;
+    var option;
+    var coinselect = document.getElementById('rec_coin');
+    var inputclabe = document.getElementById('rec_clabe');
+    coinId = coinselect.value;
+    coinBank = inputclabe.dataset.currency;
+    if (coinBank != coinId) {
+        for (var i = 0; i < coinselect.options.length; i++) {
+            option = coinselect.options[i];
+            if (option.value == coinBank) {
+                option.setAttribute('selected', true);
+            } else {
+                option.removeAttribute('selected');
+            }
+        }
+    } else {
+        $("#rec_coin").parent().parent().removeClass('has-error');
+        $("#rec_coin").parent().parent().addClass('has-sucess');
+    }
 }
