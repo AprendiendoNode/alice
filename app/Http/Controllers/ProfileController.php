@@ -10,7 +10,17 @@ class ProfileController extends Controller
 {
     public function index()
     {
-      return view('permitted.general.profile');
+      $userid=Auth::user()->id;
+      $isActive=null;
+      $isActive = DB::table('model_has_permissions')->where('model_id',$userid)->where('permission_id',216)->count();
+      if($isActive==1){
+        $estado=true;
+      }
+      else{
+        $estado=false;
+      }
+      
+      return view('permitted.general.profile',compact('estado'));
     }
     public function show(Request $request)
     {
@@ -57,4 +67,28 @@ class ProfileController extends Controller
      }
      // else { return "#no coinciden password"; }
     }
+
+    public function activeassistant(Request $request){
+      $userid=Auth::user()->id;
+      $isActive = DB::table('model_has_permissions')->where('model_id',$userid)->where('permission_id',216)->count();
+      if($isActive==0){
+        DB::table('model_has_permissions')->insert(['model_id'=>$userid,'permission_id'=>216,'model_type'=>'App\User']);
+        return 'ok';
+      }else{
+        return 'no changes';
+      }
+
+    }
+    public function disableassistant(Request $request){
+      $userid=Auth::user()->id;
+      $isActive = DB::table('model_has_permissions')->where('model_id',$userid)->where('permission_id',216)->count();
+      if($isActive==1){
+        DB::table('model_has_permissions')->where('model_id',$userid)->where('permission_id',216)->delete();
+        return 'ok';
+      }else{
+        return 'no changes';
+      }
+
+    }
+
 }

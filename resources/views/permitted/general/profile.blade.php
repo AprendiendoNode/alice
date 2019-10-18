@@ -96,6 +96,19 @@
                       </div>
                     </form>
                 </div>
+                <div class="p-4">
+                    <form class="" action="" method="post">
+                        {{ csrf_field() }}
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label for="" class="col-form-label">Activar asistente</label>
+                            </div>
+                            <div class="col-sm-10 pt-3">
+                                <input type="checkbox" id="act_asist" class="js-switch" name="" >
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <div class="row justify-content-center">
                   <div class="col-10 mx-auto">
                     <div class="alert alert-primary" role="alert">
@@ -104,6 +117,7 @@
                         <li> La cantidad de caracteres de la contraseña debe de ser igual o mayor que 6. </li>
                         <li> La contraseña y la confirmación deben de ser iguales. </li>
                         <li> En caso que desee cambiar el nombre o la localizacion basta con llenar el campo deseado.</li>
+                        <li> Para activar o desactivar el asistente de documentación haga clic en el interruptor.</li>
                       </ol>
                       <hr>
                       <p class="mb-0">Cuando sea necesario, asegúrese de leer estas instrucciones.</p>
@@ -162,6 +176,8 @@ opacity: 1 !important;
 </style>
 <script src="{{ asset('js/admin/profile.js')}}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7LGUHYSQjKM4liXutm2VilsVK-svO1XA&libraries=places"></script>
+<link href="{{ asset('bower_components/switchery-master/dist/switchery.css')}}" rel="stylesheet" type="text/css">
+<script src="{{ asset('bower_components/switchery-master/dist/switchery.js')}}" charset="utf-8"></script>
 <script type="text/javascript">
     function initialize() {
         var options = {
@@ -172,5 +188,94 @@ opacity: 1 !important;
         var autocomplete = new google.maps.places.Autocomplete(input, options);
     }
     google.maps.event.addDomListener(window, 'load', initialize);
+//switch
+function setSwitchery(switchElement, checkedBool) {
+    if((checkedBool && !switchElement.isChecked()) || (!checkedBool && switchElement.isChecked())) {
+        switchElement.setPosition(true);
+        switchElement.handleOnchange(true);
+    }
+}
+
+var defaults = {
+color : '#15d640',
+secondaryColor : '#fa3232',
+jackColor : '#fff',
+jackSecondaryColor: null,
+className : 'switchery',
+disabled : true,
+disabledOpacity : 0.5,
+speed : '0.1s',
+size : 'default',
+}
+
+
+
+var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+var switchery;
+elems.forEach(function(html) {
+switchery = new Switchery(html, defaults);
+});
+
+var estado = {!! json_encode($estado, JSON_HEX_TAG) !!}; //Estado recuperado de la base de datos
+//console.log(estado);
+setSwitchery(switchery,estado);
+
+$('#act_asist').on('change',function(){
+//var switchAsit =('#act_asist');
+//alert($('#act_asist').prop('checked'));
+if($('#act_asist').prop('checked')==true){
+//alert('activado');
+var _token = $('input[name="_token"]').val();
+$.ajax({
+  type: "POST",
+  url: '/activeassistant',
+  data:{ _token: _token},
+  success: function (data) {
+    //console.log(data);
+    Swal.fire({
+    position: 'center',
+    type: 'success',
+    title: 'Asistente activado',
+    showConfirmButton: false,
+    timer: 1200
+    }).then((result) => {
+          location.reload();
+  })
+  },
+  error: function (data) {
+    console.log(data);
+  }
+});
+
+
+}else{
+//alert('desactivado');
+var _token = $('input[name="_token"]').val();
+$.ajax({
+  type:"POST",
+  url:"/disableassistant",
+  data:{_token: _token},
+  success: function(data){
+    Swal.fire({
+    position: 'center',
+    type: 'warning',
+    title: 'Asistente desactivado',
+    showConfirmButton: false,
+    timer: 1200
+  }).then((result) => {
+        location.reload();
+})
+
+  },
+  error:function(data){
+    console.log(data);
+  }
+});
+
+
+
+}
+
+})
 </script>
 @endpush

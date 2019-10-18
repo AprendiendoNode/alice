@@ -88,10 +88,10 @@
                 {{ __('auth.settings') }}
               </a>
               @endif
-              <!--<a class="dropdown-item" href="{{ url('/docs') }}">
+              <a class="dropdown-item" href="{{ url('/docs') }}">
                 <i class="mdi mdi-help text-primary"></i>
                 Ayuda
-              </a>-->
+              </a>
               <a class="dropdown-item" onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
                 <i class="mdi mdi-logout text-primary"></i>

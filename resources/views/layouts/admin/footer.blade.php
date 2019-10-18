@@ -76,7 +76,8 @@
 }
 
   </style>
-  <script>/*
+    @if( auth()->user()->can('View Help Assistant') )
+  <script>
     $('.bubble').show();
     new WOW().init();
     $('#globo').on('click',function(){
@@ -111,7 +112,7 @@
     $(".message1").delay(1300).fadeOut(500);
     $('#globo_close').on('click',function() {
       $('.bubble').hide();
-    });*/
+    });
   </script>
-
+    @endif
 @endpush
