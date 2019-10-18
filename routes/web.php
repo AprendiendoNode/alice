@@ -996,6 +996,13 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::get('/customer-invoices/test', 'Sales\CustomerInvoiceController@verfact');
     Route::get('/reset_t', 'Sales\CustomerInvoiceController@store_reset');
 });
+
+Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){ 
+  // Contabilidad 
+  Route::get('/view_balance_accounting','Accounting\BalanceController@index'); 
+  // Route::get('/holaa','Accounting\BalanceController@index2'); 
+});
+
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
 {
       Route::get('/settings_pac', 'Base\PacController@index');
