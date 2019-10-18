@@ -1697,4 +1697,16 @@ class CustomerInvoiceController extends Controller
 
       return $result;
     }
+    public function balances(Request $request)
+    {
+      //Variables
+      $customer_id = $request->customer_id;
+      $filter_currency_id = $request->currency_id;
+      //Logica
+      if ($request->ajax() && !empty($customer_id)) {
+        $resultados = DB::select('CALL px_customer_invoices_open_data (?, ?)', array($customer_id, $filter_currency_id));
+        return response()->json($resultados, 200);
+      }
+      return response()->json(['error' => __('general.error500')], 422);
+    }
 }

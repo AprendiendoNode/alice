@@ -976,7 +976,14 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
 
     //Notas de credito
     Route::get('/customer-credit-notes', 'Sales\CustomerCreditNoteController@index');
+    Route::get('/customer-invoices/balances', 'Sales\CustomerInvoiceController@balances')->name('customer-invoices/balances');
+    Route::post('customer-credit-notes/total-reconciled-lines', 'Sales\CustomerCreditNoteController@totalReconciledLines')->name('customer-credit-notes/total-reconciled-lines');
 
+    Route::post('/customer-credit-notes/total-lines', 'Sales\CustomerCreditNoteController@totalLines');
+    Route::post('/customer-credit-notes-store', 'Sales\CustomerCreditNoteController@store');
+
+    Route::get('customer-credit-notes/get-customer-credit-note', 'Sales\CustomerCreditNoteController@getCustomerCreditNote')->name('customer-credit-notes/get-customer-credit-note');
+    
     Route::get('/customer-invoices/autocomplete-cfdi', 'Sales\CustomerInvoiceController@autocompleteCfdi');
     Route::get('customer-invoices/get-customer-invoice', 'Sales\CustomerInvoiceController@getCustomerInvoice')->name('customer-invoices/get-customer-invoice');
 
@@ -997,10 +1004,10 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::get('/reset_t', 'Sales\CustomerInvoiceController@store_reset');
 });
 
-Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){ 
-  // Contabilidad 
-  Route::get('/view_balance_accounting','Accounting\BalanceController@index'); 
-  // Route::get('/holaa','Accounting\BalanceController@index2'); 
+Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
+  // Contabilidad
+  Route::get('/view_balance_accounting','Accounting\BalanceController@index');
+  // Route::get('/holaa','Accounting\BalanceController@index2');
 });
 
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()

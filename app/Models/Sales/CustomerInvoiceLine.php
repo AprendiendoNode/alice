@@ -30,7 +30,9 @@ class CustomerInvoiceLine extends Model
       'amount_total',
       'sort_order',
       'status',
-      'contract_annex_id'
+      'contract_annex_id',
+      'currency_id',
+      'currency_value'
   ];
   public function scopeActive($query)
   {

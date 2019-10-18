@@ -867,7 +867,7 @@
                   dataType: "JSON",
                   data: "id=" + id,
                   success: function (data) {
-                      $("#form #item_name_" + row).val(data[0].description);
+                      $("#form #item_name_" + row).val(data[0].descripcion);
                       $("#form #item_unit_measure_id_" + row).val(data[0].unit_measure_id);
                       $("#form #item_sat_product_id_" + row).val(data[0].sat_product_id);
                       $("#form #item_price_unit_" + row).val(data[0].price);
