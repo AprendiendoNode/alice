@@ -701,7 +701,7 @@ public function update_pay (Request $request) {
   $banco = $request -> get('banco'); //
   $cuenta = $request -> get('cuenta'); //
   $clabe = $request -> get('clabe'); //
-  $referencia = $request -> get('referencia'); //
+  //$referencia = $request -> get('referencia'); //
   $observacion = $request -> get('observacion'); //
   $monto = $request -> get('monto'); //
   $tasa = $request -> get('tasa'); //
@@ -712,7 +712,9 @@ public function update_pay (Request $request) {
   $payment = $request -> get('payment');
 
   //Checar cambios
-  $total_ant = DB::table('payments')->select('amount')->where('id', $payment)->get();
+  $payments_montos_table = DB::table('payments_montos')->select('*')->where('payments_id', $payment)->get();
+  $payments_table = DB::table('payments')->select('*')->where('id', $payment)->get();
+  $payments_comments_table = DB::table('payments_comments')->select('*')->where('payment_id', $payment)->get();
 
   //SÓLO FUNCIONA CORRECTAMENTE EN PAGOS QUE NO SEAN MÚLTIPLES
   DB::table('payments_montos')->where('payments_id', $payment)->update([
@@ -740,8 +742,18 @@ public function update_pay (Request $request) {
 
   //Save logs
   DB::connection('alicelog')->table('edit_payments_log')->insert([
-    'quantity' => 0,
-    'CamposModificados' => "amount (".$total_ant." -> ".$total.")",
+    'payment_id' => $payment,
+    'orden_compra' => $payments_table[0]->purchase_order." -> ".$ordenDeCompra,
+    'concepto' => $payments_table[0]->concept_pay." -> ".$concepto ,
+    'forma_pago' => $payments_table[0]->way_pay_id." -> ".$formaDePago,
+    'cuenta' => $payments_table[0]->prov_bco_ctas_id." -> ".$cuenta,
+    'clabe' => $clabe,
+    'observacion' => $payments_comments_table[0]->name." -> ".$observacion,
+    'monto' => $payments_montos_table[0]->amount." -> ".$monto,
+    'tasa' => $payments_montos_table[0]->IVA." -> ".$tasa,
+    'monto_iva' => $payments_montos_table[0]->amount_iva." -> ".$montoIVA,
+    'total' => $payments_table[0]->amount." -> ".$total,
+    'currency' => $payments_table[0]->currency_id." -> ".$currency,
     'user' => Auth::user()->name,
     'user_id' => Auth::user()->id,
     'action' => "Updated",

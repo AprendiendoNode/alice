@@ -104,7 +104,7 @@
                                 <label for="" class="col-form-label">Activar asistente</label>
                             </div>
                             <div class="col-sm-10 pt-3">
-                                <input type="checkbox" id="act_asist" class="js-switch" name="" >
+                                <input type="checkbox" id="act_asist" class="js-switch" name="">
                             </div>
                         </div>
                     </form>
@@ -202,7 +202,6 @@ secondaryColor : '#fa3232',
 jackColor : '#fff',
 jackSecondaryColor: null,
 className : 'switchery',
-disabled : true,
 disabledOpacity : 0.5,
 speed : '0.1s',
 size : 'default',
@@ -219,7 +218,7 @@ switchery = new Switchery(html, defaults);
 var estado = {!! json_encode($estado, JSON_HEX_TAG) !!}; //Estado recuperado de la base de datos
 //console.log(estado);
 setSwitchery(switchery,estado);
-
+switchery.disable();//Deshabilitado para la nube, borrar cuando se publice oficialmente la documetacion.
 $('#act_asist').on('change',function(){
 //var switchAsit =('#act_asist');
 //alert($('#act_asist').prop('checked'));
