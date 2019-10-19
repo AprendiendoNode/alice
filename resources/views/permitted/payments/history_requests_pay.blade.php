@@ -374,7 +374,7 @@
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
 
-    <script src="{{ asset('js/admin/payments/request_modal_payment.js')}}"></script>
+    <script src="{{ asset('js/admin/payments/request_modal_payment.js?v=v2.0.0')}}"></script>
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
     @if( auth()->user()->can('View level zero payment notification') )
