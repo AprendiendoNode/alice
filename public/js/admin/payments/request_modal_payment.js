@@ -8,18 +8,14 @@ function enviar(e, editing){
    payment = valor;
 
    var _token = $('input[name="_token"]').val();
-   data_basic_venues(valor, _token);
-   data_basic(valor, _token);
-   data_basic_bank(valor, _token);
-   data_basic_firmas(valor, _token);
-   accounting_account(valor, _token);
+   data_basic_venues(payment, _token);
 
   $("input[type=checkbox]").prop('checked', '');
   $("input[type=radio]").prop('checked', '');
   $("#rec_venues_table tbody").children().remove();
   $("#rec_facts_table tbody").children().remove();
 
-  if ( $("#id_xs").length > 0 ) { $("#id_xs").val(valor); }
+  if ( $("#id_xs").length > 0 ) { $("#id_xs").val(payment); }
 
   $('#modal-view-concept').modal('show');
 
@@ -341,6 +337,14 @@ function  data_basic_venues(campoa, campob){
         $('#iva').hide();
         $('#totales').hide();
       }
+
+      var _token = $('input[name="_token"]').val();
+
+      data_basic(payment, _token);
+      data_basic_bank(payment, _token);
+      data_basic_firmas(payment, _token);
+      accounting_account(payment, _token);
+
     },
     error: function (data) {
       console.log('Error:', data);
