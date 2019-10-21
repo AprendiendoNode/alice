@@ -663,9 +663,9 @@ $(".validation-wizard-master").steps({
     onStepChanging: function (event, currentIndex, newIndex) {
       set_table_rubro();
       set_table_gastos();
-      set_table_objetivos();
       set_table_modelos();
       set_table_servadm();
+      set_table_objetivos();
 
       if(newIndex == 2){
         // Tabla de productos del Documento P
@@ -683,9 +683,9 @@ $(".validation-wizard-master").steps({
       event.preventDefault();
       set_table_rubro();
       set_table_gastos();
-      set_table_objetivos();
       set_table_modelos();
       set_table_servadm();
+      set_table_objetivos();
         // swal("form_master Submitted!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem erat eleifend ex semper, lobortis purus sed.");
       /************************************************************************************/
       Swal.fire({

@@ -74,8 +74,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
     <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_logs.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting_cart_general.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting.js?v=4.1.0')}}"></script>
-    <script type="text/javascript" src="{{asset('js/admin/quoting/metricas.js?v=4.1.0')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting.js?v=4.2.0')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/quoting/metricas.js?v=4.2.0')}}"></script>
     <script type="text/javascript">
     $(function() {
       localStorage.clear();

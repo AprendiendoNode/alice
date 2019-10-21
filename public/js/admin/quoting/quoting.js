@@ -559,9 +559,9 @@ $(".validation-wizard-master").steps({
     onStepChanging: function (event, currentIndex, newIndex) {
       set_table_rubro();
       set_table_gastos();
-      set_table_objetivos();
       set_table_modelos();
       set_table_servadm();
+      set_table_objetivos();
 
       if(newIndex == 2){
         // Tabla de productos del Documento P
@@ -573,6 +573,11 @@ $(".validation-wizard-master").steps({
       return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form_master.find(".body:eq(" + newIndex + ") label.error").remove(), form_master.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form_master.validate().settings.ignore = ":disabled,:hidden", form_master.valid())
     },
     onFinishing: function (event, currentIndex) {
+        set_table_rubro();
+        set_table_gastos();
+        set_table_modelos();
+        set_table_servadm();
+        set_table_objetivos();
         return form_master.validate().settings.ignore = ":disabled", form_master.valid()
     },
     onFinished: function (event, currentIndex) {
