@@ -66,7 +66,7 @@
 
 - ## Proyectos
     - [Administración de productos](/{{route}}/{{version}}/planning/products)
-    - [Solicitud de compra](/{{route}}/{{version}}/planning/purchaserequest)
+    - [Solicitud de compra](/{{route}}/{{version}}/documentp/documentp_cart)
     - [Historial documento M](/{{route}}/{{version}}/planning/historyM)
     - [Ver entregados](/{{route}}/{{version}}/planning/viewdelivered)
     - [Avance de proyectos](/{{route}}/{{version}}/planning/projectprogress)
