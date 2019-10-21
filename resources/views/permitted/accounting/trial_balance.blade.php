@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View trial balance') )
-    {{ Balanza }}
+    Balanza
   @else
     {{ trans('message.denied') }}
   @endif
@@ -10,7 +10,7 @@
 
 @section('contentheader_description')
   @if( auth()->user()->can('View trial balance') )
-    {{ de comprobación }}
+    <!-- <b>de comprobación</b> -->
   @else
     {{ trans('message.denied') }}
   @endif
@@ -18,7 +18,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View trial balance') )
-    {{ Balanza de comprobación }}
+    Balanza de comprobación
   @else
     {{ trans('message.denied') }}
   @endif
@@ -37,7 +37,7 @@
                  <div class="col-md-8">
                    <div class="input-group">
                      <span class="input-group-addon"><i class="fas fa-calendar-alt fa-2x"></i></span>
-                     <input id="date_to_search" type="text" class="form-control form-control-sm" name="date_to_search">
+                     <input id="date_to_search" type="text" class="form-control form-control-sm dateInput" name="date_to_search">
                    </div>
                  </div>
                  <div class="col-md-4">
@@ -51,30 +51,24 @@
 
            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
              <div class="table-responsive">
-               <table id="table_pays" class="table table-striped table-bordered table-hover compact-tab w-100">
+               <table id="table_balance" class="table table-striped table-bordered table-hover compact-tab w-100">
                  <thead>
                    <tr class="bg-primary" style="background: #088A68;">
-                     <th> <small></small> </th>
-                     <th> <small>Factura</small> </th>
-                     <th> <small> Sitio </small> </th>
-                     <th> <small>Proveedor</small> </th>
-                     <th> <small>Estatus</small> </th>
-                     <th> <small>Monto</small> </th>
-                     <th> <small>Elaboró</small> </th>
-                     <th> <small>Fecha de solicitud</small> </th>
-                     <th> <small>Fecha límite de pago</small> </th>
-                     <th> <small>Presupuesto</small> </th>
-                     <th> <small>Conceptos</small> </th>
-                     <th> <small></small> </th>
+                     <!-- <th> <small></small> </th> -->
+                     <th> <small>Cuenta</small> </th>
+                     <th> <small>NAT</small> </th>
+                     <th> <small>Nombre</small> </th>
+                     <th> <small>Saldo Ini</small> </th>
+                     <th> <small>Cargos</small> </th>
+                     <th> <small>Abonos</small> </th>
+                     <th> <small>Saldo Fin</small> </th>
                    </tr>
                  </thead>
                  <tbody>
                  </tbody>
                  <tfoot id='tfoot_average'>
                    <tr>
-                     <th></th>
-                     <th></th>
-                     <th></th>
+                     <!-- <th></th> -->
                      <th></th>
                      <th></th>
                      <th></th>
@@ -91,7 +85,6 @@
            </div>
          </div>
        </div>
-    @endif
     @else
       @include('default.denied')
     @endif
@@ -130,7 +123,7 @@
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
     
-    <!-- <script src="{{ asset('js/admin/payments/request_payment_0.js?v=3.0.0')}}"></script> -->
+    <script src="{{ asset('js/admin/accounting/trial_balance.js?v=0.0.0')}}"></script>
   @else
     <!--NO VER-->
   @endif
