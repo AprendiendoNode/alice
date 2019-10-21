@@ -51,6 +51,7 @@
                               </div>
                               <div class="col-md-4">
                                 <input style="font-size:22px;font-weight: bold;" disabled class="form-control form-control-sm" type="text" name="numfact" id="numfact" value="">
+                                <input type="button" id="actualizarFactura" onclick="modalPendiente()" class="btn btn-secondary btn-sm d-none" style="font-weight: bold; margin-left: 29%;" value="Subir factura">
                               </div>
                               <div class="col-md-2">
                               <label for="customer" class="control-label"> Orden de compra</label>

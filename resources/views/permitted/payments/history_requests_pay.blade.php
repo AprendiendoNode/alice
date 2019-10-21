@@ -25,6 +25,93 @@
 @endsection
 
 @section('content')
+
+  <!-- Modal Factura Pendiente -->
+  <div id="modalActualizarFactura" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content w-100 m-auto">
+              <div class="modal-header">
+                  <h4 class="modal-title"><i class="fas fa-file-upload"></i> Agregar factura</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                  @if( auth()->user()->can('View add invoices by drive') )
+                  <form id="validation_modal_fact" name="validation_modal_fact" enctype="multipart/form-data">
+                      {{ csrf_field() }}
+                      <input type="hidden" id="info_fact_pend" name="info_fact_pend">
+                      <div class="form-group">
+                          <label for="info_proveedor" class="control-label">Nombre del Proveedor:</label>
+                          <input type="text" class="form-control" id="info_proveedor" name="info_proveedor" readonly>
+                      </div>
+                      <div class="row">
+                          <div class="form-group col-md-8">
+                              <label for="info_cantidad" class="control-label">Monto:</label>
+                              <input type="text" class="form-control" id="info_cantidad" name="info_cantidad" readonly>
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="info_orden" class="control-label">Orden de pago:</label>
+                              <input type="text" class="form-control" id="info_orden" name="info_orden" readonly>
+                          </div>
+                      </div>
+
+                      <center>
+                          <label for="" class="col-md-12 control-label text-danger"><i class="fas fa-cloud-upload-alt" aria-hidden="true"></i> Importar facturas en PDF O XML</label>
+                      </center>
+                      <div class="row mb-2">
+                          <div class="col-md-8 m-auto">
+                            <div class="form-group">
+                                <label for="info_nofact" class="control-label">No. Factura:</label>
+                                <input type="text" class="form-control required" id="info_nofact" name="info_nofact" readonly>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-8 m-auto">
+                            <div class="input-group" id="cont_1">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-danger btn-sm">
+                                      <i class="far fa-file-pdf"></i>  PDF
+                                      <input id="file_pdf" name="file_pdf" type="file" style="display: none;" class="required">
+                                    </span>
+                                </label>
+                                <input type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="row mb-2">
+                        <div class="col-md-8 m-auto">
+                            <div class="input-group" id="cont_2">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-success btn-sm">
+                                      <i class="far fa-file-excel"></i> XLSX
+                                      <input id="file_xml" name="file_xml" type="file" style="display: none;" class="required">
+                                    </span>
+                                </label>
+                                <input type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-3 m-auto">
+                            <div class="form-group mt-10">
+                                <button type="submit" class="btn btn-info btn-sm" style="width: 150px;"><i class="fa fa-bullseye margin-r5"></i> Guardar</button>
+                            </div>
+                        </div>
+                      </div>
+
+                  </form>
+                  @else @include('default.denied') @endif
+              </div>
+              <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div> -->
+          </div>
+
+      </div>
+  </div>
+
   <!-- Modal -->
   <div class="modal fade" id="modal-view-algo">
     <div class="modal-dialog">
@@ -373,8 +460,10 @@
     <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
+    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
+    <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
 
-    <script src="{{ asset('js/admin/payments/request_modal_payment.js?v=v2.0.0')}}"></script>
+    <script src="{{ asset('js/admin/payments/request_modal_payment.js?v=v3.0.0')}}"></script>
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
     @if( auth()->user()->can('View level zero payment notification') )

@@ -65,6 +65,8 @@ class CFilemanagerController extends Controller
       $fichero = 'true';
     }
 
+    if($no_fac == "factura_pendiente") $no_fac = "Factura";
+
     if ($fichero == 'true') {
       $update_pay=DB::table('payments')
       ->where('id', $id_pay)
@@ -73,6 +75,27 @@ class CFilemanagerController extends Controller
         'pay_status_fact_id' => '3',
         'updated_at' => \Carbon\Carbon::now()
       ]);
+
+      DB::connection('alicelog')->table('edit_payments_log')->insert([
+        'payment_id' => $id_pay,
+        'orden_compra' => "Sin cambios",
+        'concepto' => "Sin cambios",
+        'forma_pago' => "Sin cambios",
+        'cuenta' => "Sin cambios",
+        'clabe' => "Sin cambios",
+        'observacion' => "Sin cambios",
+        'monto' => "Sin cambios",
+        'tasa' => "Sin cambios",
+        'monto_iva' => "Sin cambios",
+        'total' => "Sin cambios",
+        'currency' => "Sin cambios",
+        'user' => Auth::user()->name,
+        'user_id' => Auth::user()->id,
+        'action' => "Nueva factura: ".$no_fac,
+        'db' => DB::connection()->getDatabaseName(),
+        'created_at' => \Carbon\Carbon::now()
+      ]);
+
       return $update_pay; // returns 1
                           // returns 0 no se cambio
     }
