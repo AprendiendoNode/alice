@@ -23,3 +23,5 @@ Homestead.json
 .rocketeer/
 
 public/css/pdf\.css
+
+\.env\.example
