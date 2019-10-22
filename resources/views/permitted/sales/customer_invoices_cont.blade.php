@@ -292,6 +292,10 @@
                                         class="text-right">
                                         Total
                                     </th>
+                                    <th width="3%"
+                                        class="text-right">
+                                        TC Usado
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -426,7 +430,7 @@
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </td>
-                                    <td class="text-right" colspan="10"></td>
+                                    <td class="text-right" colspan="12"></td>
                                 </tr>
 
                                 </tbody>
@@ -434,26 +438,24 @@
                                   <!-- Totales -->
                                   <tr>
                                       <td></td>
-                                      <td class="text-right" colspan="8" rowspan="3"
+                                      <td class="text-right" colspan="9" rowspan="3"
                                           style="vertical-align: middle">
                                       </td>
-                                      <td class="text-right">
-                                          <strong>Subtotal</strong>
-                                      </td>
-                                      <td class="text-right"><span id="txt_amount_untaxed">0</span>
-                                      </td>
+                                      <td class="text-right"><strong>Subtotal</strong></td>
+                                      <td class="text-right"><span id="txt_amount_untaxed">0</span></td>
+                                      <td></td>
                                   </tr>
                                   <tr>
                                       <td></td>
-                                      <td class="text-right">
-                                          <strong>Impuesto</strong></td>
+                                      <td class="text-right"><strong>Impuesto</strong></td>
                                       <td class="text-right"><span id="txt_amount_tax">0</span></td>
+                                      <td></td>
                                   </tr>
                                   <tr>
                                       <td></td>
-                                      <td class="text-right">
-                                          <strong>Total</strong></td>
+                                      <td class="text-right"><strong>Total</strong></td>
                                       <td class="text-right"><span id="txt_amount_total">0</span></td>
+                                      <td></td>
                                   </tr>
                                 </tfoot>
                             </table>
@@ -682,6 +684,7 @@
                 processData: false,
                 success: function (data){
                   if (data == 'success') {
+                    /*
                     let timerInterval;
                     Swal.fire({
                       type: 'success',
@@ -705,6 +708,7 @@
                         window.location.href = "/sales/customer-invoices";
                       }
                     });
+                    */
                   }
                   if (data == 'false') {
                     Swal.fire({
@@ -962,6 +966,9 @@
                     $.each(data.items, function (key, value) {
                         $("#item_txt_amount_untaxed_" + key).html(value);
                     });
+                    $.each(data.tc_used, function (key, value) {
+                        $("#exchange_rate_applied" + key).html(value);
+                    });
                     $("#form #txt_amount_untaxed").html(data.amount_untaxed);
                     $("#form #txt_amount_tax").html(data.amount_tax);
                     $("#form #txt_amount_total").html(data.amount_total);
@@ -1193,7 +1200,7 @@
                                   <i class="fa fa-plus"></i>
                             </button>
                           </td>
-                        <td class="text-right" colspan="10"></td>
+                        <td class="text-right" colspan="12"></td>
                       </tr>`;
         $("#items tbody").append(html);
         getDataContractAnnexes();
@@ -1350,6 +1357,11 @@
                   html += '<td class="text-right" style="padding-top: 11px;">';
                   html += '<span id="item_txt_amount_untaxed_' + i + '">0</span>';
                   html += '</td>';
+
+                  html += '<td class="text-right" style="padding-top: 11px;">';
+                  html += '<span id="exchange_rate_applied' + item_row + '">0</span>';
+                  html += '</td>';
+
                   html += '</tr>';
                   $("#form #items tbody #add_item").before(html);
                   /* Configura lineas*/
