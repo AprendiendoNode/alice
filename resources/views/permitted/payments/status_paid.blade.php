@@ -132,6 +132,9 @@
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
+    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
+    <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+    
     <script src="{{ asset('js/admin/payments/status_paid.js')}}"></script>
     <script src="{{ asset('js/admin/payments/request_modal_payment.js')}}"></script>
   @else
