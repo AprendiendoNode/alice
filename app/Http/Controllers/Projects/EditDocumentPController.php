@@ -72,7 +72,7 @@ class EditDocumentPController extends Controller
   {
     $projects = Documentp::where('doc_type', 1)->where('status_id', '<>', 4)->orderBy('nombre_proyecto','ASC')->get();
     $grupos = DB::table('cadenas')->select('id', 'name')->orderBy('name','ASC')->get();
-    $itcs = DB::select('CALL px_ITC_todos');
+    $itcs = DB::select('CALL px_ITC_todos2');
 
     return view('permitted.documentp.edit_project_doc', compact('projects', 'grupos','itcs'));
   }
