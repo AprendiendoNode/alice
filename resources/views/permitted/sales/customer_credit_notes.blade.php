@@ -75,7 +75,7 @@
               <div class="col-md-4 col-xs-12">
                 <div class="form-group">
                   <label for="currency_value">TC:<span style="color: red;">*</span></label>
-                  <input type="text" class="form-control" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;">
+                  <input type="text" class="form-control" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;" required>
                 </div>
               </div>
               <div class="col-md-4 col-xs-12">
@@ -935,7 +935,29 @@
               processData: false,
               success: function (data){
                 if (data == 'success') {
-
+                  let timerInterval;
+                  Swal.fire({
+                    type: 'success',
+                    title: 'La factura de egresos se ha generado con éxito!',
+                    html: 'Se estan aplicando los cambios.',
+                    timer: 2500,
+                    onBeforeOpen: () => {
+                      Swal.showLoading()
+                      timerInterval = setInterval(() => {
+                        Swal.getContent().querySelector('strong')
+                      }, 100)
+                    },
+                    onClose: () => {
+                      clearInterval(timerInterval)
+                    }
+                  }).then((result) => {
+                    if (
+                      // Read more about handling dismissals
+                      result.dismiss === Swal.DismissReason.timer
+                    ) {
+                      window.location.href = "/sales/customer-credit-notes";
+                    }
+                  });
                 }
                 if (data == 'false') {
                   Swal.fire({
