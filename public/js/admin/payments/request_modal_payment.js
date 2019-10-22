@@ -2,12 +2,14 @@ var modificando, sitios, payment, proveedor_id, moneda;
 
 function enviar(e, editing){
 
-  createEventListener_filePdf();
-  createEventListener_fileXml();
 
   //If editing...just edit by users with edit permie and if the payments have status 1 or 2
    modificando = editing;
 
+   if(modificando){
+     createEventListener_filePdf();
+     createEventListener_fileXml();
+   }
    var valor= e.getAttribute('value');
    payment = valor;
 
