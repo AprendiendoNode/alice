@@ -223,51 +223,18 @@
                                    id="items" style="min-width: 1800px;">
                                 <thead>
                                 <tr>
-                                    <th width="5%"
-                                        class="text-center">
-                                        Opciones
-                                    </th>
-                                    <th width="12%"
-                                        class="text-center">
-                                        Producto
-                                    </th>
-                                    <th class="text-left">
-                                      Descripción
-                                      <span class="required text-danger">*</span>
-                                    </th>
-                                    <th width="10%" class="text-center">
-                                      Unidad de medida
-                                      <span class="required text-danger">*</span>
-                                    </th>
-                                    <th width="12%"
-                                        class="text-center">
-                                        Prod/Serv SAT
-                                        <span class="required text-danger">*</span>
-                                    </th>
-                                    <th width="8%"
-                                        class="text-center">
-                                        Cantidad<span class="required text-danger">*</span>
-                                    </th>
-                                    <th width="8%"
-                                        class="text-center">
-                                        Precio
-                                        <span class="required text-danger">*</span>
-                                    </th>
-                                    <th width="8%"
-                                        class="text-center text-nowrap">
-                                          Desc. %
-                                    </th>
-                                    <th width="8%"
-                                        class="text-center">
-                                        Moneda<span class="required text-danger">*</span>
-                                    </th>
-                                    <th width="11%"
-                                        class="text-center">Impuestos
-                                    </th>
-                                    <th width="9%"
-                                        class="text-right">
-                                        Total
-                                    </th>
+                                    <th width="5%" class="text-center"> Opciones </th>
+                                    <th width="12%" class="text-center"> Producto </th>
+                                    <th width="12%" class="text-left"> Descripción <span class="required text-danger">*</span> </th>
+                                    <th width="10%" class="text-center"> Unidad de medida <span class="required text-danger">*</span> </th>
+                                    <th width="12%" class="text-center"> Prod/Serv SAT <span class="required text-danger">*</span> </th>
+                                    <th width="8%" class="text-center"> Cantidad<span class="required text-danger">*</span> </th>
+                                    <th width="8%" class="text-center"> Precio <span class="required text-danger">*</span> </th>
+                                    <th width="8%" class="text-center text-nowrap"> Desc. % </th>
+                                    <th width="8%" class="text-center"> Moneda<span class="required text-danger">*</span> </th>
+                                    <th width="11%" class="text-center">Impuestos </th>
+                                    <th width="9%" class="text-right"> Total </th>
+                                    <th width="3%" class="text-right">TC Usado</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -402,31 +369,30 @@
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </td>
-                                    <td class="text-right" colspan="10"></td>
+                                    <td class="text-right" colspan="11"></td>
                                 </tr>
                                 <!-- Totales -->
                                 <tr>
                                     <td></td>
                                     <td class="text-right" colspan="8" rowspan="3"
                                         style="vertical-align: middle">
+                                        <textarea class="form-control input-sm col-name-id" name="comment" id="comment" placeholder="@lang('customer_credit_note.entry_comment')" required rows="3" autocomplete="off" /></textarea>
                                     </td>
-                                    <td class="text-right">
-                                        <strong>Subtotal</strong>
-                                    </td>
-                                    <td class="text-right"><span id="txt_amount_untaxed">0</span>
-                                    </td>
+                                    <td class="text-right"><strong>Subtotal</strong></td>
+                                    <td class="text-right"><span id="txt_amount_untaxed">0</span></td>
+                                    <td class="text-right"></td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td class="text-right">
-                                        <strong>Impuesto</strong></td>
+                                    <td class="text-right"><strong>Impuesto</strong></td>
                                     <td class="text-right"><span id="txt_amount_tax">0</span></td>
+                                    <td class="text-right"></td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td class="text-right">
-                                        <strong>Total</strong></td>
+                                    <td class="text-right"><strong>Total</strong></td>
                                     <td class="text-right"><span id="txt_amount_total">0</span></td>
+                                    <td class="text-right"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -828,6 +794,11 @@
             html += '<td class="text-right" style="padding-top: 11px;">';
             html += '<span id="item_txt_amount_untaxed_' + item_row + '">0</span>';
             html += '</td>';
+
+            html += '<td class="text-right" style="padding-top: 11px;">';
+            html += '<span id="exchange_rate_applied' + item_row + '">0</span>';
+            html += '</td>';
+
             html += '</tr>';
             $("#form #items tbody #add_item").before(html);
             /* Configura lineas*/
@@ -930,6 +901,9 @@
                     console.log(data);
                     $.each(data.items, function (key, value) {
                         $("#item_txt_amount_untaxed_" + key).html(value);
+                    });
+                    $.each(data.tc_used, function (key, value) {
+                        $("#exchange_rate_applied" + key).html(value);
                     });
                     $("#form #txt_amount_untaxed").html(data.amount_untaxed);
                     $("#form #txt_amount_tax").html(data.amount_tax);
