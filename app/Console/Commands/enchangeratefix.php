@@ -32,7 +32,7 @@ class enchangeratefix extends Command
     {
       $result = ExchangeRate::getExchangeRateFix();
       $mutable = Carbon::now();
-      // $mutable = Carbon::create(2019, 7, 23, 0);
+      // $mutable = Carbon::create(2019, 10, 21, 0);
       // $mutable = Carbon::create(2019, 7, 13, 0)->format('Y-m-d');
       // $friday = $mutable->subDays(3)->format('Y-m-d');
       
@@ -61,7 +61,8 @@ class enchangeratefix extends Command
           $varx = 2;
           break;
         case $mutable->isMonday():
-          $friday = $mutable->subDays(3)->format('Y-m-d');
+          $friday = Carbon::now()->subDays(3)->format('Y-m-d');
+          //$friday = $mutable->subDays(3)->format('Y-m-d');
           $latest = DB::table('exchange_rates')->where('current_date', $friday)->first();
           $fix_rate = $series[0]['dato'];
           $dof_rate = $latest->current_rate_fix;
