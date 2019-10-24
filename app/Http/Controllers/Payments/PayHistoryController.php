@@ -89,7 +89,7 @@ class PayHistoryController extends Controller
     $user = Auth::user()->id;
     $email = Auth::user()->email;
 
-    $input_date_i= $request->date_search;
+    $input_date_i= $request->date_to_search;
     if ($input_date_i != '') {
       $date = $input_date_i.'-01';
     }
