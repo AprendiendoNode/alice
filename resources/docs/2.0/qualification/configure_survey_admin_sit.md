@@ -1,3 +1,4 @@
 #Enviar encuesta
- - [Enviar encuesta](#head1)
-## <a name="head1">Enviar Encuesta</a>
+ - [General](#head1)
+
+## <a name="head1">En construcción</a>
