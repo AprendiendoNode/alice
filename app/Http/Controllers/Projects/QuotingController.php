@@ -10,7 +10,7 @@ use \Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Projects\{Documentp, Documentp_cart, In_Documentp_cart, Cotizador};
-use App\Models\Projects\{Cotizador_status_user, Cotizador_approvals};
+use App\Models\Projects\{Cotizador_status_user, Cotizador_approvals, Cotizador_approval_propuesta};
 use App\Mail\SolicitudCompra;
 use App\User;
 use Carbon\Carbon;
@@ -466,6 +466,45 @@ class QuotingController extends Controller
         $valor= 'true';
       }
       return $valor;
+    }
+
+    public function get_approvals_propuesta_comercial($id_doc)
+    {
+      $documentp = DB::select('CALL px_documentop_data(?)', array($id_doc));
+      $cotizador = Cotizador::where('id_doc', $id_doc)->first();
+      $aprovals_propuesta = Cotizador_approval_propuesta::firstOrCreate(['cotizador_id' => $cotizador->id]);
+      $check_approvals = DB::select('CALL px_valida_aprobado_propuesta_comercial(?)', array($cotizador->id));
+      
+      return view('permitted.quoting.approvals_propuesta_comercial', compact('documentp', 'aprovals_propuesta', 'check_approvals'))->render();
+    }
+
+    public function approval_directives_propuesta_comercial(Request $request)
+    {
+       
+      $cotizador = Cotizador::where('id_doc', $request->id)->first();
+      $aprovals_propuesta = Cotizador_approval_propuesta::firstOrCreate(['cotizador_id' => $cotizador->id]);
+      $aprovals_propuesta->administracion = $request->administracion;
+      $aprovals_propuesta->director_comercial = $request->director_comercial;
+      $aprovals_propuesta->director_operaciones = $request->director_operaciones;
+      $aprovals_propuesta->director_general = $request->director_general;
+      $aprovals_propuesta->save();
+    
+      $check_approvals = DB::select('CALL px_valida_aprobado_propuesta_comercial(?)', array($cotizador->id));
+        
+      if($check_approvals[0]->aprobado_direccion == 1){
+        $documentp = Documentp::find($request->id);
+        $documentp->cotizador_status_id = 4; // Se autoriza cotizador para propuesta
+        $documentp->save();
+      }    
+
+      return response()->json(['status' => true]);
+    }
+
+    public function get_quoting_objetives($id_doc)
+    {
+      $result = DB::select(' CALL px_objetivos_cotizador_by_doc(?)', array($id_doc));
+
+      return $result;
     }
     
     public function createFolio()

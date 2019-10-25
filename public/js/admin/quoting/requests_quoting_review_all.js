@@ -67,8 +67,6 @@ function documentp_table(datajson, table){
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
             <a class="dropdown-item" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editar(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.id}'" value="${data.id}"><i class="fa fa-edit"></i>Editar cotizador</a>
             <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
-            <a class="dropdown-item" href="/view_pdf_propuesta_comercial/${data.id}" target="_blank"><i class="fas fa-file-pdf"></i> Ver propuesta comercial</a>
-            <a class="dropdown-item" href="#" onclick="send_mail_propuesta_comercial(this)" data-id="${data.id}"><i class="fas fa-envelope-open-text"></i> Enviar propuesta a mi correo</a>
         </div> 
        </div>`,
       data.cotizador_status
@@ -87,7 +85,8 @@ var Configuration_table_responsive_documentp= {
                   'selectRow': true
                 },
                 "width": "0.1%",
-                "className": "text-center"
+                "className": "text-center",
+                "visible": false,
             },
             {
               "targets": 1,
@@ -150,71 +149,7 @@ var Configuration_table_responsive_documentp= {
               "<'row'<'col-sm-12'tr>>" +
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
-          {
-            text: '<i class=""></i> Autorizar cotizador',
-            titleAttr: 'Autorizar cotizador',
-            className: 'btn bg-dark',
-            init: function(api, node, config) {
-              $(node).removeClass('Autorizar')
-            },
-            action: function ( e, dt, node, config ) {
-              var rows_selected = $("#table_quoting").DataTable().column(0).checkboxes.selected();
-              var _token = $('input[name="_token"]').val();
-              // Iterate over all selected checkboxes
-              var valores= new Array();
-              // console.log(factura);
-              $.each(rows_selected, function(index, rowId){
-                valores.push(rowId);
-              });
-
-              if (valores.length === 0){
-                Swal.fire("Operación abortada", "Ningún registro seleccionado :(", "error");
-              }else{
-                Swal.fire({
-                  title: "¿Estás seguro?",
-                  type: "warning",
-                  showCancelButton: true,
-                  confirmButtonClass: "btn-danger",
-                  confirmButtonText: "Continuar",
-                  cancelButtonText: "Cancelar",
-                  customClass: 'swal-wide'
-                }).then((result) => {
-                  if(result.value){
-
-                    var status_cotizador = 4; // Estatus autorizado
-                    // console.log(semana);
-                    $('.cancel').prop('disabled', 'disabled');
-                    $('.confirm').prop('disabled', 'disabled');
-
-                    if(status_cotizador === ''){
-                      Swal.fire("Operación abortada", "Debe seleccionar un estatus", "error")
-                    }else{
-                      $.ajax({
-                        type: "POST",
-                        url: "/set_status_quoting",
-                        data: { idents: JSON.stringify(valores), status_cotizador: status_cotizador , _token : _token },
-                        success: function (data){
-                          console.log(data);
-                          if (data === 'true') {
-                            Swal.fire("Operación Completada!", "", "success");
-                            table_permission_zero();
-                          }else{
-                              Swal.fire("Ocurrio un error al cambiar estatus!", "", "error");
-                          }
-
-                        },
-                        error: function (data) {
-                          console.log('Error:', data);
-                        }
-                      });
-                    }
-                  }
-                })
-              }
-
-
-            }
-          },
+          
         ],
         language:{
             "sProcessing":     "Procesando...",

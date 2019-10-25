@@ -26,7 +26,7 @@
     {{ csrf_field() }}
     <input type="hidden" name="id_doc_3" id="id_doc_3" value="">
   </form>
-  @include('permitted.documentp.modal_documentp')
+  @include('permitted.quoting.modal_quoting')
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
           <div class="row">

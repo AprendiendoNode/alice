@@ -185,22 +185,49 @@
             </div>
             <div id="docc" class="tab-pane fade">
               <div class="row">
-                <div class="container-box col-md-2">
+                <div class="container-box col-md-1">
                   <div class="icon_head_dash">
                     <i class="fa fa-hashtag text-danger" aria-hidden="true"></i>
                   </div>
                   <div class="info_head_dash">
                     <p class="text-default">Total</p>
-                    <h4><strong>{{ $status_compras[2]->Revisado +  $status_compras[2]->Nuevo}}</strong></h4>
+                    <h4><strong>{{ $status_cotizador[0]->Total_solicitudes}}</strong></h4>
                   </div>
                 </div>
                 <div class="container-box col-md-2">
                   <div class="icon_head_dash">
-                    <i class="fa fa-eye text-warning" aria-hidden="true"></i>
+                    <i class="fas fa-tasks text-dark" aria-hidden="true"></i>
                   </div>
                   <div class="info_head_dash">
-                    <p class="text-default">En revisión</p>
-                    <h4><strong>{{ $status_compras[2]->Revisado}}</strong></h4>
+                    <p class="text-default">En Kick-off</p>
+                    <h4><strong>{{ $status_cotizador[0]->En_kickoff}}</strong></h4>
+                  </div>
+                </div>
+                <div class="container-box col-md-2">
+                  <div class="icon_head_dash">
+                    <i class="fas fa-check-circle text-success" aria-hidden="true"></i>
+                  </div>
+                  <div class="info_head_dash">
+                    <p class="text-default">Autorizados</p>
+                    <h4><strong>{{ $status_cotizador[0]->Autorizado}}</strong></h4>
+                  </div>
+                </div>
+                <div class="container-box col-md-2">
+                  <div class="icon_head_dash">
+                    <i class="fas fa-exclamation-circle text-warning" aria-hidden="true"></i>
+                  </div>
+                  <div class="info_head_dash">
+                    <p class="text-default">En revision</p>
+                    <h4><strong>{{ $status_cotizador[0]->En_revision}}</strong></h4>
+                  </div>
+                </div>
+                <div class="container-box col-md-3">
+                  <div class="icon_head_dash">
+                    <i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
+                  </div>
+                  <div class="info_head_dash">
+                    <p class="text-default">Fuera de parametros</p>
+                    <h4><strong>{{ $status_cotizador[0]->Fuera_parametros}}</strong></h4>
                   </div>
                 </div>
                 <div class="container-box col-md-2">
@@ -209,7 +236,7 @@
                   </div>
                   <div class="info_head_dash">
                     <p class="text-default"> Nuevos </p>
-                    <h4><strong>{{ $status_compras[2]->Nuevo }}</strong></h4>
+                    <h4><strong>{{ $status_cotizador[0]->Nuevo }}</strong></h4>
                   </div>
                 </div>
               </div>
@@ -312,21 +339,6 @@
                     <td class="text-right">{{ $status_projects_instalado[2]->total_usd }}</td>
                     <td class="text-right">{{ $status_projects_instalado[2]->facturando }}</td>
                   </tr>
-                   <tr>
-                    <td> <strong>Venta</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects[4]->riesgo }}</td>
-                    <td class="text-center">{{ $status_projects[4]->atencion }}</td>
-                    <td class="text-center">{{ $status_projects[4]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[4]->riesgo + $status_projects[4]->atencion + $status_projects[4]->normal }} </td>
-                    <!------------------------->
-                    <td class="text-right"> <span>{{ $status_projects[4]->total_usd }}</span> </td>
-                    <td class="text-right"> <span>{{ $status_projects[4]->por_facturar }} </span> </td>
-                    <!------------------------>
-                    <td> <strong>Venta</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects_instalado[4]->instalado }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[4]->total_usd }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[4]->facturando }}</td>
-                  </tr>
                   {{--<tr>
                     <td> <strong>F & F</strong> </td>
                     <td class="text-center p-2">{{ $status_projects[5]->riesgo }}</td>
@@ -345,22 +357,22 @@
                 </tbody>
                 <tfooter>
                   @php
-                    $total_inversion = str_replace(',','',$status_projects[0]->total_usd) + str_replace(',','',$status_projects[1]->total_usd) + str_replace(',','',$status_projects[2]->total_usd) + str_replace(',','',$status_projects[4]->total_usd);
-                    $total_por_facturar = str_replace(',','',$status_projects[0]->por_facturar) + str_replace(',','',$status_projects[1]->por_facturar) + str_replace(',','',$status_projects[2]->por_facturar) + str_replace(',','',$status_projects[4]->por_facturar);
-                    $total_inversion_instalado = str_replace(',','',$status_projects_instalado[0]->total_usd) + str_replace(',','',$status_projects_instalado[1]->total_usd) + str_replace(',','',$status_projects_instalado[2]->total_usd) + str_replace(',','',$status_projects_instalado[4]->total_usd);
-                    $total_facturando = str_replace(',','',$status_projects_instalado[0]->facturando) + str_replace(',','',$status_projects_instalado[1]->facturando) + str_replace(',','',$status_projects_instalado[2]->facturando) + str_replace(',','',$status_projects_instalado[4]->facturando);
+                    $total_inversion = str_replace(',','',$status_projects[0]->total_usd) + str_replace(',','',$status_projects[1]->total_usd) + str_replace(',','',$status_projects[2]->total_usd);
+                    $total_por_facturar = str_replace(',','',$status_projects[0]->por_facturar) + str_replace(',','',$status_projects[1]->por_facturar) + str_replace(',','',$status_projects[2]->por_facturar);
+                    $total_inversion_instalado = str_replace(',','',$status_projects_instalado[0]->total_usd) + str_replace(',','',$status_projects_instalado[1]->total_usd) + str_replace(',','',$status_projects_instalado[2]->total_usd);
+                    $total_facturando = str_replace(',','',$status_projects_instalado[0]->facturando) + str_replace(',','',$status_projects_instalado[1]->facturando) + str_replace(',','',$status_projects_instalado[2]->facturando);
                    @endphp
                   <tr class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
                     <td><strong>Total</strong> </td>
-                    <td class="text-center p-2"> <span id="total_rojo">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo + $status_projects[4]->riesgo }}</span> </td>
-                    <td class="text-center"> <span id="total_amarillo">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion + $status_projects[4]->atencion }}</span> </td>
-                    <td class="text-center"> <span id="total_verde">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal + $status_projects[4]->normal }}</span> </td>
+                    <td class="text-center p-2"> <span id="total_rojo">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo }}</span> </td>
+                    <td class="text-center"> <span id="total_amarillo">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion }}</span> </td>
+                    <td class="text-center"> <span id="total_verde">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal }}</span> </td>
                     <th class="text-center"> <span id="total_project_instalation"></span>  </th>
                     <td class="text-right"> <span id="">{{  number_format($total_inversion, 0, '.', ',')  }}</span> </td>
                     <td class="text-right"> <span id="">{{  number_format($total_por_facturar, 0, '.', ',')  }}</span> </td>
                     <!------------------------->
                     <td><strong>Total</strong> </td>
-                    <td class="text-center"> <span id="">{{ $status_projects_instalado[0]->instalado + $status_projects_instalado[1]->instalado + $status_projects_instalado[2]->instalado + $status_projects_instalado[4]->instalado }}</span> </td>
+                    <td class="text-center"> <span id="">{{ $status_projects_instalado[0]->instalado + $status_projects_instalado[1]->instalado + $status_projects_instalado[2]->instalado }}</span> </td>
                     <td class="text-right"> <span id="">{{  number_format($total_inversion_instalado, 0, '.', ',')  }}</span> </td>
                     <td class="text-right"> <span id="">{{  number_format($total_facturando, 0, '.', ',')  }}</span> </td>
                   </tr>
@@ -371,6 +383,76 @@
         </div>
       </div>
       <br>
+      <!----------------ESTATUS DE PROYECTOS DE VENTA------------------------------------>
+      <div class="row">
+        <div class="col-12 card">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <h4 class="text-title">Venta</h4>
+            </div>
+          </div>
+          <div class="row d-flex mb-short">
+            <div class="col-xs-12 col-md-12 table-responsive">
+              <table id="table-dash" class="table table-sm table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th style="background:black" class="text-center text-white" colspan="7">
+                      Proyectos en ejecución
+                    </th>
+                    <th style="background:black" class="text-center text-white" colspan="4">
+                      Proyectos instalados
+                    </th>
+                  </tr>
+                  <tr style="background: #193257;color:white;">
+                    <th>Estatus</th>
+                    <th class="text-center">Riesgo</th>
+                    <th class="text-center">Atención</th>
+                    <th class="text-center">Normal</th>
+                    <th></th>
+                    <th colspan="2" class="text-center">USD</th>
+                    <th>Estatus</th>
+                    <th class="text-center">Instalado</th>
+                    <th colspan="2" class="text-center">USD</th>
+                  </tr>
+                  <tr id="status" class="">
+                    <th class="text">Tipo de servicio</th>
+                    <th class="text-center"><i style="color:red;" class="fa fa-circle" aria-hidden="true"></i></th>
+                    <th class="text-center"><i style="color:yellow;" class="fa fa-circle" aria-hidden="true"></i></th>
+                    <th class="text-center"><i style="color:green;" class="fa fa-circle" aria-hidden="true"></i></th>
+                    <th class="text-center" rowspan="">Total</th>
+                    <th class="text-center">Inversión</th>
+                    <th class="text-center">Por facturar</th>
+                    <th class="text">Tipo de servicio</th>
+                    <th class="text-center"><i style="color:blue;" class="fa fa-circle" aria-hidden="true"></i></th>
+                    <th class="text-center">Inversión</th>
+                    <th class="text-center">Facturado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                   <tr>
+                    <td> <strong>Venta</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects[4]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[4]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[4]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[4]->riesgo + $status_projects[4]->atencion + $status_projects[4]->normal }} </td>
+                    <!------------------------->
+                    <td class="text-right"> <span>{{ $status_projects[4]->total_usd }}</span> </td>
+                    <td class="text-right"> <span>{{ $status_projects[4]->por_facturar }} </span> </td>
+                    <!------------------------>
+                    <td> <strong>Venta</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects_instalado[4]->instalado }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[4]->total_usd }}</td>
+                    <td class="text-right">{{ $status_projects_instalado[4]->facturando }}</td>
+                  </tr>
+                </tbody>
+                
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <!---ATRASOS------------------------------------------------------------------------------>
       <div class="row">
         <div class="col-12 card">
           <div class="row d-flex mb-short">
@@ -458,7 +540,7 @@
         </div>
       </div>
       <br>
-      <!---------------------------------------------------->
+      <!--------MOTIVOS DE ATRASO-------------------------------------------->
       <div class="row">
         <div class="col-12 card">
           <div class="row d-flex mb-short">
@@ -559,7 +641,7 @@
         </div>
       </div>
       <br>
-      <!---------------------------------------------------->
+      <!---------------------------------------------------------------------->
       <div class="row">
         <div class="col-12 card">
           <div class="row d-flex mb-short">
@@ -582,7 +664,7 @@
         </div>
       </div>
       <br>
-      <!---------------------------------------------------->
+      <!---------------------------------------------------------------------->
       <div class="row">
         <div class="col-12 card">
           <div class="row d-flex mb-short">

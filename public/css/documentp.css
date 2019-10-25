@@ -564,6 +564,10 @@ input::-webkit-input-placeholder {
   padding: 0.2rem 0.2rem;
 }
 
+#tabla_objetivos th, #tabla_objetivos td{
+  padding: 0.2rem 1.2rem !important;
+}
+
 
 /*Tabla resumen de pedido*/
 

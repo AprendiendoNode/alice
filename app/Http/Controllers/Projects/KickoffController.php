@@ -623,34 +623,36 @@ class KickoffController extends Controller
       $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
 
       DB::beginTransaction();
-      try {
-        DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
-           'director_general' => 1,
-           'updated_at' => \Carbon\Carbon::now()
-        ]);
-        //Cambiando status de documento a "EN REVISIÓN"
-        $documentp->status_id = 2;
-        $documentp->save();
 
-        $user = Auth::user()->id;
-        $new_doc_state = new Documentp_status_user;
-        $new_doc_state->documentp_id = $documentp->id;
-        $new_doc_state->user_id = $user;
-        $new_doc_state->status_id = '2';
-        $new_doc_state->save();
+        try {
+          DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
+            'director_general' => 1,
+            'updated_at' => \Carbon\Carbon::now()
+          ]);
+          //Cambiando status de documento a "EN REVISIÓN"
+          $documentp->status_id = 2;
+          $documentp->save();
 
-        if(!$this->check_approvals($documentp->id)){
-          $flag = "1";
-        }else{
-          $flag = "2";
-        }
-        DB::commit();
+          $user = Auth::user()->id;
+          $new_doc_state = new Documentp_status_user;
+          $new_doc_state->documentp_id = $documentp->id;
+          $new_doc_state->user_id = $user;
+          $new_doc_state->status_id = '2';
+          $new_doc_state->save();
 
-    } catch(\Exception $e){
-      $e->getMessage();
-      DB::rollback();
-      return $e;
-    }
+          if(!$this->check_approvals($documentp->id)){
+            $flag = "1";
+          }else{
+            $flag = "2";
+          }
+          DB::commit();
+
+      } catch(\Exception $e){
+        $e->getMessage();
+        DB::rollback();
+        
+        return $e;
+      }
 
       return $flag;
     }

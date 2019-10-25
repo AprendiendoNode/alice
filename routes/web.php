@@ -449,6 +449,10 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/edit_cart_quoting', 'Projects\QuotingEditController@index'); //Vista del formulario para editar
   Route::post('/edit_quoting', 'Projects\QuotingEditController@edit');
   Route::post('/quoting_approval_directive', 'Projects\QuotingController@quoting_approval_directive');
+  Route::get('/get_quoting_objetives/{id_doc}', 'Projects\QuotingController@get_quoting_objetives');
+  Route::get('/get_approvals_propuesta_comercial/{id_doc}', 'Projects\QuotingController@get_approvals_propuesta_comercial');
+  Route::post('/approval_directives_propuesta_comercial', 'Projects\QuotingController@approval_directives_propuesta_comercial');
+
   //KICK-OFF
   Route::post('/edit_kickoff', 'Projects\KickoffController@index');
   Route::post('/update_kickoff', 'Projects\KickoffController@u`pdate');

@@ -17,10 +17,9 @@ function enviar(e){
   let id_cart = element.dataset.cart;
 
   data_header(miInit, id_documentp);
+  data_cotizador_objetivos(miInit, id_documentp);
+  checks_approvals_propuesta(miInit, id_documentp);
   data_table_products(miInit, id_documentp, id_cart);
-  data_status_users(miInit, id_documentp);
-  data_deny(miInit, id_documentp);
-
   $('#modal-view-concept').modal('show');
 
 }
@@ -89,54 +88,6 @@ function send_mail_propuesta_comercial(e){
 }
 
 
-function deny_docp(e){
-  var valor= e.getAttribute('value');
-  var _token = $('input[name="_token"]').val();
-
-  swal({
-    title: "¿Estás seguro?",
-    text: "Se denegará este Cotizador!<br><br><textarea rows='3' placeholder='Añadir comentario' class='form-control' id='comentario'></textarea>",
-    type: "warning",
-    html:true,
-    showCancelButton: true,
-    confirmButtonClass: "btn-danger",
-    confirmButtonText: "Continuar.!",
-    cancelButtonText: "Cancelar.!",
-    closeOnConfirm: false,
-    closeOnCancel: false
-  },
-  function(isConfirm){
-    if(isConfirm){
-      var comment = document.getElementById("comentario").value;
-      console.log(comment);
-      if (comment === "") {
-
-        swal("Operación abortada!", "Añada un comentario de denegación.", "error");
-      }else{
-        $.ajax({
-            type: "POST",
-            url: "/deny_documentp",
-            data: { idents: valor, comm: comment, _token : _token },
-            success: function (data){
-              if (data === 'true') {
-                swal("Operación Completada!", "El Documento P ha sido denegado.", "success");
-                table_permission_one();
-              }
-              if (data === 'false') {
-                swal("Operación abortada!", "No cuenta con el permiso o esta ya se encuentra denegado :) Nota: Si la solicitud ya esta confirmada no se puede denegar", "error");
-              }
-            },
-            error: function (data) {
-              console.log('Error:', data);
-            }
-        });
-      }
-    }else{
-        swal("Operación abortada", "Ningúna solicitud afectada :)", "error");
-    }
-  })
-}
-
 function editar(e){
   var element = e;
   var _token = $('input[name="_token"]').val();
@@ -166,6 +117,7 @@ function data_header(miInit, id_documentp){
         return response.json();
       })
       .then(data => {
+        console.log(data);
         if(data == null || data == '[]'){
           $('#tipo_doc').text('');
           $('#fecha').text('');
@@ -179,6 +131,10 @@ function data_header(miInit, id_documentp){
           $('#densidad').text('');
           $('#sitios').text('');
           $('#num_oportunidad').text('');
+          $('#servicio_mensual').text('');
+          $('#plazo').text('');
+          $('#renta_anticipada').text('');
+          $('#capex').text('');
         }else{
           $('#tipo_doc').text('Documento C');
           let nombre_proyecto = data[0].nombre_proyecto;
@@ -193,9 +149,14 @@ function data_header(miInit, id_documentp){
           $('#densidad').text(data[0].densidad);
           $('#sitios').text(data[0].sitios);
           $('#num_oportunidad').text(data[0].num_oportunidad);
+          $('#servicio_mensual').text(data[0].servicio_mensual);
+          $('#plazo').text(data[0].plazo);
+          $('#renta_anticipada').text(data[0].renta_anticipada);
+          $('#capex').text(data[0].capex);
            let id_documentp = data[0].id;
            document.getElementById('button_history').dataset.id = id_documentp;
         }
+        
 
       })
       .catch(error => {
@@ -228,55 +189,6 @@ function data_deny(miInit, id_documentp){
       })
 }
 
-function data_status_users(miInit, id_documentp){
-  var reviso, autorizo, entrego = [];
-
-  fetch(`/documentp_header/data_status_user/${id_documentp}`,  miInit)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        $('#reviso').html('');
-        $('#autorizo').html('');
-        $('#entrego').html('');
-        if(data != null && data != '[]'){
-          var html= `<ul>`;
-          var html2= `<ul>`;
-          var html3= `<ul>`;
-          reviso = data.filter(val => val.status_id == 2);
-          autorizo = data.filter(val => val.status_id == 3);
-          entrego = data.filter(val => val.status_id == 5);
-
-          $.each(reviso, function( i, key ) {
-            html +=`<li>` + key.name + ` - ` + key.created_at + `</li>`;
-          })
-          html +=`</ul>`;
-          $('#reviso').html(html);
-
-          $.each(autorizo, function( i, key ) {
-            html2 +=`<li>` + key.name + ` - ` + key.created_at + `</li>`;
-          })
-          html2 +=`</ul>`;
-          $('#autorizo').html(html2);
-
-          $.each(entrego, function( i, key ) {
-            html3 +=`<li>` + key.name + ` - ` + key.created_at + `</li>`;
-          })
-          html3 +=`</ul>`;
-          $('#entrego').html(html3);
-
-        }else{
-          $('#reviso').html('');
-          $('#autorizo').html('');
-          $('#entrego').html('');
-        }
-
-      })
-      .catch(error => {
-        console.log(error);
-      })
-}
-
 function data_table_products(miInit, id_documentp, id_cart){
 
   fetch(`/quoting_table_products/${id_documentp}/${id_cart}`,  miInit)
@@ -289,6 +201,81 @@ function data_table_products(miInit, id_documentp, id_cart){
       .catch(error => {
         console.log(error);
       })
+}
+
+function checks_approvals_propuesta(miInit, id_documentp){
+
+  fetch(`/get_approvals_propuesta_comercial/${id_documentp}`,  miInit)
+      .then(response => {
+        return response.text();
+      })
+      .then(html => {
+        $('#checks_propuesta_comercial').html(html);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+}
+
+function data_cotizador_objetivos(miInit, id_documentp){
+  fetch(`/get_quoting_objetives/${id_documentp}`,  miInit)
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        document.getElementById("utilidad_mensual").innerHTML = data[0].utilidad_mensual;
+        document.getElementById("utilidad_proyecto").innerHTML = data[0].utilidad_proyecto;
+        document.getElementById("utilidad_inversion").innerHTML = data[0].utilidad_inversion;
+        document.getElementById("utilidad_3_anios").innerHTML = data[0].utilidad_3_anios;
+        document.getElementById("utilidad_3_anios_percent").innerHTML = data[0].utilidad_3_anios_min;
+        document.getElementById("renta_mensual_inversion").innerHTML = data[0].renta_mensual_inversion;
+        document.getElementById("utilidad_renta").innerHTML = data[0].utilidad_renta_percent;
+        document.getElementById("tiempo_retorno").innerHTML = data[0].tiempo_retorno;
+        document.getElementById("vtc").innerHTML = data[0].vtc;
+        document.getElementById("tir").innerHTML = data[0].tir;
+
+        parametros_objetivos(data[0].renta_mensual_inversion, 
+          data[0].utilidad_inversion, 
+          data[0].tir, 
+          data[0].utilidad_renta_percent,
+          data[0].tiempo_retorno,
+          data[0].utilidad_3_anios_min);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+}
+
+function parametros_objetivos(percentRentaMensualInversion, percentUtilidadInversion, percentTir, percentUtilidadRenta, tiempoRetorno, utilidad3Minimo){
+
+  let utilidad_3_anios_min = parseFloat(utilidad3Minimo);
+  let utilidad_3_anios = parseFloat(document.getElementById('utilidad_3_anios').innerHTML);
+
+  let renta_mensual_inversion_icon = document.getElementById('renta_mensual_inversion_icon');
+  let utilidad_inversion_icon = document.getElementById('utilidad_inversion_icon');
+  let utilidad_3_anios_percent_icon = document.getElementById('utilidad_3_anios_percent_icon');
+  let utilidad_renta_icon = document.getElementById('utilidad_renta_icon');
+  let tiempo_retorno_icon = document.getElementById('tiempo_retorno_icon');
+  let tir_icon = document.getElementById('tir_icon');
+
+  percentRentaMensualInversion >= 7.0 ? set_icons(renta_mensual_inversion_icon, true) : set_icons(renta_mensual_inversion_icon, false);
+
+  percentUtilidadInversion >= 2.0 ? set_icons(utilidad_inversion_icon, true) : set_icons(utilidad_inversion_icon, false);
+
+  parseFloat(utilidad_3_anios) >= utilidad_3_anios_min ? set_icons(utilidad_3_anios_percent_icon, true) : set_icons(utilidad_3_anios_percent_icon, false);
+
+  percentUtilidadRenta >= 33.0 ? set_icons(utilidad_renta_icon, true) : set_icons(utilidad_renta_icon, false);
+
+  tiempoRetorno <= 18 ? set_icons(tiempo_retorno_icon, true) : set_icons(tiempo_retorno_icon, false);
+
+  percentTir >= 50.0 ? set_icons(tir_icon, true) : set_icons(tir_icon, false);
+
+}
+
+function set_icons(element, flag){
+  element.className = '';
+  flag == true ? element.classList.add('fa', 'fa-check', 'text-success') : element.classList.add('fa', 'fa-times', 'text-danger');
 }
 
 function show_logs(e){
@@ -414,6 +401,15 @@ var Configuration_table_responsive_logs= {
             }
         },
     };
+
+    //Formato numerico: 00,000.00
+function format_number(number){
+  return number.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function remove_commas(number){
+  return number.replace(/,/g, "");
+}
 
     // FIX SCROLLBAR MODAL
     $(document).on('hidden.bs.modal', '.modal', function () {

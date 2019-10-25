@@ -113,19 +113,19 @@
           <td></td>
           <td id="" rowspan="4" colspan="4"> </td>
           <td colspan="5" align="right">Total Equipo Activo USD</td>
-          <td colspan="3" class="red-color" align="right">$ {{ number_format($total_ea, 2, '.', ',') }}</td>
+          <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_ea, 2, '.', ',') }}</td>
       </tr>
       <tr>
           <td></td>
           <td></td>
           <td colspan="4" align="right">Total Material USD</td>
-          <td colspan="3" class="red-color" align="right">$ {{ number_format($total_materiales, 2, '.', ',') }}</td>
+          <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_materiales, 2, '.', ',') }}</td>
       </tr>
       <tr>
           <td></td>
           <td></td>
           <td colspan="4" align="right">Total Mano de obra USD</td>
-          <td colspan="3" class="red-color" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
+          <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
       </tr>
       <tr>
         @php
@@ -135,7 +135,7 @@
           <td></td>
           <td></td>
           <td colspan="4" align="right">Total USD</td>
-          <td colspan="3" class="red-color" align="right" class="">$ {{ number_format($total, 2, '.', ',') }}</td>
+          <td colspan="3" class="text-danger" align="right" class="">$ {{ number_format($total, 2, '.', ',') }}</td>
       </tr>
   </tfoot>
 </table>
