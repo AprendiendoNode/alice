@@ -124,7 +124,7 @@
                           </div>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 table-responsive">
                       <table id="tabla_objetivos" class="table table-striped table-condensed">
                         <thead class="bg-dark text-white">
                           <tr>
@@ -191,7 +191,7 @@
                         </thead>
                       </table>
                     </div>
-                    <!-------TABLA DE PRODUCTOS-------------------------------------------------------------->
+                    <!-------checks directores-------------------------------------------------------------->
                     <div class="col-12 col-md-3">
                       <div  class="row">
                         <div id="checks_propuesta_comercial" class="col-md-12">

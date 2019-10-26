@@ -170,9 +170,9 @@ var Configuration_table_responsive_documentp= {
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
           {
-            text: '<i class=""></i> Enviar a Kick-off',
-            titleAttr: 'Enviar a Kick-off',
-            className: 'btn bg-dark',
+            text: '<i class=""></i> Enviar a Legal',
+            titleAttr: 'Enviar a Legal',
+            className: 'btn btn-warning',
             init: function(api, node, config) {
               $(node).removeClass('btn-default')
             },

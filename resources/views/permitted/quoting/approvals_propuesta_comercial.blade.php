@@ -190,10 +190,10 @@
 (function() {
     //Si el cotizador ya esta autorizado desactivo todos los checkboxes 
     let cotizador = document.getElementById('cotizador_status').value;
-    if(cotizador == 4){
+    console.log(cotizador);
+    if(cotizador == 4 || cotizador == 5){
         var input_checks = document.getElementsByClassName('custom-control-input');
         Array.from(input_checks).forEach(function (element) {
-            $flag = false;
             element.disabled = true;
         });
     }
@@ -237,8 +237,6 @@ function approval_propuesta(e){
         director_operaciones,
         director_general
     }
-
-    console.log(data);
 
     const headers = new Headers({
         "Accept": "application/json",
