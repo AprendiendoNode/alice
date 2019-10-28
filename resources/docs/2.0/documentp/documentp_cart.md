@@ -55,7 +55,7 @@ Donde se realizara la instalacion (Local o foranea).
 - Tipo de cambio
 
 > {warning} Tipo de cambio con el que se cotizaran los productos que se agreguen en la solicitud.
-El monto deos productos sera en USD, en caso de que el precio de algun producto sea en pesos (MXN) el sistema realizara la conversion a USD de forma automatica con el tipo de cambio que tenga este campo.
+El monto de los productos sera en USD, en caso de que el precio de algun producto sea en pesos (MXN) el sistema realizara la conversion a USD de forma automatica con el tipo de cambio que tenga este campo.
 
 ## <a name="head1">Agregar equipo activo</a>
 El siguiente paso es seleccionar el equipo activo que se utilizara en el proyecto con sus cantidades. Posteriormente al hacer click en buscar equipo activo, el sistema mostrara el equipo seleccionado con una sugerencia de zone director, el modelo del zone director propuesto sera deacuerdo a la cantidad de AP's aolicitada.

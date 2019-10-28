@@ -79,7 +79,7 @@
     - [Reporte de Presupuesto](/{{route}}/{{version}}/documentp/view_budget_report)
     
 - ## Cotizador
-    - [Cotizador](/{{route}}/{{version}}/quote/quote)
+    - [Cotizador](/{{route}}/{{version}}/quoting/quoting)
     - [Historial de cotizaciones](/{{route}}/{{version}}/quote/quotehistory)
 - ## CFDI
     - [Dashboard](/{{route}}/{{version}}/cfdi/cfdi)

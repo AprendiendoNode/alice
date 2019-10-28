@@ -981,6 +981,8 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
 
     //Notas de credito
     Route::get('/customer-credit-notes', 'Sales\CustomerCreditNoteController@index');
+    Route::get('/credit-notes-history', 'Sales\CustomerCreditNoteController@view_egresos');
+    Route::post('/credit-notes-search', 'Sales\CustomerCreditNoteController@search');
     Route::get('/customer-invoices/balances', 'Sales\CustomerInvoiceController@balances')->name('customer-invoices/balances');
     Route::post('customer-credit-notes/total-reconciled-lines', 'Sales\CustomerCreditNoteController@totalReconciledLines')->name('customer-credit-notes/total-reconciled-lines');
 

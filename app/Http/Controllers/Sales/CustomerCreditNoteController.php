@@ -799,4 +799,36 @@ class CustomerCreditNoteController extends Controller
              throw $e;
          }
      }
+
+     public function view_egresos()
+     {
+        $customer = DB::select('CALL GetCustomersActivev2 ()', array());
+        $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
+        $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
+        $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
+        $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
+        $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()', array());
+        $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
+        $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
+        $cfdi_relations = DB::select('CALL GetAllCfdiRelationsv2 ()', array());
+
+        return view('permitted.sales.customer_credit_notes_history', compact('customer', 'sucursal', 'salespersons'));
+     }
+
+     public function search(Request $request)
+      {
+        $folio = !empty($request->filter_name) ? $request->filter_name : '';
+        $date_from  = $request->filter_date_from;
+        $date_to  = $request->filter_date_to;
+        $sucursal = !empty($request->filter_branch_office_id) ? $request->filter_branch_office_id : '';
+        $cliente = !empty($request->filter_customer_id) ? $request->filter_customer_id : '';
+        $estatus = !empty($request->filter_status) ? $request->filter_status : '';
+
+        $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+        $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
+
+        $resultados = DB::select('CALL px_customer_note_credits_filters (?,?,?,?,?,?)', array($date_a, $date_b, $folio, $sucursal, $cliente, $estatus));
+
+        return json_encode($resultados);
+      }
 }
