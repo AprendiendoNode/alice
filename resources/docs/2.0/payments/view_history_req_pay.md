@@ -1,4 +1,4 @@
-# Solicitud de pagos
+# Historial de pagos
  - [Instrucciones](#head1)
 
 Esta sección sirve para visualizar las solicitudes de pago por mes.

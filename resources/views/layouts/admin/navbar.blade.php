@@ -82,6 +82,10 @@
               <span class="nav-profile-name">{{ Auth::user()->name }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <a class="dropdown-item" href="{{ url('/profile') }}">
+                <i class="mdi mdi-account text-primary"></i>
+                Mi perfil
+              </a>
               @if( auth()->user()->can('View Configuration') )
               <a class="dropdown-item" href="{{ url('/Configuration') }}">
                 <i class="mdi mdi-settings text-primary"></i>
