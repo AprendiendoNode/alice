@@ -33,8 +33,8 @@
                     <h4 class="text-danger">{{$data_header[0]->folio}}</h4>
                     <h5 class="text-danger">Última actualización: <span id="hour_created">{{$hour_created}}</span></h5>
                     <p class="text-primary">Número de ediciones: {{$data_header[0]->num_edit}}</p> 
-                      <!---Si el estatus del cotizador es AUTORIZADO o EN KICK-OFF  se muestra el boto de enlace al kickoff-->
-                      @if($data_header[0]->cotizador_status_id == 4 || $data_header[0]->cotizador_status_id == 5)
+                      <!---Si el estatus del cotizador es FIRMA DE CONTRATO o EN KICK-OFF  se muestra el boto de enlace al kickoff-->
+                      @if($data_header[0]->cotizador_status_id == 5 || $data_header[0]->cotizador_status_id == 6)
                         <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="KICK-OFF" onclick="kickoff(this)" data-id="{{$id_document}}"  value="{{$id_document}}" class="btn btn-success text-white"><span class="fas fa-tasks"></span> Ir a KICK-OFF</a>
                       @endif
                       @include('permitted.quoting.form_edit')

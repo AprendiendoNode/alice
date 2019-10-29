@@ -456,7 +456,7 @@ Route::group(['middleware' => 'auth'], function () {
 
   //KICK-OFF
   Route::post('/edit_kickoff', 'Projects\KickoffController@index');
-  Route::post('/update_kickoff', 'Projects\KickoffController@u`pdate');
+  Route::post('/update_kickoff', 'Projects\KickoffController@update');
   Route::post('/update_kickoff_comision', 'Projects\KickoffController@update_kickoff_comision');
   Route::post('/update_kickoff_comisionByDefault', 'Projects\KickoffController@setComision');
   Route::post('/update_kickoff_contract', 'Projects\KickoffController@update_kickoff_contract');

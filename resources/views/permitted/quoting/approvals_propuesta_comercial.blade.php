@@ -188,10 +188,10 @@
 <script>
 
 (function() {
-    //Si el cotizador ya esta autorizado desactivo todos los checkboxes 
+    //Si el cotizador ya esta autorizado, en firma de contrato o kickoff desactivo todos los checkboxes 
     let cotizador = document.getElementById('cotizador_status').value;
     console.log(cotizador);
-    if(cotizador == 4 || cotizador == 5){
+    if(cotizador == 4 || cotizador == 5 || cotizador == 6 ){
         var input_checks = document.getElementsByClassName('custom-control-input');
         Array.from(input_checks).forEach(function (element) {
             element.disabled = true;

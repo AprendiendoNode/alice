@@ -205,6 +205,15 @@
                 </div>
                 <div class="container-box col-md-2">
                   <div class="icon_head_dash">
+                    <i class="fas fa-pen-alt text-primary" aria-hidden="true"></i>
+                  </div>
+                  <div class="info_head_dash">
+                    <p class="text-default">Firma contrato</p>
+                    <h4><strong>{{ $status_cotizador[0]->Firma_contrato}}</strong></h4>
+                  </div>
+                </div>
+                <div class="container-box col-md-2">
+                  <div class="icon_head_dash">
                     <i class="fas fa-check-circle text-success" aria-hidden="true"></i>
                   </div>
                   <div class="info_head_dash">
@@ -221,7 +230,7 @@
                     <h4><strong>{{ $status_cotizador[0]->En_revision}}</strong></h4>
                   </div>
                 </div>
-                <div class="container-box col-md-3">
+                <div class="container-box col-md-2">
                   <div class="icon_head_dash">
                     <i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
                   </div>
@@ -230,15 +239,15 @@
                     <h4><strong>{{ $status_cotizador[0]->Fuera_parametros}}</strong></h4>
                   </div>
                 </div>
-                <div class="container-box col-md-2">
+                <div class="container-box col-md-1">
                   <div class="icon_head_dash">
                     <i class="fa fa-plus-square text-info" aria-hidden="true"></i>
                   </div>
                   <div class="info_head_dash">
-                    <p class="text-default"> Nuevos </p>
+                    <p class="text-default"> Nuevo </p>
                     <h4><strong>{{ $status_cotizador[0]->Nuevo }}</strong></h4>
                   </div>
-                </div>
+                </div> 
               </div>
             </div>
           </div>
