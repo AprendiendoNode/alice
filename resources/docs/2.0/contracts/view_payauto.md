@@ -2,4 +2,4 @@
  - [General](#head1)
 
 
-## <a name="head1">En construcción</a>
+## <a name="head1">Pendiente de actualización...</a>

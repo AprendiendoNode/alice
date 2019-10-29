@@ -1,9 +1,8 @@
 # Avance de proyectos
- - [Specification](#specification)
- - [Dependencies Title](#dependencies-title)
+Vista detallada con la informacion relevante del avance de proyectos( Documentos P). <br><br>
 
-## <a name="head1">Sub 1</a>
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah.
+![historial](/images/docs/documentp/avanceProyectos.png)
+
+> {info} Los IT Concierge deberan llenar un checklist con el avance de instalacion de sus sitios asignados semanalmente. Esto podran hacerlo desde su historial de compras al visualizar su pedido o en este mismo modulo.
+
+![checklist](/images/docs/documentp/avanceProyectos.png)

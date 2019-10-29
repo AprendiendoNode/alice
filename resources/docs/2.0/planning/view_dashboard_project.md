@@ -1,9 +1,6 @@
 # Dashboard de proyectos
- - [Specification](#specification)
- - [Dependencies Title](#dependencies-title)
+Informacion de los proyectos en ejecucion e instalados.
 
-## <a name="head1">Sub 1</a>
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah.
+ En esta seccion esta disponible un resumen con la informacion mas relevante de los proyectos como el estatus de instalacion, facturacion, atrasos, rentas perdidas por dia y motivos de atrasos. <br><br>
+
+![dashboard](/images/docs/documentp/dashboard1.png)

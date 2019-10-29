@@ -18,7 +18,7 @@ Route::get('/policies', 'PoliceController@index')->name('policies');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/searchDocumentation','HomeController@getDocumentation');
+Route::post('/searchDocumentation','HomeController@getDocumentation');
 //VER ENCUESTA DINAMICA
 Route::get('questionary/{data}','Survey\QuestionaryController@index');
 //REGISTRAR ENCUESTA DINAMICA
@@ -441,7 +441,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/view_history_quoting_kickoff', 'Projects\QuotingController@get_history_quoting_kickoff');
   Route::get('/view_history_quoting_signature', 'Projects\QuotingController@get_history_signature_kickoff');
   Route::get('/view_auth_history_quoting', 'Projects\QuotingController@view_auth');
-  Route::get('/view_history_quoting_inreview', 'Projects\QuotingController@view_review'); 
+  Route::get('/view_history_quoting_inreview', 'Projects\QuotingController@view_review');
   Route::post('/set_status_quoting', 'Projects\QuotingController@set_status_quoting');
   Route::get('/quoting_table_products/{id_documentp}/{id_cart}', 'Projects\QuotingController@get_table_products');
   Route::get('/quoting_invoice/{id_documentp}/{id_cart}', 'Projects\QuotingController@export_invoice');
@@ -991,7 +991,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-credit-notes-store', 'Sales\CustomerCreditNoteController@store');
 
     Route::get('customer-credit-notes/get-customer-credit-note', 'Sales\CustomerCreditNoteController@getCustomerCreditNote')->name('customer-credit-notes/get-customer-credit-note');
-    
+
     Route::get('/customer-invoices/autocomplete-cfdi', 'Sales\CustomerInvoiceController@autocompleteCfdi');
     Route::get('customer-invoices/get-customer-invoice', 'Sales\CustomerInvoiceController@getCustomerInvoice')->name('customer-invoices/get-customer-invoice');
 

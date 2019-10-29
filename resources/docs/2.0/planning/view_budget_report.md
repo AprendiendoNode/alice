@@ -1,9 +1,10 @@
-# Reporte de presupuesto
- - [Specification](#specification)
- - [Dependencies Title](#dependencies-title)
+#Reporte de Presupuestos
 
-## <a name="head1">Sub 1</a>
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah.
+Informacion del presupuesto ejercido  de los sitios 
+
+![sitios](/images/docs/documentp/tablaReporte.png)
+<br><br>
+
+Desglose del presupuesto con informacion de pagos.<br><br>
+
+![budget](/images/docs/documentp/desgloseMontos.png)

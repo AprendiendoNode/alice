@@ -1,9 +1,5 @@
 # Proyectos terminados
- - [Specification](#specification)
- - [Dependencies Title](#dependencies-title)
+Vista detallada con la informacion de proyectos que ya se encuentran ***instalados***.
 
-## <a name="head1">Sub 1</a>
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah. Example text blah. Example text blah.
-Example text blah. Example text blah.
+![historial](/images/docs/documentp/proyectosTerminados.png)
+

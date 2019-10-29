@@ -81,8 +81,12 @@
     $('.bubble').show();
     new WOW().init();
     $('#globo').on('click',function(){
-      var urlarray=(window.location.href).split("/");
-      var url = urlarray.pop();
+      var urlarray=(window.location.href).split("/"), url;
+      if(urlarray.length > 4) {
+        url = urlarray[3] + "/" + urlarray[4];
+      } else {
+        url = urlarray.pop();
+      }
       if(url == "home" || url == "") {
         var ventana = window.open("http://"+urlarray[2]+"/docs/2.0/home/dash", "_blank");
         ventana.focus();
@@ -94,12 +98,12 @@
       } else {
         $('.bubble').hide();
         $.ajax({
-          type: "GET",
+          type: "post",
           url: '/searchDocumentation',
-          data:{url: url },
+          data:{ _token: "{{ csrf_token() }}", url: url },
           success: function (data) {
-            //console.log(data);
             var ruta=JSON.parse(data)[0]['name'];
+            if(url.indexOf("/") > 0) url = url.split("/")[1];
             var ventana= window.open("http://"+urlarray[2]+"/docs/2.0/"+ruta+"/"+url, "_blank");
             ventana.focus();
           },

@@ -65,19 +65,19 @@
     - [Cobros aplicados](/{{route}}/{{version}}/contracts/view_cobrados)
 
 - ## Proyectos
-    - [Dashboard de proyectos](/{{route}}/{{version}}/documentp/view_dashboard_project)
-    - [Administración de productos](/{{route}}/{{version}}/catalogs/products)
-    - [Solicitud de compra](/{{route}}/{{version}}/documentp/documentp_cart)
-    - [Historial documento P](/{{route}}/{{version}}/documentp/view_history_documentp)
-    - [Historial documento M](/{{route}}/{{version}}/documentp/view_history_documentm)
-    - [Ver autorizados](/{{route}}/{{version}}/documentp/view_history_auth_documentp)
-    - [Ver entregados](/{{route}}/{{version}}/documentp/view_doc_delivery)
-    - [Avance de proyectos](/{{route}}/{{version}}/documentp/view_project_doc_p)
-    - [Proyectos terminados](/{{route}}/{{version}}/documentp/view_project_docp_success)
-    - [Editar proyectos](/{{route}}/{{version}}/documentp/view_edit_projects)
-    - [Vista de Presupuesto](/{{route}}/{{version}}/documentp/view_budget)
-    - [Reporte de Presupuesto](/{{route}}/{{version}}/documentp/view_budget_report)
-    
+    - [Dashboard de proyectos](/{{route}}/{{version}}/planning/view_dashboard_project)
+    - [Administración de productos](/{{route}}/{{version}}/planning/products)
+    - [Solicitud de compra](/{{route}}/{{version}}/planning/documentp_cart)
+    - [Historial documento P](/{{route}}/{{version}}/planning/view_history_documentp)
+    - [Historial documento M](/{{route}}/{{version}}/planning/view_history_documentm)
+    - [Ver autorizados](/{{route}}/{{version}}/planning/view_history_auth_documentp)
+    - [Ver entregados](/{{route}}/{{version}}/planning/view_doc_delivery)
+    - [Avance de proyectos](/{{route}}/{{version}}/planning/view_project_doc_p)
+    - [Proyectos terminados](/{{route}}/{{version}}/planning/view_project_docp_success)
+    - [Editar proyectos](/{{route}}/{{version}}/planning/view_edit_projects)
+    - [Vista de Presupuesto](/{{route}}/{{version}}/planning/view_budget)
+    - [Reporte de Presupuesto](/{{route}}/{{version}}/planning/view_budget_report)
+
 - ## Cotizador
     - [Cotizador](/{{route}}/{{version}}/quoting/quoting)
     - [Historial de cotizaciones](/{{route}}/{{version}}/quote/quotehistory)
