@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View note credit history') )
     Historial egresos
   @else
   {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View note credit history') )
     Historial egresos
   @else
   {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View note credit history') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -255,7 +255,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View note credit history') )
   <style media="screen">
     .editor-wrapper {
       min-height: 250px;
@@ -464,7 +464,7 @@
       var a07 = '<a class="dropdown-item" href="javascript:void(0);"><i class="fa fa-print"></i> @lang('general.button_print')</a>';
       var a08 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_invoice.text_mark_sent')</a>';
       var a09 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_paid(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_invoice.text_mark_paid')</a>';
-      var a10 = '<a class="dropdown-item" href="javascript:void(0);" onclick="payment_history(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fa fa-history"></i> @lang('customer_invoice.text_payment_history')</a>';
+      var a10 = '';
       var a11 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
   
       var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a10+a11;

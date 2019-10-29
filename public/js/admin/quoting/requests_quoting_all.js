@@ -58,6 +58,9 @@ function documentp_table(datajson, table){
        case 'Fuera de parametros':
           badge= '<span class="badge badge-danger badge-pill text-white">Fuera de parametros</span>';
           break;
+       case 'Firma de contrato':
+          badge= '<span class="badge badge-primary badge-pill text-white">Firma de contrato</span>';
+          break;
        default:
          badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
          break;
@@ -107,7 +110,7 @@ var Configuration_table_responsive_documentp= {
                 "width": "0.1%",
                 "createdCell": function (td, cellData, rowData, row, col){
                   if ( cellData > 0 ) {
-                    if(rowData[11] == 'En revisión' || rowData[11] == 'Autorizado' || rowData[11] == 'En Kick-off'){
+                    if(rowData[11] != 'Fuera de parametros'){
                       this.api().cell(td).checkboxes.disable();
                     }
                   }
@@ -178,7 +181,7 @@ var Configuration_table_responsive_documentp= {
           {
             text: '<i class=""></i> Enviar para autorización',
             titleAttr: 'Enviar para autorización',
-            className: 'btn bg-dark',
+            className: 'btn btn-warning',
             init: function(api, node, config) {
               $(node).removeClass('btn-default')
             },

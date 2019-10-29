@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View history quoting') )
-    Historial de cotizaciones
+  @if( auth()->user()->can('View history quoting signature contract') )
+    Cotizaciones en firma de contrato
   @else
     {{ trans('message.denied') }}
   @endif
@@ -10,8 +10,8 @@
 @endsection
 
 @section('breadcrumb_title')
-   @if( auth()->user()->can('View history quoting') )
-    Historial de cotizaciones
+   @if( auth()->user()->can('View history quoting signature contract') )
+    Cotizaciones en firma de contrato
     @else
       {{ trans('message.denied') }}
     @endif
@@ -65,6 +65,7 @@
                   <th> <small><i class="fas fa-check-double"></i></small> </th>
                   <th> <small>Doc.</small> </th>
                   <th> <small></small> </th>
+                  <th> <small></small> </th>
                 </tr>
               </thead>
               <tbody>
@@ -107,6 +108,7 @@
                     <th> <small><i class="fas fa-check-double"></i></small> </th>
                     <th> <small>Doc.</small> </th>
                     <th> <small></small> </th>
+                    <th> <small></small> </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -141,23 +143,20 @@
   <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
   <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
   <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v=2.0')}}" >
   <style>
     .dataTables_wrapper .dataTable .btn{
       width: 50px !important;
     }
-
     .dropdown-menu {
       font-size: 0.8rem !important;
     }
   </style>
-  <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v=2.0')}}" >
-  @if( auth()->user()->can('View level zero documentp notification') )
-    <script src="{{ asset('js/admin/quoting/requests_quoting_0.js?v=4.2')}}"></script>
-    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.2')}}"></script>
-  @elseif ( auth()->user()->can('View level one documentp notification') ||
-            auth()->user()->can('View level two documentp notification') ||
-            auth()->user()->can('View level three documentp notification'))
-    <script src="{{ asset('js/admin/quoting/requests_quoting_all.js?v=4.2')}}"></script>
-    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.2')}}"></script>
+  @if( auth()->user()->can('Aprobacion legal') )
+    <script src="{{ asset('js/admin/quoting/requests_quoting_signature_all.js?v=4.1')}}"></script>
+    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.1')}}"></script>
+  @else
+    <script src="{{ asset('js/admin/quoting/requests_quoting_signature_0.js?v=4.1')}}"></script>
+    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.1')}}"></script>
   @endif
 @endpush

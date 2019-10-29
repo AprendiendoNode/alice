@@ -153,12 +153,12 @@
     }
   </style>
   @if( auth()->user()->can('View level zero documentp notification') )
-    <script src="{{ asset('js/admin/quoting/requests_quoting_review_0.js?v=4.1')}}"></script>
-    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.1')}}"></script>
+    <script src="{{ asset('js/admin/quoting/requests_quoting_review_0.js?v=4.2')}}"></script>
+    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.2')}}"></script>
   @elseif ( auth()->user()->can('View level one documentp notification') ||
             auth()->user()->can('View level two documentp notification') ||
             auth()->user()->can('View level three documentp notification'))
-    <script src="{{ asset('js/admin/quoting/requests_quoting_review_all.js?v=4.1')}}"></script>
-    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.1')}}"></script>
+    <script src="{{ asset('js/admin/quoting/requests_quoting_review_all.js?v=4.2')}}"></script>
+    <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.2')}}"></script>
   @endif
 @endpush

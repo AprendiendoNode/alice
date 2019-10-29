@@ -439,6 +439,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/view_quotig_history', 'Projects\QuotingController@index_history');
   Route::get('/view_history_quoting_out_parameters', 'Projects\QuotingController@get_history_quoting_out_parameters');
   Route::get('/view_history_quoting_kickoff', 'Projects\QuotingController@get_history_quoting_kickoff');
+  Route::get('/view_history_quoting_signature', 'Projects\QuotingController@get_history_signature_kickoff');
   Route::get('/view_auth_history_quoting', 'Projects\QuotingController@view_auth');
   Route::get('/view_history_quoting_inreview', 'Projects\QuotingController@view_review'); 
   Route::post('/set_status_quoting', 'Projects\QuotingController@set_status_quoting');

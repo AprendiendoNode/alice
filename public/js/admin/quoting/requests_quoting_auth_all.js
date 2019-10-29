@@ -39,28 +39,8 @@ function documentp_table(datajson, table){
   vartable.fnClearTable();
   $.each(datajson, function(index, data){
     let type_doc = 'C';
-    let badge = '';
+    let badge = '<span class="badge badge-success badge-pill text-white">Autorizado</span>';
     let parameters_icon = '';
-    switch (data.cotizador_status) {
-      case 'Nuevo':
-        badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';
-        break;
-      case 'En revisión':
-        badge= '<span class="badge badge-warning badge-pill text-white">En revisión</span>';
-        break;
-      case 'Autorizado':
-        badge= '<span class="badge badge-success badge-pill text-white">Autorizado</span>';
-        break;
-       case 'En Kick-off':
-         badge= '<span class="badge badge-dark badge-pill text-white">En Kick-off</span>';
-         break;
-       case 'Fuera de parametros':
-          badge= '<span class="badge badge-danger badge-pill text-white">Fuera de parametros</span>';
-          break;
-       default:
-         badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
-         break;
-    }
 
     if(data.objetivos_cotizador == 0){
       parameters_icon = '<span class="badge badge-danger badge-pill text-white"><i class="fas fa-times"></i></span>';
@@ -106,7 +86,6 @@ var Configuration_table_responsive_documentp= {
                 },
                 "width": "0.1%",
                 "className": "text-center",
-                "visible" : false
             },
             {
               "targets": 1,
@@ -172,7 +151,7 @@ var Configuration_table_responsive_documentp= {
           {
             text: '<i class=""></i> Enviar a Legal',
             titleAttr: 'Enviar a Legal',
-            className: 'btn btn-warning',
+            className: 'btn btn-primary',
             init: function(api, node, config) {
               $(node).removeClass('btn-default')
             },
@@ -199,7 +178,7 @@ var Configuration_table_responsive_documentp= {
                 }).then((result) => {
                   if(result.value){
 
-                    var status_cotizador = 5; // Estatus EN-KICKOFF
+                    var status_cotizador = 5; // Estatus "Firma de contrato"
                     // console.log(semana);
                     $('.cancel').prop('disabled', 'disabled');
                     $('.confirm').prop('disabled', 'disabled');

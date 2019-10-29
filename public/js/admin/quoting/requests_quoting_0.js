@@ -57,6 +57,9 @@ function documentp_table(datajson, table){
        case 'Fuera de parametros':
           badge= '<span class="badge badge-danger badge-pill text-white">Fuera de parametros</span>';
           break;
+       case 'Firma de contrato':
+          badge= '<span class="badge badge-primary badge-pill text-white">Firma de contrato</span>';
+          break;
        default:
          badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
          break;

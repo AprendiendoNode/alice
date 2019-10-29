@@ -54,6 +54,11 @@ class QuotingController extends Controller
         return view('permitted.quoting.quote_history_kickoff');
     }
 
+    public function get_history_signature_kickoff()
+    {
+        return view('permitted.quoting.quote_history_signature');
+    }
+
     public function view_auth()
     {
         return view('permitted.quoting.history_quoting_auth');

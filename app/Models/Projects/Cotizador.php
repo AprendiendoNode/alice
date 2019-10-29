@@ -21,8 +21,8 @@ class Cotizador extends Model
   {
   	$documentp = Documentp::findOrFail($id_documentp);
   	$cotizador_status = $documentp->cotizador_status_id;
-	//Diferente de estatus en KICKOFF
-  	if($cotizador_status != 5){
+	//Diferente de estatus "Firma de contrato" y " EN KICKOFF"
+  	if($cotizador_status != 5 && $cotizador_status != 6){
 		//Fuera de parametros
   		if($documentp->objetivos_cotizador == 0 || $documentp->total_usd > 50000){
 			$documentp->cotizador_status_id = 2;

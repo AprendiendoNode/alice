@@ -41,24 +41,7 @@ function documentp_table(datajson, table){
   data = datajson.filter(data => data.cotizador_status == 'Fuera de parametros');
   $.each(data, function(index, data){
     let type_doc = 'C';
-    let badge = '';
-    switch (data.cotizador_status) {
-      case 'Nuevo':
-        badge= '<span class="badge badge-secondary badge-pill text-white">Nuevo</span>';
-        break;
-      case 'En revisión':
-        badge= '<span class="badge badge-warning badge-pill text-white">En revisión</span>';
-        break;
-       case 'En Kick-off':
-         badge= '<span class="badge badge-success badge-pill text-white">En Kick-off</span>';
-         break;
-       case 'Fuera de parametros':
-          badge= '<span class="badge badge-danger badge-pill text-white">Fuera de parametros</span>';
-          break;
-       default:
-         badge= '<span class="badge badge-danger badge-pill text-white">Denegado</span>';
-         break;
-    }
+    let badge = '<span class="badge badge-danger badge-pill text-white">Fuera de parametros</span>';
 
     if(data.objetivos_cotizador == 0){
       parameters_icon = '<span class="badge badge-danger badge-pill text-white"><i class="fas fa-times"></i></span>';
