@@ -113,6 +113,19 @@
     <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
     <script src="{{ asset('js/admin/documentp/requests_documentp_auth.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
+    <style>
+      .cell-large{
+        min-width: 200px !important;
+      }
+
+      .dataTables_wrapper .dataTable .btn{
+        width: 50px !important;
+      }
+
+      .dropdown-menu {
+        font-size: 0.8rem !important;
+      }
+    </style>
     <script type="text/javascript">
       $(document).on({
         'show.bs.modal': function() {

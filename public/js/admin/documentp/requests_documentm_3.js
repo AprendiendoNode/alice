@@ -155,12 +155,13 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 7,
               "width": "0.1%",
-              "className": "text-center cell-short",
+              "className": "text-center",
             },
             {
               "targets": 8,
               "width": "0.1%",
               "className": "text-center cell-short",
+              "visible" : false
             },
             {
               "targets": 9,

@@ -808,11 +808,54 @@ class KickoffController extends Controller
           'date' => \Carbon\Carbon::now(),
           'link' => route('view_history_documentp')
         ]);
-
+        
         $recipient = User::find($recipient_id);
         $recipient->notify(new MessageDocumentp($message));
+     
+      }
+      //Enviar correo de aprobacion de compra 
+      $this->send_mail_aproved($id_doc);
+
+    }
+
+    public function send_mail_aproved($id_doc)
+    {
+      $doc = Documentp::findOrFail($id_doc);
+      $folio = $doc->folio;
+      $fecha_aprobacion = $doc->fecha_aprobacion;
+      $doc_type = $doc->doc_type;
+      $total_ea = $doc->total_ea;
+      $total_ena = $doc->total_ena;
+      $total_mo = $doc->total_mo;
+      $total = $doc->total_usd;
+      $user = User::findOrFail($doc->itc_id);
+      $itc = $user->name;
+      $itc_email = $user->email;
+
+      $name_project = "";
+
+      if($doc->nombre_proyecto == null || $doc->nombre_proyecto == ''){
+        $sql = DB::table('hotels')->select('id','Nombre_hotel')->where('id', $doc->anexo_id)->get();
+        $name_project = $sql[0]->Nombre_hotel;
+      }else{
+        $name_project = $doc->nombre_proyecto;
       }
 
+      $parametros1 = [
+        'fecha_aprobacion' => $fecha_aprobacion,
+        'folio' => $folio,
+        'doc_type' => $doc_type,
+        'nombre_proyecto' => $name_project,
+        'itc' => $itc,
+        'total_ea' => $total_ea,
+        'total_ena' => $total_ena,
+        'total_mo' => $total_mo,
+        'total' => $total
+      ];
+
+      $copias = ['aguevara@sitwifi.com', 'mdeoca@sitwifi.com', 'mmoreno@sitwifi.com'];
+      Mail::to($itc_email)->cc($copias)->send(new SolicitudCompraAprobada($parametros1));
+      //Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompraAprobada($parametros1));
     }
 
     public function generate_pdf_propuesta($id_doc)

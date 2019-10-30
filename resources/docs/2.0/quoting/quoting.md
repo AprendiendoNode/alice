@@ -135,7 +135,25 @@ En el tercer paso se le mostrara un resumen del cotizador con los productos que 
 
 ![image](/images/docs/quoting/resumenCotizacion.png)
 
-> {danger} Tenga en cuenta que al modificar los productos y datos finacieros los parametros de los objetivos cambiaran y tendra que volver a calcular el servicio mensual nuevamente para que el objetivo se ajuste a un valor rentable.
+> {danger} Tenga en cuenta que al modificar los productos y datos finacieros los parametros de los objetivos cambiaran y tendra que volver a calcular el servicio mensual nuevamente para que el objetivo se ajuste a un valor rentable.<br><br>
+
+Por ultimo debera hacer clic al boton ***Guardar cotizacion*** para finalizar.<br><br>
+
+![image](/images/docs/quoting/guardarCotizacion.png)
+
+> {success} El sistema hara una serie de validaciones y le pondra un estatus al cotizador en automatico:
+
+- Fuera de parametros
+
+Si el cotizador no cumple con los parametros de la tabla de objetivos o si el monto total de la inversion supera los 50000 USD, se marcara con el estatus ***Fuera de parametros*** y debera solicitar autorizacion por parte de la direccion para poder descargar la propuesta comercial del cliente. <br><br>      
+
+![image](/images/docs/quoting/fueraParametros.png)
+
+- Autorizado
+
+Si el cotizador cumple con los parametros de los objetivos y el monto total de la inversion no supera los 50000 USD, se marcara con el estatus ***Autorizado***. <br><br>      
+
+![image](/images/docs/quoting/autorizado.png)
 
 
 

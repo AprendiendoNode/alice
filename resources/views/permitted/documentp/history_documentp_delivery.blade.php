@@ -101,11 +101,18 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
     <script src="{{ asset('js/admin/documentp/request_modal_documentp.js')}}"></script>
     <style>
-      .actions a{
-        padding: 3px 6px !important;
-        margin-left: 3px;
-      }
-    </style>
+        .cell-large{
+          min-width: 200px !important;
+        }
+  
+        .dataTables_wrapper .dataTable .btn{
+          width: 50px !important;
+        }
+  
+        .dropdown-menu {
+          font-size: 0.8rem !important;
+        }
+      </style>
 
   @else
     @include('default.denied')

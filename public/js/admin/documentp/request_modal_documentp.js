@@ -36,8 +36,7 @@ function addCommentModal(e){
   var element = e;
   let id_documentp = element.dataset.id;
   var _token = $('input[name="_token"]').val();
-
-  document.getElementById('id_doc').value = id_documentp;
+ console.log(id_documentp);
   document.getElementById('comment').value = '';
 
   const headers = new Headers({
@@ -56,6 +55,7 @@ function addCommentModal(e){
           return response.json();
         })
         .then(data => {
+            document.getElementById('id_doc').value = id_documentp;
             document.getElementById('comment').value = data[0].comentario_manager;
             $('#modal-add-comment').modal('show');
         })
@@ -70,7 +70,7 @@ $('#addComment').on('click', function(e){
   var _token = $('input[name="_token"]').val();
   let id_documentp = document.getElementById('id_doc').value;
   let comment = document.getElementById('comment').value;
-
+ 
   const headers = new Headers({
     "Accept": "application/json",
     "X-Requested-With": "XMLHttpRequest",
@@ -78,7 +78,8 @@ $('#addComment').on('click', function(e){
   })
   var form = $('#form_add_comment')[0];
   var formData = new FormData(form);
-
+  formData.append('id_doc', id_documentp);
+ 
   var miInit = { method: 'post',
                     headers: headers,
                     body: formData,

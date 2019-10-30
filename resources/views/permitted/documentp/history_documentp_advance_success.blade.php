@@ -32,7 +32,6 @@
         </div>
         <div class="modal-body">
           <form id="form_add_comment">
-            <input id="id_doc" type="hidden" name="id_doc" value="">
             <textarea class="form-control" id="comment" name="comment" rows="8" placeholder="Escriba un comentario"></textarea>
           </form>
         </div>
@@ -330,6 +329,14 @@
         border-bottom: none;
       }
 
+      .dataTables_wrapper .dataTable .btn{
+        width: 50px !important;
+      }
+
+      .dropdown-menu {
+        font-size: 0.8rem !important;
+      }
+
        /* select option{
         color: transparent;
       } */
@@ -356,17 +363,17 @@
 
     </style>
     @if( auth()->user()->can('View level zero documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_success_0.js?v=1.0.6')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=2.0.0')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_success_0.js?v=2.0.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=3.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level one documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_success_1.js?v=1.0.6')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=2.0.0')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_success_1.js?v=2.0.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=3.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level two documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_success_1.js?v=1.0.6')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=2.0.0')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_success_1.js?v=2.0.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=3.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level three documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_success_1.js?v=1.0.6')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=2.0.0')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_success_1.js?v=2.0.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=3.0.0')}}"></script>
     @endif
 @else
   @include('default.denied')

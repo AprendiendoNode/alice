@@ -160,7 +160,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 6,
               "width": "0.3%",
-              "className": "text-center cell-short",
+              "className": "text-center",
             },
             {
               "targets": 7,
