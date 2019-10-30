@@ -78,15 +78,18 @@
   </style>
     @if( auth()->user()->can('View Help Assistant') )
   <script>
-    $('.bubble').show();
-    new WOW().init();
+    var urlarray=(window.location.href).split("/"), url;
+    if(urlarray.length > 4) {
+      url = urlarray[3] + "/" + urlarray[4];
+    } else {
+      url = urlarray.pop();
+    }
+    if(url != "profile" && url != "Classification" && url != "Configuration") {
+      $('.bubble').show();
+      new WOW().init();
+      $(".message1").delay(1300).fadeOut(500);
+    }
     $('#globo').on('click',function(){
-      var urlarray=(window.location.href).split("/"), url;
-      if(urlarray.length > 4) {
-        url = urlarray[3] + "/" + urlarray[4];
-      } else {
-        url = urlarray.pop();
-      }
       if(url == "home" || url == "") {
         var ventana = window.open("http://"+urlarray[2]+"/docs/2.0/home/dash", "_blank");
         ventana.focus();
@@ -113,7 +116,6 @@
         });
       }
     });
-    $(".message1").delay(1300).fadeOut(500);
     $('#globo_close').on('click',function() {
       $('.bubble').hide();
     });
