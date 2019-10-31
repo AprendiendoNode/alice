@@ -81,12 +81,12 @@
 - ## Cotizador
     - [Cotizador](/{{route}}/{{version}}/quoting/quoting)
     - [Levantamiento](/{{route}}/{{version}}/quoting/levantamiento)
-    - [Historial de cotizaciones](/{{route}}/{{version}}/quoting/quote_history)
-    - [Fuera de parametros](/{{route}}/{{version}}/quoting/quote_history_out_parameters)
-    - [En revision](/{{route}}/{{version}}/quoting/quote_history_review)
-    - [Autorizados](/{{route}}/{{version}}/quoting/history_quoting_auth)
-    - [Firma de contrato](/{{route}}/{{version}}/quoting/quotehistory)
-    - [En Kick-off](/{{route}}/{{version}}/quoting/quotehistory)
+    - [Historial de cotizaciones](/{{route}}/{{version}}/quoting/view_quotig_history)
+    - [Fuera de parametros](/{{route}}/{{version}}/quoting/view_history_quoting_out_parameters)
+    - [En revision](/{{route}}/{{version}}/quoting/view_history_quoting_inreview)
+    - [Autorizados](/{{route}}/{{version}}/quoting/view_auth_history_quoting)
+    - [Firma de contrato](/{{route}}/{{version}}/quoting/view_history_quoting_signature)
+    - [En Kick-off](/{{route}}/{{version}}/quoting/view_history_quoting_kickoff)
 - ## CFDI
     - [Dashboard](/{{route}}/{{version}}/cfdi/cfdi)
     - [Facturacion](/{{route}}/{{version}}/cfdi/billing)
