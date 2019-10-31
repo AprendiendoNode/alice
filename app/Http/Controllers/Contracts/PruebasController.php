@@ -304,16 +304,24 @@ class PruebasController extends Controller
       $date = $date_current.'-01';
       $user_actual = Auth::user()->id;
       $count_id = count($ids_contracts);
-
+      
+      \DB::beginTransaction();
       for ($i=0; $i < $count_id; $i++) {
             $result = DB::table('contracts_charges')
                       ->where('id', $ids_contracts[$i])
-                      ->where('pay_date', $date)
+                      // ->where('pay_date', $date)
                       ->update(['contract_charges_state_id' => 2,
                                 'user_updated_id' => $user_actual,
                                 'updated_at' =>  \Carbon\Carbon::now()]);
-      }
 
+            DB::table('contracts_charges_statuses')->insert([
+              'contract_charge_id' => $ids_contracts[$i],
+              'user_id' => $user_actual,
+              'contract_charges_state_id' => 2]);
+      }
+      // Commit the transaction
+      DB::commit();
+      
       return $result;
     }
     public function get_status_contracts(Request $request)

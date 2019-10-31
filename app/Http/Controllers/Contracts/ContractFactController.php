@@ -53,6 +53,8 @@ class ContractFactController extends Controller
       $aux = explode("-",str_replace("/","-",$fecha_cobro));
       $fecha_ok = $aux[2]."-".$aux[0]."-".$aux[1];
 
+      \DB::beginTransaction();
+
       for ($i=0; $i < $count_id; $i++) {
             $result = DB::table('contracts_charges')
                       ->where('id', $ids_contracts[$i])
@@ -66,8 +68,13 @@ class ContractFactController extends Controller
                                 'fecha_mov' => \Carbon\Carbon::now(),
                                 'banco_id' => $banco
                               ]);
+            DB::table('contracts_charges_statuses')->insert([
+                          'contract_charge_id' => $ids_contracts[$i],
+                          'user_id' => $user_actual,
+                          'contract_charges_state_id' => 3]);
       }
-
+      // Commit the transaction
+      DB::commit();
       return $result;
     }
     public function monto_fact(Request $request)

@@ -40,16 +40,20 @@ class checkxpaymentsmonthly extends Command
     {
         // fecha compromiso, o no aplica. nueva vista con menos columnas, plazo de vencimiento(numero día).
         // Dashboard contratos, distribución.s
+        
         $fecha_ini = date('Y-m-01');
-        $fecha_fin = date('Y-m-t');
-        $fecha_cur = date('Y-m-d');
-
+        // $fecha_fin = date('Y-m-t');
+        // $fecha_cur = date('Y-m-d');
+        // $fecha_ini = date('2019-11-01');
+        
         $contracts = DB::select('CALL px_contracts_active_data(?)', array($fecha_ini));
         //$contracts = DB::select('CALL px_contracts_active_data(?)', array('2019-01-01'));
         $count = count($contracts);
 
         $contract_charges_state_id = 1;
         $estado_insercion = 0;
+        
+        \DB::beginTransaction();
         for ($i=0; $i < $count; $i++) {
             $this->line('Current Iteration: '. $i);
             $monto = $contracts[$i]->quantity;
@@ -99,14 +103,22 @@ class checkxpaymentsmonthly extends Command
                 'subtotal' => $contracts[$i]->quantity
             ];
 
-            $sql_insert = DB::table('contracts_charges')->insert($data_insert);
-            if ($sql_insert) {
+            $sql_insert = DB::table('contracts_charges')->insertGetId($data_insert);
+            
+            $data_insert_statuses = DB::table('contracts_charges_statuses')->insert([
+                          'contract_charge_id' => $sql_insert,
+                          'user_id' => 1,
+                          'contract_charges_state_id' => $contract_charges_state_id]);
+
+            if ($data_insert_statuses) {
                 $this->line('Datos Insertados.');
             }else{
                 $this->error('no se insertaron datos.');
             }
         }
-        //dd($fechaini);
+        // Commit the transaction
+        DB::commit();
+        
         $this->info('Command Completed.');
     }
 }
