@@ -218,7 +218,7 @@ switchery = new Switchery(html, defaults);
 var estado = {!! json_encode($estado, JSON_HEX_TAG) !!}; //Estado recuperado de la base de datos
 //console.log(estado);
 setSwitchery(switchery,estado);
-switchery.disable();//Deshabilitado para la nube, borrar cuando se publice oficialmente la documetacion.
+//switchery.disable();//Deshabilitado para la nube, borrar cuando se publice oficialmente la documentacion.
 $('#act_asist').on('change',function(){
 //var switchAsit =('#act_asist');
 //alert($('#act_asist').prop('checked'));
