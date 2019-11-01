@@ -1365,10 +1365,10 @@
                   html += '</tr>';
                   $("#form #items tbody #add_item").before(html);
                   /* Configura lineas*/
-                  initItem();
                   $("#item_current_"+item_row+" option[value='" + key.currency_id +"']").attr('selected', true);
                   item_row++;
                 });
+                initItem();
                 totalItem();
               }
             },
