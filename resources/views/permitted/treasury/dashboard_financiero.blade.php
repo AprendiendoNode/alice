@@ -89,8 +89,8 @@
                           <tr >
                             <th></th>
                             <th></th>
-                            <th></th>
-                            <th></th>
+                            <th id="tdep_mov"></th>
+                            <th id="tret_mov"></th>
                             <th></th>
                             <th id="t1_i"></th>
                             <th id="t1_f"></th>
@@ -207,8 +207,12 @@
                             <th class="sum_col"> <small>Depositos</small> </th>
                             <th class="sum_col"> <small>Retiros</small> </th>
                             <th class="sum_col"> <small>Saldo final</small> </th>
-                            <th class="sum_col" style="background: #005A96"> <small>Saldo inicial MXN</small> </th>
-                            <th class="sum_col" style="background: #005A96"> <small>Saldo final MXN</small> </th>
+                            <!--<th class="sum_col" style="background: #005A96"> <small>Saldo inicial MXN</small> </th>
+                            <th class="sum_col" style="background: #005A96"> <small>Saldo final MXN</small> </th>-->
+                            <th class="sum_col" style="background: #EB382B"> <small>Deuda actual</small> </th>
+                            <th class="sum_col"style="background: #005A96" > <small>Disponible</small> </th>
+                            <th class="sum_col" > <small>Monto Crédito</small> </th>
+                            <th style="background: #008B86"><small>Liquidez Disponible(MXN)</small></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -248,8 +252,12 @@
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th id="t1_i"></th>
-                            <th id="t1_f"></th>
+                            <!--<th id="t1_i"></th>
+                            <th id="t1_f"></th>-->
+                            <th></th>
+                            <th id="rev_disp"></th>
+                            <th></th>
+                            <th id="liquidez_tot">gfd</th>
                           </tr>
                         </tfoot>
                       </table>
@@ -610,7 +618,7 @@
 
 
     </style>
-    <script src="{{ asset('js/admin/treasury/dash_finanzas.js?v=1.5')}}"></script>
+    <script src="{{ asset('js/admin/treasury/dash_finanzas.js?v=2.5')}}"></script>
   @else
     <!--NO VER-->
   @endif

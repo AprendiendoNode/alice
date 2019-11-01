@@ -97,7 +97,7 @@ function get_info_banks_mxn() {
       // console.log(data);
     //  var order=["CH PESOS BX","Santander Pesos","HSBC PESOS","Multiva","Bancomer"];
  var sortedData= data.sort(function(a, b) {
-  var arrayOrder = ["CH PESOS BX","ULTIMO MOVIMIENTO RENDIMIENTO", "Santander Pesos", "HSBC PESOS", "Multiva", "Bancomer"];
+  var arrayOrder = ["CH PESOS BX","MOVIMIENTOS (Sin Barredora)", "Santander Pesos", "HSBC PESOS", "Multiva", "Bancomer"];
   function getIndex(x) {
     return arrayOrder.indexOf(x.banco);
   }
@@ -105,7 +105,7 @@ function get_info_banks_mxn() {
   return (getIndex(a) - getIndex(b)) ;
 });
 //console.log(sortedData);
-    table_banks(data, $("#table_banks1"));
+    table_banks_mxn(data, $("#table_banks1"));
     total_global();
     },
     error: function (data) {
@@ -173,15 +173,15 @@ function get_info_banks_cred_rev() {
     data: { _token : _token, date: datanow },
     success: function (data){
     //  console.log(data);
-    /*  var sortedData= data.sort(function(a, b) {
-       var arrayOrder = ["CH PESOS BX REV","Santander Pesos REV","Dominicana (DOP)","Costa Rica  (CRC)"];
+      var sortedData= data.sort(function(a, b) {
+       var arrayOrder = ["CH PESOS BX REV","Santander Pesos REV","HSBC Pesos REV"];
        function getIndex(x) {
          return arrayOrder.indexOf(x.banco);
        }
 
        return (getIndex(a) - getIndex(b)) ;
-     });*/
-      table_banks(data, $("#table_banks4"));
+     });
+      table_banks_rev(sortedData, $("#table_banks4"));
       //total_global();
     },
     error: function (data) {
@@ -218,6 +218,75 @@ function table_banks(datajson, table){
       status.saldo_final_mxn.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     ]);
   });
+}
+function table_banks_mxn(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_banks);
+  vartable.fnClearTable();
+  var bucle=0;
+  var deposito=0;
+  var retiro=0;
+  var depos_mov=0;
+  var ret_mov=0;
+  $.each(datajson, function(index, status){
+    //console.log(status.deposito.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    vartable.fnAddData([
+      status.banco,
+      // status.semana,
+      status.saldo_inicial.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      bucle==1? (deposito-status.deposito.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(/,/g, '')).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","): status.deposito.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      bucle==1? (retiro-status.retiro.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(/,/g, '')).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","): status.retiro.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      status.saldo_final.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      status.saldo_inicial_mxn.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      status.saldo_final_mxn.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    ]);
+    if(bucle==0){
+      deposito=status.deposito.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(/,/g, '');
+      retiro=status.retiro.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(/,/g, '');
+    }
+    if(bucle==1){
+      depos_mov=(deposito-status.deposito.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(/,/g, '')).toString();
+      ret_mov=(retiro-status.retiro.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(/,/g, '')).toString();
+    }
+
+    bucle++;
+  });
+  var total_dep=($("#tdep_mov").text().replace(",","").replace("(","").replace(")","")).toString();
+  var total_ret=($("#tret_mov").text().replace(",","").replace("(","").replace(")","")).toString();
+
+
+  $("#tdep_mov").text(total_dep-depos_mov);
+  $("#tret_mov").text(total_ret-ret_mov);
+}
+
+
+function table_banks_rev(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_banks);
+  vartable.fnClearTable();
+  var bucle=0;
+  $.each(datajson, function(index, status){
+    //console.log(parseInt(status.saldo_final.toString().replace(/\B(?=(\d{3})+(?!\d))/g,"").replace(/,/g, '')));
+    vartable.fnAddData([
+      status.banco,
+      // status.semana,
+      status.saldo_inicial.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      status.deposito.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      status.retiro.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      status.saldo_final.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      //status.saldo_inicial_mxn.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    //  status.saldo_final_mxn.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      status.saldo_final.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      bucle==0? (285-status.saldo_final): bucle==1? (5000+parseInt(status.saldo_final.toString().replace(/\B(?=(\d{3})+(?!\d))/g,"").replace(/,/g, ''))): (6000+parseInt(status.saldo_final.toString().replace(/\B(?=(\d{3})+(?!\d))/g,"").replace(/,/g, ''))),
+      bucle==0? 285: bucle==1? 5000 : 6000,
+      ""
+    ]);
+    bucle++;
+  });
+  var grantotal=parseInt(($("#gt_f").text().replace(",","").replace("(","").replace(")","")).toString());
+  var rev_disp=parseInt(($("#rev_disp").text().replace(",","").replace("(","").replace(")","")).toString());
+
+  $("#liquidez_tot").text((grantotal+rev_disp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 }
 
 function get_all_banks() {
@@ -353,7 +422,7 @@ function get_table_values() {
     //console.log(data);
       var sortedData= data.sort(function(a, b) {//Ordenamos los datos
 
-       var arrayOrder = ["Traspasos, venta divisas","Créditos, arrendamientos, intereses, Comisiones bancarias, Impuestos","Ingresos CxC/PagosCxP","Movimientos por identificar/Fuera del sistema","Devuelto, rechazado por el banco","Notas de Crédito, eliminados, cancelados","Ingresos gastos extranjeros","Ingresos en MXN, facturado en USD"];
+       var arrayOrder = ["Traspasos, venta divisas","Traspasos, venta divisas (DOP,CRC)","Créditos, arrendamientos, intereses, Comisiones bancarias, Impuestos","Ingresos CxC/PagosCxP","Movimientos por identificar/Fuera del sistema","Devuelto, rechazado por el banco","Notas de Crédito, eliminados, cancelados","Ingresos gastos extranjeros","Rendimiento","Ingresos en MXN, facturado en USD"];
        function getIndex(x) {
          return arrayOrder.indexOf(x.descripcion);
        }
