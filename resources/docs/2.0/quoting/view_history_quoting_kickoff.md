@@ -30,7 +30,7 @@ Al final del formulario del Documento A se encuentra un apartado con checks para
 
 Si la informacion del Documento A no esta completa le aparecera un mensaje de advertencia deacuerdo al area que le corresponde autorizar y le marcara los campos faltantes en rojo. No podra autorizar hasta que llene los campos que se le indican.<br><br>
 
-![image](/images/docs/quoting/mensajeDnyAepproval.png)<br><br>
+![image](/images/docs/quoting/mensajeDenyApproval.png)<br><br>
 ![image](/images/docs/quoting/inputsVacios.png)<br><br>
 
 Si la informacion del area a autorizar esta completa le aparecera un mensaje de confirmacion y al recargarse la pagina aparecera la leyenda ***Autorizado*** debajo del nombre de la persona quien autorizo.<br><br>

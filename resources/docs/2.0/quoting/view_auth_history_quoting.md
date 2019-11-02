@@ -12,7 +12,7 @@ En esta vista tendran las opciones disponibles para imprimir la propuesta comerc
 
 ![image](/images/docs/quoting/pdfPropuesta.png)<br><br>
 
-## <a name="sendlegal">Enviar a legal</a>
++## <a name="sendlegal">Enviar a legal</a>
 Una vez que el cliente acepte los terminos de la propuesta comercial se procedera en enviar la cotizacion al area legal para que se realice el contrato del proyecto.<br><br>
 Para enviar la propuesta comercial debera seleccionar el cotizador y despues dar clic al boton ***Enviar a legal***.
 ![image](/images/docs/quoting/enviarLegal.png)<br><br>

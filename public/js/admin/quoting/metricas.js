@@ -388,74 +388,84 @@ function set_icons(element, flag){
 }
 
 function calcularServicioMensual(){
-
+    let productos;
     
-    Swal.fire({
-      title: 'Buscando objetivo...',
-      text: '',
-      backdrop: `
-        rgba(11, 11, 12,0.5)
-        center left
-        no-repeat
-      `,
-      onBeforeOpen: () => {
-        Swal.showLoading();
-      },
-      onOpen: () => {
-        let enlace = document.getElementById("enlace").value;
-        enlace = parseFloat(enlace) * 1.1;
-        let plazo = document.getElementById("plazo").value;
-        let capex = document.getElementById("capex").value;
-        let deposito = document.getElementById("deposito").value;
-        let total_gastos = remove_commas(document.getElementById('total_gastos').innerHTML);
-        let total_inversion = remove_commas(document.getElementById('total_rubros').innerHTML);
-        let comision = get_comision();
-        total_inversion = parseFloat(total_inversion - comision);
-        var renta = 0;
-        var flag = false;
+    (localStorage.getItem('productos') == null) ?  productos = [] : productos = JSON.parse(localStorage.getItem('productos'));
 
-        do{
-           renta+=50;
-           let utilidad_mensual = parseFloat(renta) + enlace - parseFloat(total_gastos);
-           let utilidad_mensual_percent = utilidad_mensual / (parseFloat(renta) + enlace);
-           utilidad_mensual_percent *= 100;
 
-           let utilidad_proyecto = utilidad_mensual * parseInt(plazo);
-           let utilidad_3_anios = utilidad_mensual * 36;
-           let utilidad_inversion = (utilidad_mensual / total_inversion) * 100;
-
-           let renta_mensual_inversion = (parseFloat(renta)) / ( parseFloat(total_inversion) - parseFloat(capex) - parseFloat(deposito));
-           renta_mensual_inversion *= 100;
-
-           let utilidad_renta_percent =  utilidad_mensual / (parseFloat(renta) - enlace);
-           utilidad_renta_percent *= 100;
-
-           let utilidad_3_anios_minimo = total_inversion  / 0.833333;
-
-           let tiempo_retorno = (parseFloat(total_inversion) - parseFloat(capex) - parseFloat(deposito)) / (parseFloat(renta) - enlace);
-           let tir = get_tir(renta);    
-           
-           // Verificando que todos los objetivos se cumplan
-          if(renta_mensual_inversion >= 7.0 && utilidad_inversion >= 2.0 &&
-             utilidad_3_anios >= utilidad_3_anios_minimo && utilidad_renta_percent >= 33.0 &&
-             tiempo_retorno <= 18 & tir >= 50.0){
-             flag = true;
-             document.getElementById('servicio').value = renta;
+    if(productos.length == 0){
+      Swal.fire(
+       'Cotizador sin materiales',
+       'Debe agregar materiales al cotizador para calcular el servicio mensual',
+       'warning'
+      )
+    }else{
+      Swal.fire({
+        title: 'Buscando objetivo...',
+        text: '',
+        backdrop: `
+          rgba(11, 11, 12,0.5)
+          center left
+          no-repeat
+        `,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+        onOpen: () => {
+          let enlace = document.getElementById("enlace").value;
+          enlace = parseFloat(enlace) * 1.1;
+          let plazo = document.getElementById("plazo").value;
+          let capex = document.getElementById("capex").value;
+          let deposito = document.getElementById("deposito").value;
+          let total_gastos = remove_commas(document.getElementById('total_gastos').innerHTML);
+          let total_inversion = remove_commas(document.getElementById('total_rubros').innerHTML);
+          let comision = get_comision();
+          total_inversion = parseFloat(total_inversion - comision);
+          var renta = 0;
+          var flag = false;
+  
+          do{
+             renta+=50;
+             let utilidad_mensual = parseFloat(renta) + enlace - parseFloat(total_gastos);
+             let utilidad_mensual_percent = utilidad_mensual / (parseFloat(renta) + enlace);
+             utilidad_mensual_percent *= 100;
+  
+             let utilidad_proyecto = utilidad_mensual * parseInt(plazo);
+             let utilidad_3_anios = utilidad_mensual * 36;
+             let utilidad_inversion = (utilidad_mensual / total_inversion) * 100;
+  
+             let renta_mensual_inversion = (parseFloat(renta)) / ( parseFloat(total_inversion) - parseFloat(capex) - parseFloat(deposito));
+             renta_mensual_inversion *= 100;
+  
+             let utilidad_renta_percent =  utilidad_mensual / (parseFloat(renta) - enlace);
+             utilidad_renta_percent *= 100;
+  
+             let utilidad_3_anios_minimo = total_inversion  / 0.833333;
+  
+             let tiempo_retorno = (parseFloat(total_inversion) - parseFloat(capex) - parseFloat(deposito)) / (parseFloat(renta) - enlace);
+             let tir = get_tir(renta);    
              
-          }
-        }while(flag != true);
-        set_table_rubro();
-        set_table_gastos();
-        set_table_modelos();
-        set_table_servadm();
-        set_table_objetivos(); 
-        Swal.close();
-      },
-      onAfterClose: () => {
-        Swal.fire('Servicio mensual actualizado','','success');
-      }
-    });
-
+             // Verificando que todos los objetivos se cumplan
+            if(renta_mensual_inversion >= 7.0 && utilidad_inversion >= 2.0 &&
+               utilidad_3_anios >= utilidad_3_anios_minimo && utilidad_renta_percent >= 33.0 &&
+               tiempo_retorno <= 18 & tir >= 50.0){
+               flag = true;
+               document.getElementById('servicio').value = renta;
+               
+            }
+          }while(flag != true);
+          set_table_rubro();
+          set_table_gastos();
+          set_table_modelos();
+          set_table_servadm();
+          set_table_objetivos(); 
+          Swal.close();
+        },
+        onAfterClose: () => {
+          Swal.fire('Servicio mensual actualizado','','success');
+        }
+      });
+    }
        
 }
 
