@@ -383,6 +383,11 @@ class ContratoController extends Controller
       $fact_unidad_medida = $request->sel_unitmeasure;
       $fact_sat_product = $request->sel_satproduct;
 
+      //banderas vtc, venue,compartir ingreso
+      $cont_vtc=$request->cont_vtc;
+      $cont_venue=$request->cont_venue;
+      $comp_ingreso=$request->comp_ingreso;
+      //info($request);
     $newAnnexeContMaster = DB::table('contract_annexes')->insertGetId(
       [
         // 'digit' => $text_5,
@@ -396,9 +401,13 @@ class ContratoController extends Controller
         'business_user_id' => $id_comercial,
         'file' => $pdf,
         'contract_master_id' => $id_contract_master,
+        'contract_status_id' => $id_status,
         'description_fact' => $fact_descrip_fact,
         'unit_measure_id' => $fact_unidad_medida,
         'sat_product_id' => $fact_sat_product,
+        'vtc'=>$cont_vtc,
+        'venue'=>$cont_venue,
+        'compartir_ingreso'=>$comp_ingreso,
         'created_at' => \Carbon\Carbon::now()
       ]
     );
