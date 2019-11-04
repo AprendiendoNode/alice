@@ -394,6 +394,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/estimation_site_table/id_anexo/{anexo}', 'Projects\DocumentpHistoryController@get_estimation_site_by_site');
   Route::get('/estimation_site_data/id_anexo/{anexo}', 'Projects\DocumentpHistoryController@get_estimation_site_by_site_data');
   Route::get('/budget_site_table/{id_anexo}/{tipo_cambio}/{date}', 'Projects\DocumentpHistoryController@get_budgettable_site');
+  Route::post('/uploadActaEntrega', 'Projects\DocumentpController@uploadActaEntrega');
+  Route::post('/downloadActaEntrega', 'Projects\DocumentpController@downloadActaEntrega');
+  Route::get('/checkActaEntregaUpload/{id_documentp}', 'Projects\DocumentpController@checkActaEntregaUpload');
   //Editar Documento P
   Route::post('/edit_cart', 'Projects\EditDocumentPController@index'); //Vista del formulario para editar
   Route::get('/get_shopping_cart/id/{id}', 'Projects\EditDocumentPController@getShoppingCart');

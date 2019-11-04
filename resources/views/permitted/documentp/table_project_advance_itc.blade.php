@@ -4,6 +4,9 @@
     <h5 class="text-center">Última actualización: <span id="fecha_actualizacion" class="badge badge-dark badge-pill text-white">{{$docp_advance->updated_at}}</span> </h5>
 
       <div class="col-md-12">
+        <div class="row mb-4">
+          <button type="button" onclick="downloadActaEntrega(this);" data-id="{{$id_doc}}" class="btn btn-success"><i class="fas fa-download"></i> Acta de Entrega</button>
+        </div>
         <div class="row">
           <div class="col-md-4">
             <label for="" class="control-label">Entrega estimada</label>

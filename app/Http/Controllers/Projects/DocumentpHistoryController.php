@@ -239,9 +239,9 @@ class DocumentpHistoryController extends Controller
         $docp_advance->total_global = floor($docp_advance->total_global);
 
         if (auth()->user()->can('View level zero documentp notification')) {
-          return view('permitted.documentp.table_project_advance_itc', compact('docp_advance', 'motives'))->render();
+          return view('permitted.documentp.table_project_advance_itc', compact('docp_advance', 'motives', 'id_doc'))->render();
         }else {
-          return view('permitted.documentp.table_project_advance_compras', compact('docp_advance', 'motives', 'motivo_name'))->render();
+          return view('permitted.documentp.table_project_advance_compras', compact('docp_advance', 'motives', 'motivo_name', 'id_doc'))->render();
         }
 
       }

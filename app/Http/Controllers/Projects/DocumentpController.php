@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Projects;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Models\Projects\Documentp;
@@ -16,6 +17,8 @@ use PDF;
 use Auth;
 use DB;
 use Mail;
+use File;
+use Storage;
 use App\Mail\SolicitudCompra;
 
 class DocumentpController extends Controller
@@ -266,6 +269,50 @@ class DocumentpController extends Controller
     $project->save();
 
     $flag = true;
+  }
+
+  public function uploadActaEntrega(Request $request)
+  {
+    $file_extension="";
+
+    if($request->file('file') != null )
+    {
+      $documentp = Documentp::findOrFail($request->id_documentp);
+      $file= $request->file('file');
+      $file_extension = $file->getClientOriginalExtension();
+      $name_file = strtoupper($documentp->folio . '_' . $documentp->nombre_proyecto);
+      $doc = $request->file('file')->storeAs('filestore/storage/documentop/ActaEntrega', 'ACTA_' . $name_file . '.' . $file_extension);
+      $documentp->acta_entrega_file = $doc;
+      $documentp->save();
+    }
+
+  }
+
+  public function downloadActaEntrega(Request $request)
+  {
+      $documentp = Documentp::findOrFail($request->id_documentp);
+      $url_file = $documentp->acta_entrega_file;
+
+      if($url_file != null){
+        $path = public_path('/images/storage/'.$url_file);
+        if(File::exists($path)){ 
+          return response()->download($path);
+        }
+      }    
+  }
+
+  public function checkActaEntregaUpload($id_documentp)
+  {
+	$status = "false";
+	$documentp = Documentp::findOrFail($id_documentp);
+    $url_file = $documentp->acta_entrega_file;
+
+	if($url_file != null && $url_file != ''){
+		$status = "true";
+	}
+
+	return $status;
+      
   }
 
   public function createFolio()

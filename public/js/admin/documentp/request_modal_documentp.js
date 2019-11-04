@@ -139,7 +139,6 @@ async function deny_docp(e){
 
 }
 
-
 function editar(e){
   var element = e;
   var _token = $('input[name="_token"]').val();
@@ -150,6 +149,174 @@ function editar(e){
   form.submit();
 
 }
+
+function get_extension_file(filename){
+	return filename.split('.').pop();
+}
+
+async function uploadActaEntrega(e){
+  var element = e;
+  let id_documentp = element.dataset.id;
+  var _token = $('input[name="_token"]').val();
+
+  const headers = new Headers({
+    "Accept": "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+    "X-CSRF-TOKEN": _token
+  })
+
+  const { value: file } = await Swal.fire({
+    title: 'Subir acta de entrega',
+    input: 'file',
+    inputAttributes: {
+      accept: '.pdf , .doc , .docx',
+      'aria-label': 'Buscar archivo'
+    }
+  })
+
+  var initGet = { method: 'GET',
+				headers: headers,
+				credentials: "same-origin",
+				cache: 'default' };
+			
+  // REVISO SI EL PROYECTO YA TIENE UNA ACTA DE ENTREGA SUBIDA
+  const checkActaEntrega = await fetch(`/checkActaEntregaUpload/${id_documentp}`,  initGet)
+  .then(result => result.json())
+  .then(data => {
+	  return data;
+  });
+  
+  // SI EL USUARIO SELECCIONO UN ARCHIVO SE VALIDA LA EXTENSION Y SE PROCEDE A GUARDAR
+  if (file) {
+    var formData = new FormData();
+    formData.append('id_documentp', id_documentp);
+	formData.append('file', file);
+	
+    var init = { method: 'POST',
+				headers: headers,
+				credentials: "same-origin",
+				body: formData,
+				cache: 'default' };
+	let extension = get_extension_file(file.name);
+
+	if(extension == 'doc' || extension == 'docx' || extension == 'pdf'){
+		
+		if(checkActaEntrega == false){
+			fetch(`/uploadActaEntrega`,  init)
+				.then(response => {
+					if(response.ok){
+						Swal.fire('Archivo guardado', file.name,'success');
+					}else{
+						Swal.fire('Ocurrio un error','','error');
+					}		
+				})
+				.catch(error => {
+					console.log(error);
+				}) 
+		}else{
+			Swal.fire({
+				title: 'Este documento ya tiene un acta de entrega',
+				text: "Desea sustituir el archivo existente?",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Si, sustituir archivo!',
+				cancelButtonText: 'Cancelar'
+			  }).then((result) => {
+				if (result.value) {
+					fetch(`/uploadActaEntrega`,  init)
+					.then(response => {
+						if(response.ok){
+							Swal.fire('Archivo guardado', file.name,'success');
+						}else{
+							Swal.fire('Ocurrio un error','','error');
+						}		
+					})
+					.catch(error => {
+						console.log(error);
+					}) 
+				}
+			  })
+		}
+		 
+	}else{
+		Swal.fire('Archivo no valido', 
+				'Solo puede subir archivos con las siguientes extensiones: .pdf, .doc, .docx' , 
+				'warning');
+	}                  
+	              
+  }else{
+    Swal.fire('No selecciono ningun archivo', '' , 'warning');
+  }
+
+}
+
+function downloadActaEntrega(e){
+  var element = e;
+  let id_documentp = element.dataset.id;
+  var token = $('input[name="_token"]').val();
+
+  $.ajax({
+    type: "POST",
+    url: "/downloadActaEntrega",
+    data: { id_documentp : id_documentp , _token : token },
+    xhrFields: {responseType: 'blob'},
+    success: function(response, status, xhr){
+      console.log(response);
+    if(response !== '[object Blob]'){
+
+      var filename = "";
+      var disposition = xhr.getResponseHeader('Content-Disposition');
+
+			if (disposition) {
+			var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+			var matches = filenameRegex.exec(disposition);
+			if (matches !== null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+			}
+			var linkelem = document.createElement('a');
+			try {
+				var blob = new Blob([response], { type: 'application/octet-stream' });
+
+				if (typeof window.navigator.msSaveBlob !== 'undefined') {
+					//   IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+					window.navigator.msSaveBlob(blob, filename);
+				} else {
+					var URL = window.URL || window.webkitURL;
+					var downloadUrl = URL.createObjectURL(blob);
+
+					if (filename) {
+						// use HTML5 a[download] attribute to specify filename
+						var a = document.createElement("a");
+						// safari doesn't support this yet
+						if (typeof a.download === 'undefined') {
+							window.location = downloadUrl;
+						} else {
+							a.href = downloadUrl;
+							a.download = filename;
+							document.body.appendChild(a);
+							a.target = "_blank";
+							a.click();
+						}
+					} else {
+						window.location = downloadUrl;
+					}
+				}
+
+			} catch (ex) {
+				console.log(ex);
+			}
+		}else{
+			Swal.fire("El archivo no existe", "", "warning");
+		}
+		},
+		error: function (response) {
+
+		}
+
+    });
+}
+
 
 function kickoff(e){
   var element = e;
