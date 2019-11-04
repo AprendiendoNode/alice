@@ -172,6 +172,7 @@ class CustomerInvoiceController extends Controller
 
        if ($request->ajax()) {
            //Variables de totales
+           $amount_subtotal = 0;
            $amount_discount = 0;
            $amount_untaxed = 0;
            $amount_tax = 0;
@@ -186,6 +187,9 @@ class CustomerInvoiceController extends Controller
                $item_quantity = (double)$item['quantity'];
                $item_price_unit = (double)$item['price_unit'];
                $item_discount = (double)$item['discount'];
+
+               $item_subtotal_quantity = round($item_price_unit * $item_quantity, 2);
+
                $item_price_reduce = ($item_price_unit * (100 - $item_discount) / 100); //precio del artículo reducido
                $item_amount_untaxed = round($item_quantity * $item_price_reduce, 2); //cantidad del artículo sin impuestos
                $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed; //descuento del importe del artículo
@@ -214,6 +218,8 @@ class CustomerInvoiceController extends Controller
                }
 
                $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;
+               $item_subtotal_clean = $item_subtotal_quantity;
+               $item_discount_clean = $item_amount_discount;
                $item_subtotal = $item_amount_untaxed ;
                //Tipo cambio
                if ($item['current'] === $currency_id) {
@@ -228,6 +234,10 @@ class CustomerInvoiceController extends Controller
                    $item_amount_tax = $item_amount_tax * $currency_value;
                    $item_amount_total = $item_amount_total * $currency_value;
                    $item_subtotal = $item_subtotal * $currency_value;
+
+                   $item_subtotal_clean = $item_subtotal_clean * $currency_value;
+                   $item_discount_clean = $item_discount_clean * $currency_value;
+
                    $items_tc [$key] =$currency_value;//ALMACENO TIPO CAMBIO
                  }
                  else { //moneda distinta
@@ -237,6 +247,11 @@ class CustomerInvoiceController extends Controller
                       $item_amount_total = $item_amount_total/$resp_currency_value;
                       $item_amount_tax = $item_amount_tax / $resp_currency_value;
                       $item_subtotal = $item_subtotal / $resp_currency_value;
+
+                      $item_subtotal_clean = $item_subtotal_clean / $resp_currency_value;
+                      $item_discount_clean = $item_discount_clean / $resp_currency_value;
+
+
                       $items_tc [$key] =$resp_currency_value;//ALMACENO TIPO CAMBIO
                    }
                    else {
@@ -249,7 +264,9 @@ class CustomerInvoiceController extends Controller
                $item_amount_untaxed = round($item_quantity * $item_amount_total, 2); //cantidad del artículo sin impuestos
 
                //Sumatoria totales
-               $amount_discount += $item_amount_discount;
+               $amount_subtotal += $item_subtotal_clean;
+
+               $amount_discount += $item_discount_clean;
                $amount_untaxed += $item_subtotal;
                $amount_tax += $item_amount_tax;
                $amount_tax_ret += $item_amount_tax_ret;
@@ -265,6 +282,7 @@ class CustomerInvoiceController extends Controller
            //Respuesta
            $json->text = $currency_value;
            $json->items = $items;
+           $json->amount_subtotal = $amount_subtotal;
            $json->amount_discount = $amount_discount;
            $json->amount_untaxed = $amount_untaxed;
            $json->amount_tax = $amount_tax + $amount_tax_ret;
@@ -559,6 +577,7 @@ class CustomerInvoiceController extends Controller
           //Guardar Registro principal
           $customer_invoice = CustomerInvoice::create($request->input());
           //Registro de lineas
+          $amount_subtotal = 0;
           $amount_discount = 0;  //Descuento de cantidad
           $amount_untaxed = 0;   //Cantidad sin impuestos
           $amount_tax = 0;       //Importe impuesto
@@ -577,6 +596,9 @@ class CustomerInvoiceController extends Controller
                   $item_quantity = (double)$item['quantity'];  //cantidad de artículo
                   $item_price_unit = (double)$item['price_unit']; //unidad de precio del artículo
                   $item_discount = (double)$item['discount']; //descuento del artículo
+
+                  $item_subtotal_quantity = round($item_price_unit * $item_quantity, 2);
+
                   $item_price_reduce = ($item_price_unit * (100 - $item_discount) / 100); //Precio reducido
                   $item_amount_untaxed = round($item_quantity * $item_price_reduce, 2); //libre de impuestos
                   $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed;//descuento
@@ -607,6 +629,8 @@ class CustomerInvoiceController extends Controller
                           }
                       }
                   }
+                  $item_subtotal_clean = $item_subtotal_quantity; 
+                  $item_discount_clean = $item_amount_discount;
                   $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;
                   $item_subtotal = $item_amount_untaxed; //libre de impuestos
 
@@ -627,6 +651,9 @@ class CustomerInvoiceController extends Controller
                       $item_amount_tax = $item_amount_tax / $item_currency_value;
                       $item_amount_total = $item_amount_total / $item_currency_value;
                       $item_subtotal = $item_subtotal / $item_currency_value;
+                      
+                      $item_subtotal_clean = $item_subtotal_clean / $item_currency_value;
+                      $item_discount_clean = $item_discount_clean / $item_currency_value;
                     }
                   }
                   //Moneda distinta
@@ -638,6 +665,9 @@ class CustomerInvoiceController extends Controller
                       $item_amount_tax = $item_amount_tax * $item_currency_value;
                       $item_amount_total = $item_amount_total * $item_currency_value;
                       $item_subtotal = $item_subtotal * $item_currency_value;
+                      $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
+                      $item_discount_clean = $item_discount_clean * $item_currency_value;
+
                     }
                     else {
                       $item_currency_value = DB::table('currencies')->select('rate')->where('id', $item_currency_id)->value('rate');
@@ -645,11 +675,15 @@ class CustomerInvoiceController extends Controller
                       $item_amount_tax = $item_amount_tax * $item_currency_value;
                       $item_amount_total = $item_amount_total * $item_currency_value;
                       $item_subtotal = $item_subtotal * $item_currency_value;
+                      $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
+                      $item_discount_clean = $item_discount_clean * $item_currency_value;
+
                     }
                   }
                   //--------------------------------------------------------------------------------------------------------------------------//
                   //Sumatoria totales
-                  $amount_discount += $item_amount_discount;
+                  $amount_subtotal += $item_subtotal_clean;
+                  $amount_discount += $item_discount_clean;
                   $amount_untaxed += $item_subtotal; //Original -> $amount_untaxed += $item_amount_untaxed;
                   $amount_tax += $item_amount_tax;
                   $amount_tax_ret += $item_amount_tax_ret;
@@ -668,8 +702,10 @@ class CustomerInvoiceController extends Controller
                       'price_unit' => $item_price_unit,
                       'discount' => $item_discount,
                       'price_reduce' => $item_price_reduce,
-                      'amount_discount' => $item_amount_discount,
-                      'amount_untaxed' => $item_amount_untaxed,
+                      'amount_discount' => $item_discount_clean,
+                      // 'amount_discount' => $item_amount_discount,
+                      'amount_untaxed' => $item_subtotal_clean,
+                      // 'amount_untaxed' => $item_amount_untaxed,
                       'amount_tax' => $item_amount_tax,
                       'amount_tax_ret' => $item_amount_tax_ret,
                       'amount_total' => $item_amount_total,
@@ -734,7 +770,7 @@ class CustomerInvoiceController extends Controller
 
           //Actualiza registro principal con totales
           $customer_invoice->amount_discount = $amount_discount;
-          $customer_invoice->amount_untaxed = $amount_untaxed;
+          $customer_invoice->amount_untaxed = $amount_subtotal;
           $customer_invoice->amount_tax = $amount_tax;
           $customer_invoice->amount_tax_ret = $amount_tax_ret;
           $customer_invoice->amount_total = $amount_total;
@@ -826,6 +862,7 @@ class CustomerInvoiceController extends Controller
          //Guardar Registro principal
          $customer_invoice = CustomerInvoice::create($request->input());
          //Registro de lineas
+         $amount_subtotal = 0;
          $amount_discount = 0;  //Descuento de cantidad
          $amount_untaxed = 0;   //Cantidad sin impuestos
          $amount_tax = 0;       //Importe impuesto
@@ -843,6 +880,10 @@ class CustomerInvoiceController extends Controller
                  $item_quantity = (double)$item['quantity']; //cantidad de artículo
                  $item_price_unit = (double)$item['price_unit']; //unidad de precio del artículo
                  $item_discount = (double)$item['discount']; //descuento del artículo
+
+                 $item_subtotal_quantity = round($item_price_unit * $item_quantity, 2);
+
+
                  $item_price_reduce = ($item_price_unit * (100 - $item_discount) / 100); //Precio reducido
                  $item_amount_untaxed = round($item_quantity * $item_price_reduce, 2); //libre de impuestos
                  $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed;//descuento
@@ -873,6 +914,8 @@ class CustomerInvoiceController extends Controller
                          }
                      }
                  }
+                 $item_subtotal_clean = $item_subtotal_quantity; 
+                 $item_discount_clean = $item_amount_discount;
                  $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;// cantidad total del artículo = Cantidad del artículo libre de impuestos + impuesto a la cantidad del artículo + cantidad de artículo retiro de impuestos
                  $item_subtotal = $item_amount_untaxed; //libre de impuestos
                  //Tipo de cambio
@@ -891,6 +934,8 @@ class CustomerInvoiceController extends Controller
                      $item_amount_tax = $item_amount_tax / $item_currency_value;
                      $item_amount_total = $item_amount_total / $item_currency_value;
                      $item_subtotal = $item_subtotal / $item_currency_value;
+                      $item_subtotal_clean = $item_subtotal_clean / $item_currency_value; 
+                      $item_discount_clean = $item_discount_clean / $item_currency_value;
                    }
                  }
                  //Moneda distinta
@@ -902,6 +947,9 @@ class CustomerInvoiceController extends Controller
                      $item_amount_tax = $item_amount_tax * $item_currency_value;
                      $item_amount_total = $item_amount_total * $item_currency_value;
                      $item_subtotal = $item_subtotal * $item_currency_value;
+                      $item_subtotal_clean = $item_subtotal_clean * $item_currency_value; 
+                      $item_discount_clean = $item_discount_clean * $item_currency_value;
+
                    }
                    else {
                      $item_currency_value = DB::table('currencies')->select('rate')->where('id', $item_currency_id)->value('rate');
@@ -909,12 +957,16 @@ class CustomerInvoiceController extends Controller
                      $item_amount_tax = $item_amount_tax * $item_currency_value;
                      $item_amount_total = $item_amount_total * $item_currency_value;
                      $item_subtotal = $item_subtotal * $item_currency_value;
+                      $item_subtotal_clean = $item_subtotal_clean * $item_currency_value; 
+                      $item_discount_clean = $item_discount_clean * $item_currency_value;
+
                    }
                  }
                  //--------------------------------------------------------------------------------------------------------------------------//
 
                  //Sumatoria totales
-                 $amount_discount += $item_amount_discount;
+                 $amount_subtotal += $item_subtotal_clean;
+                 $amount_discount += $item_discount_clean;
                  $amount_untaxed += $item_subtotal; //Original -> $amount_untaxed += $item_amount_untaxed;
                  $amount_tax += $item_amount_tax;
                  $amount_tax_ret += $item_amount_tax_ret;
@@ -932,8 +984,10 @@ class CustomerInvoiceController extends Controller
                      'price_unit' => $item_price_unit,
                      'discount' => $item_discount,
                      'price_reduce' => $item_price_reduce,
-                     'amount_discount' => $item_amount_discount,
-                     'amount_untaxed' => $item_amount_untaxed,
+                     'amount_discount' => $item_discount_clean,
+                     // 'amount_discount' => $item_amount_discount,
+                     'amount_untaxed' => $item_subtotal_clean,
+                     // 'amount_untaxed' => $item_amount_untaxed,
                      'amount_tax' => $item_amount_tax,
                      'amount_tax_ret' => $item_amount_tax_ret,
                      'amount_total' => $item_amount_total,
@@ -999,7 +1053,7 @@ class CustomerInvoiceController extends Controller
 
          //Actualiza registro principal con totales
          $customer_invoice->amount_discount = $amount_discount;
-         $customer_invoice->amount_untaxed = $amount_untaxed;
+         $customer_invoice->amount_untaxed = $amount_subtotal;
          $customer_invoice->amount_tax = $amount_tax;
          $customer_invoice->amount_tax_ret = $amount_tax_ret;
          $customer_invoice->amount_total = $amount_total;

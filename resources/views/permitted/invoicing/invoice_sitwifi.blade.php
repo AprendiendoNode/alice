@@ -240,6 +240,10 @@
         <td align="right" colspan="2">Sub Total</td>
         <td align="right" colspan="2">$ <span>{{ number_format($customer_invoice->amount_untaxed, 2,'.', ','),$customer_invoice->currency->code }}</span></td>
       </tr>
+      <tr>
+        <td align="right" colspan="2">Descuento</td>
+        <td align="right" colspan="2">$ <span>{{ number_format($customer_invoice->amount_discount, 2,'.', ','),$customer_invoice->currency->code }}</span></td>
+      </tr>
       @if($customer_invoice->customerInvoiceTaxes->isNotEmpty())
           @foreach($customer_invoice->customerInvoiceTaxes as $result)
               <tr>

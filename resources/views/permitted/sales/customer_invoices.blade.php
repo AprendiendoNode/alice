@@ -374,12 +374,18 @@
                                 <!-- Totales -->
                                 <tr>
                                     <td></td>
-                                    <td class="text-right" colspan="8" rowspan="3"
+                                    <td class="text-right" colspan="8" rowspan="4"
                                         style="vertical-align: middle">
-                                        <textarea class="form-control input-sm col-name-id" name="comment" id="comment" placeholder="@lang('customer_credit_note.entry_comment')" required rows="3" autocomplete="off" /></textarea>
+                                        <textarea class="form-control input-sm col-name-id" name="comment" id="comment" placeholder="@lang('customer_credit_note.entry_comment')" required rows="4" autocomplete="off" /></textarea>
                                     </td>
                                     <td class="text-right"><strong>Subtotal</strong></td>
                                     <td class="text-right"><span id="txt_amount_untaxed">0</span></td>
+                                    <td class="text-right"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="text-right"><strong>Descuento</strong></td>
+                                    <td class="text-right"><span id="txt_amount_discount">0</span></td>
                                     <td class="text-right"></td>
                                 </tr>
                                 <tr>
@@ -905,7 +911,10 @@
                     $.each(data.tc_used, function (key, value) {
                         $("#exchange_rate_applied" + key).html(value);
                     });
-                    $("#form #txt_amount_untaxed").html(data.amount_untaxed);
+
+                    // $("#form #txt_amount_untaxed").html(data.amount_untaxed);
+                    $("#form #txt_amount_untaxed").html(data.amount_subtotal);
+                    $("#form #txt_amount_discount").html(data.amount_discount);
                     $("#form #txt_amount_tax").html(data.amount_tax);
                     $("#form #txt_amount_total").html(data.amount_total);
                     $("#form input[name='amount_total_tmp']").val(data.amount_total_tmp)
