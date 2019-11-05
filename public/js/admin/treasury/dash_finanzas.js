@@ -464,6 +464,7 @@ function table_cxc_vencidas(){
     data: { _token : _token },
     success: function (data){
     //  console.log(data);
+    $('.divCXC').addClass('tableFixHead');
       table_vencidas(data, $('#table_cxc_vencidas'));
     },
     error: function (data) {
@@ -956,7 +957,7 @@ var Configuration_table_cxc_vencidas = {
                   }
   ],
 
-  bInfo: false,
+  bInfo: true,
   "footerCallback": function(row, data, start, end, display){
     var api = this.api(), data;
     var suma = 0;

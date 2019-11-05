@@ -466,12 +466,12 @@
                 </div>
             </div>
 
-            <div class="row text-center contact-info">
+            <div class="row text-center ">
                 <div class="col-sm-12">
-                  <div class=" table-responsive clearfix mt-10">
-                      <table id="table_cxc_vencidas" class="table table-bordered table-striped table-hover display compact-tab" style="width: 100%;">
-                        <thead>
-                          <tr class="" style="background: #252525">
+                  <div class=" table-responsive divCXC mt-10">
+                      <table id="table_cxc_vencidas" class="table table-bordered  compact-tab table-hover " style="width: 100%;">
+                        <thead  >
+                          <tr class="" style="background: #252525;">
                             <th class="text-center " style="background: #252525"> <small>Cuentas por cobrar</small> </th>
                             <th class="text-center  sum_col" style="background: #005A96"> <small>1 Mes(MXN)</small> </th>
                             <th class="text-center  sum_col" style="background: #005A96"> <small>2 Mes(MXN)</small> </th>
@@ -574,6 +574,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/pdf.css')}}" >
     <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.dataTables.min.css">
     <style media="screen">
       .none_pading {
         padding:0px 0px 0px 0px !important;
@@ -615,7 +616,8 @@
       #history_comment{
         white-space:break-all  !important;
       }
-
+      .tableFixHead          { overflow-y: auto; height: 600px; }
+      .tableFixHead thead th { position: sticky !important; top: 0; }
 
     </style>
     <script src="{{ asset('js/admin/treasury/dash_finanzas.js?v=2.5')}}"></script>
