@@ -426,6 +426,21 @@
                           </div>
                         </div>
                         <div class="row">
+                        <div class="pt-3 col-md-3">
+                            <p>Contemplar para VTC</p>
+                            <input type="checkbox" id="cont_vtc" class="js-switch" name="">
+                        </div>
+                        <div class="pt-3 col-md-3">
+                            <p>Contemplar para venue</p>
+                            <input type="checkbox" id="cont_venue" class="js-switch" name="">
+                        </div>
+                        <div class="pt-3 col-md-3">
+                            <p>Compartir ingreso</p>
+                            <input type="checkbox" id="comp_ingreso" class="js-switch" name="">
+                        </div>
+
+                        </div>
+                        <div class="row">
                           <div class="col-md-12">
                             <h5><strong>Sitios</strong></h5>
                             <div class="table-responsive">
@@ -653,6 +668,9 @@
 
     <script src="{{ asset('js/admin/contract/contract_master_edit.js?v1.0')}}"></script>
     <script src="{{ asset('js/admin/contract/contract_anexo_edit.js?v1.0')}}"></script>
+
+    <link href="{{ asset('bower_components/switchery-master/dist/switchery.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{ asset('bower_components/switchery-master/dist/switchery.js')}}" charset="utf-8"></script>
     <style media="screen">
       .contrato_a{
          display:none;
@@ -731,6 +749,63 @@
       }
     </style>
     <script type="text/javascript">
+    /*switch contemplar vtc*/
+
+    function setSwitchery(switchElement, checkedBool) {
+        if((checkedBool && !switchElement.isChecked()) || (!checkedBool && switchElement.isChecked())) {
+            switchElement.setPosition(true);
+            switchElement.handleOnchange(true);
+        }
+    }
+
+    var defaults = {
+    color : '#15d640',
+    secondaryColor : '#fa3232',
+    jackColor : '#fff',
+    jackSecondaryColor: null,
+    className : 'switchery',
+    disabledOpacity : 0.5,
+    speed : '0.1s',
+    size : 'default',
+    }
+
+    var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+    var switchery=[];
+    var i=0;
+    elems.forEach(function(html) {
+    switchery[i] = new Switchery(html, defaults);
+    i++;
+    });
+
+    var cont_vtc = 0;
+    var cont_venue = 0;
+    var  comp_ingreso = 0;
+
+      $('#cont_vtc').on('change',function(){
+        if($('#cont_vtc').prop('checked')==true){
+          cont_vtc = 1;
+          //console.log(cont_vtc);
+        }else {
+          cont_vtc = 0;
+          //console.log(cont_vtc);
+        }
+      });
+      $('#cont_venue').on('change',function(){
+        if($('#cont_venue').prop('checked')==true){
+          cont_venue = 1;
+        }
+        else{
+          cont_venue = 0;
+        }
+      });
+      $('#comp_ingreso').on('change',function(){
+        if($('#comp_ingreso').prop('checked')==true){
+          comp_ingreso = 1;
+        }else{
+          comp_ingreso = 0;
+        }
+      });
+
     $(function() {
       $('#select_one').val('').trigger('change');
 

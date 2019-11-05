@@ -30,6 +30,7 @@ Route::post('/create_questionaryb','Survey\QuestionaryController@create_now_emai
 
 Route::group(['middleware' => 'auth'], function () {
   Route::post('/vtc_generar','HomeController@vtc_generar');
+  Route::post('/vtc_real_generar','HomeController@vtc_real_generar');
   //Dashboard
   Route::get('/', 'HomeController@index')->name('/');
   Route::post('/data_get_payment_all_week','HomeController@show_payment');

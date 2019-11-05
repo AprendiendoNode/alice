@@ -311,12 +311,38 @@ function genTablesite(id_contract) {
       data: { id_contract : id_contract , _token : _token },
       success: function (data){
         generate_site(data, $("#table_site"));
+        var array=JSON.parse(data);
+        get_switch(array[0]['vtc'],array[0]['venue'],array[0]['compartir_ingreso']);
       },
       error: function (data) {
         console.log('Error:', data);
       }
   });
 }
+
+function get_switch(vtc,venue,comp_ingreso){
+
+if(vtc==1){
+        setSwitchery(switchery[0],true);
+}else{
+  setSwitchery(switchery[0],false);
+}
+if(venue==1){
+        setSwitchery(switchery[1],true);
+}else{
+  setSwitchery(switchery[1],false);
+}
+if(comp_ingreso==1){
+        setSwitchery(switchery[2],true);
+}else{
+  setSwitchery(switchery[2],false);
+}
+
+
+}
+
+
+
 
 function generate_site(datajson, table){
   table.DataTable().destroy();
@@ -687,6 +713,9 @@ $(".validation-wizard-anexo").steps({
           var digit = $("#sel_anexo option:selected").val();
 
           formData.append('digit', digit);
+          formData.append('cont_vtc', cont_vtc);
+          formData.append('cont_venue', cont_venue);
+          formData.append('comp_ingreso', comp_ingreso);
 
           $.ajax({
             type: "POST",

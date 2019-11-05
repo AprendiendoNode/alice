@@ -569,7 +569,6 @@ class ContratoController extends Controller
       $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array());
       $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
 
-
       return view('permitted.contract.cont_edit_cont', compact('unitmeasures', 'satproduct', 'iva','currency','hotels', 'classifications','verticals','cadenas', 'contract_status', 'resguardo', 'rz_customer' , 'sitio', 'itconcierge', 'vendedores'));
   }
 
@@ -733,6 +732,9 @@ class ContratoController extends Controller
     $description_fact= $request->description_fact;
     $unitmeasures = $request->sel_unitmeasure;
     $satproduct = $request->sel_satproduct;
+    $cont_vtc=$request->cont_vtc;
+    $cont_venue=$request->cont_venue;
+    $comp_ingreso=$request->comp_ingreso;
 
     $contract_masters = DB::table('idcontracts')->select('contrat_id','key')->where('cxclassification_id', $service)
                                                                             ->where('vertical_id', $vertical)
@@ -750,6 +752,9 @@ class ContratoController extends Controller
                                                  'description_fact' => $description_fact,
                                                  'unit_measure_id' => $unitmeasures,
                                                  'sat_product_id' => $satproduct,
+                                                 'vtc'=>$cont_vtc,
+                                                 'venue'=>$cont_venue,
+                                                 'compartir_ingreso'=>$comp_ingreso,
                                                  'itconcierge_id' => $itconcierge,
                                                  'contract_status_id' => $status,
                                                  'updated_at' =>  \Carbon\Carbon::now()]);
@@ -834,7 +839,17 @@ class ContratoController extends Controller
  public function all_site_anexo(Request $request)
  {
       $id = $request->id_contract;
+      //info($id);
       $result = DB::select('CALL px_contract_annex_cadena_hotel (?)', array($id));
+
+      $cont_vtc = DB::Table('contract_annexes')->select('vtc')->where('id',$id)->get();
+      $cont_venue= DB::Table('contract_annexes')->select('venue')->where('id',$id)->get();
+      $comp_ingreso = DB::Table('contract_annexes')->select('compartir_ingreso')->where('id',$id)->get();
+      /*Agregamos los estados del switch*/
+      $result[0]->vtc=$cont_vtc[0]->vtc;
+      $result[0]->venue=$cont_venue[0]->venue;
+      $result[0]->compartir_ingreso=$comp_ingreso[0]->compartir_ingreso;
+      //info($result);
       return json_encode($result);
  }
  public function edit_site_anexo(Request $request)

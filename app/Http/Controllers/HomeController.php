@@ -132,5 +132,13 @@ class HomeController extends Controller
       return json_encode($result_b);
 
     }
+    public function vtc_real_generar (Request $request)
+    {
+
+      $result_a = DB::select('CALL px_crea_vtc_real ()', array());
+      $result_b = DB::select('CALL px_lista_vtc_real ()', array());
+      return json_encode($result_b);
+
+    }
 
 }
