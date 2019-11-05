@@ -232,6 +232,7 @@ class CustomerInvoiceController extends Controller
                    $currency_value = $current_select_rate->current_rate;
                    $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $currency_id)->value('code_banxico');
                    $item_amount_tax = $item_amount_tax * $currency_value;
+                   $item_amount_tax_ret = $item_amount_tax_ret * $currency_value;
                    $item_amount_total = $item_amount_total * $currency_value;
                    $item_subtotal = $item_subtotal * $currency_value;
 
@@ -246,6 +247,7 @@ class CustomerInvoiceController extends Controller
                    if ($currency_id === '2') { //SI LA MONEDA SELECCIONADA ES DOLAR
                       $item_amount_total = $item_amount_total/$resp_currency_value;
                       $item_amount_tax = $item_amount_tax / $resp_currency_value;
+                      $item_amount_tax_ret = $item_amount_tax_ret / $resp_currency_value;
                       $item_subtotal = $item_subtotal / $resp_currency_value;
 
                       $item_subtotal_clean = $item_subtotal_clean / $resp_currency_value;
@@ -649,6 +651,7 @@ class CustomerInvoiceController extends Controller
                       $item_currency_value = $currency_pral_value; //Tipo de cambio a usar
                       //Tranformamos a dolar
                       $item_amount_tax = $item_amount_tax / $item_currency_value;
+                      $item_amount_tax_ret = $item_amount_tax_ret / $item_currency_value;
                       $item_amount_total = $item_amount_total / $item_currency_value;
                       $item_subtotal = $item_subtotal / $item_currency_value;
                       
@@ -663,21 +666,21 @@ class CustomerInvoiceController extends Controller
                       $item_currency_value = $exchange_rates->current_rate; //Tipo de cambio a usar
                       //Tranformamos a dolar
                       $item_amount_tax = $item_amount_tax * $item_currency_value;
+                      $item_amount_tax_ret = $item_amount_tax_ret * $item_currency_value;
                       $item_amount_total = $item_amount_total * $item_currency_value;
                       $item_subtotal = $item_subtotal * $item_currency_value;
                       $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
                       $item_discount_clean = $item_discount_clean * $item_currency_value;
-
                     }
                     else {
                       $item_currency_value = DB::table('currencies')->select('rate')->where('id', $item_currency_id)->value('rate');
                       //Tranformamos al valor de la moneda seleccionada
                       $item_amount_tax = $item_amount_tax * $item_currency_value;
+                      $item_amount_tax_ret = $item_amount_tax_ret * $item_currency_value;
                       $item_amount_total = $item_amount_total * $item_currency_value;
                       $item_subtotal = $item_subtotal * $item_currency_value;
                       $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
                       $item_discount_clean = $item_discount_clean * $item_currency_value;
-
                     }
                   }
                   //--------------------------------------------------------------------------------------------------------------------------//
@@ -736,7 +739,9 @@ class CustomerInvoiceController extends Controller
                       'name' => $tax->name,
                       'tax_id' => $tax_id,
                       'amount_base' => $result['amount_base'],
-                      'amount_tax' => $result['amount_tax'],
+                      'amount_tax' => $amount_tax,
+                      // 'amount_base' => $result['amount_base'],
+                      // 'amount_tax' => $result['amount_tax'],
                       'sort_order' => $i,
                       'status' => 1,
                   ]);
