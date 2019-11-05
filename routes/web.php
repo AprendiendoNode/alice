@@ -810,6 +810,10 @@ Route::group(['middleware' => 'auth'], function () {
     //Crear encuestas
     Route::get('/create_survey_admin' , 'Survey\CreateSurveyController@index');
     Route::post('/store_new_survey_admin' , 'Survey\CreateSurveyController@store');
+
+    Route::get('cont_hist_cont', 'SabanaController@index');
+    Route::post('informacionCliente', 'SabanaController@informacionCliente');
+
 });
 
 
