@@ -118,16 +118,16 @@
                     <div class="card col-md-6" style="width: 18rem;">
                       <img id="imagenCliente" class="card-img-top" alt="...">
                       <div class="card-body text-center">
-                        <a href="#" class="btn btn-primary">Más detalles</a>
+                        <a href="/viewreports" class="btn btn-primary">Más detalles</a>
                       </div>
                     </div>
                     <div class="card col-md-6" style="width: 18rem;">
                       <div class="card-body text-center">
                         <h5 class="card-title">ITC asignado:</h5>
-                        <p id="itcCliente" class="card-text">Subtítulo 1</p>
+                        <p id="itcCliente" class="card-text"></p>
                         <br>
                         <h5 class="card-title">Número de cuartos:</h5>
-                        <p id="cuartosCliente" class="card-text">Subtítulo 2</p>
+                        <p id="cuartosCliente" class="card-text"></p>
                         <br>
                         <h5 class="card-title">Teléfono de contacto:</h5>
                         <p id="telefonoCliente" class="card-text"></p>
@@ -136,7 +136,7 @@
                         <p id="direccionCliente" class="card-text"></p>
                         <br>
                         <h5 class="card-title">Correo:</h5>
-                        <p id="cuartosCliente" class="card-text">Subtítulo 3</p>
+                        <p id="correoCliente" class="card-text"></p>
                       </div>
                     </div>
                   </div>

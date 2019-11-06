@@ -13,8 +13,11 @@ $(function() {
       success: function (data){
         console.log(data);
         $("#imagenCliente").attr("src", "../images/hotel/" + data[0].dirlogo1);
+        $("#itcCliente").text(data[1].name + " -> " + data[1].email);
+        $("#cuartosCliente").text(data[0].num_hab == null ? "Sin informacion" : data[0].num_hab);
         $("#telefonoCliente").text(data[0].Telefono);
         $("#direccionCliente").text(data[0].Direccion);
+        $("#correoCliente").text(data[2].correo == null ? "Sin informacion" : data[2].correo);
         $("#cargando").addClass("d-none");
         $(".first_tab").removeClass("d-none");
       },

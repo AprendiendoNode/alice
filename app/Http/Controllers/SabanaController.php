@@ -26,7 +26,9 @@ class SabanaController extends Controller
   {
     $hotel = $request->cliente;
     $result1 = DB::table('hotels')->where("id",$hotel)->get();
-    return $result1;
+    $itc = DB::select('CALL setemailsnmp(?)', array($hotel));
+    $email = DB::table('hotels')->join("sucursals", "hotels.sucursal_id", "=", "sucursals.id")->select("sucursals.correo")->where("hotels.id",$hotel)->get();
+    return array_merge(json_decode($result1),$itc,json_decode($email));
   }
 
   public function get_table_equipments(Request $request){
