@@ -28,4 +28,14 @@ class SabanaController extends Controller
     $result1 = DB::table('hotels')->where("id",$hotel)->get();
     return $result1;
   }
+
+  public function get_table_equipments(Request $request){
+    $id_hotel=$request->id;
+    $result= DB::Select('CALL px_equipmentsxhotel(?)',array($id_hotel));
+    return $result;
+
+  }
+
+
+
 }

@@ -162,13 +162,34 @@
                       generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
               </div>
               <div class="tab_content">
-                  <h3>Tab content 4</h3>
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
-                      specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
-                      passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
-                      essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
+                  <h3>Todos los equipos del sitio</h3>
+                  <table id="all_equipments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
+                    <thead>
+                      <tr style="background: #1B1D23">
+                        <th> <small>Tipo</small> </th>
+                        <th > <small>Modelo</small> </th>
+                        <th > <small>Mac</small> </th>
+                        <th > <small>Serie</small> </th>
+                        <th > <small>Descripción</small> </th>
+                        <th > <small>Estado</small> </th>
+                        <th > <small>Fecha Registro</small> </th>
+                        <th > <small>Fecha Baja</small> </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot >
+                      <tr >
+                        <th></th>
+                        <th></th>
+                        <th ></th>
+                        <th></th>
+                        <th></th>
+                        <th ></th>
+                        <th ></th>
+                      </tr>
+                    </tfoot>
+                  </table>
               </div>
               <div class="tab_content">
                   <h3>Tab content 5</h3>
@@ -219,6 +240,8 @@
     <script type="text/javascript" src="js/jquery.multipurpose_tabcontent.js"></script>
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/admin/sabana/sabana.js')}}"></script>
+    <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
   @else
     <!--NO SCRIPTS-->
