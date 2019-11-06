@@ -128,7 +128,7 @@
                     var add_relation = "tab_" + tab_count + "_" + div_rel;
                     //var add_relation = "tab_" + div_rel;
                     $(this).addClass(add_relation);
-                    $(this).attr("title", add_relation);
+                    $(this).attr("title", "");
                     div_rel++;
                 });
 

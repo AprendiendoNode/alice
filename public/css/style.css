@@ -61,6 +61,7 @@ li {
 .tab_wrapper > ul li.active {
   border-color: #49a4d9;
   color: #49a4d9;
+  background-color: white;
 }
 .tab_wrapper > ul li.active:after {
   content: "";
@@ -93,13 +94,15 @@ li {
 .tab_wrapper .content_wrapper {
   float: left;
   width: 100%;
-  border: 1px solid #49a4d9;
+  border: 1px solid #49a4d9; /* BORDE ABAJO */
   border-top: 0;
+  margin-top: -3px;
   box-sizing: border-box;
 }
 .tab_wrapper .content_wrapper .tab_content {
   display: none;
   padding: 15px 20px;
+  background-color: white;
 }
 .tab_wrapper .content_wrapper .tab_content.active {
   /* display: block; */
