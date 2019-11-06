@@ -620,7 +620,7 @@
       .tableFixHead thead th { position: sticky !important; top: 0; }
 
     </style>
-    <script src="{{ asset('js/admin/treasury/dash_finanzas.js?v=2.5')}}"></script>
+    <script src="{{ asset('js/admin/treasury/dash_finanzas.js?v=3.5')}}"></script>
   @else
     <!--NO VER-->
   @endif

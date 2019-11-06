@@ -40,9 +40,7 @@ $('.filtrarDashboard').on('click', function(){
     // get_table_bank_mx();
 
     get_info_banks_mxn();
-    get_info_banks_usd();
-    get_info_banks_ex();
-    get_info_banks_cred_rev();
+
     get_all_banks();
     get_cxc_cxp();
     get_table_values();
@@ -107,6 +105,8 @@ function get_info_banks_mxn() {
 //console.log(sortedData);
     table_banks_mxn(data, $("#table_banks1"));
     total_global();
+    get_info_banks_usd();
+
     },
     error: function (data) {
       console.log('Error:', data);
@@ -133,6 +133,8 @@ function get_info_banks_usd() {
      //data[0].saldo_final= -2467322;
       table_banks(data, $("#table_banks2"));
       total_global();
+      get_info_banks_ex();
+
     },
     error: function (data) {
       console.log('Error:', data);
@@ -158,6 +160,7 @@ function get_info_banks_ex() {
      });
       table_banks(sortedData, $("#table_banks3"));
       total_global();
+      get_info_banks_cred_rev();
     },
     error: function (data) {
       console.log('Error:', data);

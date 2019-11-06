@@ -415,7 +415,6 @@
       });
       function graph_vtc() {
         var data_count = [];
-        var data_count2 = [];
         var data_name = [];
 
         var _token = $('meta[name="csrf-token"]').attr('content');
@@ -429,32 +428,39 @@
               data_name.push(objdata.AnioMes + ' = ' + objdata.vtc);
               data_count.push({ value: objdata.vtc, name: objdata.AnioMes + ' = ' + objdata.vtc},);
             });
-                    /*VTC REAL*/
-            $.ajax({
-              type: "POST",
-              url: "/vtc_real_generar",
-              data: { _token : _token },
-              success: function (data){
-                $.each(JSON.parse(data),function(index, objdata){
-                  //data_name.push(objdata.AnioMes + ' = ' + objdata.vtc);
-                  data_count2.push({ value: objdata.vtc, name: objdata.AnioMes + ' = ' + objdata.vtc},);
-                });
-                  graph_vtcte('maingraphicVTC', '', '', data_name, data_count,data_count2);
-
-              },
-              error: function (data) {
-                console.log('Error:', data);
-              }
-            });
+            vtc_real(data_name,data_count)
               //graph_vtcte('maingraphicVTC', '', '', data_name, data_count);
           },
           error: function (data) {
             console.log('Error:', data);
+              vtc_real(data_name,data_count)
           }
         });
 
-
       }
+        function vtc_real(data_name,data_count){
+        var data_count2 = [];
+        /*VTC REAL*/
+        $.ajax({
+        type: "POST",
+        url: "/vtc_real_generar",
+        data: { _token : _token },
+        success: function (data){
+          $.each(JSON.parse(data),function(index, objdata){
+            //data_name.push(objdata.AnioMes + ' = ' + objdata.vtc);
+            data_count2.push({ value: objdata.vtc, name: objdata.AnioMes + ' = ' + objdata.vtc},);
+          });
+          //vtc_venue(data_name,data_count,data_count2);
+            graph_vtcte('maingraphicVTC', '', '', data_name, data_count,data_count2);
+
+        },
+        error: function (data) {
+          vtc_venue(data_name,data_count,data_count2);
+          console.log('Error:', data);
+        }
+        });
+
+        }
 
 
       function graph_vtcte(title, titlepral, subtitlepral, campoa, campob,campoc){
@@ -514,7 +520,7 @@
                     trigger: 'axis'
                 },
                 legend: {
-                    data:['VTC','VTC Real']
+                    data:['VTC','VTC Servicio Administrado']
                 },
                 toolbox: {
                     show : true,
@@ -562,7 +568,7 @@
                               fontWeight: 'bold'
                             }
                         }
-                    }
+                    },
                 ],
                 yAxis : [
                     {
@@ -577,7 +583,7 @@
                         data:campob
                     },
                     {
-                        name:'VTC Real',
+                        name:'VTC Servicio Administrado',
                         type:'bar',
                         barWidth: '20%',
                         data:campoc
@@ -593,113 +599,6 @@
             });
           }
 
-     /*VTC REAL
-
-     $('#btn_graph1VTC_real').on('click', function(e){
-       graph_vtc_real();
-     });
-     function graph_vtc_real() {
-       var data_count = [];
-       var data_name = [];
-       var _token = $('meta[name="csrf-token"]').attr('content');
-       $.ajax({
-         type: "POST",
-         url: "/vtc_real_generar",
-         data: { _token : _token },
-         success: function (data){
-           $.each(JSON.parse(data),function(index, objdata){
-             data_name.push(objdata.AnioMes + ' = ' + objdata.vtc);
-             data_count.push({ value: objdata.vtc, name: objdata.AnioMes + ' = ' + objdata.vtc},);
-           });
-           graph_vtcte_real('maingraphicVTC_real', '', '', data_name, data_count);
-         },
-         error: function (data) {
-           console.log('Error:', data);
-         }
-       });
-     }
-     function graph_vtcte_real(title, titlepral, subtitlepral, campoa, campob){
-           var myChart = echarts.init(document.getElementById(title));
-           var option = {
-               tooltip : {
-                   trigger: 'axis'
-               },
-               legend: {
-                   data:['VTC Real']
-               },
-               toolbox: {
-                   show : true,
-                   feature : {
-                       dataView : {show: false, readOnly: false, title : 'Datos', lang: ['Vista de datos', 'Cerrar', 'Actualizar']},
-                       magicType : {
-                         show: true,
-                         type: ['line', 'bar'],
-                         title : {
-                           line : 'Gráfico de líneas',
-                           bar : 'Gráfico de barras',
-                           stack : 'Acumular',
-                           tiled : 'Tiled',
-                           force: 'Cambio de diseño orientado a la fuerza',
-                           chord: 'Interruptor del diagrama de acordes',
-                           pie: 'Gráfico circular',
-                           funnel: 'Gráfico de embudo'
-                         },
-                       },
-                       restore : {show: false, title : 'Recargar'},
-                       saveAsImage : {show: true , title : 'Guardar'}
-                   }
-               },
-                 color : ['#1c60e6','#91c7ae','#0B610B', '#E73231', '#635CD9','#2f4554', '#2C68FA', '#FFBF00','#d48265', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#6e7074', '#546570', '#c4ccd3'],
-               calculable : true,
-               dataZoom : {
-                   show : true,
-                   realtime : true,
-                   start : 5,
-                   end : 95
-               },
-               xAxis : [
-                   {
-                       type : 'category',
-                       boundaryGap : true,
-                       data: campoa,
-                       axisTick: {
-                           alignWithLabel: true
-                       },
-                       axisLabel : {
-                           show:true,
-                           textStyle : {
-                             fontFamily: 'sans-serif',
-                             fontSize: 8,
-                             fontStyle: 'italic',
-                             fontWeight: 'bold'
-                           }
-                       }
-                   }
-               ],
-               yAxis : [
-                   {
-                       type : 'value'
-                   }
-               ],
-               series : [
-                   {
-                       name:'VTC Real',
-                       type:'bar',
-                       barWidth: '20%',
-                       data:campob
-                   }
-               ]
-           };
-           myChart.setOption(option);
-
-           $(window).on('resize', function(){
-             if(myChart != null && myChart != undefined){
-               myChart.resize();
-             }
-           });
-         }
-
-         */
 
 
     </script>
