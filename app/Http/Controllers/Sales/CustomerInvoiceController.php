@@ -654,9 +654,12 @@ class CustomerInvoiceController extends Controller
                       $item_amount_tax_ret = $item_amount_tax_ret / $item_currency_value;
                       $item_amount_total = $item_amount_total / $item_currency_value;
                       $item_subtotal = $item_subtotal / $item_currency_value;
-                      
                       $item_subtotal_clean = $item_subtotal_clean / $item_currency_value;
                       $item_discount_clean = $item_discount_clean / $item_currency_value;
+                      foreach ($taxes as $tax_id => $result) {
+                        $taxes[$tax_id]['amount_base'] = $result['amount_base'] / $item_currency_value;
+                        $taxes[$tax_id]['amount_tax'] = $result['amount_tax'] / $item_currency_value;
+                      }
                     }
                   }
                   //Moneda distinta
@@ -671,6 +674,10 @@ class CustomerInvoiceController extends Controller
                       $item_subtotal = $item_subtotal * $item_currency_value;
                       $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
                       $item_discount_clean = $item_discount_clean * $item_currency_value;
+                      foreach ($taxes as $tax_id => $result) {
+                        $taxes[$tax_id]['amount_base'] = $result['amount_base'] * $item_currency_value;
+                        $taxes[$tax_id]['amount_tax'] = $result['amount_tax'] * $item_currency_value;
+                      }
                     }
                     else {
                       $item_currency_value = DB::table('currencies')->select('rate')->where('id', $item_currency_id)->value('rate');
@@ -681,6 +688,10 @@ class CustomerInvoiceController extends Controller
                       $item_subtotal = $item_subtotal * $item_currency_value;
                       $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
                       $item_discount_clean = $item_discount_clean * $item_currency_value;
+                      foreach ($taxes as $tax_id => $result) {
+                        $taxes[$tax_id]['amount_base'] = $result['amount_base'] * $item_currency_value;
+                        $taxes[$tax_id]['amount_tax'] = $result['amount_tax'] * $item_currency_value;
+                      }
                     }
                   }
                   //--------------------------------------------------------------------------------------------------------------------------//
@@ -739,9 +750,7 @@ class CustomerInvoiceController extends Controller
                       'name' => $tax->name,
                       'tax_id' => $tax_id,
                       'amount_base' => $result['amount_base'],
-                      'amount_tax' => $amount_tax,
-                      // 'amount_base' => $result['amount_base'],
-                      // 'amount_tax' => $result['amount_tax'],
+                      'amount_tax' => $result['amount_tax'],
                       'sort_order' => $i,
                       'status' => 1,
                   ]);
