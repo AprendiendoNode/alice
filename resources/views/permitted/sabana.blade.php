@@ -165,7 +165,7 @@
                   <h3>Todos los equipos del sitio</h3>
                   <table id="all_equipments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                     <thead>
-                      <tr style="background: #1B1D23">
+                      <tr style="background: #02948c">
                         <th> <small>Tipo</small> </th>
                         <th > <small>Modelo</small> </th>
                         <th > <small>Mac</small> </th>

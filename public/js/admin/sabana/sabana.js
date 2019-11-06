@@ -52,12 +52,12 @@ get_info_equipments(cadena);
     vartable.fnClearTable();
     $.each(datajson, function(index, status){
       vartable.fnAddData([
-        status.especificacions_id,
-        status.modelos_id,
+        status.tipo,
+        status.modelo,
         status.MAC,
         status.Serie,
         status.Descripcion,
-        status.estados_id,
+        '<p><span class="badge badge-secondary">'+status.estado+'</span></p>',
         status.Fecha_Registro,
         status.Fecha_Baja
 
@@ -87,9 +87,9 @@ get_info_equipments(cadena);
     // },
     //ordering: false,
     //"pageLength": 5,
-    dom: "<'row'<'col-sm-2'l><'col-sm-4'f>>" +
-          "<'row'<'col-sm-12'tr>>" +
-          "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+    dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+         "<'row'<'col-sm-12'tr>>" +
+         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 
     bInfo: true,
     "createdRow": function ( row, data, index ) {
