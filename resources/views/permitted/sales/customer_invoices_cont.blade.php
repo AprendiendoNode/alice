@@ -225,6 +225,16 @@
           </div> -->
 
           <!---------------------------------------------------------------------------------->
+          <div class="row mt-3">
+            <div class="row mt-3">
+              <div class="form-check form-check-flat form-check-primary ml-5">
+                <label class="form-check-label">
+                   <input id="check_group_sites" type="checkbox" class="form-check-input">
+                   Agrupar sitios en un solo concepto
+              </div>
+            </div>
+          </div>
+          <!---------------------------------------------------------------------------------->
           <div class="row mt-5">
             <div class="col-md-12">
               <nav>
@@ -630,9 +640,36 @@
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
   <script type="text/javascript">
-  var conceptIndex = 0;
-  $(function() {
+   var conceptIndex = 0;
+   $(function() {
         moment.locale('es'); //anadir
+
+		var check_group_sites = document.getElementById("check_group_sites");
+		
+        check_group_sites.addEventListener('click', (e) => {
+			var contract_master = $('#cont_maestro_id').val();
+			
+			if(contract_master == '' || contract_master == null){
+				Swal.fire('Seleccione un contrato maestro','','warning');
+			}else{
+				$("#items tbody tr").remove();
+				item_row = 0;
+				let html = `<tr id="add_item">
+							<td class="text-center">
+									<button type="button" onclick="addItem();"
+											class="btn btn-xs btn-primary"
+											style="margin-bottom: 0;">
+										<i class="fa fa-plus"></i>
+									</button>
+								</td>
+								<td class="text-right" colspan="12"></td>
+							</tr>`;
+				$("#items tbody").append(html);
+				getDataContractAnnexes();
+			}
+			
+        });
+
     //-----------------------------------------------------------
         $("#form").validate({
           ignore: "input[type=hidden]",
@@ -680,8 +717,15 @@
             // debug: true,
             // errorElement: "label",
             submitHandler: function(e){
+              var group_sites = 0;
+              var check_group_sites = document.getElementById("check_group_sites");
+              if(check_group_sites.checked == true){
+                group_sites = 1;
+              }  
               var form = $('#form')[0];
               var formData = new FormData(form);
+              formData.append('group_sites', group_sites);
+              console.log(group_sites);
               $.ajax({
                 type: "POST",
                 url: "/sales/customer-invoices-store-cont",
@@ -690,7 +734,7 @@
                 processData: false,
                 success: function (data){
                   if (data == 'success') {
-                    /*
+                    
                     let timerInterval;
                     Swal.fire({
                       type: 'success',
@@ -711,10 +755,10 @@
                         // Read more about handling dismissals
                         result.dismiss === Swal.DismissReason.timer
                       ) {
-                        window.location.href = "/sales/customer-invoices";
+                        window.location.href = "/sales/customer-invoices-cont";
                       }
                     });
-                    */
+                    
                   }
                   if (data == 'false') {
                     Swal.fire({
@@ -737,7 +781,7 @@
             }
         });
         //-----------------------------------------------------------
-      });
+    });
 
       // var currency = {!! json_encode($currency) !!};
       // console.log(currency);
@@ -745,137 +789,6 @@
       var item_relation_row = "{{ $item_relation_row }}";
       var item_row_cfdi_relation = "{{ $item_relation_row }}";
 
-      function addItem() {
-          // var moneda_val = $('input[name="currency_id"]').val();
-          // var tc_val = $('input[name="currency_value"]').val();
-          // if (moneda_val == '' || tc_val == '') {
-          //   Swal.fire({
-          //      type: 'error',
-          //      title: 'Oops...',
-          //      text: 'Selecciona la moneda a usar e ingresa un TC',
-          //    });
-          // }
-          // else {
-          //   //#Solicitamos primero el tc a usar
-          //   var html = '';
-          //   html += '<tr id="item_row_' + item_row + '">';
-          //   html += '<td class="text-center" style="vertical-align: middle;">';
-          //   html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
-          //   html += '<i class="fa fa-trash"></i>';
-          //   html += '</button>';
-          //   html += '<input type="hidden" name="item[' + item_row + '][id]" id="item_id_' + item_row + '" /> ';
-          //   html += '</td>';
-          //
-          //   html += '<td>';
-          //   html += '<div class="form-group form-group-sm">';
-          //   html += '<div class="input-group input-group-sm">';
-          //   html += '<select class="form-control form-control-sm col-product-id" name="item[' + item_row + '][product_id]" id="item_product_id_' + item_row + '" data-row="' + item_row + '">';
-          //   html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-          //   @forelse ($product as $product_data)
-          //   html += '<option value="{{ $product_data->id  }}">{{ $product_data->name }}</option>';
-          //   @empty
-          //   @endforelse
-          //   html += '</select>';
-          //   html += '</div>';
-          //   html += '</div>';
-          //   html += '</td>';
-          //
-          //   html += '<td>';
-          //   html += '<div class="form-group form-group-sm">';
-          //   html += '<input class="form-control form-control-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="2" autocomplete="off" />';
-          //   html += '</input>';
-          //   html += '</div>';
-          //   html += '</td>';
-          //
-          //   html += '<td>';
-          //   html += '<div class="form-group form-group-sm">';
-          //   html += '<select class="form-control form-control-sm col-unit-measure-id" name="item[' + item_row + '][unit_measure_id]" id="item_unit_measure_id_' + item_row + '" required>';
-          //   html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-          //   @forelse ($unitmeasures as $unitmeasures_data)
-          //     html += '<option value="{{ $unitmeasures_data->id  }}">{{ $unitmeasures_data->name }}</option>';
-          //   @empty
-          //   @endforelse
-          //   html += '</select>';
-          //   html += '</div>';
-          //   html += '</td>';
-          //
-          //   html += '<td>';
-          //   html += '<div class="form-group form-group-sm">';
-          //   html += '<select class="form-control form-control-sm col-sat-product-id" name="item[' + item_row + '][sat_product_id]" id="item_sat_product_id_' + item_row + '" required>';
-          //   html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-          //   @forelse ($satproduct as $satproduct_data)
-          //     html += '<option value="{{ $satproduct_data->id  }}">{{ $satproduct_data->name }}</option>';
-          //   @empty
-          //   @endforelse
-          //   html += '</select>';
-          //   html += '</div>';
-          //   html += '</td>';
-          //
-          //   html += '<td>';
-          //   html += '<div class="form-group form-group-sm">';
-          //   html += '<input type="number" class="form-control form-control-sm text-right col-quantity" name="item[' + item_row + '][quantity]" id="item_quantity_' + item_row + '" required step="any" />';
-          //   html += '</div>';
-          //   html += '</td>';
-          //
-          //   html += '<td>';
-          //   html += '<div class="form-group form-group-sm">';
-          //   html += '<input type="number" class="form-control form-control-sm text-right col-price-unit" name="item[' + item_row + '][price_unit]" id="item_price_unit_' + item_row + '" required step="any" />';
-          //   html += '</div>';
-          //   html += '</td>';
-          //
-          //   html += '<td>';
-          //   html += '<div class="form-group form-group-sm">';
-          //   html += '<input type="number" class="form-control form-control-sm text-center col-discount" name="item[' + item_row + '][discount]" id="item_discount_' + item_row + '" step="any" />';
-          //   html += '</div>';
-          //   html += '</td>';
-          //
-          //   //
-          //   /*<select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
-          //     <option value="">{{ trans('message.selectopt') }}</option>
-          //     @forelse ($currency as $currency_data)
-          //       <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
-          //     @empty
-          //     @endforelse
-          //   </select>*/
-          //
-          //   html += '<td>';
-          //   html += '<div class="form-group form-group-sm">';
-          //
-          //   html += '<select class="form-control form-control-sm col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" data-row="' + item_row + '" required>'
-          //   html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-          //   @forelse ($currency as $currency_data)
-          //     html += '<option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>';
-          //   @empty
-          //   @endforelse
-          //   html += '</select>';
-          //   // html += '<input type="number" class="form-control input-sm text-center col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" step="any" />';
-          //   html += '</div>';
-          //   html += '</td>';
-          //
-          //   //
-          //
-          //   html += '<td>';
-          //   html += '<div class="form-group form-group-sm">';
-          //   html += '<select class="form-control form-control-sm my-select2 col-taxes" name="item[' + item_row + '][taxes][]" id="item_taxes_' + item_row + '" multiple>';
-          //   @forelse ($impuestos as $impuestos_data)
-          //     html += '<option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>';
-          //   @empty
-          //   @endforelse
-          //     html += '</select>';
-          //   html += '</div>';
-          //   html += '</td>';
-          //
-          //   html += '<td class="text-right" style="padding-top: 11px;">';
-          //   html += '<span id="item_txt_amount_untaxed_' + item_row + '">0</span>';
-          //   html += '</td>';
-          //   html += '</tr>';
-          //   $("#form #items tbody #add_item").before(html);
-          //   /* Configura lineas*/
-          //   initItem();
-          //   // totalItem();
-          //   item_row++;
-          // }
-      }
       /*Selecciona moneda actual*/
       $(document).on('change', '#form #items tbody .col-current', function (e) {
           // let id = $(this).val();
@@ -1218,6 +1131,9 @@
         var token = $('input[name="_token"]').val();
         var cadena_id = $('#cadena_id').val();
         var cont_maestro_id = $('#cont_maestro_id').val();
+		    var check = document.getElementById("check_group_sites").checked;
+		    var fecha3 = moment($("#form input[name='date']").val(), 'DD-MM-YYYY').format('MMMM YYYY');
+
         $.ajax({
             url: "/sales/customer-data-annexes",
             type: "POST",
@@ -1234,148 +1150,275 @@
                  });
                  $("select[name='cont_maestro_id']").val('');
               }
-              else {
-                //#Solicitamos primero el tc a usar
-                data.forEach(function(key,i) {
-                  var html = '';
-                  var current_unit= key.unit_measure_id;
-                  var current_sat = key.sat_product_id;
+              else {          
+                //Si no esta seleccionado la opcion de agrupar sitio se depliegan todos los anexos
+                if(check != true){
+                  data.forEach(function(key,i) {
+                    var html = '';
+                    var current_unit= key.unit_measure_id;
+                    var current_sat = key.sat_product_id;
+                    
+                    html += '<tr id="item_row_' + item_row + '">';
+                    html += '<td class="text-center" style="vertical-align: middle;">';
+                    html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
+                    html += '<i class="fa fa-trash"></i>';
+                    html += '</button>';
+                    html += '<input type="hidden" name="item[' + i + '][id]" id="item_id_' + item_row + '" /> ';
+                    html += '</td>';
 
-                  // var fecha =  moment($("#form input[name='date']").val(), 'DD-MM-YYYY').isValid();
-                  // var fecha2 = moment($("#form input[name='date']").val()).format('MM/DD/YYYY');
-                  var fecha3 = moment($("#form input[name='date']").val(), 'DD-MM-YYYY').format('MMMM YYYY');
-                  // console.log(fecha);
-                  // console.log(fecha2);
-                  // console.log(fecha3);
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<div class="input-group input-group-sm">';
+                    html +=  key.key
+                    html += '<input type="hidden" name="item[' + i + '][id_cont]" id="item_id_cont' + item_row + '" value="' + key.contract_annex_id + '" /> ';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</td>';
 
-                  html += '<tr id="item_row_' + item_row + '">';
-                  html += '<td class="text-center" style="vertical-align: middle;">';
-                  html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
-                  html += '<i class="fa fa-trash"></i>';
-                  html += '</button>';
-                  html += '<input type="hidden" name="item[' + i + '][id]" id="item_id_' + item_row + '" /> ';
-                  html += '</td>';
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<div class="input-group input-group-sm">';
+                    html +=  key.sitio
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</td>';
 
-                  html += '<td>';
-                  html += '<div class="form-group form-group-sm">';
-                  html += '<div class="input-group input-group-sm">';
-                  html +=  key.key
-                  html += '<input type="hidden" name="item[' + i + '][id_cont]" id="item_id_cont' + item_row + '" value="' + key.contract_annex_id + '" /> ';
-                  html += '</div>';
-                  html += '</div>';
-                  html += '</td>';
+                    var text_description = key.description_fact +' '+fecha3;
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<textarea class="form-control form-control-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="4" autocomplete="off" >';
+                    html +=  text_description.toUpperCase();
+                    html += '</textarea>';
+                    html += '</div>';
+                    html += '</td>';
 
-                  html += '<td>';
-                  html += '<div class="form-group form-group-sm">';
-                  html += '<div class="input-group input-group-sm">';
-                  html +=  key.sitio
-                  html += '</div>';
-                  html += '</div>';
-                  html += '</td>';
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<select class="form-control form-control-sm col-unit-measure-id" name="item[' + item_row + '][unit_measure_id]" id="item_unit_measure_id_' + item_row + '" required>';
+                    html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                    @forelse ($unitmeasures as $unitmeasures_data)
+                    if( current_unit == {{ $unitmeasures_data->id  }})
+                    {
+                      html += '<option value="{{ $unitmeasures_data->id  }}" selected>[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
+                    }
+                    else {
+                      html += '<option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
 
-                  var text_description = key.description_fact +' '+fecha3;
-                  html += '<td>';
-                  html += '<div class="form-group form-group-sm">';
-                  html += '<textarea class="form-control form-control-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="4" autocomplete="off" >';
-                  html +=  text_description.toUpperCase();
-                  html += '</textarea>';
-                  html += '</div>';
-                  html += '</td>';
-
-                  html += '<td>';
-                  html += '<div class="form-group form-group-sm">';
-                  html += '<select class="form-control form-control-sm col-unit-measure-id" name="item[' + item_row + '][unit_measure_id]" id="item_unit_measure_id_' + item_row + '" required>';
-                  html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-                  @forelse ($unitmeasures as $unitmeasures_data)
-                  if( current_unit == {{ $unitmeasures_data->id  }})
-                  {
-                    html += '<option value="{{ $unitmeasures_data->id  }}" selected>[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
-                  }
-                  else {
-                    html += '<option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
-
-                  }
-                  @empty
-                  @endforelse
-                  html += '</select>';
-                  html += '</div>';
-                  html += '</td>';
-
-                  html += '<td>';
-                  html += '<div class="form-group form-group-sm">';
-                  html += '<select class="form-control form-control-sm col-sat-product-id" name="item[' + item_row + '][sat_product_id]" id="item_sat_product_id_' + item_row + '" required>';
-                  html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-                  @forelse ($satproduct as $satproduct_data)
-                  if( current_sat == {{ $satproduct_data->id  }}){
-                    html += '<option value="{{ $satproduct_data->id  }}" selected>[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
-                  }
-                  else {
-                    html += '<option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
-                  }
-                  @empty
-                  @endforelse
-                  html += '</select>';
-                  html += '</div>';
-                  html += '</td>';
-
-                  html += '<td>';
-                  html += '<div class="form-group form-group-sm">';
-                  html += '<input type="number" class="form-control form-control-sm text-right col-quantity" value="1"  name="item[' + item_row + '][quantity]" id="item_quantity_' + item_row + '" required step="any" />';
-                  html += '</div>';
-                  html += '</td>';
-
-                  html += '<td>';
-                  html += '<div class="form-group form-group-sm">';
-                  html += '<input type="number" class="form-control form-control-sm text-right col-price-unit" value="' + key.monto + '" name="item[' + item_row + '][price_unit]" id="item_price_unit_' + item_row + '" required step="any" />';
-                  html += '</div>';
-                  html += '</td>';
-
-                  html += '<td>';
-                  html += '<div class="form-group form-group-sm">';
-                  html += '<input type="number" class="form-control form-control-sm text-center col-discount" name="item[' + item_row + '][discount]" id="item_discount_' + item_row + '" step="any" />';
-                  html += '</div>';
-                  html += '</td>';
-
-                  html += '<td>';
-                  html += '<div class="form-group form-group-sm">';
-                  html += '<select class="form-control form-control-sm col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" data-row="' + item_row + '" required>'
-                  html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-                  @forelse ($currency as $currency_data)
-                    html += '<option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>';
-                  @empty
-                  @endforelse
-                  html += '</select>';
-                  // html += '<input type="number" class="form-control input-sm text-center col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" step="any" />';
-                  html += '</div>';
-                  html += '</td>';
-
-                  //
-
-                  html += '<td>';
-                  html += '<div class="form-group form-group-sm">';
-                  html += '<select class="form-control form-control-sm my-select2 col-taxes" name="item[' + item_row + '][taxes][]" id="item_taxes_' + item_row + '" multiple>';
-                  @forelse ($impuestos as $impuestos_data)
-                    html += '<option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>';
-                  @empty
-                  @endforelse
+                    }
+                    @empty
+                    @endforelse
                     html += '</select>';
-                  html += '</div>';
-                  html += '</td>';
+                    html += '</div>';
+                    html += '</td>';
 
-                  html += '<td class="text-right" style="padding-top: 11px;">';
-                  html += '<span id="item_txt_amount_untaxed_' + i + '">0</span>';
-                  html += '</td>';
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<select class="form-control form-control-sm col-sat-product-id" name="item[' + item_row + '][sat_product_id]" id="item_sat_product_id_' + item_row + '" required>';
+                    html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                    @forelse ($satproduct as $satproduct_data)
+                    if( current_sat == {{ $satproduct_data->id  }}){
+                      html += '<option value="{{ $satproduct_data->id  }}" selected>[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
+                    }
+                    else {
+                      html += '<option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
+                    }
+                    @empty
+                    @endforelse
+                    html += '</select>';
+                    html += '</div>';
+                    html += '</td>';
 
-                  html += '<td class="text-right" style="padding-top: 11px;">';
-                  html += '<span id="exchange_rate_applied' + item_row + '">0</span>';
-                  html += '</td>';
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<input type="number" class="form-control form-control-sm text-right col-quantity" value="1"  name="item[' + item_row + '][quantity]" id="item_quantity_' + item_row + '" required step="any" />';
+                    html += '</div>';
+                    html += '</td>';
 
-                  html += '</tr>';
-                  $("#form #items tbody #add_item").before(html);
-                  /* Configura lineas*/
-                  $("#item_current_"+item_row+" option[value='" + key.currency_id +"']").attr('selected', true);
-                  item_row++;
-                });
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<input type="number" class="form-control form-control-sm text-right col-price-unit" value="' + key.monto + '" name="item[' + item_row + '][price_unit]" id="item_price_unit_' + item_row + '" required step="any" />';
+                    html += '</div>';
+                    html += '</td>';
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<input type="number" class="form-control form-control-sm text-center col-discount" name="item[' + item_row + '][discount]" id="item_discount_' + item_row + '" step="any" />';
+                    html += '</div>';
+                    html += '</td>';
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<select class="form-control form-control-sm col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" data-row="' + item_row + '" required>'
+                    html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                    @forelse ($currency as $currency_data)
+                      html += '<option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>';
+                    @empty
+                    @endforelse
+                    html += '</select>';
+                    // html += '<input type="number" class="form-control input-sm text-center col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" step="any" />';
+                    html += '</div>';
+                    html += '</td>';
+
+                    //
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<select class="form-control form-control-sm my-select2 col-taxes" name="item[' + item_row + '][taxes][]" id="item_taxes_' + item_row + '" multiple>';
+                    @forelse ($impuestos as $impuestos_data)
+                      html += '<option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>';
+                    @empty
+                    @endforelse
+                      html += '</select>';
+                    html += '</div>';
+                    html += '</td>';
+
+                    html += '<td class="text-right" style="padding-top: 11px;">';
+                    html += '<span id="item_txt_amount_untaxed_' + i + '">0</span>';
+                    html += '</td>';
+
+                    html += '<td class="text-right" style="padding-top: 11px;">';
+                    html += '<span id="exchange_rate_applied' + item_row + '">0</span>';
+                    html += '</td>';
+
+                    html += '</tr>';
+                    $("#form #items tbody #add_item").before(html);
+                    /* Configura lineas*/
+                    $("#item_current_"+item_row+" option[value='" + key.currency_id +"']").attr('selected', true);
+                    item_row++;
+                  });
+                }else{
+					// Agrupando todos los sitios en uno solo
+					var html = '';
+                    var current_unit= data[0].unit_measure_id;
+                    var current_sat = data[0].sat_product_id;
+    
+                    html += '<tr id="item_row_' + item_row + '">';
+                    html += '<td class="text-center" style="vertical-align: middle;">';
+                    html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
+                    html += '<i class="fa fa-trash"></i>';
+                    html += '</button>';
+                    html += '<input type="hidden" name="item[' + 0 + '][id]" id="item_id_' + item_row + '" /> ';
+                    html += '</td>';
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<div class="input-group input-group-sm">';
+                    html +=  '-'
+                    html += '<input type="hidden" name="item[' + 0 + '][id_cont]" id="item_id_cont' + item_row + '" value="" /> ';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</td>';
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<div class="input-group input-group-sm">';
+                    html += 'Cadena ' + data[0].cadena + ' - ' + data.length + ' sitios agrupados';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</td>';
+
+                    var text_description = data[0].description_fact +' '+fecha3;
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<textarea class="form-control form-control-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="4" autocomplete="off" >';
+                    html +=  text_description.toUpperCase();
+                    html += '</textarea>';
+                    html += '</div>';
+                    html += '</td>';
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<select class="form-control form-control-sm col-unit-measure-id" name="item[' + item_row + '][unit_measure_id]" id="item_unit_measure_id_' + item_row + '" required>';
+                    html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                    @forelse ($unitmeasures as $unitmeasures_data)
+                    if( current_unit == {{ $unitmeasures_data->id  }})
+                    {
+                      html += '<option value="{{ $unitmeasures_data->id  }}" selected>[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
+                    }
+                    else {
+                      html += '<option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
+
+                    }
+                    @empty
+                    @endforelse
+                    html += '</select>';
+                    html += '</div>';
+                    html += '</td>';
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<select class="form-control form-control-sm col-sat-product-id" name="item[' + item_row + '][sat_product_id]" id="item_sat_product_id_' + item_row + '" required>';
+                    html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                    @forelse ($satproduct as $satproduct_data)
+                    if( current_sat == {{ $satproduct_data->id  }}){
+                      html += '<option value="{{ $satproduct_data->id  }}" selected>[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
+                    }
+                    else {
+                      html += '<option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
+                    }
+                    @empty
+                    @endforelse
+                    html += '</select>';
+                    html += '</div>';
+                    html += '</td>';
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<input type="number" class="form-control form-control-sm text-right col-quantity" value="1"  name="item[' + item_row + '][quantity]" id="item_quantity_' + item_row + '" required step="any" />';
+                    html += '</div>';
+                    html += '</td>';
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<input type="number" class="form-control form-control-sm text-right col-price-unit" value="0" name="item[' + item_row + '][price_unit]" id="item_price_unit_' + item_row + '" required step="any" />';
+                    html += '</div>';
+                    html += '</td>';
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<input type="number" class="form-control form-control-sm text-center col-discount" name="item[' + item_row + '][discount]" id="item_discount_' + item_row + '" step="any" />';
+                    html += '</div>';
+                    html += '</td>';
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<select class="form-control form-control-sm col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" data-row="' + item_row + '" required>'
+                    html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                    @forelse ($currency as $currency_data)
+                      html += '<option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>';
+                    @empty
+                    @endforelse
+                    html += '</select>';
+                    html += '</div>';
+                    html += '</td>';
+
+                    //
+
+                    html += '<td>';
+                    html += '<div class="form-group form-group-sm">';
+                    html += '<select class="form-control form-control-sm my-select2 col-taxes" name="item[' + item_row + '][taxes][]" id="item_taxes_' + item_row + '" multiple>';
+                    @forelse ($impuestos as $impuestos_data)
+                      html += '<option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>';
+                    @empty
+                    @endforelse
+                    html += '</select>';
+                    html += '</div>';
+                    html += '</td>';
+
+                    html += '<td class="text-right" style="padding-top: 11px;">';
+                    html += '<span id="item_txt_amount_untaxed_' + 0 + '">0</span>';
+                    html += '</td>';
+
+                    html += '<td class="text-right" style="padding-top: 11px;">';
+                    html += '<span id="exchange_rate_applied' + item_row + '">0</span>';
+                    html += '</td>';
+
+                    html += '</tr>';
+                    $("#form #items tbody #add_item").before(html);
+                    /* Configura lineas*/
+                    $("#item_current_"+item_row+" option[value='" + data[0].currency_id +"']").attr('selected', true);		
+				}
+                
                 initItem();
                 totalItem();
               }
@@ -1385,9 +1428,9 @@
             }
         });
 
-      }
-
-      // Funciones para cuentas contables dinamicas.
+	  }
+	  
+	  // Funciones para cuentas contables dinamicas.
         /*var select2_options = {
               theme: "bootstrap",
               placeholder: "Selecciona",
@@ -1639,6 +1682,8 @@
             // $('#cc_key2').val(name_key);
         });*/
       //
+
+      
   </script>
 
   <style media="screen">
@@ -1655,20 +1700,10 @@
     }
 
     #items th, #items td {
-    padding: .75rem 0.7375rem;
-    vertical-align: top;
-    border-top: 1px solid #f3f3f3;
-}
-    /* .select2-selection__rendered {
-      line-height: 44px !important;
-      padding-left: 20px !important;
-    }
-    .select2-selection {
-      height: 42px !important;
-    }
-    .select2-selection__arrow {
-      height: 36px !important;
-    } */
+		padding: .75rem 0.7375rem;
+		vertical-align: top;
+		border-top: 1px solid #f3f3f3;
+	}
   </style>
   @else
   @endif

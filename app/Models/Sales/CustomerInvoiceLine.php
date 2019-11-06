@@ -32,7 +32,8 @@ class CustomerInvoiceLine extends Model
       'status',
       'contract_annex_id',
       'currency_id',
-      'currency_value'
+      'currency_value',
+      'group_sites'
   ];
   public function scopeActive($query)
   {

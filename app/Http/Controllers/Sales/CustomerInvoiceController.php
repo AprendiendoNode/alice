@@ -844,6 +844,7 @@ class CustomerInvoiceController extends Controller
      {
 
      }
+
      public function store_cont(Request $request)
      {
        // Begin a transaction
@@ -1010,6 +1011,7 @@ class CustomerInvoiceController extends Controller
                      'contract_annex_id' => $item['id_cont'],
                      'currency_id' => $item['current'],
                      'currency_value' => $item_currency_value,
+                     'group_sites' => $request->group_sites
                  ]);
 
                  //Guardar impuestos por linea
@@ -1082,6 +1084,11 @@ class CustomerInvoiceController extends Controller
          if (!method_exists($this, $class_cfdi)) {
              throw new \Exception(__('general.error_cfdi_class_exists'));
          }
+
+         if($request->group_sites == 1){
+            $this->insert_sites_annexes_lines($request, $customer_invoice);
+         }
+
          //Valida Empresa y PAC para timbrado
          PacHelper::validateSatActions();
 
@@ -1123,6 +1130,149 @@ class CustomerInvoiceController extends Controller
            // return __('general.error_cfdi_pac');
        }
      }
+
+
+     //Inserta sitios agrupados a CustomerInvoiceLines con las cantidades ponderadas 
+
+     public function insert_sites_annexes_lines(Request $request, $customer_invoice)
+     {
+        $cadena_id = $request->cadena_id;
+        $contract_master_id = $request->cont_maestro_id;
+
+        $sites = DB::select('CALL px_annexesXcadena_data(?, ?)', array($cadena_id, $contract_master_id));
+        $num_sites = count($sites);
+        
+        if (!empty($request->item)) {
+                $item = $request->item;
+                //Logica
+                $item_quantity = (double)$item[0]['quantity']; //cantidad de artículo
+                $item_price_unit = (double)$item[0]['price_unit']; //unidad de precio del artículo
+                $item_discount = (double)$item[0]['discount']; //descuento del artículo
+                
+                $item_subtotal_quantity = round($item_price_unit * $item_quantity, 2);
+                
+
+                $item_price_reduce = ($item_price_unit * (100 - $item_discount) / 100); //Precio reducido
+                $item_amount_untaxed = round($item_quantity * $item_price_reduce, 2); //libre de impuestos
+                $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed;//descuento
+                $item_amount_tax = 0; //impuesto a la cantidad del artículo
+                $item_amount_tax_ret = 0; // cantidad de artículo retiro de impuestos
+               //Impuestos por cada producto
+                if (!empty($item[0]['taxes'])) {
+                    foreach ($item[0]['taxes'] as $tax_id) {
+                        if (!empty($tax_id)) {
+                            $tax = Tax::findOrFail($tax_id);
+                            $tmp = 0;
+                            if ($tax->factor == 'Tasa') {
+                                $tmp = $item_amount_untaxed * $tax->rate / 100;
+                            } elseif ($tax->factor == 'Cuota') {
+                                $tmp = $tax->rate;
+                            }
+                            $tmp = round($tmp, 2);
+                            if ($tmp < 0) { //Retenciones
+                                $item_amount_tax_ret += $tmp;
+                            } else { //Traslados
+                                $item_amount_tax += $tmp;
+                            }
+                            //Sumatoria de impuestos
+                            $taxes[$tax_id] = array(
+                                'amount_base' => $item_amount_untaxed + (isset($taxes[$tax_id]['amount_base']) ? $taxes[$tax_id]['amount_base'] : 0),
+                                'amount_tax' => $tmp + (isset($taxes[$tax_id]['amount_tax']) ? $taxes[$tax_id]['amount_tax'] : 0),
+                            );
+                        }
+                    }
+                }
+                $item_subtotal_clean = $item_subtotal_quantity; 
+                $item_discount_clean = $item_amount_discount;
+                $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;// cantidad total del artículo = Cantidad del artículo libre de impuestos + impuesto a la cantidad del artículo + cantidad de artículo retiro de impuestos
+                $item_subtotal = $item_amount_untaxed; //libre de impuestos
+                $currency_pral_id = $request->currency_id;      //Moneda principal
+                $currency_pral_value = $request->currency_value;//Valor o TC de la moneda principal
+                //Tipo de cambio
+                $item_currency_id = $item[0]['current'];
+                $item_currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item_currency_id)->value('code_banxico');
+                $item_currency_value = $currency_pral_value;
+                //--------------------------------------------------------------------------------------------------------------------------//
+                //Moneda principal es dolar
+                if ($currency_pral_id == '2') {
+                  if ($item_currency_id == '2') {
+                    $item_currency_value = $currency_pral_value; //Tipo de cambio a usar
+                  }
+                  else {
+                    $item_currency_value = $currency_pral_value; //Tipo de cambio a usar
+                    //Tranformamos a dolar
+                    $item_amount_tax = $item_amount_tax / $item_currency_value;
+                    $item_amount_total = $item_amount_total / $item_currency_value;
+                    $item_subtotal = $item_subtotal / $item_currency_value;
+                     $item_subtotal_clean = $item_subtotal_clean / $item_currency_value; 
+                     $item_discount_clean = $item_discount_clean / $item_currency_value;
+                  }
+                }
+                //Moneda distinta
+                else {
+                  if ($item_currency_id == '2') { //bien
+                    $exchange_rates = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+                    $item_currency_value = $exchange_rates->current_rate; //Tipo de cambio a usar
+                    //Tranformamos a dolar
+                    $item_amount_tax = $item_amount_tax * $item_currency_value;
+                    $item_amount_total = $item_amount_total * $item_currency_value;
+                    $item_subtotal = $item_subtotal * $item_currency_value;
+                     $item_subtotal_clean = $item_subtotal_clean * $item_currency_value; 
+                     $item_discount_clean = $item_discount_clean * $item_currency_value;
+
+                  }
+                  else {
+                    $item_currency_value = DB::table('currencies')->select('rate')->where('id', $item_currency_id)->value('rate');
+                    //Tranformamos al valor de la moneda seleccionada
+                    $item_amount_tax = $item_amount_tax * $item_currency_value;
+                    $item_amount_total = $item_amount_total * $item_currency_value;
+                    $item_subtotal = $item_subtotal * $item_currency_value;
+                     $item_subtotal_clean = $item_subtotal_clean * $item_currency_value; 
+                     $item_discount_clean = $item_discount_clean * $item_currency_value;
+
+                  }
+                }
+                //--------------------------------------------------------------------------------------------------------------------------//
+
+                
+            /***GUARDANDO ANEXOS CON SUS MONTOS PONDERADOS****/
+            foreach ($sites as $key => $site) {
+                
+                $customer_invoice_line = CustomerInvoiceLine::create([
+                    'created_uid' => \Auth::user()->id,
+                    'updated_uid' => \Auth::user()->id,
+                    'customer_invoice_id' => $customer_invoice->id,
+                    'name' => $item[0]['name'],
+                    'sat_product_id' => $item[0]['sat_product_id'],
+                    'unit_measure_id' => $item[0]['unit_measure_id'],
+                    'quantity' => $item_quantity,
+                    'price_unit' => $item_price_unit / $num_sites,
+                    'discount' => $item_discount / $num_sites,
+                    'price_reduce' => $item_price_reduce / $num_sites,
+                    'amount_discount' => $item_discount_clean / $num_sites,
+                    'amount_untaxed' => $item_subtotal_clean / $num_sites,
+                    'amount_tax' => $item_amount_tax / $num_sites,
+                    'amount_tax_ret' => $item_amount_tax_ret / $num_sites,
+                    'amount_total' => $item_amount_total / $num_sites,
+                    'sort_order' => $key,
+                    'status' => 1,
+                    'contract_annex_id' => $site->contract_annex_id,
+                    'currency_id' => $item[0]['current'],
+                    'currency_value' => $item_currency_value,
+                    'group_sites' => 1
+                ]);
+                  //dd($item[0]['taxes']);  
+                //Guardar impuestos por linea
+                if (!empty($item[0]['taxes'])) {
+                    $customer_invoice_line->taxes()->sync($item[0]['taxes']);
+                } else {
+                    $customer_invoice_line->taxes()->sync([]);
+                }
+            }
+        }
+        
+     }
+     
      /**
       * Crear XML y enviar a timbrar CFDI 3.3
       *
