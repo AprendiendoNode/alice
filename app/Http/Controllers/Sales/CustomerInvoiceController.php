@@ -840,10 +840,6 @@ class CustomerInvoiceController extends Controller
           // return __('general.error_cfdi_pac');
       }
      }
-     public function store_cont2(Request $request)
-     {
-
-     }
 
      public function store_cont(Request $request)
      {
@@ -951,6 +947,10 @@ class CustomerInvoiceController extends Controller
                      $item_subtotal = $item_subtotal / $item_currency_value;
                       $item_subtotal_clean = $item_subtotal_clean / $item_currency_value; 
                       $item_discount_clean = $item_discount_clean / $item_currency_value;
+                      foreach ($taxes as $tax_id => $result) {
+                        $taxes[$tax_id]['amount_base'] = $result['amount_base'] / $item_currency_value;
+                        $taxes[$tax_id]['amount_tax'] = $result['amount_tax'] / $item_currency_value;
+                      }
                    }
                  }
                  //Moneda distinta
@@ -964,6 +964,10 @@ class CustomerInvoiceController extends Controller
                      $item_subtotal = $item_subtotal * $item_currency_value;
                       $item_subtotal_clean = $item_subtotal_clean * $item_currency_value; 
                       $item_discount_clean = $item_discount_clean * $item_currency_value;
+                      foreach ($taxes as $tax_id => $result) {
+                        $taxes[$tax_id]['amount_base'] = $result['amount_base'] * $item_currency_value;
+                        $taxes[$tax_id]['amount_tax'] = $result['amount_tax'] * $item_currency_value;
+                      }
 
                    }
                    else {
@@ -974,6 +978,10 @@ class CustomerInvoiceController extends Controller
                      $item_subtotal = $item_subtotal * $item_currency_value;
                       $item_subtotal_clean = $item_subtotal_clean * $item_currency_value; 
                       $item_discount_clean = $item_discount_clean * $item_currency_value;
+                      foreach ($taxes as $tax_id => $result) {
+                        $taxes[$tax_id]['amount_base'] = $result['amount_base'] * $item_currency_value;
+                        $taxes[$tax_id]['amount_tax'] = $result['amount_tax'] * $item_currency_value;
+                      }
 
                    }
                  }
