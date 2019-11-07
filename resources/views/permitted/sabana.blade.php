@@ -151,16 +151,108 @@
                       discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics,
                       very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
               </div>
+
+
               <div class="tab_content">
+                <section>
+
+
                   <h3 style="font-weight: bold; margin-left: 47%;">NPS</h3>
-                  <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage
-                      of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator
-                      on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition,
-                      injected humour, or non-characteristic words etc. There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look
-                      even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined
-                      chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The
-                      generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                          <div class="card" id="box_total_survey" style="cursor: pointer;">
+                            <div class="card-body">
+                              <div class="ml-sm-3 ml-md-0 ml-xl-0 mt-2 mt-sm-0 mt-md-2 mt-xl-0 text-center">
+                                <h4 id="total_survey" class="mb-2 text-primary font-weight-bold">194</h4>
+                								<h6 class="mb-0">Total de encuestas</h6>
+                							</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                          <div class="card" id="box_response" style="cursor: pointer;">
+                            <div class="card-body">
+                              <div class="ml-sm-3 ml-md-0 ml-xl-0 mt-2 mt-sm-0 mt-md-2 mt-xl-0 text-center">
+                                <h4 id="answered" class="mb-2 text-success font-weight-bold">110</h4>
+                								<h6 class="mb-0">Respondieron</h6>
+                							</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                          <div class="card" id="box_sin_response" style="cursor: pointer;">
+                            <div class="card-body">
+                              <div class="ml-sm-3 ml-md-0 ml-xl-0 mt-2 mt-sm-0 mt-md-2 mt-xl-0 text-center">
+                                <h4 id="unanswered" class="mb-2 text-danger font-weight-bold">84</h4>
+                								<h6 class="mb-0">Sin respuesta</h6>
+                							</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 grid-margin stretch-card">
+                      <div class="card">
+                        <div class="card-body .npscontainer"  style="width: 100%;">
+                          <h4 class="card-title">NPS chart</h4>
+                          <div id="main_nps_hotel" style="width: 100%; min-height: 320px; "></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                          <div class="card" id="box_promotores" style="cursor: pointer;">
+                            <div class="card-body">
+                              <div class="d-xl-flex  align-items-center justify-content-center p-0 item">
+                                <i class="mdi mdi-emoticon icon-lg mr-3 text-success"></i>
+                                <div class="d-flex flex-column justify-content-around">
+                                  <small class="mb-1 text-muted font-weight-bold">Promotores</small>
+                                  <h6 id="total_promotores" class="mr-2 mb-0">0</h6>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                          <div class="card" id="box_pasivos" style="cursor: pointer;">
+                            <div class="card-body">
+                              <div class="d-xl-flex  align-items-center justify-content-center p-0 item">
+                                <i class="mdi mdi-emoticon-neutral icon-lg mr-3 text-warning"></i>
+                                <div class="d-flex flex-column justify-content-around">
+                                  <small class="mb-1 text-muted font-weight-bold">Pasivos</small>
+                                  <h6 id="total_pasivos" class="mr-2 mb-0">0</h6>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                          <div class="card" id="box_detractores" style="cursor: pointer;">
+                            <div class="card-body">
+                              <div class="d-xl-flex align-items-center justify-content-center p-0 item">
+                                <i class="mdi mdi-emoticon-sad icon-lg mr-3 text-danger"></i>
+                                <div class="d-flex flex-column justify-content-around">
+                                  <small class="mb-1 text-muted font-weight-bold">Detractores</small>
+                                  <h6 id="total_detractores" class="mr-2 mb-0">0</h6>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                  </section>
               </div>
+
+
               <div class="tab_content">
                   <h3>Todos los equipos del sitio</h3>
                   <table id="all_equipments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">

@@ -221,6 +221,7 @@ function graph_nps() {
           data_count1.push({ value: objdata.Count, name: objdata.Concepto + ' = ' + objdata.Count},);
         });
         graph_pie_default_four_with_porcent('main_grap_nps', data_name1, data_count1, 'Grafica', 'NPS', 'left');
+        
       },
       error: function (data) {
         console.log('Error:', data);
