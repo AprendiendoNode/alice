@@ -15,7 +15,7 @@
               </select>
           </div>
           <div class="form-group fields_docp">
-            <label for="proyecto" class="">Nombre del proyecto</label>
+            <label for="proyecto" class="">Nombre de oportunidad (Proyecto)</label>
             <input type="text" class="form-control form-control-sm" id="proyecto" name="proyecto" placeholder="">
           </div>
           <div class="form-group fields_docm">
@@ -45,7 +45,7 @@
               </select>
           </div>
           <div id="" class="form-group fields_docp">
-            <label for="grupo" class="">Grupo / Nombre</label>
+            <label for="grupo" class="">Nombre de la cuenta (Cadena)</label>
               <input type="text" class="form-control form-control-sm" id="grupo" name="grupo" placeholder="">
           </div>
           <div id="" class="form-group fields_docm">
@@ -56,7 +56,7 @@
           </div>
           <div class="form-group fields_docp">
             <label for="oportunity" class="">Num. oportunidad</label>
-              <input type="text" class="form-control form-control-sm" id="oportunity" name="oportunity" placeholder="">
+              <input type="text" class="form-control form-control-sm" id="oportunity" name="oportunity" placeholder="" value="OP-">
           </div>
         </div>
         <!-------------------------------------------------------------------->
@@ -76,7 +76,7 @@
               </select>
           </div>
           <div class="form-group">
-            <label for="fecha" class="">Propietario de la cuenta</label>
+            <label for="fecha" class="">Propietario de la oportunidad (Vendedor)</label>
               <select class="form-control form-control-sm" name="comercial" id="comercial">
                 <option value="">Elegir...</option>
                 @foreach ($comerciales as $comercial_data)
@@ -92,7 +92,9 @@
               <select class="form-control form-control-sm" id="type_service" name="type_service">
                 <option value="">Elegir...</option>
                 @foreach ($type_service as $type_service_data)
-                  <option value="{{$type_service_data->id}}">{{$type_service_data->name}}</option>
+                  @if($type_service_data->id != 4)
+                    <option value="{{$type_service_data->id}}">{{$type_service_data->name}}</option>
+                  @endif
                 @endforeach
               </select>
           </div>

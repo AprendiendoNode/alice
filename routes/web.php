@@ -473,6 +473,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/approval_servicio_cliente/id_doc/{id}', 'Projects\KickoffController@approval_servicio_cliente');
   Route::get('/approval_facturacion/id_doc/{id}', 'Projects\KickoffController@approval_facturacion');
   Route::get('/approval_legal/id_doc/{id}', 'Projects\KickoffController@approval_legal');
+  Route::get('/approval_vendedor/id_doc/{id}', 'Projects\KickoffController@approval_vendedor');
+  Route::get('/approval_investigacion/id_doc/{id}', 'Projects\KickoffController@approval_investigacion');
   Route::get('/approval_director_operaciones/id_doc/{id}', 'Projects\KickoffController@approval_director_operaciones');
   Route::get('/approval_director_general/id_doc/{id}', 'Projects\KickoffController@approval_director_general');
   Route::get('/notificaciones_read_doc/{id}', 'Auth\NotificationController@read_docp');

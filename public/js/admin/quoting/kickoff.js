@@ -15,6 +15,8 @@ var check_itconcierge = document.getElementById("check_itconcierge");
 var check_servicio_cliente = document.getElementById("check_servicio_cliente");
 var check_facturacion = document.getElementById("check_facturacion");
 var check_legal = document.getElementById("check_legal");
+var check_vendedor = document.getElementById("check_vendedor");
+var check_investigacion_desarrollo = document.getElementById("check_investigacion_desarrollo");
 var check_director_operaciones = document.getElementById("check_director_operaciones");
 var check_director_general = document.getElementById("check_director_general");
 //EVENT LISTENERS CHECKBOX APPROVALS
@@ -44,6 +46,12 @@ check_facturacion.addEventListener('click', (e) => {
 });
 check_legal.addEventListener('click', (e) => {
   approval_legal(e);
+});
+check_vendedor.addEventListener('click', (e) => {
+  approval_vendedor(e);
+});
+check_investigacion_desarrollo.addEventListener('click', (e) => {
+  approval_investigacion(e);
 });
 check_director_operaciones.addEventListener('click', (e) => {
   approval_director_operaciones(e);
@@ -757,6 +765,138 @@ function approval_soporte(e){
           })
 
         }
+
+    /***********************************************************/
+    function approval_vendedor(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var id = document.getElementById('id').value;
+      var miInit = {
+        method: 'get',
+        headers: headers,
+        credentials: "same-origin",
+        cache: 'default' };
+
+        Swal.fire({
+          title: "¿Los montos de la comision son correctos?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Confirmar',
+          cancelButtonText: 'Cancelar',
+          showLoaderOnConfirm: true,
+          preConfirm: () => {
+
+             return fetch(`/approval_vendedor/id_doc/${id}`, miInit)
+                       .then(function(response){
+                         if (!response.ok) {
+                            throw new Error(response.statusText)
+                          }
+                         return response.text();
+                       })
+                       .catch(function(error){
+                         Swal.showValidationMessage(
+                           `Request failed: ${error}`
+                         )
+                       });
+          }//Preconfirm
+        }).then((result) => {
+          console.log(result.value);
+          if(result.value == "1"){
+            document.getElementById("check_vendedor").checked = true;
+            document.getElementById("check_vendedor").disabled = true;
+            Swal.fire({
+              title: 'Aprobado por:',
+              text: "Vendedor",
+              type: 'success',
+            }).then(function (result) {
+              if (result.value) {
+                location.reload();
+              }
+            })
+          }else if(result.value == "2"){
+            document.getElementById("check_vendedor").checked = true;
+            document.getElementById("check_vendedor").disabled = true;
+            Swal.fire({
+              title: 'Cotizador autorizado por comité',
+              text: "Este documento se ha convertido a Documento P",
+              type: 'success',
+            }).then(function (result) {
+              if (result.value) {
+                location.reload();
+              }
+            })
+          }
+        })
+
+      }
+
+  /***********************************************************/
+  function approval_investigacion(e){
+    e.preventDefault();
+    e.stopPropagation();
+    var id = document.getElementById('id').value;
+    var miInit = {
+      method: 'get',
+      headers: headers,
+      credentials: "same-origin",
+      cache: 'default' };
+
+      Swal.fire({
+        title: "¿Estas seguro?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+
+           return fetch(`/approval_investigacion/id_doc/${id}`, miInit)
+                     .then(function(response){
+                       if (!response.ok) {
+                          throw new Error(response.statusText)
+                        }
+                       return response.text();
+                     })
+                     .catch(function(error){
+                       Swal.showValidationMessage(
+                         `Request failed: ${error}`
+                       )
+                     });
+        }//Preconfirm
+      }).then((result) => {
+        console.log(result.value);
+        if(result.value == "1"){
+          document.getElementById("check_investigacion_desarrollo").checked = true;
+          document.getElementById("check_investigacion_desarrollo").disabled = true;
+          Swal.fire({
+            title: 'Aprobado por:',
+            text: "Investigacion y desarrollo",
+            type: 'success',
+          }).then(function (result) {
+            if (result.value) {
+              location.reload();
+            }
+          })
+        }else if(result.value == "2"){
+          document.getElementById("check_investigacion_desarrollo").checked = true;
+          document.getElementById("check_investigacion_desarrollo").disabled = true;
+          Swal.fire({
+            title: 'Cotizador autorizado por comité',
+            text: "Este documento se ha convertido a Documento P",
+            type: 'success',
+          }).then(function (result) {
+            if (result.value) {
+              location.reload();
+            }
+          })
+        }
+      })
+
+    }
 
 /***********************************************************/
         function approval_director_operaciones(e){

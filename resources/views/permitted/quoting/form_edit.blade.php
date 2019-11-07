@@ -18,7 +18,7 @@
               </select>
           </div>
           <div class="form-group fields_docp">
-            <label for="proyecto" class="">Nombre del proyecto</label>
+            <label for="proyecto" class="">Nombre de oportunidad (Proyecto)</label>
             <input type="text" class="form-control" id="proyecto" name="proyecto" value="{{$data_header[0]->nombre_proyecto}}" placeholder="">
           </div>
           <div class="form-group fields_docm">
@@ -56,7 +56,7 @@
               </select>
           </div>
           <div id="" class="form-group fields_docp">
-            <label for="grupo" class="">Grupo / Nombre</label>
+            <label for="grupo" class="">Nombre de la cuenta (Cadena)</label>
               <input type="text" class="form-control" id="grupo" name="grupo" value="{{$data_header[0]->nombre_grupo}}" placeholder="">
           </div>
           <div id="" class="form-group fields_docm">
@@ -93,7 +93,7 @@
               </select>
           </div>
           <div class="form-group">
-            <label for="fecha" class="">Propietario de la cuenta</label>
+            <label for="fecha" class="">Propietario de la oportunidad (Vendedor)</label>
               <select class="form-control form-control-sm" name="comercial" id="comercial">
                 <option value="">Elegir...</option>
                 @foreach ($comerciales as $comercial_data)
@@ -115,7 +115,7 @@
                 @foreach ($type_service as $type_service_data)
                   @if($type_service_data->id == $data_header[0]->tipo_servicio_id)
                     <option selected value="{{$type_service_data->id}}">{{$type_service_data->name}}</option>
-                  @else
+                  @elseif($type_service_data->id != 4)
                     <option value="{{$type_service_data->id}}">{{$type_service_data->name}}</option>
                   @endif
                 @endforeach

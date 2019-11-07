@@ -499,6 +499,84 @@ class KickoffController extends Controller
       return $flag;
     }
 
+    public function approval_vendedor($id)
+    {
+      $flag = "0";
+      $documentp = Documentp::find($id);
+      $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+
+      DB::beginTransaction();
+      try {
+        DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
+           'vendedor' => 1,
+           'updated_at' => \Carbon\Carbon::now()
+        ]);
+        //Cambiando status de documento a "EN REVISIÓN"
+        $documentp->status_id = 2;
+        $documentp->save();
+
+        $user = Auth::user()->id;
+        $new_doc_state = new Documentp_status_user;
+        $new_doc_state->documentp_id = $documentp->id;
+        $new_doc_state->user_id = $user;
+        $new_doc_state->status_id = '2';
+        $new_doc_state->save();
+
+        if(!$this->check_approvals($documentp->id)){
+          $flag = "1";
+        }else{
+          $flag = "2";
+        }
+        DB::commit();
+
+    } catch(\Exception $e){
+      $e->getMessage();
+      DB::rollback();
+      return $e;
+    }
+
+      return $flag;
+    }
+
+    public function approval_investigacion($id)
+    {
+      $flag = "0";
+      $documentp = Documentp::find($id);
+      $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+
+      DB::beginTransaction();
+      try {
+        DB::table('kickoff_approvals')->where('kickoff_id', $kickoff->id)->update([
+           'investigacion_desarrollo' => 1,
+           'updated_at' => \Carbon\Carbon::now()
+        ]);
+        //Cambiando status de documento a "EN REVISIÓN"
+        $documentp->status_id = 2;
+        $documentp->save();
+
+        $user = Auth::user()->id;
+        $new_doc_state = new Documentp_status_user;
+        $new_doc_state->documentp_id = $documentp->id;
+        $new_doc_state->user_id = $user;
+        $new_doc_state->status_id = '2';
+        $new_doc_state->save();
+
+        if(!$this->check_approvals($documentp->id)){
+          $flag = "1";
+        }else{
+          $flag = "2";
+        }
+        DB::commit();
+
+    } catch(\Exception $e){
+      $e->getMessage();
+      DB::rollback();
+      return $e;
+    }
+
+      return $flag;
+    }
+
     public function approval_facturacion($id)
     {
       $flag = "0";
@@ -664,7 +742,7 @@ class KickoffController extends Controller
       $kickoff_approvals = Kickoff_approvals::where('kickoff_id', $kickoff->id)->first();
       $approval_dir = DB::select('CALL px_valida_aprobado_direccion(?)', array($kickoff_approvals->id));
       //Revisando si todos los departamentos ya revisaron el documento
-      if( $kickoff_approvals->proyectos == 1 &&
+      if( $kickoff_approvals->proyectos == 1 && $kickoff_approvals->vendedor == 1 && $kickoff_approvals->investigacion_desarrollo == 1 &&
           $kickoff_approvals->soporte == 1 && $kickoff_approvals->planeacion == 1 && $kickoff_approvals->servicio_cliente &&
           $kickoff_approvals->itconcierge && $kickoff_approvals->legal && $kickoff_approvals->facturacion &&
           $approval_dir[0]->aprobado_direccion == 1){

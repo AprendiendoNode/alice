@@ -878,6 +878,7 @@
                           @else
                             <input id="check_itconcierge" type="checkbox" class="form-check-input" disabled>
                           @endif
+                          {{$document[0]->ITC}}
                           {{-- {{$document[0]->ITC}} --}}
                       </div>
                       <div class="text-center">
@@ -886,6 +887,26 @@
                           <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
                         @endif
                       </div>
+                    </div>
+                    <div class="d-block">
+                        <div class="form-check form-check-flat form-check-success ml-5">
+                          <label class="form-check-label">
+                            @if (auth()->user()->can('Aprobacion vendedor') && $kickoff_approvals->vendedor == 1)
+                              <input id="check_vendedor" type="checkbox" class="form-check-input" disabled checked>
+                            @elseif(auth()->user()->can('Aprobacion vendedor') && $kickoff_approvals->vendedor == 0)
+                              <input id="check_vendedor" type="checkbox" class="form-check-input">
+                            @else
+                              <input id="check_vendedor" type="checkbox" class="form-check-input" disabled>
+                            @endif
+                            {{$document[0]->comercial}}
+                            {{-- {{$document[0]->ITC}} --}}
+                        </div>
+                        <div class="text-center">
+                          <p class="text-secondary ml-5">Vendedor</p>
+                          @if ($kickoff_approvals->vendedor == 1)
+                            <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
+                          @endif
+                        </div>
                     </div>
                     <div class="d-block">
                       <div class="form-check form-check-flat form-check-success ml-5">
@@ -1000,9 +1021,28 @@
                           <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
                         @endif
                       </div>
-                    </div>
+					</div>
+					<div class="d-block">
+						<div class="form-check form-check-flat form-check-success ml-5">
+							<label class="form-check-label">
+							@if (auth()->user()->can('Aprobacion investigacion y desarrollo') && $kickoff_approvals->investigacion_desarrollo == 1)
+								<input id="check_investigacion_desarrollo" type="checkbox" class="form-check-input" disabled checked>
+							@elseif(auth()->user()->can('Aprobacion investigacion y desarrollo') && $kickoff_approvals->investigacion_desarrollo == 0)
+								<input id="check_investigacion_desarrollo" type="checkbox" class="form-check-input">
+							@else
+								<input id="check_investigacion_desarrollo" type="checkbox" class="form-check-input" disabled>
+							@endif
+							Javier Martínez
+						</div>
+						<div class="text-center">
+							<p class="text-secondary ml-5">Investigación y desarrollo</p>
+							@if ($kickoff_approvals->investigacion_desarrollo == 1)
+							<span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
+							@endif
+						</div>
+					</div>
                     <div class="d-block">
-                      <div class="form-check form-check-flat form-check-success ml-3">
+                      <div class="form-check form-check-flat form-check-success ml-5">
                         <label class="form-check-label">
                           @if (auth()->user()->can('Aprobacion administracion') && $approval_dir[0]->aprobado_direccion == 1)
                             <input id="check_administracion" type="checkbox" class="form-check-input" disabled checked>
@@ -1016,9 +1056,9 @@
                           María  de Jesús Ortíz
                       </div>
                       <div class="text-center">
-                        <p class="text-secondary">Administración y Finanzas</p>
+                        <p class="text-secondary ml-5">Administración y Finanzas</p>
                         @if ($kickoff_approvals->administracion == 1)
-                          <span class="badge badge-success badge-pill text-white">Autorizado</span>
+                          <span class="badge badge-success badge-pill text-white ml-5">Autorizado</span>
                         @endif
                       </div>
                     </div>
@@ -1118,7 +1158,7 @@
   @else
     @include('default.denied')
   @endif
-  <script type="text/javascript" src="{{asset('js/admin/quoting/kickoff.js?v?=2.0.0')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/quoting/kickoff.js?v?=3.0.0')}}"></script>
   <script type="text/javascript" src="{{asset('js/admin/quoting/modal_linea_base.js')}}"></script>
   <script type="text/javascript" src="{{asset('js/admin/quoting/comision.js?v=2.0.0')}}"></script>
   <script type="text/javascript" src="{{asset('js/admin/documentp/request_modal_documentp.js')}}"></script>
