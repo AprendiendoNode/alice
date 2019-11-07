@@ -936,5 +936,34 @@ class ContratoController extends Controller
    $result = DB::select('CALL px_contract_payments_log_del (?,?)', array($id, $name_user));
    return json_encode($result);
  }
+ public static function dateTimeToSql($date)
+  {
+      $date_orden = str_replace('/', '-', $date );
+      return date('Y-m-d', strtotime($date_orden));
+  }
+ public function index_contract_expiration(Request $request)
+ {
+   return view('permitted.contract.contract_expiration');
+ }
+ public function contract_expiration_notvenue(Request $request)
+ {
+   $date_start = $this->dateTimeToSql($request->start);
+   $date_end = $this->dateTimeToSql($request->end);
+   $resultados = DB::select('CALL px_contract_annexes_vencido_serv_adm (?,?)', array($date_start, $date_end ));
+   return json_encode($resultados);
+ }
+ public function contract_expiration_venue(Request $request)
+ {
+   $date_start = $this->dateTimeToSql($request->start);
+   $date_end = $this->dateTimeToSql($request->end);
+   $resultados = DB::select('CALL px_contract_annexes_vencido_venue (?,?)', array($date_start, $date_end ));
+   return json_encode($resultados);
+ }
+ public function contract_expiration_info(Request $request)
+ {
+   $id_maestro = $request->value;
+   $result = DB::select('CALL px_anexos_fechas (?)', array($id_maestro));
+   return json_encode($result);
 
+ }
 }

@@ -746,7 +746,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('find_fact_pend', 'Contracts\CFilemanagerController@find_fact_pend');
     Route::post('get_data_fact_by_drive', 'Contracts\CFilemanagerController@get_data_fact_by_drive');
     Route::post('add_fact_pend_by_drive', 'Contracts\CFilemanagerController@add_fact_pend_by_drive');
-
+    //Vencimiento de contratos
+    Route::get('/contract_expiration', 'Contracts\ContratoController@index_contract_expiration');
+    Route::post('/contract_expiration_notvenue', 'Contracts\ContratoController@contract_expiration_notvenue');
+    Route::post('/contract_expiration_venue', 'Contracts\ContratoController@contract_expiration_venue');
+    Route::post('/contract_expiration_info', 'Contracts\ContratoController@contract_expiration_info'); 
     //Lista por facturar
     Route::get('/view_payauto', 'Contracts\PruebasController@index_pagos');
     Route::post('/recordmens', 'Contracts\PruebasController@record_a')->name('recordmens');
