@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         Commands\ticketsxdescription::class,
         Commands\weeklyxpayments::class,
         Commands\weeklyxincome::class,
+        Commands\weeklyxviatics::class,
         Commands\enchangeratefix::class,
     ];
 
@@ -52,6 +53,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('ticket:desc')->twiceDaily(19, 23);
         $schedule->command('weekly:pay')->fridays()->at('19:00');
         $schedule->command('weekly:income')->fridays()->at('19:01');
+        $schedule->command('weekly:viatic')->fridays()->at('19:02');
         $schedule->command('check:payments')->monthly(1, '4:00');
         $schedule->command('exchangerate:fix')->dailyAt('12:20');
         //

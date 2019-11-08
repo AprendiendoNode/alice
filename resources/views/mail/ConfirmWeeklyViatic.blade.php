@@ -128,7 +128,7 @@ background-color: #f6f6f6;
                                 color: #74787E;
                                 line-height: 1.5em;
                                 font-size: 14px;
-                                text-align: left;"><strong>No se ingreso ningún pago esta semana.</strong></p>
+                                text-align: left;"><strong>No se confirmó el pago de viáticos esta semana.</strong></p>
                     @else
                     <label>Total: </label><h4>{{$totales[0]->suma_monto}}</h4><br>
                     
