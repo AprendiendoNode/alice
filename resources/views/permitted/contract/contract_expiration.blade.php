@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View drive') )
+  @if( auth()->user()->can('Contract expiration') )
     Vencimiento de contratos
   @else
     {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('contentheader_description')
-  @if( auth()->user()->can('View drive') )
+  @if( auth()->user()->can('Contract expiration') )
   @else
     {{ trans('message.denied') }}
   @endif
@@ -54,7 +54,7 @@
     </div>
   </div>
 
-  @if( auth()->user()->can('View drive') )
+  @if( auth()->user()->can('Contract expiration') )
     <div class="card mb-4">
       <div class="card-body">
         <form id="search" name="search" class="forms-sample" enctype="multipart/form-data"> <!-- change -->
@@ -165,7 +165,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View drive') )
+  @if( auth()->user()->can('Contract expiration') )
     <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
     <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
