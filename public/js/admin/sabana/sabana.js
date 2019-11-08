@@ -27,6 +27,7 @@ $(function() {
     });
 get_info_equipments(cadena);
 get_nps_hotel(cadena);
+get_nps_comment(cadena);
 
   });
 
@@ -47,6 +48,28 @@ get_nps_hotel(cadena);
         $('#total_promotores').text(data[0]['pr']);
         $('#total_pasivos').text(data[0]['ps']);
         $('#total_detractores').text(data[0]['d']);
+        $('#total_survey').text(data[0]['enviadas']);
+        $('#answered').text(data[0]['respondieron']);
+        $('#unanswered').text(data[0]['abstenidos']);
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+
+  }
+
+  function get_nps_comment(idcadena){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idcadena;
+    //console.log(id);
+    $.ajax({
+      type: "POST",
+      url: "/get_nps_comment_hotel",
+      data: { _token : _token, id: id },
+      success: function (data){
+        //console.log(data);
+        table_comments_hotel(data,$('#nps_comments'));
       },
       error: function (data) {
         console.log('Error:', data);
@@ -63,7 +86,7 @@ get_nps_hotel(cadena);
       url: "/get_all_equipmentsbyhotel",
       data: { _token : _token, id: id },
       success: function (data){
-
+        $('.divEQ').addClass('tableFixHead');
         table_equipments(data, $("#all_equipments"));
 
       },
@@ -74,6 +97,41 @@ get_nps_hotel(cadena);
 
   }
 
+  function table_comments_hotel(datajson, table){
+    table.DataTable().destroy();
+    var vartable = table.dataTable(Configuration_table);
+    vartable.fnClearTable();
+    //console.log(datajson);
+    $.each(datajson, function(index, status){
+      console.log(status.nps );
+      var span_calificacion = '';
+      full_star ='<span class="fas fa-star text-warning"></span>';
+      empty_star='<span class="far fa-star "></span>';
+      switch (status.nps ) {
+        case 'Pr':
+        span_calificacion = full_star.repeat(5);
+          break;
+        case 'Ps':
+          span_calificacion = full_star.repeat(3) + empty_star.repeat(2);
+          break;
+        case 'D':
+            span_calificacion = empty_star.repeat(5);
+          break;
+        default:
+
+      }
+      vartable.fnAddData([
+        status.cliente,
+        status.sitio,
+        span_calificacion,
+        status.it,
+        status.comentario,
+        status.fecha
+
+      ]);
+    });
+  }
+
   function table_equipments(datajson, table){
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table_equipments);
@@ -81,15 +139,15 @@ get_nps_hotel(cadena);
     $.each(datajson, function(index, status){
       var span_identificador = '';
       if (status.estado == '1') { span_identificador = '<span class="badge badge-pill badge-success">Activo en Sitio</span>';}
-      if (status.estado == '2') { span_identificador = '<span class="badge badge-pill badge-danger">Baja</span>';}
-      if (status.estado == '3') { span_identificador = '<span class="badge badge-pill badge-warning text-white">Bodega</span>';}
-      if (status.estado == '4') { span_identificador = '<span class="badge badge-pill badge-dark">Stock</span>';}
-      if (status.estado == '5') { span_identificador = '<span class="badge badge-pill badge-info">Prestamo</span>';}
-      if (status.estado == '6') { span_identificador = '<span class="badge badge-pill badge-primary">Venta</span>';}
-      if (status.estado == '7') { span_identificador = '<span class="badge badge-pill badge-info">Propiedad del Cliente</span>';}
-      if (status.estado == '8') { span_identificador = '<span class="badge badge-pill badge-secondary">Demo</span>';}
-      if (status.estado == '9') { span_identificador = '<span class="badge badge-pill badge-secondary">Asignado [SITWIFI]</span>';}
-      if (status.estado == '10') { span_identificador = '<span class="badge badge-pill badge-danger">Descontinuado</span>';}
+else  if (status.estado == '2') { span_identificador = '<span class="badge badge-pill badge-danger">Baja</span>';}
+else  if (status.estado == '3') { span_identificador = '<span class="badge badge-pill badge-warning text-white">Bodega</span>';}
+else  if (status.estado == '4') { span_identificador = '<span class="badge badge-pill badge-dark">Stock</span>';}
+else  if (status.estado == '5') { span_identificador = '<span class="badge badge-pill badge-info">Prestamo</span>';}
+else  if (status.estado == '6') { span_identificador = '<span class="badge badge-pill badge-primary">Venta</span>';}
+else  if (status.estado == '7') { span_identificador = '<span class="badge badge-pill badge-info">Propiedad del Cliente</span>';}
+else  if (status.estado == '8') { span_identificador = '<span class="badge badge-pill badge-secondary">Demo</span>';}
+else  if (status.estado == '9') { span_identificador = '<span class="badge badge-pill badge-secondary">Asignado [SITWIFI]</span>';}
+else  if (status.estado == '10') { span_identificador = '<span class="badge badge-pill badge-danger">Descontinuado</span>';}
       vartable.fnAddData([
         status.tipo,
         status.modelo,
@@ -104,7 +162,45 @@ get_nps_hotel(cadena);
     });
   }
 
-
+  var Configuration_table = {
+    "order": [[ 0, "asc" ]],
+    paging: false,
+    //"pagingType": "simple",
+    Filter: false,
+    searching: false,
+    ordering: false,
+    "select": false,
+    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+    dom:"<'row'<'col-sm-6'B><'col-sm-2'l><'col-sm-4'f>>" +
+          "<'row'<'col-sm-12'tr>>" +
+          "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+    buttons: [],
+    bInfo: true,
+    language:{
+      "sProcessing":     "Procesando...",
+      "sLengthMenu":     "Mostrar _MENU_ registros",
+      "sZeroRecords":    "No se encontraron resultados",
+      "sEmptyTable":     "Ningún dato disponible",
+      "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+      "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+      "sInfoPostFix":    "",
+      "sSearch":         "<i class='fa fa-search'></i> Buscar:",
+      "sUrl":            "",
+      "sInfoThousands":  ",",
+      "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+          "sFirst":    "Primero",
+          "sLast":     "Último",
+          "sNext":     "Siguiente",
+          "sPrevious": "Anterior"
+      },
+      "oAria": {
+            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      }
+    }
+  }
 
   var Configuration_table_equipments = {
     "order": [[ 0, "asc" ]],

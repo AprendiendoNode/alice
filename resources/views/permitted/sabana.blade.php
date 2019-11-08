@@ -249,23 +249,53 @@
 
 
                   </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h3>Última encuesta</h3>
+                      <table id="nps_comments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
+                        <thead>
+                          <tr class="bg-primary text-center">
+                            <th class="bg-primary"> <small>Cliente</small> </th>
+                            <th class="bg-primary"> <small>Sitio</small> </th>
+                            <th class="bg-primary"> <small>Calificacion</small> </th>
+                            <th class="bg-primary"> <small>Itc</small> </th>
+                            <th class="bg-primary"> <small>Comentario</small> </th>
+                            <th class="bg-primary"> <small>Fecha</small> </th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-center">
+                        </tbody>
+                        <tfoot >
+                          <tr >
+                            <th></th>
+                            <th></th>
+                            <th ></th>
+                            <th></th>
+                            <th></th>
+                            <th ></th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
                   </section>
               </div>
 
 
               <div class="tab_content">
                   <h3>Todos los equipos del sitio</h3>
+                  <div class="divEQ">
                   <table id="all_equipments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                     <thead>
-                      <tr style="background: #02948c">
-                        <th> <small>Tipo</small> </th>
-                        <th > <small>Modelo</small> </th>
-                        <th > <small>Mac</small> </th>
-                        <th > <small>Serie</small> </th>
-                        <th > <small>Descripción</small> </th>
-                        <th > <small>Estado</small> </th>
-                        <th > <small>Fecha Registro</small> </th>
-                        <th > <small>Fecha Baja</small> </th>
+                      <tr class="bg-aqua">
+                        <th class="bg-aqua"> <small>Tipo</small> </th>
+                        <th class="bg-aqua"> <small>Modelo</small> </th>
+                        <th class="bg-aqua"> <small>Mac</small> </th>
+                        <th class="bg-aqua"> <small>Serie</small> </th>
+                        <th class="bg-aqua"> <small>Descripción</small> </th>
+                        <th class="bg-aqua"> <small>Estado</small> </th>
+                        <th class="bg-aqua"> <small>Fecha Registro</small> </th>
+                        <th class="bg-aqua"> <small>Fecha Baja</small> </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -282,6 +312,7 @@
                       </tr>
                     </tfoot>
                   </table>
+                  </div>
               </div>
               <div class="tab_content">
                   <h3>Tab content 5</h3>
@@ -334,7 +365,13 @@
     <script src="{{ asset('js/admin/sabana/sabana.js')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-
+    <style media="screen">
+    .tableFixHead          { overflow-y: auto;overflow-x: hidden; height: 500px; }
+    .tableFixHead thead th { position: sticky !important; top: 0; }
+    .bg-aqua{
+    background: #02948c;
+    }
+    </style>
   @else
     <!--NO SCRIPTS-->
   @endif

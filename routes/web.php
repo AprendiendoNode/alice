@@ -752,7 +752,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/contract_expiration', 'Contracts\ContratoController@index_contract_expiration');
     Route::post('/contract_expiration_notvenue', 'Contracts\ContratoController@contract_expiration_notvenue');
     Route::post('/contract_expiration_venue', 'Contracts\ContratoController@contract_expiration_venue');
-    Route::post('/contract_expiration_info', 'Contracts\ContratoController@contract_expiration_info'); 
+    Route::post('/contract_expiration_info', 'Contracts\ContratoController@contract_expiration_info');
     //Lista por facturar
     Route::get('/view_payauto', 'Contracts\PruebasController@index_pagos');
     Route::post('/recordmens', 'Contracts\PruebasController@record_a')->name('recordmens');
@@ -821,6 +821,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('informacionCliente', 'SabanaController@informacionCliente');
     Route::post('get_all_equipmentsbyhotel', 'SabanaController@get_table_equipments');
     Route::post('get_nps_hotel', 'SabanaController@get_nps_hotel');
+    Route::post('get_nps_comment_hotel', 'SabanaController@get_nps_comment_hotel');
 
 
 });

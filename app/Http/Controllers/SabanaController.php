@@ -44,6 +44,12 @@ class SabanaController extends Controller
     return $result;
   }
 
+  public function get_nps_comment_hotel(Request $request){
+    $id_hotel=$request->id;
+    $result = DB::select('CALL px_get_results_nps_sitio (?)', array($id_hotel));
+    return $result;
+  }
+
 
 
 }
