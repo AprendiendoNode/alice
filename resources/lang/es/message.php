@@ -50,8 +50,8 @@ return [
     'subtitle_detailed_hotel_costs' => 'detallado por sitio con costos',
     'breadcrumb_detailed_hotel_costs' => 'Reporte detallado por sitio con costos',
 
-    'subtitle_detailed_hotel_proyect' => 'por proyecto',
-    'breadcrumb_detailed_hotel_proyect' => 'Reporte por proyecto',
+    'subtitle_detailed_hotel_proyect' => 'por cadena',
+    'breadcrumb_detailed_hotel_proyect' => 'Reporte por cadena',
 
     'title_cover' => 'Carta',
     'subtitle_detailed_cover' => 'de entrega',
