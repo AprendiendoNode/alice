@@ -28,7 +28,7 @@ $(function() {
 get_info_equipments(cadena);
 get_nps_hotel(cadena);
 get_nps_comment(cadena);
-
+get_graph_equipments(cadena);
   });
 
 
@@ -89,6 +89,26 @@ get_nps_comment(cadena);
         $('.divEQ').addClass('tableFixHead');
         table_equipments(data, $("#all_equipments"));
 
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+
+  }
+
+  function get_graph_equipments(idcadena) {
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idcadena;
+    $.ajax({
+      type: "POST",
+      url: "/get_graph_equipments",
+      data: { _token : _token, id: id },
+      success: function (data){
+        //$('.divEQ').addClass('tableFixHead');
+        //table_equipments(data, $("#all_equipments"));
+        //console.log(data);
+        graph_equipments('graph_equipments',data);
       },
       error: function (data) {
         console.log('Error:', data);
@@ -440,4 +460,75 @@ else  if (status.estado == '10') { span_identificador = '<span class="badge badg
         }
     });
   }
+
+
+function graph_equipments(title,data) {
+  //$('#'+title).width($('#'+title).width());
+  //$('#'+title).height($('#'+title).height());
+
+ var chart = document.getElementById(title);
+  var resizeMainContainer = function () {
+   chart.style.width = 720+'px';
+   chart.style.height = 320+'px';
+ };
+  resizeMainContainer();
+    var myChart = echarts.init(chart);
+    var group=[];
+    var i=0;
+
+    data.forEach(function(element){
+    group[i] = {value:element.cantidad,name: element.tipo};
+    i++;
+    });
+
+    option = {
+        title : {
+            text: 'Clasificación',
+            subtext: 'Tipo de equipo',
+            x:'center'
+        },
+         //color: ['#AD50D0','#00EEB1','#00CAE5','#DB3841','#D87DAF','#2B4078','#AD50D0','#AD50D0'],
+         color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#00a4c8','#d0b450','#d06f50'],
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'right',
+            
+        },
+        series : [
+            {
+                name: 'Tipo de equipo',
+                type: 'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data:group,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+
+  myChart.setOption(option);
+
+  $(window).on('resize', function(){
+      if(myChart != null && myChart != undefined){
+         chart.style.width = 100+'%';
+         chart.style.height = 100+'%';
+          myChart.resize();
+
+      }
+  });
+}
+
+
+
 });

@@ -198,7 +198,9 @@
                       <div class="card">
                         <div class="card-body .npscontainer"  style="width: 100%;">
                           <h4 class="card-title">NPS chart</h4>
-                          <div id="main_nps_hotel" style="width: 100%; min-height: 320px; "></div>
+                          <div class="d-flex justify-content-center border-bottom w-100">
+                            <div id="main_nps_hotel" style="width: 100%; min-height: 320px; "></div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -284,6 +286,10 @@
 
               <div class="tab_content">
                   <h3>Todos los equipos del sitio</h3>
+                  <div class="d-flex justify-content-center border-bottom w-100">
+                    <div  id="graph_equipments" style="min-height: 300px;left: 0px;right: 0px;"> </div>
+                  </div>
+
                   <div class="divEQ">
                   <table id="all_equipments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                     <thead>

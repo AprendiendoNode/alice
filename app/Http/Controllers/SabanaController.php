@@ -50,6 +50,12 @@ class SabanaController extends Controller
     return $result;
   }
 
+  public function get_graph_equipments(Request $request){
+    $id_hotel = $request->id;
+    $result = DB::select('CALL px_equiposxtipo_hotel (?)',array($id_hotel));
+    return $result;
+  }
+
 
 
 }

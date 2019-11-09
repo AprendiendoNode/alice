@@ -822,7 +822,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_all_equipmentsbyhotel', 'SabanaController@get_table_equipments');
     Route::post('get_nps_hotel', 'SabanaController@get_nps_hotel');
     Route::post('get_nps_comment_hotel', 'SabanaController@get_nps_comment_hotel');
-
+    Route::post('get_graph_equipments','SabanaController@get_graph_equipments');
 
 });
 
