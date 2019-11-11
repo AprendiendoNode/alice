@@ -819,6 +819,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('cont_hist_cont', 'SabanaController@index');
     Route::post('informacionCliente', 'SabanaController@informacionCliente');
+    Route::post('get_all_contracts_by_hotel', 'SabanaController@get_all_contracts_by_hotel');
+    Route::post('get_all_annexes_by_master', 'SabanaController@get_all_annexes_by_master');
     Route::post('get_all_equipmentsbyhotel', 'SabanaController@get_table_equipments');
     Route::post('get_nps_hotel', 'SabanaController@get_nps_hotel');
     Route::post('get_nps_comment_hotel', 'SabanaController@get_nps_comment_hotel');

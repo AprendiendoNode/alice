@@ -30,14 +30,23 @@ class SabanaController extends Controller
     $email = DB::table('hotels')->join("sucursals", "hotels.sucursal_id", "=", "sucursals.id")->select("sucursals.correo")->where("hotels.id",$hotel)->get();
     return array_merge(json_decode($result1),$itc,json_decode($email));
   }
-
+  public function get_all_contracts_by_hotel(Request $request)
+  {
+    $hotel = $request->id;
+    $maestro = DB::select('CALL px_contrac_master_data_site(?)', array($hotel));
+    return $maestro;
+  }
+  public function get_all_annexes_by_master(Request $request)
+  {
+    $master = $request->id;
+    $anexos = DB::select('CALL px_anexos_masters(?)', array($master));
+    return $anexos;
+  }
   public function get_table_equipments(Request $request){
     $id_hotel=$request->id;
     $result= DB::Select('CALL px_equipmentsxhotel(?)',array($id_hotel));
     return $result;
-
   }
-
   public function get_nps_hotel(Request $request){
     $id_hotel=$request->id;
     $result = DB::select('CALL px_NPS_sitio (?)', array($id_hotel));
@@ -55,7 +64,4 @@ class SabanaController extends Controller
     $result = DB::select('CALL px_equiposxtipo_hotel (?)',array($id_hotel));
     return $result;
   }
-
-
-
 }

@@ -3,13 +3,13 @@ $(function() {
   $(".select2").select2();
   $("#cliente").on('change', function(e) {
     var _token = $('input[name="_token"]').val();
-    var cadena = $('#cliente').val();
+    var cliente = $('#cliente').val();
     $(".first_tab").addClass("d-none");
     $("#cargando").removeClass("d-none");
     $.ajax({
       type: "POST",
       url: "/informacionCliente",
-      data: { cliente : cadena, _token : _token },
+      data: { cliente : cliente, _token : _token },
       success: function (data){
         //console.log(data);
         $("#imagenCliente").attr("src", "../images/hotel/" + data[0].dirlogo1);
@@ -25,11 +25,32 @@ $(function() {
         console.log('Error:', data);
       }
     });
-get_info_equipments(cadena);
-get_nps_hotel(cadena);
-get_nps_comment(cadena);
-get_graph_equipments(cadena);
+    get_contracts(cliente);
+    get_info_equipments(cliente);
+
+get_info_equipments(cliente);
+get_nps_hotel(cliente);
+get_nps_comment(cliente);
+get_graph_equipments(cliente);
   });
+
+  function get_contracts(cliente) {
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id = cliente;
+    $.ajax({
+      type: "POST",
+      url: "/get_all_contracts_by_hotel",
+      data: { _token : _token, id: id },
+      success: function (data){
+
+        table_masters(data, $("#all_contracts"));
+
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+  }
 
 
   function get_nps_hotel(idcadena){
@@ -59,6 +80,48 @@ get_graph_equipments(cadena);
 
   }
 
+  function table_masters(datajson, table){
+    table.DataTable().destroy();
+    var vartable = table.dataTable(Configuration_table_contracts);
+    vartable.fnClearTable();
+    $.each(datajson, function(index, status){
+      vartable.fnAddData([
+        status.key,
+        status.razon,
+        status.cliente,
+        status.email,
+        status.telephone,
+        status.resguardo,
+        status.estatus,
+        "<button class='btn btn-info'><i class='fas fa-eye'></i></button>",
+        "<button id='verAnexos~"+status.id+"~"+status.key+"' class='verAnexos btn btn-info'><i class='fas fa-file-signature'></i></button>"
+      ]);
+    });
+  }
+
+  $(document).on("click", ".verAnexos", function() {
+    var cm = $(this)[0].id.split("~");
+    $('#anexosModalLabel').text('Anexos del contrato maestro: '+cm[2]);
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id = cm[1];
+    $.ajax({
+      type: "POST",
+      url: "/get_all_annexes_by_master",
+      data: { _token : _token, id: id },
+      success: function (data){
+
+        console.log(data);
+        //table_masters(data, $("#all_contracts"));
+
+        $('#anexosModal').modal('show');
+
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+  });
+
   function get_nps_comment(idcadena){
     var _token = $('meta[name="csrf-token"]').attr('content');
     var id= idcadena;
@@ -78,9 +141,9 @@ get_graph_equipments(cadena);
 
   }
 
-  function get_info_equipments(idcadena) {
+  function get_info_equipments(cliente) {
     var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
+    var id= cliente;
     $.ajax({
       type: "POST",
       url: "/get_all_equipmentsbyhotel",
@@ -496,7 +559,7 @@ function graph_equipments(title,data) {
         legend: {
             orient: 'vertical',
             left: 'right',
-            
+
         },
         series : [
             {
@@ -529,6 +592,61 @@ function graph_equipments(title,data) {
   });
 }
 
+  var Configuration_table_contracts = {
+    "order": [[ 0, "asc" ]],
+    paging: true,
+    //"pagingType": "simple",
+    Filter: true,
+    searching: true,
+    ordering: true,
+    "select": false,
+    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+    // "columnDefs": [
+    //     {
+    //       "targets": 0,
+    //       "width": "1%",
+    //     },
+    // ],
+    // "select": {
+    //     'style': 'multi',
+    // },
+    //ordering: false,
+    //"pageLength": 5,
+    dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+         "<'row'<'col-sm-12'tr>>" +
+         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 
+    bInfo: true,
+    "createdRow": function ( row, data, index ) {
+
+  },
+    "footerCallback": function(row, data, start, end, display){
+
+    },
+    language:{
+      "sProcessing":     "Procesando...",
+      "sLengthMenu":     "Mostrar _MENU_ registros",
+      "sZeroRecords":    "No se encontraron resultados",
+      "sEmptyTable":     "Ningún dato disponible",
+      "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+      "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+      "sInfoPostFix":    "",
+      "sSearch":         "<i class='fa fa-search'></i> Buscar:",
+      "sUrl":            "",
+      "sInfoThousands":  ",",
+      "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+          "sFirst":    "Primero",
+          "sLast":     "Último",
+          "sNext":     "Siguiente",
+          "sPrevious": "Anterior"
+      },
+      "oAria": {
+            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      }
+    }
+  }
 
 });
