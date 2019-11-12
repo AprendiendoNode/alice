@@ -128,12 +128,12 @@ class DocumentpCartController extends Controller
       return view('permitted.documentp.products_categories', ['products_categories' => $products_categories])->render();
     }
 
-    public function getCategoriesDescription($category, $description)
+    public function getCategoriesDescription($category, $description, $material, $type, $medida)
     {
       if($category != 0){
-        $products = DB::select('CALL px_products_xcategoria_ydescripcion(?,?)', array($category, $description));
+        $products = DB::select('CALL px_products_xcategoria_ydescripcion(?,?,?,?,?)', array($category, $description, $material, $type, $medida));
         $products_categories =  $this->paginate($products, $perPage = 4,  null , $options = []);
-
+        //dd($products_categories);
         return view('permitted.documentp.products_categories', ['products_categories' => $products_categories])->render();
       }else{
         $products = DB::select('CALL px_products_xdescripcion(?)', array($description));
@@ -143,6 +143,14 @@ class DocumentpCartController extends Controller
       }
 
     }
+
+    public function getTypeMaterial($id)
+    {
+      $types_material = DB::table('product_type_material')->select('id', 'name')->where('product_material_id', $id)->get();
+      
+      return $types_material;
+    }
+
 
     function paginate($items, $perPage, $page , $options = [])
     {

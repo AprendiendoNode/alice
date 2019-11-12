@@ -49,6 +49,22 @@ $(function () {
     });
   })
 
+  function getTypeMaterial(material){
+    fetch(`/getTypeMaterial/material/${material}`,  miInit)
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(data){
+        $('#tipo_material').empty();
+        $.each(data, function(i, key) {
+          $('#tipo_material').append("<option value="+key.id+">"+key.name+"</option>");
+      });
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+  } 
+
   $('#anexo_id').on('change', function(){
     get_table_estimation();
   });
@@ -135,6 +151,39 @@ $(function () {
       console.log(error);
     })
   }
+
+  $("input[name='optionsMaterial']").on("change",function(e){
+    let material = $("input[name='optionsMaterial']:checked").val();
+    getTypeMaterial(material);
+    // var categoria = document.getElementById('categoria').value;
+    // var description = document.getElementById('description').value;
+    // var type = document.getElementById('tipo_material').value;
+    // var material = $("input[name='optionsMaterial']:checked").val();
+    // var medida = $("input[name='optionsMedida']:checked").val();
+    
+    // let url = ``;
+
+    // if(description.length >=3){
+    //   url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
+    //   getArticlesCategorias(url);
+    // }
+  })
+
+  $("input[name='optionsMedida']").on("change",function(e){
+    var categoria = document.getElementById('categoria').value;
+    var description = document.getElementById('description').value;
+    var type = document.getElementById('tipo_material').value;
+    var material = $("input[name='optionsMaterial']:checked").val();
+    var medida = $("input[name='optionsMedida']:checked").val();
+    
+    let url = ``;
+
+    if(description.length >=3){
+      url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
+      getArticlesCategorias(url);
+    }
+  })
+
 
   /**
 **** scripts del funcionamiento de la paginacion de Equip. activo, materiales,
@@ -232,10 +281,14 @@ $(function () {
     $('#description').on('keyup',function(){
       var categoria = document.getElementById('categoria').value;
       var description = document.getElementById('description').value;
+      var type = document.getElementById('tipo_material').value;
+      var material = $("input[name='optionsMaterial']:checked").val();
+      var medida = $("input[name='optionsMedida']:checked").val();
+      
       let url = ``;
 
-      if(description.length >=4){
-        url = `/items/ajax/third/${categoria}/${description}`;
+      if(description.length >=3){
+        url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
         getArticlesCategorias(url);
       }
 
@@ -524,3 +577,4 @@ function obtenerProductosLS(){
 function insertarMO(producto){
     guardarProductoLS(producto);
 }
+

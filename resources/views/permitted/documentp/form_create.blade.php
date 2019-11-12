@@ -312,7 +312,7 @@
       </div>
         <br>
         <div class="row">
-            <div class="card col-3 p-3">
+            <div class="col-3 p-3">
               <div class="form-group">
                 <h4 class="col text-dark"><b>Filtrar por:</b></h4>
                 <label for="">Categoría:</label>
@@ -323,10 +323,43 @@
                   @endforeach
                 </select>
               </div>
-
               <div class="form-group">
                 <label for="">Descripción:</label>
                 <input id="description" class="col form-control form-control-sm" placeholder=" Mínimo 4 letras"/>
+              </div>
+              <div class="form-group">
+                <label for="">Material:</label><br>
+                <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-dark">
+                    <input type="radio" name="optionsMaterial" id="option1" value="1"> Galvanizado
+                  </label>
+                  <label class="btn btn-dark">
+                    <input type="radio" name="optionsMaterial" id="option2" value="2"> PVC
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="">Tipo:</label>
+                <select class="col form-control form-control-sm" id="tipo_material" name="tipo_material">
+                  <option value="0">Elegir...</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="">Medida:</label>
+                <div class="btn-group btn-group-sm btn-group-toggle d-flex justify-content-center" data-toggle="buttons">
+                  <label class="btn btn-danger active">
+                    <input type="radio" name="optionsMedida" id="option1" value="1" checked> 1"
+                  </label>
+                  <label class="btn btn-danger">
+                    <input type="radio" name="optionsMedida" id="option2" value="2"> 1/2"
+                  </label>
+                  <label class="btn btn-danger">
+                    <input type="radio" name="optionsMedida" id="option3" value="3"> 3/4"
+                  </label>
+                  <label class="btn btn-danger">
+                    <input type="radio" name="optionsMedida" id="option3" value="4"> 2"
+                  </label>
+                </div>
               </div>
               <div class="form-group">
                 <button id="get_categorias_button" type="button" class="col btn btn-dark mt-3"><i class="fas fa-search"></i> Buscar</button>

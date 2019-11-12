@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd" Version="3.3" Serie="FAC" Folio="24" Fecha="2019-11-11T11:14:13" FormaPago="99" CondicionesDePago="Por definir" SubTotal="194587.00" Moneda="MXN" Total="225720.92" TipoDeComprobante="I" MetodoPago="PPD" LugarExpedicion="77514" NoCertificado="00001000000406108338" Certificado="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" Sello="RLTi+8IVJoSZAxiEc48WvNXV1Ucj2RunqOo3i4Kf70TQu261AyOUT4RC9ip4RpgY5/u27nsoEvPBdAJRR6/5/VV0t+w7i6xiLjbsY8kU3Omhjmiap7+AJFiI3vBB8oyBufMr9M6n58vX+/EvfOvBNiOBmPzW0DbfNM+hsRas9mnZOK2cqQRr2i8J3VNvO4AFAXLPeDtZm1Xzx6iTuRGQHucvpfPrXYbkKb8mLMcWKk7ksO2N3LSK+BCX7X2Fkgh9gdmJe+aX/P8So6+WMqLXiwywAYTX0R+g2/5X77LbQXlpthpxH89SacfW3CBA+22SHA6TkgGdPVQAy6cpUg30gA==">
+  <cfdi:Emisor Nombre="SITWIFI S.A. DE C.V." Rfc="SIT070918IXA" RegimenFiscal="601"/>
+  <cfdi:Receptor Rfc="GDI880315IYA" Nombre="GRUPO DICE SA DE CV" UsoCFDI="P01"/>
+  <cfdi:Conceptos>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="10000.000000" Importe="194587.00">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="194587.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="31133.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="81161801" Cantidad="1.000000" ClaveUnidad="E48" Unidad="Unidad de servicio" Descripcion="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS NOVIEMBRE 2019" ValorUnitario="769.230770" Importe="14968.23">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="14968.23" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2394.92"/>
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+  </cfdi:Conceptos>
+  <cfdi:Impuestos TotalImpuestosTrasladados="31133.92">
+    <cfdi:Traslados>
+      <cfdi:Traslado Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="31133.92"/>
+    </cfdi:Traslados>
+  </cfdi:Impuestos>
+</cfdi:Comprobante>

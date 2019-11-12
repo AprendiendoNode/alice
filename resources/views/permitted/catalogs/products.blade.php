@@ -188,7 +188,47 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+					</div>
+					<div id="div_tuberia" class="row d-none">
+						<div class="col-md-4">
+						  <label for="sel_material"> Material:
+							<span style="color: red;"></span>
+						  </label>
+						  <div id="div_sel_material" class="input-group mb-3">
+							<select id="sel_material" name="sel_material" class="form-control form-control-sm">
+							  <option value="" selected>{{ trans('message.selectopt') }}</option>
+							  @forelse ($materiales as $material)
+							  	<option value="{{ $material->id }}"> {{ $material->name }} </option>
+							  @empty
+							  @endforelse
+							</select>
+						  </div>
+						</div>
+						<div class="col-md-4">
+						  <label for="sel_type"> Tipo:
+							<span style="color: red;"></span>
+						  </label>
+						  <div id="sel_type_div" class="input-group mb-3">
+							<select edatas="sel_type" id="sel_type" name="sel_type" class="form-control form-control-sm">
+								<option value=''>Elegir...</option>
+							</select>
+						  </div>
+						</div>
+						<div class="col-md-4">
+							<label for="edit_sel_modelo"> Unidad:
+							  <span style="color: red;"></span>
+							</label>
+							<div id="div_sel_unit" class="input-group mb-3">
+							  <select edatas="sel_unit" id="sel_unit" name="sel_unit" class="form-control form-control-sm">
+								<option value=''>Elegir...</option>
+								@forelse ($unidades as $unidad)
+									<option value="{{ $unidad->id }}"> {{ $unidad->unit }} </option>
+								@empty
+								@endforelse
+							  </select>
+							</div>
+						  </div>
+					  </div>
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
@@ -440,7 +480,49 @@
                           </select>
                         </div>
                       </div>
-                    </div>
+					</div>
+					<div id="div_edit_tuberia" class="row">
+					<div class="col-md-4">
+						<label for="edit_sel_material"> Material:
+						<span style="color: red;"></span>
+						</label>
+						<div id="div_edit_sel_material" class="input-group mb-3">
+						<select edatas="edit_sel_material" id="edit_sel_material" name="edit_sel_material" class="form-control form-control-sm">
+							@forelse ($materiales as $material)
+								<option value="{{ $material->id }}"> {{ $material->name }} </option>
+							@empty
+							@endforelse
+						</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<label for="sel_type"> Tipo:
+						<span style="color: red;"></span>
+						</label>
+						<div id="edit_sel_type_div" class="input-group mb-3">
+						<select edatas="edit_sel_type" id="edit_sel_type" name="edit_sel_type" class="form-control form-control-sm">
+							@forelse ($material_type as $data_material_type)
+								<option value="{{ $data_material_type->id }}"> {{ $data_material_type->name }} </option>
+							@empty
+							@endforelse
+						</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<label for="edit_sel_modelo"> Unidad:
+							<span style="color: red;"></span>
+						</label>
+						<div id="edit_div_sel_unit" class="input-group mb-3">
+							<select edatas="edit_sel_unit_product" id="edit_sel_unit_product" name="edit_sel_unit_product" class="form-control form-control-sm">
+							<option value=''>Elegir...</option>
+							@forelse ($unidades as $unidad)
+								<option value="{{ $unidad->id }}"> {{ $unidad->unit }} </option>
+							@empty
+							@endforelse
+							</select>
+						</div>
+						</div>
+					</div>
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">

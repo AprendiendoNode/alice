@@ -1,3 +1,16 @@
+var _token = $('input[name="_token"]').val();
+
+const headers = new Headers({
+  "Accept": "application/json",
+  "X-Requested-With": "XMLHttpRequest",
+  "X-CSRF-TOKEN": _token
+})
+
+var miInitGet = { method: 'get',
+                  headers: headers,
+                  credentials: "same-origin",
+                  cache: 'default' };
+
   $(function() {
     // We can attach the `fileselect` event to all file inputs on the page
     $(document).on('change', ':file', function() {
@@ -635,6 +648,18 @@ function edit_product(e){
          $('[name="edit_sel_estatus"]').val(data[0].status_id).trigger('change');
          $('#edit_img_preview').attr("src", '../images/storage/'+data[0].image);
          $('#inputEditOrden').val(data[0].sort_order);
+
+         //
+        if(data[0].categoria_id == 12){
+          $('#div_edit_tuberia').removeClass("d-none");
+          $('[name="edit_sel_material"]').val(data[0].product_material_id);
+          $('[name="edit_sel_type"]').val(data[0].product_type_material_id);
+          $('[name="edit_sel_unit_product"]').val(data[0].product_measure_id).trigger('change');
+        }else{
+          $('#div_edit_tuberia').addClass("d-none");
+        }
+
+
          if (data[0].status == '0')
          {
            $("#editstatus").prop('checked', false).change();
@@ -648,3 +673,63 @@ function edit_product(e){
        }
    })
 }
+
+
+$('#sel_material').on('change', function(){
+  let material = $(this).val();
+  fetch(`/getTypeMaterial/material/${material}`,  miInitGet)
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(data){
+        $('#sel_type').empty();
+        $('#sel_type').append("<option value='0'>Elegir...</option>");
+        $.each(data, function(i, key) {
+          $('#sel_type').append("<option value="+key.id+">"+key.name+"</option>");
+        });
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+})
+
+$('#edit_sel_material').on('change', function(){
+  let material = document.getElementById('edit_sel_material').value;
+  console.log(material);
+  fetch(`/getTypeMaterial/material/${material}`,  miInitGet)
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(data){
+        $('#edit_sel_type').empty();
+        $('#edit_sel_type').append("<option value='0'>Elegir...</option>");
+        $.each(data, function(i, key) {
+          $('#edit_sel_type').append("<option value="+key.id+">"+key.name+"</option>");
+        });
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+})
+
+$('#sel_categoria').on('change', function(){
+  let categoria = $(this).val();
+  
+  if(categoria == 12){
+    $('#div_tuberia').removeClass("d-none");
+  }else{
+    $('#div_tuberia').addClass("d-none");
+  }
+  
+})
+
+$('#edit_sel_categoria').on('change', function(){
+  let categoria = $(this).val();
+  if(categoria == 12){
+    $('#div_edit_tuberia').removeClass("d-none");
+  }else{
+    $('#div_edit_tuberia').addClass("d-none");
+  }
+  
+})
+

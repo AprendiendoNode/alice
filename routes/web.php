@@ -362,7 +362,11 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('items/ajax/four/{api}/{ape}', ['uses'  => 'Projects\DocumentpCartController@getMoProducts']);
   Route::get('items/ajax/four/{api}/{ape}/{id_doc}', ['uses'  => 'Projects\DocumentpCartController@getMoProductsCart']);
   Route::get('items/ajax/third/{category}', ['uses'  => 'Projects\DocumentpCartController@getCategories']);
-  Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']);
+  Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']); 
+  Route::get('/getTypeMaterial/material/{id}', function ($id) { 
+    $result = DB::table('product_type_material')->select('id', 'name')->where('product_material_id', $id)->get(); 
+    return $result; 
+  }); 
   Route::get('/documentp_invoice/{id_documentp}/{id_cart}', 'Projects\DocumentpController@export_invoice');
   Route::get('/update_cant_cart/{id}/{cant}/{porcentaje_compra}', 'Projects\DocumentpController@update_cantidad_recibida');
   Route::get('/update_fecha_entrega/{id}/{date}', 'Projects\DocumentpController@update_fecha_entrega');

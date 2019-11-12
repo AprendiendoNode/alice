@@ -4,13 +4,29 @@
       <div class="card">
         <div class="header">
           <span class="categoria">{{$product->categoria}}</span>
+          @if($product->categoria_id == 12)
+            @isset($product->medida)
+              <span class="medida bg-dark">{{$product->medida}}</span>
+            @endisset
+            
+          @endif
           <img class="img-fluid" src="{{ asset("images/storage/$product->image") }}" alt="">
         </div>
         <div class="card__content">
           <div class="card__title">
-            <a  class="">{{$product->name}}</a>
+            @php
+              $productFull = $product->name;
+              $tam = strlen ($productFull);
+              if ($tam > 35){
+                $productRec = substr($productFull,0, 35);
+                echo $productRec;
+                echo '<a type="button" class="" data-toggle="tooltip" data-placement="top" title="'.$productFull.'">...</a>';
+              }else{
+                echo $productFull;
+              }
+            @endphp
           </div>
-          <div class="row d-flex justify-content-center">
+          <div class="row d-flex justify-content-center mb-0">
             <div class="col-8">
               <p class=" text-price">$
                 <span class="card_price">{{number_format($product->price, 2, '.', ',')}}</span>
@@ -23,6 +39,29 @@
               </a>
             </div>
           </div>
+          @if($product->categoria_id == 12)
+            <div class="row d-flex justify-content-center">
+              <div class="col-6 mb-0">
+                  @isset($product->material)
+                    <p class="text-secondary type">
+                      <span class="">
+                        {{$product->material}}
+                      </span>        
+                    </p>
+                  @endisset
+                  
+                </div>
+              <div class="col-6 mb-0">
+                  @isset($product->material)
+                  <p class="text-secondary type"> Tipo:
+                    <span class="">
+                      {{$product->tipo}}
+                    </span>        
+                  </p>
+                @endisset
+              </div>
+            </div>
+          @endif
           <div class="row">
             <div class="col-6">
               <h6>Cant. Sugerida</h6>

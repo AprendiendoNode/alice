@@ -8,7 +8,17 @@
         </div>
         <div class="card__content">
           <div class="card__title">
-            <a  class="">{{$product->name}}</a>
+            @php
+              $productFull = $product->name;
+              $tam = strlen ($productFull);
+              if ($tam > 35){
+                $productRec = substr($productFull,0, 35);
+                echo $productRec;
+                echo '<a type="button" class="" data-toggle="tooltip" data-placement="top" title="'.$productFull.'">...</a>';
+              }else{
+                echo $productFull;
+              }
+            @endphp
           </div>
           <div class="row d-flex justify-content-center">
             <div class="col-8">

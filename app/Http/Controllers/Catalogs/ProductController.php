@@ -27,14 +27,16 @@ class ProductController extends Controller
       $estatus = DB::select('CALL GetAllStatusProductsActivev2 ()', array());
       $marcas = DB::select('CALL GetAllBrandsActivev2 ()', array());
       $country = DB::select('CALL GetAllCountryActivev2 ()', array());
-
+      $materiales = DB::table('product_material')->select('id', 'name')->get();
+      $material_type = DB::table('product_type_material')->select('id', 'name')->get();
+      $unidades = DB::table('product_measure')->select('id', 'unit')->get();
       $list_moneda = DB::table('currencies')->select('name')->pluck('name')->all();
       $list_marca = DB::table('marcas')->select('Nombre_marca')->pluck('Nombre_marca')->all();
       $list_espec = DB::table('especificacions')->select('name')->where([['status', '=', 1],])->pluck('name')->all();
       $especificacion = DB::select('CALL GetAllEspecificacionActivev2 ()', array());
 
       return view('permitted.catalogs.products',compact('currency','unitmeasures','satproduct', 'customer', 'category','brands','models',
-      'estatus', 'marcas', 'especificacion', 'marcas', 'list_moneda', 'list_marca', 'list_espec', 'country'));
+      'estatus', 'marcas', 'especificacion', 'marcas', 'list_moneda', 'list_marca', 'list_espec', 'country', 'materiales', 'unidades', 'material_type'));
     }
 
     /**
@@ -92,6 +94,10 @@ class ProductController extends Controller
             $fileName = uniqid().'.'.$file_extension;
             $img= $request->file('fileInput')->storeAs('product',$fileName);
 
+            $product_material_id = isset($request->sel_material) ? $request->sel_material : null;
+            $product_type_material_id = isset($request->sel_type) ? $request->sel_type : null;
+            $product_measure_id = isset($request->sel_unit) ? $request->sel_unit : null;
+
             $newId = DB::table('products')
             ->insertGetId([
               'name' => $name,
@@ -113,6 +119,9 @@ class ProductController extends Controller
               'sat_product_id' => $id_satserv,
               'especifications_id' => $id_especification,
               'comment' => $nComment,
+              'product_material_id' => $product_material_id,
+              'product_type_material_id' => $product_type_material_id,
+              'product_measure_id' => $product_measure_id,
               'sort_order' => $orden,
               'status' => $status,
               'created_uid' => $user_id,
@@ -192,6 +201,10 @@ class ProductController extends Controller
         DB::table('products')->where('id', $id_prod)->update(['image' => $img]);
       }
 
+      $product_material_id = isset($request->edit_sel_material) ? $request->edit_sel_material : null;
+      $product_type_material_id = isset($request->edit_sel_type) ? $request->edit_sel_type : null;
+      $product_measure_id = isset($request->edit_sel_unit_product) ? $request->edit_sel_unit_product : null;
+
 
       $newId = DB::table('products')
       ->where('id', '=',$id_prod )
@@ -214,6 +227,9 @@ class ProductController extends Controller
                 'sat_product_id' => $id_satserv,
                 'especifications_id' => $id_especification,
                 'comment' => $nComment,
+                'product_material_id' => $product_material_id,
+                'product_type_material_id' => $product_type_material_id,
+                'product_measure_id' => $product_measure_id,
                 'sort_order' => $orden,
                 'status' => $status,
                 'updated_uid' => $user_id,

@@ -224,18 +224,29 @@ button {
   z-index: 100;
 }
 
-.categoria::before {
-  background: white;
-  border-radius: 10px;
-  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-  content: '';
-  height: 6px;
-  left: 10px;
+
+.medida {
+  border-radius: 30px;
+  color: white;
+  display: inline-block;
+  height: 30px;
+  line-height: 20px;
+  padding: 5px 10px 10px;
   position: absolute;
-  width: 6px;
-  top: 8px;
+  top: 0px;
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+  font-size: 13px !important;
+  right: -0px;
+  font-weight: bold;
+  z-index: 100;
 }
 
+.type{
+  font-weight: bold;
+  font-size: 0.57rem;
+  text-transform: uppercase;
+}
 
 .card {
   background-color: white;
