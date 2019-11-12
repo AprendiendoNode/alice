@@ -301,7 +301,7 @@
         </div>
         <div class="modal-footer">
           @if ( auth()->user()->can('View level three payment notification') )
-            <button type="button" class="btn btn-warning btn-aprobar"><i class="fa fa-check"></i> Aprobar</button>
+            <button id="no_aprobar_en_gastos" type="button" class="btn btn-warning btn-aprobar"><i class="fa fa-check"></i> Aprobar</button>
           @endif
           <button type="button" class="btn btn-success btn-print-invoice"><i class="fa fa-download"></i> Descargar facturas (.zip)</button>
           <button type="button" class="btn btn-danger btn-print-pdf"><i class="fas fa-file-pdf"></i> Descargar factura PDF</button>

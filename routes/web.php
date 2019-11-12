@@ -362,11 +362,11 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('items/ajax/four/{api}/{ape}', ['uses'  => 'Projects\DocumentpCartController@getMoProducts']);
   Route::get('items/ajax/four/{api}/{ape}/{id_doc}', ['uses'  => 'Projects\DocumentpCartController@getMoProductsCart']);
   Route::get('items/ajax/third/{category}', ['uses'  => 'Projects\DocumentpCartController@getCategories']);
-  Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']); 
-  Route::get('/getTypeMaterial/material/{id}', function ($id) { 
-    $result = DB::table('product_type_material')->select('id', 'name')->where('product_material_id', $id)->get(); 
-    return $result; 
-  }); 
+  Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']);
+  Route::get('/getTypeMaterial/material/{id}', function ($id) {
+    $result = DB::table('product_type_material')->select('id', 'name')->where('product_material_id', $id)->get();
+    return $result;
+  });
   Route::get('/documentp_invoice/{id_documentp}/{id_cart}', 'Projects\DocumentpController@export_invoice');
   Route::get('/update_cant_cart/{id}/{cant}/{porcentaje_compra}', 'Projects\DocumentpController@update_cantidad_recibida');
   Route::get('/update_fecha_entrega/{id}/{date}', 'Projects\DocumentpController@update_fecha_entrega');
@@ -830,6 +830,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_nps_comment_hotel', 'SabanaController@get_nps_comment_hotel');
     Route::post('get_graph_equipments','SabanaController@get_graph_equipments');
     Route::post('get_budget_annual_hotel','SabanaController@get_budget_annual_hotel');
+    Route::post('get_payment_folios_gastos','SabanaController@get_payment_folios_gastos');
+
+
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');
     Route::post('/search_info_gen', 'Viatics\DashboardViaticController@info_gen');

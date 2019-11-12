@@ -81,7 +81,12 @@ class SabanaController extends Controller
 
   }
 
-
+  public function get_payment_folios_gastos(Request $request)
+  {
+    $id = $request->id;
+    $res =  DB::select('CALL payments_hotel_folio_gastos(?)', array($id));
+    return $res;
+  }
 
 
 }

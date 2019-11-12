@@ -398,7 +398,7 @@
 
 
               <div class="tab_content">
-                  <h3>Todos los equipos del sitio</h3>
+                  <h3 style="font-weight: bold; margin-left: 34%;">Todos los equipos del sitio</h3>
                   <div class="d-flex justify-content-center border-bottom w-100">
                     <div  id="graph_equipments" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                   </div>
@@ -445,7 +445,7 @@
               <div class="tab_content">
                 <div class="row">
                   <div class="col-md-12">
-                    <h3>Presupuesto anual del sitio</h3>
+                    <h3 style="font-weight: bold; margin-left: 33%;">Presupuesto anual del sitio</h3>
                     <table id="table_budget_site" name='table_budget_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
                       <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
                       <thead>
@@ -470,20 +470,47 @@
                 </div>
               </div>
               <div class="tab_content">
-                  <h3>Tab content 7</h3>
-                  <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage
-                      of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator
-                      on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition,
-                      injected humour, or non-characteristic words etc. There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look
-                      even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined
-                      chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The
-                      generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                  <h3 style="font-weight: bold; margin-left: 45%;">Pagos</h3>
+                  <div class="table-responsive">
+                    <table id="table_pays" class="table table-striped table-bordered table-hover text-white compact-tab" style="width:100%">
+                      <thead>
+                        <tr class="bg-primary" style="background: #088A68;">
+                          <th> <small>Factura</small> </th>
+                          <th> <small>Proveedor</small> </th>
+                          <th> <small>Estatus</small> </th>
+                          <th> <small>Monto</small> </th>
+                          <th> <small>Elaboró</small> </th>
+                          <th> <small>Fecha solicitud</small> </th>
+                          <th> <small>Fecha límite pago</small> </th>
+                          <th> <small>Cuenta</small> </th>
+                          <th> <small>Nombre cuenta</small> </th>
+                          <th> <small>Conceptos</small> </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                      <tfoot id='tfoot_average'>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                </div>
               </div>
           </div>
       </div>
       <div style="margin-left: 40%;">
         <img id="cargando" class="d-none" src="/images/cargando.gif" alt="...">
       </div>
+
+      @include('permitted.payments.modal_payment')
 
     @else
       @include('default.denied')
@@ -498,6 +525,9 @@
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <script type="text/javascript" src="js/jquery.multipurpose_tabcontent.js"></script>
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
+    <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+    <script src="{{ asset('js/admin/payments/request_modal_payment.js')}}"></script>
     <script src="{{ asset('js/admin/sabana/sabana.js')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>

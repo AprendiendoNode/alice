@@ -33,6 +33,7 @@ get_nps_hotel(cliente);
 get_nps_comment(cliente);
 get_graph_equipments(cliente);
 get_table_budget(cliente);
+getFoliosByHotel(cliente);
   });
 
   function get_contracts(cliente) {
@@ -328,12 +329,49 @@ function generate_table_budget(datajson, table){
       '<span class="">' + data.mano_obra_monto + '</span>',
       '<span class="">' + data.enlaces_monto + '</span>',
       '<span class="">' + data.viaticos_monto + '</span>',
-      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+data.hotel_id+'" class="btn btn-success btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-eye"></span></a>',
+      '<a href="javascript:void(0);" onclick="enviar_pres(this)" value="'+data.hotel_id+'" class="btn btn-success btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-eye"></span></a>',
     ]);
   });
 }
 
+function getFoliosByHotel(cliente){
+  var id = cliente;
+  var _token = $('input[name="_token"]').val();
+  $.ajax({
+    type: "POST",
+    url: "/get_payment_folios_gastos",
+    data: { id : id, _token : _token },
+    success: function (data){
+      console.log(data);
+      payments_table(data, $("#table_pays"));
+    },
+    error: function (data) {
+      console.log('Error:', data);
+    }
+  });
+}
 
+function payments_table(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_contracts);
+  vartable.fnClearTable();
+  //console.log(datajson);
+  $.each(datajson, function(index, value){
+    vartable.fnAddData([
+      value.factura,
+      value.proveedor,
+      '<span class="badge badge-primary">'+value.estatus+'</span>',
+      value.monto_str,
+      value.elaboro,
+      value.fecha_solicitud,
+      value.fecha_limite,
+      value.key_cc,
+      value.name_cc,
+      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+value.id+'" class="btn btn-default btn-sm" role="button" data-target="#modal-concept"><i class="far fa-edit" aria-hidden="true"></i></a>',
+      ]);
+  });
+  $('#no_aprobar_en_gastos').addClass("d-none");
+}
 
   var Configuration_table = {
     "order": [[ 0, "asc" ]],
@@ -748,7 +786,7 @@ function graph_equipments(title,data) {
 });
 
 
-function enviar(e) {
+function enviar_pres(e) {
   var valor= e.getAttribute('value');
   $('#id_annex').val(valor);
   $('#modal-view-presupuesto').modal('show');
