@@ -370,7 +370,7 @@ function payments_table(datajson, table){
       '<a href="javascript:void(0);" onclick="enviar(this)" value="'+value.id+'" class="btn btn-default btn-sm" role="button" data-target="#modal-concept"><i class="far fa-edit" aria-hidden="true"></i></a>',
       ]);
   });
-  $('#no_aprobar_en_gastos').addClass("d-none");
+  $('.no_aprobar_en_gastos').addClass("d-none");
 }
 
   var Configuration_table = {

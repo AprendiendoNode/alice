@@ -503,6 +503,8 @@
                       </tfoot>
                     </table>
                 </div>
+                <br>
+                <h3 style="font-weight: bold; margin-left: 44%;">Viáticos</h3>
               </div>
           </div>
       </div>

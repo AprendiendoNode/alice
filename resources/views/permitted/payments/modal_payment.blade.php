@@ -301,11 +301,11 @@
         </div>
         <div class="modal-footer">
           @if ( auth()->user()->can('View level three payment notification') )
-            <button id="no_aprobar_en_gastos" type="button" class="btn btn-warning btn-aprobar"><i class="fa fa-check"></i> Aprobar</button>
+            <button type="button" class="no_aprobar_en_gastos btn btn-warning btn-aprobar"><i class="fa fa-check"></i> Aprobar</button>
           @endif
-          <button type="button" class="btn btn-success btn-print-invoice"><i class="fa fa-download"></i> Descargar facturas (.zip)</button>
-          <button type="button" class="btn btn-danger btn-print-pdf"><i class="fas fa-file-pdf"></i> Descargar factura PDF</button>
-          <button type="button" class="btn btn-primary btn-export"><i class="fa fa-print"></i> Exportar solicitud</button>
+          <button type="button" class="no_aprobar_en_gastos btn btn-success btn-print-invoice"><i class="fa fa-download"></i> Descargar facturas (.zip)</button>
+          <button type="button" class="no_aprobar_en_gastos btn btn-danger btn-print-pdf"><i class="fas fa-file-pdf"></i> Descargar factura PDF</button>
+          <button type="button" class="no_aprobar_en_gastos btn btn-primary btn-export"><i class="fa fa-print"></i> Exportar solicitud</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
         </div>
       </div>
