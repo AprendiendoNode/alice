@@ -32,6 +32,7 @@ get_info_equipments(cliente);
 get_nps_hotel(cliente);
 get_nps_comment(cliente);
 get_graph_equipments(cliente);
+get_table_budget(cliente);
   });
 
   function get_contracts(cliente) {
@@ -186,7 +187,7 @@ get_graph_equipments(cliente);
     vartable.fnClearTable();
     //console.log(datajson);
     $.each(datajson, function(index, status){
-      console.log(status.nps );
+
       var span_calificacion = '';
       full_star ='<span class="fas fa-star text-warning"></span>';
       empty_star='<span class="far fa-star "></span>';
@@ -244,6 +245,50 @@ else  if (status.estado == '10') { span_identificador = '<span class="badge badg
       ]);
     });
   }
+
+
+  function get_table_budget(idcadena){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idcadena;
+    $.ajax({
+        type: "POST",
+        url: "/get_budget_annual_hotel",
+        data: { id: id, _token : _token },
+        success: function (data){
+          //console.log(data);
+          generate_table_budget(data, $('#table_budget_site'));
+          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
+  }
+
+
+function generate_table_budget(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table);
+  vartable.fnClearTable();
+  $.each(datajson, function(index, data){
+    vartable.fnAddData([
+      //data.id,
+      //data.Nombre_hotel,
+      data.key,
+      data.id_ubicacion,
+      data.moneda,
+      '<span class="">' + data.equipo_activo_monto + '</span>',
+      '<span class="">' + data.equipo_no_activo_monto + '</span>',
+      '<span class="">' + data.licencias_monto + '</span>',
+      '<span class="">' + data.mano_obra_monto + '</span>',
+      '<span class="">' + data.enlaces_monto + '</span>',
+      '<span class="">' + data.viaticos_monto + '</span>',
+      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+data.hotel_id+'" class="btn btn-success btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-eye"></span></a>',
+    ]);
+  });
+}
+
+
 
   var Configuration_table = {
     "order": [[ 0, "asc" ]],
@@ -497,7 +542,7 @@ else  if (status.estado == '10') { span_identificador = '<span class="badge badg
               data: [{value: valor, name: grapname}],
               axisLine: {            // 坐标轴线
                   lineStyle: {       // 属性lineStyle控制线条样式
-                      color: [[0.85, '#E73231'],[0.90, '#FFBF00'],[1, '#0B610B']],
+                      color: [[0.85, '#f0120a'],[0.90, '#f5e60c'],[1, '#0fe81e']],
                       width: 30
                   }
               },
@@ -516,8 +561,12 @@ else  if (status.estado == '10') { span_identificador = '<span class="badge badg
 
     $(window).on('resize', function(){
         if(myChart != null && myChart != undefined){
-           chart.style.width = 100+'%';
-           chart.style.height = 100+'%';
+
+
+           //chart.style.width = 100+'%';
+           //chart.style.height = 100+'%';
+           chart.style.width = $(window).width()*0.5;
+           chart.style.height = $(window).width()*0.5;
             myChart.resize();
 
         }
@@ -551,7 +600,7 @@ function graph_equipments(title,data) {
             x:'center'
         },
          //color: ['#AD50D0','#00EEB1','#00CAE5','#DB3841','#D87DAF','#2B4078','#AD50D0','#AD50D0'],
-         color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#00a4c8','#d0b450','#d06f50'],
+         color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#4dd60d','#096dc9','#f90000'],
         tooltip : {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -584,8 +633,10 @@ function graph_equipments(title,data) {
 
   $(window).on('resize', function(){
       if(myChart != null && myChart != undefined){
-         chart.style.width = 100+'%';
-         chart.style.height = 100+'%';
+         //chart.style.width = 100+'%';
+         //chart.style.height = 100+'%';
+         chart.style.width = $(window).width()*0.5;
+         chart.style.height = $(window).width()*0.5;
           myChart.resize();
 
       }
@@ -649,4 +700,49 @@ function graph_equipments(title,data) {
     }
   }
 
+});
+
+
+function enviar(e) {
+  var valor= e.getAttribute('value');
+  $('#id_annex').val(valor);
+  $('#modal-view-presupuesto').modal('show');
+  $('.modal-title').text('Presupuesto');
+  // $('#modal-view-presupuesto').modal('hide');
+  get_table_estimation(valor);
+  console.log(valor);
+}
+
+function get_table_estimation(id_anexo){
+  console.log(id_anexo);
+  var _token = $('meta[name="csrf-token"]').attr('content');
+  const headers = new Headers({
+    "Accept": "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+    "X-CSRF-TOKEN": _token
+  });
+  //var id_anexo = $('#id_annex').val();
+  var init = { method: 'get',
+               headers: headers,
+               credentials: "same-origin",
+               cache: 'default' };
+  if(id_anexo != null && id_anexo != undefined){
+    fetch(`/estimation_site_table/id_anexo/${id_anexo}`, init)
+      .then(response => {
+        return response.text();
+      })
+      .then(data => {
+        $('#presupuesto_anual').html('');
+        $('#presupuesto_anual').html(data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+}
+
+$('.closeModal').on('click', function(){
+  $('#tpgeneral').val('');
+  $('#date_to_search_tc').val('');
+  $('#presupuesto_anual').html('');
 });

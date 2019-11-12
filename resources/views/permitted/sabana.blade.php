@@ -118,6 +118,49 @@
         </div>
       </div>
       <!-- EndModal -->
+
+      <div class="modal fade" id="modal-view-presupuesto">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <!-- Contenido de modal. -->
+              <input type="hidden" id="id_annex" name="id_annex">
+
+                <div class="table-responsive">
+                  <div class="row fields_docm">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <h4 class="text-center text-danger">Presupuesto Anual</h4>
+                        <h5 class="text-center text-default">* Montos en USD</h5>
+                        <br>
+                        <div id="presupuesto_anual">
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+              <div class="row ">
+                <div class="col-sm-12">
+                  <button type="button" class="btn btn-default closeModal pull-right" data-dismiss="modal">Close</button>
+                </div>
+                <!-- <div class="col-sm-3">
+                  <button type="submit" class="btn btn-warning pull-right">Save changes</button>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
       <div class="tab_wrapper first_tab d-none">
           <ul class="tab_list">
               <li class="active"><i class="fas fa-user-circle"></i> Información</li>
@@ -237,9 +280,9 @@
 
                     <div class="col-md-6 grid-margin stretch-card">
                       <div class="card">
-                        <div class="card-body .npscontainer"  style="width: 100%;">
+                        <div class="card-body .npscontainer container-fluid"  style="width: 100%;">
                           <h4 class="card-title">NPS chart</h4>
-                          <div class="d-flex justify-content-center border-bottom w-100">
+                          <div class="d-flex justify-content-center  border-bottom w-100">
                             <div id="main_nps_hotel" style="width: 100%; min-height: 320px; "></div>
                           </div>
                         </div>
@@ -252,7 +295,7 @@
                           <div class="card" id="box_promotores" style="cursor: pointer;">
                             <div class="card-body">
                               <div class="d-xl-flex  align-items-center justify-content-center p-0 item">
-                                <i class="mdi mdi-emoticon icon-lg mr-3 text-success"></i>
+                                <i class="mdi mdi-emoticon icon-lg mr-3 color-green"></i>
                                 <div class="d-flex flex-column justify-content-around">
                                   <small class="mb-1 text-muted font-weight-bold">Promotores</small>
                                   <h6 id="total_promotores" class="mr-2 mb-0">0</h6>
@@ -265,7 +308,7 @@
                           <div class="card" id="box_pasivos" style="cursor: pointer;">
                             <div class="card-body">
                               <div class="d-xl-flex  align-items-center justify-content-center p-0 item">
-                                <i class="mdi mdi-emoticon-neutral icon-lg mr-3 text-warning"></i>
+                                <i class="mdi mdi-emoticon-neutral icon-lg mr-3 color-yellow"></i>
                                 <div class="d-flex flex-column justify-content-around">
                                   <small class="mb-1 text-muted font-weight-bold">Pasivos</small>
                                   <h6 id="total_pasivos" class="mr-2 mb-0">0</h6>
@@ -278,7 +321,7 @@
                           <div class="card" id="box_detractores" style="cursor: pointer;">
                             <div class="card-body">
                               <div class="d-xl-flex align-items-center justify-content-center p-0 item">
-                                <i class="mdi mdi-emoticon-sad icon-lg mr-3 text-danger"></i>
+                                <i class="mdi mdi-emoticon-sad icon-lg mr-3 color-red"></i>
                                 <div class="d-flex flex-column justify-content-around">
                                   <small class="mb-1 text-muted font-weight-bold">Detractores</small>
                                   <h6 id="total_detractores" class="mr-2 mb-0">0</h6>
@@ -297,13 +340,13 @@
                       <h3>Última encuesta</h3>
                       <table id="nps_comments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>
-                          <tr class="bg-primary text-center">
-                            <th class="bg-primary"> <small>Cliente</small> </th>
-                            <th class="bg-primary"> <small>Sitio</small> </th>
-                            <th class="bg-primary"> <small>Calificacion</small> </th>
-                            <th class="bg-primary"> <small>Itc</small> </th>
-                            <th class="bg-primary"> <small>Comentario</small> </th>
-                            <th class="bg-primary"> <small>Fecha</small> </th>
+                          <tr class="bg-aqua text-center">
+                            <th class="bg-aqua"> <small>Cliente</small> </th>
+                            <th class="bg-aqua"> <small>Sitio</small> </th>
+                            <th class="bg-aqua"> <small>Calificacion</small> </th>
+                            <th class="bg-aqua"> <small>Itc</small> </th>
+                            <th class="bg-aqua"> <small>Comentario</small> </th>
+                            <th class="bg-aqua"> <small>Fecha</small> </th>
                           </tr>
                         </thead>
                         <tbody class="text-center">
@@ -371,14 +414,31 @@
                   </p>
               </div>
               <div class="tab_content">
-                  <h3>Tab content 6</h3>
-                  <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in
-                      Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections
-                      1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum,
-                      "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32. Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years
-                      old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature,
-                      discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics,
-                      very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3>Presupuesto anual del sitio</h3>
+                    <table id="table_budget_site" name='table_budget_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
+                      <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
+                      <thead>
+                          <tr class="bg-aqua" style="color: white">
+                              <!--<th> <small>Sitio</small> </th>-->
+                              <th> <small>Anexo</small> </th>
+                              <th> <small>ID ubicacion</small> </th>
+                              <th> <small>Moneda</small> </th>
+                              <th> <small>Equipo activo</small> </th>
+                              <th> <small>Equipo no activo</small> </th>
+                              <th> <small>Licencias</small> </th>
+                              <th> <small>Mano de obra</small> </th>
+                              <th> <small>Enlaces</small> </th>
+                              <th> <small>Viáticos</small> </th>
+                              <th> <small>Acciones</small> </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
               <div class="tab_content">
                   <h3>Tab content 7</h3>
@@ -418,6 +478,9 @@
     .bg-aqua{
     background: #02948c;
     }
+    .color-green{ color:#0fe81e;}
+    .color-red{ color:#f0120a;}
+    .color-yellow{ color:#f6a60a;}
     </style>
   @else
     <!--NO SCRIPTS-->

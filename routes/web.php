@@ -825,7 +825,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_nps_hotel', 'SabanaController@get_nps_hotel');
     Route::post('get_nps_comment_hotel', 'SabanaController@get_nps_comment_hotel');
     Route::post('get_graph_equipments','SabanaController@get_graph_equipments');
-
+    Route::post('get_budget_annual_hotel','SabanaController@get_budget_annual_hotel');
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');
     Route::post('/search_info_gen', 'Viatics\DashboardViaticController@info_gen');

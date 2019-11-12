@@ -64,4 +64,24 @@ class SabanaController extends Controller
     $result = DB::select('CALL px_equiposxtipo_hotel (?)',array($id_hotel));
     return $result;
   }
+  public function get_budget_annual_hotel(Request $request){
+    $id_hotel = $request->id;
+    $date_current = date('Y-m');
+    $date = $date_current.'-01';
+    /*$input_date_i = $request->date;
+    if (empty($input_date_i)) {
+      $date_current = date('Y-m');
+      $date = $date_current.'-01';
+    }
+    else {
+      $date = $input_date_i.'-01';
+    } */
+    $result = DB::select('CALL px_annual_budgets_site(?,?)', array($date,$id_hotel));
+    return $result;
+
+  }
+
+
+
+
 }
