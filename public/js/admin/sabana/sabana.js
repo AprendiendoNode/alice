@@ -93,9 +93,27 @@ get_table_budget(cliente);
         status.email,
         status.telephone,
         status.resguardo,
-        status.estatus,
-        "<button class='btn btn-info'><i class='fas fa-eye'></i></button>",
+        "<label class='badge badge-secondary'>"+status.estatus+"</label>",
+        status.xvenc,
         "<button id='verAnexos~"+status.id+"~"+status.key+"' class='verAnexos btn btn-info'><i class='fas fa-file-signature'></i></button>"
+      ]);
+    });
+  }
+
+  function table_annexes(datajson, table){
+    table.DataTable().destroy();
+    var vartable = table.dataTable(Configuration_table_contracts);
+    vartable.fnClearTable();
+    $.each(datajson, function(index, status){
+      vartable.fnAddData([
+        status.key,
+        status.date_signature,
+        status.date_scheduled_start,
+        status.date_scheduled_end,
+        status.date_real,
+        status.pesos,
+        status.dolares,
+        "<label class='badge badge-secondary'>"+status.estatus+"</label>"
       ]);
     });
   }
@@ -112,7 +130,34 @@ get_table_budget(cliente);
       success: function (data){
 
         console.log(data);
-        //table_masters(data, $("#all_contracts"));
+
+        //Montos de diferentes filas montados en la misma tabla
+        var correctData = [], savedKeys = [];
+
+        data.forEach(function(row) {
+          var i = savedKeys.indexOf(row.key);
+          if(i < 0) {
+            if(row.currency.startsWith("MXN")) {
+              row.pesos = row.quantity;
+              row.dolares = null;
+            } else {
+              row.dolares = row.quantity;
+              row.pesos = null;
+            }
+            correctData.push(row);
+            savedKeys.push(row.key);
+          } else {
+            if(row.currency.startsWith("MXN")) {
+              correctData[i].pesos = row.quantity;
+            } else {
+              correctData[i].dolares = row.quantity;
+            }
+          }
+        });
+
+        console.log(correctData);
+
+        table_annexes(correctData, $("#all_annexes"));
 
         $('#anexosModal').modal('show');
 

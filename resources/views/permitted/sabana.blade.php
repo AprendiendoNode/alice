@@ -112,7 +112,35 @@
               </button>
             </div>
             <div class="modal-body">
-              ...
+              <div class="table-responsive">
+                <table id="all_annexes" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
+                  <thead>
+                    <tr class="bg-aqua">
+                      <th> <small>Id</small> </th>
+                      <th> <small>F. Firma de contrato</small> </th>
+                      <th > <small>F. Inicio de contrato (programada)</small> </th>
+                      <th > <small>F. Fin de contrato (calculada)</small> </th>
+                      <th > <small>F. Inicio real</small> </th>
+                      <th > <small>Monto (pesos)</small> </th>
+                      <th > <small>Monto (dólares)</small> </th>
+                      <th > <small>Estado</small> </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                  <tfoot >
+                    <tr >
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th ></th>
+                      <th></th>
+                      <th></th>
+                      <th ></th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -206,7 +234,7 @@
                   <div class="table-responsive">
                     <table id="all_contracts" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                       <thead>
-                        <tr style="background: #97bf36">
+                        <tr class="bg-aqua">
                           <th> <small>Id</small> </th>
                           <th> <small>Razón social</small> </th>
                           <th > <small>Nombre (cobranza)</small> </th>
@@ -214,7 +242,7 @@
                           <th > <small>Teléfono</small> </th>
                           <th > <small>Resguarda</small> </th>
                           <th > <small>Estado</small> </th>
-                          <th > <small>Ver</small> </th>
+                          <th > <small>Vencimiento</small> </th>
                           <th > <small>Anexos</small> </th>
                         </tr>
                       </thead>
@@ -228,6 +256,7 @@
                           <th ></th>
                           <th></th>
                           <th></th>
+                          <th ></th>
                           <th ></th>
                           <th ></th>
                         </tr>
