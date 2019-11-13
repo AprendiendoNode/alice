@@ -33,6 +33,7 @@ get_nps_hotel(cliente);
 get_nps_comment(cliente);
 get_graph_equipments(cliente);
 get_table_budget(cliente);
+get_table_tickets(cliente);
 getFoliosByHotel(cliente);
   });
 
@@ -311,6 +312,24 @@ else  if (status.estado == '10') { span_identificador = '<span class="badge badg
     });
   }
 
+  function get_table_tickets(idcadena){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idcadena;
+    $.ajax({
+        type: "POST",
+        url: "/get_tickets_by_hotel",
+        data: { id: id, _token : _token },
+        success: function (data){
+          //console.log(data);
+          generate_table_tickets(data, $('#table_tickets_site'));
+          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
+  }
+
 
 function generate_table_budget(datajson, table){
   table.DataTable().destroy();
@@ -330,6 +349,27 @@ function generate_table_budget(datajson, table){
       '<span class="">' + data.enlaces_monto + '</span>',
       '<span class="">' + data.viaticos_monto + '</span>',
       '<a href="javascript:void(0);" onclick="enviar_pres(this)" value="'+data.hotel_id+'" class="btn btn-success btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-eye"></span></a>',
+    ]);
+  });
+}
+
+function generate_table_tickets(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table);
+  vartable.fnClearTable();
+  $.each(datajson, function(index, data){
+    vartable.fnAddData([
+      '<small>'+data.id_ticket+'</small>',
+      '<small>'+data.type+'</small>',
+      '<small>'+data.subject+'</small>',
+      //'<small>'+data.description+'</small>',
+      '<small>'+data.status+'</small>',
+      '<small>'+data.priority+'</small>',
+      '<small>'+data.via_channel+'</small>',
+      '<small>'+data.satisfaction_rating+'</small>',
+	    '<small>'+ data.via_from_name+'</small>',
+      '<small>'+data.created_at+'</small>',
+      '<small>'+data.itc+'</small>'
     ]);
   });
 }
@@ -375,16 +415,16 @@ function payments_table(datajson, table){
 
   var Configuration_table = {
     "order": [[ 0, "asc" ]],
-    paging: false,
+    paging: true,
     //"pagingType": "simple",
-    Filter: false,
-    searching: false,
+    Filter: true,
+    searching: true,
     ordering: false,
     "select": false,
     "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
-    dom:"<'row'<'col-sm-6'B><'col-sm-2'l><'col-sm-4'f>>" +
-          "<'row'<'col-sm-12'tr>>" +
-          "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+    dom:"<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+         "<'row'<'col-sm-12'tr>>" +
+         "<'row'<'col-sm-12 col-md-4'i><'col-sm-12 col-md-12'p>>",
     buttons: [],
     bInfo: true,
     language:{

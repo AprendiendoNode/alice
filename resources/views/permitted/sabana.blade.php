@@ -434,13 +434,33 @@
                   </div>
               </div>
               <div class="tab_content">
-                  <h3>Tab content 5</h3>
-                  <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
-                      specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
-                      passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
-                      essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
+                <div class="text-center">
+                  <h3 style="font-weight:bold;" >Todos los tickets </h3>
+                </div>
+                <div class="row mt-1">
+                  <div class="col-md-12">
+                  <table id="table_tickets_site" name='table_tickets_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
+                    <thead>
+                        <tr class="bg-aqua text-center" style="color: white">
+                            <!--<th> <small>Sitio</small> </th>-->
+                            <th> <small>No.Ticket</small> </th>
+                            <th> <small>Tipo</small> </th>
+                            <th> <small>Asunto</small> </th>
+                            <!--<th> <small>Descripcion</small> </th>-->
+                            <th> <small>Estatus</small> </th>
+                            <th> <small>Prioridad</small> </th>
+                            <th> <small>Canal</small> </th>
+                            <th> <small>Nivel de satisfacción</small> </th>
+                            <th> <small>Cliente</small> </th>
+                            <th> <small>Fecha Solicitud</small> </th>
+                            <th> <small>Atendió</small> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                  </div>
+                </div>
               </div>
               <div class="tab_content">
                 <div class="row">
