@@ -34,6 +34,7 @@ get_nps_comment(cliente);
 get_graph_equipments(cliente);
 get_table_budget(cliente);
 get_table_tickets(cliente);
+get_graph_tickets_type(cliente);
 getFoliosByHotel(cliente);
   });
 
@@ -330,6 +331,24 @@ else  if (status.estado == '10') { span_identificador = '<span class="badge badg
     });
   }
 
+  function get_graph_tickets_type(idcadena){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idcadena;
+    $.ajax({
+        type: "POST",
+        url: "/get_ticketsxtipo_hotel",
+        data: { id: id, _token : _token },
+        success: function (data){
+          //console.log(data);
+          graph_tickets_type('graph_type_tickets',data);
+          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
+  }
+
 
 function generate_table_budget(datajson, table){
   table.DataTable().destroy();
@@ -357,14 +376,64 @@ function generate_table_tickets(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table);
   vartable.fnClearTable();
+  //color: ['#474B4F','#ff5400','#e92e29','#FFDE40','#4dd60d','#00BFF3','#096dc9','#f90000'],
+  var type='';
+  var status='';
+  var priority='';
   $.each(datajson, function(index, data){
+    switch (data.type) {
+      case 'incident':
+      type='<span class="badge badge-pill text-white" style="background-color:#ff5400">incident</span>';
+        break;
+      case 'problem':
+      type='<span class="badge badge-pill text-white" style="background-color:#e92e29">problem</span>';
+        break;
+      case 'question':
+      type='<span class="badge badge-pill text-white" style="background-color:#FFDE40">question</span>';
+        break;
+      case 'task':
+      type='<span class="badge badge-pill text-white" style="background-color:#4dd60d">task</span>';
+        break;
+      case '':
+      type='<span class="badge badge-pill text-white" style="background-color:#474B4F">other</span>';
+        break;
+    }
+      switch (data.status) {
+        case 'solved':
+        status='<span class="badge badge-pill text-white bg-primary" >solved</span>';
+          break;
+        case 'open':
+        status='<span class="badge badge-pill text-white" style="background-color:#4dd60d">open</span>';
+          break;
+        case 'closed':
+        status='<span class="badge badge-pill text-white" style="background-color:#474B4F">closed</span>';
+          break;
+      }
+
+      switch (data.priority) {
+        case 'high':
+        priority='<span class="badge badge-pill text-white" style="background-color:#ff5400">high</span>';
+          break;
+        case 'urgent':
+        priority='<span class="badge badge-pill text-white" style="background-color:#e92e29">urgent</span>';
+          break;
+        case 'low':
+        priority='<span class="badge badge-pill bg-secondary text-white" >low</span>';
+          break;
+        case 'normal':
+        priority='<span class="badge badge-pill text-white bg-primary" >normal</span>';
+          break;
+        case '':
+        priority='<span class="badge badge-pill text-white" style="background-color:#474B4F">not assigned</span>';
+          break;
+      }
+
     vartable.fnAddData([
       '<small>'+data.id_ticket+'</small>',
-      '<small>'+data.type+'</small>',
+      type,
       '<small>'+data.subject+'</small>',
-      //'<small>'+data.description+'</small>',
-      '<small>'+data.status+'</small>',
-      '<small>'+data.priority+'</small>',
+      status,
+      priority,
       '<small>'+data.via_channel+'</small>',
       '<small>'+data.satisfaction_rating+'</small>',
 	    '<small>'+ data.via_from_name+'</small>',
@@ -382,7 +451,7 @@ function getFoliosByHotel(cliente){
     url: "/get_payment_folios_gastos",
     data: { id : id, _token : _token },
     success: function (data){
-      console.log(data);
+      //console.log(data);
       payments_table(data, $("#table_pays"));
     },
     error: function (data) {
@@ -749,6 +818,102 @@ function graph_equipments(title,data) {
                 }
             }
         ]
+    };
+
+
+  myChart.setOption(option);
+
+  $(window).on('resize', function(){
+      if(myChart != null && myChart != undefined){
+         //chart.style.width = 100+'%';
+         //chart.style.height = 100+'%';
+         chart.style.width = $(window).width()*0.5;
+         chart.style.height = $(window).width()*0.5;
+          myChart.resize();
+
+      }
+  });
+}
+
+
+function graph_tickets_type(title,data) {
+  //$('#'+title).width($('#'+title).width());
+  //$('#'+title).height($('#'+title).height());
+
+ var chart = document.getElementById(title);
+  var resizeMainContainer = function () {
+   chart.style.width = 720+'px';
+   chart.style.height = 320+'px';
+ };
+  resizeMainContainer();
+    var myChart = echarts.init(chart);
+    var group=[];
+    var titles=[];
+    var i=0;
+
+    data.forEach(function(element){
+    element.type=="" ?  element.type="other": element.type;
+    group[i] ={name: element.type,type: 'bar',data: [element.cantidad]};
+    titles[i] = element.type;
+    i++;
+    });
+    console.log(titles);
+    console.log(group);
+    /*option = {
+        title : {
+            text: 'Clasificación',
+            subtext: 'Tipo de equipo',
+            x:'center'
+        },
+         //color: ['#AD50D0','#00EEB1','#00CAE5','#DB3841','#D87DAF','#2B4078','#AD50D0','#AD50D0'],
+         color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#4dd60d','#096dc9','#f90000'],
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'right',
+
+        },
+        series : [
+            {
+                name: 'Tipo de equipo',
+                type: 'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data:group,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    }; */
+
+    option = {
+        title: {
+            text: 'Clasificación',
+            x:'center'
+        },
+        legend: {
+            data: titles,
+            orient: 'vertical',
+            right: -10,
+            top: 40,
+            bottom: 20,
+
+        },
+        //color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#4dd60d','#096dc9','#f90000'],
+        color: ['#474B4F','#ff5400','#e92e29','#FFDE40','#4dd60d','#00BFF3','#096dc9','#f90000'],
+        toolbox: {},
+        tooltip: {},
+        xAxis: {type: 'category'},
+        yAxis: {},
+        series:group,
     };
 
 

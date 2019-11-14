@@ -437,6 +437,9 @@
                 <div class="text-center">
                   <h3 style="font-weight:bold;" >Todos los tickets </h3>
                 </div>
+                <div class="d-flex justify-content-center border-bottom w-100">
+                  <div  id="graph_type_tickets" style="min-height: 300px;left: 0px;right: 0px;"> </div>
+                </div>
                 <div class="row mt-1">
                   <div class="col-md-12">
                   <table id="table_tickets_site" name='table_tickets_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
@@ -456,7 +459,7 @@
                             <th> <small>Atendió</small> </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="text-center">
                     </tbody>
                   </table>
                   </div>
