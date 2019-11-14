@@ -831,6 +831,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_graph_equipments','SabanaController@get_graph_equipments');
     Route::post('get_budget_annual_hotel','SabanaController@get_budget_annual_hotel');
     Route::post('get_payment_folios_gastos','SabanaController@get_payment_folios_gastos');
+    Route::post('get_viatics_gastos','SabanaController@get_viatics_gastos');
     Route::post('get_tickets_by_hotel','SabanaController@get_tickets_by_hotel');
     Route::post('get_ticketsxtipo_hotel','SabanaController@get_ticketsxtype_hotel');
 

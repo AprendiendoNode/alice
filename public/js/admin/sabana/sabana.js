@@ -36,6 +36,7 @@ get_table_budget(cliente);
 get_table_tickets(cliente);
 get_graph_tickets_type(cliente);
 getFoliosByHotel(cliente);
+getViaticsByHotel(cliente);
   });
 
   function get_contracts(cliente) {
@@ -132,7 +133,7 @@ getFoliosByHotel(cliente);
       data: { _token : _token, id: id },
       success: function (data){
 
-        console.log(data);
+        //console.log(data);
 
         //Montos de diferentes filas montados en la misma tabla
         var correctData = [], savedKeys = [];
@@ -158,7 +159,7 @@ getFoliosByHotel(cliente);
           }
         });
 
-        console.log(correctData);
+        //console.log(correctData);
 
         table_annexes(correctData, $("#all_annexes"));
 
@@ -460,6 +461,41 @@ function getFoliosByHotel(cliente){
   });
 }
 
+function getViaticsByHotel(cliente){
+  var id = cliente;
+  var _token = $('input[name="_token"]').val();
+  $.ajax({
+    type: "POST",
+    url: "/get_viatics_gastos",
+    data: { id : id, _token : _token },
+    success: function (data){
+      viatics_table(data, $("#table_viatics"));
+    },
+    error: function (data) {
+      console.log('Error:', data);
+    }
+  });
+}
+
+function viatics_table(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_contracts);
+  vartable.fnClearTable();
+  $.each(datajson, function(index, status){
+  vartable.fnAddData([
+    status.folio,
+    status.name,
+    status.date_start,
+    status.date_end,
+    "$" + status.solicitado.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " MXN",
+    "$" + status.aprobado.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " MXN",
+    '<span class="badge badge-primary">'+status.estado+'</span>',
+    status.usuario,
+    '<a href="javascript:void(0);" onclick="enviar_via(this)" value="'+status.id+'" class="btn btn-default btn-sm" role="button"><span class="far fa-edit"></span></a>',
+    ]);
+  });
+}
+
 function payments_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_contracts);
@@ -476,7 +512,7 @@ function payments_table(datajson, table){
       value.fecha_limite,
       value.key_cc,
       value.name_cc,
-      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+value.id+'" class="btn btn-default btn-sm" role="button" data-target="#modal-concept"><i class="far fa-edit" aria-hidden="true"></i></a>',
+      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+value.id+'" class="btn btn-default btn-sm" role="button"><i class="far fa-edit" aria-hidden="true"></i></a>',
       ]);
   });
   $('.no_aprobar_en_gastos').addClass("d-none");
@@ -1033,4 +1069,68 @@ $('.closeModal').on('click', function(){
   $('#tpgeneral').val('');
   $('#date_to_search_tc').val('');
   $('#presupuesto_anual').html('');
+});
+
+function enviar_via(e){
+  var valor= e.getAttribute('value');
+  var _token = $('input[name="_token"]').val();
+  var fecha = $('#date_to_search').val();
+  $('.no_aprobar_en_gastos').addClass("d-none");
+  cabecera_viatic(valor, _token);
+  cuerpo_viatic(valor, _token);
+  timeline(valor, _token);
+  $('#obj').val(valor);
+  // totales_concept_zsa(valor, _token);
+  $('#modal-view-viatics').modal('show');
+}
+// Exportacion del pdf
+$('.btn-export').on('click', function(){
+    $("#captura_table_general").hide();
+    $(".hojitha").css("border", "");
+    html2canvas(document.getElementById("captura_pdf_general")).then(function(canvas) {
+      var ctx = canvas.getContext('2d');
+      ctx.rect(0, 0, canvas.width, canvas.height);
+          var imgData = canvas.toDataURL("image/jpeg", 1.0);
+          var correccion_landscape = 0;
+          var correccion_portrait = 0;
+          if(canvas.height > canvas.width) {
+              var orientation = 'portrait';
+              correccion_portrait = 1;
+              correccion_landscape = 0;
+              var imageratio = canvas.height/canvas.width;
+          }
+          else {
+              var orientation = 'landscape';
+              correccion_landscape = 0;
+              correccion_portrait = 0;
+              var imageratio = canvas.width/canvas.height;
+          }
+          if(canvas.height < 900) {
+              fontsize = 16;
+          }
+          else if(canvas.height < 2300) {
+              fontsize = 11;
+          }
+          else {
+              fontsize = 6;
+          }
+
+          var margen = 0;//pulgadas
+
+          // console.log(canvas.width);
+          // console.log(canvas.height);
+
+         var pdf  = new jsPDF({
+                      orientation: orientation,
+                      unit: 'in',
+                      format: [16+correccion_portrait, (16/imageratio)+margen+correccion_landscape]
+                    });
+
+          var widthpdf = pdf.internal.pageSize.width;
+          var heightpdf = pdf.internal.pageSize.height;
+          pdf.addImage(imgData, 'JPEG', 0, margen, widthpdf, heightpdf-margen);
+          pdf.save("Solicitud de viaticos.pdf");
+          $(".hojitha").css("border", "1px solid #ccc");
+          $(".hojitha").css("border-bottom-style", "hidden");
+    });
 });

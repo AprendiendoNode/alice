@@ -101,6 +101,176 @@
           </div>
         </div>
       </div>-->
+      <div class="modal modal-default fade" id="modal-view-viatics" data-backdrop="static"  tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" style="width:45%" >
+          <div class="modal-content">
+            <div class="modal-header">
+
+              <h4 class="modal-title"><i class="fas fa-id-card" style="margin-right: 4px;"></i>Lista de conceptos</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="card table-responsive">
+                <div class="card-body">
+                  <div class="row">
+                    <!------------------------------------------------------------------------------------------------------------------------------------------------------->
+                    <div id="captura_pdf_general" class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                      <input id="obj" name="obj" class="form-control hidden" required readonly type="text" value="" style="display:none; visibility:hidden;">
+
+                      <div class="hojitha"   style="background-color: #fff; /*border:1px solid #ccc;*/ border-bottom-style:hidden; padding:10px; padding-top: 0px; width: 95%">
+                        <div class="row pad-top-botm ">
+                          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                            <h2> <small>Solicitud de viaticos</small></h2>
+                          </div>
+                        </div>
+
+                        <div class="row text-center contact-info">
+                          <div class="col-lg-12 col-md-12 col-sm-12">
+                            <hr />
+                            <span>
+                              <strong>Fecha de solicitud: </strong><small id="fecha_sol"></small>
+                            </span>
+                            <hr />
+                          </div>
+                        </div>
+
+                        <div  class="row pad-top-botm client-info">
+                          <div class="col-lg-12 col-md-12 col-sm-12">
+                            <p class="text-center" style="border: 1px solid #FF851B" >Solicitante</p>
+                            <strong>Nombre: </strong><small id="name_user"></small>
+                            <br />
+                            <strong>Correo: </strong><small id="correo_user"></small>
+                            <br />
+                            <strong>Beneficiario: </strong><small id="tipo_beneficiario"></small>
+                            <br />
+                            <strong>Gerente aprobar: </strong><small id="responsable"></small>
+                            <br />
+                            <strong>Folio del viaticos: </strong><small id="folio_solicitud"></small>
+                            <br />
+                            <strong>Estatus de Solicitud: </strong><small id="status_solicitud"></small>
+                            <br />
+                            <strong>Prioridad de Solicitud: </strong><small id="status_prioridad"></small>
+                            <br />
+                          </div>
+                          <div class="col-lg-12 col-md-12 col-sm-12">
+                            <p class="text-center" style="border: 1px solid #007bff" >Periodo</p>
+                            <strong>Fecha de inicio: </strong><small id="fecha_ini"></small>
+                            <br />
+                            <strong>Fecha de termino:</strong><small id="fecha_fin"></small>
+                            <br />
+                          </div>
+                        </div>
+
+                        <div class="row pad-top-botm client-info">
+                          <div class="col-lg-12 col-md-12 col-sm-12">
+                            <p class="text-center" style="border: 1px solid #3D9970" >Conceptos</p>
+                            <div class="clearfix">
+                              <table id="table_concept" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                  <tr>
+                                    <th>Concepto</th>
+                                    <th>Monto</th>
+                                    <th>Estatus</th>
+                                    <th>Hotel</th>
+                                    <th>Justificacion</th>
+                                  </tr>
+                                </thead>
+                                <tbody style="font-size: 10px;">
+
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div  class="row pad-top-botm client-info">
+                          <div class="col-lg-12 col-md-12 col-sm-12">
+                            <strong>Total aprobado: </strong><small id="total_aprob"></small>
+                            <br />
+                            <strong>Total cargo directo: </strong><small id="total_direct"></small>
+                            <br />
+                            <strong>Total denegado: </strong><small id="total_denegado"></small>
+                            <br />
+                          </div>
+                        </div>
+
+                        <div class="row pad-top-botm client-info pt-10">
+                          <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="clearfix">
+                              <div id="comentarios" style="width: 100%; min-height: 80px; border:1px solid #ccc;padding:10px;">Descripción:
+                                <small id="observaciones_a"></small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row pad-top-botm client-info pt-10">
+                          <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="clearfix">
+                              <div id="observaciones" style="width: 100%; min-height: 80px; border:1px solid #ccc;padding:10px;">Observaciones o comentarios:
+                                <small id="observaciones_b"></small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row margin-top-large text-center pt-10">
+                            <div class="col-md-3 col-xs-3 border-top margin-left-short">
+                              <img id="firma_1" name="firma_1" class="img-responsive" src="{{ asset('/images/hotel/Default.svg') }}" width="70%" />
+                              <hr>
+                              <p id="timeline_a" >{{ trans('pay.no_data') }}</p>
+                              <hr>
+                              <p style="font-weight: bold;">{{ trans('viatic.aproba_a') }}</p>
+                            </div>
+                            <div class="col-md-3 col-xs-3 border-top margin-left-short">
+                              <img id="firma_2" name="firma_2" class="img-responsive" src="{{ asset('/images/hotel/Default.svg') }}" width="70%"/>
+                              <hr>
+                              <p id="timeline_b" >{{ trans('pay.no_data') }}</p>
+                              <hr>
+                              <p style="font-weight: bold;">{{ trans('viatic.aproba_b') }}</p>
+                            </div>
+                            <div class="col-md-3 col-xs-3 border-top margin-left-short">
+                              <img id="firma_3" name="firma_2" class="img-responsive" src="{{ asset('/images/hotel/Default.svg') }}" width="70%"/>
+                              <hr>
+                              <p id="timeline_c">{{ trans('pay.no_data') }}</p>
+                              <hr>
+                              <p style="font-weight: bold;">{{ trans('viatic.aproba_c') }}</p>
+                            </div>
+                            <div class="col-md-3 col-xs-3 border-top margin-left-short">
+                              <img id="firma_3" name="firma_2" class="img-responsive" src="{{ asset('/images/hotel/Default.svg') }}" width="70%"/>
+                              <hr>
+                              <p id="timeline_d">{{ trans('pay.no_data') }}</p>
+                              <hr>
+                              <p style="font-weight: bold;">{{ trans('viatic.aproba_d') }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <p><strong>{{ trans('pay.confpay') }}: </strong> <small id="timeline_f">{{ trans('pay.no_data') }}</small></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <p><strong>{{ trans('viatic.denegada') }}: </strong> <small id="timeline_e">{{ trans('pay.no_data') }}</small></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!------------------------------------------------------------------------------------------------------------------------------------------------------->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              @if( auth()->user()->can('Update of concepts assigned to travel expenses') )
+              <button type="button" class="no_aprobar_en_gastos btn btn-warning btn-sit"><i class="far fa-edit"></i> Editar conceptos</button>
+              @endif
+              <button type="button" class="no_aprobar_en_gastos btn btn-primary btn-export"><i class="fa fa-save"></i> Exportar PDF</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- Modal -->
       <div class="modal fade" id="anexosModal" tabindex="-1" role="dialog" aria-labelledby="anexosModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -528,6 +698,38 @@
                 </div>
                 <br>
                 <h3 style="font-weight: bold; margin-left: 44%;">Viáticos</h3>
+                <div class="table-responsive">
+                  <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100">
+                    <thead>
+                      <tr class="bg-primary">
+                        <th> <small>Folio</small> </th>
+                        <th> <small>Servicio</small> </th>
+                        <th> <small>Fecha Inicio</small> </th>
+                        <th> <small>Fecha Fin</small> </th>
+                        <th> <small>Monto Solicitado</small> </th>
+                        <th> <small>Monto Aprobado</small> </th>
+                        <th> <small>Estatus</small> </th>
+                        <th> <small>Usuario</small> </th>
+                        <th> <small></small> </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot id='tfoot_average'>
+                      <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
               </div>
           </div>
       </div>
@@ -552,6 +754,7 @@
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+    <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js?v=2.0.0')}}"></script>
     <script src="{{ asset('js/admin/payments/request_modal_payment.js')}}"></script>
     <script src="{{ asset('js/admin/sabana/sabana.js')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">

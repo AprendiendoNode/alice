@@ -88,6 +88,13 @@ class SabanaController extends Controller
     return $res;
   }
 
+  public function get_viatics_gastos(Request $request)
+  {
+    $id = $request->id;
+    $res =  DB::select('CALL px_history_viatics_sitio(?)', array($id));
+    return $res;
+  }
+
   public function get_tickets_by_hotel(Request $request){
     $id_hotel=$request->id;
 
