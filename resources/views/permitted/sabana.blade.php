@@ -374,7 +374,7 @@
                   <h3 style="font-weight: bold; margin-left: 40%;">Información general</h3>
                   <div class="row">
                     <div class="card col-md-6" style="width: 18rem;">
-                      <img id="imagenCliente" class="card-img-top" alt="...">
+                      <img id="imagenCliente" class="card-img-top" style="max-height: 300px;" alt="Logo no encontrado :(">
                       <div class="card-body text-center">
                         <a href="/viewreports" class="btn btn-primary">Más detalles</a>
                       </div>
@@ -673,6 +673,9 @@
               </div>
               <div class="tab_content">
                   <h3 style="font-weight: bold; margin-left: 45%;">Pagos</h3>
+                  <div class="d-flex justify-content-center border-bottom w-100">
+                    <div id="graph_payments" style="min-height: 300px;left: 0px;right: 0px;"> </div>
+                  </div>
                   <div class="table-responsive">
                     <table id="table_pays" class="table table-striped table-bordered table-hover text-white compact-tab" style="width:100%">
                       <thead>
@@ -707,6 +710,9 @@
                 </div>
                 <br>
                 <h3 style="font-weight: bold; margin-left: 44%;">Viáticos</h3>
+                <div class="d-flex justify-content-center border-bottom w-100">
+                  <div id="graph_viatics" style="min-height: 300px;left: 0px;right: 0px;"> </div>
+                </div>
                 <div class="table-responsive">
                   <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100">
                     <thead>

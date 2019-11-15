@@ -222,7 +222,7 @@ getViaticsByHotel(cliente);
         //$('.divEQ').addClass('tableFixHead');
         //table_equipments(data, $("#all_equipments"));
         //console.log(data);
-        graph_equipments('graph_equipments',data);
+        graph_equipments('graph_equipments',data,"Clasificación","Tipo de equipo");
       },
       error: function (data) {
         console.log('Error:', data);
@@ -471,7 +471,25 @@ function getFoliosByHotel(cliente){
     url: "/get_payment_folios_gastos",
     data: { id : id, _token : _token },
     success: function (data){
-      //console.log(data);
+      /*console.log(data);
+
+      var data2 = [], savedGastos = [];
+
+      data.forEach(function(row){
+        var i = savedGastos.indexOf(row.name_cc.toLowerCase());
+        if(i < 0) {
+          data2.push({
+            monto: parseFloat(row.monto_str.split(" ")[0].replace(",","")),
+            gasto: row.name_cc.toLowerCase()
+          });
+          savedGastos.push(row.name_cc.toLowerCase());
+        } else {
+          data2[i].monto += parseFloat(row.monto_str.split(" ")[0].replace(",",""));
+        }
+      });
+
+      console.log(data2);*/
+      //graph_payments('graph_payments', data2);
       payments_table(data, $("#table_pays"));
     },
     error: function (data) {
@@ -488,6 +506,25 @@ function getViaticsByHotel(cliente){
     url: "/get_viatics_gastos",
     data: { id : id, _token : _token },
     success: function (data){
+      console.log(data);
+
+      var data2 = [], savedGastos = [];
+
+      data.forEach(function(row){
+        var i = savedGastos.indexOf(row.name.toLowerCase());
+        if(i < 0) {
+          data2.push({
+            cantidad: row.aprobado,
+            tipo: row.name
+          });
+          savedGastos.push(row.name.toLowerCase());
+        } else {
+          data2[i].cantidad += row.aprobado;
+        }
+      });
+
+      console.log(data2);
+      graph_equipments('graph_viatics', data2, "", "Servicios");
       viatics_table(data, $("#table_viatics"));
     },
     error: function (data) {
@@ -821,7 +858,7 @@ function payments_table(datajson, table){
   }
 
 
-function graph_equipments(title,data) {
+function graph_equipments(title,data,text,subtext) {
   //$('#'+title).width($('#'+title).width());
   //$('#'+title).height($('#'+title).height());
 
@@ -842,8 +879,8 @@ function graph_equipments(title,data) {
 
     option = {
         title : {
-            text: 'Clasificación',
-            subtext: 'Tipo de equipo',
+            text: text,
+            subtext: subtext,
             x:'center'
         },
          //color: ['#AD50D0','#00EEB1','#00CAE5','#DB3841','#D87DAF','#2B4078','#AD50D0','#AD50D0'],
@@ -859,7 +896,7 @@ function graph_equipments(title,data) {
         },
         series : [
             {
-                name: 'Tipo de equipo',
+                name: subtext,
                 type: 'pie',
                 radius : '55%',
                 center: ['50%', '60%'],
@@ -1133,11 +1170,11 @@ function enviar_pres(e) {
   $('.modal-title').text('Presupuesto');
   // $('#modal-view-presupuesto').modal('hide');
   get_table_estimation(valor);
-  console.log(valor);
+  //console.log(valor);
 }
 
 function get_table_estimation(id_anexo){
-  console.log(id_anexo);
+  //console.log(id_anexo);
   var _token = $('meta[name="csrf-token"]').attr('content');
   const headers = new Headers({
     "Accept": "application/json",
