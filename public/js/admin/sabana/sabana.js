@@ -35,6 +35,7 @@ get_graph_equipments(cliente);
 get_table_budget(cliente);
 get_table_tickets(cliente);
 get_graph_tickets_type(cliente);
+get_graph_tickets_status(cliente);
 getFoliosByHotel(cliente);
 getViaticsByHotel(cliente);
   });
@@ -342,6 +343,24 @@ else  if (status.estado == '10') { span_identificador = '<span class="badge badg
         success: function (data){
           //console.log(data);
           graph_tickets_type('graph_type_tickets',data);
+          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
+  }
+
+  function get_graph_tickets_status(idcadena){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idcadena;
+    $.ajax({
+        type: "POST",
+        url: "/get_ticketsxstatus_hotel",
+        data: { id: id, _token : _token },
+        success: function (data){
+          //console.log(data);
+          graph_tickets_status('graph_status_tickets',data);
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
         },
         error: function (data) {
@@ -817,7 +836,7 @@ function graph_equipments(title,data) {
     var i=0;
 
     data.forEach(function(element){
-    group[i] = {value:element.cantidad,name: element.tipo};
+    group[i] = {value:element.cantidad,name: element.tipo+' ('+element.cantidad+')'};
     i++;
     });
 
@@ -878,7 +897,7 @@ function graph_tickets_type(title,data) {
 
  var chart = document.getElementById(title);
   var resizeMainContainer = function () {
-   chart.style.width = 720+'px';
+   chart.style.width = 420+'px';
    chart.style.height = 320+'px';
  };
   resizeMainContainer();
@@ -889,12 +908,70 @@ function graph_tickets_type(title,data) {
 
     data.forEach(function(element){
     element.type=="" ?  element.type="other": element.type;
-    group[i] ={name: element.type,type: 'bar',data: [element.cantidad]};
+    group[i] ={name: element.type,type: 'bar',label: {normal: {show: true,position: 'inside'}},data: [element.cantidad]};
     titles[i] = element.type;
     i++;
     });
-    console.log(titles);
-    console.log(group);
+    //console.log(titles);
+    //console.log(group);
+
+
+    option = {
+        title: {
+            text: 'Tickets por tipo',
+            x:'center'
+        },
+        legend: {
+            data: titles,
+            orient: 'vertical',
+            right: -10,
+            top: 40,
+            bottom: 20,
+
+        },
+        //color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#4dd60d','#096dc9','#f90000'],
+        color: ['#474B4F','#ff5400','#e92e29','#FFDE40','#4dd60d','#00BFF3','#096dc9','#f90000'],
+        toolbox: {},
+        tooltip: {},
+        xAxis: {type: 'category'},
+        yAxis: {},
+        series:group,
+    };
+
+
+  myChart.setOption(option);
+
+  $(window).on('resize', function(){
+      if(myChart != null && myChart != undefined){
+         //chart.style.width = 100+'%';
+         //chart.style.height = 100+'%';
+         chart.style.width = $(window).width()*0.5;
+         chart.style.height = $(window).width()*0.5;
+          myChart.resize();
+
+      }
+  });
+}
+
+function graph_tickets_status(title,data) {
+  //$('#'+title).width($('#'+title).width());
+  //$('#'+title).height($('#'+title).height());
+
+ var chart = document.getElementById(title);
+  var resizeMainContainer = function () {
+   chart.style.width = 420+'px';
+   chart.style.height = 320+'px';
+ };
+  resizeMainContainer();
+    var myChart = echarts.init(chart);
+    var group=[];
+    var i=0;
+
+    data.forEach(function(element){
+    group[i] = {value:element.cantidad,name: element.status+' ('+element.cantidad+')'};
+    i++;
+    });
+
     /*option = {
         title : {
             text: 'Clasificación',
@@ -931,25 +1008,47 @@ function graph_tickets_type(title,data) {
     }; */
 
     option = {
-        title: {
-            text: 'Clasificación',
-            x:'center'
+      title : {
+          text: 'Tickets por estado',
+          x:'center'
+      },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
         },
         legend: {
-            data: titles,
             orient: 'vertical',
-            right: -10,
-            top: 40,
-            bottom: 20,
-
+            x: 'right',
+            //data:['1','2','3','4','5']
         },
-        //color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#4dd60d','#096dc9','#f90000'],
-        color: ['#474B4F','#ff5400','#e92e29','#FFDE40','#4dd60d','#00BFF3','#096dc9','#f90000'],
-        toolbox: {},
-        tooltip: {},
-        xAxis: {type: 'category'},
-        yAxis: {},
-        series:group,
+        color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#4dd60d','#096dc9','#f90000'],
+        series: [
+            {
+                name:'Estado',
+                type:'pie',
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '25',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:group
+            }
+        ]
     };
 
 

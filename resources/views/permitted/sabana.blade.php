@@ -537,6 +537,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <h3>Última encuesta</h3>
+                      <div class="table-responsive">
                       <table id="nps_comments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>
                           <tr class="bg-aqua text-center">
@@ -561,6 +562,7 @@
                           </tr>
                         </tfoot>
                       </table>
+                      </div>
                     </div>
                   </div>
                   </section>
@@ -573,7 +575,7 @@
                     <div  id="graph_equipments" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                   </div>
 
-                  <div class="divEQ">
+                  <div class="divEQ table-responsive">
                   <table id="all_equipments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                     <thead>
                       <tr class="bg-aqua">
@@ -607,26 +609,31 @@
                 <div class="text-center">
                   <h3 style="font-weight:bold;" >Todos los tickets </h3>
                 </div>
-                <div class="d-flex justify-content-center border-bottom w-100">
+                <div class="row">
+                <div class="d-flex justify-content-center border-bottom w-100 col-md-6">
                   <div  id="graph_type_tickets" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                 </div>
+                <div class="d-flex justify-content-center border-bottom w-40 col-md-6">
+                  <div id="graph_status_tickets"class=""></div>
+                </div>
+                </div>
                 <div class="row mt-1">
-                  <div class="col-md-12">
+                  <div class="col-md-12 table-responsive divEQ">
                   <table id="table_tickets_site" name='table_tickets_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
                     <thead>
                         <tr class="bg-aqua text-center" style="color: white">
                             <!--<th> <small>Sitio</small> </th>-->
-                            <th> <small>No.Ticket</small> </th>
-                            <th> <small>Tipo</small> </th>
-                            <th> <small>Asunto</small> </th>
+                            <th class="bg-aqua"> <small>No.Ticket</small> </th>
+                            <th class="bg-aqua"> <small>Tipo</small> </th>
+                            <th class="bg-aqua"> <small>Asunto</small> </th>
                             <!--<th> <small>Descripcion</small> </th>-->
-                            <th> <small>Estatus</small> </th>
-                            <th> <small>Prioridad</small> </th>
-                            <th> <small>Canal</small> </th>
-                            <th> <small>Nivel de satisfacción</small> </th>
-                            <th> <small>Cliente</small> </th>
-                            <th> <small>Fecha Solicitud</small> </th>
-                            <th> <small>Atendió</small> </th>
+                            <th class="bg-aqua"> <small>Estatus</small> </th>
+                            <th class="bg-aqua"> <small>Prioridad</small> </th>
+                            <th class="bg-aqua"> <small>Canal</small> </th>
+                            <th class="bg-aqua"> <small>Nivel de satisfacción</small> </th>
+                            <th class="bg-aqua"> <small>Cliente</small> </th>
+                            <th class="bg-aqua"> <small>Fecha Solicitud</small> </th>
+                            <th class="bg-aqua"> <small>Atendió</small> </th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
@@ -639,6 +646,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <h3 style="font-weight: bold; margin-left: 33%;">Presupuesto anual del sitio</h3>
+                    <div class="table-responsive">
                     <table id="table_budget_site" name='table_budget_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
                       <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
                       <thead>
@@ -659,6 +667,7 @@
                       <tbody>
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -760,7 +769,7 @@
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">
-    .tableFixHead          { overflow-y: auto;overflow-x: hidden; height: 500px; }
+    .tableFixHead          { overflow-y: auto; height: 550px; }
     .tableFixHead thead th { position: sticky !important; top: 0; }
     .bg-aqua{
     background: #02948c;

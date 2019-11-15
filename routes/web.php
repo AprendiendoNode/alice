@@ -834,7 +834,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_viatics_gastos','SabanaController@get_viatics_gastos');
     Route::post('get_tickets_by_hotel','SabanaController@get_tickets_by_hotel');
     Route::post('get_ticketsxtipo_hotel','SabanaController@get_ticketsxtype_hotel');
-
+    Route::post('get_ticketsxstatus_hotel','SabanaController@get_ticketsxstatus_hotel');
 
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');

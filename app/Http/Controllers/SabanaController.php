@@ -104,9 +104,15 @@ class SabanaController extends Controller
 
   public function get_ticketsxtype_hotel(Request $request ){
     $id_hotel=$request->id;
-    $result = DB::connection('Zendesk2')->select('CALL px_ticketsxtype_hotel(?)', array($id_hotel));    
+    $result = DB::connection('Zendesk2')->select('CALL px_ticketsxtype_hotel(?)', array($id_hotel));
     return $result;
   }
 
+
+  public function get_ticketsxstatus_hotel(Request $request ){
+    $id_hotel=$request->id;
+    $result = DB::connection('Zendesk2')->select('CALL px_ticketsxstatus_hotel(?)', array($id_hotel));
+    return $result;
+  }
 
 }
