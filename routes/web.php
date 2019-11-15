@@ -1011,7 +1011,8 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices/total-lines', 'Sales\CustomerInvoiceController@totallines');
     Route::post('/customer-invoices/currency_now', 'Sales\CustomerInvoiceController@get_currency');
     Route::get('/customers/get-customer', 'Sales\CustomerController@getCustomer')->name('customers/get-customer');
-
+    Route::get('/view_contracts', 'Sales\CustomerInvoiceController@view_contracts');
+    
     Route::get('/customer-invoices-cont', 'Sales\CustomerInvoiceController@index2');
     Route::post('/customer-invoices-cont-search', 'Sales\CustomerInvoiceController@search_cont');
     Route::post('/customer-data-annexes', 'Sales\CustomerInvoiceController@getDataContractAnnexes');

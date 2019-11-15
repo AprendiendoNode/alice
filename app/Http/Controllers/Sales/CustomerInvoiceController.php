@@ -131,6 +131,16 @@ class CustomerInvoiceController extends Controller
         'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications'
       ));
     }
+
+    public function view_contracts()
+    {
+        $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
+        $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
+        $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
+
+        return view('permitted.sales.customer_cont_test', compact('currency', 'sucursal', 'salespersons'));
+    }
+
     public function getProduct(Request $request)
     {
         //Variables

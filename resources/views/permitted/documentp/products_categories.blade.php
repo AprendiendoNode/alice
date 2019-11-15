@@ -20,7 +20,7 @@
               if ($tam > 35){
                 $productRec = substr($productFull,0, 35);
                 echo $productRec;
-                echo '<a type="button" class="" data-toggle="tooltip" data-placement="top" title="'.$productFull.'">...</a>';
+                echo '<a class="" data-toggle="tooltip" data-placement="top" title="'.$productFull.'">...</a>';
               }else{
                 echo $productFull;
               }

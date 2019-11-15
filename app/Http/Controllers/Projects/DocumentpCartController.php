@@ -120,9 +120,15 @@ class DocumentpCartController extends Controller
 
     }
 
-    public function getCategories($category)
+    public function getCategories($category, $material, $type, $medida)
     {
-      $products = DB::select('CALL px_products_xcategoria(?)', array($category));
+      /* Si llega vacio y la categoria es diferente de 
+        tuberia se asignan las variables a 0 para saltar ese filtro */
+      $material = (empty($material) || $category != 12) ? 0 : $material;
+      $type = (empty($type) || $category != 12) ? 0 : $type;
+      $medida = (empty($medida) || $category != 12) ? 0 : $medida;
+
+      $products = DB::select('CALL px_products_xcategoria(?,?,?,?)', array($category, $material, $type, $medida));
       $products_categories =  $this->paginate($products, $perPage = 4,  null , $options = []);
 
       return view('permitted.documentp.products_categories', ['products_categories' => $products_categories])->render();
@@ -130,15 +136,22 @@ class DocumentpCartController extends Controller
 
     public function getCategoriesDescription($category, $description, $material, $type, $medida)
     {
+      /* Si llega vacio y la categoria es diferente de 
+        tuberia se asignan las variables a 0 para saltar ese filtro */
+      $material = (empty($material) || $category != 12) ? 0 : $material;
+      $type = (empty($type) || $category != 12) ? 0 : $type;
+      $medida = (empty($medida) || $category != 12) ? 0 : $medida;
+      
       if($category != 0){
         $products = DB::select('CALL px_products_xcategoria_ydescripcion(?,?,?,?,?)', array($category, $description, $material, $type, $medida));
         $products_categories =  $this->paginate($products, $perPage = 4,  null , $options = []);
-        //dd($products_categories);
+        
         return view('permitted.documentp.products_categories', ['products_categories' => $products_categories])->render();
+      
       }else{
         $products = DB::select('CALL px_products_xdescripcion(?)', array($description));
         $products_categories =  $this->paginate($products, $perPage = 4,  null , $options = []);
-        //dd($products);
+        
         return view('permitted.documentp.products_categories', ['products_categories' => $products_categories])->render();
       }
 
@@ -150,7 +163,6 @@ class DocumentpCartController extends Controller
       
       return $types_material;
     }
-
 
     function paginate($items, $perPage, $page , $options = [])
     {
