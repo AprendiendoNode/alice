@@ -471,25 +471,42 @@ function getFoliosByHotel(cliente){
     url: "/get_payment_folios_gastos",
     data: { id : id, _token : _token },
     success: function (data){
-      /*console.log(data);
+      console.log(data); //Ya tenemos la conversión a pesos de los dólares pero no es exacta
 
-      var data2 = [], savedGastos = [];
+      var dataMXN = [], savedGastosMXN = [], dataUSD = [], savedGastosUSD = [];
 
       data.forEach(function(row){
-        var i = savedGastos.indexOf(row.name_cc.toLowerCase());
-        if(i < 0) {
-          data2.push({
-            monto: parseFloat(row.monto_str.split(" ")[0].replace(",","")),
-            gasto: row.name_cc.toLowerCase()
-          });
-          savedGastos.push(row.name_cc.toLowerCase());
+
+        if(row.monto_str.split(" ")[1] == "MXN") {
+          var i = savedGastosMXN.indexOf(row.name_cc.toLowerCase().trim());
+          if(i < 0) {
+            dataMXN.push({
+              cantidad: parseFloat(row.monto_str.split(" ")[0].replace(",","")),
+              tipo: row.name_cc
+            });
+            savedGastosMXN.push(row.name_cc.toLowerCase().trim());
+          } else {
+            dataMXN[i].cantidad += parseFloat(row.monto_str.split(" ")[0].replace(",",""));
+          }
         } else {
-          data2[i].monto += parseFloat(row.monto_str.split(" ")[0].replace(",",""));
+          var i = savedGastosUSD.indexOf(row.name_cc.toLowerCase().trim());
+          if(i < 0) {
+            dataUSD.push({
+              cantidad: parseFloat(row.monto_str.split(" ")[0].replace(",","")),
+              tipo: row.name_cc
+            });
+            savedGastosUSD.push(row.name_cc.toLowerCase().trim());
+          } else {
+            dataUSD[i].cantidad += parseFloat(row.monto_str.split(" ")[0].replace(",",""));
+          }
         }
+
       });
 
-      console.log(data2);*/
-      //graph_payments('graph_payments', data2);
+      console.log(dataMXN);
+      console.log(dataUSD);
+      graph_equipments('graph_payments1', dataMXN, "", "PESOS"); //El string PESOS no debe ser cambiado!
+      graph_equipments('graph_payments2', dataUSD, "", "DÓLARES"); //El string DÓLARES no debe ser cambiado!
       payments_table(data, $("#table_pays"));
     },
     error: function (data) {
@@ -506,25 +523,25 @@ function getViaticsByHotel(cliente){
     url: "/get_viatics_gastos",
     data: { id : id, _token : _token },
     success: function (data){
-      console.log(data);
+      //console.log(data);
 
       var data2 = [], savedGastos = [];
 
       data.forEach(function(row){
-        var i = savedGastos.indexOf(row.name.toLowerCase());
+        var i = savedGastos.indexOf(row.name.toLowerCase().trim());
         if(i < 0) {
           data2.push({
             cantidad: row.aprobado,
             tipo: row.name
           });
-          savedGastos.push(row.name.toLowerCase());
+          savedGastos.push(row.name.toLowerCase().trim());
         } else {
           data2[i].cantidad += row.aprobado;
         }
       });
 
-      console.log(data2);
-      graph_equipments('graph_viatics', data2, "", "Servicios");
+      //console.log(data2);
+      graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
       viatics_table(data, $("#table_viatics"));
     },
     error: function (data) {
@@ -873,7 +890,9 @@ function graph_equipments(title,data,text,subtext) {
     var i=0;
 
     data.forEach(function(element){
-    group[i] = {value:element.cantidad,name: element.tipo+' ('+element.cantidad+')'};
+    if(subtext == "PAGADOS" || subtext == "PESOS") group[i] = {value:element.cantidad,name: element.tipo+' ($'+element.cantidad.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+' MXN)'};
+    else if(subtext == "DÓLARES") group[i] = {value:element.cantidad,name: element.tipo+' ($'+element.cantidad.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+' USD)'};
+    else group[i] = {value:element.cantidad,name: element.tipo+' ('+element.cantidad+')'};
     i++;
     });
 
