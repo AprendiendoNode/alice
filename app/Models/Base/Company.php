@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Helpers\Helper;
 use App\Models\Catalogs\City;
-use App\Models\Catalogs\Country;
+use App\Models\Catalogs\country;
 use App\Models\Catalogs\State;
 use App\Models\Catalogs\TaxRegimen;
 
@@ -119,7 +119,7 @@ class Company extends Model
 
       public function country()
       {
-          return $this->belongsTo(Country::class);
+          return $this->belongsTo(country::class);
       }
 
       public function companyBankAccounts()

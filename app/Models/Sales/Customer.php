@@ -9,7 +9,7 @@ use App\Models\Catalogs\CfdiUse;
 use App\Models\Catalogs\Salesperson;
 use App\Models\Catalogs\City;
 use App\Models\Catalogs\State;
-use App\Models\Catalogs\Country;
+use App\Models\Catalogs\country;
 use App\Models\Catalogs\CustomerBankAccount;
 use Illuminate\Database\Eloquent\Model;
 
@@ -73,7 +73,7 @@ class Customer extends Model
 
   public function country()
   {
-      return $this->belongsTo(Country::class);
+      return $this->belongsTo(country::class);
   }
 
   public function customerBankAccounts()

@@ -15,7 +15,7 @@ use App\Helpers\Helper;
 use App\Models\Base\Company;
 use App\Models\Base\CompanyBankAccount;
 use App\Models\Catalogs\Bank;
-use App\Models\Catalogs\Country;
+use App\Models\Catalogs\country;
 use App\Models\Catalogs\Currency;
 use App\Models\Catalogs\TaxRegimen;
 

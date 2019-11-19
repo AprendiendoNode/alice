@@ -5,7 +5,7 @@ namespace App\Models\Base;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Catalogs\City;
 use App\Models\Catalogs\State;
-use App\Models\Catalogs\Country;
+use App\Models\Catalogs\country;
 class BranchOffice extends Model
 {
   protected $table = 'branch_offices';
@@ -27,6 +27,6 @@ class BranchOffice extends Model
 
   public function country()
   {
-      return $this->belongsTo(Country::class);
+      return $this->belongsTo(country::class);
   }
 }
