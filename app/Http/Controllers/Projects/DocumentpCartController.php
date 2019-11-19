@@ -136,6 +136,7 @@ class DocumentpCartController extends Controller
 
     public function getCategoriesDescription($category, $description, $material, $type, $medida)
     {
+      
       /* Si llega vacio y la categoria es diferente de 
         tuberia se asignan las variables a 0 para saltar ese filtro */
       $material = (empty($material) || $category != 12) ? 0 : $material;

@@ -196,7 +196,6 @@ $(function () {
 
       getArticlesCategorias(url);
     
-
   })
 
 
@@ -374,12 +373,18 @@ $(function () {
         var type = document.getElementById('tipo_material').value;
         var material = $("input[name='optionsMaterial']:checked").val();
         var medida = $("input[name='optionsMedida']:checked").val();
-        if(description.lenght != '' && description.lenght != undefined){
+        
+       /* if(description.lenght != '' && description.lenght != undefined){
           url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
-        }else{
-          url = `/items/ajax/third/${categoria}/${material}/${type}/${medida}`;
+        }else if(description.lenght > 3){
+          url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
         }
+        else{
+          url = `/items/ajax/third/${categoria}/${material}/${type}/${medida}`;
+        } */
 
+
+        url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
         $.ajax({
             url: url,
             data: { page: pg },
@@ -394,7 +399,7 @@ $(function () {
 
     var data_aps= get_aps();
     var data_switches = get_switches();
-    console.log(data_aps);
+    
     var aps = JSON.stringify(data_aps[0]);
     var api = data_aps[1];
     var ape = data_aps[2];
@@ -442,7 +447,7 @@ $(function () {
     var type = document.getElementById('tipo_material').value;
     var material = $("input[name='optionsMaterial']:checked").val();
     var medida = $("input[name='optionsMedida']:checked").val();
-    console.log(description.lenght );
+    
     if(description.lenght != '' && description.lenght != undefined){
       url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
     }else{

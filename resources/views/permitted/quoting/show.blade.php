@@ -65,15 +65,14 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master-two/steps.css')}}" >
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
     <!-- FormValidation plugin and the class supports validating Bootstrap form -->
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
     <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
     <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v=2.0')}}" >
     <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_logs.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting_cart_general.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting_cart_general.js?v=2.0')}}"></script>
     <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting.js?v=4.2.0')}}"></script>
     <script type="text/javascript" src="{{asset('js/admin/quoting/metricas.js?v=4.3.0')}}"></script>
     <script type="text/javascript">

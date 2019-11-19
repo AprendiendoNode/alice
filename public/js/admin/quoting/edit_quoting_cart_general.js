@@ -23,9 +23,18 @@ $(function () {
   }
 
   $('#itc').select2();
-  //Oculto los campos para dicumento M por default
+  //Oculto los campos para documento M por default
   $(".fields_docm").css('display', 'none');
 
+  $('#categoria').on('change', function(){
+    let categoria = $(this).val();
+    if(categoria == 12){
+      $('#div_tuberia').removeClass("d-none");
+    }else{
+      $('#div_tuberia').addClass("d-none");
+    }
+    
+  })
 
   function get_aps_sites(id_cad){
     fetch(`/get_aps_sites/id/${id_cad}`,  miInit)
@@ -40,10 +49,62 @@ $(function () {
     })
   }
 
+  $("input[name='optionsMaterial']").on("change",function(e){
+    let material = $("input[name='optionsMaterial']:checked").val();
+    getTypeMaterial(material);
+    // var categoria = document.getElementById('categoria').value;
+    // var description = document.getElementById('description').value;
+    // var type = document.getElementById('tipo_material').value;
+    // var material = $("input[name='optionsMaterial']:checked").val();
+    // var medida = $("input[name='optionsMedida']:checked").val();
+    
+    // let url = ``;
+
+    // if(description.length >=3){
+    //   url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
+    //   getArticlesCategorias(url);
+    // }
+  })
+
+  $("input[name='optionsMedida']").on("change",function(e){
+    var categoria = document.getElementById('categoria').value;
+    var description = document.getElementById('description').value;
+    var type = document.getElementById('tipo_material').value;
+    var material = $("input[name='optionsMaterial']:checked").val();
+    var medida = $("input[name='optionsMedida']:checked").val();
+    
+    let url = ``;
+    
+      if(description.lenght != '' && description.lenght != undefined && description.length >=3){
+        url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
+      }else{
+        url = `/items/ajax/third/${categoria}/${material}/${type}/${medida}`;
+      }
+
+      getArticlesCategorias(url);
+    
+  })
+
   /**
 **** scripts del funcionamiento de la paginacion de Equip. activo, materiales,
 **** filtro por categoria y aps, firewalls y switches dinamicos
   */
+
+ function getTypeMaterial(material){
+  fetch(`/getTypeMaterial/material/${material}`,  miInit)
+    .then(function(response){
+      return response.json();
+    })
+    .then(function(data){
+      $('#tipo_material').empty();
+      $.each(data, function(i, key) {
+        $('#tipo_material').append("<option value="+key.id+">"+key.name+"</option>");
+    });
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+} 
 
     function get_aps(){
       var select_aps = document.getElementsByClassName("aps_modelo");
@@ -133,17 +194,21 @@ $(function () {
           return pg;
       }
 
-    $('#description').on('keyup',function(){
-      var categoria = document.getElementById('categoria').value;
-      var description = document.getElementById('description').value;
-      let url = ``;
-
-      if(description.length >=4){
-        url = `/items/ajax/third/${categoria}/${description}`;
-        getArticlesCategorias(url);
-      }
-
-    });
+      $('#description').on('keyup',function(){
+        var categoria = document.getElementById('categoria').value;
+        var description = document.getElementById('description').value;
+        var type = document.getElementById('tipo_material').value;
+        var material = $("input[name='optionsMaterial']:checked").val();
+        var medida = $("input[name='optionsMedida']:checked").val();
+        
+        let url = ``;
+  
+        if(description.length >=3){
+          url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
+          getArticlesCategorias(url);
+        }
+  
+      });
 
     $('#products-grid').on('click', '.pagination a', function(e) {
         e.preventDefault();
@@ -203,24 +268,33 @@ $(function () {
     });
 
     $('#products-grid-categorias').on('click', '.pagination a', function(e) {
-        e.preventDefault();
-        var pg = getPaginationSelectedPage($(this).attr('href'));
-        var categoria = document.getElementById('categoria').value;
-        var description = document.getElementById('description').value;
-        if(description.lenght != ''){
-          url = `/items/ajax/third/${categoria}/${description}`;
-        }else{
-          url = `/items/ajax/third/${categoria}`;
-        }
+      e.preventDefault();
+      var pg = getPaginationSelectedPage($(this).attr('href'));
+      var categoria = document.getElementById('categoria').value;
+      var description = document.getElementById('description').value;
+      var type = document.getElementById('tipo_material').value;
+      var material = $("input[name='optionsMaterial']:checked").val();
+      var medida = $("input[name='optionsMedida']:checked").val();
+      
+     /* if(description.lenght != '' && description.lenght != undefined){
+        url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
+      }else if(description.lenght > 3){
+        url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
+      }
+      else{
+        url = `/items/ajax/third/${categoria}/${material}/${type}/${medida}`;
+      } */
 
-        $.ajax({
-            url: url,
-            data: { page: pg },
-            success: function(data) {
-                $('#products-grid-categorias').html(data);
-            }
-        });
-    });
+
+      url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
+      $.ajax({
+          url: url,
+          data: { page: pg },
+          success: function(data) {
+              $('#products-grid-categorias').html(data);
+          }
+      });
+  });
 
   $("#get_equipo_button").on("click",function(e){
     e.preventDefault();
@@ -271,10 +345,14 @@ $(function () {
     e.preventDefault();
     var categoria = document.getElementById('categoria').value;
     var description = document.getElementById('description').value;
-    if(description.lenght != ''){
-      url = `/items/ajax/third/${categoria}/${description}`;
+    var type = document.getElementById('tipo_material').value;
+    var material = $("input[name='optionsMaterial']:checked").val();
+    var medida = $("input[name='optionsMedida']:checked").val();
+    
+    if(description.lenght != '' && description.lenght != undefined){
+      url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
     }else{
-      url = `/items/ajax/third/${categoria}`;
+      url = `/items/ajax/third/${categoria}/${material}/${type}/${medida}`;
     }
 
     getArticlesCategorias(url);
