@@ -91,6 +91,23 @@ getViaticsByHotel(cliente);
     var vartable = table.dataTable(Configuration_table_contracts);
     vartable.fnClearTable();
     $.each(datajson, function(index, status){
+    var estado = '';
+
+    switch (status.estatus) {
+      case 'Activo':
+      estado ='<span class="badge badge-pill text-white bg-success">Activo</span>';
+        break;
+      case 'Pausado':
+        estado ='<span class="badge badge-pill text-white bg-warning">Pausado</span>';
+        break;
+      case 'Cancelado':
+        estado ='<span class="badge badge-pill text-white bg-danger">Cancelado</span>';
+        break;
+      case 'Terminado':
+        estado ='<span class="badge badge-pill text-white bg-dark">Terminado</span>';
+        break;
+      default:
+    }
       vartable.fnAddData([
         status.key,
         status.razon,
@@ -98,7 +115,7 @@ getViaticsByHotel(cliente);
         status.email,
         status.telephone,
         status.resguardo,
-        "<label class='badge badge-secondary'>"+status.estatus+"</label>",
+        estado,
         status.xvenc,
         "<button id='verAnexos~"+status.id+"~"+status.key+"' class='verAnexos btn btn-info'><i class='fas fa-file-signature'></i></button>"
       ]);
@@ -110,6 +127,23 @@ getViaticsByHotel(cliente);
     var vartable = table.dataTable(Configuration_table_contracts);
     vartable.fnClearTable();
     $.each(datajson, function(index, status){
+      var estado = '';
+
+      switch (status.estatus) {
+        case 'Activo':
+        estado ='<span class="badge badge-pill text-white bg-success">Activo</span>';
+          break;
+        case 'Pausado':
+          estado ='<span class="badge badge-pill text-white bg-warning">Pausado</span>';
+          break;
+        case 'Cancelado':
+          estado ='<span class="badge badge-pill text-white bg-danger">Cancelado</span>';
+          break;
+        case 'Terminado':
+          estado ='<span class="badge badge-pill text-white bg-dark">Terminado</span>';
+          break;
+        default:
+      }
       vartable.fnAddData([
         status.key,
         status.date_signature,
@@ -118,7 +152,7 @@ getViaticsByHotel(cliente);
         status.date_real,
         status.pesos,
         status.dolares,
-        "<label class='badge badge-secondary'>"+status.estatus+"</label>"
+        estado
       ]);
     });
   }
@@ -562,7 +596,7 @@ function viatics_table(datajson, table){
     status.date_end,
     "$" + status.solicitado.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " MXN",
     "$" + status.aprobado.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " MXN",
-    '<span class="badge badge-primary">'+status.estado+'</span>',
+    '<span class="badge  badge-pill badge-success">'+status.estado+'</span>',
     status.usuario,
     '<a href="javascript:void(0);" onclick="enviar_via(this)" value="'+status.id+'" class="btn btn-default btn-sm" role="button"><span class="far fa-edit"></span></a>',
     ]);
@@ -578,7 +612,7 @@ function payments_table(datajson, table){
     vartable.fnAddData([
       value.factura,
       value.proveedor,
-      '<span class="badge badge-primary">'+value.estatus+'</span>',
+      '<span class="badge badge-pill  badge-success">'+value.estatus+'</span>',
       value.monto_str,
       value.elaboro,
       value.fecha_solicitud,

@@ -684,7 +684,7 @@
                   <div class="table-responsive">
                     <table id="table_pays" class="table table-striped table-bordered table-hover text-white compact-tab" style="width:100%">
                       <thead>
-                        <tr class="bg-primary" style="background: #088A68;">
+                        <tr class="bg-aqua" style="background: #088A68;">
                           <th> <small>Factura</small> </th>
                           <th> <small>Proveedor</small> </th>
                           <th> <small>Estatus</small> </th>
@@ -721,7 +721,7 @@
                 <div class="table-responsive">
                   <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100">
                     <thead>
-                      <tr class="bg-primary">
+                      <tr class="bg-aqua">
                         <th> <small>Folio</small> </th>
                         <th> <small>Servicio</small> </th>
                         <th> <small>Fecha Inicio</small> </th>
