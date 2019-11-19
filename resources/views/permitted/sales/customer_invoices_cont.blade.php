@@ -1288,6 +1288,11 @@
                   });
                 }else{
 					// Agrupando todos los sitios en uno solo
+          var amount_sum_annexes = 0.0;
+          data.forEach(function(key){
+            amount_sum_annexes += parseFloat(key.monto);
+          });
+          console.log(amount_sum_annexes);
 					var html = '';
                     var current_unit= data[0].unit_measure_id;
                     var current_sat = data[0].sat_product_id;
@@ -1370,7 +1375,7 @@
 
                     html += '<td>';
                     html += '<div class="form-group form-group-sm">';
-                    html += '<input type="number" class="form-control form-control-sm text-right col-price-unit" value="0" name="item[' + item_row + '][price_unit]" id="item_price_unit_' + item_row + '" required step="any" />';
+                    html += '<input type="number" class="form-control form-control-sm text-right col-price-unit" value="'+ amount_sum_annexes +'" name="item[' + item_row + '][price_unit]" id="item_price_unit_' + item_row + '" required step="any" />';
                     html += '</div>';
                     html += '</td>';
 

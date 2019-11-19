@@ -1150,7 +1150,7 @@ class CustomerInvoiceController extends Controller
      }
 
 
-     //Inserta sitios agrupados a CustomerInvoiceLines con las cantidades ponderadas 
+     //Inserta sitios agrupados a CustomerInvoiceLines
 
      public function insert_sites_annexes_lines(Request $request, $customer_invoice)
      {
@@ -1161,10 +1161,16 @@ class CustomerInvoiceController extends Controller
         $num_sites = count($sites);
         
         if (!empty($request->item)) {
+                
+                //--------------------------------------------------------------------------------------------------------------------------//
+                
+            /***GUARDANDO ANEXOS CON SUS MONTOS UNICOS****/
+            foreach ($sites as $key => $site) {
+                //dd($site);
                 $item = $request->item;
                 //Logica
                 $item_quantity = (double)$item[0]['quantity']; //cantidad de artículo
-                $item_price_unit = (double)$item[0]['price_unit']; //unidad de precio del artículo
+                $item_price_unit = (double)$site->monto; //unidad de precio del artículo
                 $item_discount = (double)$item[0]['discount']; //descuento del artículo
                 
                 $item_subtotal_quantity = round($item_price_unit * $item_quantity, 2);
@@ -1200,6 +1206,7 @@ class CustomerInvoiceController extends Controller
                         }
                     }
                 }
+
                 $item_subtotal_clean = $item_subtotal_quantity; 
                 $item_discount_clean = $item_amount_discount;
                 $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;// cantidad total del artículo = Cantidad del artículo libre de impuestos + impuesto a la cantidad del artículo + cantidad de artículo retiro de impuestos
@@ -1250,12 +1257,7 @@ class CustomerInvoiceController extends Controller
 
                   }
                 }
-                //--------------------------------------------------------------------------------------------------------------------------//
 
-                
-            /***GUARDANDO ANEXOS CON SUS MONTOS PONDERADOS****/
-            foreach ($sites as $key => $site) {
-                
                 $customer_invoice_line = CustomerInvoiceLine::create([
                     'created_uid' => \Auth::user()->id,
                     'updated_uid' => \Auth::user()->id,
@@ -1264,14 +1266,14 @@ class CustomerInvoiceController extends Controller
                     'sat_product_id' => $item[0]['sat_product_id'],
                     'unit_measure_id' => $item[0]['unit_measure_id'],
                     'quantity' => $item_quantity,
-                    'price_unit' => $item_price_unit / $num_sites,
-                    'discount' => $item_discount / $num_sites,
-                    'price_reduce' => $item_price_reduce / $num_sites,
-                    'amount_discount' => $item_discount_clean / $num_sites,
-                    'amount_untaxed' => $item_subtotal_clean / $num_sites,
-                    'amount_tax' => $item_amount_tax / $num_sites,
-                    'amount_tax_ret' => $item_amount_tax_ret / $num_sites,
-                    'amount_total' => $item_amount_total / $num_sites,
+                    'price_unit' => $item_price_unit,
+                    'discount' => $item_discount,
+                    'price_reduce' => $item_price_reduce,
+                    'amount_discount' => $item_discount_clean,
+                    'amount_untaxed' => $item_subtotal_clean,
+                    'amount_tax' => $item_amount_tax,
+                    'amount_tax_ret' => $item_amount_tax_ret,
+                    'amount_total' => $item_amount_total,
                     'sort_order' => $key,
                     'status' => 1,
                     'contract_annex_id' => $site->contract_annex_id,
@@ -1286,7 +1288,7 @@ class CustomerInvoiceController extends Controller
                 } else {
                     $customer_invoice_line->taxes()->sync([]);
                 }
-            }
+            } //FIN FOREACH
         }
         
      }
