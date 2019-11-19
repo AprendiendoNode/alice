@@ -18,8 +18,6 @@ $(function() {
         $("#telefonoCliente").text(data[0].Telefono);
         $("#direccionCliente").text(data[0].Direccion);
         $("#correoCliente").text(data[2].correo == null ? "Sin informacion" : data[2].correo);
-        $("#cargando").addClass("d-none");
-        $(".first_tab").removeClass("d-none");
       },
       error: function (data) {
         console.log('Error:', data);
@@ -27,17 +25,15 @@ $(function() {
     });
     get_contracts(cliente);
     get_info_equipments(cliente);
-
-get_info_equipments(cliente);
-get_nps_hotel(cliente);
-get_nps_comment(cliente);
-get_graph_equipments(cliente);
-get_table_budget(cliente);
-get_table_tickets(cliente);
-get_graph_tickets_type(cliente);
-get_graph_tickets_status(cliente);
-getFoliosByHotel(cliente);
-getViaticsByHotel(cliente);
+    get_nps_hotel(cliente);
+    get_nps_comment(cliente);
+    get_graph_equipments(cliente);
+    get_table_budget(cliente);
+    get_table_tickets(cliente);
+    get_graph_tickets_type(cliente);
+    get_graph_tickets_status(cliente);
+    getFoliosByHotel(cliente);
+    getViaticsByHotel(cliente);
   });
 
   function get_contracts(cliente) {
@@ -505,7 +501,7 @@ function getFoliosByHotel(cliente){
     url: "/get_payment_folios_gastos",
     data: { id : id, _token : _token },
     success: function (data){
-      console.log(data); //Ya tenemos la conversión a pesos de los dólares pero no es exacta
+      //console.log(data); //Ya tenemos la conversión a pesos de los dólares pero no es exacta
 
       var dataMXN = [], savedGastosMXN = [], dataUSD = [], savedGastosUSD = [];
 
@@ -537,8 +533,8 @@ function getFoliosByHotel(cliente){
 
       });
 
-      console.log(dataMXN);
-      console.log(dataUSD);
+      //console.log(dataMXN);
+      //console.log(dataUSD);
       graph_equipments('graph_payments1', dataMXN, "", "PESOS"); //El string PESOS no debe ser cambiado!
       graph_equipments('graph_payments2', dataUSD, "", "DÓLARES"); //El string DÓLARES no debe ser cambiado!
       payments_table(data, $("#table_pays"));
@@ -577,6 +573,8 @@ function getViaticsByHotel(cliente){
       //console.log(data2);
       graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
       viatics_table(data, $("#table_viatics"));
+      $("#cargando").addClass("d-none");
+      $(".first_tab").removeClass("d-none");
     },
     error: function (data) {
       console.log('Error:', data);

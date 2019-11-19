@@ -754,7 +754,7 @@
           </div>
       </div>
       <div style="margin-left: 40%;">
-        <img id="cargando" class="d-none" src="/images/cargando.gif" alt="...">
+        <img id="cargando" class="d-none" src="/images/loading.gif" alt="...">
       </div>
 
       @include('permitted.payments.modal_payment')
