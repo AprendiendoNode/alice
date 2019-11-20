@@ -28,6 +28,7 @@ $(function() {
     get_nps_hotel(cliente);
     get_nps_comment(cliente);
     get_graph_equipments(cliente);
+    get_graph_equipments_status(cliente);
     get_table_budget(cliente);
     get_table_tickets(cliente);
     get_graph_tickets_type(cliente);
@@ -261,6 +262,27 @@ $(function() {
 
   }
 
+
+  function get_graph_equipments_status(idcadena) {
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idcadena;
+    $.ajax({
+      type: "POST",
+      url: "/get_graph_equipments_status",
+      data: { _token : _token, id: id },
+      success: function (data){
+        //$('.divEQ').addClass('tableFixHead');
+        //table_equipments(data, $("#all_equipments"));
+        //console.log(data);
+        graph_equipments_status('graph_equipments_status',data);
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+
+  }
+
   function table_comments_hotel(datajson, table){
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table);
@@ -372,6 +394,9 @@ else  if (status.estado == '10') { span_identificador = '<span class="badge badg
         data: { id: id, _token : _token },
         success: function (data){
           //console.log(data);
+          if(data==''){
+            data=[{},{},{},{},{}] //Necesario para evitar errores cuando es vacio.
+          }
           graph_tickets_type('graph_type_tickets',data);
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
         },
@@ -906,6 +931,64 @@ function payments_table(datajson, table){
     });
   }
 
+  function graph_equipments_status(title,data) {
+    //$('#'+title).width($('#'+title).width());
+    //$('#'+title).height($('#'+title).height());
+    //console.log('entra');
+   var chart = document.getElementById(title);
+    var resizeMainContainer = function () {
+     chart.style.width = 520+'px';
+     chart.style.height = 320+'px';
+   };
+    resizeMainContainer();
+      var myChart = echarts.init(chart);
+      var group=[];
+      var titles=[];
+      var i=0;
+
+      data.forEach(function(element){
+      group[i] ={name: element.estado,type: 'bar',label: {normal: {show: true,position: 'inside'}},data: [element.cantidad]};
+      titles[i] = element.estado;
+      i++;
+      });
+
+      option = {
+          title: {
+              text: 'Equipos por estado',
+              x:'center',
+              top:-5
+          },
+          legend: {
+              data: titles,
+              orient: 'horizontal',
+              align: 'left',
+              center:'center',
+              top:20
+
+          },
+          //color: ['#474B4F','#ff5400','#e92e29','#FFDE40','#4dd60d','#00BFF3','#096dc9','#f90000'],
+          color: ['#34cd36','#ff0800','#FFDE40','#474B4F','#0dcad6','#008df4','#0f8d95','#7a7a7a','#7a7a7a','#ff0800'],
+          toolbox: {},
+          tooltip: {},
+          xAxis: {},
+          yAxis: {type: 'category'},
+          series:group,
+      };
+
+
+    myChart.setOption(option);
+
+    $(window).on('resize', function(){
+        if(myChart != null && myChart != undefined){
+           //chart.style.width = 100+'%';
+           //chart.style.height = 100+'%';
+           chart.style.width = $(window).width()*0.5;
+           chart.style.height = $(window).width()*0.5;
+            myChart.resize();
+
+        }
+    });
+  }
 
 function graph_equipments(title,data,text,subtext) {
   //$('#'+title).width($('#'+title).width());
@@ -942,7 +1025,7 @@ function graph_equipments(title,data,text,subtext) {
         },
         legend: {
             orient: 'vertical',
-            left: 'right',
+            left: 60+'px',
 
         },
         series : [

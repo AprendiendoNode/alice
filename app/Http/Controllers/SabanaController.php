@@ -64,6 +64,11 @@ class SabanaController extends Controller
     $result = DB::select('CALL px_equiposxtipo_hotel (?)',array($id_hotel));
     return $result;
   }
+  public function get_graph_equipments_status(Request $request){
+    $id_hotel = $request->id;
+    $result = DB::select('CALL px_equiposxstatus_hotel (?)',array($id_hotel));
+    return $result;
+  }
   public function get_budget_annual_hotel(Request $request){
     $id_hotel = $request->id;
     $date_current = date('Y-m');
@@ -98,20 +103,20 @@ class SabanaController extends Controller
   public function get_tickets_by_hotel(Request $request){
     $id_hotel=$request->id;
 
-    $result = DB::connection('Zendesk2')->select('CALL px_ticketsxhotel(?)', array($id_hotel));
+    $result = DB::connection('zendesk')->select('CALL px_ticketsxhotel(?)', array($id_hotel));
     return $result;
   }
 
   public function get_ticketsxtype_hotel(Request $request ){
     $id_hotel=$request->id;
-    $result = DB::connection('Zendesk2')->select('CALL px_ticketsxtype_hotel(?)', array($id_hotel));
+    $result = DB::connection('zendesk')->select('CALL px_ticketsxtype_hotel(?)', array($id_hotel));
     return $result;
   }
 
 
   public function get_ticketsxstatus_hotel(Request $request ){
     $id_hotel=$request->id;
-    $result = DB::connection('Zendesk2')->select('CALL px_ticketsxstatus_hotel(?)', array($id_hotel));
+    $result = DB::connection('zendesk')->select('CALL px_ticketsxstatus_hotel(?)', array($id_hotel));
     return $result;
   }
 

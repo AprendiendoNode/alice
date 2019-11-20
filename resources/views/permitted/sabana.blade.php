@@ -571,9 +571,16 @@
 
               <div class="tab_content">
                   <h3 style="font-weight: bold; margin-left: 34%;">Todos los equipos del sitio</h3>
-                  <div class="d-flex justify-content-center border-bottom w-100">
+                  <div class="row">
+                    <div class="col-md-1"></div>
+                  <div class="d-flex justify-content-center border-bottom w-100 col-md-5">
                     <div  id="graph_equipments" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                   </div>
+                  <div class="d-flex justify-content-center border-bottom w-30 col-md-5">
+                    <div  id="graph_equipments_status" > </div>
+                  </div>
+                  <div class="col-md-1"></div>
+                </div>
 
                   <div class="divEQ table-responsive">
                   <table id="all_equipments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
@@ -674,6 +681,7 @@
               <div class="tab_content">
                   <h3 style="font-weight: bold; margin-left: 45%;">Pagos</h3>
                   <div class="row">
+                    <div class="col-md-1"></div>
                     <div class="d-flex justify-content-center border-bottom w-100 col-md-5">
                       <div id="graph_payments1" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                     </div>
@@ -681,6 +689,7 @@
                       <div id="graph_payments2" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                     </div>
                   </div>
+                  <div class="col-md-1"></div>
                   <div class="table-responsive">
                     <table id="table_pays" class="table table-striped table-bordered table-hover text-white compact-tab" style="width:100%">
                       <thead>
