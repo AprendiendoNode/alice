@@ -284,11 +284,11 @@
                         <p><strong>{{ trans('pay.confpay') }}: </strong><small id="rec_name_conf">{{ trans('pay.no_data') }}</small></p>
                       </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="col-sm-12">
                         <p><strong>{{ trans('pay.delconfpay') }}: </strong><small id="rec_name_conf_del">{{ trans('pay.no_data') }}</small></p>
                       </div>
-                    </div>
+                    </div> -->
                     <div class="row">
                         <button id="actualizar_solicitud" type="button" class="btn btn-warning mx-auto d-none"><i class="fas fa-edit"></i> Actualizar solicitud</button>
                     </div>

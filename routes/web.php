@@ -621,6 +621,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/history_status_paid_month', 'Payments\PayHistoryPaidController@payments_paid');
     Route::post('/history_status_paid_month_period', 'Payments\PayHistoryPaidController@payments_paid_period');
     Route::post('/history_status_paid_month_sumas', 'Payments\PayHistoryPaidController@payments_paid_sums');
+    Route::get('/view_facturas_pend', 'Payments\PayHistoryPaidController@index_facturapendiente');
+    // Route::post('/get_data_fact_by_drive', 'Payments\PayHistoryPaidController@get_data_fact_by_drive');
+
     //Programar pagos
     Route::get('/program_date_pay', 'Payments\PayHistoryController@index2');
     Route::post('/get_program_table', 'Payments\PayHistoryController@program_payment');

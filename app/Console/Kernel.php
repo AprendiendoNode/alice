@@ -55,7 +55,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('weekly:income')->fridays()->at('19:01');
         $schedule->command('weekly:viatic')->fridays()->at('19:02');
         $schedule->command('check:payments')->monthly(1, '4:00');
-        $schedule->command('exchangerate:fix')->dailyAt('12:20');
+        $schedule->command('exchangerate:fix')->timezone('America/Mexico_City')->dailyAt('12:20');
         //
         // $schedule->command('ticket:monthly')->weekly()->sundays()->at('23:00');
         // $schedule->command('test:prueba')->weekly();

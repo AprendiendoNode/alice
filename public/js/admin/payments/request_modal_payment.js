@@ -826,7 +826,7 @@ function data_basic_firmas(campoa, campob){
           $("#rec_name_reviso").text(datax[0].nombre2);
           $("#rec_name_auth").text(datax[0].nombre3);
           $("#rec_name_conf").text(datax[0].nombre4);
-          $("#rec_name_conf_del").text(datax[0].nombre5);
+          // $("#rec_name_conf_del").text(datax[0].nombre5);
         }
         else{
           //$("#rec_observation").text('No disponible.');

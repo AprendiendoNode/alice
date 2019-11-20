@@ -47,22 +47,35 @@ class PayHistoryPaidController extends Controller
     $financing = DB::table('payments_financings')->pluck('name', 'id')->all();
     return view('permitted.payments.status_paid',compact('cadena','proveedor','vertical', 'currency', 'way', 'area', 'application', 'options', 'classification', 'financing'));
   }
-  public function payments_paid (Request $request) {
-    $user = Auth::user()->id;
-    $email = Auth::user()->email;
-    $input_date_i= $request->get('date_to_search');
-    if ($input_date_i != '') {
-      $date = $input_date_i.'-01';
+  /* Facturas Pendientes */
+    public function index_facturapendiente()
+    {
+      $facturas = DB::select('CALL px_pay_status_fact_pend ()', array());
+      return view('permitted.payments.invoice_pending_pay', compact('facturas'));
     }
-    else {
-      $date_current = date('Y-m');
-      $date = $date_current.'-01';
+    public function get_data_fact_by_drive(Request $request)
+    {
+      $valor = $request->data_one;
+      $result = DB::select('CALL px_payments_data2 (?)', array($valor));
+      return $result;
     }
-    if (auth()->user()->can('View history all payments status paid')) {
-      $result = DB::select('CALL  get_payments_mes_pagado (?)', array($date));
+    public function payments_paid (Request $request) {
+      $user = Auth::user()->id;
+      $email = Auth::user()->email;
+      $input_date_i= $request->get('date_to_search');
+      if ($input_date_i != '') {
+        $date = $input_date_i.'-01';
+      }
+      else {
+        $date_current = date('Y-m');
+        $date = $date_current.'-01';
+      }
+      if (auth()->user()->can('View history all payments status paid')) {
+        $result = DB::select('CALL  get_payments_mes_pagado (?)', array($date));
+      }
+      return $result;
     }
-    return $result;
-  }
+  /* Fin facturas pendientes. */
 
   public function payments_paid_period(Request $request)
   {
@@ -94,5 +107,10 @@ class PayHistoryPaidController extends Controller
       $result = DB::select('CALL get_payments_pagado_sumas (?, ?)', array($date_a, $date_b));
       return $result;
     }
+  }
+  public function find_fact_pend(Request $request)
+  {
+    $result = DB::select('CALL px_pay_status_fact_pend ()', array());
+    return $result;
   }
 }
