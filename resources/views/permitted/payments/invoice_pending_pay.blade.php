@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View history all payments status paid') )
+  @if( auth()->user()->can('View facturas pendientes') )
     {{ trans('message.pay_hist_request') }}
   @else
     {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View history all payments status paid') )
+  @if( auth()->user()->can('View facturas pendientes') )
     {{ trans('message.breadcrumb_status_paid') }}
   @else
     {{ trans('message.denied') }}
@@ -19,7 +19,7 @@
 @section('content')
   @include('permitted.payments.modal_payment')
 
-    @if( auth()->user()->can('View history all payments status paid') )
+    @if( auth()->user()->can('View facturas pendientes') )
     <div class="container">
       <div class="card">
         <div class="card-body">
@@ -116,7 +116,7 @@
        border-radius: 3px;
    }
   </style>
-  @if( auth()->user()->can('View history all payments status paid') )
+  @if( auth()->user()->can('View facturas pendientes') )
     <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
 
