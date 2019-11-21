@@ -69,6 +69,15 @@ $(function () {
     get_table_estimation();
   });
 
+  $('#lugar_instalacion').on('change', function(){
+    let instalacion = $(this).val();
+    if(instalacion == 2){
+      $("#div_button_viatic").removeClass('d-none');
+    }else{
+      $("#div_button_viatic").addClass('d-none');
+    }
+  });
+
   function get_table_estimation(){
     var id_anexo = $('#anexo_id').val();
     var init = { method: 'get',
@@ -374,17 +383,14 @@ $(function () {
         var material = $("input[name='optionsMaterial']:checked").val();
         var medida = $("input[name='optionsMedida']:checked").val();
         
-       /* if(description.lenght != '' && description.lenght != undefined){
+        if(type != undefined && material != undefined){
           url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
-        }else if(description.lenght > 3){
-          url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
-        }
-        else{
+        }else if(description == undefined || description == ''){
           url = `/items/ajax/third/${categoria}/${material}/${type}/${medida}`;
-        } */
+        }else{
+          url = `/items/ajax/third/${categoria}/${description}/0/0/0`;
+        } 
 
-
-        url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
         $.ajax({
             url: url,
             data: { page: pg },
@@ -437,6 +443,18 @@ $(function () {
     var switch_cant = data_switches[1];
     url = `/items/ajax/four/${api}/${ape}`;
     getArticlesManoObra(url);
+
+  })
+
+  $("#get_viatics_button").on("click",function(e){
+    e.preventDefault();
+    var data_aps = get_aps();
+    var aps = JSON.stringify(data_aps[0]);
+    var api = data_aps[1];
+    var ape = data_aps[2];
+
+    url = `/items/ajax/five/${api}/${ape}`;
+    getArticlesViatics(url);
 
   })
 
@@ -521,6 +539,39 @@ function getArticlesManoObra(url) {
         swal("Debe llenar las cantidades de los equipos","","warning");
     });
 }
+
+  function getArticlesViatics(url) {
+    $.ajax({
+        url : url
+    }).done(function (data) {
+      var productosLS = obtenerProductosLocalStorage();
+
+        data.forEach(element => {
+          var productosLS = obtenerProductosLocalStorage();
+          var id_product = element.id;
+          if(productosLS == '[]'){
+            //Primer producto del carrito
+            leerDatosProductMO(element);
+            menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
+          }else {
+            let count =  productosLS.filter(producto => producto.id == id_product);
+
+            if(count.length == 1){
+              //El producto existe
+              menssage_toast('Error', '2', 'Este producto ya fue agregado al pedido' , '3000');
+            }else{
+              leerDatosProductMO(element);
+              menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
+            }
+
+          }
+
+        })
+
+    }).fail(function () {
+        swal("Debe llenar las cantidades de los equipos","","warning");
+    });
+  }
 
 function getArticlesCategorias(url) {
     $.ajax({

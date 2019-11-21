@@ -33,7 +33,7 @@ class EditDocumentPController extends Controller
     //Data formulario
     $grupos = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
     $anexos = DB::table('hotels')->select('id', 'Nombre_hotel')->orderBy('Nombre_hotel')->get();
-    $categories = DB::table('categories')->select('id', 'name')->get();
+    $categories = DB::table('products_categories')->select('id', 'name')->get();
     $verticals = DB::table('verticals')->select('id','name')->get();
     $itc = DB::select('CALL px_ITC_todos_V2');
     $comerciales = DB::select('CALL px_resguardoXgrupo_users(?)', array(2));

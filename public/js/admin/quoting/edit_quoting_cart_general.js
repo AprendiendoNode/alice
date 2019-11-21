@@ -276,17 +276,14 @@ $(function () {
       var material = $("input[name='optionsMaterial']:checked").val();
       var medida = $("input[name='optionsMedida']:checked").val();
       
-     /* if(description.lenght != '' && description.lenght != undefined){
+      if(type != undefined && material != undefined){
         url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
-      }else if(description.lenght > 3){
-        url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
-      }
-      else{
+      }else if(description == undefined || description == ''){
         url = `/items/ajax/third/${categoria}/${material}/${type}/${medida}`;
-      } */
-
-
-      url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
+      }else{
+        url = `/items/ajax/third/${categoria}/${description}/0/0/0`;
+      } 
+     
       $.ajax({
           url: url,
           data: { page: pg },

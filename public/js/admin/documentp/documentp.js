@@ -48,10 +48,12 @@ function sumaTotales(){
   var total_eqactivo = 0.0;
   var total_materiales = 0.0;
   var total_sitwifi = 0.0;
+  var total_viaticos = 0.0;
   //Separo en diferentes arreglos del Local Storage  segun la clasificacion de un producto
   let equipo_activo = productosLS.filter(producto => producto.categoria_id == 4  || producto.categoria_id == 6 || producto.categoria_id == 14);
-  let materiales= productosLS.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6 && producto.categoria_id != 7 && producto.categoria_id != 14);
+  let materiales= productosLS.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6 && producto.categoria_id != 7 && producto.categoria_id != 14 && producto.categoria_id != 15);
   let sitwifi= productosLS.filter(producto => producto.categoria_id == 7 );
+  let viaticos = productosLS.filter(producto => producto.categoria_id == 15 );
 
   //Sumando totales por categorias
   equipo_activo.forEach(function(producto){
@@ -63,6 +65,9 @@ function sumaTotales(){
   sitwifi.forEach(function(producto){
     total_sitwifi += parseFloat(producto.precio_total_usd);
   });
+  viaticos.forEach(function(producto){
+    total_viaticos += parseFloat(producto.precio_total_usd);
+  });
   //Actualizando montos totales en el DOM
   document.getElementById("total_eqactivo").innerHTML = (total_eqactivo.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   document.getElementById("total_eqactivo_footer").innerHTML = (total_eqactivo.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -72,6 +77,9 @@ function sumaTotales(){
 
   document.getElementById("total_sitwifi").innerHTML = (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   document.getElementById("total_sitwifi_footer").innerHTML = (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  document.getElementById("total_viaticos").innerHTML = (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  document.getElementById("total_viaticos_footer").innerHTML = (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   //Total global
   document.getElementById("total_global").innerHTML = ((total_materiales + total_eqactivo + total_sitwifi).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -277,13 +285,16 @@ function generate_table_products(){
   var productos = obtenerProductosLocalStorage();
   //Filtrar productos por categoria
   let equipo_activo = productos.filter(producto => producto.categoria_id == 4  || producto.categoria_id == 6 || producto.categoria_id == 14);
-  let materiales= productos.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6 && producto.categoria_id != 7 && producto.categoria_id != 14);
+  let materiales= productos.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6  &&
+                                   producto.categoria_id != 7 && producto.categoria_id != 14 && producto.categoria_id != 15);
   let sitwifi= productos.filter(producto => producto.categoria_id == 7 );
+  let viaticos = productos.filter(producto => producto.categoria_id == 15 );
 
   $("#tabla_productos tbody tr").remove();
   var total_eq_activo = 0.0;
   var total_materiales = 0.0;
   var total_sitwifi = 0.0;
+  var total_viaticos = 0.0;
   $.each(equipo_activo, function( i, key ) {
     total_eq_activo += parseFloat(key.precio_total_usd);
     $('#tabla_productos tbody').append('<tr id="' + key.id + '"><td>'
@@ -346,12 +357,35 @@ function generate_table_products(){
         + '<button type="button" onclick="eliminarProductoLocalStorage('+key.id+');deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td>'
         + '</td></tr>');
      });
-      $('#tabla_productos tbody').append(
-        `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Mano de obra:</td><td>DLLS</td><td id="total_sitwifi" colspan="2">$0.00</td></tr>`);
-         document.getElementById("total_sitwifi").innerHTML = "$" + (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-         document.getElementById("total_sitwifi_footer").innerHTML =  (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+     $('#tabla_productos tbody').append(
+      `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Mano de obra:</td><td>DLLS</td><td id="total_sitwifi" colspan="2">$0.00</td></tr>`);
+       document.getElementById("total_sitwifi").innerHTML = "$" + (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+       document.getElementById("total_sitwifi_footer").innerHTML =  (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+     $.each(viaticos, function( i, key ) {
+      total_viaticos += parseFloat(key.precio_total_usd);
+      $('#tabla_productos tbody').append('<tr id="' + key.id + '"><td>'
+        + key.cant_sug + '</td>'
+        + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id + '" data-clave="' + key.codigo + '" data-title="cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
+        + key.descripcion.toUpperCase() + '</td><td>'
+        + key.categoria.toUpperCase() + '</td><td>'
+        + key.codigo + '</td><td>'
+        + key.proveedor + '</td><td>'
+        + key.num_parte + '</td><td>'
+        + key.descuento + '</td><td>'
+        + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio+ '" data-name="precio" class="set-price"></a></td class=""><td>'
+        + key.currency + '</td><td class="precio_total">'
+        + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
+        + key.precio_total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
+        + '<button type="button" onclick="eliminarProductoLocalStorage('+key.id+');deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td>'
+        + '</td></tr>');
+     });
+     $('#tabla_productos tbody').append(
+      `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total viaticos:</td><td>DLLS</td><td id="total_viaticos" colspan="2">$0.00</td></tr>`);
+       document.getElementById("total_viaticos").innerHTML = "$" + (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+       document.getElementById("total_viaticos_footer").innerHTML =  (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      
          //Total global
-         document.getElementById("total_global").innerHTML = ((total_materiales + total_eq_activo + total_sitwifi).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        document.getElementById("total_global").innerHTML = ((total_materiales + total_eq_activo + total_sitwifi + total_viaticos).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   //  Fix de errorres en validate
   $('.set-cant-req').on('shown', function() {
@@ -512,12 +546,14 @@ $(".validation-wizard-master").steps({
             let total_ea = 0.0;
             let total_ena = 0.0;
             let total_mo = 0.0;
+            let total_viaticos = 0.0;
             let total = 0.0;
 
              productosLS = localStorage.getItem('productos');
              total_ea = document.getElementById('total_eqactivo_footer').innerHTML;
              total_ena = document.getElementById('total_materiales_footer').innerHTML;
              total_mo = document.getElementById('total_sitwifi_footer').innerHTML;
+             total_viaticos = document.getElementById('total_viaticos_footer').innerHTML;
              total = document.getElementById('total_global').innerHTML;
 
              var form = $('#validation_master')[0];
@@ -527,6 +563,7 @@ $(".validation-wizard-master").steps({
              formData.append('total_ea',total_ea.replace(/,/g, ""));
              formData.append('total_ena',total_ena.replace(/,/g, ""));
              formData.append('total_mo',total_mo.replace(/,/g, ""));
+             formData.append('total_viaticos',total_viaticos.replace(/,/g, ""));
              formData.append('total',total.replace(/,/g, ""));
 
              const headers = new Headers({
@@ -595,7 +632,7 @@ $(".validation-wizard-master").steps({
         }
     },
     rules: {
-        type_service: {
+        /*type_service: {
           required: true
         },
         vertical: {
@@ -612,7 +649,7 @@ $(".validation-wizard-master").steps({
         },
         tipo_cambio: {
           required: true
-        },
+        },*/
     },
 
 })

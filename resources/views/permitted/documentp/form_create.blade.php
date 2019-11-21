@@ -1,7 +1,7 @@
 <form id="validation_master" name="validation_master" class="form-horizontal validation-wizard-master wizard-circle">
     {{ csrf_field() }}
     <!-- Step 1 -->
-    <h6>Paso 1 -Llenar datos y pedido de compras</h6>
+    <h6>Paso 1 -Llenar datos y agregar materiales</h6>
     <section>
       <div class="row">
         <div class="col-6 col-md-4 col-lg-3">
@@ -291,6 +291,7 @@
         </section>
       </div>
       <br>
+      <!--------MANO DE OBRA---------->
       <div class="row fields_docp">
         <h4 class="text-danger">Mano de obra</h4>
       </div>
@@ -298,6 +299,20 @@
         <div class="col-md-4">
           <div class="form-group">
               <a href="#" class="btn btn-danger ml-20" id="get_mo_button" name=""><i class="fas fa-people-carry mr-2"></i> Agregar Mano de obra</a>
+          </div>
+        </div>
+      </div>
+      <br>
+      <!--------VIATICOS---------->
+      <div id="div_button_viatic" class="d-none">
+        <div class="row fields_docp">
+          <h4 class="text-danger">Viaticos</h4>
+        </div>
+        <div class="row fields_docp">
+          <div class="col-md-4">
+            <div class="form-group">
+                <a href="#" class="btn btn-success ml-20" id="get_viatics_button" name=""><i class="fas fa-utensils mr-2"></i></i><i class="fas fa-suitcase-rolling mr-1"></i> Agregar Viaticos</a>
+            </div>
           </div>
         </div>
       </div>
@@ -377,7 +392,7 @@
     </section>
 
     <!-- Step 2 -->
-    <h6>Paso 2 -Llenar datos y pedido de compras</h6>
+    <h6>Paso 2 -Resumen de compras</h6>
     <section>
       <div class="row">
         <div class="col-md-12">
@@ -416,6 +431,10 @@
                     <tr>
                       <td colspan="2"></td> <td style="font-weight:bold;" colspan="3">Total Mano de Obra:</td>
                       <td  style="font-weight:bold;" colspan="3">$ <span id="total_sitwifi_footer">0.00</span> USD</td>
+                    </tr>
+                    <tr>
+                      <td colspan="2"></td> <td style="font-weight:bold;" colspan="3">Total Viaticos:</td>
+                      <td  style="font-weight:bold;" colspan="3">$ <span id="total_viaticos_footer">0.00</span> USD</td>
                     </tr>
                     <tr>
                       <td colspan="2"></td> <td style="font-weight:bold;" colspan="3">Total:</td>

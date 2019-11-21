@@ -162,6 +162,7 @@ background-color: #f6f6f6;
                           <th> <small>Total $ EA USD</small> </th>
                           <th> <small>Total $ ENA USD</small> </th>
                           <th> <small>Total $ MO USD</small> </th>
+                          <th> <small>Total $ Viaticos USD</small> </th>
                           <th> <small>Total USD</small> </th>
                           </tr>
                           </thead>
@@ -170,6 +171,7 @@ background-color: #f6f6f6;
                               <td>${{$param['total_ea']}}</td>
                               <td>${{$param['total_ena']}}</td>
                               <td>${{$param['total_mo']}}</td>
+                              <td>${{$param['total_viaticos']}}</td>
                               <td>${{$param['total']}}</td>
                             </tr>
                           </tbody>

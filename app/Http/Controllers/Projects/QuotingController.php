@@ -24,7 +24,7 @@ class QuotingController extends Controller
 {
     public function index(Request $request)
     {
-      $categories = DB::table('categories')->select('id', 'name')->get();
+      $categories = DB::table('products_categories')->select('id', 'name')->get();
       $grupos = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
       $verticals = DB::table('verticals')->select('id','name')->get();
       $itc = DB::select('CALL px_ITC_todos_V2');

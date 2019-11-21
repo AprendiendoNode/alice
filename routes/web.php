@@ -359,10 +359,12 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/documentp_cart', 'Projects\DocumentpCartController@index');
   Route::get('items/ajax/{type}/{aps}/{api}/{ape}/{firewalls}/{switches}/{switch_cant}',
   ['uses'  => 'Projects\DocumentpCartController@getItemType'])->where('type', 'first|second');
+  Route::get('items/ajax/third/{category}/{material}/{type}/{medida}', ['uses'  => 'Projects\DocumentpCartController@getCategories']);  
+  Route::get('items/ajax/third/{category}/{description}/{material}/{type}/{medida}', 
+            ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']); 
   Route::get('items/ajax/four/{api}/{ape}', ['uses'  => 'Projects\DocumentpCartController@getMoProducts']);
   Route::get('items/ajax/four/{api}/{ape}/{id_doc}', ['uses'  => 'Projects\DocumentpCartController@getMoProductsCart']);
-  Route::get('items/ajax/third/{category}/{material}/{type}/{medida}', ['uses'  => 'Projects\DocumentpCartController@getCategories']);  
-  Route::get('items/ajax/third/{category}/{description}/{material}/{type}/{medida}', ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']); 
+  Route::get('items/ajax/five/{api}/{ape}', ['uses'  => 'Projects\DocumentpCartController@getViaticsProducts']);
  // Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']);
   Route::get('/getTypeMaterial/material/{id}', function ($id) {
     $result = DB::table('product_type_material')->select('id', 'name')->where('product_material_id', $id)->get();

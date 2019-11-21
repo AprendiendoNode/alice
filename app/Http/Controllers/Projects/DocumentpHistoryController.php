@@ -181,8 +181,10 @@ class DocumentpHistoryController extends Controller
       $status = json_encode($status);
       // Filtrando categorias de los productos
       $equipo_activo = $collection->whereIn('categoria_id', [4, 6, 14]);
-      $materiales = $collection->whereNotIn('categoria_id', [4, 6, 7, 14]);
+      $materiales = $collection->whereNotIn('categoria_id', [4, 6, 7, 14, 15]);
       $mano_obra = $collection->where('categoria_id', 7);
+      $viaticos = $collection->where('categoria_id', 15);
+
       foreach ($equipo_activo as $ea) {
           $ea->cantidad = floor($ea->cantidad);
           $ea->cantidad_sugerida = floor($ea->cantidad_sugerida);
@@ -198,11 +200,16 @@ class DocumentpHistoryController extends Controller
           $mo->cantidad_sugerida = floor($mo->cantidad_sugerida);
           $mo->porcentaje_compra = floor($mo->porcentaje_compra);
       }
+      foreach ($viaticos as $v) {
+        $v->cantidad = floor($v->cantidad);
+        $v->cantidad_sugerida = floor($v->cantidad_sugerida);
+        $v->porcentaje_compra = floor($v->porcentaje_compra);
+      }
 
       if (auth()->user()->can('View level zero documentp notification')) {
-        return view('permitted.documentp.table_products_modal_itc', compact('equipo_activo', 'materiales', 'mano_obra', 'status', 'tipo_cambio'))->render();
+        return view('permitted.documentp.table_products_modal_itc', compact('equipo_activo', 'materiales', 'mano_obra', 'viaticos','status', 'tipo_cambio'))->render();
       }else{
-        return view('permitted.documentp.table_products_modal_compras', compact('equipo_activo', 'materiales', 'mano_obra', 'status', 'tipo_cambio'))->render();
+        return view('permitted.documentp.table_products_modal_compras', compact('equipo_activo', 'materiales', 'mano_obra', 'viaticos','status', 'tipo_cambio'))->render();
       }
 
     }

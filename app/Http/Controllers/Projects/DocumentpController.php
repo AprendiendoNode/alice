@@ -111,6 +111,7 @@ class DocumentpController extends Controller
         $new_documentp->total_ea = $total_ea;
         $new_documentp->total_ena = $total_ena;
         $new_documentp->total_mo = $total_mo;
+        $new_documentp->total_viaticos = $request->total_viaticos;
         $new_documentp->num_edit = 0;
         $new_documentp->vertical_id = $vertical_id;
         $new_documentp->tipo_servicio_id = $type_service;
@@ -150,11 +151,12 @@ class DocumentpController extends Controller
           'total_ea' => $total_ea,
           'total_ena' => $total_ena,
           'total_mo' => $total_mo,
+          'total_viaticos' => $new_documentp->total_viaticos,
           'total' => $total
         ];
 
-        Mail::to('rdelgado@sitwifi.com')->cc('aarciga@sitwifi.com')->send(new SolicitudCompra($parametros1));
-        //Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompra($parametros1));
+        //Mail::to('rdelgado@sitwifi.com')->cc('aarciga@sitwifi.com')->send(new SolicitudCompra($parametros1));
+        Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompra($parametros1));
         $flag = "true";
 
     } catch(\Exception $e){
@@ -186,9 +188,9 @@ class DocumentpController extends Controller
     $collection = collect($data);
     // Filtrando categorias de los productos
     $equipo_activo = $collection->whereIn('categoria_id', [4, 6, 14]);
-    $materiales = $collection->whereNotIn('categoria_id', [4, 6, 7, 14]);
+    $materiales = $collection->whereNotIn('categoria_id', [4, 6, 7, 14, 15]);
     $mano_obra = $collection->where('categoria_id', 7);
-
+    $viaticos = $collection->where('categoria_id', 15);
     $folio = $data_header[0]->folio;
     $fecha = $data_header[0]->fecha;
     $itc = $data_header[0]->ITC;
@@ -201,8 +203,8 @@ class DocumentpController extends Controller
 
     // Enviando datos a la vista de la factura
     $pdf = PDF::loadView('permitted.documentp.invoice',
-    compact('equipo_activo', 'materiales', 'mano_obra', 'fecha', 'folio','tipo_cambio', 'itc',
-            'nombre_proyecto', 'comercial', 'vertical', 'status', 'doc_type'));
+                compact('equipo_activo', 'materiales', 'mano_obra', 'viaticos','fecha', 'folio','tipo_cambio', 'itc',
+                'nombre_proyecto', 'comercial', 'vertical', 'status', 'doc_type'));
 
     return $pdf->stream();
   }

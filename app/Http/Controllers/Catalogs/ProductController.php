@@ -19,9 +19,8 @@ class ProductController extends Controller
       $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
       $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array());
       $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
-      $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
       $customer = DB::select('CALL GetCustomersActivev2 ()', array());
-      $category = DB::select('CALL GetAllCategoriesActivev2 ()', array());
+      $category = DB::table('products_categories')->select('id', 'name')->get();
       $brands = DB::select('CALL GetAllBrandsActivev2 ()', array());
       $models = DB::select('CALL GetAllModelsActivev2 ()', array());
       $estatus = DB::select('CALL GetAllStatusProductsActivev2 ()', array());

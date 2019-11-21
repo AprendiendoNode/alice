@@ -122,6 +122,7 @@
         $total_ea = 0.0;
         $total_materiales = 0.0;
         $total_mano_obra = 0.0;
+        $total_viatico = 0.0;
       @endphp
 
       @foreach($equipo_activo as $producto)
@@ -188,6 +189,30 @@
           <td colspan="4"></td>
           <td colspan="3" align="right">Total Mano de obra USD</td>
           <td align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
+      </tr>
+
+      @if ($viaticos != '[]')
+        @foreach($viaticos as $producto)
+        <tr>
+          <td colspan="2">{{$producto->producto}}</td>
+          <td align="center">{{$producto->cantidad}}</td>
+          <td align="right">{{number_format($producto->precio, 2, '.', ',')}}</td>
+          <td align="center">{{$producto->currency}}</td>
+          <td align="center">{{$producto->descuento}}</td>
+          <td align="right">{{ (int)$producto->porcentaje_compra }}%</td>
+          <td align="right">{{number_format($producto->total, 2, '.', ',')}}</td>
+          <td align="right">{{ number_format($producto->total_usd, 2, '.', ',')}}</td>
+        </tr>
+        {{$total_viatico += $producto->total_usd}}
+        @endforeach
+      @else
+
+      @endif
+      <tr class="bg-blue">
+          <td></td>
+          <td colspan="4"></td>
+          <td colspan="3" align="right">Total Viaticos USD</td>
+          <td align="right">$ {{ number_format($total_viatico, 2, '.', ',') }}</td>
       </tr>
     </tbody>
 

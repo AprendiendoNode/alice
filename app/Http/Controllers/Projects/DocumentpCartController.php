@@ -17,7 +17,7 @@ class DocumentpCartController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = DB::table('categories')->select('id', 'name')->get();
+        $categories = DB::table('products_categories')->select('id', 'name')->get();
         $grupos = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
         $verticals = DB::table('verticals')->select('id','name')->get();
         $itc = DB::select('CALL px_ITC_todos_V2');
@@ -86,7 +86,13 @@ class DocumentpCartController extends Controller
         return $products_m;
     }
 
+    public function getViaticsProducts($api, $ape)
+    {
+        $cant_aps = $api + $ape;
+        $products_m = DB::select('CALL px_products_propuesta_manoobra_viaticos(?)', array($cant_aps));
 
+        return $products_m;
+    }
 
     public function createTableTempEA($aps ,$firewalls, $switches)
     {
@@ -149,7 +155,7 @@ class DocumentpCartController extends Controller
         
         return view('permitted.documentp.products_categories', ['products_categories' => $products_categories])->render();
       
-      }else{
+      }else if($description){
         $products = DB::select('CALL px_products_xdescripcion(?)', array($description));
         $products_categories =  $this->paginate($products, $perPage = 4,  null , $options = []);
         
