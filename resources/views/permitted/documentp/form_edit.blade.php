@@ -280,6 +280,10 @@
                       <td  style="font-weight:bold;" colspan="3">$ <span id="total_sitwifi_footer">0.00</span> USD</td>
                     </tr>
                     <tr>
+                      <td colspan="2"></td> <td style="font-weight:bold;" colspan="3">Total Viaticos:</td>
+                      <td  style="font-weight:bold;" colspan="3">$ <span id="total_viaticos_footer">0.00</span> USD</td>
+                    </tr>
+                    <tr>
                       <td colspan="2"></td> <td style="font-weight:bold;" colspan="3">Total:</td>
                       <td  class="text-danger" style="font-weight:bold;" colspan="3">$<span id="total_global">0.00</span> USD</td>
                     </tr>

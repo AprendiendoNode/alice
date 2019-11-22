@@ -622,6 +622,7 @@
         </section>
       </div>
       <br>
+      <!--------MANO DE OBRA---------->
       <div class="row fields_docp">
         <h4 class="text-danger">Mano de obra</h4>
       </div>
@@ -638,6 +639,19 @@
         </section>
       </div>
       <br>
+      <!--------VIATICOS---------->
+      <div id="div_button_viatic" class="d-none">
+        <div class="row fields_docp">
+          <h4 class="text-danger">Viaticos</h4>
+        </div>
+        <div class="row fields_docp">
+          <div class="col-md-4">
+            <div class="form-group">
+                <a href="#" class="btn btn-success ml-20" id="get_viatics_button" name=""><i class="fas fa-utensils mr-2"></i></i><i class="fas fa-suitcase-rolling mr-1"></i> Agregar Viaticos</a>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <h4 class="text-danger col-12">Agregar material extra</h4>
       </div>
@@ -744,6 +758,10 @@
                     <tr>
                       <td colspan="2"></td> <td style="font-weight:bold;" colspan="3">Total Mano de Obra:</td>
                       <td  style="font-weight:bold;" colspan="3">$ <span id="total_sitwifi_footer">0.00</span> USD</td>
+                    </tr>
+                    <tr>
+                      <td colspan="2"></td> <td style="font-weight:bold;" colspan="3">Total Viaticos:</td>
+                      <td  style="font-weight:bold;" colspan="3">$ <span id="total_viaticos_footer">0.00</span> USD</td>
                     </tr>
                     <tr>
                       <td colspan="2"></td> <td style="font-weight:bold;" colspan="3">Total:</td>

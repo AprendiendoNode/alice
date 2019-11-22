@@ -277,6 +277,7 @@ $(function () {
       var medida = $("input[name='optionsMedida']:checked").val();
       
       if(type != undefined && material != undefined){
+        description == undefined || description == '' ? description = ' ' : description;
         url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
       }else if(description == undefined || description == ''){
         url = `/items/ajax/third/${categoria}/${material}/${type}/${medida}`;

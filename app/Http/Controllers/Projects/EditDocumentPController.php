@@ -242,6 +242,7 @@ class EditDocumentPController extends Controller
       $documentp->total_ea = $request->total_ea;
       $documentp->total_ena = $request->total_ena;
       $documentp->total_mo = $request->total_mo;
+      $documentp->total_viaticos = $request->total_viaticos;
       $documentp->total_usd = $request->total;
       $documentp->num_edit = $num_edit;
       $documentp->itc_id = $request->itc;

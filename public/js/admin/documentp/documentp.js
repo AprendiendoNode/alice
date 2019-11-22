@@ -81,7 +81,7 @@ function sumaTotales(){
   document.getElementById("total_viaticos").innerHTML = (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   document.getElementById("total_viaticos_footer").innerHTML = (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   //Total global
-  document.getElementById("total_global").innerHTML = ((total_materiales + total_eqactivo + total_sitwifi).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  document.getElementById("total_global").innerHTML = ((total_materiales + total_eqactivo + total_sitwifi + total_viaticos).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 }
 
@@ -286,7 +286,7 @@ function generate_table_products(){
   //Filtrar productos por categoria
   let equipo_activo = productos.filter(producto => producto.categoria_id == 4  || producto.categoria_id == 6 || producto.categoria_id == 14);
   let materiales= productos.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6  &&
-                                   producto.categoria_id != 7 && producto.categoria_id != 14 && producto.categoria_id != 15);
+                                               producto.categoria_id != 7 && producto.categoria_id != 14 && producto.categoria_id != 15);
   let sitwifi= productos.filter(producto => producto.categoria_id == 7 );
   let viaticos = productos.filter(producto => producto.categoria_id == 15 );
 
@@ -566,7 +566,7 @@ $(".validation-wizard-master").steps({
              formData.append('total_viaticos',total_viaticos.replace(/,/g, ""));
              formData.append('total',total.replace(/,/g, ""));
 
-             const headers = new Headers({
+             const headers = new Headers({        
                "Accept": "application/json",
                "X-Requested-With": "XMLHttpRequest",
                "X-CSRF-TOKEN": _token
@@ -632,7 +632,7 @@ $(".validation-wizard-master").steps({
         }
     },
     rules: {
-        /*type_service: {
+        type_service: {
           required: true
         },
         vertical: {
@@ -649,7 +649,7 @@ $(".validation-wizard-master").steps({
         },
         tipo_cambio: {
           required: true
-        },*/
+        },
     },
 
 })

@@ -47,6 +47,7 @@ table tfoot td, table tfoot th {
         $total_ea = 0.0;
         $total_materiales = 0.0;
         $total_mano_obra = 0.0;
+        $total_viatico = 0.0;
         $background_progress = "bg-warning";
       @endphp
 
@@ -259,6 +260,78 @@ table tfoot td, table tfoot th {
           <td colspan="5" align="right">Total Mano de obra USD</td>
           <td colspan="3" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
       </tr>
+
+      @if ($viaticos != '[]')
+        @foreach($viaticos as $producto)
+          @php
+            if($producto->order_status_id == 4) $background_progress  = "bg-success";
+            else if($producto->order_status_id >= 5) $background_progress  = "bg-primary";
+            else $background_progress  = "bg-warning";
+          @endphp
+          <tr id="{{$producto->id}}">
+            <td class="descripcion">{{$producto->producto}}</td>
+            <td align="center">{{$producto->cantidad_sugerida}}</td>
+            <td class="text-bold" align="center">{{$producto->cantidad}}</td>
+            <td align="right">{{number_format($producto->precio, 2, '.', ',')}}</td>
+            <td align="center">{{$producto->currency}}</td>
+            <td align="center">{{$producto->descuento}}</td>
+            <td align="right">{{number_format($producto->total, 2, '.', ',')}}</td>
+            <td class="p-left" align="right">{{ number_format($producto->total_usd, 2, '.', ',')}}</td>
+            <td align="center">
+              <a id="cant_req" href="javascript:void(0);"
+              data-type="text"
+              data-cant="{{$producto->cantidad}}"
+              data-pk="{{$producto->id}}"
+              data-title="cantidad"
+              data-value="{{$producto->cantidad_recibida}}" data-name="cant_req" class="set-cant-req"></a></td>
+              <td  style="vertical-align: center;">
+                  <div style="height: 14px;width:{{$producto->porcentaje_compra}}%" class="progress-bar {{$background_progress}}  progress-bar-striped" role="progressbar"
+                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{$producto->porcentaje_compra}}">
+                    <span>{{$producto->porcentaje_compra}}%</span>
+                  </div>
+              </td>
+            <td align="center">
+              <a href="javascript:void(0);"
+                 data-type="text"
+                 data-pk="{{$producto->id}}"
+                 data-title="orden-compra"
+                 data-value="{{$producto->purchase_order}}"
+                 data-name="orden-compra"
+                 class="set-purchase-order">
+
+              </a>
+            </td>
+            <td align="center">
+              <a href="javascript:void(0);"
+                 data-type="text"
+                 data-pk="{{$producto->id}}"
+                 data-title="Fecha de entrega"
+                 data-value="{{ ($producto->fecha_entrega != null ? date("d-m-Y", strtotime($producto->fecha_entrega))  : $producto->fecha_entrega) }}"
+                 data-name="fecha-entrega"
+                 class="set-fecha-entrega">
+
+              </a>
+            </td>
+            <td align="center">
+              <a id="cant_req" href="javascript:void(0);"
+              data-type="select"
+              data-cant="{{$producto->cantidad}}"
+              data-pk="{{$producto->id}}"
+              data-title="Estatus"
+              data-source="{{$status}}"
+              data-value="{{$producto->order_status_id}}" data-name="status" class="set-status"></a></td>
+          </tr>
+        @php $total_viatico += $producto->total_usd @endphp
+        @endforeach
+      @else
+
+      @endif
+      <tr class="bg-blue text-bold">
+          <td></td>
+          <td colspan="5"></td>
+          <td colspan="5" align="right">Total Viaticos USD</td>
+          <td colspan="3" align="right">$ {{ number_format($total_viatico, 2, '.', ',') }}</td>
+      </tr>
     </tbody>
 
     <tfoot>
@@ -287,14 +360,20 @@ table tfoot td, table tfoot th {
             <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
         </tr>
         <tr>
+          <td></td>
+          <td></td>
+          <td colspan="5" align="right">Total Viaticos USD</td>
+          <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_viatico, 2, '.', ',') }}</td>
+      </tr>
+        <tr>
           @php
             $total = 0.0;
-            $total = $total_ea + $total_materiales + $total_mano_obra;
+            $total = $total_ea + $total_materiales + $total_mano_obra + $total_viatico;
           @endphp
             <td></td>
             <td></td>
-            <td colspan="5" align="right">Total USD</td>
-            <td colspan="3" class="text-danger" align="right" class="">$ {{ number_format($total, 2, '.', ',') }}</td>
+            <td colspan="9" align="right">Total USD</td>
+            <td colspan="2" class="text-danger" align="right" class="">$ {{ number_format($total, 2, '.', ',') }}</td>
         </tr>
     </tfoot>
   </table>
