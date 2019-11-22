@@ -40,13 +40,13 @@
                 <div class="form-group row">
                   <label for="inputCreatTaxid" class="col-sm-3 col-form-label">RFC <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputCreatTaxid" name="inputCreatTaxid" placeholder="RFC" maxlength="15">
+                    <input type="text" class="form-control form-control-sm required" id="inputCreatTaxid" name="inputCreatTaxid" placeholder="RFC" maxlength="30">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="inputCreatNumid" class="col-sm-3 col-form-label">Razón social <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputCreatNumid" name="inputCreatNumid" placeholder="Reg. identidad fiscal" maxlength="20">
+                    <input type="text" class="form-control form-control-sm required" id="inputCreatNumid" name="inputCreatNumid" placeholder="Reg. identidad fiscal" maxlength="300">
                   </div>
                 </div>
                 <div class="form-group row">
@@ -255,13 +255,13 @@
                 <div class="form-group row">
                   <label for="inputEditTaxid" class="col-sm-3 col-form-label">RFC <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputEditTaxid" name="inputEditTaxid" placeholder="RFC" maxlength="15">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditTaxid" name="inputEditTaxid" placeholder="RFC" maxlength="30">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="inputEditNumid" class="col-sm-3 col-form-label">Razón social <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputEditNumid" name="inputEditNumid" placeholder="Reg. identidad fiscal" maxlength="20">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditNumid" name="inputEditNumid" placeholder="Reg. identidad fiscal" maxlength="300">
                   </div>
                 </div>
                 <div class="form-group row">
