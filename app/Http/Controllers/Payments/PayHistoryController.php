@@ -20,7 +20,7 @@ use App\Currency;
 use App\Prov_bco_cta;
 use App\Pay_status_user;
 use App\Deny_paycomment;
-
+use PDF;
 use App\Payments_application;
 use App\Payments_area;
 use App\Payments_classification;
@@ -763,5 +763,42 @@ public function update_pay (Request $request) {
 
   return "OK";
 }
+
+  public function export_pay(Request $request)
+  {
+
+    $cc = ($request -> get('prints'))[0];
+    $fecha_de_solicitud = ($request -> get('prints'))[1];
+    $fecha_de_pago = ($request -> get('prints'))[2];
+    $num_factura = ($request -> get('prints'))[3];
+    $orden_de_compra = ($request -> get('prints'))[4];
+    $prioridad = ($request -> get('prints'))[5];
+    $folio = ($request -> get('prints'))[6];
+    $proveedor = ($request -> get('prints'))[7];
+    $monto = ($request -> get('prints'))[8];
+    $monto_texto = ($request -> get('prints'))[9];
+    $valores_tabla = array_chunk(($request -> get('tabla')), 7);
+    $concepto_de_pago = ($request -> get('prints'))[10];
+    $forma_de_pago = ($request -> get('prints'))[11];
+    $banco = ($request -> get('prints'))[12];
+    $cuenta = ($request -> get('prints'))[13];
+    $clabe = ($request -> get('prints'))[14];
+    $referencia = ($request -> get('prints'))[15];
+
+    if($referencia == null) $referencia = "Referencia bancaria";
+
+    $observaciones = ($request -> get('prints'))[16];
+    $subtotal = ($request -> get('prints'))[17];
+    $iva = ($request -> get('prints'))[18];
+    $total = ($request -> get('prints'))[19];
+
+    info($valores_tabla);
+
+    $pdf = PDF::loadView('permitted.payments.pdf_pay',
+                compact('cc', 'fecha_de_solicitud', 'fecha_de_pago', 'num_factura','orden_de_compra', 'prioridad','folio', 'proveedor', 'monto', 'monto_texto',
+                'valores_tabla', 'concepto_de_pago', 'forma_de_pago', 'banco', 'cuenta', 'clabe', 'referencia', 'observaciones', 'subtotal', 'iva', 'total'));
+
+    return base64_encode($pdf->stream());
+  }
 
 }

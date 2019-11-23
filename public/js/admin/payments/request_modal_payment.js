@@ -7,8 +7,11 @@ function enviar(e, editing){
    modificando = editing;
 
    if(modificando){
+     $('.no_aprobar_en_gastos').addClass("d-none");
      createEventListener_filePdf();
      createEventListener_fileXml();
+   } else {
+     $('.no_aprobar_en_gastos').removeClass("d-none");
    }
    var valor= e.getAttribute('value');
    payment = valor;
@@ -634,14 +637,6 @@ $("#actualizar_solicitud").on('click', function() {
 });
 
 async function disable_buttons(status) {
-  if( status == 3 || status == 4 || status == 6) {
-    $('.btn-print-invoice').prop( "disabled", false);
-    $('.btn-print-pdf').prop( "disabled", false);
-    $('.btn-export').prop( "disabled", false);
-  } else {
-    $('.btn-print-invoice').prop( "disabled", true);
-    $('.btn-print-pdf').prop( "disabled", true);
-    $('.btn-export').prop( "disabled", true);
     if(modificando && sitios <= 1) {
       console.log("Editando...");
       $('#rec_order_purchase').prop( "disabled", false);
@@ -726,7 +721,6 @@ async function disable_buttons(status) {
       $('#actualizar_solicitud').addClass("d-none");
       $("#actualizarFactura").addClass("d-none");
     }
-  }
 }
 
 $('#rec_bank_edit').on('change', function() {
@@ -1148,6 +1142,112 @@ $("#validation_modal_fact").validate({
       /*----------------------------------------------------------------------*/
     }
 });
+
+$('.btn-export').on('click', function(){
+
+    var _token = $('input[name="_token"]').val();
+
+    var cc = $("#cc_key").val();
+    var fecha_de_solicitud = $("#fecha_ini").text();
+    var fecha_de_pago = $("#fecha_pay").text();
+    var num_factura = $("#numfact").val();
+    var orden_de_compra = $("#rec_order_purchase").val();
+    var prioridad = $("#rec_priority").val();
+    var folio = $("#folio").val();
+    var proveedor = $("#rec_proveedor").val();
+    var monto = $("#rec_monto").val();
+    var monto_texto = $("#amountText").val();
+    var valores_tabla = [];
+
+    $("#rec_venues_table tbody tr").each(function(row, tr) {
+      for(var i = 0; i < 7; i++) {
+        valores_tabla.push($(tr).find('td:eq('+i+')').text());
+      }
+    });
+
+    var concepto_de_pago = $("#rec_description").val();
+    var forma_de_pago = $("#rec_way_pay").val();
+    var banco = $("#rec_bank").val();
+    var cuenta = $("#rec_cuenta").val();
+    var clabe = $("#rec_clabe").val();
+    var referencia = $("#rec_reference").val();
+    var observaciones = $("#rec_observation").val();
+    var subtotal = $("#subtotal").val();
+    var iva = $("#iva2").val();
+    var total = $("#total").val();
+
+    $.ajax({
+        type: "POST",
+        url: "/export_pay",
+        data: {
+          prints: [cc, fecha_de_solicitud, fecha_de_pago, num_factura, orden_de_compra, prioridad, folio, proveedor, monto, monto_texto,
+          concepto_de_pago, forma_de_pago, banco, cuenta, clabe, referencia, observaciones, subtotal, iva, total],
+          tabla: valores_tabla,
+          _token : _token
+        },
+        success: function (data) {
+          var hiddenElement = document.createElement('a');
+          hiddenElement.href = "data:application/pdf;base64," + data;
+          hiddenElement.download = 'SOLICITUD DE PAGO.pdf';
+          hiddenElement.click();
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
+
+    //GENERACIÓN DEL PDF ANTERIOR
+
+    /*$("#captura_table_general").hide();
+
+    $(".hojitha").css("border", "");
+    html2canvas(document.getElementById("captura_pdf_general")).then(function(canvas) {
+      var ctx = canvas.getContext('2d');
+      ctx.rect(0, 0, canvas.width, canvas.height);
+          var imgData = canvas.toDataURL("image/jpeg", 1.0);
+          var correccion_landscape = 0;
+          var correccion_portrait = 0;
+          if(canvas.height > canvas.width) {
+              var orientation = 'portrait';
+              correccion_portrait = 1;
+              correccion_landscape = 0;
+              var imageratio = canvas.height/canvas.width;
+          }
+          else {
+              var orientation = 'landscape';
+              correccion_landscape = 0;
+              correccion_portrait = 0;
+              var imageratio = canvas.width/canvas.height;
+          }
+          if(canvas.height < 900) {
+              fontsize = 16;
+          }
+          else if(canvas.height < 2300) {
+              fontsize = 11;
+          }
+          else {
+              fontsize = 6;
+          }
+
+          var margen = 0;//pulgadas
+
+          // console.log(canvas.width);
+          // console.log(canvas.height);
+
+         var pdf  = new jsPDF({
+                      orientation: orientation,
+                      unit: 'in',
+                      format: [16+correccion_portrait, (16/imageratio)+margen+correccion_landscape]
+                    });
+
+          var widthpdf = pdf.internal.pageSize.width;
+          var heightpdf = pdf.internal.pageSize.height;
+          pdf.addImage(imgData, 'JPEG', 0, margen, widthpdf, heightpdf-margen);
+          pdf.save("Solicitud de pago.pdf");
+          $(".hojitha").css("border", "1px solid #ccc");
+          $(".hojitha").css("border-bottom-style", "hidden");
+    });*/
+  });
 
 function createEventListener_filePdf () {
   const element = document.querySelector('[name="file_pdf"')

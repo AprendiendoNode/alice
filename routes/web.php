@@ -359,9 +359,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/documentp_cart', 'Projects\DocumentpCartController@index');
   Route::get('items/ajax/{type}/{aps}/{api}/{ape}/{firewalls}/{switches}/{switch_cant}',
   ['uses'  => 'Projects\DocumentpCartController@getItemType'])->where('type', 'first|second');
-  Route::get('items/ajax/third/{category}/{material}/{type}/{medida}', ['uses'  => 'Projects\DocumentpCartController@getCategories']);  
-  Route::get('items/ajax/third/{category}/{description}/{material}/{type}/{medida}', 
-            ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']); 
+  Route::get('items/ajax/third/{category}/{material}/{type}/{medida}', ['uses'  => 'Projects\DocumentpCartController@getCategories']);
+  Route::get('items/ajax/third/{category}/{description}/{material}/{type}/{medida}',
+            ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']);
   Route::get('items/ajax/four/{api}/{ape}', ['uses'  => 'Projects\DocumentpCartController@getMoProducts']);
   Route::get('items/ajax/four/{api}/{ape}/{id_doc}', ['uses'  => 'Projects\DocumentpCartController@getMoProductsCart']);
   Route::get('items/ajax/five/{api}/{ape}', ['uses'  => 'Projects\DocumentpCartController@getViaticsProducts']);
@@ -585,6 +585,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/view_history_req_pay', 'Payments\PayHistoryController@index');
     Route::post('/edit_pay_ways', 'Payments\PayHistoryController@edit_pay_ways');
     Route::post('/get_proveedor_banks', 'Payments\PayHistoryController@get_proveedor_banks');
+    Route::post('/export_pay', 'Payments\PayHistoryController@export_pay');
 
     //- Pagos Historial N0
     Route::post('/view_request_pay_zero', 'Payments\PayHistoryController@history_zero');
@@ -1018,7 +1019,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices/currency_now', 'Sales\CustomerInvoiceController@get_currency');
     Route::get('/customers/get-customer', 'Sales\CustomerController@getCustomer')->name('customers/get-customer');
     Route::get('/view_contracts', 'Sales\CustomerInvoiceController@view_contracts');
-    
+
     Route::get('/customer-invoices-cont', 'Sales\CustomerInvoiceController@index2');
     Route::post('/customer-invoices-cont-search', 'Sales\CustomerInvoiceController@search_cont');
     Route::post('/customer-data-annexes', 'Sales\CustomerInvoiceController@getDataContractAnnexes');
