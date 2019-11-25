@@ -134,12 +134,35 @@ class CustomerInvoiceController extends Controller
 
     public function view_contracts()
     {
+        $customer = DB::select('CALL GetCustomersActivev2 ()', array());
         $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
         $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
         $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
+        $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
+        $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()', array());
+        $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
+        $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
+        $cfdi_relations = DB::select('CALL GetAllCfdiRelationsv2 ()', array());
 
-        return view('permitted.sales.customer_cont_test', compact('currency', 'sucursal', 'salespersons'));
+        return view('permitted.sales.customer_cont_test', compact(
+          'customer','sucursal','currency',
+          'salespersons','payment_way','payment_term',
+          'payment_methods', 'cfdi_uses', 'cfdi_relations'
+        ));
     }
+    public function search_view_contracts(Request $request)
+    {
+      $moneda = $request->currency_id;
+      $result = DB::select('CALL px_contracts_masters_sum_annexes (?)', array($moneda));
+      return json_encode($result);
+    }
+    public function view_contracts_info(Request $request)
+    {
+      $identificador = $request->id;
+      $result = DB::select('CALL px_contract_annexes_xmaster (?)', array($identificador));
+      return json_encode($result);
+    }
+
 
     public function getProduct(Request $request)
     {
@@ -641,7 +664,7 @@ class CustomerInvoiceController extends Controller
                           }
                       }
                   }
-                  $item_subtotal_clean = $item_subtotal_quantity; 
+                  $item_subtotal_clean = $item_subtotal_quantity;
                   $item_discount_clean = $item_amount_discount;
                   $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;
                   $item_subtotal = $item_amount_untaxed; //libre de impuestos
@@ -935,7 +958,7 @@ class CustomerInvoiceController extends Controller
                          }
                      }
                  }
-                 $item_subtotal_clean = $item_subtotal_quantity; 
+                 $item_subtotal_clean = $item_subtotal_quantity;
                  $item_discount_clean = $item_amount_discount;
                  $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;// cantidad total del artículo = Cantidad del artículo libre de impuestos + impuesto a la cantidad del artículo + cantidad de artículo retiro de impuestos
                  $item_subtotal = $item_amount_untaxed; //libre de impuestos
@@ -955,7 +978,7 @@ class CustomerInvoiceController extends Controller
                      $item_amount_tax = $item_amount_tax / $item_currency_value;
                      $item_amount_total = $item_amount_total / $item_currency_value;
                      $item_subtotal = $item_subtotal / $item_currency_value;
-                      $item_subtotal_clean = $item_subtotal_clean / $item_currency_value; 
+                      $item_subtotal_clean = $item_subtotal_clean / $item_currency_value;
                       $item_discount_clean = $item_discount_clean / $item_currency_value;
                       foreach ($taxes as $tax_id => $result) {
                         $taxes[$tax_id]['amount_base'] = $result['amount_base'] / $item_currency_value;
@@ -972,7 +995,7 @@ class CustomerInvoiceController extends Controller
                      $item_amount_tax = $item_amount_tax * $item_currency_value;
                      $item_amount_total = $item_amount_total * $item_currency_value;
                      $item_subtotal = $item_subtotal * $item_currency_value;
-                      $item_subtotal_clean = $item_subtotal_clean * $item_currency_value; 
+                      $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
                       $item_discount_clean = $item_discount_clean * $item_currency_value;
                       foreach ($taxes as $tax_id => $result) {
                         $taxes[$tax_id]['amount_base'] = $result['amount_base'] * $item_currency_value;
@@ -986,7 +1009,7 @@ class CustomerInvoiceController extends Controller
                      $item_amount_tax = $item_amount_tax * $item_currency_value;
                      $item_amount_total = $item_amount_total * $item_currency_value;
                      $item_subtotal = $item_subtotal * $item_currency_value;
-                      $item_subtotal_clean = $item_subtotal_clean * $item_currency_value; 
+                      $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
                       $item_discount_clean = $item_discount_clean * $item_currency_value;
                       foreach ($taxes as $tax_id => $result) {
                         $taxes[$tax_id]['amount_base'] = $result['amount_base'] * $item_currency_value;
@@ -1159,11 +1182,11 @@ class CustomerInvoiceController extends Controller
 
         $sites = DB::select('CALL px_annexesXcadena_data(?, ?)', array($cadena_id, $contract_master_id));
         $num_sites = count($sites);
-        
+
         if (!empty($request->item)) {
-                
+
                 //--------------------------------------------------------------------------------------------------------------------------//
-                
+
             /***GUARDANDO ANEXOS CON SUS MONTOS UNICOS****/
             foreach ($sites as $key => $site) {
                 //dd($site);
@@ -1172,9 +1195,9 @@ class CustomerInvoiceController extends Controller
                 $item_quantity = (double)$item[0]['quantity']; //cantidad de artículo
                 $item_price_unit = (double)$site->monto; //unidad de precio del artículo
                 $item_discount = (double)$item[0]['discount']; //descuento del artículo
-                
+
                 $item_subtotal_quantity = round($item_price_unit * $item_quantity, 2);
-                
+
 
                 $item_price_reduce = ($item_price_unit * (100 - $item_discount) / 100); //Precio reducido
                 $item_amount_untaxed = round($item_quantity * $item_price_reduce, 2); //libre de impuestos
@@ -1207,7 +1230,7 @@ class CustomerInvoiceController extends Controller
                     }
                 }
 
-                $item_subtotal_clean = $item_subtotal_quantity; 
+                $item_subtotal_clean = $item_subtotal_quantity;
                 $item_discount_clean = $item_amount_discount;
                 $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;// cantidad total del artículo = Cantidad del artículo libre de impuestos + impuesto a la cantidad del artículo + cantidad de artículo retiro de impuestos
                 $item_subtotal = $item_amount_untaxed; //libre de impuestos
@@ -1229,7 +1252,7 @@ class CustomerInvoiceController extends Controller
                     $item_amount_tax = $item_amount_tax / $item_currency_value;
                     $item_amount_total = $item_amount_total / $item_currency_value;
                     $item_subtotal = $item_subtotal / $item_currency_value;
-                     $item_subtotal_clean = $item_subtotal_clean / $item_currency_value; 
+                     $item_subtotal_clean = $item_subtotal_clean / $item_currency_value;
                      $item_discount_clean = $item_discount_clean / $item_currency_value;
                   }
                 }
@@ -1242,7 +1265,7 @@ class CustomerInvoiceController extends Controller
                     $item_amount_tax = $item_amount_tax * $item_currency_value;
                     $item_amount_total = $item_amount_total * $item_currency_value;
                     $item_subtotal = $item_subtotal * $item_currency_value;
-                     $item_subtotal_clean = $item_subtotal_clean * $item_currency_value; 
+                     $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
                      $item_discount_clean = $item_discount_clean * $item_currency_value;
 
                   }
@@ -1252,7 +1275,7 @@ class CustomerInvoiceController extends Controller
                     $item_amount_tax = $item_amount_tax * $item_currency_value;
                     $item_amount_total = $item_amount_total * $item_currency_value;
                     $item_subtotal = $item_subtotal * $item_currency_value;
-                     $item_subtotal_clean = $item_subtotal_clean * $item_currency_value; 
+                     $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
                      $item_discount_clean = $item_discount_clean * $item_currency_value;
 
                   }
@@ -1281,7 +1304,7 @@ class CustomerInvoiceController extends Controller
                     'currency_value' => $item_currency_value,
                     'group_sites' => 1
                 ]);
-                  //dd($item[0]['taxes']);  
+                  //dd($item[0]['taxes']);
                 //Guardar impuestos por linea
                 if (!empty($item[0]['taxes'])) {
                     $customer_invoice_line->taxes()->sync($item[0]['taxes']);
@@ -1290,9 +1313,9 @@ class CustomerInvoiceController extends Controller
                 }
             } //FIN FOREACH
         }
-        
+
      }
-     
+
      /**
       * Crear XML y enviar a timbrar CFDI 3.3
       *
@@ -2029,5 +2052,18 @@ class CustomerInvoiceController extends Controller
         return response()->json($resultados, 200);
       }
       return response()->json(['error' => __('general.error500')], 422);
+    }
+
+    public function search_currency_contract(Request $request)
+    {
+      $customer_id = $request->currency_id;
+      if ($customer_id == 2) {
+        $resultados = DB::select('CALL px_tipocambio_ultimo ()', array());
+        return json_encode($resultados);
+      }
+      else {
+        $resultados = DB::select('CALL px_currency_data (?)', array($customer_id));
+        return json_encode($resultados);
+      }
     }
 }

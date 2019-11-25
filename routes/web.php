@@ -1054,6 +1054,10 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices/modal-send-mail', 'Sales\CustomerInvoiceController@modalSendMail');
     Route::get('/customer-invoices/test', 'Sales\CustomerInvoiceController@verfact');
     Route::get('/reset_t', 'Sales\CustomerInvoiceController@store_reset');
+
+    Route::post('/search_view_contracts', 'Sales\CustomerInvoiceController@search_view_contracts');
+    Route::post('/view_contracts_info', 'Sales\CustomerInvoiceController@view_contracts_info');
+    Route::post('/search_currency_contract', 'Sales\CustomerInvoiceController@search_currency_contract'); 
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
