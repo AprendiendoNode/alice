@@ -238,6 +238,13 @@ function data_basic(campoa, campob){
                   $("#totales_format").val(monto);
                   $("#totales").val(monto);
 
+                  if(!modificando) {
+                    $("#rec_venues_table tbody tr").each(function(row, tr){
+                        monto_iva = $(tr).find('td:eq(6)').text();
+                        $(tr).find('td:eq(6)').text("$"+monto_iva.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                    });
+                  }
+
         }
         else{
                 $("#fecha_ini").text('No disponible.');

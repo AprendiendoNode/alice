@@ -356,6 +356,9 @@
                   </tfoot>
                 </table>
               </div>
+              <div class="text-center">
+                <label id="label_totales" style="font-weight: bold;"></label>
+              </div>
             </div>
           </div>
         </div>

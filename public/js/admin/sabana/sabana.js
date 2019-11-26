@@ -184,6 +184,9 @@ $(function() {
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table_contracts);
     vartable.fnClearTable();
+
+    var totalPesos = 0, totalDolares = 0;
+
     $.each(datajson, function(index, status){
       var estado = '';
 
@@ -202,6 +205,10 @@ $(function() {
           break;
         default:
       }
+
+      totalPesos += (status.pesos == null ? 0 : parseFloat(status.pesos));
+      totalDolares += (status.dolares == null ? 0 : parseFloat(status.dolares));
+
       vartable.fnAddData([
         status.key,
         status.date_signature,
@@ -213,6 +220,9 @@ $(function() {
         estado
       ]);
     });
+
+    $('#label_totales').text("Total Pesos: $" + totalPesos + " Total Dólares: $" + totalDolares);
+
   }
 
   $(document).on("click", ".verAnexos", function() {
