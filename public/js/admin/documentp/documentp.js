@@ -182,6 +182,7 @@ function update_mano_de_obra(){
 function update_decuento(id, desq){
   let tipo_cambio = document.getElementById('tipo_cambio').value;
   let productosLS;
+  
   let currency_id = 0;
   let precio = 0.0;
   let precioTotal = 0.0;

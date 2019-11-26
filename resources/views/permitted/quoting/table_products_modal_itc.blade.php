@@ -17,6 +17,7 @@
       $total_ea = 0.0;
       $total_materiales = 0.0;
       $total_mano_obra = 0.0;
+      $total_viatico = 0.0;
       $background_progress = "progress-bar-warning";
     @endphp
 
@@ -102,6 +103,36 @@
     </tr>
   </tbody>
 
+  @if ($viatico != '[]')
+      @foreach($viatico as $producto)
+        @php
+          if($producto->order_status_id == 4) $background_progress  = "progress-bar-success";
+          else if($producto->order_status_id == 5 || $producto->order_status_id == 6) $background_progress  = "progress-bar-primary";
+          else $background_progress  = "progress-bar-warning";
+        @endphp
+        <tr id="{{$producto->id}}">
+          <td colspan="4" class="descripcion">{{$producto->producto}}</td>
+          <td align="center">{{(int)$producto->cantidad_sugerida}}</td>
+          <td class="text-bold" align="center">{{ (int)$producto->cantidad}}</td>
+          <td align="right">{{number_format($producto->precio, 2, '.', ',')}}</td>
+          <td align="center">{{$producto->currency}}</td>
+          <td align="center">{{$producto->descuento}}</td>
+          <td align="right">{{number_format($producto->total, 2, '.', ',')}}</td>
+          <td class="p-left" align="right">{{ number_format($producto->total_usd, 2, '.', ',')}}</td>
+        </tr>
+      @php $total_viatico += $producto->total_usd @endphp
+      @endforeach
+    @else
+
+    @endif
+    <tr class="bg-secondary text-white font-weight-bold">
+        <td></td>
+        <td colspan="4"></td>
+        <td colspan="4" align="right">Total Viaticos USD</td>
+        <td colspan="3" align="right">$ {{ number_format($total_viatico, 2, '.', ',') }}</td>
+    </tr>
+  </tbody>
+
   <tfoot>
     <tr>
         <td></td>
@@ -128,14 +159,20 @@
           <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
       </tr>
       <tr>
+        <td></td>
+        <td></td>
+        <td colspan="4" align="right">Total Viaticos USD</td>
+        <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_viatico, 2, '.', ',') }}</td>
+    </tr>
+      <tr>
         @php
           $total = 0.0;
-          $total = $total_ea + $total_materiales + $total_mano_obra;
+          $total = $total_ea + $total_materiales + $total_mano_obra + $total_viatico;
         @endphp
           <td></td>
           <td></td>
-          <td colspan="4" align="right">Total USD</td>
-          <td colspan="3" class="text-danger" align="right" class="">$ {{ number_format($total, 2, '.', ',') }}</td>
+          <td colspan="8" align="right">Total USD</td>
+          <td colspan="2" class="text-danger" align="right" class="">$ {{ number_format($total, 2, '.', ',') }}</td>
       </tr>
   </tfoot>
 </table>
