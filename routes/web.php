@@ -843,6 +843,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_ticketsxtipo_hotel','SabanaController@get_ticketsxtype_hotel');
     Route::post('get_ticketsxstatus_hotel','SabanaController@get_ticketsxstatus_hotel');
     Route::post('get_graph_equipments_status','SabanaController@get_graph_equipments_status');
+    Route::post('sabana_modal_encuestas','SabanaController@sabana_modal_encuestas');
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');
     Route::post('/search_info_gen', 'Viatics\DashboardViaticController@info_gen');
@@ -1057,7 +1058,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
 
     Route::post('/search_view_contracts', 'Sales\CustomerInvoiceController@search_view_contracts');
     Route::post('/view_contracts_info', 'Sales\CustomerInvoiceController@view_contracts_info');
-    Route::post('/search_currency_contract', 'Sales\CustomerInvoiceController@search_currency_contract'); 
+    Route::post('/search_currency_contract', 'Sales\CustomerInvoiceController@search_currency_contract');
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){

@@ -49,7 +49,13 @@ class SabanaController extends Controller
   }
   public function get_nps_hotel(Request $request){
     $id_hotel=$request->id;
-    $result = DB::select('CALL px_NPS_sitio (?)', array($id_hotel));
+    $anio=$request->anio;
+
+    if($anio == "") {
+      $anio = date('Y');
+    }
+
+    $result = DB::select('CALL px_NPS_sitio (?, ?)', array($id_hotel, $anio));
     return $result;
   }
 
@@ -118,6 +124,29 @@ class SabanaController extends Controller
     $id_hotel=$request->id;
     $result = DB::connection('zendesk')->select('CALL px_ticketsxstatus_hotel(?)', array($id_hotel));
     return $result;
+  }
+
+  public function sabana_modal_encuestas(Request $request ){
+    $date= $request->anio;
+    $encuestas= $request->encuestas;
+    $hotel= $request->hotel;
+
+    if ($date == '') {
+      $date = date('Y-m-d');
+    } else {
+      $date = $date."-01-01";
+    }
+
+    if($encuestas == "box_promo") {
+      $encuestas = 4;
+    } else if($encuestas == "box_pas") {
+      $encuestas = 5;
+    } else {
+      $encuestas = 6;
+    }
+
+    $result = DB::select('CALL status_nps_anio (?, ?, ?)', array($date, $encuestas, $hotel));
+    return json_encode($result);
   }
 
 }

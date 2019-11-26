@@ -101,6 +101,51 @@
           </div>
         </div>
       </div>-->
+
+      <div class="modal modal-default fade" id="modal-view-ppd" data-backdrop="static">
+          <div class="modal-dialog" >
+            <div class="modal-content" style="width: 70vw; margin-left: -15vw;">
+              <div class="modal-header">
+                <h4 class="modal-title"><i class="far fa-address-card" style="margin-right: 4px;"></i>Calificaciones.</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="box-body table-responsive">
+              <div class="box-body">
+                <div class="row">
+                  <div id="captura_pdf_general" class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="row pad-top-botm client-info">
+                      <div class="col-lg-12 col-md-12 col-sm-12">
+                        <p class="text-center" style="border: 1px solid #3D9970" >Calificaciones.</p>
+                        <div class="clearfix">
+                          <table id="table_boxes_ppd" class="table table-striped table-bordered table-hover">
+                            <thead>
+                              <tr>
+                                <th>Cliente</th>
+                                <th>Sitio</th>
+                                <th>Ing. Asignado</th>
+                                <th>Fecha de registro</th>
+                                <th>Calificación</th>
+                              </tr>
+                            </thead>
+                            <tbody style="font-size: 11px;">
+
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+              <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary btn-export"><i class="fa fa-save"></i> Exportar PDF</button> -->
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </div>
+            </div>
+          </div>
+      </div>
+
       <div class="modal modal-default fade" id="modal-view-viatics" data-backdrop="static"  tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" style="width:45%" >
           <div class="modal-content">
@@ -441,8 +486,33 @@
 
 
                   <h3 style="font-weight: bold; margin-left: 47%;">NPS</h3>
+
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-3 col-xs-12">
+                      <div class="form-group" id="date_from">
+                        <label class="control-label" for="date_to_search">
+                          {{ __('general.date_from') }}:
+                        </label>
+                        <div class="input-group mb-3">
+                          <input type="text"  datas="filter_date_from" id="date_to_search" name="date_to_search" class="form-control form-control-sm" placeholder="" value="" required>
+                          <div class="input-group-append">
+                            <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12 pt-4">
+                      <button id="boton-aplica-filtro" name="boton-aplica-filtro" type="button"
+                              class="btn btn-xs btn-info filtrarDashboard"
+                              style="margin-top: 4px">
+                          <i class="fa fa-filter"> Filtrar</i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <!--<div class="col-md-3">
                       <div class="row">
                         <div class="col-md-12 mb-3">
                           <div class="card" id="box_total_survey" style="cursor: pointer;">
@@ -475,9 +545,9 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div>-->
 
-                    <div class="col-md-6 grid-margin stretch-card">
+                    <div class="col-md-8 grid-margin stretch-card">
                       <div class="card">
                         <div class="card-body .npscontainer container-fluid"  style="width: 100%;">
                           <h4 class="card-title">NPS chart</h4>
@@ -488,7 +558,7 @@
                       </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                       <div class="row">
                         <div class="col-md-12 mb-3">
                           <div class="card" id="box_promotores" style="cursor: pointer;">

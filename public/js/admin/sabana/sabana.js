@@ -1,6 +1,18 @@
 $(function() {
   $(".first_tab").champ();
   $(".select2").select2();
+
+  $('#date_to_search').datepicker({
+    language: 'es',
+    format: "yyyy",
+    viewMode: "years",
+    minViewMode: "years",
+    startDate: '2018',
+    endDate: '-0y',
+    autoclose: true,
+    clearBtn: true
+  });
+
   $("#cliente").on('change', function(e) {
     var _token = $('input[name="_token"]').val();
     var cliente = $('#cliente').val();
@@ -55,15 +67,64 @@ $(function() {
     });
   }
 
+  $('.filtrarDashboard').on('click', function(){
+    get_nps_hotel($('#cliente').val());
+  });
+
+  $('#box_promotores').on('click', function(){
+    boxes_cali_modal('box_promo');
+    $('#modal-view-ppd').modal('show');
+  });
+  $('#box_pasivos').on('click', function(){
+    boxes_cali_modal('box_pas');
+    $('#modal-view-ppd').modal('show');
+  });
+  $('#box_detractores').on('click', function(){
+    boxes_cali_modal('box_detra');
+    $('#modal-view-ppd').modal('show');
+  });
+
+  function boxes_cali_modal(encuestas) {
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var anio = $('#date_to_search').val();
+    var id = $('#cliente').val();
+    $.ajax({
+        type: "POST",
+        url: "/sabana_modal_encuestas",
+        data: { _token: _token, anio: anio, encuestas: encuestas, hotel: id },
+        success: function (data){
+          table_boxes_cali(data, $('#table_boxes_ppd'));
+          document.getElementById("table_boxes_ppd_wrapper").childNodes[0].setAttribute("class", "form-inline");
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
+  }
+
+  function table_boxes_cali(datajson, table) {
+    table.DataTable().destroy();
+    var vartable = table.dataTable(Configuration_table_responsive_simple_two);
+    vartable.fnClearTable();
+    $.each(JSON.parse(datajson), function(index, status){
+      vartable.fnAddData([
+        status.Cliente,
+        status.Sitio,
+        status.IT,
+        status.fecha_update,
+        getValueCurrent(status.NPS),
+      ]);
+    });
+  }
 
   function get_nps_hotel(idcadena){
     var _token = $('meta[name="csrf-token"]').attr('content');
+    var anio = $('#date_to_search').val();
     var id= idcadena;
-    //console.log(id);
     $.ajax({
       type: "POST",
       url: "/get_nps_hotel",
-      data: { _token : _token, id: id },
+      data: { _token : _token, id: id, anio: anio },
       success: function (data){
         //console.log(data);
         //console.log(data[0]['nps']);
@@ -72,9 +133,9 @@ $(function() {
         $('#total_promotores').text(data[0]['pr']);
         $('#total_pasivos').text(data[0]['ps']);
         $('#total_detractores').text(data[0]['d']);
-        $('#total_survey').text(data[0]['enviadas']);
-        $('#answered').text(data[0]['respondieron']);
-        $('#unanswered').text(data[0]['abstenidos']);
+        //$('#total_survey').text(data[0]['enviadas']);
+        //$('#answered').text(data[0]['respondieron']);
+        //$('#unanswered').text(data[0]['abstenidos']);
       },
       error: function (data) {
         console.log('Error:', data);
@@ -1404,3 +1465,25 @@ $('.btn-export').on('click', function(){
           $(".hojitha").css("border-bottom-style", "hidden");
     });
 });
+
+function getValueCurrent(qty) {
+  var retval;
+  var val=qty;
+  switch(val){
+    case 'Pr':
+      retval = '<span class="badge badge-success">Promotor</span>';
+      break;
+    case 'Ps':
+      retval = '<span class="badge badge-warning">Pasivo</span>';
+      break;
+    case 'D':
+      retval = '<span class="badge badge-danger">Detractor</span>';
+      break;
+    case 'NA':
+      retval = '<span class="badge badge-danger">Sin calificación</span>';
+      break;
+    default:
+      retval = '<span class="badge badge-danger">Sin calificación</span>';
+  }
+  return retval;
+}

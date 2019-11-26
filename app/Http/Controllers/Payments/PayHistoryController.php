@@ -792,8 +792,6 @@ public function update_pay (Request $request) {
     $iva = ($request -> get('prints'))[18];
     $total = ($request -> get('prints'))[19];
 
-    info($valores_tabla);
-
     $pdf = PDF::loadView('permitted.payments.pdf_pay',
                 compact('cc', 'fecha_de_solicitud', 'fecha_de_pago', 'num_factura','orden_de_compra', 'prioridad','folio', 'proveedor', 'monto', 'monto_texto',
                 'valores_tabla', 'concepto_de_pago', 'forma_de_pago', 'banco', 'cuenta', 'clabe', 'referencia', 'observaciones', 'subtotal', 'iva', 'total'));
