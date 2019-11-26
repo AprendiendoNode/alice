@@ -34,143 +34,109 @@
                         <!--------------------------------------------------------------------------->
                         <form id="validate_d" name="validate_d" class="validation-razon" action="" method="POST">
                           {{ csrf_field() }}
-                          <div class="form-group row">
-                            <label for="inputCreatName" class="col-sm-3 col-form-label">{{ trans('auth.nombre')}} <span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control form-control-sm required" id="inputCreatName" name="inputCreatName" placeholder="{{ trans('auth.nombre') }}" maxlength="60">
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="inputCreatTaxid" class="col-sm-3 col-form-label">RFC <span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control form-control-sm required" id="inputCreatTaxid" name="inputCreatTaxid" placeholder="RFC" maxlength="30">
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="inputCreatNumid" class="col-sm-3 col-form-label">Razón social <span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control form-control-sm required" id="inputCreatNumid" name="inputCreatNumid" placeholder="Reg. identidad fiscal" maxlength="300">
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="inputCreatEmail" class="col-sm-3 col-form-label">Correo electrónico <span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <input type="email" class="form-control form-control-sm required" id="inputCreatEmail" name="inputCreatEmail" placeholder="Correo electrónico" maxlength="100">
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="inputCreatPhone" class="col-sm-3 col-form-label">Telefono</label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control form-control-sm onlynumber" id="inputCreatPhone" name="inputCreatPhone" placeholder="" maxlength="12">
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="inputCreatMobile" class="col-sm-3 col-form-label">Telefono movil</label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control form-control-sm onlynumber" id="inputCreatMobile" name="inputCreatMobile" placeholder="" maxlength="12">
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="select_one_mdal" class="col-sm-3 col-form-label">Término de pago <span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <select  id="select_one_mdal" name="select_one_mdal" class="form-control form-control-sm required"  style="width: 100%;">
-                                <option value="" selected>{{ trans('pay.select_op') }}</option>
-                                @forelse ($payment_term as $payment_term_data)
-                                <option value="{{ $payment_term_data->id }}"> {{ $payment_term_data->name }} </option>
-                                @empty
-                                @endforelse
-                              </select>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="select_two_mdal" class="col-sm-3 col-form-label">Formas de pago<span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <select  id="select_two_mdal" name="select_two_mdal" class="form-control form-control-sm required"  style="width: 100%;">
-                                <option value="" selected>{{ trans('pay.select_op') }}</option>
-                                @forelse ($payment_way as $payment_way_data)
-                                <option value="{{ $payment_way_data->id }}"> {{ $payment_way_data->name }} </option>
-                                @empty
-                                @endforelse
-                              </select>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="select_three_mdal" class="col-sm-3 col-form-label">Metodo de pago<span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <select  id="select_three_mdal" name="select_three_mdal" class="form-control form-control-sm required"  style="width: 100%;">
-                                <option value="" selected>{{ trans('pay.select_op') }}</option>
-                                @forelse ($payment_methods as $payment_methods_data)
-                                <option value="{{ $payment_methods_data->id }}"> {{ $payment_methods_data->name }} </option>
-                                @empty
-                                @endforelse
-                              </select>
-                            </div>
-                          </div><div class="form-group row">
-                            <label for="select_four_mdal" class="col-sm-3 col-form-label">Usos de CFDI<span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <select  id="select_four_mdal" name="select_four_mdal" class="form-control form-control-sm required"  style="width: 100%;">
-                                <option value="">{{ trans('message.selectopt') }}</option>
-                                @forelse ($cfdi_uses as $cfdi_uses_data)
-                                <option value="{{ $cfdi_uses_data->id }}"> {{ $cfdi_uses_data->name }} </option>
-                                @empty
-                                @endforelse
-                              </select>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="inputCreatAddress_1" class="col-sm-3 col-form-label">Direccion<span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control form-control-sm required" id="inputCreatAddress_1" name="inputCreatAddress_1" placeholder="Direccion" maxlength="100">
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="select_six_mdal" class="col-sm-3 col-form-label">Paises<span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <select  id="select_six_mdal" name="select_six_mdal" class="form-control form-control-sm required"  style="width: 100%;">
-                                <option value="">{{ trans('message.selectopt') }}</option>
-                                @forelse ($countries as $countries_data)
-                                <option value="{{ $countries_data->id }}"> {{ $countries_data->name }} </option>
-                                @empty
-                                @endforelse
-                              </select>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="select_seven_mdal" class="col-sm-3 col-form-label">Estados<span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <select  id="select_seven_mdal" name="select_seven_mdal" class="form-control form-control-sm required"  style="width: 100%;">
-                                <option value="">{{ trans('message.selectopt') }}</option>
-                                @forelse ($states as $states_data)
-                                <option value="{{ $states_data->id }}"> {{ $states_data->name }} </option>
-                                @empty
-                                @endforelse
-                              </select>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="select_eight_mdal" class="col-sm-3 col-form-label">Ciudades<span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <select  id="select_eight_mdal" name="select_eight_mdal" class="form-control form-control-sm required"  style="width: 100%;">
-                                <option value="">{{ trans('message.selectopt') }}</option>
-                                @forelse ($cities as $cities_data)
-                                <option value="{{ $cities_data->id }}"> {{ $cities_data->name }} </option>
-                                @empty
-                                @endforelse
-                              </select>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="inputCreatPostCode" class="col-sm-3 col-form-label">Codigo Postal<span style="color: red;">*</span></label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control form-control-sm onlynumber required" id="inputCreatPostCode" name="inputCreatPostCode" placeholder="" maxlength="10">
-                            </div>
-                          </div>
-
-
                           <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label>RFC</label>
+                                <input type="text" class="form-control required" id="n_rfc" name="n_rfc">
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label>Razon Social</label>
+                                <input type="text" class="form-control required" id="rfc_name" name="rfc_name">
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label for="rfc_type" class="control-label">Tipo</label>
+                                  <select id="rfc_type" name="rfc_type" class="form-control select2" style="width:100%;">
+                                    <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                    @forelse ($rz_type as $data_rz_type)
+                                    <option value="{{ $data_rz_type->id }}"> {{ $data_rz_type->name }} </option>
+                                    @empty
+                                    @endforelse
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label for="rfc_nacionalidad" class="control-label">Nacionalidad</label>
+                                  <select id="rfc_nacionalidad" name="rfc_nacionalidad" class="form-control select2" style="width:100%;">
+                                    <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                    @forelse ($rz_nationality as $data_rz_nationality)
+                                    <option value="{{ $data_rz_nationality->id }}"> {{ $data_rz_nationality->name }} </option>
+                                    @empty
+                                    @endforelse
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label>Dirección 1</label>
+                                <input type="text" class="form-control required" id="rfc_dir1" name="rfc_dir1">
+                              </div>
+
+                              <div class="form-group">
+                                <label>Dirección 2</label>
+                                <input type="text" class="form-control" id="rfc_dir2" name="rfc_dir2">
+                              </div>
+
+                              <div class="form-group">
+                                <label>Email para la facturación:</label>
+                                <input type="text" class="form-control required" id="email_fact" name="email_fact">
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label for="rfc_comp" class="control-label">Concepto de facturación</label>
+                                  <select id="rfc_comp" name="rfc_comp" class="form-control select2" style="width:100%;">
+                                    <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                    @forelse ($rz_concept_invoice as $data_z_concept_invoice)
+                                    <option value="{{ $data_z_concept_invoice->id }}"> {{ $data_z_concept_invoice->key }} {{ $data_z_concept_invoice->name }} </option>
+                                    @empty
+                                    @endforelse
+                                  </select>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label >Codigo Postal</label>
+                                <input type="text" class="form-control required" id="rfc_cp" name="rfc_cp">
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Pais</label>
+                                <input type="text" class="form-control required" id="rfc_pais" name="rfc_pais" readonly>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Estado</label>
+                                <input type="text" class="form-control required" id="rfc_estado" name="rfc_estado" readonly>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label >Municipio</label>
+                                <input type="text" class="form-control required" id="rfc_municipio" name="rfc_municipio" readonly>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Localidad</label>
+                                <input type="text" class="form-control required" id="rfc_localidad" name="rfc_localidad" readonly>
+                              </div>
+                            </div>
+
                             <div class="col-md-12">
                               <button type="submit" class="btn btn-primary adddatarazon"><i class="fa fa-plus"></i> Guardar</button>
                             </div>
+
                           </div>
                         </form>
                         <!--------------------------------------------------------------------------->
@@ -362,6 +328,20 @@
                               <div class="col-md-8 col-md-offset-2">
                                 <u> Datos de cobranza</u>
 
+                                <div class="form-group">
+                                  <label for="contact_name" class="control-label">Nombre:</label>
+                                  <input type="text" class="form-control required" id="contact_name" name="contact_name">
+                                </div>
+
+                                <div class="form-group">
+                                  <label for="contact_email" class="control-label">Email:</label>
+                                  <input type="text" class="form-control required" id="contact_email" name="contact_email">
+                                </div>
+
+                                <div class="form-group">
+                                  <label for="contact_telephone" class="control-label">Telefono:</label>
+                                  <input type="text" class="form-control required" id="contact_telephone" name="contact_telephone" maxlength="10">
+                                </div>
                                 <div class="form-group">
                                   <label for="user_resc" class="control-label"> Persona que resguarda el contrato:</label>
                                   <select class="form-control required" name="user_resc" id="user_resc">
@@ -993,7 +973,7 @@
 
   <script src="{{ asset('/plugins/momentupdate/moment-with-locales.js')}}"></script>
 
-  <script src="{{ asset('js/admin/contract/c_mdrz2.js?v1.0')}}"></script>
+  <script src="{{ asset('js/admin/contract/c_mdrz.js?v1.0')}}"></script>
   <script src="{{ asset('js/admin/contract/c_mdgrup.js?v1.0')}}"></script>
 
   <script src="{{ asset('js/admin/contract/c_contrato_general.js?v1.0')}}"></script>

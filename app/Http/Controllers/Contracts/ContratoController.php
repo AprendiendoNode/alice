@@ -155,7 +155,8 @@ class ContratoController extends Controller
     $rz_type = DB::Table('rz_types')->select('id', 'name')->get();
     $rz_nationality = DB::Table('rz_nationalities')->select('id', 'name')->get();
     $rz_concept_invoice = DB::Table('rz_concept_invoices')->select('id', 'key', 'name')->get();
-    $rz_customer = DB::Table('rz_customers')->select('id', 'name')->get();
+    // $rz_customer = DB::Table('rz_customers')->select('id', 'name')->get();
+    $rz_customer = DB::select('CALL px_customers_data_list ()', array());
 
     $iva = DB::Table('ivas')->select('number')->get();
 
@@ -168,7 +169,22 @@ class ContratoController extends Controller
     $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array());
     $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
 
-    return view('permitted.contract.cont_create_cont', compact('unitmeasures','satproduct','classifications','verticals','cadenas', 'sitio','currency', 'hotels', 'country', 'rz_type', 'rz_nationality', 'rz_concept_invoice', 'contract_status', 'rz_customer', 'iva', 'resguardo','vendedores','itconcierge'));
+
+    $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()', array());
+    $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
+    $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
+    $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
+    $countries = DB::select('CALL GetAllCountryActivev2 ()', array());
+    $states = DB::select('CALL GetAllStateActivev2 ()', array());
+    $cities = DB::select('CALL GetAllCitiesv2 ()', array());
+
+    return view('permitted.contract.cont_create_cont', compact(
+      'unitmeasures','satproduct','classifications','verticals',
+      'cadenas', 'sitio','currency', 'hotels', 'country', 'rz_type',
+      'rz_nationality', 'rz_concept_invoice', 'contract_status', 'rz_customer',
+      'iva', 'resguardo','vendedores','itconcierge',
+      'payment_term','payment_way','payment_methods','cfdi_uses','countries','states','cities'
+    ));
   }
 
   public function create_group_by_contract (Request $request) {
@@ -265,9 +281,9 @@ class ContratoController extends Controller
 
     $id_razon = $request->sel_razon;
 
-    $text_name = $request->contact_name;
-    $text_email = $request->contact_email;
-    $text_phone = $request->contact_telephone;
+    // $text_name = $request->contact_name;
+    // $text_email = $request->contact_email;
+    // $text_phone = $request->contact_telephone;
     $id_user = $request->user_resc;
 
     $file_pdf = $request->file('fileInput');
@@ -280,9 +296,9 @@ class ContratoController extends Controller
     $newContMaster = DB::table('contract_masters')->insertGetId(
       [
         'digit' => $text_4,
-        'name' => $text_name,
-        'email' => $text_email,
-        'telephone' => $text_phone,
+        // 'name' => $text_name,
+        // 'email' => $text_email,
+        // 'telephone' => $text_phone,
         'user_id' => $id_user,
         'file' => $pdf,
         'rz_customer_id' => $id_razon,
@@ -965,5 +981,63 @@ class ContratoController extends Controller
    $result = DB::select('CALL px_anexos_fechas (?)', array($id_maestro));
    return json_encode($result);
 
+ }
+
+
+ public function create_rza_by_contract (Request $request) {
+
+     $name = $request->inputCreatName;
+     $rfc = $request->inputCreatTaxid;
+     $n_rfc = $request->inputCreatNumid;
+     $email = $request->inputCreatEmail;
+     $phone = !empty($request->inputCreatPhone) ? $request->inputCreatPhone : '';
+     $movil = !empty($request->inputCreatMobile) ? $request->inputCreatMobile : '';
+
+     $term = $request->select_one_mdal;
+     $form = $request->select_two_mdal;
+     $metd = $request->select_three_mdal;
+     $cfi = $request->select_four_mdal;
+     $address = $request->inputCreatAddress_1;
+     $pais = $request->select_six_mdal;
+     $estado = $request->select_seven_mdal;
+     $ciudad = $request->select_eight_mdal;
+     $code = $request->inputCreatPostCode;
+
+   $newId = DB::table('customers')->insertGetId(
+     [
+       'name' => $name,
+       'taxid' => $rfc,
+       'numid' => $n_rfc,
+       'email' => $email,
+       'phone' => $phone,
+       'phone_mobile' => $movil,
+       'payment_term_id' => $term,
+       'payment_way_id' => $form,
+       'payment_method_id' => $metd,
+       'cfdi_use_id' => $cfi,
+       'salesperson_id' => 1,
+       'address_1' => $address,
+       'country_id' => $pais,
+       'state_id' => $estado,
+       'city_id' => $ciudad,
+       'postcode' => $code,
+       'sort_order' => 0,
+       'status' => 1,
+       'provider' => 0,
+       'created_at' => \Carbon\Carbon::now(),
+       'created_uid' => \Auth::user()->id,
+       'updated_uid' => \Auth::user()->id,
+     ]
+   );
+   if(empty($newId)){
+     return '0'; // returns 1
+   }
+   else{
+     return $newId; // returns 1
+   }
+ }
+ public function reset_rza_by_contract (Request $request) {
+   $result = DB::select('CALL px_customers_data_list ()', array());
+   return json_encode($result);
  }
 }

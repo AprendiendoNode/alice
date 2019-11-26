@@ -850,6 +850,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/search_info_gen_solicitud', 'Viatics\DashboardViaticController@info_gen_sol');
     Route::post('/search_info_gen_montos', 'Viatics\DashboardViaticController@info_gen_montos');
 
+    Route::post('/create_rza_by_contract', 'Contracts\ContratoController@create_rza_by_contract');
+    Route::post('/reset_rza_by_contract', 'Contracts\ContratoController@reset_rza_by_contract');
 });
 
 
