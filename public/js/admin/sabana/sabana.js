@@ -41,12 +41,12 @@ $(function() {
     get_nps_comment(cliente);
     get_graph_equipments(cliente);
     get_graph_equipments_status(cliente);
-    get_table_budget(cliente);
     get_table_tickets(cliente);
     get_graph_tickets_type(cliente);
     get_graph_tickets_status(cliente);
     getFoliosByHotel(cliente);
     getViaticsByHotel(cliente);
+    get_table_budget(cliente);
   });
 
   function get_contracts(cliente) {
@@ -420,6 +420,8 @@ else  if (status.estado == '10') { span_identificador = '<span class="badge badg
         success: function (data){
           //console.log(data);
           generate_table_budget(data, $('#table_budget_site'));
+          $("#cargando").addClass("d-none");
+          $(".first_tab").removeClass("d-none");
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
         },
         error: function (data) {
@@ -490,22 +492,34 @@ function generate_table_budget(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table);
   vartable.fnClearTable();
+  var mensual = 0;
+  //console.log(new Date().getMilliseconds());
   $.each(datajson, function(index, data){
+    mensual = parseInt((parseInt(data.enero +data.febrero + data.marzo + data.abril + data.mayo +data.junio
+    + data.julio + data.agosto +data.septiembre + data.octubre + data.noviembre + data.diciembre)*100)/data.monto);
+    isNaN(mensual)==true? mensual=0:mensual;
+
     vartable.fnAddData([
       //data.id,
       //data.Nombre_hotel,
-      data.key,
-      data.id_ubicacion,
-      data.moneda,
-      '<span class="">' + data.equipo_activo_monto + '</span>',
-      '<span class="">' + data.equipo_no_activo_monto + '</span>',
-      '<span class="">' + data.licencias_monto + '</span>',
-      '<span class="">' + data.mano_obra_monto + '</span>',
-      '<span class="">' + data.enlaces_monto + '</span>',
-      '<span class="">' + data.viaticos_monto + '</span>',
-      '<a href="javascript:void(0);" onclick="enviar_pres(this)" value="'+data.hotel_id+'" class="btn btn-success btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-eye"></span></a>',
+      data.categoria,
+      data.monto,
+      data.enero,
+      data.febrero,
+      data.marzo,
+      data.abril,
+      data.mayo,
+      data.junio,
+      data.julio,
+      data.agosto,
+      data.septiembre,
+      data.octubre,
+      data.noviembre,
+      data.diciembre,
+      mensual,
     ]);
   });
+    //console.log(new Date().getMilliseconds());
 }
 
 function generate_table_tickets(datajson, table){
@@ -713,6 +727,7 @@ function payments_table(datajson, table){
     "order": [[ 0, "asc" ]],
     paging: true,
     //"pagingType": "simple",
+    "iDisplayLength": 7,
     Filter: true,
     searching: true,
     ordering: false,

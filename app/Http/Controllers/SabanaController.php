@@ -77,8 +77,8 @@ class SabanaController extends Controller
   }
   public function get_budget_annual_hotel(Request $request){
     $id_hotel = $request->id;
-    $date_current = date('Y-m');
-    $date = $date_current.'-01';
+    $date_current = date('Y');
+    //$date = $date_current.'-01';
     /*$input_date_i = $request->date;
     if (empty($input_date_i)) {
       $date_current = date('Y-m');
@@ -87,7 +87,7 @@ class SabanaController extends Controller
     else {
       $date = $input_date_i.'-01';
     } */
-    $result = DB::select('CALL px_annual_budgets_site(?,?)', array($date,$id_hotel));
+    $result = DB::select('CALL px_get_mount_PEjercidoxHotel(?,?)', array($id_hotel,$date_current));
     return $result;
 
   }

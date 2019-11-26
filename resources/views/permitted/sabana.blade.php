@@ -642,14 +642,14 @@
               <div class="tab_content">
                   <h3 style="font-weight: bold; margin-left: 34%;">Todos los equipos del sitio</h3>
                   <div class="row">
-                    <div class="col-md-1"></div>
-                  <div class="d-flex justify-content-center border-bottom w-100 col-md-5">
+                  <div class=" col-sm-1 col-md-1 mr-3"></div>
+                  <div class="d-flex justify-content-center border-bottom w-100 col-sm-5 col-md-5">
                     <div  id="graph_equipments" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                   </div>
-                  <div class="d-flex justify-content-center border-bottom w-30 col-md-5">
+                  <div class="d-flex justify-content-center border-bottom w-30 col-sm-5 col-md-5">
                     <div  id="graph_equipments_status" > </div>
                   </div>
-                  <div class="col-md-1"></div>
+                  <div class=" col-sm-1 col-md-1"></div>
                 </div>
 
                   <div class="divEQ table-responsive">
@@ -687,12 +687,14 @@
                   <h3 style="font-weight:bold;" >Todos los tickets </h3>
                 </div>
                 <div class="row">
-                <div class="d-flex justify-content-center border-bottom w-100 col-md-6">
+                  <div class="col-sm-1 col-md-1"></div>
+                <div class="d-flex justify-content-center border-bottom w-100 col-sm-5 col-md-5">
                   <div  id="graph_type_tickets" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                 </div>
-                <div class="d-flex justify-content-center border-bottom w-40 col-md-6">
+                <div class="d-flex justify-content-center border-bottom w-40 col-sm-5 col-md-5">
                   <div id="graph_status_tickets"class=""></div>
                 </div>
+                <div class="col-sm-1 col-md-1"></div>
                 </div>
                 <div class="row mt-1">
                   <div class="col-md-12 table-responsive divEQ">
@@ -724,26 +726,50 @@
                   <div class="col-md-12">
                     <h3 style="font-weight: bold; margin-left: 33%;">Presupuesto anual del sitio</h3>
                     <div class="table-responsive">
-                    <table id="table_budget_site" name='table_budget_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
-                      <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
-                      <thead>
-                          <tr class="bg-aqua" style="color: white">
-                              <!--<th> <small>Sitio</small> </th>-->
-                              <th> <small>Anexo</small> </th>
-                              <th> <small>ID ubicacion</small> </th>
-                              <th> <small>Moneda</small> </th>
-                              <th> <small>Equipo activo</small> </th>
-                              <th> <small>Equipo no activo</small> </th>
-                              <th> <small>Licencias</small> </th>
-                              <th> <small>Mano de obra</small> </th>
-                              <th> <small>Enlaces</small> </th>
-                              <th> <small>Viáticos</small> </th>
-                              <th> <small>Acciones</small> </th>
+                      <table id="table_budget_site" name='table_budget_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
+                        <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
+                        <thead>
+                          <tr class="bg-aqua text-center">
+                            <th><small>Cuenta</small> </th>
+                            <th class="sum_col"><small>Presupuesto</small> </th>
+                            <th class="sum_col"><small>Ene.</small> </th>
+                            <th class="sum_col"><small>Feb.</small> </th>
+                            <th class="sum_col"><small>Mar.</small> </th>
+                            <th class="sum_col"><small>Abr.</small> </th>
+                            <th class="sum_col"><small>May.</small> </th>
+                            <th class="sum_col"><small>Jun.</small> </th>
+                            <th class="sum_col"><small>Jul.</small> </th>
+                            <th class="sum_col"><small>Ago.</small> </th>
+                            <th class="sum_col"><small>Sep.</small> </th>
+                            <th class="sum_col"><small>Oct.</small> </th>
+                            <th class="sum_col"><small>Nov.</small> </th>
+                            <th class="sum_col"><small>Dic.</small> </th>
+                            <th class="sum_ejer"><small>% Ejercido</small> </th>
                           </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody class="text-center">
+
+                        </tbody>
+                        <tfoot id='tfoot_average' class="bg-secondary text-center text-white">
+                          <tr>
+                            <th>TOTAL</th>
+                            <th id="total_presupuesto"></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                          </tr>
+                        </tfoot>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -760,20 +786,20 @@
                     </div>
                   </div>
                   <div class="col-md-1"></div>
-                  <div class="table-responsive">
+                  <div class="table-responsive divEQ">
                     <table id="table_pays" class="table table-striped table-bordered table-hover text-white compact-tab" style="width:100%">
                       <thead>
-                        <tr class="bg-aqua" style="background: #088A68;">
-                          <th> <small>Factura</small> </th>
-                          <th> <small>Proveedor</small> </th>
-                          <th> <small>Estatus</small> </th>
-                          <th> <small>Monto</small> </th>
-                          <th> <small>Elaboró</small> </th>
-                          <th> <small>Fecha solicitud</small> </th>
-                          <th> <small>Fecha límite pago</small> </th>
-                          <th> <small>Cuenta</small> </th>
-                          <th> <small>Nombre cuenta</small> </th>
-                          <th> <small>Conceptos</small> </th>
+                        <tr class="bg-aqua text-center" style="background: #088A68;">
+                          <th class="bg-aqua"> <small>Factura</small> </th>
+                          <th class="bg-aqua"> <small>Proveedor</small> </th>
+                          <th class="bg-aqua"> <small>Estatus</small> </th>
+                          <th class="bg-aqua"> <small>Monto</small> </th>
+                          <th class="bg-aqua"> <small>Elaboró</small> </th>
+                          <th class="bg-aqua"> <small>Fecha solicitud</small> </th>
+                          <th class="bg-aqua"> <small>Fecha límite pago</small> </th>
+                          <th class="bg-aqua"> <small>Cuenta</small> </th>
+                          <th class="bg-aqua"> <small>Nombre cuenta</small> </th>
+                          <th class="bg-aqua"> <small>Conceptos</small> </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -797,19 +823,19 @@
                 <div class="d-flex justify-content-center border-bottom w-100">
                   <div id="graph_viatics" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive divEQ">
                   <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100">
                     <thead>
-                      <tr class="bg-aqua">
-                        <th> <small>Folio</small> </th>
-                        <th> <small>Servicio</small> </th>
-                        <th> <small>Fecha Inicio</small> </th>
-                        <th> <small>Fecha Fin</small> </th>
-                        <th> <small>Monto Solicitado</small> </th>
-                        <th> <small>Monto Aprobado</small> </th>
-                        <th> <small>Estatus</small> </th>
-                        <th> <small>Usuario</small> </th>
-                        <th> <small></small> </th>
+                      <tr class="bg-aqua text-center">
+                        <th class="bg-aqua"> <small>Folio</small> </th>
+                        <th class="bg-aqua"> <small>Servicio</small> </th>
+                        <th class="bg-aqua"> <small>Fecha Inicio</small> </th>
+                        <th class="bg-aqua"> <small>Fecha Fin</small> </th>
+                        <th class="bg-aqua"> <small>Monto Solicitado</small> </th>
+                        <th class="bg-aqua"> <small>Monto Aprobado</small> </th>
+                        <th class="bg-aqua"> <small>Estatus</small> </th>
+                        <th class="bg-aqua"> <small>Usuario</small> </th>
+                        <th class="bg-aqua"> <small></small> </th>
                       </tr>
                     </thead>
                     <tbody>
