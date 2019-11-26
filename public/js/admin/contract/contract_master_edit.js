@@ -173,9 +173,9 @@ $(".validation-wizard-master").on('change','#sel_master_digit',function(){
     data: { id_contract : id_contract,  _token : _token },
     success: function (data){
       console.log(data);
-      $("#contact_name").val(data[0].cliente);
-      $("#contact_email").val(data[0].email);
-      $("#contact_telephone").val(data[0].telephone);
+      //$("#contact_name").val(data[0].cliente);
+      //$("#contact_email").val(data[0].email);
+      //$("#contact_telephone").val(data[0].telephone);
       var rz_select = document.getElementById("sel_razon");
       var option_rz;
       var user_select = document.getElementById("user_resc");
@@ -306,7 +306,7 @@ $(".validation-wizard-master").steps({
         else {
          Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
        }
-      })      
+      })
       /************************************************************************************/
     }
 }), $(".validation-wizard-master").validate({

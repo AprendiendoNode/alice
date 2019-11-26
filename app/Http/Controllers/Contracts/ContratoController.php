@@ -576,7 +576,7 @@ class ContratoController extends Controller
       $country = DB::Table('countries')->select('id', 'name')->get();
       $contract_status = DB::Table('contract_statuses')->select('id', 'name')->get();
       $resguardo = DB::select('CALL px_resguardoXgrupo_users (?)', array('1'));
-      $rz_customer = DB::Table('rz_customers')->select('id', 'name')->get();
+      $rz_customer = DB::Table('customers')->select('id', 'name')->get();
       $classifications = DB::select('CALL px_cxclassifications ()', array(''));
       $itconcierge = DB::select('CALL px_ITC_todos ()', array());
       $vendedores = DB::select('CALL px_resguardoXgrupo_users (?)', array('2'));
@@ -681,9 +681,9 @@ class ContratoController extends Controller
     $cadena = $request->sel_master_cadenas;
     $digit = $request->digit;
     $rz = $request->sel_razon;
-    $nombre  = $request->contact_name;
-    $email = $request->contact_email;
-    $telefono = $request->contact_telephone;
+    //$nombre  = $request->contact_name;
+    //$email = $request->contact_email;
+    //$telefono = $request->contact_telephone;
     $status = $request->status_cont;
     $user_resc = $request->user_resc;
     $flag = "false";
@@ -700,10 +700,7 @@ class ContratoController extends Controller
       if(count($result) != 0){
         $id_contract = $result[0]->id;
 
-        $sql = DB::table('contract_masters')->where('id', $id_contract)->update(['name' => $nombre,
-                                                     'email' => $email ,
-                                                     'telephone' => $telefono,
-                                                     'user_id' => $user_resc,
+        $sql = DB::table('contract_masters')->where('id', $id_contract)->update(['user_id' => $user_resc,
                                                      'rz_customer_id' => $rz,
                                                      'contract_status_id' => $status,
                                                      'updated_at' =>  \Carbon\Carbon::now()]);
