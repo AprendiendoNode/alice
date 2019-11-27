@@ -46,6 +46,18 @@
                 font-size: 18px;
                 text-align: center;
             }
+            .rick {
+                /*margin: 10px;*/
+                width: 526px;
+                height: 389px;
+                text-align: center;
+                display: block;
+            }
+            .resize_fit_center {
+                max-width:100%;
+                max-height:100%;
+                vertical-align: middle;
+            }
         </style>
     </head>
     <body>
@@ -53,9 +65,14 @@
             <div class="code">
                 @yield('code')
             </div>
-
             <div class="message" style="padding: 10px;">
                 @yield('message')
+            </div>
+
+            <div class="rick" align="center">
+                
+
+                @yield('content')
             </div>
         </div>
     </body>
