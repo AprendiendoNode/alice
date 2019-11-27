@@ -22,7 +22,9 @@
             }
 
             .full-height {
-                height: 100vh;
+                /*height: 100vh;*/
+                height: 50vh;
+
             }
 
             .flex-center {
@@ -41,12 +43,15 @@
                 padding: 0 15px 0 15px;
                 text-align: center;
             }
-
             .message {
                 font-size: 18px;
                 text-align: center;
             }
             .rick {
+              position: absolute;
+               bottom: 0;
+               bottom: -30vh;
+
                 /*margin: 10px;*/
                 width: 526px;
                 height: 389px;
@@ -70,7 +75,7 @@
             </div>
 
             <div class="rick" align="center">
-                
+
 
                 @yield('content')
             </div>
