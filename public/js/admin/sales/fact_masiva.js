@@ -1,13 +1,52 @@
 $(function(){
-  $('#table_contracts tbody').on('click', 'tr', function () {
-        var rows_selected = $("#table_contracts").DataTable().column(5).checkboxes.selected();
-        $.each(rows_selected, function(index, rowId){
-      
-        });
-  } );
-
+  /*$('#table_contracts').on('click', 'thead tr th input[type="checkbox"]',function(e) {   
+      alert('Clicked on "Select all"');   
+  });
+  $('#table_contracts').DataTable().on('select', function( e, dt, type, indexes ){
+    console.log($('table_contracts').find('.selected'));
+    var rows_selected = $("#table_contracts").DataTable().column(0).checkboxes.selected().row().data();
+    console.log(rows_selected);
+  });
+  $('#table_contracts').DataTable().on('deselect', function( e, dt, type, indexes ){
+    console.log($('table_contracts').find('.selected'));
+    var rows_selected = $("#table_contracts").DataTable().column(0).checkboxes.selected().row().data();
+    console.log(rows_selected);
+  });*/
   moment.locale('es');
+  let $dt = $('#table_contracts');
+  $('#total').val(0);
+  let $total = $('#total');
 
+  $dt.on('change', 'tbody input', function() {
+    let info = $dt.DataTable().row($(this).closest('tr')).data();
+    let total = parseFloat($total.val());
+    let price = parseFloat(info[5]);
+
+    total += this.checked ? price : price * -1;
+
+    $total.val(total);
+  });
+
+  $dt.on('change', 'thead input', function (evt) {
+    let checked = this.checked;
+    let total = 0;
+    let data = [];
+    
+    $dt.DataTable().data().each(function (info) {
+      // var txt = info[0];    
+      if (checked) {
+        total += parseFloat(info[5]);
+        // txt = txt.substr(0, txt.length - 1) + ' checked>';
+      } else {
+        // txt = txt.replace(' checked', '');
+      }
+      // info[0] = txt;
+      data.push(info);
+    });
+    // $dt.DataTable().clear().rows.add(data).draw();
+    $total.val(total);
+  });
+  
   $("#form input[name='date']").daterangepicker({
       singleDatePicker: true,
       timePicker: true,
@@ -114,7 +153,6 @@ $(function(){
   //-----------------------------------------------------------
 });
 
-
 function table_anexos(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_checkbox_move_viatic_n1);
@@ -132,7 +170,6 @@ function table_anexos(datajson, table){
     ]);
   });
 }
-
 function view_info(e){
   var valor = e.getAttribute('value');
   var _token = $('meta[name="csrf-token"]').attr('content');
@@ -241,7 +278,6 @@ function default_currency() {
   });
 }
 
-
 // Configuracion de table de estatus verifica*
 var Configuration_table_responsive_checkbox_move_viatic_n1= {
   "order": [[ 1, "desc" ]],
@@ -293,6 +329,8 @@ var Configuration_table_responsive_checkbox_move_viatic_n1= {
   ],
   "select": {
     'style': 'multi',
+    'selector': 'td:first-child'
+
   },
   dom: "<'row'<'col-sm-6'B><'col-sm-2'l><'col-sm-4'f>>" +
   "<'row'<'col-sm-12'tr>>" +

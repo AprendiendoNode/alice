@@ -198,6 +198,10 @@
 
               <div class="row my-4">
                 <div class="col">
+                  <div class="form-group">
+                    <label for="total">Total seleccionado:</label>
+                    <input type="text" class="form-control form-control-sm" name="total" id="total" readonly>
+                  </div>
                   <div class="table-responsive">
                     <table id="table_contracts" class="table table-condensed table-hover table-bordered table-striped mt-5">
                       <thead style="background-color: #C5CFCF;">
