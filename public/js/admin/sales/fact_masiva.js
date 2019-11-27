@@ -1,21 +1,36 @@
 $(function(){
   /*$('#table_contracts').on('click', 'thead tr th input[type="checkbox"]',function(e) {   
       alert('Clicked on "Select all"');   
-  });
-  $('#table_contracts').DataTable().on('select', function( e, dt, type, indexes ){
-    console.log($('table_contracts').find('.selected'));
-    var rows_selected = $("#table_contracts").DataTable().column(0).checkboxes.selected().row().data();
-    console.log(rows_selected);
-  });
-  $('#table_contracts').DataTable().on('deselect', function( e, dt, type, indexes ){
-    console.log($('table_contracts').find('.selected'));
-    var rows_selected = $("#table_contracts").DataTable().column(0).checkboxes.selected().row().data();
-    console.log(rows_selected);
   });*/
   moment.locale('es');
   let $dt = $('#table_contracts');
   $('#total').val(0);
   let $total = $('#total');
+  
+  // $('#table_contracts').DataTable().on('select', function( e, dt, type, indexes ){
+  //   // console.log($('table_contracts').find('.selected'));
+  //   // var rows_selected = $("#table_contracts").DataTable().column(0).checkboxes.selected().row().data();
+  //   // console.log(rows_selected);
+  //   let info = $("#table_contracts").DataTable().column(0).checkboxes.selected().row().data();
+  //   let total = parseFloat($total.val());
+  //   let price = parseFloat(info[5]);
+
+  //   total +=  price;
+
+  //   $total.val(total);
+  // });
+  // $('#table_contracts').DataTable().on('deselect', function( e, dt, type, indexes ){
+  //   // console.log($('table_contracts').find('.selected'));
+  //   // var rows_selected = $("#table_contracts").DataTable().column(0).checkboxes.selected().row().data();
+  //   // console.log(rows_selected);
+  //   let info = $("#table_contracts").DataTable().column(0).checkboxes.selected().row().data();
+  //   let total = parseFloat($total.val());
+  //   let price = parseFloat(info[5]);
+
+  //   total +=  price * -1;
+
+  //   $total.val(total);
+  // });
 
   $dt.on('change', 'tbody input', function() {
     let info = $dt.DataTable().row($(this).closest('tr')).data();
@@ -287,7 +302,7 @@ var Configuration_table_responsive_checkbox_move_viatic_n1= {
     { //Subida 1
       "targets": 0,
       "checkboxes": {
-        'selectRow': true
+        // 'selectRow': true
       },
       "width": "1%",
     },
