@@ -13,6 +13,18 @@ $(function() {
     clearBtn: true
   });
 
+
+    $('#date_presupuesto').datepicker({
+      language: 'es',
+      format: "yyyy",
+      viewMode: "years",
+      minViewMode: "years",
+      startDate: '2019',
+      endDate: '-0y',
+      autoclose: true,
+      clearBtn: true
+    });
+
   $("#cliente").on('change', function(e) {
     var _token = $('input[name="_token"]').val();
     var cliente = $('#cliente').val();
@@ -46,7 +58,7 @@ $(function() {
     get_graph_tickets_status(cliente);
     getFoliosByHotel(cliente);
     getViaticsByHotel(cliente);
-    get_table_budget(cliente);
+    get_table_budget(cliente,'');
   });
 
   function get_contracts(cliente) {
@@ -418,15 +430,19 @@ else  if (status.estado == '10') { span_identificador = '<span class="badge badg
       ]);
     });
   }
+$('#btn-filtrar').on('click',function(){
+var idcliente=$('#cliente').val();
+var fecha= $('#date_presupuesto').val();
+get_table_budget(idcliente,fecha)
+});
 
-
-  function get_table_budget(idcadena){
+  function get_table_budget(idcadena,fecha){
     var _token = $('meta[name="csrf-token"]').attr('content');
     var id= idcadena;
     $.ajax({
         type: "POST",
         url: "/get_budget_annual_hotel",
-        data: { id: id, _token : _token },
+        data: { id: id,fecha:fecha, _token : _token },
         success: function (data){
           //console.log(data);
           generate_table_budget(data, $('#table_budget_site'));
@@ -497,17 +513,30 @@ else  if (status.estado == '10') { span_identificador = '<span class="badge badg
     });
   }
 
+function overflow(numrow){
+  var tabla=document.getElementById("table_budget_site").getElementsByTagName("tr");
+  tabla[numrow].style.backgroundColor = "yellow";
+}
+
+function morethan100(number){
+var val=''
+number>100? val='<span style="color:red; font-weight:bold;">'+number+'%'+'</span>': val=number+'%';
+return val;
+}
 
 function generate_table_budget(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table);
   vartable.fnClearTable();
+  var suma=0;
   var mensual = 0;
   var totales=new Array(0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+  var numrow=1;
   //console.log(new Date().getMilliseconds());
   $.each(datajson, function(index, data){
-    mensual = parseInt(((parseInt(data.enero) +parseInt(data.febrero) + parseInt(data.marzo) + parseInt(data.abril) + parseInt(data.mayo) +parseInt(data.junio)
-    + parseInt(data.julio) + parseInt(data.agosto) +parseInt(data.septiembre) + parseInt(data.octubre) + parseInt(data.noviembre) + parseInt(data.diciembre))*100)/data.monto);
+    suma =(parseInt(data.enero) +parseInt(data.febrero) + parseInt(data.marzo) + parseInt(data.abril) + parseInt(data.mayo) +parseInt(data.junio)
+    + parseInt(data.julio) + parseInt(data.agosto) +parseInt(data.septiembre) + parseInt(data.octubre) + parseInt(data.noviembre) + parseInt(data.diciembre));
+    mensual = parseInt((suma*100)/data.monto);
     isNaN(mensual)==true? mensual=0:mensual;
 
     vartable.fnAddData([
@@ -527,8 +556,11 @@ function generate_table_budget(datajson, table){
       '$'+data.octubre,
       '$'+data.noviembre,
       '$'+data.diciembre,
-      mensual+'%',
+      morethan100(mensual),
     ]);
+      mensual>100?overflow(numrow): '';
+      suma>data.monto?overflow(numrow):'';
+      numrow++;
       totales[0]=totales[0]+parseInt(data.monto);
       totales[1]=totales[1]+parseInt(data.enero);
       totales[2]=totales[2]+parseInt(data.febrero);
@@ -559,7 +591,8 @@ function generate_table_budget(datajson, table){
   $('#total_oct').text('$'+totales[10]);
   $('#total_nov').text('$'+totales[11]);
   $('#total_dic').text('$'+totales[12]);
-  $('#total_ejercido').text(parseInt((totales[13]*100)/totales[0])+'%');
+  var result = isNaN(parseInt((totales[13]*100)/totales[0]))?0:parseInt((totales[13]*100)/totales[0]);
+  $('#total_ejercido').html(morethan100(result));
     //console.log(new Date().getMilliseconds());
 }
 

@@ -464,7 +464,7 @@
                           <th > <small>Anexos</small> </th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody class="text-center">
                       </tbody>
                       <tfoot >
                         <tr >
@@ -486,34 +486,27 @@
 
               <div class="tab_content">
                 <section>
-
-
-                  <h3 style="font-weight: bold; margin-left: 47%;">NPS</h3>
-
-                  <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-3 col-xs-12">
-                      <div class="form-group" id="date_from">
-                        <label class="control-label" for="date_to_search">
-                          {{ __('general.date_from') }}:
-                        </label>
-                        <div class="input-group mb-3">
-                          <input type="text"  datas="filter_date_from" id="date_to_search" name="date_to_search" class="form-control form-control-sm" placeholder="" value="" required>
-                          <div class="input-group-append">
-                            <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-3 col-xs-12 pt-4">
-                      <button id="boton-aplica-filtro" name="boton-aplica-filtro" type="button"
-                              class="btn btn-xs btn-info filtrarDashboard"
-                              style="margin-top: 4px">
-                          <i class="fa fa-filter"> Filtrar</i>
-                      </button>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="w-100 text-center">
+                      <h3 style="font-weight: bold;">NPS</h3>
                     </div>
                   </div>
+                </div>
 
+                  <div class="row">
+                  <div class="col-md-3 col-xs-12 mb-3">
+                    <div class="input-group  flex-nowrap">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
+                      </div>
+                      <input id="date_to_search" type="text" class="form-control" placeholder="YYYY" aria-label="Recipient's username" aria-describedby="button-addon2">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-info filtrarDashboard" type="button" id="boton-aplica-filtro">Filtrar</button>
+                      </div>
+                    </div>
+                </div>              
+                </div>
                   <div class="row">
                     <!--<div class="col-md-3">
                       <div class="row">
@@ -731,6 +724,19 @@
                       <h3 style="font-weight: bold;">Presupuesto anual de mantenimiento del sitio</h3>
                       <h4>Montos en dólares</h4>
                     </div>
+
+                    <div class="col-md-3 col-xs-12 mb-3">
+                      <div class="input-group  flex-nowrap">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
+                        </div>
+                        <input id="date_presupuesto" type="text" class="form-control" placeholder="YYYY" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-info" type="button" id="btn-filtrar">Filtrar</button>
+                        </div>
+                      </div>
+                  </div>
+
                     <div class="table-responsive">
                       <table id="table_budget_site" name='table_budget_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
                         <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
@@ -756,7 +762,7 @@
                         <tbody class="text-center">
 
                         </tbody>
-                        <tfoot id='tfoot_average' class="bg-secondary text-center text-white">
+                        <tfoot id='tfoot_average' class="bg-dark text-center text-white">
                           <tr>
                             <th>TOTAL</th>
                             <th id="total_presupuesto"></th>
@@ -808,7 +814,7 @@
                           <th class="bg-aqua"> <small>Conceptos</small> </th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody class="text-center">
                       </tbody>
                       <tfoot id='tfoot_average'>
                         <tr>
@@ -844,7 +850,7 @@
                         <th class="bg-aqua"> <small></small> </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="text-center">
                     </tbody>
                     <tfoot id='tfoot_average'>
                       <tr>
@@ -891,7 +897,7 @@
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">
-    .tableFixHead          { overflow-y: auto; height: 550px; }
+    .tableFixHead          { overflow-y: auto; height: 600px; }
     .tableFixHead thead th { position: sticky !important; top: 0; }
     .bg-aqua{
     background: #02948c;

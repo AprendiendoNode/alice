@@ -77,7 +77,10 @@ class SabanaController extends Controller
   }
   public function get_budget_annual_hotel(Request $request){
     $id_hotel = $request->id;
+    $date_current = $request->fecha;
+    if($date_current==''){
     $date_current = date('Y');
+    }
     //$date = $date_current.'-01';
     /*$input_date_i = $request->date;
     if (empty($input_date_i)) {
