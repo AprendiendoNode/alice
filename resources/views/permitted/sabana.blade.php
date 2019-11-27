@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View drive') )
-    <strong>Dashboard Clientes</strong>
+  @if( auth()->user()->can('View dash sabana') )
+    <strong>Dashboard General Por Sitio</strong>
   @else
     {{ trans('message.denied') }}
   @endif
 @endsection
 
 @section('contentheader_description')
-  @if( auth()->user()->can('View drive') )
+  @if( auth()->user()->can('View dash sabana') )
 
   @else
     {{ trans('message.denied') }}
@@ -17,15 +17,15 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View drive') )
-    Clientes
+  @if( auth()->user()->can('View dash sabana') )
+    Sitio
   @else
     {{ trans('message.denied') }}
   @endif
 @endsection
 
 @section('content')
-    @if( auth()->user()->can('View drive') )
+    @if( auth()->user()->can('View dash sabana') )
 
       <div class="input-group mb-3">
         <label class="mr-1">Sitio:</label>
@@ -876,7 +876,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View drive') )
+  @if( auth()->user()->can('View dash sabana') )
 
     <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/animate.css" />
