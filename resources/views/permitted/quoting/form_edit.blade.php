@@ -234,6 +234,12 @@
                   <td></td>
                 </tr>
                 <tr>
+                  <td>Viaticos</td>
+                  <td>$ <span id="rubro_viaticos">0.0</span> </td>
+                  <td><span id="rubro_viaticos_percent">0</span>%</td>
+                  <td></td>
+                </tr>
+                <tr>
                   <td>Comisión</td>
                   <td>$ <span id="rubro_comision">0.0</span> </td>
                   <td><span id="rubro_comision_percent">0</span>%</td>
@@ -495,6 +501,20 @@
       <div  class="row fields_docp">
         <section id="products-grid-mo" class="products-grid-mo">
         </section>
+      </div>
+      <br>
+      <!--------VIATICOS---------->
+      <div id="div_button_viatic" class="">
+        <div class="row fields_docp">
+          <h4 class="text-danger">Viaticos</h4>
+        </div>
+        <div class="row fields_docp">
+          <div class="col-md-4">
+            <div class="form-group">
+                <button type="button" class="btn btn-success ml-20" id="get_viatics_button" name=""><i class="fas fa-utensils mr-2"></i></i><i class="fas fa-suitcase-rolling mr-1"></i> Agregar Viaticos</button>
+            </div>
+          </div>
+        </div>
       </div>
       <br>
       <div class="row">

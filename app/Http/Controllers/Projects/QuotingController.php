@@ -222,7 +222,9 @@ class QuotingController extends Controller
                'inversion_ea_percent' => $request->rubro_ea_percent,
                'inversion_ena_percent' => $request->rubro_ena_percent,
                'mano_obra' => $request->total_mo,
+               'viaticos' => $request->total_viaticos,
                'mano_obra_percent' => $request->rubro_mo_percent,
+               'viaticos_percent' => $request->rubro_viaticos_percent,
                'indirectos' => $request->rubro_indirectos,
                'indirectos_percent' => $request->rubro_indirectos_percent,
                'comision' => $request->rubro_comision,
@@ -326,7 +328,7 @@ class QuotingController extends Controller
           ];
 
           //Mail::to('rdelgado@sitwifi.com')->cc('aarciga@sitwifi.com')->send(new SolicitudCompra($parametros1));
-          Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompra($parametros1));
+          //Mail::to('rkuman@sitwifi.com')->send(new SolicitudCompra($parametros1));
 
           $flag = "true";
 

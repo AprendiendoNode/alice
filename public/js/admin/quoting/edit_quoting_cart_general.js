@@ -85,6 +85,51 @@ $(function () {
     
   })
 
+  $("#get_viatics_button").on("click",function(e){
+    
+    var data_aps = get_aps();
+    var aps = JSON.stringify(data_aps[0]);
+    var api = data_aps[1];
+    var ape = data_aps[2];
+
+    url = `/items/ajax/five/${api}/${ape}`;
+    getArticlesViatics(url);
+
+  })
+
+  function getArticlesViatics(url) {
+    $.ajax({
+        url : url
+    }).done(function (data) { 
+      var productosLS = obtenerProductosLocalStorage();
+
+        data.forEach(element => {
+          var productosLS = obtenerProductosLocalStorage();
+          var id_product = element.id;
+          if(productosLS == '[]'){
+            //Primer producto del carrito
+            leerDatosProductMO(element);
+            menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
+          }else {
+            let count =  productosLS.filter(producto => producto.id == id_product);
+
+            if(count.length == 1){
+              //El producto existe
+              menssage_toast('Error', '2', 'Este producto ya fue agregado al pedido' , '3000');
+            }else{
+              leerDatosProductMO(element);
+              menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
+            }
+
+          }
+
+        })
+
+    }).fail(function () {
+        Swal.fire("Debe llenar las cantidades de los equipos","","warning");
+    });
+  }
+
   /**
 **** scripts del funcionamiento de la paginacion de Equip. activo, materiales,
 **** filtro por categoria y aps, firewalls y switches dinamicos
@@ -106,34 +151,33 @@ $(function () {
     })
 } 
 
-    function get_aps(){
-      var select_aps = document.getElementsByClassName("aps_modelo");
-      var cant_aps = document.getElementsByClassName("aps_cant");
-      var element = {}
-      var aps = [];
-      var api = 0;
-      var ape = 0;
-      var data = [];
-
-      for(var i = 0;i < select_aps.length - 1; i++)
-      {
-        element = {"id" : $(select_aps[i]).val(),
-                    "modelo" : $(select_aps[i]).children("option").filter(":selected").text(),
-                    "clave" : $(select_aps[i]).children("option").filter(":selected").data('key'),
-                    "cant" : cant_aps[i].value}
-
+  function get_aps(){
+    var cant_aps = document.getElementsByClassName("aps_cant");
+    var element = {}
+    var aps = [];
+    var api = 0;
+    var ape = 0;
+    var data = [];
+    var productos = obtenerProductosLocalStorage();
+    var products_aps = productos.filter(producto =>
+      producto.codigo.substring(0, 3) == 'API' || producto.codigo.substring(0, 3) == 'APE');
+      
+      $.each(products_aps, function( i, key ) {
+        element = {"id" : key.id,
+                  "cant" : key.cant_req}
         aps.push(element);
-
-        if(element.clave == "API"){
-          api = api + parseInt(element.cant);
-        }else if(element.clave == "APE"){
-          ape = ape + parseInt(element.cant);
+        cant_aps += key.cant_req;
+        
+        if(key.codigo.substring(0, 3) == 'API'){
+          api = api + parseInt(key.cant_req);
+        }else if(key.codigo.substring(0, 3) == 'APE'){
+          ape = ape + parseInt(key.cant_req);
         }
-      }
+      });
 
-      return data = [aps,api,ape];
+    return data = [aps,api,ape];
 
-    }
+  }
 
     function get_firewalls(){
       var select_firewall = document.getElementsByClassName("firewall_modelo");

@@ -83,20 +83,23 @@ function set_table_rubro(){
   let total_eq_activo = 0.0;
   let total_materiales = 0.0;
   let total_mo = 0.0;
+  let total_viaticos = 0.0;
   let indirectos_percent = document.getElementById("indirectos").value;
   let indirectos = 0.0;
   let comision = get_comision();
   let equipo_percent = 0;
   let materiales_percent = 0;
   let mano_obra_percent = 0;
+  let viaticos_percent = 0;
   let rubro_indirectos_percent = 0;
   let comision_percent = 0;
   let total_rubros = 0.0;
 
   if(productos.length != 0){
     let equipo_activo = productos.filter(producto => producto.categoria_id == 4  || producto.categoria_id == 6 || producto.categoria_id == 14);
-    let materiales= productos.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6 && producto.categoria_id != 7 && producto.categoria_id != 14);
+    let materiales= productos.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6 && producto.categoria_id != 7 && producto.categoria_id != 14 && producto.categoria_id != 15);
     let sitwifi= productos.filter(producto => producto.categoria_id == 7 );
+    let viaticos = productos.filter(producto => producto.categoria_id == 15 );
 
     if(equipo_activo.length != 0){
       equipo_activo.forEach(function(producto) {
@@ -115,29 +118,37 @@ function set_table_rubro(){
         total_mo += parseFloat(producto.precio_total_usd);
       });
     }
+    if(viaticos.length != 0){
+      viaticos.forEach(function(producto) {
+        total_viaticos += parseFloat(producto.precio_total_usd);
+      });
+    }
 
   }
 
   indirectos = ((total_eq_activo + total_materiales + total_mo) * parseInt(indirectos_percent)) / 100;
-  total_rubros = total_eq_activo + total_materiales + total_mo + indirectos + comision;
+  total_rubros = total_eq_activo + total_materiales + total_mo + total_viaticos + indirectos + comision;
 
   rubro_indirectos_percent = (indirectos /  total_rubros) * 100;
   equipo_percent = (total_eq_activo /  total_rubros) * 100;
   materiales_percent = (total_materiales /  total_rubros) * 100;
   mano_obra_percent =  (total_mo /  total_rubros) * 100;
+  viaticos_percent =  (total_viaticos /  total_rubros) * 100;
   comision_percent =  (comision /  total_rubros) * 100;
 
   document.getElementById("rubro_ea").innerHTML = format_number(total_eq_activo);
   document.getElementById("rubro_ena").innerHTML = format_number(total_materiales);
   document.getElementById("rubro_mo").innerHTML = format_number(total_mo);
   document.getElementById("rubro_indirectos").innerHTML = format_number(indirectos);
+  document.getElementById("rubro_viaticos").innerHTML = format_number(total_viaticos);
   document.getElementById("rubro_comision").innerHTML = format_number(comision);
   document.getElementById("rubro_ea_percent").innerHTML = Math.round(equipo_percent);
   document.getElementById("rubro_ena_percent").innerHTML = Math.round(materiales_percent);
   document.getElementById("rubro_mo_percent").innerHTML = Math.round(mano_obra_percent);
+  document.getElementById("rubro_viaticos_percent").innerHTML = Math.round(viaticos_percent);
   document.getElementById("rubro_comision_percent").innerHTML = Math.round(comision_percent);
   document.getElementById("rubro_indirectos_percent").innerHTML = Math.round(rubro_indirectos_percent);
-  document.getElementById("total_rubros").innerHTML = format_number(total_eq_activo + total_materiales + total_mo + indirectos + comision);
+  document.getElementById("total_rubros").innerHTML = format_number(total_eq_activo + total_materiales + total_mo + total_viaticos + indirectos + comision);
 }
 
 function set_table_gastos(){

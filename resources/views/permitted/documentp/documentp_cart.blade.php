@@ -104,19 +104,19 @@
 
       });
     </script>
-    <script type="text/javascript" src="{{asset('js/admin/documentp/document_cart_general.js?v=2.0')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/documentp/document_cart_general.js?v=2.2')}}"></script>
     @else
       @include('default.denied')
     @endif
     <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_logs.js')}}"></script>
     @if( auth()->user()->can('View level zero documentp notification') )
-      <script type="text/javascript" src="{{asset('js/admin/documentp/documentp.js?v=1.0.2')}}"></script>
+      <script type="text/javascript" src="{{asset('js/admin/documentp/documentp.js?v=2.2')}}"></script>
     @elseif ( auth()->user()->can('View level one documentp notification') )
-      <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_create_comercial.js?v=1.0.2')}}"></script>
+      <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_create_comercial.js?v=2.2')}}"></script>
     @elseif ( auth()->user()->can('View level two documentp notification') )
-      <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_create_comercial.js?v=1.0.2')}}"></script>
+      <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_create_comercial.js?v=2.2')}}"></script>
     @elseif ( auth()->user()->can('View level three documentp notification') )
-      <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_create_comercial.js?v=1.0.2')}}"></script>
+      <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_create_comercial.js?v=2.2')}}"></script>
     @endif
 
 

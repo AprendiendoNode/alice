@@ -658,11 +658,12 @@ $(".validation-wizard-master").steps({
               //Inversion
               formData.append('rubro_indirectos', (document.getElementById("rubro_indirectos").innerHTML).replace(/,/g, ""));
               formData.append('rubro_comision', (document.getElementById("rubro_comision").innerHTML).replace(/,/g, ""));
-              formData.append('rubro_ea_percent', (document.getElementById("rubro_ea_percent").innerHTML).replace(/,/g, ""))
-              formData.append('rubro_ena_percent', (document.getElementById("rubro_ena_percent").innerHTML).replace(/,/g, ""))
-              formData.append('rubro_mo_percent', (document.getElementById("rubro_mo_percent").innerHTML).replace(/,/g, ""))
-              formData.append('rubro_indirectos_percent', (document.getElementById("rubro_indirectos_percent").innerHTML).replace(/,/g, ""))
-              formData.append('rubro_comision_percent', (document.getElementById("rubro_comision_percent").innerHTML).replace(/,/g, ""))
+              formData.append('rubro_ea_percent', (document.getElementById("rubro_ea_percent").innerHTML).replace(/,/g, ""));
+              formData.append('rubro_ena_percent', (document.getElementById("rubro_ena_percent").innerHTML).replace(/,/g, ""));
+              formData.append('rubro_mo_percent', (document.getElementById("rubro_mo_percent").innerHTML).replace(/,/g, ""));
+              formData.append('rubro_viaticos_percent', (document.getElementById("rubro_viaticos_percent").innerHTML).replace(/,/g, ""));
+              formData.append('rubro_indirectos_percent', (document.getElementById("rubro_indirectos_percent").innerHTML).replace(/,/g, ""));
+              formData.append('rubro_comision_percent', (document.getElementById("rubro_comision_percent").innerHTML).replace(/,/g, ""));
               formData.append('total_rubros', (document.getElementById("total_rubros").innerHTML).replace(/,/g, ""));
               //Gastos
               formData.append('credito_mensual', (document.getElementById("credito_mensual").innerHTML).replace(/,/g, ""));

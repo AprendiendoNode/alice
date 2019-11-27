@@ -70,13 +70,18 @@ $(function () {
   });
 
   $('#lugar_instalacion').on('change', function(){
-    let instalacion = $(this).val();
+    check_installation_site();
+  });
+
+  function check_installation_site()
+  {
+    let instalacion = document.getElementById('lugar_instalacion').value;
     if(instalacion == 2){
       $("#div_button_viatic").removeClass('d-none');
     }else{
       $("#div_button_viatic").addClass('d-none');
     }
-  });
+  }
 
   function get_table_estimation(){
     var id_anexo = $('#anexo_id').val();
@@ -448,7 +453,7 @@ $(function () {
   })
 
   $("#get_viatics_button").on("click",function(e){
-    e.preventDefault();
+    
     var data_aps = get_aps();
     var aps = JSON.stringify(data_aps[0]);
     var api = data_aps[1];
@@ -570,7 +575,7 @@ function getArticlesManoObra(url) {
         })
 
     }).fail(function () {
-        swal("Debe llenar las cantidades de los equipos","","warning");
+        Swal.fire("Debe llenar las cantidades de los equipos","","warning");
     });
   }
 

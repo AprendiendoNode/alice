@@ -242,13 +242,19 @@
             <td class="red-color" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
         </tr>
         <tr>
+          <td></td>
+          <td></td>
+          <td colspan="3" align="right">Total Viaticos USD</td>
+          <td class="red-color" align="right">$ {{ number_format($total_viatico, 2, '.', ',') }}</td>
+      </tr>
+        <tr>
           @php
             $total = 0.0;
-            $total = $total_ea + $total_materiales + $total_mano_obra;
+            $total = $total_ea + $total_materiales + $total_mano_obra + $total_viatico;
           @endphp
             <td></td>
             <td></td>
-            <td colspan="3" align="right">Total USD</td>
+            <td colspan="5" align="right">Total USD</td>
             <td class="red-color" align="right" class="">$ {{ number_format($total, 2, '.', ',') }}</td>
         </tr>
     </tfoot>

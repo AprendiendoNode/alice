@@ -450,7 +450,7 @@ function generate_table_products(){
         + '</td></tr>');
      });
      $('#tabla_productos tbody').append(
-      `<tr style="font-weight:bold !important"; class="bg-secondary text-white"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Viaticos:</td><td>DLLS</td><td id="total_sitwifi" colspan="2">$0.00</td></tr>`);
+      `<tr style="font-weight:bold !important"; class="bg-secondary text-white"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Mano de obra:</td><td>DLLS</td><td id="total_sitwifi" colspan="2">$0.00</td></tr>`);
        document.getElementById("total_sitwifi").innerHTML = "$" + (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
        document.getElementById("total_sitwifi_footer").innerHTML =  (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
        $.each(viaticos, function( i, key ) {
@@ -471,7 +471,7 @@ function generate_table_products(){
           + '</td></tr>');
        });
         $('#tabla_productos tbody').append(
-          `<tr style="font-weight:bold !important"; class="bg-secondary text-white"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total:</td><td>DLLS</td><td id="total_viaticos" colspan="2">$0.00</td></tr>`);
+          `<tr style="font-weight:bold !important"; class="bg-secondary text-white"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total viaticos:</td><td>DLLS</td><td id="total_viaticos" colspan="2">$0.00</td></tr>`);
            document.getElementById("total_viaticos").innerHTML = "$" + (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
            document.getElementById("total_viaticos_footer").innerHTML =  (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             
@@ -763,12 +763,13 @@ $(".validation-wizard-master").steps({
             //Inversion
             formData.append('rubro_indirectos', (document.getElementById("rubro_indirectos").innerHTML).replace(/,/g, ""));
             formData.append('rubro_comision', (document.getElementById("rubro_comision").innerHTML).replace(/,/g, ""));
-            formData.append('rubro_ea_percent', (document.getElementById("rubro_ea_percent").innerHTML).replace(/,/g, ""))
-            formData.append('rubro_ena_percent', (document.getElementById("rubro_ena_percent").innerHTML).replace(/,/g, ""))
-            formData.append('rubro_mo_percent', (document.getElementById("rubro_mo_percent").innerHTML).replace(/,/g, ""))
-            formData.append('rubro_indirectos_percent', (document.getElementById("rubro_indirectos_percent").innerHTML).replace(/,/g, ""))
-            formData.append('rubro_comision_percent', (document.getElementById("rubro_comision_percent").innerHTML).replace(/,/g, ""))
-            formData.append('total_rubros', (document.getElementById("total_rubros").innerHTML).replace(/,/g, ""));
+            formData.append('rubro_ea_percent', (document.getElementById("rubro_ea_percent").innerHTML).replace(/,/g, ""));
+            formData.append('rubro_ena_percent', (document.getElementById("rubro_ena_percent").innerHTML).replace(/,/g, ""));
+            formData.append('rubro_mo_percent', (document.getElementById("rubro_mo_percent").innerHTML).replace(/,/g, ""));
+            formData.append('rubro_viaticos_percent', (document.getElementById("rubro_viaticos_percent").innerHTML).replace(/,/g, ""));
+            formData.append('rubro_indirectos_percent', (document.getElementById("rubro_indirectos_percent").innerHTML).replace(/,/g, ""));
+            formData.append('rubro_comision_percent', (document.getElementById("rubro_comision_percent").innerHTML).replace(/,/g, ""));
+            formData.append('total_rubros', (document.getElementById("total_rubros").innerHTML).replace(/,/g, ""));//Gastos
             //Gastos
             formData.append('credito_mensual', (document.getElementById("credito_mensual").innerHTML).replace(/,/g, ""));
             formData.append('credito_mensual_percent', (document.getElementById("credito_mensual_percent").value).replace(/,/g, ""));

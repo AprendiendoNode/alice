@@ -356,19 +356,41 @@ function generate_table_products(){
         + key.proveedor + '</td><td>'
         + key.num_parte + '</td><td>'
         + key.descuento + '</td><td class="precio">'
-        + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio+ '" data-name="precio" class="set-price"></a></td class=""><td>'
+        + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio+ '" data-name="precio" class="set-price"></a></td><td class="precio">'
         + key.currency + '</td><td class="precio_total">'
         + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
         + key.precio_total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
         + '<button type="button" onclick="eliminarProductoLocalStorage('+key.id+');deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td>'
         + '</td></tr>');
      });
-      $('#tabla_productos tbody').append(
-        `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Mano de obra:</td><td>DLLS</td><td id="total_sitwifi" colspan="2">$0.00</td></tr>`);
-         document.getElementById("total_sitwifi").innerHTML = "$" + (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-         document.getElementById("total_sitwifi_footer").innerHTML =  (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-         //Total global
-         document.getElementById("total_global").innerHTML = ((total_materiales + total_eq_activo + total_sitwifi).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+     $('#tabla_productos tbody').append(
+      `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Mano de obra:</td><td>DLLS</td><td id="total_sitwifi" colspan="2">$0.00</td></tr>`);
+       document.getElementById("total_sitwifi").innerHTML = "$" + (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+       document.getElementById("total_sitwifi_footer").innerHTML =  (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+       $.each(viaticos, function( i, key ) {
+        total_viaticos += parseFloat(key.precio_total_usd);
+        $('#tabla_productos tbody').append('<tr id="' + key.id + '"><td>'
+          + key.cant_sug + '</td>'
+          + '<td><a id="cant_req" href="" data-type="text" data-pk="'+ key.id + '" data-clave="' + key.codigo + '" data-title="cantidad" data-value="' + key.cant_req + '" data-name="cant_req" class="set-cant-req"></a></td><td class="descripcion">'
+          + key.descripcion.toUpperCase() + '</td><td>'
+          + key.categoria.toUpperCase() + '</td><td>'
+          + key.codigo + '</td><td>'
+          + key.proveedor + '</td><td>'
+          + key.num_parte + '</td><td>'
+          + key.descuento + '</td><td>'
+          + '<a href="#" data-type="text" data-descripcion="' + key.descripcion + '" data-precio="' + key.precio + '" data-pk="' + key.id + '" data-url="" data-title="precio" data-value="' + key.precio+ '" data-name="precio" class="set-price"></a></td><td class="precio">'
+          + key.currency + '</td><td class="precio_total">'
+          + key.precio_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td class="precio_total_usd">'
+          + key.precio_total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td><td>'
+          + '<button type="button" onclick="eliminarProductoLocalStorage('+key.id+');deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td>'
+          + '</td></tr>');
+       });
+       $('#tabla_productos tbody').append(
+        `<tr style="font-weight:bold !important"; class="bg-primary"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total viaticos:</td><td>DLLS</td><td id="total_viaticos" colspan="2">$0.00</td></tr>`);
+         document.getElementById("total_viaticos").innerHTML = "$" + (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+         document.getElementById("total_viaticos_footer").innerHTML =  (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+       //Total global
+       document.getElementById("total_global").innerHTML = ((total_materiales + total_eq_activo + total_sitwifi + total_viaticos).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   //  Fix de errorres en validate
   $('.set-cant-req').on('shown', function() {
