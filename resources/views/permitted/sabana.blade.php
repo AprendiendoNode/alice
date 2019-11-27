@@ -727,7 +727,10 @@
               <div class="tab_content">
                 <div class="row">
                   <div class="col-md-12">
-                    <h3 style="font-weight: bold; margin-left: 33%;">Presupuesto anual del sitio</h3>
+                    <div class="w-100 text-center">
+                      <h3 style="font-weight: bold;">Presupuesto anual de mantenimiento del sitio</h3>
+                      <h4>Montos en dólares</h4>
+                    </div>
                     <div class="table-responsive">
                       <table id="table_budget_site" name='table_budget_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
                         <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
@@ -757,19 +760,19 @@
                           <tr>
                             <th>TOTAL</th>
                             <th id="total_presupuesto"></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
+                            <th id="total_ene"></th>
+                            <th id="total_feb"></th>
+                            <th id="total_mar"></th>
+                            <th id="total_abr"></th>
+                            <th id="total_may"></th>
+                            <th id="total_jun"></th>
+                            <th id="total_jul"></th>
+                            <th id="total_ago"></th>
+                            <th id="total_sep"></th>
+                            <th id="total_oct"></th>
+                            <th id="total_nov"></th>
+                            <th id="total_dic"></th>
+                            <th id="total_ejercido"></th>
                           </tr>
                         </tfoot>
                       </table>

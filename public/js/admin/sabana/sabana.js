@@ -503,32 +503,63 @@ function generate_table_budget(datajson, table){
   var vartable = table.dataTable(Configuration_table);
   vartable.fnClearTable();
   var mensual = 0;
+  var totales=new Array(0,0,0,0,0,0,0,0,0,0,0,0,0,0);
   //console.log(new Date().getMilliseconds());
   $.each(datajson, function(index, data){
-    mensual = parseInt((parseInt(data.enero +data.febrero + data.marzo + data.abril + data.mayo +data.junio
-    + data.julio + data.agosto +data.septiembre + data.octubre + data.noviembre + data.diciembre)*100)/data.monto);
+    mensual = parseInt(((parseInt(data.enero) +parseInt(data.febrero) + parseInt(data.marzo) + parseInt(data.abril) + parseInt(data.mayo) +parseInt(data.junio)
+    + parseInt(data.julio) + parseInt(data.agosto) +parseInt(data.septiembre) + parseInt(data.octubre) + parseInt(data.noviembre) + parseInt(data.diciembre))*100)/data.monto);
     isNaN(mensual)==true? mensual=0:mensual;
 
     vartable.fnAddData([
       //data.id,
       //data.Nombre_hotel,
       data.categoria,
-      data.monto,
-      data.enero,
-      data.febrero,
-      data.marzo,
-      data.abril,
-      data.mayo,
-      data.junio,
-      data.julio,
-      data.agosto,
-      data.septiembre,
-      data.octubre,
-      data.noviembre,
-      data.diciembre,
-      mensual,
+      '$'+data.monto,
+      '$'+data.enero,
+      '$'+data.febrero,
+      '$'+data.marzo,
+      '$'+data.abril,
+      '$'+data.mayo,
+      '$'+data.junio,
+      '$'+data.julio,
+      '$'+data.agosto,
+      '$'+data.septiembre,
+      '$'+data.octubre,
+      '$'+data.noviembre,
+      '$'+data.diciembre,
+      mensual+'%',
     ]);
+      totales[0]=totales[0]+parseInt(data.monto);
+      totales[1]=totales[1]+parseInt(data.enero);
+      totales[2]=totales[2]+parseInt(data.febrero);
+      totales[3]=totales[3]+parseInt(data.marzo);
+      totales[4]=totales[4]+parseInt(data.abril);
+      totales[5]=totales[5]+parseInt(data.mayo);
+      totales[6]=totales[6]+parseInt(data.junio);
+      totales[7]=totales[7]+parseInt(data.julio);
+      totales[8]=totales[8]+parseInt(data.agosto);
+      totales[9]=totales[9]+parseInt(data.septiembre);
+      totales[10]=totales[10]+parseInt(data.octubre);
+      totales[11]=totales[11]+parseInt(data.noviembre);
+      totales[12]=totales[12]+parseInt(data.diciembre);
+
+      totales[13]=totales[1]+totales[2]+totales[3]+totales[4]+totales[5]+
+      totales[6]+totales[7]+totales[8]+totales[9]+totales[10]+totales[11]+totales[12];
   });
+  $('#total_presupuesto').text('$'+totales[0]);
+  $('#total_ene').text('$'+totales[1]);
+  $('#total_feb').text('$'+totales[2]);
+  $('#total_mar').text('$'+totales[3]);
+  $('#total_abr').text('$'+totales[4]);
+  $('#total_may').text('$'+totales[5]);
+  $('#total_jun').text('$'+totales[6]);
+  $('#total_jul').text('$'+totales[7]);
+  $('#total_ago').text('$'+totales[8]);
+  $('#total_sep').text('$'+totales[9]);
+  $('#total_oct').text('$'+totales[10]);
+  $('#total_nov').text('$'+totales[11]);
+  $('#total_dic').text('$'+totales[12]);
+  $('#total_ejercido').text(parseInt((totales[13]*100)/totales[0])+'%');
     //console.log(new Date().getMilliseconds());
 }
 
