@@ -455,10 +455,9 @@
                         <tr class="bg-aqua text-center">
                           <th> <small>Id</small> </th>
                           <th> <small>Razón social</small> </th>
-                          <th > <small>Nombre (cobranza)</small> </th>
-                          <th > <small>Email</small> </th>
-                          <th > <small>Teléfono</small> </th>
-                          <th > <small>Resguarda</small> </th>
+                          <th > <small>Clasificación</small> </th>
+                          <th > <small>Vertical</small> </th>
+                          <th > <small>Cadena</small> </th>
                           <th > <small>Estado</small> </th>
                           <th > <small>Vencimiento</small> </th>
                           <th > <small>Anexos</small> </th>
@@ -472,7 +471,6 @@
                           <th></th>
                           <th></th>
                           <th ></th>
-                          <th></th>
                           <th></th>
                           <th ></th>
                           <th ></th>

@@ -181,10 +181,9 @@ $(function() {
       vartable.fnAddData([
         status.key,
         status.razon,
-        status.cliente,
-        status.email,
-        status.telephone,
-        status.resguardo,
+        status.cxclassification,
+        status.vertical,
+        status.cadena,
         estado,
         status.xvenc,
         "<button id='verAnexos~"+status.id+"~"+status.key+"' class='verAnexos btn btn-info'><i class='fas fa-file-signature'></i></button>"
