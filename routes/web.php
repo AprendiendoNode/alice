@@ -738,6 +738,7 @@ Route::group(['middleware' => 'auth'], function () {
     //Editar contratos maestros
     Route::post('get_digit_contract_master', 'Contracts\ContratoController@get_digit_contract_master');
     Route::post('get_data_contract_master', 'Contracts\ContratoController@get_data_contract_master');
+    Route::post('get_data_rz_selected', 'Contracts\ContratoController@get_data_rz_selected');
     Route::post('update_contract_master', 'Contracts\ContratoController@update_contract_master');
     //Editar contratos key_anexo_sitio
     Route::post('get_ids_contract_anexo', 'Contracts\ContratoController@get_ids_contract_anexo');

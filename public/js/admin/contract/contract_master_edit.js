@@ -159,7 +159,33 @@ function get_digit_master(service, vertical, cadena){
   });
 
 }
+$(".validation-wizard-master").on('change','#sel_razon',function(){
+  console.log('entra');
+  var razon = $(this).val();
+  if (razon != '') {
+    $.ajax({
+      type: "POST",
+      url: "/get_data_rz_selected",
+      data: { razon : razon, _token : _token },
+      success: function (data){
+        //console.log(data);
+        $('#contact_taxid').val(data[0]['taxid']);
+        $('#contact_numid').val(data[0]['numid']);
+        $('#contact_email').val(data[0]['email']);
+        $('#contact_telephone').val(data[0]['phone']);
+        $('#contact_cellphone').val(data[0]['phone_mobile']);
+        $('#contact_address').val(data[0]['address_1']);
+        $('#contact_postcode').val(data[0]['postcode']);
 
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+
+  }
+
+});
 
 $(".validation-wizard-master").on('change','#sel_master_digit',function(){
   var digit = $("#sel_master_digit option:selected").text();
@@ -172,10 +198,17 @@ $(".validation-wizard-master").on('change','#sel_master_digit',function(){
     url: "/get_data_contract_master",
     data: { id_contract : id_contract,  _token : _token },
     success: function (data){
-      console.log(data);
+      //console.log(data);
       //$("#contact_name").val(data[0].cliente);
       //$("#contact_email").val(data[0].email);
       //$("#contact_telephone").val(data[0].telephone);
+      $('#contact_taxid').val(data[0]['taxid']);
+      $('#contact_numid').val(data[0]['numid']);
+      $('#contact_email').val(data[0]['email']);
+      $('#contact_telephone').val(data[0]['phone']);
+      $('#contact_cellphone').val(data[0]['phone_mobile']);
+      $('#contact_address').val(data[0]['address_1']);
+      $('#contact_postcode').val(data[0]['postcode']);
       var rz_select = document.getElementById("sel_razon");
       var option_rz;
       var user_select = document.getElementById("user_resc");
@@ -330,17 +363,17 @@ $(".validation-wizard-master").steps({
     },
     rules: {
         contact_email: {
-          email: true
+          //email: true
         },
         fileInput: {
           extension: 'pdf',
           filesize: 20000000
         },
         contact_telephone: {
-          required: true,
-          number: true,
-          minlength: 7,
-          maxlength: 10
+          //required: true,
+          //number: true,
+          //minlength: 7,
+          //maxlength: 10
         },
     },
     messages: {

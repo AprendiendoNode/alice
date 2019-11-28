@@ -655,6 +655,11 @@ class ContratoController extends Controller
 
     return $result;
   }
+  public function get_data_rz_selected(Request $request){
+    $id_razon = $request->razon;
+    $result = DB::select('CALL px_customers_data(?)', array($id_razon));
+    return $result;
+  }
 
   public function get_data_anexos(Request $request)
   {

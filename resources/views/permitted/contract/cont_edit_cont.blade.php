@@ -148,19 +148,35 @@
                                 </div>
 
                                 <div class="col-md-8 col-md-offset-2">
-                                  <!--<u> Datos de cobranza</u>
+                                  <!--<u> Datos de cobranza</u>-->
                                   <div class="form-group">
-                                    <label for="contact_name" class="control-label">Nombre:</label>
-                                    <input type="text" class="form-control required" id="contact_name" name="contact_name">
+                                    <label for="contact_name" class="control-label">RFC</label>
+                                    <input type="text" class="form-control " id="contact_taxid" name="contact_name" readonly>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="contact_name" class="control-label">Razón social</label>
+                                    <input type="text" class="form-control" id="contact_numid" name="contact_name" readonly>
                                   </div>
                                   <div class="form-group">
                                     <label for="contact_email" class="control-label">Email:</label>
-                                    <input type="text" class="form-control required" id="contact_email" name="contact_email">
+                                    <input type="text" class="form-control" id="contact_email" name="contact_email" readonly>
                                   </div>
                                   <div class="form-group">
                                     <label for="contact_telephone" class="control-label">Telefono:</label>
-                                    <input type="text" class="form-control required" id="contact_telephone" name="contact_telephone" maxlength="10">
-                                  </div>-->
+                                    <input type="text" class="form-control " id="contact_telephone" name="contact_telephone" maxlength="10" readonly>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="contact_telephone" class="control-label">Celular:</label>
+                                    <input type="text" class="form-control " id="contact_cellphone" name="contact_telephone" maxlength="10" readonly>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="contact_telephone" class="control-label">Dirección:</label>
+                                    <input type="text" class="form-control " id="contact_address" name="contact_telephone" maxlength="10" readonly>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="contact_telephone" class="control-label">Código Postal:</label>
+                                    <input type="text" class="form-control " id="contact_postcode" name="contact_telephone" maxlength="10" readonly>
+                                  </div>
                                   <div class="form-group">
                                     <label for="user_resc" class="control-label"> Persona que resguarda el contrato:</label>
                                     <select class="form-control required" name="user_resc" id="user_resc">
