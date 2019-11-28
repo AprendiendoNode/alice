@@ -117,8 +117,8 @@
                       <div class="col-lg-12 col-md-12 col-sm-12">
                         <p class="text-center" style="border: 1px solid #3D9970" >Calificaciones.</p>
                         <div class="clearfix">
-                          <table id="table_boxes_ppd" class="table table-striped table-bordered table-hover">
-                            <thead>
+                          <table id="table_boxes_ppd" class="table table-striped table-bordered compact-tab table-hover">
+                            <thead class="bg-aqua text-center">
                               <tr>
                                 <th>Cliente</th>
                                 <th>Sitio</th>
@@ -127,7 +127,7 @@
                                 <th>Calificación</th>
                               </tr>
                             </thead>
-                            <tbody style="font-size: 11px;">
+                            <tbody class="text-center"style="font-size: 11px;">
 
                             </tbody>
                           </table>
@@ -330,7 +330,7 @@
               <div class="table-responsive">
                 <table id="all_annexes" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                   <thead>
-                    <tr class="bg-aqua">
+                    <tr class="bg-aqua text-center">
                       <th> <small>Id</small> </th>
                       <th> <small>F. Firma de contrato</small> </th>
                       <th > <small>F. Inicio de contrato (programada)</small> </th>
@@ -341,7 +341,7 @@
                       <th > <small>Estado</small> </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody class="text-center">
                   </tbody>
                   <tfoot >
                     <tr >
@@ -452,7 +452,7 @@
                   <div class="table-responsive">
                     <table id="all_contracts" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                       <thead>
-                        <tr class="bg-aqua">
+                        <tr class="bg-aqua text-center">
                           <th> <small>Id</small> </th>
                           <th> <small>Razón social</small> </th>
                           <th > <small>Nombre (cobranza)</small> </th>
@@ -505,7 +505,7 @@
                         <button class="btn btn-outline-info filtrarDashboard" type="button" id="boton-aplica-filtro">Filtrar</button>
                       </div>
                     </div>
-                </div>              
+                </div>
                 </div>
                   <div class="row">
                     <!--<div class="col-md-3">

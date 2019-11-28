@@ -242,6 +242,7 @@ $(function() {
     $('#anexosModalLabel').text('Anexos del contrato maestro: '+cm[2]);
     var _token = $('meta[name="csrf-token"]').attr('content');
     var id = cm[1];
+//    console.log(id);
     $.ajax({
       type: "POST",
       url: "/get_all_annexes_by_master",
@@ -1560,19 +1561,19 @@ function getValueCurrent(qty) {
   var val=qty;
   switch(val){
     case 'Pr':
-      retval = '<span class="badge badge-success">Promotor</span>';
+      retval = '<span class="badge badge-pill badge-success">Promotor</span>';
       break;
     case 'Ps':
-      retval = '<span class="badge badge-warning">Pasivo</span>';
+      retval = '<span class="badge badge-pill badge-warning">Pasivo</span>';
       break;
     case 'D':
-      retval = '<span class="badge badge-danger">Detractor</span>';
+      retval = '<span class="badge badge-pill badge-danger">Detractor</span>';
       break;
     case 'NA':
-      retval = '<span class="badge badge-danger">Sin calificación</span>';
+      retval = '<span class="badge badge-pill badge-danger">Sin calificación</span>';
       break;
     default:
-      retval = '<span class="badge badge-danger">Sin calificación</span>';
+      retval = '<span class="badge badge-pill badge-danger">Sin calificación</span>';
   }
   return retval;
 }
