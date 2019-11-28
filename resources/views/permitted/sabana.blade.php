@@ -605,10 +605,10 @@
                       <table id="nps_comments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>
                           <tr class="bg-aqua text-center">
-                            <th class="bg-aqua"> <small>Cliente</small> </th>
+                            <th class="bg-aqua"> <small>Itc</small> </th>                            
                             <th class="bg-aqua"> <small>Sitio</small> </th>
                             <th class="bg-aqua"> <small>Calificacion</small> </th>
-                            <th class="bg-aqua"> <small>Itc</small> </th>
+                            <th class="bg-aqua"> <small>Cliente</small> </th>
                             <th class="bg-aqua"> <small>Comentario</small> </th>
                             <th class="bg-aqua"> <small>Fecha</small> </th>
                           </tr>

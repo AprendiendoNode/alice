@@ -390,10 +390,10 @@ $(function() {
 
       }
       vartable.fnAddData([
-        status.cliente,
+        status.it,
         status.sitio,
         span_calificacion,
-        status.it,
+        status.cliente,
         status.comentario,
         status.fecha
 
@@ -520,7 +520,7 @@ function overflow(numrow){
 
 function morethan100(number){
 var val=''
-number>100? val='<span style="color:red; font-weight:bold;">'+number+'%'+'</span>': val=number+'%';
+number>100? val='<span style="color:red; font-weight:bold;">'+number+'%'+'</span>': val='<span style="font-weight:bold;">'+number+'%'+'</span>';
 return val;
 }
 
@@ -543,19 +543,19 @@ function generate_table_budget(datajson, table){
       //data.id,
       //data.Nombre_hotel,
       data.categoria,
-      '$'+data.monto,
-      '$'+data.enero,
-      '$'+data.febrero,
-      '$'+data.marzo,
-      '$'+data.abril,
-      '$'+data.mayo,
-      '$'+data.junio,
-      '$'+data.julio,
-      '$'+data.agosto,
-      '$'+data.septiembre,
-      '$'+data.octubre,
-      '$'+data.noviembre,
-      '$'+data.diciembre,
+      '$'+data.monto.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.enero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.febrero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.marzo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.abril.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.mayo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.junio.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.julio.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.agosto.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.septiembre.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.octubre.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.noviembre.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+data.diciembre.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       morethan100(mensual),
     ]);
       mensual>100?overflow(numrow): '';
@@ -578,19 +578,19 @@ function generate_table_budget(datajson, table){
       totales[13]=totales[1]+totales[2]+totales[3]+totales[4]+totales[5]+
       totales[6]+totales[7]+totales[8]+totales[9]+totales[10]+totales[11]+totales[12];
   });
-  $('#total_presupuesto').text('$'+totales[0]);
-  $('#total_ene').text('$'+totales[1]);
-  $('#total_feb').text('$'+totales[2]);
-  $('#total_mar').text('$'+totales[3]);
-  $('#total_abr').text('$'+totales[4]);
-  $('#total_may').text('$'+totales[5]);
-  $('#total_jun').text('$'+totales[6]);
-  $('#total_jul').text('$'+totales[7]);
-  $('#total_ago').text('$'+totales[8]);
-  $('#total_sep').text('$'+totales[9]);
-  $('#total_oct').text('$'+totales[10]);
-  $('#total_nov').text('$'+totales[11]);
-  $('#total_dic').text('$'+totales[12]);
+  $('#total_presupuesto').text('$'+totales[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_ene').text('$'+totales[1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_feb').text('$'+totales[2].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_mar').text('$'+totales[3].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_abr').text('$'+totales[4].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_may').text('$'+totales[5].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_jun').text('$'+totales[6].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_jul').text('$'+totales[7].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_ago').text('$'+totales[8].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_sep').text('$'+totales[9].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_oct').text('$'+totales[10].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_nov').text('$'+totales[11].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $('#total_dic').text('$'+totales[12].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
   var result = isNaN(parseInt((totales[13]*100)/totales[0]))?0:parseInt((totales[13]*100)/totales[0]);
   $('#total_ejercido').html(morethan100(result));
     //console.log(new Date().getMilliseconds());
@@ -804,7 +804,7 @@ function payments_table(datajson, table){
     "iDisplayLength": 7,
     Filter: true,
     searching: true,
-    ordering: false,
+    ordering: true,
     "select": false,
     "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
     dom:"<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
