@@ -1042,4 +1042,9 @@ class ContratoController extends Controller
    $result = DB::select('CALL px_customers_data_list ()', array());
    return json_encode($result);
  }
+ public function search_client_contract (Request $request) {
+   $result = DB::select('CALL px_customers_data_list2 ()', array());
+   return json_encode($result);
+ }
+
 }

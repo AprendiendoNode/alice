@@ -853,6 +853,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/create_rza_by_contract', 'Contracts\ContratoController@create_rza_by_contract');
     Route::post('/reset_rza_by_contract', 'Contracts\ContratoController@reset_rza_by_contract');
+    Route::post('/search_client_contract', 'Contracts\ContratoController@search_client_contract');
+
 });
 
 
@@ -1062,6 +1064,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/search_view_contracts', 'Sales\CustomerInvoiceController@search_view_contracts');
     Route::post('/view_contracts_info', 'Sales\CustomerInvoiceController@view_contracts_info');
     Route::post('/search_currency_contract', 'Sales\CustomerInvoiceController@search_currency_contract');
+
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){

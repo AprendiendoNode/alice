@@ -1,12 +1,12 @@
 $(function(){
-  /*$('#table_contracts').on('click', 'thead tr th input[type="checkbox"]',function(e) {   
-      alert('Clicked on "Select all"');   
+  /*$('#table_contracts').on('click', 'thead tr th input[type="checkbox"]',function(e) {
+      alert('Clicked on "Select all"');
   });*/
   moment.locale('es');
   let $dt = $('#table_contracts');
   $('#total').val(0);
   let $total = $('#total');
-  
+
   // $('#table_contracts').DataTable().on('select', function( e, dt, type, indexes ){
   //   // console.log($('table_contracts').find('.selected'));
   //   // var rows_selected = $("#table_contracts").DataTable().column(0).checkboxes.selected().row().data();
@@ -46,9 +46,9 @@ $(function(){
     let checked = this.checked;
     let total = 0;
     let data = [];
-    
+
     $dt.DataTable().data().each(function (info) {
-      // var txt = info[0];    
+      // var txt = info[0];
       if (checked) {
         total += parseFloat(info[5]);
         // txt = txt.substr(0, txt.length - 1) + ' checked>';
@@ -61,7 +61,7 @@ $(function(){
     // $dt.DataTable().clear().rows.add(data).draw();
     $total.val(total);
   });
-  
+
   $("#form input[name='date']").daterangepicker({
       singleDatePicker: true,
       timePicker: true,
@@ -180,7 +180,7 @@ function table_anexos(datajson, table){
       status.cadena,
       status.key,
       status.sum_annexes,
-      '',
+      '<a href="javascript:void(0)" data-type="select" data-pk="'+ status.id_contract_master +'" data-title="Clientes" data-value="' + status.customers + '" class="set-clientes">',
       '<a href="javascript:void(0);" onclick="view_info(this)" class="btn btn-primary  btn-sm mr-2 p-1" value="'+status.id_contract_master+'"><i class="fas fa-eye btn-icon-prepend fastable"></i> informacion</a>'
     ]);
   });
@@ -221,6 +221,24 @@ function table_salespersons(datajson, table){
     ]);
   });
 }
+function default_client() {
+  var _token = $('input[name="_token"]').val();
+  $.ajax({
+    type: "POST",
+    url: "/search_client_contract",
+    data: { _token : _token },
+    success: function (data) {
+      return data;
+    },
+    error: function (err){
+      Swal.fire({
+        type: 'error',
+        title: 'Oopss...',
+        text: err.statusText,
+      });
+    }
+  });
+}
 
 var Configuration_table_responsive_simple_classification={
   dom: "<'row'<'col-sm-3'l><'col-sm-9'f>>" +
@@ -234,6 +252,37 @@ var Configuration_table_responsive_simple_classification={
   "aLengthMenu": [[3, 5, 10, 25, -1], [3, 5, 10, 25, "Todos"]],
   //ordering: false,
   "pageLength": 5,
+  "fnDrawCallback": function() {
+    var _token = $('input[name="_token"]').val();
+    var source_clientes;
+    $.ajax({
+      type: "POST",
+      url: "/search_client_contract",
+      data: { _token : _token },
+      success: function (data) {
+        source_clientes = data;
+      },
+      error: function (err){
+        Swal.fire({
+          type: 'error',
+          title: 'Oopss...',
+          text: err.statusText,
+        });
+      }
+    });
+
+    $('.set-clientes').editable({
+        type : 'select',
+        source: function() {
+        return source_clientes;
+      },
+      success: function(response, newValue) {
+        var id_contrato = $(this).data('pk');
+        console.log(newValue);
+        setCliente(id_contrato, newValue);
+      }
+    });
+  },
   bInfo: false,
       language:{
               "sProcessing":     "Procesando...",
@@ -259,6 +308,25 @@ var Configuration_table_responsive_simple_classification={
                   "sSortDescending": ": Activar para ordenar la columna de manera descendente"
               }
       }
+}
+
+function setCliente(id, newValue){
+  var _token = $('input[name="_token"]').val();
+  $.ajax({
+      type: "POST",
+      url: "/set_cliente_contrato",
+      data: { id_contract : id, id_status : newValue, _token : _token },
+      success: function (data){
+        if(data == "true"){
+          menssage_toast('Mensaje', '3', 'Actualizado' , '2000');
+        }else{
+          menssage_toast('Error', '2', 'Ocurrio un error inesperado' , '3000');
+        }
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+  });
 }
 
 function default_currency() {

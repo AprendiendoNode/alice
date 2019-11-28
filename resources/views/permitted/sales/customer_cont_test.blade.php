@@ -265,15 +265,16 @@
   <link href="{{ asset('plugins/daterangepicker-master/daterangepicker.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('plugins/daterangepicker-master/daterangepicker.js')}}"></script>
 
-  {{-- <link href="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet" type="text/css"> --}}
-  {{-- <script src="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script> --}}
-  {{-- <script src="{{ asset('js/admin/sales/customers_invoices.js')}}"></script> --}}
+
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
   {{-- <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script> --}}
   <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
   <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
+
+  <link rel="stylesheet" href="{{ asset('css/bootstrap-editable.css') }}" type="text/css" />
+  <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
 
   <script src="{{ asset('js/admin/sales/fact_masiva.js')}}"></script>
 
