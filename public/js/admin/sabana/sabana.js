@@ -203,16 +203,16 @@ $(function() {
       var estado = '';
 
       switch (status.estatus) {
-        case 'Activo':
+        case 1:
         estado ='<span class="badge badge-pill text-white bg-success">Activo</span>';
           break;
-        case 'Pausado':
+        case 2:
           estado ='<span class="badge badge-pill text-white bg-warning">Pausado</span>';
           break;
-        case 'Cancelado':
+        case 3:
           estado ='<span class="badge badge-pill text-white bg-danger">Cancelado</span>';
           break;
-        case 'Terminado':
+        case 4:
           estado ='<span class="badge badge-pill text-white bg-dark">Terminado</span>';
           break;
         default:
@@ -257,20 +257,20 @@ $(function() {
         data.forEach(function(row) {
           var i = savedKeys.indexOf(row.key);
           if(i < 0) {
-            if(row.currency.startsWith("MXN")) {
-              row.pesos = row.quantity;
+            if(row.moneda.startsWith("MXN")) {
+              row.pesos = row.monto;
               row.dolares = null;
             } else {
-              row.dolares = row.quantity;
+              row.dolares = row.monto;
               row.pesos = null;
             }
             correctData.push(row);
             savedKeys.push(row.key);
           } else {
-            if(row.currency.startsWith("MXN")) {
-              correctData[i].pesos = row.quantity;
+            if(row.moneda.startsWith("MXN")) {
+              correctData[i].pesos = row.monto;
             } else {
-              correctData[i].dolares = row.quantity;
+              correctData[i].dolares = row.monto;
             }
           }
         });
@@ -795,7 +795,7 @@ function payments_table(datajson, table){
       '<a href="javascript:void(0);" onclick="enviar(this)" value="'+value.id+'" class="btn btn-default btn-sm" role="button"><i class="far fa-edit" aria-hidden="true"></i></a>',
       ]);
   });
-  $('.no_aprobar_en_gastos').addClass("d-none");
+  $('.no_aprobar_en_gastos').css("display","none");
 }
 
   var Configuration_table = {
@@ -1496,7 +1496,7 @@ function enviar_via(e){
   var valor= e.getAttribute('value');
   var _token = $('input[name="_token"]').val();
   var fecha = $('#date_to_search').val();
-  $('.no_aprobar_en_gastos').addClass("d-none");
+  $('.no_aprobar_en_gastos').css("display","none");
   cabecera_viatic(valor, _token);
   cuerpo_viatic(valor, _token);
   timeline(valor, _token);
