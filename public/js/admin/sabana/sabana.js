@@ -412,11 +412,11 @@ else  if (status.estado == '2') { span_identificador = '<span class="badge badge
 else  if (status.estado == '3') { span_identificador = '<span class="badge badge-pill badge-warning text-white">Bodega</span>';}
 else  if (status.estado == '4') { span_identificador = '<span class="badge badge-pill badge-dark">Stock</span>';}
 else  if (status.estado == '5') { span_identificador = '<span class="badge badge-pill badge-info">Prestamo</span>';}
-else  if (status.estado == '6') { span_identificador = '<span class="badge badge-pill badge-primary">Venta</span>';}
-else  if (status.estado == '7') { span_identificador = '<span class="badge badge-pill badge-info">Propiedad del Cliente</span>';}
-else  if (status.estado == '8') { span_identificador = '<span class="badge badge-pill badge-secondary">Demo</span>';}
-else  if (status.estado == '9') { span_identificador = '<span class="badge badge-pill badge-secondary">Asignado [SITWIFI]</span>';}
-else  if (status.estado == '10') { span_identificador = '<span class="badge badge-pill badge-danger">Descontinuado</span>';}
+else  if (status.estado == '10') { span_identificador = '<span class="badge badge-pill badge-primary">Venta</span>';}
+else  if (status.estado == '13') { span_identificador = '<span class="badge badge-pill text-white" style="background-color:#0DCAD6;">Propiedad del Cliente</span>';}
+else  if (status.estado == '14') { span_identificador = '<span class="badge badge-pill badge-secondary">Demo</span>';}
+else  if (status.estado == '16') { span_identificador = '<span class="badge badge-pill badge-secondary">Asignado [SITWIFI]</span>';}
+else  if (status.estado == '17') { span_identificador = '<span class="badge badge-pill badge-danger">Descontinuado</span>';}
       vartable.fnAddData([
         status.tipo,
         status.modelo,
@@ -798,13 +798,13 @@ function payments_table(datajson, table){
 }
 
   var Configuration_table = {
-    "order": [[ 0, "asc" ]],
+    //"order": [[ 0, "asc" ]],
     paging: true,
     //"pagingType": "simple",
     "iDisplayLength": 7,
     Filter: true,
     searching: true,
-    ordering: true,
+    ordering:false,
     "select": false,
     "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
     dom:"<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
