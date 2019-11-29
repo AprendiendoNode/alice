@@ -608,7 +608,7 @@
         </div>
       </div>
       <div  class="row fields_docp">
-        <section id="products-grid" class="products-grid">
+        <section class="col-12" id="products-grid" class="products-grid">
 
         </section>
       </div>
@@ -624,7 +624,7 @@
         </div>
       </div>
       <div  class="row fields_docp">
-        <section id="products-grid-materiales" class="products-grid-materiales">
+        <section class="col-12" id="products-grid-materiales" class="products-grid-materiales">
         </section>
       </div>
       <br>

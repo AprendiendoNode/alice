@@ -256,8 +256,8 @@
   <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>
 
-  <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
-  <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
+  <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
+  <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
 
   <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
   <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
@@ -268,13 +268,13 @@
 
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-
+  <link rel="stylesheet" href="{{ asset('css/bootstrap-editable.css') }}" type="text/css" />
+  <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
   {{-- <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script> --}}
   <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
   <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
 
-  <link rel="stylesheet" href="{{ asset('css/bootstrap-editable.css') }}" type="text/css" />
-  <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
+  
 
   <script src="{{ asset('js/admin/sales/fact_masiva.js')}}"></script>
 

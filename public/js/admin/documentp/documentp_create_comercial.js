@@ -688,176 +688,162 @@ var conceptIndex = 0,
     max_options2 = 8;
 
 
-$(".validation-wizard-master").on('click', '.addButtonAP', function(){
-  if( constante_eliminar.length === 0) {
-    if(conceptIndex <= max_options) {
-      conceptIndex++;
-      var $template = $('#optionTemplateAP'),
-      $clone  = $template
-        .clone()
-        .removeClass('d-none')
-        .removeAttr('id')
-        .attr('data-book-index', conceptIndex)
-        .insertBefore($template);
-      // Update the name attributes
-      $clone
-        .find('[name="aps_modelo"]').attr('name', 'aps_modelo[' + conceptIndex + ']').attr('data_row', conceptIndex).addClass("required").end()
-        .find('[name="aps_cant"]').attr('name', 'aps_cant[' + conceptIndex + ']').addClass("required").end();
-
-
-        //createEvent_Mensualidad (conceptIndex);
-
-    }
-    else{
-      Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
-    }
-  }
-  else {
-    /*INICIO DE LA SECCION-- Reutilizo index eliminados. */
-      var ordenando_array = constante_eliminar.sort();
-      index_reutilizado = ordenando_array[0];
-
-      var $template = $('#optionTemplateAP'),
-      $clone  = $template
-        .clone()
-        .removeClass('d-none')
-        .removeAttr('id')
-        .attr('data-book-index', index_reutilizado)
-        .insertBefore($template);
-
-      $clone
-          .find('[name="aps_modelo"]').attr('name', 'aps_modelo[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
-          .find('[name="aps_cant"]').attr('name', 'aps_cant[' + index_reutilizado + ']').addClass("required").end();
-
-          //createEvent_Mensualidad (index_reutilizado);
-
-    //Elimino el primero elemento del array
-      ordenando_array.shift();
-  }
-});
-
-$(".validation-wizard-master").on('click','.removeButtonAP',function(){
-  var $row  = $(this).parents('.clone'),
-      index = $row.attr('data-book-index');
-  // Remove element containing the option
-      $row.remove();
-  //Añado el index a reutilizar en la inserción
-      constante_eliminar.push(index);
-      // createEvent_llenarmoneda ();
-});
-
-$(".validation-wizard-master").on('click', '.addButtonFW', function(){
-  if( constante_eliminar_1.length === 0) {
-    if(conceptIndex1 <= max_options1) {
-      conceptIndex1++;
-      var $template = $('#optionTemplateFIRE'),
-      $clone  = $template
-        .clone()
-        .removeClass('d-none')
-        .removeAttr('id')
-        .attr('data-book-index', conceptIndex1)
-        .insertBefore($template);
-      // Update the name attributes
-      $clone
-        .find('[name="firew_mod"]').attr('name', 'firew_mod[' + conceptIndex1 + ']').attr('data_row', conceptIndex1).addClass("required").end()
-        .find('[name="firew_cant"]').attr('name', 'firew_cant[' + conceptIndex1 + ']').addClass("required").end();
-
-
-        //createEvent_Mensualidad (conceptIndex1);
-
-    }
-    else{
-      Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
-    }
-  }
-  else {
-    /*INICIO DE LA SECCION-- Reutilizo index eliminados. */
-      var ordenando_array = constante_eliminar_1.sort();
-      index_reutilizado = ordenando_array[0];
-
-      var $template = $('#optionTemplateFIRE'),
-      $clone  = $template
-        .clone()
-        .removeClass('d-none')
-        .removeAttr('id')
-        .attr('data-book-index', index_reutilizado)
-        .insertBefore($template);
-
-      $clone
-          .find('[name="firew_mod"]').attr('name', 'firew_mod[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
-          .find('[name="firew_cant"]').attr('name', 'firew_cant[' + index_reutilizado + ']').addClass("required").end();
-
-          //createEvent_Mensualidad (index_reutilizado);
-
-    //Elimino el primero elemento del array
-      ordenando_array.shift();
-  }
-});
-
-$(".validation-wizard-master").on('click','.removeButtonFW',function(){
-  var $row  = $(this).parents('.clone'),
-      index = $row.attr('data-book-index');
-  // Remove element containing the option
-      $row.remove();
-  //Añado el index a reutilizar en la inserción
-      constante_eliminar.push(index);
-      // createEvent_llenarmoneda ();
-});
-
-$(".validation-wizard-master").on('click', '.addButtonSW', function(){
-  if( constante_eliminar_2.length === 0) {
-    if(conceptIndex2 <= max_options2) {
-      conceptIndex2++;
-      var $template = $('#optionTemplateSW'),
-      $clone  = $template
-        .clone()
-        .removeClass('d-none')
-        .removeAttr('id')
-        .attr('data-book-index', conceptIndex2)
-        .insertBefore($template);
-      // Update the name attributes
-      $clone
-        .find('[name="switches_mod"]').attr('name', 'switches_mod[' + conceptIndex2 + ']').attr('data_row', conceptIndex2).addClass("required").end()
-        .find('[name="switches_cant"]').attr('name', 'switches_cant[' + conceptIndex2 + ']').addClass("required").end();
-
-
-        //createEvent_Mensualidad (conceptIndex2);
-
-    }
-    else{
-      Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
-    }
-  }
-  else {
-    /*INICIO DE LA SECCION-- Reutilizo index eliminados. */
-      var ordenando_array = constante_eliminar_2.sort();
-      index_reutilizado = ordenando_array[0];
-
-      var $template = $('#optionTemplateSW'),
-      $clone  = $template
-        .clone()
-        .removeClass('d-none')
-        .removeAttr('id')
-        .attr('data-book-index', index_reutilizado)
-        .insertBefore($template);
-
-      $clone
-          .find('[name="switches_mod"]').attr('name', 'switches_mod[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
-          .find('[name="switches_cant"]').attr('name', 'switches_cant[' + index_reutilizado + ']').addClass("required").end();
-
-          //createEvent_Mensualidad (index_reutilizado);
-
-    //Elimino el primero elemento del array
-      ordenando_array.shift();
-  }
-});
-
-$(".validation-wizard-master").on('click','.removeButtonSW',function(){
-  var $row  = $(this).parents('.clone'),
-      index = $row.attr('data-book-index');
-  // Remove element containing the option
-      $row.remove();
-  //Añado el index a reutilizar en la inserción
-      constante_eliminar.push(index);
-      // createEvent_llenarmoneda ();
-});
+    $(".validation-wizard-master").on('click', '.addButtonAP', function(){
+      if( constante_eliminar.length === 0) {
+        if(conceptIndex <= max_options) {
+          conceptIndex++;
+          var $template = $('#optionTemplateAP'),
+          $clone  = $template
+            .clone()
+            .removeClass('d-none')
+            .removeAttr('id')
+            .attr('data-book-index', conceptIndex)
+            .insertBefore($template);
+          // Update the name attributes
+          $clone
+            .find('[name="aps_modelo"]').attr('name', 'aps_modelo[' + conceptIndex + ']').attr('data_row', conceptIndex).addClass("required").end()
+            .find('[name="aps_cant"]').attr('name', 'aps_cant[' + conceptIndex + ']').addClass("required").end();
+        }
+        else{
+          Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+        }
+      }
+      else {
+        /*INICIO DE LA SECCION-- Reutilizo index eliminados. */
+          var ordenando_array = constante_eliminar.sort();
+          index_reutilizado = ordenando_array[0];
+    
+          var $template = $('#optionTemplateAP'),
+          $clone  = $template
+            .clone()
+            .removeClass('d-none')
+            .removeAttr('id')
+            .attr('data-book-index', index_reutilizado)
+            .insertBefore($template);
+    
+          $clone
+              .find('[name="aps_modelo"]').attr('name', 'aps_modelo[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
+              .find('[name="aps_cant"]').attr('name', 'aps_cant[' + index_reutilizado + ']').addClass("required").end();
+    
+          //Elimino el primero elemento del array
+          ordenando_array.shift();
+      }
+    });
+    
+    $(".validation-wizard-master").on('click','.removeButtonAP',function(){
+      var $row  = $(this).parents('.clone'),
+          index = $row.attr('data-book-index');
+          // Remove element containing the option
+          $row.remove();
+          //Añado el index a reutilizar en la inserción
+          constante_eliminar.push(index);
+          // createEvent_llenarmoneda ();
+    });
+    
+    $(".validation-wizard-master").on('click', '.addButtonFW', function(){
+      if( constante_eliminar_1.length === 0) {
+        if(conceptIndex1 <= max_options1) {
+          conceptIndex1++;
+          var $template = $('#optionTemplateFIRE'),
+          $clone  = $template
+            .clone()
+            .removeClass('d-none')
+            .removeAttr('id')
+            .attr('data-book-index', conceptIndex1)
+            .insertBefore($template);
+          // Update the name attributes
+          $clone
+            .find('[name="firew_mod"]').attr('name', 'firew_mod[' + conceptIndex1 + ']').attr('data_row', conceptIndex1).addClass("required").end()
+            .find('[name="firew_cant"]').attr('name', 'firew_cant[' + conceptIndex1 + ']').addClass("required").end();
+    
+    
+            //createEvent_Mensualidad (conceptIndex1);
+    
+        }
+        else{
+          Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+        }
+      }
+      else {
+        /*INICIO DE LA SECCION-- Reutilizo index eliminados. */
+          var ordenando_array = constante_eliminar_1.sort();
+          index_reutilizado = ordenando_array[0];
+    
+          var $template = $('#optionTemplateFIRE'),
+          $clone  = $template
+            .clone()
+            .removeClass('d-none')
+            .removeAttr('id')
+            .attr('data-book-index', index_reutilizado)
+            .insertBefore($template);
+    
+          $clone
+              .find('[name="firew_mod"]').attr('name', 'firew_mod[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
+              .find('[name="firew_cant"]').attr('name', 'firew_cant[' + index_reutilizado + ']').addClass("required").end();
+    
+          //Elimino el primero elemento del array
+          ordenando_array.shift();
+      }
+    });
+    
+    $(".validation-wizard-master").on('click','.removeButtonFW',function(){
+      var $row  = $(this).parents('.clone'),
+          index = $row.attr('data-book-index');
+          // Remove element containing the option
+          $row.remove();
+          //Añado el index a reutilizar en la inserción
+          constante_eliminar_1.push(index);
+          // createEvent_llenarmoneda ();
+    });
+    
+    $(".validation-wizard-master").on('click', '.addButtonSW', function(){
+      if( constante_eliminar_2.length === 0) {
+        if(conceptIndex2 <= max_options2) {
+          conceptIndex2++;
+          var $template = $('#optionTemplateSW'),
+          $clone = $template
+            .clone()
+            .removeClass('d-none')
+            .removeAttr('id')
+            .attr('data-book-index', conceptIndex2)
+            .insertBefore($template);
+            // Update the name attributes
+          $clone
+            .find('[name="switches_mod"]').attr('name', 'switches_mod[' + conceptIndex2 + ']').attr('data_row', conceptIndex2).addClass("required").end()
+            .find('[name="switches_cant"]').attr('name', 'switches_cant[' + conceptIndex2 + ']').addClass("required").end();
+        }
+        else{
+          Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+        }
+      }
+      else {
+        /*INICIO DE LA SECCION-- Reutilizo index eliminados. */
+          var ordenando_array = constante_eliminar_2.sort();
+          index_reutilizado = ordenando_array[0];
+    
+          var $template = $('#optionTemplateSW'),
+          $clone = $template
+            .clone()
+            .removeClass('d-none')
+            .removeAttr('id')
+            .attr('data-book-index', index_reutilizado)
+            .insertBefore($template);
+    
+          $clone
+              .find('[name="switches_mod"]').attr('name', 'switches_mod[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
+              .find('[name="switches_cant"]').attr('name', 'switches_cant[' + index_reutilizado + ']').addClass("required").end();
+    
+        //Elimino el primero elemento del array
+          ordenando_array.shift();
+      }
+    });
+    
+    $(".validation-wizard-master").on('click','.removeButtonSW',function(){
+      var $row  = $(this).parents('.clone'),
+          index = $row.attr('data-book-index');
+          // Remove element containing the option
+          $row.remove();
+          //Añado el index a reutilizar en la inserción
+          constante_eliminar_2.push(index);
+          
+    });

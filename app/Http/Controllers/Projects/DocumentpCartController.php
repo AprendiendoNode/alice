@@ -60,7 +60,7 @@ class DocumentpCartController extends Controller
         } else if ($type == 'second') {
           $products_m = DB::select('CALL px_products_propuesta_antenas_materiales(?,?,?)', array($api, $ape, $switch_cant));
           //dd($products_m);
-          $products_materiales =  $this->paginate($products_m, $perPage = 5,  null , $options = []);
+          $products_materiales =  $this->paginate($products_m, $perPage = 12,  null , $options = []);
 
           return view('permitted.documentp.products_materiales', ['products_materiales' => $products_materiales])->render();
 

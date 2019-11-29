@@ -1,6 +1,6 @@
 <ul id="lista-productos2" class="cards" style="position: relative;">
 @foreach($products_materiales as $product)
-  <li class="cards__item">
+  <li class="cards__item mt-2">
     <div class="card">
       <div class="header">
         <span class="categoria">{{$product->categoria}}</span>

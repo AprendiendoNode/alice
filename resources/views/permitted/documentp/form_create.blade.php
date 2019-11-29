@@ -125,12 +125,12 @@
 
       <div class="row">
         <div class="col-md-4 fields_docp">
-          <div class="row">
+          <div class="row mb-2">
             <div class="col-md-8">
               <h4 class="text-center text-primary">AP'S</h4>
             </div>
             <div class="col-md-2">
-              <button class="btn addButtonAP" type="button"><i class="fa fa-plus"></i></button>
+              <button class="btn btn-sm btn-dark p-1 addButtonAP" type="button"><i class="fa fa-plus"></i></button>
             </div>
           </div>
 
@@ -165,18 +165,18 @@
               <div class="col-4">
                 <input class="form-control form-control-sm aps_cant" min="0" type="number" name="aps_cant" placeholder="Cantidad">
               </div>
-              <button type="button" class="col-1 btn removeButtonAP"><i class="fa fa-minus"></i></button>
+              <button type="button" class="col-1 btn removeButtonAP"><i class="fa fa-minus text-danger"></i></button>
             </div>
           </div>
         </div><!--row antenas--->
 
         <div class="col-md-4 fields_docp">
-          <div class="row">
+          <div class="row mb-2">
             <div class="col-md-8">
               <h4 class="text-center text-primary">FIREWALL</h4>
             </div>
             <div class="col-md-2">
-              <button class="btn addButtonFW" type="button" name="button"> <i class="fa fa-plus"></i></button>
+              <button class="btn btn-sm btn-dark p-1 addButtonFW" type="button" name="button"> <i class="fa fa-plus"></i></button>
             </div>
           </div>
           <div class="row mb-2">
@@ -208,18 +208,18 @@
               <div class="col-4">
                 <input class="form-control form-control-sm firewall_cant" min="0" type="number" name="firew_cant" placeholder="Cantidad">
               </div>
-              <button type="button" class="col-1 btn removeButtonFW"><i class="fa fa-minus"></i></button>
+              <button type="button" class="col-1 btn removeButtonFW"><i class="fa fa-minus text-danger"></i></button>
             </div>
           </div>
         </div><!--row firewall--->
 
         <div class="col-md-4 fields_docp">
-          <div class="row ">
+          <div class="row mb-2">
             <div class="col-8">
               <h4 class="text-center text-primary">SWITCHES</h4>
             </div>
             <div class="col-2">
-              <button class="btn addButtonSW" type="button" name="button"> <i class="fa fa-plus"></i></button>
+              <button class="btn btn-sm btn-dark p-1 addButtonSW" type="button" name="button"> <i class="fa fa-plus"></i></button>
             </div>
           </div>
 
@@ -253,7 +253,7 @@
               <div class="col-4">
                 <input class="form-control form-control-sm switch_cant" min="0" type="number" name="switches_cant" placeholder="Cantidad">
               </div>
-              <button type="button" class="col-1 btn removeButtonSW"><i class="fa fa-minus"></i></button>
+              <button type="button" class="col-1 btn removeButtonSW"><i class="fa fa-minus text-danger"></i></button>
               </div>
             </div>
           </div><!--row switches--->
@@ -271,7 +271,7 @@
         </div>
       </div>
       <div  class="row fields_docp">
-        <section id="products-grid" class="products-grid">
+        <section class="col-12" id="products-grid" class="products-grid">
 
         </section>
       </div>
@@ -287,7 +287,7 @@
         </div>
       </div>
       <div  class="row fields_docp">
-        <section id="products-grid-materiales" class="products-grid-materiales">
+        <section class="col-12" id="products-grid-materiales" class="products-grid-materiales">
         </section>
       </div>
       <br>

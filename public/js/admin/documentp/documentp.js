@@ -661,9 +661,9 @@ var conceptIndex = 0,
     constante_eliminar_1 = [],
     constante_eliminar_2 = [],
     constante_a = 0,
-    max_options = 7,
-    max_options1 = 1,
-    max_options2 = 8;
+    max_options = 8,
+    max_options1 = 2,
+    max_options2 = 6;
 
 
 $(".validation-wizard-master").on('click', '.addButtonAP', function(){
@@ -681,10 +681,6 @@ $(".validation-wizard-master").on('click', '.addButtonAP', function(){
       $clone
         .find('[name="aps_modelo"]').attr('name', 'aps_modelo[' + conceptIndex + ']').attr('data_row', conceptIndex).addClass("required").end()
         .find('[name="aps_cant"]').attr('name', 'aps_cant[' + conceptIndex + ']').addClass("required").end();
-
-
-        //createEvent_Mensualidad (conceptIndex);
-
     }
     else{
       Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
@@ -707,9 +703,7 @@ $(".validation-wizard-master").on('click', '.addButtonAP', function(){
           .find('[name="aps_modelo"]').attr('name', 'aps_modelo[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
           .find('[name="aps_cant"]').attr('name', 'aps_cant[' + index_reutilizado + ']').addClass("required").end();
 
-          //createEvent_Mensualidad (index_reutilizado);
-
-    //Elimino el primero elemento del array
+      //Elimino el primero elemento del array
       ordenando_array.shift();
   }
 });
@@ -717,9 +711,9 @@ $(".validation-wizard-master").on('click', '.addButtonAP', function(){
 $(".validation-wizard-master").on('click','.removeButtonAP',function(){
   var $row  = $(this).parents('.clone'),
       index = $row.attr('data-book-index');
-  // Remove element containing the option
+      // Remove element containing the option
       $row.remove();
-  //Añado el index a reutilizar en la inserción
+      //Añado el index a reutilizar en la inserción
       constante_eliminar.push(index);
       // createEvent_llenarmoneda ();
 });
@@ -765,9 +759,7 @@ $(".validation-wizard-master").on('click', '.addButtonFW', function(){
           .find('[name="firew_mod"]').attr('name', 'firew_mod[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
           .find('[name="firew_cant"]').attr('name', 'firew_cant[' + index_reutilizado + ']').addClass("required").end();
 
-          //createEvent_Mensualidad (index_reutilizado);
-
-    //Elimino el primero elemento del array
+      //Elimino el primero elemento del array
       ordenando_array.shift();
   }
 });
@@ -775,10 +767,10 @@ $(".validation-wizard-master").on('click', '.addButtonFW', function(){
 $(".validation-wizard-master").on('click','.removeButtonFW',function(){
   var $row  = $(this).parents('.clone'),
       index = $row.attr('data-book-index');
-  // Remove element containing the option
+      // Remove element containing the option
       $row.remove();
-  //Añado el index a reutilizar en la inserción
-      constante_eliminar.push(index);
+      //Añado el index a reutilizar en la inserción
+      constante_eliminar_1.push(index);
       // createEvent_llenarmoneda ();
 });
 
@@ -787,20 +779,16 @@ $(".validation-wizard-master").on('click', '.addButtonSW', function(){
     if(conceptIndex2 <= max_options2) {
       conceptIndex2++;
       var $template = $('#optionTemplateSW'),
-      $clone  = $template
+      $clone = $template
         .clone()
         .removeClass('d-none')
         .removeAttr('id')
         .attr('data-book-index', conceptIndex2)
         .insertBefore($template);
-      // Update the name attributes
+        // Update the name attributes
       $clone
         .find('[name="switches_mod"]').attr('name', 'switches_mod[' + conceptIndex2 + ']').attr('data_row', conceptIndex2).addClass("required").end()
         .find('[name="switches_cant"]').attr('name', 'switches_cant[' + conceptIndex2 + ']').addClass("required").end();
-
-
-        //createEvent_Mensualidad (conceptIndex2);
-
     }
     else{
       Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
@@ -812,7 +800,7 @@ $(".validation-wizard-master").on('click', '.addButtonSW', function(){
       index_reutilizado = ordenando_array[0];
 
       var $template = $('#optionTemplateSW'),
-      $clone  = $template
+      $clone = $template
         .clone()
         .removeClass('d-none')
         .removeAttr('id')
@@ -823,8 +811,6 @@ $(".validation-wizard-master").on('click', '.addButtonSW', function(){
           .find('[name="switches_mod"]').attr('name', 'switches_mod[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
           .find('[name="switches_cant"]').attr('name', 'switches_cant[' + index_reutilizado + ']').addClass("required").end();
 
-          //createEvent_Mensualidad (index_reutilizado);
-
     //Elimino el primero elemento del array
       ordenando_array.shift();
   }
@@ -833,9 +819,9 @@ $(".validation-wizard-master").on('click', '.addButtonSW', function(){
 $(".validation-wizard-master").on('click','.removeButtonSW',function(){
   var $row  = $(this).parents('.clone'),
       index = $row.attr('data-book-index');
-  // Remove element containing the option
+      // Remove element containing the option
       $row.remove();
-  //Añado el index a reutilizar en la inserción
-      constante_eliminar.push(index);
-      // createEvent_llenarmoneda ();
+      //Añado el index a reutilizar en la inserción
+      constante_eliminar_2.push(index);
+      
 });

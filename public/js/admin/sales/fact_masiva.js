@@ -1,4 +1,26 @@
 $(function(){
+  //Configuracion de x-editable jquery
+$.fn.editable.defaults.mode = 'popup';
+$.fn.editable.defaults.ajaxOptions = {type:'POST'};
+  localStorage.clear();
+  var _token = $('input[name="_token"]').val();
+  
+    $.ajax({
+      type: "POST",
+      url: "/search_client_contract",
+      data: { _token : _token },
+      success: function (data) {
+        localStorage.setItem('source_clientes', data);
+      },
+      error: function (err){
+        Swal.fire({
+          type: 'error',
+          title: 'Oopss...',
+          text: err.statusText,
+        });
+      }
+    });
+    
   /*$('#table_contracts').on('click', 'thead tr th input[type="checkbox"]',function(e) {
       alert('Clicked on "Select all"');
   });*/
@@ -172,6 +194,7 @@ function table_anexos(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_checkbox_move_viatic_n1);
   vartable.fnClearTable();
+  console.log(datajson);
   $.each(JSON.parse(datajson), function(index, status){
     vartable.fnAddData([
       status.id_contract_master,
@@ -180,7 +203,7 @@ function table_anexos(datajson, table){
       status.cadena,
       status.key,
       status.sum_annexes,
-      '<a href="javascript:void(0)" data-type="select" data-pk="'+ status.id_contract_master +'" data-title="Clientes" data-value="' + status.customers + '" class="set-clientes">',
+      '<a href="javascript:void(0)" data-type="select" data-pk="'+ status.id_contract_master +'" data-title="clientes" data-value="' + status.rz_customer_id + '" class="set-clientes">',
       '<a href="javascript:void(0);" onclick="view_info(this)" class="btn btn-primary  btn-sm mr-2 p-1" value="'+status.id_contract_master+'"><i class="fas fa-eye btn-icon-prepend fastable"></i> informacion</a>'
     ]);
   });
@@ -254,23 +277,7 @@ var Configuration_table_responsive_simple_classification={
   "pageLength": 5,
   "fnDrawCallback": function() {
     var _token = $('input[name="_token"]').val();
-    var source_clientes;
-    $.ajax({
-      type: "POST",
-      url: "/search_client_contract",
-      data: { _token : _token },
-      success: function (data) {
-        source_clientes = data;
-      },
-      error: function (err){
-        Swal.fire({
-          type: 'error',
-          title: 'Oopss...',
-          text: err.statusText,
-        });
-      }
-    });
-
+    var source_clientes = localStorage.getItem('source_clientes');
     $('.set-clientes').editable({
         type : 'select',
         source: function() {
