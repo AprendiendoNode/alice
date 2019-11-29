@@ -416,6 +416,8 @@
               <li><i class="fas fa-clipboard-list"></i> Tickets</li>
               <li><i class="fas fa-funnel-dollar"></i> Presupuesto</li>
               <li><i class="fas fa-hand-holding-usd"></i></i> Gastos</li>
+              <li><i class="fas fa-wifi"></i></i> Disponibilidad Enlaces/Antenas</li>
+              <li><i class="fas fa-chart-bar"></i></i> Estadisticas de consumo</li>
           </ul>
           <div class="content_wrapper">
               <div class="tab_content active">
@@ -605,7 +607,7 @@
                       <table id="nps_comments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>
                           <tr class="bg-aqua text-center">
-                            <th class="bg-aqua"> <small>Itc</small> </th>                            
+                            <th class="bg-aqua"> <small>Itc</small> </th>
                             <th class="bg-aqua"> <small>Sitio</small> </th>
                             <th class="bg-aqua"> <small>Calificacion</small> </th>
                             <th class="bg-aqua"> <small>Cliente</small> </th>
@@ -865,6 +867,13 @@
                     </tfoot>
                   </table>
                 </div>
+              </div>
+
+              <div class="tab_content">
+                Under construction
+              </div>
+              <div class="tab_content">
+                Under Construction 2
               </div>
           </div>
       </div>
