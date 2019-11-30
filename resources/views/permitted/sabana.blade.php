@@ -417,7 +417,7 @@
               <li><i class="fas fa-funnel-dollar"></i> Presupuesto</li>
               <li><i class="fas fa-hand-holding-usd"></i></i> Gastos</li>
               <li><i class="fas fa-wifi"></i></i> Disponibilidad Enlaces/Antenas</li>
-              <li><i class="fas fa-chart-bar"></i></i> Estadisticas de consumo</li>
+              <li id="tab_consumo"><i class="fas fa-chart-bar"></i></i> Estadísticas de consumo</li>
           </ul>
           <div class="content_wrapper">
               <div class="tab_content active">
@@ -425,9 +425,6 @@
                   <div class="row">
                     <div class="card col-md-6" style="width: 18rem;">
                       <img id="imagenCliente" class="card-img-top" style="max-height: 300px;" alt="Logo no encontrado :(">
-                      <div class="card-body text-center">
-                        <a href="/viewreports" class="btn btn-primary">Más detalles</a>
-                      </div>
                     </div>
                     <div class="card col-md-6" style="width: 18rem;">
                       <div class="card-body text-center">
@@ -500,7 +497,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
                       </div>
-                      <input id="date_to_search" type="text" class="form-control" placeholder="YYYY" aria-label="Recipient's username" aria-describedby="button-addon2">
+                      <input id="date_to_search" type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
                       <div class="input-group-append">
                         <button class="btn btn-outline-info filtrarDashboard" type="button" id="boton-aplica-filtro">Filtrar</button>
                       </div>
@@ -730,7 +727,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
                         </div>
-                        <input id="date_presupuesto" type="text" class="form-control" placeholder="YYYY" aria-describedby="button-addon2">
+                        <input id="date_presupuesto" type="text" class="form-control" aria-describedby="button-addon2">
                         <div class="input-group-append">
                           <button class="btn btn-outline-info" type="button" id="btn-filtrar">Filtrar</button>
                         </div>
@@ -872,8 +869,83 @@
               <div class="tab_content">
                 Under construction
               </div>
-              <div class="tab_content">
-                Under Construction 2
+              <div id="consumo_echarts" class="tab_content">
+                <div class="text-center">
+                  <h3 style="font-weight:bold;" >Consumos</h3>
+                </div>
+                <div class="row">
+                  <div class="col-md-4 col-xs-12"></div>
+                  <div class="col-md-4 col-xs-12 mb-3">
+                    <div class="input-group  flex-nowrap">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
+                      </div>
+                      <input id="date_consumos" type="text" class="form-control" aria-describedby="button-addon2">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-info" type="button" id="btn-filtrar-consumos">Filtrar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row pad-top-botm client-info">
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="clearfix">
+                        <div id="main_client_day" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
+                      </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="clearfix">
+                        <div id="main_gigabyte_day" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
+                      </div>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <h3 style="font-weight:bold; margin-top: 10px;" >APS</h3>
+                </div>
+                <div class="row pad-top-botm client-info">
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="clearfix">
+                        <div id="main_top_aps" class="mt-3" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
+                      </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="table-responsive">
+                      <table id="table_top_aps" class="table table-striped table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>Descripción</th>
+                            <th>MAC</th>
+                            <th>No. Clientes.</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <h3 style="font-weight:bold; margin-top: 10px;" >Tabla comparativa</h3>
+                </div>
+                <div class="row pad-top-botm client-info">
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="table-responsive">
+                      <table id="table_comparative" class="table table-striped table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>Concepto</th>
+                            <th>Mes 1</th>
+                            <th>Mes 2</th>
+                            <th>Identificador</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
           </div>
       </div>
@@ -897,10 +969,11 @@
     <script type="text/javascript" src="js/jquery.multipurpose_tabcontent.js"></script>
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
     <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js?v=2.0.0')}}"></script>
     <script src="{{ asset('js/admin/payments/request_modal_payment.js')}}"></script>
-    <script src="{{ asset('js/admin/sabana/sabana.js')}}"></script>
+    <script src="{{ asset('js/admin/sabana/sabana.js?v=2.0.0')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">
