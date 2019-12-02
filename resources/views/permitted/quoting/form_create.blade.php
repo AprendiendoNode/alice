@@ -594,6 +594,132 @@
             </div>
           </div><!--row switches--->
       </div><!---row-->
+      <br>
+      <div class="row">
+        <div class="col-md-4 fields_docp">
+          <div class="row mb-2">
+            <div class="col-8">
+              <h4 class="text-center text-success">Bobinas</h4>
+            </div>
+            <div class="col-2">
+              <button class="btn btn-sm btn-dark p-1 addButtonBobinas" type="button" name="button"> <i class="fa fa-plus"></i></button>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="form-row">
+              <div class="col-9">
+                <select class="form-control form-control-sm bobinas_select" name="bobinas_select[0]">
+                  <option value="0">Elija ...</option>
+                  @foreach ($products_bobinas as $products)
+                    <option value="{{$products->id}}">{{$products->name}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-1"></div>
+            </div>
+          </div>
+          <div class="row clone d-none" id="optionTemplateBobinas">
+            <div class="form-row">
+              <div class="col-9">
+                <select class="form-control form-control-sm bobinas_select" name="bobinas_select">
+                  <option value="0">Elija ...</option>
+                  @foreach ($products_bobinas as $products)
+                    <option value="{{$products->id}}">{{$products->name}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <button type="button" class="col-1 btn removeButtonBobinas"><i class="fa fa-minus text-danger"></i></button>
+              </div>
+            </div>
+          </div><!--row bobinas--->
+          <div class="col-md-4 fields_docp">
+            <div class="row mb-2">
+              <div class="col-8">
+                <h4 class="text-center text-success">Gabinetes</h4>
+              </div>
+              <div class="col-2">
+                <button class="btn btn-sm btn-dark p-1 addButtonGabinetes" type="button" name="button"> <i class="fa fa-plus"></i></button>
+              </div>
+            </div>
+  
+            <div class="row mb-2">
+              <div class="form-row">
+                <div class="col-6">
+                  <select class="form-control form-control-sm gabinetes_select" name="gabinetes_select[0]">
+                    <option value="0">Elija ...</option>
+                    @foreach ($products_gabinetes as $gabinetes)
+                      <option value="{{$gabinetes->id}}">{{$gabinetes->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-4">
+                  <input class="form-control form-control-sm gabinetes_cant" value="0" min="0" type="number" name="gabinetes_cant[0]" placeholder="Cantidad">
+                </div>
+                <div class="col-1"></div>
+              </div>
+            </div>
+            <div class="row clone d-none" id="optionTemplateGabinetes">
+              <div class="form-row">
+                <div class="col-6">
+                  <select class="form-control form-control-sm gabinetes_select" name="gabinetes_select">
+                    <option value="0">Elija ...</option>
+                    @foreach ($products_gabinetes as $gabinetes)
+                      <option value="{{$gabinetes->id}}">{{$gabinetes->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-4">
+                  <input class="form-control form-control-sm gabinetes_cant" value="0" min="0" type="number" name="gabinetes_cant" placeholder="Cantidad">
+                </div>
+                <button type="button" class="col-1 btn removeButtonGabinetes"><i class="fa fa-minus text-danger"></i></button>
+                </div>
+              </div>
+            </div><!--row gabinetes--->
+
+          <div class="col-md-2 fields_docp">
+            <div class="row mb-2">
+              <div class="col-12">
+                <h4 class="text-center text-success">Material</h4>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex justify-content-center">
+              <div class="form-row">
+                <div class="col-12">
+                  <select class="form-control form-control-sm material_select" name="material_select[0]">
+                    @foreach ($materiales as $material)
+                      <option value="{{$material->id}}">{{$material->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>  
+          </div><!--material--->
+          <div class="col-md-2 fields_docp">
+            <div class="row mb-2">
+              <div class="col-12">
+                <h4 class="text-center text-success">Medidas</h4>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex justify-content-center">
+              <div class="form-row">
+                <div class="col-12">
+                  <select class="form-control form-control-sm medida_select" name="medida_select[0]">
+                    @foreach ($medidas as $medida)
+                      <option value="{{$medida->id}}">{{$medida->unit}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>  
+          </div><!--Medidas--->
+      </div>
+      <div  class="row mb-3">
+        <div class="col-12">
+          <button type="button" id="add_shopping_cart" class="btn btn-success m-3"> <i class="fas fa-cart-plus"></i> Agregar al pedido</button>
+          <button type="button" id="delete_cart" class="btn btn-danger m-3"> <i class="fas fa-trash-alt"></i> Vaciar carrito</button>
+        </div>
+      </div>
 
       <div  class="row mb-3"></div>
 

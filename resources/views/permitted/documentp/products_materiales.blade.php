@@ -4,6 +4,12 @@
     <div class="card">
       <div class="header">
         <span class="categoria">{{$product->categoria}}</span>
+        @if($product->categoria_id == 11 || $product->categoria_id == 12)
+            @isset($product->product_measure)
+              <span class="medida bg-dark">{{$product->product_measure}}</span>
+            @endisset
+            
+          @endif
         <img class="img-fluid" src="{{ asset("images/storage/$product->image") }}" alt="">
       </div>
       <div class="card__content">
@@ -33,6 +39,29 @@
             </a>
           </div>
         </div>
+        @if($product->categoria_id == 11 || $product->categoria_id == 12)
+            <div class="row d-flex justify-content-center">
+              <div class="col-6 mb-0">
+                  @isset($product->product_material)
+                    <p class="text-secondary type">
+                      <span class="">
+                        {{$product->product_material}}
+                      </span>        
+                    </p>
+                  @endisset
+                  
+                </div>
+              <div class="col-6 mb-0">
+                  @isset($product->product_type_material)
+                  <p class="text-secondary type"> Tipo:
+                    <span class="">
+                      {{$product->product_type_material}}
+                    </span>        
+                  </p>
+                @endisset
+              </div>
+            </div>
+          @endif
         <div class="row">
           <div class="col-6">
             <h6>Cant. Sugerida</h6>

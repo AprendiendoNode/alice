@@ -381,7 +381,7 @@
       <div  class="row mb-3">
         <div class="col-12">
           <button type="button" id="add_shopping_cart" class="btn btn-success m-3"> <i class="fas fa-cart-plus"></i> Agregar al pedido</button>
-          <button type="button" id="delete" class="btn btn-danger m-3"> <i class="fas fa-trash-alt"></i> Vaciar carrito</button>
+          <button type="button" id="delete_cart" class="btn btn-danger m-3"> <i class="fas fa-trash-alt"></i> Vaciar carrito</button>
         </div>
       </div>
 

@@ -146,20 +146,44 @@ class DocumentpCartController extends Controller
 
     }
 
+    public function getProductsCart($aps ,$firewalls, $switches, $bobinas, $gabinetes)
+    {
+       $id_user = Auth::user()->id;
+
+       $this->createTableTempProducts($aps ,$firewalls, $switches, $bobinas, $gabinetes);
+
+          try{
+            $products = DB::select('CALL px_products_table_products_tmp(?)', array($id_user));
+            
+
+            return $products;
+
+          }catch(\Illuminate\Database\QueryException $e){
+            Schema::dropIfExists('products_temp' . $id_user);
+            return $e;
+          }
+
+    }
+
     public function createTableTempProducts($aps ,$firewalls, $switches, $bobinas, $gabinetes)
     {
       $id_user = Auth::user()->id;
-      $data_products = json_decode($products);
+      $data_aps = json_decode($aps);
+      $data_firewalls = json_decode($firewalls);
+      $data_switches = json_decode($switches);
+      $data_bobinas = json_decode($bobinas);
+      $data_gabinetes = json_decode($gabinetes);
 
-      $collection = collect($data_products);
-      // Filtrando datos sin id y cantidad
-      $data_products = $collection->whereNotIn('id', 0)
+      $dataEquipos = array_merge($data_aps, $data_firewalls, $data_switches, $data_bobinas, $data_gabinetes);
+      $collection = collect($dataEquipos);
+      // Filtrando datos sin modelo y cantidad
+      $dataEquipos = $collection->whereNotIn('id', 0)
                                 ->whereNotIn('cant', 0)->whereNotIn('cant', "");;
 
-      $tablaProducts = 'products_temp' . $id_user;
+      $tablaEquipoActivo = 'products_temp' . $id_user;
 
-      if (!Schema::hasTable($tablaProducts)) {
-          Schema::create($tablaProducts, function (Blueprint $table) use ($tablaProducts) {
+      if (!Schema::hasTable($tablaEquipoActivo)) {
+          Schema::create($tablaEquipoActivo, function (Blueprint $table) use ($tablaEquipoActivo) {
               $table->integer('id');
               $table->integer('cantidad');
               $table->timestamps();
@@ -168,7 +192,7 @@ class DocumentpCartController extends Controller
 
       foreach ($dataEquipos as $data)
       {
-        DB::table($tablaProducts)->insert(
+        DB::table($tablaEquipoActivo)->insert(
             ['id' => $data->id, 'cantidad' => $data->cant]
         );
       }

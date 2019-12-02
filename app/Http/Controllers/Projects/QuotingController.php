@@ -34,9 +34,13 @@ class QuotingController extends Controller
       $product_sw = DB::select('CALL px_products_swiches');
       $product_ap = DB::select('CALL px_products_antenas');
       $product_fw = DB::select('CALL px_products_firewalls');
-
+      $products_bobinas = DB::table('products')->where('name', 'LIKE', '%bobina%')->get();
+      $products_gabinetes = DB::table('products')->where('name', 'LIKE', '%gabinete%')->get();
+      $materiales = DB::table('product_material')->get();
+      $medidas = DB::table('product_measure')->get();
+        
       return view('permitted.quoting.quoting', compact('categories', 'itc', 'verticals', 'comerciales', 'type_service',
-                  'grupos','installation' ,'product_sw', 'product_ap', 'product_fw'));
+                  'grupos','installation' ,'product_sw', 'product_ap', 'product_fw', 'products_bobinas', 'products_gabinetes', 'materiales','medidas'));
     }
 
     public function index_history()

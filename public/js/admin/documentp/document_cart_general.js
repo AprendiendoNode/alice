@@ -49,6 +49,28 @@ $(function () {
     });
   })
 
+  $('#delete_cart').on('click', function(){
+    Swal.fire({
+      title: '¿Estas seguro?',
+      text: "Se borraran todos los productos del carrito.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Continuar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        localStorage.clear();
+        Swal.fire(
+          'Productos eliminados!',
+          '',
+          'success'
+        )
+      }
+    })
+  });
+
   function getTypeMaterial(material){
     fetch(`/getTypeMaterial/material/${material}`,  miInit)
       .then(function(response){
@@ -214,10 +236,45 @@ $(function () {
 
   $('#add_shopping_cart').on('click', function(){
     var data_gabinete = get_gabinetes();
-    var data_switches = get_gabinetes();
-    var bobinas = get_bobinas();
-    var gabinetes = data_gabinete[1];
-    var switches = data_switches[1];
+    var data_switches = get_switches();
+    var data_bobinas = get_bobinas();
+    var data_gabinete = get_gabinetes();
+    var data_aps = get_aps();
+
+    var aps = JSON.stringify(data_aps[0]);
+    var bobinas = JSON.stringify(data_bobinas[0]);
+    var firewalls = JSON.stringify(get_firewalls());
+    var switches = JSON.stringify(data_switches[0]);
+    var gabinetes = JSON.stringify(data_gabinete[0]);
+ 
+    fetch(`/getProductsCart/${aps}/${firewalls}/${switches}/${bobinas}/${gabinetes}`, miInit)
+         .then(function(response){
+           return response.json();
+         })
+         .then(function(products){
+           products.forEach(product => {
+              var productosLS = obtenerProductosLocalStorage();
+              var id_product = product.id;
+              if(productosLS == '[]'){
+                //Primer producto del carrito
+                leerDatosProductMO(product);
+                menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
+              }else {
+                let count =  productosLS.filter(producto => producto.id == id_product);
+    
+                if(count.length == 1){
+                  //El producto existe
+                  menssage_toast('Error', '2', 'Este producto ya fue agregado al pedido' , '3000');
+                }else{
+                  leerDatosProductMO(product);
+                  menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
+                }
+              }
+           });
+         })
+         .catch(function(error){
+                 console.log(error);
+         });
     
   });
 
@@ -232,13 +289,13 @@ $(function () {
       var metros_x_bobina = 305;
       var prom_cable_antena = 55;
       var merma = 1.1;
-      
-      var data = [];
       var total = 0.0;
+
       var data_aps = get_aps();
       var api = JSON.stringify(data_aps[1]);
       var ape = JSON.stringify(data_aps[2]);
       var antenas = parseFloat(api) + parseFloat(ape); 
+
       cantidad_bobinas = ((antenas * prom_cable_antena) / metros_x_bobina) * merma;
       var select_bobinas = document.getElementsByClassName("bobinas_select");
       var element = {}
@@ -249,9 +306,9 @@ $(function () {
       for(var i = 0;i < select_bobinas.length - 1; i++)
       {
         element = {"id" : $(select_bobinas[i]).val(),
-                    "cant" : parseInt(cantidad_bobinas)}
+                    "cant" : Math.ceil(cantidad_bobinas)}
 
-        total=  parseInt(cantidad_bobinas);         
+        total= total +  Math.ceil(cantidad_bobinas);         
         bobinas.push(element);
       }
 
@@ -424,7 +481,7 @@ $(function () {
     //url = `/items/ajax/second/${api}/${switch_cant}/119/${gabinetes}/${material}/${medida}`;
 
         $.ajax({
-            url : `/items/ajax/second/${api}/${switch_cant}/119/${gabinetes}/${material}/${medida}`,
+            url : `/items/ajax/second/${api}/${switch_cant}/${bobinas}/${gabinetes}/${material}/${medida}`,
             data: { page: pg },
             success: function(data) {
                 $('#products-grid-materiales').html(data);
@@ -509,7 +566,7 @@ $(function () {
     var material = $('.material_select').val();
     var medida = $('.medida_select').val();
     console.log(data_bobinas);
-    url = `/items/ajax/second/${api}/${switch_cant}/119/${gabinetes}/${material}/${medida}`;
+    url = `/items/ajax/second/${api}/${switch_cant}/${bobinas}/${gabinetes}/${material}/${medida}`;
     getArticlesMateriales(url);
   })
 
@@ -702,7 +759,7 @@ function leerDatosProductMO(producto){
        currency: producto.currency,
        currency_id: producto.currency_id,
        proveedor: producto.proveedor,
-       descuento: 0,
+       descuento: producto.descuento,
        cant_sug: cant_sug,
        cant_req: cant_req,
        precio_total : precioTotal.toFixed(2),
