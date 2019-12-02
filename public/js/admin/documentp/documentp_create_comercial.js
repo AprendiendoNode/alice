@@ -679,13 +679,19 @@ $(".validation-wizard-master").steps({
 var conceptIndex = 0,
     conceptIndex1 = 0,
     conceptIndex2 = 0,
+    conceptIndex3 = 0,
+    conceptIndex4 = 0,
     constante_eliminar = [],
     constante_eliminar_1 = [],
     constante_eliminar_2 = [],
+    constante_eliminar_3 = [],
+    constante_eliminar_4 = [],
     constante_a = 0,
     max_options = 7,
     max_options1 = 1,
-    max_options2 = 8;
+    max_options2 = 3;
+    max_options3 = 1;
+    max_options4 = 1;
 
 
     $(".validation-wizard-master").on('click', '.addButtonAP', function(){
@@ -846,4 +852,106 @@ var conceptIndex = 0,
           //Añado el index a reutilizar en la inserción
           constante_eliminar_2.push(index);
           
+    });
+
+    $(".validation-wizard-master").on('click', '.addButtonBobinas', function(){
+      if( constante_eliminar_3.length === 0) {
+        if(conceptIndex3 <= max_options3) {
+          conceptIndex3++;
+          var $template = $('#optionTemplateBobinas'),
+          $clone = $template
+            .clone()
+            .removeClass('d-none')
+            .removeAttr('id')
+            .attr('data-book-index', conceptIndex3)
+            .insertBefore($template);
+            // Update the name attributes
+          $clone
+            .find('[name="bobinas_select"]').attr('name', 'bobinas_select[' + conceptIndex3 + ']').attr('data_row', conceptIndex3).addClass("required").end()
+            .find('[name="bobinas_cant"]').attr('name', 'bobinas_cant[' + conceptIndex3 + ']').addClass("required").end();
+        }
+        else{
+          Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+        }
+      }
+      else {
+        /*INICIO DE LA SECCION-- Reutilizo index eliminados. */
+          var ordenando_array = constante_eliminar_3.sort();
+          index_reutilizado = ordenando_array[0];
+    
+          var $template = $('#optionTemplateBobinas'),
+          $clone = $template
+            .clone()
+            .removeClass('d-none')
+            .removeAttr('id')
+            .attr('data-book-index', index_reutilizado)
+            .insertBefore($template);
+    
+          $clone
+              .find('[name="bobinas_select"]').attr('name', 'bobinas_select[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
+              .find('[name="bobinas_cant"]').attr('name', 'bobinas_cant[' + index_reutilizado + ']').addClass("required").end();
+    
+        //Elimino el primero elemento del array
+          ordenando_array.shift();
+      }
+    });
+    
+    $(".validation-wizard-master").on('click','.removeButtonBobinas',function(){
+      var $row  = $(this).parents('.clone'),
+          index = $row.attr('data-book-index');
+          // Remove element containing the option
+          $row.remove();
+          //Añado el index a reutilizar en la inserción
+          constante_eliminar_3.push(index); 
+    });
+
+    $(".validation-wizard-master").on('click', '.addButtonGabinetes', function(){
+      if( constante_eliminar_4.length === 0) {
+        if(conceptIndex4 <= max_options4) {
+          conceptIndex4++;
+          var $template = $('#optionTemplateGabinetes'),
+          $clone = $template
+            .clone()
+            .removeClass('d-none')
+            .removeAttr('id')
+            .attr('data-book-index', conceptIndex4)
+            .insertBefore($template);
+            // Update the name attributes
+          $clone
+            .find('[name="gabinetes_select"]').attr('name', 'gabinetes_select[' + conceptIndex4 + ']').attr('data_row', conceptIndex4).addClass("required").end()
+            .find('[name="bobinas_cant"]').attr('name', 'bobinas_cant[' + conceptIndex4 + ']').addClass("required").end();
+        }
+        else{
+          Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
+        }
+      }
+      else {
+        /*INICIO DE LA SECCION-- Reutilizo index eliminados. */
+          var ordenando_array = constante_eliminar_4.sort();
+          index_reutilizado = ordenando_array[0];
+    
+          var $template = $('#optionTemplateGabinetes'),
+          $clone = $template
+            .clone()
+            .removeClass('d-none')
+            .removeAttr('id')
+            .attr('data-book-index', index_reutilizado)
+            .insertBefore($template);
+    
+          $clone
+              .find('[name="gabinetes_select"]').attr('name', 'gabinetes_select[' + index_reutilizado + ']').attr('data_row', index_reutilizado).addClass("required").end()
+              .find('[name="bobinas_cant"]').attr('name', 'bobinas_cant[' + index_reutilizado + ']').addClass("required").end();
+    
+        //Elimino el primero elemento del array
+          ordenando_array.shift();
+      }
+    });
+    
+    $(".validation-wizard-master").on('click','.removeButtonGabinetes',function(){
+      var $row  = $(this).parents('.clone'),
+          index = $row.attr('data-book-index');
+          // Remove element containing the option
+          $row.remove();
+          //Añado el index a reutilizar en la inserción
+          constante_eliminar_4.push(index); 
     });

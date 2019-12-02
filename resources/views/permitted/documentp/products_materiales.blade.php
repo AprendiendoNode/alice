@@ -47,7 +47,7 @@
               data-id="{{$product->id}}"
               data-descripcion="{{$product->name}}"
               data-price="{{$product->price}}"
-              data-proveedor="{{$product->proveedor}}"
+              data-proveedor="{{$product->provedor}}"
               data-codigo="{{$product->code}}"
               data-num-parte="{{$product->num_parte}}"
               data-currency="{{$product->currency}}"

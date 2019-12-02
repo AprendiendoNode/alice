@@ -212,16 +212,76 @@ $(function () {
     
   })
 
+  $('#add_shopping_cart').on('click', function(){
+    var data_gabinete = get_gabinetes();
+    var data_switches = get_gabinetes();
+    var bobinas = get_bobinas();
+    var gabinetes = data_gabinete[1];
+    var switches = data_switches[1];
+    
+  });
+
 
   /**
 **** scripts del funcionamiento de la paginacion de Equip. activo, materiales,
 **** filtro por categoria y aps, firewalls y switches dinamicos
   */
 
+    function get_bobinas(){
+      var cantidad_bobinas = 0;
+      var metros_x_bobina = 305;
+      var prom_cable_antena = 55;
+      var merma = 1.1;
+      
+      var data = [];
+      var total = 0.0;
+      var data_aps = get_aps();
+      var api = JSON.stringify(data_aps[1]);
+      var ape = JSON.stringify(data_aps[2]);
+      var antenas = parseFloat(api) + parseFloat(ape); 
+      cantidad_bobinas = ((antenas * prom_cable_antena) / metros_x_bobina) * merma;
+      var select_bobinas = document.getElementsByClassName("bobinas_select");
+      var element = {}
+      var bobinas = [];
+
+      var data = [];
+
+      for(var i = 0;i < select_bobinas.length - 1; i++)
+      {
+        element = {"id" : $(select_bobinas[i]).val(),
+                    "cant" : parseInt(cantidad_bobinas)}
+
+        total=  parseInt(cantidad_bobinas);         
+        bobinas.push(element);
+      }
+
+      return data = [bobinas, total];
+    }
+
+    function get_gabinetes(){
+      var data = [];
+      var select_gabinete = document.getElementsByClassName("gabinetes_select");
+      var cant_gabinete = document.getElementsByClassName("gabinetes_cant");
+      var element = {}
+      var gabinetes = [];
+      var total = 0;
+
+      for(var i = 0;i < select_gabinete.length - 1; i++)
+      {
+        element = {"id" : $(select_gabinete[i]).val(),
+                    "cant" : parseFloat(cant_gabinete[i].value)}
+
+        total+= element.cant;
+        gabinetes.push(element);
+      }
+
+      return data = [gabinetes, total];
+    }
+
     function get_aps(){
       var select_aps = document.getElementsByClassName("aps_modelo");
       var cant_aps = document.getElementsByClassName("aps_cant");
-      var element = {}
+      var element = {};
       var aps = [];
       var api = 0;
       var ape = 0;
@@ -345,17 +405,26 @@ $(function () {
     $('#products-grid-materiales').on('click', '.pagination a', function(e) {
         e.preventDefault();
         var pg = getPaginationSelectedPage($(this).attr('href'));
-        var data_aps= get_aps();
+        var data_aps = get_aps();
         var data_switches = get_switches();
+        var data_bobinas = get_bobinas();
         var aps = JSON.stringify(data_aps[0]);
-        var api = data_aps[1];
-        var ape = data_aps[2];
+        var api = parseInt(data_aps[1]);
+        var ape = parseInt(data_aps[2]);
         var firewalls = JSON.stringify(get_firewalls());
         var switches = JSON.stringify(data_switches[0]);
         var switch_cant = data_switches[1];
+        var data_gabinete = get_gabinetes();
+        var bobinas = data_bobinas[1];
+        var gabinetes = data_gabinete[1];
+        var switches = data_switches[1];
+        var material = $('.material_select').val();
+        var medida = $('.medida_select').val();
+       console.log(data_bobinas);
+    //url = `/items/ajax/second/${api}/${switch_cant}/119/${gabinetes}/${material}/${medida}`;
 
         $.ajax({
-            url: `/items/ajax/second/${aps}/${api}/${ape}/${firewalls}/${switches}/${switch_cant}`,
+            url : `/items/ajax/second/${api}/${switch_cant}/119/${gabinetes}/${material}/${medida}`,
             data: { page: pg },
             success: function(data) {
                 $('#products-grid-materiales').html(data);
@@ -426,14 +495,21 @@ $(function () {
     e.preventDefault();
     var data_aps = get_aps();
     var data_switches = get_switches();
+    var data_bobinas = get_bobinas();
     var aps = JSON.stringify(data_aps[0]);
-    var api = data_aps[1];
-    var ape = data_aps[2];
+    var api = parseInt(data_aps[1]);
+    var ape = parseInt(data_aps[2]);
     var firewalls = JSON.stringify(get_firewalls());
     var switches = JSON.stringify(data_switches[0]);
     var switch_cant = data_switches[1];
-
-    url = `/items/ajax/second/${aps}/${api}/${ape}/${firewalls}/${switches}/${switch_cant}`;
+    var data_gabinete = get_gabinetes();
+    var bobinas = data_bobinas[1];
+    var gabinetes = data_gabinete[1];
+    var switches = data_switches[1];
+    var material = $('.material_select').val();
+    var medida = $('.medida_select').val();
+    console.log(data_bobinas);
+    url = `/items/ajax/second/${api}/${switch_cant}/119/${gabinetes}/${material}/${medida}`;
     getArticlesMateriales(url);
   })
 

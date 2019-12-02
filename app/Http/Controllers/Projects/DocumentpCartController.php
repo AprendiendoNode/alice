@@ -10,6 +10,7 @@ use \Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Projects\Documentp;
+use App\Models\Catalogs\Product;
 use Auth;
 use DB;
 
@@ -27,9 +28,13 @@ class DocumentpCartController extends Controller
         $product_sw = DB::select('CALL px_products_swiches');
         $product_ap = DB::select('CALL px_products_antenas');
         $product_fw = DB::select('CALL px_products_firewalls');
-
-        return view('permitted.documentp.documentp_cart', compact('grupos', 'verticals', 'itc'
-              , 'categories', 'type_service', 'installation','comerciales' ,'product_ap', 'product_sw', 'product_fw'));
+        $products_bobinas = DB::table('products')->where('name', 'LIKE', '%bobina%')->get();
+        $products_gabinetes = DB::table('products')->where('name', 'LIKE', '%gabinete%')->get();
+        $materiales = DB::table('product_material')->get();
+        $medidas = DB::table('product_measure')->get();
+        
+        return view('permitted.documentp.documentp_cart', compact('grupos', 'verticals', 'itc','products_bobinas','materiales', 'medidas',
+              'products_gabinetes', 'categories', 'type_service', 'installation','comerciales' ,'product_ap', 'product_sw', 'product_fw'));
 
     }
 
@@ -58,10 +63,25 @@ class DocumentpCartController extends Controller
           }
 
         } else if ($type == 'second') {
-          $products_m = DB::select('CALL px_products_propuesta_antenas_materiales(?,?,?)', array($api, $ape, $switch_cant));
+          $products_m = DB::select('CALL px_antenas_internas_materiales(?,?,?,?,?,?)', array($api, $ape, $switch_cant));
           //dd($products_m);
           $products_materiales =  $this->paginate($products_m, $perPage = 12,  null , $options = []);
 
+          return view('permitted.documentp.products_materiales', ['products_materiales' => $products_materiales])->render();
+
+        }
+
+    }
+
+    public function getItemTypeMaterials($type, $api, $switch_cant, $bobinas, $gabinetes, $material, $medida)
+    {
+       $id_user = Auth::user()->id;
+
+        if ($type == 'second') {
+          $products_m = DB::select('CALL px_antenas_internas_materiales(?,?,?,?,?,?)', array($api, $switch_cant, $bobinas, $gabinetes, $material, $medida));
+          //dd($products_m);
+          $products_materiales =  $this->paginate($products_m, $perPage = 12,  null , $options = []);
+          
           return view('permitted.documentp.products_materiales', ['products_materiales' => $products_materiales])->render();
 
         }
@@ -126,6 +146,34 @@ class DocumentpCartController extends Controller
 
     }
 
+    public function createTableTempProducts($aps ,$firewalls, $switches, $bobinas, $gabinetes)
+    {
+      $id_user = Auth::user()->id;
+      $data_products = json_decode($products);
+
+      $collection = collect($data_products);
+      // Filtrando datos sin id y cantidad
+      $data_products = $collection->whereNotIn('id', 0)
+                                ->whereNotIn('cant', 0)->whereNotIn('cant', "");;
+
+      $tablaProducts = 'products_temp' . $id_user;
+
+      if (!Schema::hasTable($tablaProducts)) {
+          Schema::create($tablaProducts, function (Blueprint $table) use ($tablaProducts) {
+              $table->integer('id');
+              $table->integer('cantidad');
+              $table->timestamps();
+          });
+      }
+
+      foreach ($dataEquipos as $data)
+      {
+        DB::table($tablaProducts)->insert(
+            ['id' => $data->id, 'cantidad' => $data->cant]
+        );
+      }
+    }
+
     public function getCategories($category, $material, $type, $medida)
     {
       /* Si llega vacio y la categoria es diferente de 
@@ -169,6 +217,11 @@ class DocumentpCartController extends Controller
       $types_material = DB::table('product_type_material')->select('id', 'name')->where('product_material_id', $id)->get();
       
       return $types_material;
+    }
+
+    public function getProductsByIds(Request $request)
+    {
+      $products = DB::select('CALL px_products_xcategoria_ydescripcion(?,?,?,?,?)', array($products));
     }
 
     function paginate($items, $perPage, $page , $options = [])
