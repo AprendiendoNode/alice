@@ -1,7 +1,8 @@
 $(function() {
   $(".first_tab").champ();
   $(".select2").select2();
-
+  $("#select_proyecto").addClass("d-none");
+  $("#select_sitio").addClass("d-none");
   $('#date_to_search').datepicker({
     language: 'es',
     format: "yyyy",
@@ -37,6 +38,37 @@ $(function() {
       clearBtn: true
     }).datepicker("setDate",'now');
 
+
+$('#tipo_sabana').on('change',function(){
+  var opcion= parseInt($('#tipo_sabana').val());
+    console.log(opcion);
+  switch (opcion) {
+    case 1://Todo Sitwifi
+    $("#select_proyecto").addClass("d-none");
+    $("#select_sitio").addClass("d-none");
+    $(".first_tab").addClass("d-none");
+    $("#cargando").removeClass("d-none");
+
+      break;
+
+    case 2: //Por proyecto
+    $("#select_sitio").addClass("d-none");
+    $("#cargando").addClass("d-none");
+    $("#select_proyecto").removeClass("d-none");
+      break;
+
+    case 3://Por sitio
+    $("#select_proyecto").addClass("d-none");
+    $("#cargando").addClass("d-none");
+    $("#select_sitio").removeClass("d-none");
+      break;
+
+    default:
+
+  }
+
+});
+  //Por sitio
   $("#cliente").on('change', function(e) {
     var _token = $('input[name="_token"]').val();
     var cliente = $('#cliente').val();
@@ -72,7 +104,21 @@ $(function() {
     getViaticsByHotel(cliente);
     get_table_budget(cliente,'');
   });
+  //Por cadena
+  $('#proyecto').on('change',function(){
+    var _token = $('input[name="_token"]').val();
+    var cadena = $('#proyecto').val();
+    //$(".first_tab").addClass("d-none");
+    $("#cargando").removeClass("d-none");
 
+//Implementar AJAX para obtener información basica de la cadena
+
+get_contracts_cadena(cadena);//Obtenemos contratos maestros
+
+  });
+
+
+  //Por sitio
   function get_contracts(cliente) {
     var _token = $('meta[name="csrf-token"]').attr('content');
     var id = cliente;
@@ -90,6 +136,29 @@ $(function() {
       }
     });
   }
+  //Por cadena
+
+  function get_contracts_cadena(cadena){
+    var _token= $('meta[name="csrf-token"]').attr('content');
+    var id = cadena;
+    $.ajax({
+      type: "POST",
+      url: "/get_all_contracts_by_cadena",
+      data: { _token : _token, id: id },
+      success: function (data){
+        //console.log(data);
+        //$('#header_cadena small').text('Hotel');
+        table_masters(data, $("#all_contracts"));
+        $(".first_tab").removeClass("d-none");
+        $("#cargando").addClass("d-none");
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+  }
+
+
 
   $('.filtrarDashboard').on('click', function(){
     get_nps_hotel($('#cliente').val());

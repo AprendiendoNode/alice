@@ -28,6 +28,26 @@
     @if( auth()->user()->can('View dash sabana') )
 
       <div class="input-group mb-3">
+      <label class="mr-1">Tipo de informe:</label>
+      <select id="tipo_sabana" class="form-control select2">
+         <option value="1">Todo Sitwifi</option>
+         <option value="2">Por Proyecto</option>
+         <option value="3">Por Sitio</option>
+       </select>
+     </div>
+
+     <div id="select_proyecto"class="input-group mb-3">
+       <label class="mr-1">Proyecto:</label>
+       <select id="proyecto" class="form-control select2">
+         <option value="" selected> Elija </option>
+         @forelse ($cadena as $data_cadena)
+           <option value="{{ $data_cadena->id }}"> {{ $data_cadena->name }} </option>
+         @empty
+         @endforelse
+       </select>
+     </div>
+
+      <div id="select_sitio"class="input-group mb-3">
         <label class="mr-1">Sitio:</label>
         <select id="cliente" class="form-control select2">
           <option value="" selected> Elija uno... </option>
@@ -456,7 +476,7 @@
                           <th> <small>Razón social</small> </th>
                           <th > <small>Clasificación</small> </th>
                           <th > <small>Vertical</small> </th>
-                          <th > <small>Cadena</small> </th>
+                          <th id="header_cadena"> <small >Cadena</small> </th>
                           <th > <small>Estado</small> </th>
                           <th > <small>Vencimiento</small> </th>
                           <th > <small>Anexos</small> </th>

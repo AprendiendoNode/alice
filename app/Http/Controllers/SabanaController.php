@@ -13,14 +13,16 @@ use DateTime;
 use DB;
 use Auth;
 use Mail;
+use App\Cadena;
 
 class SabanaController extends Controller
 {
   public function index()
   {
     $user_id = Auth::user()->id;
+    $cadena = Cadena::select('id', 'name')->get();
     $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array($user_id, "SuperAdmin"));
-    return view('permitted.sabana', compact('hotels'));
+    return view('permitted.sabana', compact('hotels','cadena'));
   }
   public function informacionCliente(Request $request)
   {
@@ -36,6 +38,13 @@ class SabanaController extends Controller
     $maestro = DB::select('CALL px_contrac_master_data_site(?)', array($hotel));
     return $maestro;
   }
+
+  public function get_all_contracts_by_cadena(Request $request){
+    $cadena = $request->id;
+    $maestro = DB::select('CALL px_contrac_master_data_cadena(?)', array($cadena));
+    return $maestro;
+  }
+  
   public function get_all_annexes_by_master(Request $request)
   {
     $master = $request->id;
