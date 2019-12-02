@@ -512,7 +512,8 @@
                 </div>
 
                   <div class="row">
-                  <div class="col-md-3 col-xs-12 mb-3">
+                    <div class="col-md-4 col-xs-12"></div>
+                  <div class="col-md-4 col-xs-12 mb-3">
                     <div class="input-group  flex-nowrap">
                       <div class="input-group-prepend">
                         <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
@@ -735,14 +736,15 @@
                 </div>
               </div>
               <div class="tab_content">
-                <div class="row">
-                  <div class="col-md-12">
+                  <div class="row">
                     <div class="w-100 text-center">
                       <h3 style="font-weight: bold;">Presupuesto anual de mantenimiento del sitio</h3>
                       <h4>Montos en dólares</h4>
                     </div>
-
-                    <div class="col-md-3 col-xs-12 mb-3">
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4 col-xs-12"></div>
+                    <div class="col-md-4 col-xs-12 mb-3">
                       <div class="input-group  flex-nowrap">
                         <div class="input-group-prepend">
                           <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
@@ -752,6 +754,7 @@
                           <button class="btn btn-outline-info" type="button" id="btn-filtrar">Filtrar</button>
                         </div>
                       </div>
+                  </div>
                   </div>
 
                     <div class="table-responsive">
@@ -800,8 +803,6 @@
                         </tfoot>
                       </table>
                     </div>
-                  </div>
-                </div>
               </div>
               <div class="tab_content">
                   <h3 style="font-weight: bold; margin-left: 45%;">Pagos</h3>
@@ -815,7 +816,7 @@
                     </div>
                   </div>
                   <div class="col-md-1"></div>
-                  <div class="table-responsive divEQ">
+                  <div class="table-responsive">
                     <table id="table_pays" class="table table-striped table-bordered table-hover text-white compact-tab" style="width:100%">
                       <thead>
                         <tr class="bg-aqua text-center" style="background: #088A68;">
@@ -852,7 +853,7 @@
                 <div class="d-flex justify-content-center border-bottom w-100">
                   <div id="graph_viatics" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                 </div>
-                <div class="table-responsive divEQ">
+                <div class="table-responsive">
                   <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100">
                     <thead>
                       <tr class="bg-aqua text-center">
@@ -887,7 +888,10 @@
               </div>
 
               <div class="tab_content">
-                Under construction
+                <div class="text-center">
+                  <h3 style="font-weight: bold;" >En construcción</h3>
+                  <img src="/images/docs/under_construction.svg" style="width: 50%;">
+                </div>
               </div>
               <div id="consumo_echarts" class="tab_content">
                 <div class="text-center">
