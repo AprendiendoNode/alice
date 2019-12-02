@@ -654,7 +654,7 @@
 
 
               <div class="tab_content">
-                  <h3 style="font-weight: bold; margin-left: 34%;">Todos los equipos del sitio</h3>
+                  <h3 id ="title_equipments"style="font-weight: bold; margin-left: 34%;">Todos los equipos del sitio</h3>
                   <div class="row">
                   <div class=" col-sm-1 col-md-1 mr-3"></div>
                   <div class="d-flex justify-content-center border-bottom w-100 col-sm-5 col-md-5">

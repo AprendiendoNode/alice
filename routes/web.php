@@ -835,9 +835,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_all_contracts_by_cadena', 'SabanaController@get_all_contracts_by_cadena');
     Route::post('get_all_annexes_by_master', 'SabanaController@get_all_annexes_by_master');
     Route::post('get_all_equipmentsbyhotel', 'SabanaController@get_table_equipments');
+    Route::post('get_all_equipmentsbycadena', 'SabanaController@get_table_equipments_cadena');
     Route::post('get_nps_hotel', 'SabanaController@get_nps_hotel');
     Route::post('get_nps_comment_hotel', 'SabanaController@get_nps_comment_hotel');
     Route::post('get_graph_equipments','SabanaController@get_graph_equipments');
+    Route::post('get_graph_equipments_cadena','SabanaController@get_graph_equipments_cadena');
     Route::post('get_budget_annual_hotel','SabanaController@get_budget_annual_hotel');
     Route::post('get_payment_folios_gastos','SabanaController@get_payment_folios_gastos');
     Route::post('get_viatics_gastos','SabanaController@get_viatics_gastos');
@@ -845,6 +847,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_ticketsxtipo_hotel','SabanaController@get_ticketsxtype_hotel');
     Route::post('get_ticketsxstatus_hotel','SabanaController@get_ticketsxstatus_hotel');
     Route::post('get_graph_equipments_status','SabanaController@get_graph_equipments_status');
+    Route::post('get_graph_equipments_status_cadena','SabanaController@get_graph_equipments_status_cadena');
     Route::post('sabana_modal_encuestas','SabanaController@sabana_modal_encuestas');
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');

@@ -111,9 +111,12 @@ $('#tipo_sabana').on('change',function(){
     //$(".first_tab").addClass("d-none");
     $("#cargando").removeClass("d-none");
 
-//Implementar AJAX para obtener información basica de la cadena
+$('#title_equipments').text('Todos los equipos de la cadena'); //Cambiamos el titulo de el apartado de equipos
 
 get_contracts_cadena(cadena);//Obtenemos contratos maestros
+get_info_equipments_cadena(cadena);
+get_graph_equipments_cadena(cadena);
+get_graph_equipments_status_cadena(cadena);
 
   });
 
@@ -387,6 +390,25 @@ get_contracts_cadena(cadena);//Obtenemos contratos maestros
 
   }
 
+  function get_info_equipments_cadena(cliente) {
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= cliente;
+    $.ajax({
+      type: "POST",
+      url: "/get_all_equipmentsbycadena",
+      data: { _token : _token, id: id },
+      success: function (data){
+        $('.divEQ').addClass('tableFixHead');
+        table_equipments(data, $("#all_equipments"));
+
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+
+  }
+
   function get_info_equipments(cliente) {
     var _token = $('meta[name="csrf-token"]').attr('content');
     var id= cliente;
@@ -426,13 +448,52 @@ get_contracts_cadena(cadena);//Obtenemos contratos maestros
 
   }
 
+  function get_graph_equipments_cadena(idcadena) {
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idcadena;
+    $.ajax({
+      type: "POST",
+      url: "/get_graph_equipments_cadena",
+      data: { _token : _token, id: id },
+      success: function (data){
 
-  function get_graph_equipments_status(idcadena) {
+        graph_equipments('graph_equipments',data,"Clasificación","Tipo de equipo");
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+
+  }
+
+
+  function get_graph_equipments_status(idsitio) {
     var _token = $('meta[name="csrf-token"]').attr('content');
     var id= idcadena;
     $.ajax({
       type: "POST",
       url: "/get_graph_equipments_status",
+      data: { _token : _token, id: id },
+      success: function (data){
+        //$('.divEQ').addClass('tableFixHead');
+        //table_equipments(data, $("#all_equipments"));
+        //console.log(data);
+        graph_equipments_status('graph_equipments_status',data);
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+
+  }
+
+
+  function get_graph_equipments_status_cadena(idcadena) {
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idcadena;
+    $.ajax({
+      type: "POST",
+      url: "/get_graph_equipments_status_cadena",
       data: { _token : _token, id: id },
       success: function (data){
         //$('.divEQ').addClass('tableFixHead');
@@ -933,9 +994,11 @@ function payments_table(datajson, table){
     "order": [[ 0, "asc" ]],
     paging: true,
     //"pagingType": "simple",
+    deferRender:true,
     Filter: true,
     searching: true,
     ordering: true,
+    "bSortClasses": false,
     "select": false,
     "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
     "columnDefs": [
@@ -980,9 +1043,9 @@ function payments_table(datajson, table){
                     "className": "text-center",
                 }
             ],
-            "select": {
-                'style': 'multi',
-            },
+        //    "select": {
+        //        'style': 'multi',
+        //    },
     // "columnDefs": [
     //     {
     //       "targets": 0,

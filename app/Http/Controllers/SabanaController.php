@@ -44,7 +44,7 @@ class SabanaController extends Controller
     $maestro = DB::select('CALL px_contrac_master_data_cadena(?)', array($cadena));
     return $maestro;
   }
-  
+
   public function get_all_annexes_by_master(Request $request)
   {
     $master = $request->id;
@@ -54,6 +54,11 @@ class SabanaController extends Controller
   public function get_table_equipments(Request $request){
     $id_hotel=$request->id;
     $result= DB::Select('CALL px_equipmentsxhotel(?)',array($id_hotel));
+    return $result;
+  }
+  public function get_table_equipments_cadena(Request $request){
+    $cadena=$request->id;
+    $result= DB::Select('CALL px_equipmentsxcadena(?)',array($cadena));
     return $result;
   }
   public function get_nps_hotel(Request $request){
@@ -79,9 +84,22 @@ class SabanaController extends Controller
     $result = DB::select('CALL px_equiposxtipo_hotel (?)',array($id_hotel));
     return $result;
   }
+
+  public function get_graph_equipments_cadena(Request $request){
+    $cadena = $request->id;
+    $result = DB::select('CALL px_equiposxtipo_cadena (?)',array($cadena));
+    return $result;
+  }
+
   public function get_graph_equipments_status(Request $request){
     $id_hotel = $request->id;
     $result = DB::select('CALL px_equiposxstatus_hotel (?)',array($id_hotel));
+    return $result;
+  }
+
+  public function get_graph_equipments_status_cadena(Request $request){
+    $cadena = $request->id;
+    $result = DB::select('CALL px_equiposxstatus_cadenas (?)',array($cadena));
     return $result;
   }
   public function get_budget_annual_hotel(Request $request){
