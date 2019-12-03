@@ -208,6 +208,7 @@ get_graph_equipments_status_cadena(cadena);
         status.Sitio,
         status.IT,
         status.fecha_update,
+        status.comentario,
         getValueCurrent(status.NPS),
       ]);
     });
@@ -469,7 +470,7 @@ get_graph_equipments_status_cadena(cadena);
 
   function get_graph_equipments_status(idsitio) {
     var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
+    var id= idsitio;
     $.ajax({
       type: "POST",
       url: "/get_graph_equipments_status",
@@ -1909,6 +1910,13 @@ function remplazar_thead_th(table, posicionini, posicionfin) {
 }
 
 $('#btn-filtrar-consumos, #tab_consumo').on('click', function(){
+  graph_client_day($('#cliente').val());
+  graph_gigabyte_day($('#cliente').val());
+  graph_top_aps_table($('#cliente').val());
+  general_table_comparative($('#cliente').val());
+});
+
+$(window).on('resize', function(){
   graph_client_day($('#cliente').val());
   graph_gigabyte_day($('#cliente').val());
   graph_top_aps_table($('#cliente').val());
