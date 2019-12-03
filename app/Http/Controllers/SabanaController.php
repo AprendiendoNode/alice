@@ -142,6 +142,12 @@ class SabanaController extends Controller
     $result = DB::connection('zendesk')->select('CALL px_ticketsxhotel(?)', array($id_hotel));
     return $result;
   }
+  public function get_tickets_by_cadena(Request $request){
+    $cadena=$request->id;
+
+    $result = DB::connection('zendesk')->select('CALL px_ticketsxcadena(?)', array($cadena));
+    return $result;
+  }
 
   public function get_ticketsxtype_hotel(Request $request ){
     $id_hotel=$request->id;
@@ -149,10 +155,21 @@ class SabanaController extends Controller
     return $result;
   }
 
+  public function get_ticketsxtype_cadena(Request $request ){
+    $cadena=$request->id;
+    $result = DB::connection('zendesk')->select('CALL px_ticketsxtype_hotel(?)', array($cadena));
+    return $result;
+  }
 
   public function get_ticketsxstatus_hotel(Request $request ){
     $id_hotel=$request->id;
     $result = DB::connection('zendesk')->select('CALL px_ticketsxstatus_hotel(?)', array($id_hotel));
+    return $result;
+  }
+
+  public function get_ticketsxstatus_cadena(Request $request ){
+    $cadena=$request->id;
+    $result = DB::connection('zendesk')->select('CALL px_ticketsxstatus_cadena(?)', array($cadena));
     return $result;
   }
 

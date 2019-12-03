@@ -117,6 +117,9 @@ get_contracts_cadena(cadena);//Obtenemos contratos maestros
 get_info_equipments_cadena(cadena);
 get_graph_equipments_cadena(cadena);
 get_graph_equipments_status_cadena(cadena);
+get_table_tickets_cadena(cadena);
+get_graph_tickets_type_cadena(cadena);
+get_graph_tickets_status_cadena(cadena);
 
   });
 
@@ -609,9 +612,9 @@ get_table_budget(idcliente,fecha)
     });
   }
 
-  function get_table_tickets(idcadena){
+  function get_table_tickets(id_sitio){
     var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
+    var id= id_sitio;
     $.ajax({
         type: "POST",
         url: "/get_tickets_by_hotel",
@@ -627,9 +630,27 @@ get_table_budget(idcliente,fecha)
     });
   }
 
-  function get_graph_tickets_type(idcadena){
+  function get_table_tickets_cadena(idcadena){
     var _token = $('meta[name="csrf-token"]').attr('content');
     var id= idcadena;
+    $.ajax({
+        type: "POST",
+        url: "/get_tickets_by_cadena",
+        data: { id: id, _token : _token },
+        success: function (data){
+          //console.log(data);
+          generate_table_tickets(data, $('#table_tickets_site'));
+          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
+  }
+
+  function get_graph_tickets_type(idsitio){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idsitio;
     $.ajax({
         type: "POST",
         url: "/get_ticketsxtipo_hotel",
@@ -647,13 +668,51 @@ get_table_budget(idcliente,fecha)
         }
     });
   }
-
-  function get_graph_tickets_status(idcadena){
+  function get_graph_tickets_type_cadena(idcadena){
     var _token = $('meta[name="csrf-token"]').attr('content');
     var id= idcadena;
     $.ajax({
         type: "POST",
+        url: "/get_ticketsxtipo_cadena",
+        data: { id: id, _token : _token },
+        success: function (data){
+          //console.log(data);
+          if(data==''){
+            data=[{},{},{},{},{}] //Necesario para evitar errores cuando es vacio.
+          }
+          graph_tickets_type('graph_type_tickets',data);
+          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
+  }
+
+  function get_graph_tickets_status(idsitio){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idsitio;
+    $.ajax({
+        type: "POST",
         url: "/get_ticketsxstatus_hotel",
+        data: { id: id, _token : _token },
+        success: function (data){
+          //console.log(data);
+          graph_tickets_status('graph_status_tickets',data);
+          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
+  }
+
+  function get_graph_tickets_status_cadena(idcadena){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idcadena;
+    $.ajax({
+        type: "POST",
+        url: "/get_ticketsxstatus_cadena",
         data: { id: id, _token : _token },
         success: function (data){
           //console.log(data);

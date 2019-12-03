@@ -844,8 +844,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_payment_folios_gastos','SabanaController@get_payment_folios_gastos');
     Route::post('get_viatics_gastos','SabanaController@get_viatics_gastos');
     Route::post('get_tickets_by_hotel','SabanaController@get_tickets_by_hotel');
+    Route::post('get_tickets_by_cadena','SabanaController@get_tickets_by_cadena');
     Route::post('get_ticketsxtipo_hotel','SabanaController@get_ticketsxtype_hotel');
+    Route::post('get_ticketsxtipo_cadena','SabanaController@get_ticketsxtype_cadena');
     Route::post('get_ticketsxstatus_hotel','SabanaController@get_ticketsxstatus_hotel');
+    Route::post('get_ticketsxstatus_cadena','SabanaController@get_ticketsxstatus_cadena');
     Route::post('get_graph_equipments_status','SabanaController@get_graph_equipments_status');
     Route::post('get_graph_equipments_status_cadena','SabanaController@get_graph_equipments_status_cadena');
     Route::post('sabana_modal_encuestas','SabanaController@sabana_modal_encuestas');

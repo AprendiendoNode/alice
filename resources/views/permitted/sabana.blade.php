@@ -30,8 +30,8 @@
       <div class="input-group mb-3">
       <label class="mr-1">Tipo de informe:</label>
       <select id="tipo_sabana" class="form-control select2">
-         <!--<option value="1">Todo Sitwifi</option>
-         <option value="2">Por Proyecto</option>-->
+         <option value="1">Todo Sitwifi</option>
+         <option value="2">Por Proyecto</option>
          <option value="0">Elige</option>
          <option value="3">Por Sitio</option>
        </select>
@@ -725,7 +725,7 @@
                             <th class="bg-aqua"> <small>Estatus</small> </th>
                             <th class="bg-aqua"> <small>Prioridad</small> </th>
                             <th class="bg-aqua"> <small>Canal</small> </th>
-                            <th class="bg-aqua"> <small>Nivel de satisfacción</small> </th>
+                            <th id="#tickets_satisfac"class="bg-aqua"> <small>Nivel de satisfacción</small> </th>
                             <th class="bg-aqua"> <small>Cliente</small> </th>
                             <th class="bg-aqua"> <small>Fecha Solicitud</small> </th>
                             <th class="bg-aqua"> <small>Atendió</small> </th>
