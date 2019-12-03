@@ -117,6 +117,8 @@ get_contracts_cadena(cadena);//Obtenemos contratos maestros
 get_info_equipments_cadena(cadena);
 get_graph_equipments_cadena(cadena);
 get_graph_equipments_status_cadena(cadena);
+get_nps_cadena(cadena);
+get_nps_comment_cadena(cadena);
 get_table_tickets_cadena(cadena);
 get_graph_tickets_type_cadena(cadena);
 get_graph_tickets_status_cadena(cadena);
@@ -187,18 +189,39 @@ get_graph_tickets_status_cadena(cadena);
     var _token = $('meta[name="csrf-token"]').attr('content');
     var anio = $('#date_to_search').val();
     var id = $('#cliente').val();
-    $.ajax({
-        type: "POST",
-        url: "/sabana_modal_encuestas",
-        data: { _token: _token, anio: anio, encuestas: encuestas, hotel: id },
-        success: function (data){
-          table_boxes_cali(data, $('#table_boxes_ppd'));
-          document.getElementById("table_boxes_ppd_wrapper").childNodes[0].setAttribute("class", "form-inline");
-        },
-        error: function (data) {
-          console.log('Error:', data);
-        }
-    });
+    var cadena = $('#proyecto').val();
+    var tipo = parseInt($('#tipo_sabana').val());
+
+    if(tipo == 1) {
+      //TODO SITWIFI
+    } else if(tipo == 2) {
+      $.ajax({
+          type: "POST",
+          url: "/sabana_modal_encuestas_cadena",
+          data: { _token: _token, anio: anio, encuestas: encuestas, cadena: cadena },
+          success: function (data){
+            table_boxes_cali(data, $('#table_boxes_ppd'));
+            document.getElementById("table_boxes_ppd_wrapper").childNodes[0].setAttribute("class", "form-inline");
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+      });
+    } else if(tipo == 3) {
+      $.ajax({
+          type: "POST",
+          url: "/sabana_modal_encuestas",
+          data: { _token: _token, anio: anio, encuestas: encuestas, hotel: id },
+          success: function (data){
+            table_boxes_cali(data, $('#table_boxes_ppd'));
+            document.getElementById("table_boxes_ppd_wrapper").childNodes[0].setAttribute("class", "form-inline");
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+      });
+    }
+
   }
 
   function table_boxes_cali(datajson, table) {
@@ -227,6 +250,33 @@ get_graph_tickets_status_cadena(cadena);
       data: { _token : _token, id: id, anio: anio },
       success: function (data){
         //console.log(data);
+        //console.log(data[0]['nps']);
+        //graph_nps_hotel('main_nps',data[0]['nps']);
+        graph_gauge_hotel('main_nps_hotel', 'NPS', '100', '100', data[0]['nps']);
+        $('#total_promotores').text(data[0]['pr']);
+        $('#total_pasivos').text(data[0]['ps']);
+        $('#total_detractores').text(data[0]['d']);
+        //$('#total_survey').text(data[0]['enviadas']);
+        //$('#answered').text(data[0]['respondieron']);
+        //$('#unanswered').text(data[0]['abstenidos']);
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+
+  }
+
+  function get_nps_cadena(idcadena){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var anio = $('#date_to_search').val();
+    var id= idcadena;
+    $.ajax({
+      type: "POST",
+      url: "/get_nps_cadena",
+      data: { _token : _token, id: id, anio: anio },
+      success: function (data){
+        console.log(data);
         //console.log(data[0]['nps']);
         //graph_nps_hotel('main_nps',data[0]['nps']);
         graph_gauge_hotel('main_nps_hotel', 'NPS', '100', '100', data[0]['nps']);
@@ -382,6 +432,25 @@ get_graph_tickets_status_cadena(cadena);
     $.ajax({
       type: "POST",
       url: "/get_nps_comment_hotel",
+      data: { _token : _token, id: id },
+      success: function (data){
+        //console.log(data);
+        table_comments_hotel(data,$('#nps_comments'));
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+
+  }
+
+  function get_nps_comment_cadena(idcadena){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= idcadena;
+    //console.log(id);
+    $.ajax({
+      type: "POST",
+      url: "/get_nps_comment_cadena",
       data: { _token : _token, id: id },
       success: function (data){
         //console.log(data);

@@ -837,7 +837,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_all_equipmentsbyhotel', 'SabanaController@get_table_equipments');
     Route::post('get_all_equipmentsbycadena', 'SabanaController@get_table_equipments_cadena');
     Route::post('get_nps_hotel', 'SabanaController@get_nps_hotel');
+    Route::post('get_nps_cadena', 'SabanaController@get_nps_cadena');
     Route::post('get_nps_comment_hotel', 'SabanaController@get_nps_comment_hotel');
+    Route::post('get_nps_comment_cadena', 'SabanaController@get_nps_comment_cadena');
     Route::post('get_graph_equipments','SabanaController@get_graph_equipments');
     Route::post('get_graph_equipments_cadena','SabanaController@get_graph_equipments_cadena');
     Route::post('get_budget_annual_hotel','SabanaController@get_budget_annual_hotel');
@@ -852,6 +854,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_graph_equipments_status','SabanaController@get_graph_equipments_status');
     Route::post('get_graph_equipments_status_cadena','SabanaController@get_graph_equipments_status_cadena');
     Route::post('sabana_modal_encuestas','SabanaController@sabana_modal_encuestas');
+    Route::post('sabana_modal_encuestas_cadena','SabanaController@sabana_modal_encuestas_cadena');
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');
     Route::post('/search_info_gen', 'Viatics\DashboardViaticController@info_gen');

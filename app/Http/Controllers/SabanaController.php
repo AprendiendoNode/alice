@@ -72,10 +72,27 @@ class SabanaController extends Controller
     $result = DB::select('CALL px_NPS_sitio (?, ?)', array($id_hotel, $anio));
     return $result;
   }
+  public function get_nps_cadena(Request $request){
+    $id_cadena=$request->id;
+    $anio=$request->anio;
+
+    if($anio == "") {
+      $anio = date('Y');
+    }
+
+    $result = DB::select('CALL px_NPS_cadena (?, ?)', array($id_cadena, $anio));
+    return $result;
+  }
 
   public function get_nps_comment_hotel(Request $request){
     $id_hotel=$request->id;
     $result = DB::select('CALL px_get_results_nps_sitio (?)', array($id_hotel));
+    return $result;
+  }
+
+  public function get_nps_comment_cadena(Request $request){
+    $id_cadena=$request->id;
+    $result = DB::select('CALL px_get_results_nps_cadena (?)', array($id_cadena));
     return $result;
   }
 
@@ -193,6 +210,29 @@ class SabanaController extends Controller
     }
 
     $result = DB::select('CALL status_nps_anio (?, ?, ?)', array($date, $encuestas, $hotel));
+    return json_encode($result);
+  }
+
+  public function sabana_modal_encuestas_cadena(Request $request ){
+    $date= $request->anio;
+    $encuestas= $request->encuestas;
+    $cadena= $request->cadena;
+
+    if ($date == '') {
+      $date = date('Y-m-d');
+    } else {
+      $date = $date."-01-01";
+    }
+
+    if($encuestas == "box_promo") {
+      $encuestas = 4;
+    } else if($encuestas == "box_pas") {
+      $encuestas = 5;
+    } else {
+      $encuestas = 6;
+    }
+info($date."-".$encuestas."-".$cadena);
+    $result = DB::select('CALL px_status_nps_cadena_anio (?, ?, ?)', array($date, $encuestas, $cadena));
     return json_encode($result);
   }
 
