@@ -55,13 +55,14 @@ $('#tipo_sabana').on('change',function(){
     $("#select_sitio").addClass("d-none");
     $("#cargando").addClass("d-none");
     $("#select_proyecto").removeClass("d-none");
+
       break;
 
     case 3://Por sitio
     $("#select_proyecto").addClass("d-none");
     $("#cargando").addClass("d-none");
     $("#select_sitio").removeClass("d-none");
-    $('#viatic_site').remove();//remueve la columna de sitio en dado caso que exista.
+    //$('#viatic_site').remove();//remueve la columna de sitio en dado caso que exista.
       break;
 
     default:
@@ -75,6 +76,8 @@ $('#tipo_sabana').on('change',function(){
     var cliente = $('#cliente').val();
     $(".first_tab").addClass("d-none");
     $("#cargando").removeClass("d-none");
+    $('#gral_sitio').removeClass('d-none');//Muestra la informacion por sitio
+    $('#gral_cadena').addClass('d-none');//oculta la informacion por cadena.
     $.ajax({
       type: "POST",
       url: "/informacionCliente",
@@ -109,6 +112,27 @@ $('#tipo_sabana').on('change',function(){
   $('#proyecto').on('change',function(){
     var _token = $('input[name="_token"]').val();
     var cadena = $('#proyecto').val();
+    $('#gral_sitio').addClass('d-none'); //Oculta la informacion de sitio
+    $('#gral_cadena').removeClass('d-none');//Muestra la tabla de informacion cadena
+    $.ajax({
+      type: "POST",
+      url: "/informacionCadena",
+      data: { cadena : cadena, _token : _token },
+      success: function (data){
+        console.log(data);
+        generate_table_info_cadena(data, $('#info_cadena'));
+        /*$("#imagenCliente").attr("src", "../images/hotel/" + data[0].dirlogo1);
+        $("#itcCliente").text(data[1].name + " -> " + data[1].email);
+        $("#cuartosCliente").text(data[0].num_hab == null ? "Sin informacion" : data[0].num_hab);
+        $("#telefonoCliente").text(data[0].Telefono);
+        $("#direccionCliente").text(data[0].Direccion);
+        $("#correoCliente").text(data[2].correo == null ? "Sin informacion" : data[2].correo);*/
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+
     //$(".first_tab").addClass("d-none");
     $(".first_tab").addClass("d-none");
     $("#cargando").removeClass("d-none");
@@ -297,6 +321,22 @@ getViaticsByCadena(cadena);
     });
 
   }
+  function generate_table_info_cadena(datajson, table){
+    table.DataTable().destroy();
+    var vartable = table.dataTable(Configuration_table);
+    vartable.fnClearTable();
+    $.each(datajson, function(index, status){
+      vartable.fnAddData([
+        '<img src="../images/hotel/'+status.dirlogo1+'" class="w-100" alt="">',
+        status.sitio,
+        status.Direccion,
+        status.Telefono,
+        status.num_hab,
+        status.name,
+        status.email
+      ]);
+    });
+  }
 
   function table_masters(datajson, table){
     table.DataTable().destroy();
@@ -476,7 +516,7 @@ getViaticsByCadena(cadena);
       data: { _token : _token, id: id },
       success: function (data){
         $('.divEQ').addClass('tableFixHead');
-        table_equipments(data, $("#all_equipments"));        
+        table_equipments(data, $("#all_equipments"));
       },
       error: function (data) {
         console.log('Error:', data);

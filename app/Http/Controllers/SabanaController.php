@@ -32,6 +32,16 @@ class SabanaController extends Controller
     $email = DB::table('hotels')->join("sucursals", "hotels.sucursal_id", "=", "sucursals.id")->select("sucursals.correo")->where("hotels.id",$hotel)->get();
     return array_merge(json_decode($result1),$itc,json_decode($email));
   }
+
+  public function informacionCadena(Request $request)
+  {
+    $cadena = $request->cadena;
+    //$result1 = DB::table('hotels')->where("cadena_id",$cadena)->get();
+    $result = DB::select('CALL px_setemailsnmp_cadena(?)', array($cadena));
+    //$email = DB::table('hotels')->join("sucursals", "hotels.sucursal_id", "=", "sucursals.id")->select("sucursals.correo")->where("hotels.id",$hotel)->get();
+    return $result;
+  }
+
   public function get_all_contracts_by_hotel(Request $request)
   {
     $hotel = $request->id;

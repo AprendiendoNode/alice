@@ -444,7 +444,7 @@
           <div class="content_wrapper">
               <div class="tab_content active">
                   <h3 style="font-weight: bold; margin-left: 40%;">Información general</h3>
-                  <div class="row">
+                  <div id="gral_sitio" class="row">
                     <div class="card col-md-6" style="width: 18rem;">
                       <img id="imagenCliente" class="card-img-top" style="max-height: 300px;" alt="Logo no encontrado :(">
                     </div>
@@ -465,6 +465,37 @@
                         <h5 class="card-title">Correo:</h5>
                         <p id="correoCliente" class="card-text"></p>
                       </div>
+                    </div>
+                  </div>
+
+                  <div id="gral_cadena" class="row">
+                    <div class="table-responsive">
+                      <table id="info_cadena" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
+                        <thead>
+                          <tr class="bg-aqua text-center">
+                            <th > <small>Logo</small> </th>
+                            <th> <small>Sitio</small> </th>
+                            <th> <small>Direccion</small> </th>
+                            <th > <small>Teléfono</small> </th>
+                            <th > <small>Habitaciones</small> </th>
+                            <th > <small>ITC</small> </th>
+                            <th > <small>Correo</small> </th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-center">
+                        </tbody>
+                        <tfoot >
+                          <tr >
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th ></th>
+                            <th></th>
+                            <th ></th>
+                            <th ></th>
+                          </tr>
+                        </tfoot>
+                      </table>
                     </div>
                   </div>
               </div>
