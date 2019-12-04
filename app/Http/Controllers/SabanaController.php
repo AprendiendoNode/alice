@@ -146,10 +146,25 @@ class SabanaController extends Controller
     return $res;
   }
 
+  public function get_payment_folios_gastos_cadena(Request $request)
+  {
+    $id_cadena = $request->id;
+    $res =  DB::select('CALL px_payments_cadena_folio_gastos(?)', array($id_cadena));
+    return $res;
+  }
+
   public function get_viatics_gastos(Request $request)
   {
     $id = $request->id;
     $res =  DB::select('CALL px_history_viatics_sitio(?)', array($id));
+    return $res;
+  }
+
+
+  public function get_viatics_gastos_cadena(Request $request)
+  {
+    $cadena = $request->id;
+    $res =  DB::select('CALL px_history_viatics_cadena(?)', array($cadena));
     return $res;
   }
 
@@ -174,7 +189,7 @@ class SabanaController extends Controller
 
   public function get_ticketsxtype_cadena(Request $request ){
     $cadena=$request->id;
-    $result = DB::connection('zendesk')->select('CALL px_ticketsxtype_hotel(?)', array($cadena));
+    $result = DB::connection('zendesk')->select('CALL px_ticketsxtype_cadena(?)', array($cadena));
     return $result;
   }
 
