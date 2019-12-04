@@ -1036,7 +1036,7 @@
     <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
     <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js?v=2.0.0')}}"></script>
     <script src="{{ asset('js/admin/payments/request_modal_payment.js')}}"></script>
-    <script src="{{ asset('js/admin/sabana/sabana.js?v=4.2.5')}}"></script>
+    <script src="{{ asset('js/admin/sabana/sabana.js?v=4.3.6')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">

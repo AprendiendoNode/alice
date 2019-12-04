@@ -53,14 +53,12 @@ $('#tipo_sabana').on('change',function(){
 
     case 2: //Por proyecto
     $("#select_sitio").addClass("d-none");
-    $("#cargando").addClass("d-none");
     $("#select_proyecto").removeClass("d-none");
 
       break;
 
     case 3://Por sitio
     $("#select_proyecto").addClass("d-none");
-    $("#cargando").addClass("d-none");
     $("#select_sitio").removeClass("d-none");
     //$('#viatic_site').remove();//remueve la columna de sitio en dado caso que exista.
       break;
@@ -194,8 +192,6 @@ getViaticsByCadena(cadena);
         //console.log(data);
         //$('#header_cadena small').text('Hotel');
         table_masters(data, $("#all_contracts"));
-        $(".first_tab").removeClass("d-none");
-        $("#cargando").addClass("d-none");
       },
       error: function (data) {
         console.log('Error:', data);
@@ -839,16 +835,7 @@ get_table_budget(idcliente,fecha)
           //console.log(data);
           graph_tickets_status('graph_status_tickets',data);
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
-          //!!!!!!!!!!!EL SIGUIENTE BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
-          $("#cargando").addClass("d-none");
-          $(".first_tab").removeClass("d-none");
-          if(document.getElementById("consumo_echarts").style.display == "block") {
-            graph_client_day_cadena(id);
-            graph_gigabyte_day_cadena(id);
-            graph_top_aps_table_cadena(id);
-            general_table_comparative_cadena(id);
-          }
-          //!!!!!!!!!!!EL ANTERIOR BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
+
         },
         error: function (data) {
           console.log('Error:', data);
@@ -1142,8 +1129,6 @@ function getViaticsByHotel(cliente){
       //console.log(data2);
       graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
       viatics_table(data, $("#table_viatics"));
-      $("#cargando").addClass("d-none");
-      $(".first_tab").removeClass("d-none");
     },
     error: function (data) {
       console.log('Error:', data);
@@ -1181,9 +1166,17 @@ function getViaticsByCadena(cadena){
       graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
       viatics_table(data, $("#table_viatics"));
 
+      //!!!!!!!!!!!EL SIGUIENTE BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
+      $("#cargando").addClass("d-none");
+      $(".first_tab").removeClass("d-none");
+      if(document.getElementById("consumo_echarts").style.display == "block") {
+        graph_client_day_cadena(id);
+        graph_gigabyte_day_cadena(id);
+        graph_top_aps_table_cadena(id);
+        general_table_comparative_cadena(id);
+      }
+      //!!!!!!!!!!!EL ANTERIOR BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
 
-      /*$("#cargando").addClass("d-none");
-      $(".first_tab").removeClass("d-none"); */
     },
     error: function (data) {
       console.log('Error:', data);
