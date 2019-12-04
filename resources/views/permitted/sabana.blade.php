@@ -30,7 +30,7 @@
       <div class="input-group mb-3">
       <label class="mr-1">Tipo de informe:</label>
       <select id="tipo_sabana" class="form-control select2">
-         <option value="1">Todo Sitwifi</option>
+         <!--<option value="1">Todo Sitwifi</option>-->
          <option value="2">Por Proyecto</option>
          <option value="0">Elige</option>
          <option value="3">Por Sitio</option>
@@ -769,6 +769,7 @@
                 </div>
               </div>
               <div class="tab_content">
+                <div id="terminado_presupuesto_cadena">
                   <div class="row">
                     <div class="w-100 text-center">
                       <h3 style="font-weight: bold;">Presupuesto anual de mantenimiento del sitio</h3>
@@ -836,6 +837,11 @@
                         </tfoot>
                       </table>
                     </div>
+                  </div>
+                  <div id="construyendo_presupuesto_cadena" class="text-center">
+                    <h3 style="font-weight: bold;" >En construcción</h3>
+                    <img src="/images/docs/under_construction.svg" style="width: 50%;">
+                  </div>
               </div>
               <div class="tab_content">
                   <h3 style="font-weight: bold; margin-left: 45%;">Pagos</h3>
@@ -1030,7 +1036,7 @@
     <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
     <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js?v=2.0.0')}}"></script>
     <script src="{{ asset('js/admin/payments/request_modal_payment.js')}}"></script>
-    <script src="{{ asset('js/admin/sabana/sabana.js?v=3.0.1')}}"></script>
+    <script src="{{ asset('js/admin/sabana/sabana.js?v=4.1.4')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">

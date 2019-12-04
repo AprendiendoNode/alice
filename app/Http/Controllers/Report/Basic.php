@@ -116,6 +116,21 @@ class Basic extends Controller
     return json_encode($result1);
   }
 
+  public function user_month_cadena(Request $request)
+  {
+    $cadena = $request->data_one;
+    $date = $request->data_two;
+
+    $datemonthyear =  explode('-', $date);
+    $dateyear= (int)$datemonthyear[0];
+    $datemonth= (int)$datemonthyear[1];
+    $datefull = $dateyear . '-' . $datemonth . '-01';
+
+    $result1 = DB::select('CALL px_get_user_cadena (?, ?)', array($datefull, $cadena));
+
+    return json_encode($result1);
+  }
+
   public function gb_month(Request $request)
   {
     $hotel = $request->data_one;
@@ -127,6 +142,21 @@ class Basic extends Controller
     $datefull = $dateyear . '-' . $datemonth . '-01';
 
     $result1 = DB::select('CALL Get_GB (?, ?)', array($datefull, $hotel));
+
+    return json_encode($result1);
+  }
+
+  public function gb_month_cadena(Request $request)
+  {
+    $cadena = $request->data_one;
+    $date = $request->data_two;
+
+    $datemonthyear =  explode('-', $date);
+    $dateyear= (int)$datemonthyear[0];
+    $datemonth= (int)$datemonthyear[1];
+    $datefull = $dateyear . '-' . $datemonth . '-01';
+
+    $result1 = DB::select('CALL px_get_GB_cadena (?, ?)', array($datefull, $cadena));
 
     return json_encode($result1);
   }
@@ -146,6 +176,21 @@ class Basic extends Controller
     return json_encode($result1);
   }
 
+  public function mostAP_top5_cadena(Request $request)
+  {
+    $cadena = $request->data_one;
+    $date = $request->data_two;
+
+    $datemonthyear =  explode('-', $date);
+    $dateyear= (int)$datemonthyear[0];
+    $datemonth= (int)$datemonthyear[1];
+    $datefull = $dateyear . '-' . $datemonth . '-01';
+
+    $result1 = DB::select('CALL px_get_mostap_cadena_top5 (?, ?, ?)', array($cadena, $dateyear, $datemonth));
+
+    return json_encode($result1);
+  }
+
   public function tab_comparativa(Request $request)
   {
     $hotel = $request->data_one;
@@ -157,6 +202,21 @@ class Basic extends Controller
     $datefull = $dateyear . '-' . $datemonth . '-01';
 
     $result1 = DB::select('CALL Comparative (?, ?)', array($hotel, $datefull));
+
+    return json_encode($result1);
+  }
+
+  public function tab_comparativa_cadena(Request $request)
+  {
+    $cadena = $request->data_one;
+    $date = $request->data_two;
+
+    $datemonthyear =  explode('-', $date);
+    $dateyear= (int)$datemonthyear[0];
+    $datemonth= (int)$datemonthyear[1];
+    $datefull = $dateyear . '-' . $datemonth . '-01';
+
+    $result1 = DB::select('CALL px_comparative_cadena (?, ?)', array($cadena, $datefull));
 
     return json_encode($result1);
   }

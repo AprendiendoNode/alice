@@ -252,9 +252,13 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/get_client_wlan', 'Report\Basic@graph_client_wlan');
   Route::post('/get_client_wlan_top', 'Report\Basic@client_wlan_top');
   Route::post('/get_user_month', 'Report\Basic@user_month');
+  Route::post('/get_user_month_cadena', 'Report\Basic@user_month_cadena');
   Route::post('/get_gb_month', 'Report\Basic@gb_month');
+  Route::post('/get_gb_month_cadena', 'Report\Basic@gb_month_cadena');
   Route::post('/get_mostAP_top5', 'Report\Basic@mostAP_top5');
+  Route::post('/get_mostAP_top5_cadena', 'Report\Basic@mostAP_top5_cadena');
   Route::post('/get_comparative', 'Report\Basic@tab_comparativa');
+  Route::post('/get_comparative_cadena', 'Report\Basic@tab_comparativa_cadena');
   Route::post('/view_reports_band' , 'Report\Basic@view_band');
   Route::post('/view_reports_device' , 'Report\Basic@view_device');
 

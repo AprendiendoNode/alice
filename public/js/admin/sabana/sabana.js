@@ -78,6 +78,11 @@ $('#tipo_sabana').on('change',function(){
     $("#cargando").removeClass("d-none");
     $('#gral_sitio').removeClass('d-none');//Muestra la informacion por sitio
     $('#gral_cadena').addClass('d-none');//oculta la informacion por cadena.
+
+    //TEMPORAL PRESUPUESTO CADENA
+    $("#terminado_presupuesto_cadena").removeClass("d-none");
+    $("#construyendo_presupuesto_cadena").addClass("d-none");
+
     $.ajax({
       type: "POST",
       url: "/informacionCliente",
@@ -136,6 +141,10 @@ $('#tipo_sabana').on('change',function(){
     //$(".first_tab").addClass("d-none");
     $(".first_tab").addClass("d-none");
     $("#cargando").removeClass("d-none");
+
+    //TEMPORAL PRESUPUESTO CADENA
+    $("#terminado_presupuesto_cadena").addClass("d-none");
+    $("#construyendo_presupuesto_cadena").removeClass("d-none");
 
 $('#title_equipments').text('Todos los equipos de la cadena'); //Cambiamos el titulo de el apartado de equipos
 
@@ -830,6 +839,16 @@ get_table_budget(idcliente,fecha)
           //console.log(data);
           graph_tickets_status('graph_status_tickets',data);
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+          //!!!!!!!!!!!EL SIGUIENTE BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
+          $("#cargando").addClass("d-none");
+          $(".first_tab").removeClass("d-none");
+          if(document.getElementById("consumo_echarts").style.display == "block") {
+            graph_client_day_cadena(id);
+            graph_gigabyte_day_cadena(id);
+            graph_top_aps_table_cadena(id);
+            general_table_comparative_cadena(id);
+          }
+          //!!!!!!!!!!!EL ANTERIOR BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
         },
         error: function (data) {
           console.log('Error:', data);
@@ -2031,6 +2050,38 @@ function graph_client_day(cliente) {
   //graph_area_four_default('main_client_day', data_name1, data_count1, 'Clientes', 'Consumo diario','right', 90, 8, 'rgba(255, 126, 80, 1)', 'rgba(255, 126, 80, 0.5)');
 }
 
+function graph_client_day_cadena(cadena) {
+  var date = $('#date_consumos').val();
+  var _token = $('input[name="_token"]').val();
+
+  // var data_count1 = [120, 132, 101, 134, 90, 230, 210,267,117,50, 121,22, 182, 191, 234, 290, 330, 310, 123, 442,321, 90, 149, 210, 122, 133, 334,121,22,56,19];
+  // var data_name1 = ['1','2','3','4','5','6','7','8','9','10', '11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
+
+  var data_count = [];
+  var data_name = [];
+
+  $.ajax({
+      type: "POST",
+      url: "/get_user_month_cadena",
+      data: { data_one : cadena , data_two : date , _token : _token },
+      success: function (data){
+        //console.log(data);
+        $.each(JSON.parse(data),function(index, objdata){
+          data_name.push(objdata.Dia);
+          data_count.push(objdata.NumClientes);
+        });
+          graph_area_four_default('main_client_day', data_name, data_count, 'Clientes', 'Consumo diario','right', 90, 8, 'rgba(255, 126, 80, 1)', 'rgba(255, 126, 80, 0.5)');
+        //console.log(data_count);
+      },
+      error: function (data) {
+        console.log('Error:', data);
+        //alert('3');
+      }
+  });
+
+  //graph_area_four_default('main_client_day', data_name1, data_count1, 'Clientes', 'Consumo diario','right', 90, 8, 'rgba(255, 126, 80, 1)', 'rgba(255, 126, 80, 0.5)');
+}
+
 function graph_gigabyte_day(cliente) {
   var date = $('#date_consumos').val();
   var _token = $('input[name="_token"]').val();
@@ -2045,6 +2096,40 @@ function graph_gigabyte_day(cliente) {
       type: "POST",
       url: "/get_gb_month",
       data: { data_one : cliente , data_two : date , _token : _token },
+      success: function (data){
+        //console.log(data);
+        $.each(JSON.parse(data),function(index, objdata){
+          data_name.push(objdata.Dia);
+          data_count.push(objdata.GB);
+        });
+        //document.getElementById("main_gigabyte_day").style.width = 500+'px';
+        //document.getElementById("main_gigabyte_day").style.height = 500+'px';
+        graph_area_four_default('main_gigabyte_day', data_name, data_count, 'Gigabyte', 'Consumo diario','right', 90, 8, 'rgba(35, 160, 164, 1)', 'rgba(35, 160, 164, 0.5)');
+        //console.log(data_count);
+      },
+      error: function (data) {
+        console.log('Error:', data);
+        //alert('3');
+      }
+  });
+
+  //graph_area_four_default('main_gigabyte_day_sabana', data_name1, data_count1, 'Gigabyte', 'Consumo diario','right', 90, 8, 'rgba(35, 160, 164, 1)', 'rgba(35, 160, 164, 0.5)');
+}
+
+function graph_gigabyte_day_cadena(cadena) {
+  var date = $('#date_consumos').val();
+  var _token = $('input[name="_token"]').val();
+
+  // var data_count1 = [120, 132, 101, 134, 90, 230, 210,267,117,50, 121,22, 182, 191, 234, 290, 330, 310, 123, 442,321, 90, 149, 210, 122, 133, 334,121,22,56,19];
+  // var data_name1 = ['1','2','3','4','5','6','7','8','9','10', '11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
+
+  var data_count = [];
+  var data_name = [];
+
+  $.ajax({
+      type: "POST",
+      url: "/get_gb_month_cadena",
+      data: { data_one : cadena , data_two : date , _token : _token },
       success: function (data){
         //console.log(data);
         $.each(JSON.parse(data),function(index, objdata){
@@ -2080,6 +2165,41 @@ function graph_top_aps_table(cliente) {
       type: "POST",
       url: "/get_mostAP_top5",
       data: { data_one : cliente , data_two : date , _token : _token },
+      success: function (data){
+        //console.log(data);
+        $.each(JSON.parse(data),function(index, objdata){
+          data_name.push(objdata.Descripcion + ' = ' + objdata.count);
+          data_count.push({ value: objdata.count, name: objdata.Descripcion + ' = ' + objdata.count},);
+          data_data.push({"descripcion": objdata.Descripcion,"mac": objdata.MAC,"nclient": objdata.count});
+        });
+        graph_douhnut_two_default('main_top_aps', 'Top 5', 'Aps & Unidades', 'left', data_name, data_count);
+        table_aps_top(data_data, $("#table_top_aps"));
+        //console.log(data_count);
+      },
+      error: function (data) {
+        console.log('Error:', data);
+        //alert('3');
+      }
+  });
+
+  //graph_douhnut_two_default('main_top_aps', 'Top 5', 'Aps & Unidades', 'left', data_name1, data_count1);
+}
+
+function graph_top_aps_table_cadena(cadena) {
+  var date = $('#date_consumos').val();
+  var _token = $('input[name="_token"]').val();
+
+  // var data_count1 = [{value:15646, name:'Mexico = 15646'},{value:447, name:'Jamaica = 447'},{value:1483, name:'Republica dominicana = 1483'}];
+  // var data_name1 = ["Mexico = 15646","Jamaica = 447","Republica dominicana = 1483"];
+
+  var data_count = [];
+  var data_name = [];
+  var data_data = [];
+
+  $.ajax({
+      type: "POST",
+      url: "/get_mostAP_top5_cadena",
+      data: { data_one : cadena , data_two : date , _token : _token },
       success: function (data){
         //console.log(data);
         $.each(JSON.parse(data),function(index, objdata){
@@ -2144,6 +2264,37 @@ function general_table_comparative(cliente) {
       }
   });
 }
+
+function general_table_comparative_cadena(cadena) {
+  var date = $('#date_consumos').val();
+  var _token = $('input[name="_token"]').val();
+  var data_data = [];
+  let comp = 0, ind1 = 0;
+  $.ajax({
+      type: "POST",
+      url: "/get_comparative_cadena",
+      data: {data_one : cadena , data_two : date , _token : _token},
+      success: function (data){
+        //console.log(data);
+        $.each(JSON.parse(data),function(index, objdata){
+          comp = parseInt(objdata.Indicador);
+          if (comp === 1) {
+            ind1 = '<i class="fa fa-arrow-down"></i>';
+          }else if (comp === 2) {
+            ind1 = '<i class="fa fa-arrow-up"></i>';
+          }else{
+            ind1 = '<i class="fa fa-arrow-right"></i>';
+          }
+          data_data.push({"concepto": objdata.Concepto,"mes1": objdata.Anterior,"mes2": objdata.Actual, "identificador": ind1});
+        });
+        remplazar_thead_th($("#table_comparative"), 1 ,2);
+        table_comparative(data_data, $("#table_comparative"));
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+  });
+}
 function table_comparative(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_simple);
@@ -2176,16 +2327,36 @@ function remplazar_thead_th(table, posicionini, posicionfin) {
   }
 }
 
-$('#btn-filtrar-consumos, #tab_consumo').on('click', function(){
-  graph_client_day($('#cliente').val());
-  graph_gigabyte_day($('#cliente').val());
-  graph_top_aps_table($('#cliente').val());
-  general_table_comparative($('#cliente').val());
+$('#btn-filtrar-consumos, #tab_consumo').on('click', function() {
+  var tipo = parseInt($('#tipo_sabana').val());
+  if(tipo == 1) {
+    //TODO SITWIFI
+  } else if (tipo == 2) {
+    graph_client_day_cadena($('#proyecto').val());
+    graph_gigabyte_day_cadena($('#proyecto').val());
+    graph_top_aps_table_cadena($('#proyecto').val());
+    general_table_comparative_cadena($('#proyecto').val());
+  } else if(tipo == 3) {
+    graph_client_day($('#cliente').val());
+    graph_gigabyte_day($('#cliente').val());
+    graph_top_aps_table($('#cliente').val());
+    general_table_comparative($('#cliente').val());
+  }
 });
 
 $(window).on('resize', function(){
-  graph_client_day($('#cliente').val());
-  graph_gigabyte_day($('#cliente').val());
-  graph_top_aps_table($('#cliente').val());
-  general_table_comparative($('#cliente').val());
+  var tipo = parseInt($('#tipo_sabana').val());
+  if(tipo == 1) {
+    //TODO SITWIFI
+  } else if (tipo == 2) {
+    graph_client_day_cadena($('#proyecto').val());
+    graph_gigabyte_day_cadena($('#proyecto').val());
+    graph_top_aps_table_cadena($('#proyecto').val());
+    general_table_comparative_cadena($('#proyecto').val());
+  } else if(tipo == 3) {
+    graph_client_day($('#cliente').val());
+    graph_gigabyte_day($('#cliente').val());
+    graph_top_aps_table($('#cliente').val());
+    general_table_comparative($('#cliente').val());
+  }
 });
