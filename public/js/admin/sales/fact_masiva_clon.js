@@ -193,7 +193,38 @@ $(function(){
                 contentType: false,
                 processData: false,
                 success: function (data){
-
+                  if(data == "success"){
+                    let timerInterval;
+                    Swal.fire({
+                      type: 'success',
+                      title: 'Operación Completada!',
+                      html: 'Aplicando los cambios.',
+                      timer: 2500,
+                      onBeforeOpen: () => {
+                        Swal.showLoading()
+                        timerInterval = setInterval(() => {
+                          Swal.getContent().querySelector('strong')
+                        }, 100)
+                      },
+                      onClose: () => {
+                        clearInterval(timerInterval)
+                      }
+                    }).then((result) => {
+                      if (
+                        // Read more about handling dismissals
+                        result.dismiss === Swal.DismissReason.timer
+                      ) {
+                       window.location.href = "/sales/view_contracts";
+                      }
+                    });
+                  }
+                  else{
+                    Swal.fire({
+                      type: 'error',
+                      title: 'Error encontrado..',
+                      text: 'Realice la operacion nuevamente!',
+                    });
+                  }
                 },
                 error: function (err) {
                   Swal.fire({
@@ -445,13 +476,20 @@ var Configuration_table_responsive_simple_classification= {
       var _token = $('input[name="_token"]').val();
       $.ajax({
           type: "POST",
-          url: "/set_cliente_contrato",
-          data: { id_contract : id, id_status : newValue, _token : _token },
+          url: "/sales/set_cliente_contrato",
+          data: { id_contract : id, id_rz : newValue, _token : _token },
           success: function (data){
-            if(data == "true"){
-              menssage_toast('Mensaje', '3', 'Actualizado' , '2000');
+            if(data == "abort"){
+              Swal.fire({
+                type: 'error',
+                title: 'Error encontrado..',
+                text: 'Realice la operacion nuevamente!',
+              });
             }else{
-              menssage_toast('Error', '2', 'Ocurrio un error inesperado' , '3000');
+              Swal.fire({
+                type: 'success',
+                title: 'Operación Completada!',
+              });
             }
           },
           error: function (data) {

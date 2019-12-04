@@ -2257,6 +2257,24 @@ class CustomerInvoiceController extends Controller
             return $e;
         }
     }
+    public function set_cliente_contrato(Request $request)
+    {
+      $user_id= Auth::user()->id;
+      $id_contrato= $request->id_contract;
+      $id_cliente= $request->id_rz;
+
+      $newId = DB::table('contract_masters')
+      ->where('id', '=', $id_contrato )
+      ->update([
+           'rz_customer_id' => $id_cliente,
+               'updated_at' => \Carbon\Carbon::now()]);
+      if($newId == '0' ){
+          return 'abort'; // returns 0
+      }
+      else {
+          return $newId; // returns id
+      }
+    }
     public function test(Request $request)
     {
       $resultados_anexos = DB::select('CALL px_annexesXmaster_data (?, ?)', array(12, 1));
@@ -2362,4 +2380,6 @@ class CustomerInvoiceController extends Controller
       DB::commit();
       return 'success';
     }
+
+
 }
