@@ -2085,22 +2085,35 @@ class CustomerInvoiceController extends Controller
     }
     public function view_contracts_create(Request $request)
     {
-                       $user = Auth::user()->id;
-       $facturar_salesperson = $request->salesperson_id;
-           $facturar_pay_way = $request->payment_way_id;
-           $facturar_pay_met = $request->payment_method_id;
-          $facturar_cfdi_use = $request->cfdi_use_id;
-      $facturar_brand_office = $request->branch_office_id;
-           $facturar_refence = !empty($request->reference) ? $request->reference : '';
-          $facturar_currency = $request->currency_id;
-          $facturar_value_tc = $request->currency_value;
-       $facturar_description = $request->description;
+        $facturar_salesperson = $request->salesperson_id;
+        $facturar_pay_way = $request->payment_way_id;
+        $facturar_pay_met = $request->payment_method_id;
+        $facturar_cfdi_use = $request->cfdi_use_id;
+        $facturar_brand_office = $request->branch_office_id;
+        $facturar_refence = !empty($request->reference) ? $request->reference : '';
+        $facturar_currency = $request->currency_id;
+        $facturar_value_tc = $request->currency_value;
+        $facturar_description = $request->description;
         $facturar_desc_month = $request->description_month;
-          $facturar_desc_all = $facturar_description.' '.$facturar_desc_month;
-        // Begin a transaction
+        $facturar_desc_all = $facturar_description.' '.$facturar_desc_month;
+        $user = Auth::user()->id;
+        //Formatos de fechas
+        $date = Helper::createDateTime($request->date);
+        $date_format = Helper::dateTimeToSql($date);
+        //Fix valida si la fecha de vencimiento esta vacia en caso de error
+        if (!empty($request->date_due)) {
+            $date_due = Helper::createDate($request->date_due);
+        }
+        else {
+            $payment_term = PaymentTerm::findOrFail($request->payment_term_id);
+            $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
+        }
+        $date_due_format = Helper::dateToSql($date_due);
+
         \DB::beginTransaction();
         // Open a try/catch block
         try {
+            // Begin a transaction
             $contract_id = json_decode($request->idents);
             for ($i=0; $i <= (count($contract_id)-1); $i++) {
               //Logica
@@ -2108,17 +2121,9 @@ class CustomerInvoiceController extends Controller
               $request->merge(['updated_uid' => \Auth::user()->id]);
               $request->merge(['status' => CustomerInvoice::OPEN]);
               //Ajusta fecha y genera fecha de vencimiento
-              $date = Helper::createDateTime($request->date);
-              $request->merge(['date' => Helper::dateTimeToSql($date)]);
-              //Fix valida si la fecha de vencimiento esta vacia en caso de error
-              if (!empty($request->date_due)) {
-                  $date_due = Helper::createDate($request->date_due);
-              }
-              else {
-                  $payment_term = PaymentTerm::findOrFail($request->payment_term_id);
-                  $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
-              }
-              $request->merge(['date_due' => Helper::dateToSql($date_due)]);
+              // $date = Helper::createDateTime($request->date);
+              $request->merge(['date' => $date_format ]);
+              $request->merge(['date_due' => $date_due_format]);
               //Obtiene folio
               $document_type = Helper::getNextDocumentTypeByCode($this->document_type_code);
               $request->merge(['document_type_id' => $document_type['id']]);
