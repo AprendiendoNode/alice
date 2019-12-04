@@ -1167,12 +1167,12 @@ function getViaticsByCadena(cadena){
         var i = savedGastos.indexOf(row.name.toLowerCase().trim());
         if(i < 0) {
           data2.push({
-            cantidad: row.aprobado,
+            cantidad: parseFloat(row.aprobado.split(" ")[0].replace(",","")),
             tipo: row.name
           });
           savedGastos.push(row.name.toLowerCase().trim());
         } else {
-          data2[i].cantidad += row.aprobado;
+          data2[i].cantidad += parseFloat(row.aprobado.split(" ")[0].replace(",",""));
         }
       });
 

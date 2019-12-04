@@ -30,9 +30,9 @@
       <div class="input-group mb-3">
       <label class="mr-1">Tipo de informe:</label>
       <select id="tipo_sabana" class="form-control select2">
+         <option value="0">Elige</option>
          <!--<option value="1">Todo Sitwifi</option>-->
          <option value="2">Por Proyecto</option>
-         <option value="0">Elige</option>
          <option value="3">Por Sitio</option>
        </select>
      </div>
@@ -1036,7 +1036,7 @@
     <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
     <script src="{{ asset('js/admin/viaticos/requests_viaticos_modal.js?v=2.0.0')}}"></script>
     <script src="{{ asset('js/admin/payments/request_modal_payment.js')}}"></script>
-    <script src="{{ asset('js/admin/sabana/sabana.js?v=4.1.4')}}"></script>
+    <script src="{{ asset('js/admin/sabana/sabana.js?v=4.2.5')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">
