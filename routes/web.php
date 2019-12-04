@@ -1081,7 +1081,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/search_view_contracts', 'Sales\CustomerInvoiceController@search_view_contracts');
     Route::post('/view_contracts_info', 'Sales\CustomerInvoiceController@view_contracts_info');
     Route::post('/search_currency_contract', 'Sales\CustomerInvoiceController@search_currency_contract');
-
+    Route::post('/view_contracts_create', 'Sales\CustomerInvoiceController@view_contracts_create'); 
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){

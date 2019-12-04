@@ -131,8 +131,25 @@ class CustomerInvoiceController extends Controller
         'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications'
       ));
     }
-
     public function view_contracts()
+    {
+        $customer = DB::select('CALL GetCustomersActivev2 ()', array());
+        $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
+        $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
+        $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
+        $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
+        $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()', array());
+        $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
+        $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
+        $cfdi_relations = DB::select('CALL GetAllCfdiRelationsv2 ()', array());
+
+        return view('permitted.sales.customer_cont_test2', compact(
+          'customer','sucursal','currency',
+          'salespersons','payment_way','payment_term',
+          'payment_methods', 'cfdi_uses', 'cfdi_relations'
+        ));
+    }
+    public function view_contracts2()
     {
         $customer = DB::select('CALL GetCustomersActivev2 ()', array());
         $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
@@ -2065,5 +2082,279 @@ class CustomerInvoiceController extends Controller
         $resultados = DB::select('CALL px_currency_data (?)', array($customer_id));
         return json_encode($resultados);
       }
+    }
+    public function view_contracts_create(Request $request)
+    {
+                       $user = Auth::user()->id;
+       $facturar_salesperson = $request->salesperson_id;
+           $facturar_pay_way = $request->payment_way_id;
+           $facturar_pay_met = $request->payment_method_id;
+          $facturar_cfdi_use = $request->cfdi_use_id;
+      $facturar_brand_office = $request->branch_office_id;
+           $facturar_refence = !empty($request->reference) ? $request->reference : '';
+          $facturar_currency = $request->currency_id;
+          $facturar_value_tc = $request->currency_value;
+       $facturar_description = $request->description;
+        $facturar_desc_month = $request->description_month;
+          $facturar_desc_all = $facturar_description.' '.$facturar_desc_month;
+        // Begin a transaction
+        \DB::beginTransaction();
+        // Open a try/catch block
+        try {
+            $contract_id = json_decode($request->idents);
+            for ($i=0; $i <= (count($contract_id)-1); $i++) {
+              //Logica
+              $request->merge(['created_uid' => \Auth::user()->id]);
+              $request->merge(['updated_uid' => \Auth::user()->id]);
+              $request->merge(['status' => CustomerInvoice::OPEN]);
+              //Ajusta fecha y genera fecha de vencimiento
+              $date = Helper::createDateTime($request->date);
+              $request->merge(['date' => Helper::dateTimeToSql($date)]);
+              //Fix valida si la fecha de vencimiento esta vacia en caso de error
+              if (!empty($request->date_due)) {
+                  $date_due = Helper::createDate($request->date_due);
+              }
+              else {
+                  $payment_term = PaymentTerm::findOrFail($request->payment_term_id);
+                  $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
+              }
+              $request->merge(['date_due' => Helper::dateToSql($date_due)]);
+              //Obtiene folio
+              $document_type = Helper::getNextDocumentTypeByCode($this->document_type_code);
+              $request->merge(['document_type_id' => $document_type['id']]);
+              $request->merge(['name' => $document_type['name']]);
+              $request->merge(['serie' => $document_type['serie']]);
+              $request->merge(['folio' => $document_type['folio']]);
+              //Guardar Registro principal
+              $customer_invoice = CustomerInvoice::create($request->input());
+              //Registro de lineas
+              $amount_subtotal = 0;
+              $amount_discount = 0;  //Descuento de cantidad
+              $amount_untaxed = 0;   //Cantidad sin impuestos
+              $amount_tax = 0;       //Importe impuesto
+              $amount_tax_ret = 0;   //Importe impuesto ret
+              $amount_total = 0;     //Cantidad total
+              $balance = 0;          //Balance
+              $taxes = array();      //Impuestos
+              $currency_pral_id = $request->currency_id;      //Moneda principal
+              $currency_pral_value = $request->currency_value;//Valor o TC de la moneda principal
+              //Buscamos los contratos anexos
+              $resultados_anexos = DB::select('CALL px_annexesXmaster_data (?, ?)', array($contract_id[$i], $facturar_currency));
+              $order = 1;
+              $customer_general = "";
+              foreach ($resultados_anexos as $key) {
+                  $item_quantity = 1;  //cantidad de artículo - default 1 un contrato anexo
+                $item_price_unit = $key->monto; //unidad de precio del artículo
+                $customer_general= $key->rz_customer_id; //cliente id
+                  $item_discount = 0; //descuento del artículo  - default 0 - NOTA: Aun no fijo el descuento
+
+                  $item_subtotal_quantity = round($item_price_unit * $item_quantity, 2);
+
+                  $item_price_reduce = ($item_price_unit * (100 - $item_discount) / 100); //Precio reducido
+                  $item_amount_untaxed = round($item_quantity * $item_price_reduce, 2); //libre de impuestos
+                  $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed;//descuento
+                  $item_amount_tax = 0;//impuesto a la cantidad del artículo
+                  $item_amount_tax_ret = 0;// cantidad de artículo retiro de impuestos
+
+                  //Tipo de cambio
+                  $item_currency_id = !empty($request->currency_id) ? $request->currency_id : 1;
+                  $item_currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item_currency_id)->value('code_banxico');
+                  $item_currency_value = !empty($request->currency_value) ? $request->currency_value : 1;
+
+                  $item_subtotal_clean = $item_subtotal_quantity;
+                  $item_discount_clean = $item_amount_discount;
+                  $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;// cantidad total del artículo = Cantidad del artículo libre de impuestos + impuesto a la cantidad del artículo + cantidad de artículo retiro de impuestos
+                  $item_subtotal = $item_amount_untaxed; //libre de impuestos
+
+                  //Sumatoria totales
+                  $amount_subtotal += $item_subtotal_clean;
+                  $amount_discount += $item_discount_clean;
+                  $amount_untaxed += $item_subtotal;
+                  $amount_tax += $item_amount_tax;
+                  $amount_tax_ret += $item_amount_tax_ret;
+                  $amount_total += $item_amount_total;
+
+                  //Guardar linea -- Por cada anexo de contrato
+                  $customer_invoice_line = CustomerInvoiceLine::create([
+                      'created_uid' => \Auth::user()->id,
+                      'updated_uid' => \Auth::user()->id,
+                      'customer_invoice_id' => $customer_invoice->id,
+                      'name' => $facturar_desc_all,
+                      'contract_annex_id' => $key->contract_annex_id,
+                      'sat_product_id' => $key->sat_product_id,
+                      'unit_measure_id' => $key->unit_measure_id,
+                      'quantity' => $item_quantity,
+                      'price_unit' => $item_price_unit,
+                      'discount' => $item_discount,
+                      'price_reduce' => $item_price_reduce,
+                      'amount_discount' => $item_amount_discount,
+                      'amount_untaxed' => $item_amount_untaxed,
+                      'amount_tax' => $item_amount_tax,
+                      'amount_tax_ret' => $item_amount_tax_ret,
+                      'amount_total' => $item_amount_total,
+                      'sort_order' => $order,
+                      'status' => 1,
+                      'currency_id' => $item_currency_id,
+                      'currency_value' => $item_currency_value,
+                  ]);
+
+                  $order++;
+              }
+              //Registros de cfdi
+              $customer_invoice_cfdi = CustomerInvoiceCfdi::create([
+                  'created_uid' => \Auth::user()->id,
+                  'updated_uid' => \Auth::user()->id,
+                  'customer_invoice_id' => $customer_invoice->id,
+                  'name' => $customer_invoice->name,
+                  'status' => 1,
+              ]);
+              //Actualiza registro principal con totales
+              $customer_invoice->customer_id = $customer_general;
+              $customer_invoice->amount_discount = $amount_discount;
+              $customer_invoice->amount_untaxed = $amount_subtotal;
+              $customer_invoice->amount_tax = $amount_tax;
+              $customer_invoice->amount_tax_ret = $amount_tax_ret;
+              $customer_invoice->amount_total = $amount_total;
+              $customer_invoice->balance = $amount_total;
+              $customer_invoice->update();
+
+              $class_cfdi = setting('cfdi_version');
+              if (empty($class_cfdi) || $class_cfdi === '0') {
+                  throw new \Exception(__('general.error_cfdi_version'));
+              }
+              if (!method_exists($this, $class_cfdi)) {
+                  throw new \Exception(__('general.error_cfdi_class_exists'));
+              }
+              //Valida Empresa y PAC para timbrado
+              PacHelper::validateSatActions();
+              //Crear XML y timbra
+              $tmp = $this->$class_cfdi($customer_invoice);
+              //Guardar registros de CFDI
+              $customer_invoice_cfdi->fill(array_only($tmp,[
+                  'pac_id',
+                  'cfdi_version',
+                  'uuid',
+                  'date',
+                  'file_xml',
+                  'file_xml_pac',
+              ]));
+              $customer_invoice_cfdi->save();
+            }
+            // Commit the transaction
+            DB::commit();
+            return 'success';
+        }
+        catch (\Exception $e) {
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            // and throw the error again.
+            // throw $e;
+            return $e;
+        }
+    }
+    public function test(Request $request)
+    {
+      $resultados_anexos = DB::select('CALL px_annexesXmaster_data (?, ?)', array(12, 1));
+      $facturar_desc_all = $facturar_description.' '.$facturar_desc_month;
+      $order = 1;
+      foreach ($resultados_anexos as $key) {
+          $item_quantity = 1;  //cantidad de artículo - default 1 un contrato anexo
+        $item_price_unit = $key->monto; //unidad de precio del artículo
+          $item_discount = 0; //descuento del artículo  - default 0 - NOTA: Aun no fijo el descuento
+
+          $item_subtotal_quantity = round($item_price_unit * $item_quantity, 2);
+
+          $item_price_reduce = ($item_price_unit * (100 - $item_discount) / 100); //Precio reducido
+          $item_amount_untaxed = round($item_quantity * $item_price_reduce, 2); //libre de impuestos
+          $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed;//descuento
+          $item_amount_tax = 0;//impuesto a la cantidad del artículo
+          $item_amount_tax_ret = 0;// cantidad de artículo retiro de impuestos
+
+          //Tipo de cambio
+          $item_currency_id = !empty($request->currency_id) ? $request->currency_id : 1;
+          $item_currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item_currency_id)->value('code_banxico');
+          $item_currency_value = !empty($request->currency_value) ? $request->currency_value : 1;
+
+          $item_subtotal_clean = $item_subtotal_quantity;
+          $item_discount_clean = $item_amount_discount;
+          $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;// cantidad total del artículo = Cantidad del artículo libre de impuestos + impuesto a la cantidad del artículo + cantidad de artículo retiro de impuestos
+          $item_subtotal = $item_amount_untaxed; //libre de impuestos
+
+          //Sumatoria totales
+          $amount_subtotal += $item_subtotal_clean;
+          $amount_discount += $item_discount_clean;
+          $amount_untaxed += $item_subtotal;
+          $amount_tax += $item_amount_tax;
+          $amount_tax_ret += $item_amount_tax_ret;
+          $amount_total += $item_amount_total;
+
+          //Guardar linea -- Por cada anexo de contrato
+          $customer_invoice_line = CustomerInvoiceLine::create([
+              'created_uid' => \Auth::user()->id,
+              'updated_uid' => \Auth::user()->id,
+              'customer_invoice_id' => $customer_invoice->id,
+              'name' => $facturar_desc_all,
+              'contract_annex_id' => $key->contract_annex_id,
+              'sat_product_id' => $key->sat_product_id,
+              'unit_measure_id' => $key->unit_measure_id,
+              'quantity' => $item_quantity,
+              'price_unit' => $item_price_unit,
+              'discount' => $item_discount,
+              'price_reduce' => $item_price_reduce,
+              'amount_discount' => $item_amount_discount,
+              'amount_untaxed' => $item_amount_untaxed,
+              'amount_tax' => $item_amount_tax,
+              'amount_tax_ret' => $item_amount_tax_ret,
+              'amount_total' => $item_amount_total,
+              'sort_order' => $order,
+              'status' => 1,
+              'currency_id' => $item_currency_id,
+              'currency_value' => $item_currency_value,
+          ]);
+
+          $order++;
+      }
+      //Registros de cfdi
+      $customer_invoice_cfdi = CustomerInvoiceCfdi::create([
+          'created_uid' => \Auth::user()->id,
+          'updated_uid' => \Auth::user()->id,
+          'customer_invoice_id' => $customer_invoice->id,
+          'name' => $customer_invoice->name,
+          'status' => 1,
+      ]);
+
+      //Actualiza registro principal con totales
+      $customer_invoice->amount_discount = $amount_discount;
+      $customer_invoice->amount_untaxed = $amount_subtotal;
+      $customer_invoice->amount_tax = $amount_tax;
+      $customer_invoice->amount_tax_ret = $amount_tax_ret;
+      $customer_invoice->amount_total = $amount_total;
+      $customer_invoice->balance = $amount_total;
+      $customer_invoice->update();
+
+      $class_cfdi = setting('cfdi_version');
+      if (empty($class_cfdi) || $class_cfdi === '0') {
+          throw new \Exception(__('general.error_cfdi_version'));
+      }
+      if (!method_exists($this, $class_cfdi)) {
+          throw new \Exception(__('general.error_cfdi_class_exists'));
+      }
+      //Valida Empresa y PAC para timbrado
+      PacHelper::validateSatActions();
+      //Crear XML y timbra
+      $tmp = $this->$class_cfdi($customer_invoice);
+      //Guardar registros de CFDI
+      $customer_invoice_cfdi->fill(array_only($tmp,[
+          'pac_id',
+          'cfdi_version',
+          'uuid',
+          'date',
+          'file_xml',
+          'file_xml_pac',
+      ]));
+      $customer_invoice_cfdi->save();
+      // Commit the transaction
+      DB::commit();
+      return 'success';
     }
 }
