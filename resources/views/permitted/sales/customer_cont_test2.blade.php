@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View facturacion masiva') )
     {{ trans('invoicing.customers_invoices') }} Contratos
   @else
   {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View facturacion masiva') )
     {{ trans('invoicing.customers_invoices') }} Contratos
   @else
   {{ trans('message.denied') }}
@@ -57,7 +57,7 @@
     </div>
   </div>
 
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View facturacion masiva') )
       <div class="row">
         <div class="col-md-12 grid-margin-onerem  stretch-card">
           <div class="card">
@@ -263,7 +263,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View facturacion masiva') )
     <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
@@ -335,12 +335,6 @@
 
     </style>
 
-
-
-  @if ( auth()->user()->can('View level three documentp notificatio2n') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=2.0.6')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
-    @endif
 @else
   @include('default.denied')
 @endif
