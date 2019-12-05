@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Projects\Documentp;
 use App\Models\Projects\Documentp_cart;
 use App\Models\Projects\In_Documentp_cart;
+use Carbon\Carbon;
 use Auth;
 use DB;
 
@@ -27,9 +28,20 @@ class EditDocumentPController extends Controller
     $num_edit = $documentP->num_edit;
     $cart = $documentP->documentp_cart_id;
     $document_cart = Documentp_cart::find($cart);
+    $tipo_cambio = 19.5;
     $in_document_cart = In_Documentp_cart::where('documentp_cart_id', $cart)->first();
-    $tipo_cambio = $in_document_cart->tipo_cambio;
+    if($in_document_cart != null){
+      $tipo_cambio = $in_document_cart->tipo_cambio;
+    }
+    
     $info = '';
+    $product_sw = DB::select('CALL px_products_swiches');
+    $product_ap = DB::select('CALL px_products_antenas');
+    $product_fw = DB::select('CALL px_products_firewalls');
+    $products_bobinas = DB::table('products')->where('name', 'LIKE', '%bobina%')->get();
+    $products_gabinetes = DB::table('products')->where('name', 'LIKE', '%gabinete%')->get();
+    $materiales = DB::table('product_material')->get();
+    $medidas = DB::table('product_measure')->get();
     //Data formulario
     $grupos = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
     $anexos = DB::table('hotels')->select('id', 'Nombre_hotel')->orderBy('Nombre_hotel')->get();
@@ -40,7 +52,8 @@ class EditDocumentPController extends Controller
     $type_service = DB::table('documentp_type')->select('id', 'name')->get();
     $installation = DB::table('documentp_installation')->select('id', 'name')->get();
     $priorities = DB::table('documentp_priorities')->select('id', 'name')->get();
-    $viewPermitted = view('permitted.documentp.show' ,compact('id_document', 'hour_created','grupos', 'anexos','data_header', 'tipo_cambio', 'categories', 'itc', 'verticals', 'comerciales', 'type_service', 'priorities', 'installation'));
+    $viewPermitted = view('permitted.documentp.show' ,compact('id_document', 'hour_created','grupos', 'anexos','data_header', 'tipo_cambio', 'categories', 'itc', 'verticals', 'comerciales', 
+    'type_service', 'priorities', 'installation','products_gabinetes' ,'products_bobinas','materiales', 'medidas','product_ap', 'product_sw', 'product_fw'));
     $viewBlock = view('permitted.documentp.edit_documentp_block', compact('folio', 'hour_created'));
     //dd($this->validateHourEdit($hour_created, $num_edit));
     if($this->check_user_permission() == 0 || $this->check_user_permission() == 1){

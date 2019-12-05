@@ -116,10 +116,12 @@ function sumaTotales(){
   var total_eqactivo = 0.0;
   var total_materiales = 0.0;
   var total_sitwifi = 0.0;
+  var total_viaticos = 0.0;
   //Separo en diferentes arreglos del Local Storage  segun la clasificacion de un producto
   let equipo_activo = productosLS.filter(producto => producto.categoria_id == 4  || producto.categoria_id == 6 || producto.categoria_id == 14);
-  let materiales= productosLS.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6 && producto.categoria_id != 7 && producto.categoria_id != 14);
+  let materiales= productosLS.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6 && producto.categoria_id != 7 && producto.categoria_id != 14 && producto.categoria_id != 15);
   let sitwifi= productosLS.filter(producto => producto.categoria_id == 7 );
+  let viaticos = productosLS.filter(producto => producto.categoria_id == 15 );
 
   //Sumando totales por categorias
   equipo_activo.forEach(function(producto){
@@ -131,6 +133,9 @@ function sumaTotales(){
   sitwifi.forEach(function(producto){
     total_sitwifi += parseFloat(producto.precio_total_usd);
   });
+  viaticos.forEach(function(producto){
+    total_viaticos += parseFloat(producto.precio_total_usd);
+  });
   //Actualizando montos totales en el DOM
   document.getElementById("total_eqactivo").innerHTML = (total_eqactivo.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   document.getElementById("total_eqactivo_footer").innerHTML = (total_eqactivo.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -140,8 +145,11 @@ function sumaTotales(){
 
   document.getElementById("total_sitwifi").innerHTML = (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   document.getElementById("total_sitwifi_footer").innerHTML = (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  document.getElementById("total_viaticos").innerHTML = (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  document.getElementById("total_viaticos_footer").innerHTML = (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   //Total global
-  document.getElementById("total_global").innerHTML = ((total_materiales + total_eqactivo + total_sitwifi).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  document.getElementById("total_global").innerHTML = ((total_materiales + total_eqactivo + total_sitwifi + total_viaticos).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 }
 
@@ -294,13 +302,16 @@ function generate_table_products(){
   var productos = obtenerProductosLocalStorage();
   //Filtrar productos por categoria
   let equipo_activo = productos.filter(producto => producto.categoria_id == 4  || producto.categoria_id == 6 || producto.categoria_id == 14);
-  let materiales= productos.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6 && producto.categoria_id != 7 && producto.categoria_id != 14);
+  let materiales= productos.filter(producto => producto.categoria_id != 4  && producto.categoria_id != 6  &&
+                                                producto.categoria_id != 7 && producto.categoria_id != 14 && producto.categoria_id != 15);
   let sitwifi= productos.filter(producto => producto.categoria_id == 7 );
+  let viaticos = productos.filter(producto => producto.categoria_id == 15 );
 
   $("#tabla_productos tbody tr").remove();
   var total_eq_activo = 0.0;
   var total_materiales = 0.0;
   var total_sitwifi = 0.0;
+  var total_viaticos = 0.0;
   $.each(equipo_activo, function( i, key ) {
     total_eq_activo += parseFloat(key.precio_total_usd);
     $('#tabla_productos tbody').append('<tr id="' + key.id + '"><td>'
@@ -607,6 +618,7 @@ $(".validation-wizard-master").steps({
           let total_ea = 0.0;
           let total_ena = 0.0;
           let total_mo = 0.0;
+          let total_viaticos = 0.0;
           let total = 0.0;
           let id = $('#id_documentp').val();
            productosLS = localStorage.getItem('productos');
@@ -614,6 +626,7 @@ $(".validation-wizard-master").steps({
            total_ea = document.getElementById('total_eqactivo_footer').innerHTML;
            total_ena = document.getElementById('total_materiales_footer').innerHTML;
            total_mo = document.getElementById('total_sitwifi_footer').innerHTML;
+           total_viaticos = document.getElementById('total_viaticos_footer').innerHTML;
            total = document.getElementById('total_global').innerHTML;
 
            var form = $('#validation_master')[0];
@@ -625,6 +638,7 @@ $(".validation-wizard-master").steps({
            formData.append('total_ea',total_ea.replace(/,/g, ""));
            formData.append('total_ena',total_ena.replace(/,/g, ""));
            formData.append('total_mo',total_mo.replace(/,/g, ""));
+           formData.append('total_viaticos',total_viaticos.replace(/,/g, ""));
            formData.append('total',total.replace(/,/g, ""));
 
            const headers = new Headers({

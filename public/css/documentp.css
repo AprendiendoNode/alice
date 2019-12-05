@@ -151,6 +151,11 @@ button {
   border-color: #8C0303;
 }
 
+.cards__item .cant_sug{
+  font-size: .8rem !important;
+  font-weight: bold;
+}
+
 .cards__item .card:hover {
   -webkit-box-shadow: -1px 9px 22px -5px rgba(0,0,0,0.75);
   -moz-box-shadow: -1px 9px 22px -5px rgba(0,0,0,0.75);

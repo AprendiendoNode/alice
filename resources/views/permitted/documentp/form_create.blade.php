@@ -260,43 +260,8 @@
       </div><!---row-->
       <br>
       <div class="row">
-        <div class="col-md-4 fields_docp">
-          <div class="row mb-2">
-            <div class="col-8">
-              <h4 class="text-center text-success">Bobinas</h4>
-            </div>
-            <div class="col-2">
-              <button class="btn btn-sm btn-dark p-1 addButtonBobinas" type="button" name="button"> <i class="fa fa-plus"></i></button>
-            </div>
-          </div>
-
-          <div class="row mb-2">
-            <div class="form-row">
-              <div class="col-9">
-                <select class="form-control form-control-sm bobinas_select" name="bobinas_select[0]">
-                  <option value="0">Elija ...</option>
-                  @foreach ($products_bobinas as $products)
-                    <option value="{{$products->id}}">{{$products->name}}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="col-1"></div>
-            </div>
-          </div>
-          <div class="row clone d-none" id="optionTemplateBobinas">
-            <div class="form-row">
-              <div class="col-9">
-                <select class="form-control form-control-sm bobinas_select" name="bobinas_select">
-                  <option value="0">Elija ...</option>
-                  @foreach ($products_bobinas as $products)
-                    <option value="{{$products->id}}">{{$products->name}}</option>
-                  @endforeach
-                </select>
-              </div>
-              <button type="button" class="col-1 btn removeButtonBobinas"><i class="fa fa-minus text-danger"></i></button>
-              </div>
-            </div>
-          </div><!--row bobinas--->
+        
+          
           <div class="col-md-4 fields_docp">
             <div class="row mb-2">
               <div class="col-8">
@@ -377,11 +342,14 @@
               </div>
             </div>  
           </div><!--Medidas--->
+          <div class="col-md-4 fields_docp">
+              <button type="button" id="add_shopping_cart" class="btn btn-sm btn-success m-3"> <i class="fas fa-cart-plus"></i> Agregar </button>
+              <button type="button" id="delete_cart" class="btn btn-sm btn-danger m-3"> <i class="fas fa-trash-alt"></i> Vaciar carrito</button>
+          </div><!----->
       </div>
-      <div  class="row mb-3">
+      <div  class="row mb-3 fields_docp">
         <div class="col-12">
-          <button type="button" id="add_shopping_cart" class="btn btn-success m-3"> <i class="fas fa-cart-plus"></i> Agregar al pedido</button>
-          <button type="button" id="delete_cart" class="btn btn-danger m-3"> <i class="fas fa-trash-alt"></i> Vaciar carrito</button>
+          
         </div>
       </div>
 
@@ -391,7 +359,7 @@
       <div class="row fields_docp">
         <div class="col-md-4">
           <div class="form-group">
-              <a href="#" class="btn btn-dark ml-20" id="get_equipo_button" name=""><i class="fas fa-hdd mr-2"></i> Buscar Equipo Activo</a>
+              <a href="#" class="btn btn-dark ml-20" id="get_equipo_button" name=""><i class="fas fa-hdd mr-2"></i> Equipo activo sugerido</a>
           </div>
         </div>
       </div>
@@ -407,7 +375,7 @@
       <div class="row fields_docp">
         <div class="col-md-4">
           <div class="form-group">
-              <a href="#" class="btn btn-dark ml-20" id="get_materiales_button" name=""><i class="fas fa-tools mr-2"></i> Buscar Materiales</a>
+              <a href="#" class="btn btn-dark ml-20" id="get_materiales_button" name=""><i class="fas fa-tools mr-2"></i> Materiales sugeridos</a>
           </div>
         </div>
       </div>

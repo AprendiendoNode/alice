@@ -10,6 +10,7 @@ use \Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Projects\Documentp;
+use App\Models\Projects\In_Documentp_cart;
 use App\Models\Catalogs\Product;
 use Auth;
 use DB;
@@ -45,22 +46,12 @@ class DocumentpCartController extends Controller
 
     public function getItemType($type, $aps, $api, $ape, $firewalls, $switches, $switch_cant)
     {
-       $id_user = Auth::user()->id;
 
         if ($type == 'first') {
+        $products = DB::select('CALL px_products_propuesta_equipoactivo(?,?)', array($api,$ape));
+        $products_eq_activo =  $this->paginate($products, $perPage = 10,  null , $options = []);
 
-          $this->createTableTempEA($aps, $firewalls, $switches);
-
-          try{
-            $products = DB::select('CALL px_products_propuesta_equipoactivo(?,?,?)', array($api,$ape,$id_user));
-            $products_eq_activo =  $this->paginate($products, $perPage = 10,  null , $options = []);
-
-            return view('permitted.documentp.products_eqactivo', ['products_eq_activo' => $products_eq_activo])->render();
-
-          }catch(\Illuminate\Database\QueryException $e){
-            Schema::dropIfExists('equipo_activo_temp' . $id_user);
-            return $e;
-          }
+        return view('permitted.documentp.products_eqactivo', ['products_eq_activo' => $products_eq_activo])->render();         
 
         } else if ($type == 'second') {
           $products_m = DB::select('CALL px_antenas_internas_materiales(?,?,?,?,?,?)', array($api, $ape, $switch_cant));
@@ -73,15 +64,15 @@ class DocumentpCartController extends Controller
 
     }
 
-    public function getItemTypeMaterials($type, $api, $switch_cant, $bobinas, $gabinetes, $material, $medida)
+    public function getItemTypeMaterials($type, $api, $ape, $switch_cant, $gabinetes, $material, $medida)
     {
        $id_user = Auth::user()->id;
 
         if ($type == 'second') {
-          $products_m = DB::select('CALL px_antenas_internas_materiales(?,?,?,?,?,?)', array($api, $switch_cant, $bobinas, $gabinetes, $material, $medida));
-          //dd($products_m);
-          $products_materiales =  $this->paginate($products_m, $perPage = 12,  null , $options = []);
+          $products_m = DB::select('CALL px_antenas_int_ext_materiales(?,?,?,?,?,?)', array($api, $ape,$switch_cant, $gabinetes, $material, $medida));
           
+          $products_materiales =  $this->paginate($products_m, $perPage = 12,  null , $options = []);
+          //dd($products_materiales);
           return view('permitted.documentp.products_materiales', ['products_materiales' => $products_materiales])->render();
 
         }
@@ -146,11 +137,11 @@ class DocumentpCartController extends Controller
 
     }
 
-    public function getProductsCart($aps ,$firewalls, $switches, $bobinas, $gabinetes)
+    public function getProductsCart($aps ,$firewalls, $switches, $gabinetes)
     {
        $id_user = Auth::user()->id;
 
-       $this->createTableTempProducts($aps ,$firewalls, $switches, $bobinas, $gabinetes);
+       $this->createTableTempProducts($aps ,$firewalls, $switches, $gabinetes);
 
           try{
             $products = DB::select('CALL px_products_table_products_tmp(?)', array($id_user));
@@ -165,16 +156,15 @@ class DocumentpCartController extends Controller
 
     }
 
-    public function createTableTempProducts($aps ,$firewalls, $switches, $bobinas, $gabinetes)
+    public function createTableTempProducts($aps ,$firewalls, $switches, $gabinetes)
     {
       $id_user = Auth::user()->id;
       $data_aps = json_decode($aps);
       $data_firewalls = json_decode($firewalls);
       $data_switches = json_decode($switches);
-      $data_bobinas = json_decode($bobinas);
       $data_gabinetes = json_decode($gabinetes);
 
-      $dataEquipos = array_merge($data_aps, $data_firewalls, $data_switches, $data_bobinas, $data_gabinetes);
+      $dataEquipos = array_merge($data_aps, $data_firewalls, $data_switches, $data_gabinetes);
       $collection = collect($dataEquipos);
       // Filtrando datos sin modelo y cantidad
       $dataEquipos = $collection->whereNotIn('id', 0)
@@ -254,6 +244,15 @@ class DocumentpCartController extends Controller
       $items = $items instanceof Collection ? $items : Collection::make($items);
 
       return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, ['path'=>url('documentp_cart')]);
+	  }
+	
+    public function deleteProductsShoppingCart(Request $request)
+    { 
+      $data = json_decode($request->data);
+      $documentp = Documentp::findOrFail($data->id_doc);
+      $delete_rows = In_Documentp_cart::where('documentp_cart_id', '=', $documentp->documentp_cart_id)->pluck('id');
+      $result = In_Documentp_cart::destroy($delete_rows);
+      return $result;
     }
 
 

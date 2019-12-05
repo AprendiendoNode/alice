@@ -133,6 +133,86 @@ $(function () {
 
   })
 
+  $('#add_shopping_cart').on('click', function(){
+    var data_switches = get_switches();
+    var data_gabinete = get_gabinetes();
+    var data_aps = get_aps();
+    console.log(data_aps);
+    var aps = JSON.stringify(data_aps[0]);
+    var firewalls = JSON.stringify(get_firewalls());
+    var switches = JSON.stringify(data_switches[0]);
+    var gabinetes = JSON.stringify(data_gabinete[0]);
+  
+    fetch(`/getProductsCart/${aps}/${firewalls}/${switches}/${gabinetes}`, miInit)
+         .then(function(response){
+           return response.json();
+         })
+         .then(function(products){
+           
+           products.forEach(product => {
+              var productosLS = obtenerProductosLocalStorage();
+              var id_product = product.id;
+              if(productosLS == '[]'){
+                //Primer producto del carrito
+                leerDatosProductMO(product);
+                menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
+              }else {
+                let count =  productosLS.filter(producto => producto.id == id_product);
+    
+                if(count.length == 1){
+                  //El producto existe
+                  menssage_toast('Error', '2', 'Este producto ya fue agregado al pedido' , '3000');
+                }else{
+                  leerDatosProductMO(product);
+                  menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
+                }
+              }
+           });
+         })
+         .catch(function(error){
+                 console.log(error);
+         });
+    
+  });
+
+  $('#delete_cart').on('click', function(e){
+    
+
+    Swal.fire({
+      title: '¿Estas seguro?',
+      text: "Se borraran todos los productos del carrito. Esta accion no se podra revertir.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Continuar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        let id_doc = document.getElementById('id_documentp').value;
+        var data = new FormData();
+        data.append( "data", JSON.stringify({id_doc: id_doc}));
+        var initPost = { method: 'post',
+                        headers: headers,
+                        credentials: "same-origin",
+                        body: data,
+                        cache: 'default' };
+
+        fetch('/deleteProductsShoppingCart', initPost)
+          .then( response => {
+            if(response.ok){
+              localStorage.clear();
+              Swal.fire('Productos eliminados!', '', 'success');
+            }
+          })
+          .catch( error => {
+            Swal.fire('Ocurrio un error inesperado', 'No se eliminaron los productos', 'error');
+            console.log(error);
+          })
+      }
+    })
+  });
+
   function getArticlesViatics(url) {
     $.ajax({
         url : url
@@ -164,6 +244,35 @@ $(function () {
     }).fail(function () {
         Swal.fire("Debe llenar las cantidades de los equipos","","warning");
     });
+  }
+
+  function get_aps(){
+    var select_aps = document.getElementsByClassName("aps_modelo");
+    var cant_aps = document.getElementsByClassName("aps_cant");
+    var element = {};
+    var aps = [];
+    var api = 0;
+    var ape = 0;
+    var data = [];
+  
+    for(var i = 0;i < select_aps.length - 1; i++)
+    {
+      element = {"id" : $(select_aps[i]).val(),
+                  "modelo" : $(select_aps[i]).children("option").filter(":selected").text(),
+                  "clave" : $(select_aps[i]).children("option").filter(":selected").data('key'),
+                  "cant" : cant_aps[i].value}
+  
+      aps.push(element);
+  
+      if(element.clave == "API"){
+        api = api + parseInt(element.cant);
+      }else if(element.clave == "APE"){
+        ape = ape + parseInt(element.cant);
+      }
+    }
+    
+    return data = [aps,api,ape];
+  
   }
 
   function check_installation_site()
@@ -325,33 +434,6 @@ $(function () {
 **** filtro por categoria y aps, firewalls y switches dinamicos
   */
 
-    function get_aps(){
-      var cant_aps = document.getElementsByClassName("aps_cant");
-      var element = {}
-      var aps = [];
-      var api = 0;
-      var ape = 0;
-      var data = [];
-      var productos = obtenerProductosLocalStorage();
-      var products_aps = productos.filter(producto =>
-        producto.codigo.substring(0, 3) == 'API' || producto.codigo.substring(0, 3) == 'APE');
-        
-        $.each(products_aps, function( i, key ) {
-          element = {"id" : key.id,
-                    "cant" : key.cant_req}
-          aps.push(element);
-          cant_aps += key.cant_req;
-          
-          if(key.codigo.substring(0, 3) == 'API'){
-            api = api + parseInt(key.cant_req);
-          }else if(key.codigo.substring(0, 3) == 'APE'){
-            ape = ape + parseInt(key.cant_req);
-          }
-        });
-
-      return data = [aps,api,ape];
-
-    }
 
     function get_firewalls(){
       var select_firewall = document.getElementsByClassName("firewall_modelo");
@@ -458,23 +540,29 @@ $(function () {
     $('#products-grid-materiales').on('click', '.pagination a', function(e) {
         e.preventDefault();
         var pg = getPaginationSelectedPage($(this).attr('href'));
-        var data_aps= get_aps();
+        var data_aps = get_aps();
         var data_switches = get_switches();
         var aps = JSON.stringify(data_aps[0]);
-        var api = data_aps[1];
-        var ape = data_aps[2];
+        var api = parseInt(data_aps[1]);
+        var ape = parseInt(data_aps[2]);
         var firewalls = JSON.stringify(get_firewalls());
         var switches = JSON.stringify(data_switches[0]);
         var switch_cant = data_switches[1];
+        var data_gabinete = get_gabinetes();
+        var gabinetes = data_gabinete[1];
+        var switches = data_switches[1];
+        var material = $('.material_select').val();
+        var medida = $('.medida_select').val();
+    
 
         $.ajax({
-            url: `/items/ajax/second/${aps}/${api}/${ape}/${firewalls}/${switches}/${switch_cant}`,
+            url : `/items/ajax/second/${api}/${ape}/${switch_cant}/${gabinetes}/${material}/${medida}`,
             data: { page: pg },
             success: function(data) {
                 $('#products-grid-materiales').html(data);
             }
         });
-    });
+  });
 
     $('#products-grid-mo').on('click', '.pagination a', function(e) {
         e.preventDefault();
@@ -508,20 +596,26 @@ $(function () {
       getArticles(`/items/ajax/first/${aps}/${api}/${ape}/${firewalls}/${switches}/${switch_cant}`);
     })
 
-  $("#get_materiales_button").on("click",function(e){
-    e.preventDefault();
-    var data_aps = get_aps();
-    var data_switches = get_switches();
-    var aps = JSON.stringify(data_aps[0]);
-    var api = data_aps[1];
-    var ape = data_aps[2];
-    var firewalls = JSON.stringify(get_firewalls());
-    var switches = JSON.stringify(data_switches[0]);
-    var switch_cant = data_switches[1];
+    $("#get_materiales_button").on("click",function(e){
+      e.preventDefault();
+      var data_aps = get_aps();
+      var data_switches = get_switches();
+      var aps = JSON.stringify(data_aps[0]);
+      var api = parseInt(data_aps[1]);
+      var ape = parseInt(data_aps[2]);
+      var firewalls = JSON.stringify(get_firewalls());
+      var switches = JSON.stringify(data_switches[0]);
+      var switch_cant = data_switches[1];
+      var data_gabinete = get_gabinetes();
+      var gabinetes = data_gabinete[1];
+      var switches = data_switches[1];
+      var material = $('.material_select').val();
+      var medida = $('.medida_select').val();
 
-    url = `/items/ajax/second/${aps}/${api}/${ape}/${firewalls}/${switches}/${switch_cant}`;
-    getArticlesMateriales(url);
-  })
+      url = `/items/ajax/second/${api}/${ape}/${switch_cant}/${gabinetes}/${material}/${medida}`;
+         
+      getArticlesMateriales(url);
+    })
 
   $("#get_mo_button").on("click",function(e){
     e.preventDefault();
@@ -668,7 +762,7 @@ function leerDatosProductMO(producto){
        currency: producto.currency,
        currency_id: producto.currency_id,
        proveedor: producto.proveedor,
-       descuento: 0,
+       descuento: producto.descuento,
        cant_sug: cant_sug,
        cant_req: cant_req,
        precio_total : precioTotal.toFixed(2),
@@ -702,3 +796,70 @@ function obtenerProductosLS(){
 function insertarMO(producto){
     guardarProductoLS(producto);
 }
+
+function get_gabinetes(){
+  var data = [];
+  var select_gabinete = document.getElementsByClassName("gabinetes_select");
+  var cant_gabinete = document.getElementsByClassName("gabinetes_cant");
+  var element = {}
+  var gabinetes = [];
+  var total = 0;
+
+  for(var i = 0;i < select_gabinete.length - 1; i++)
+  {
+    element = {"id" : $(select_gabinete[i]).val(),
+                "cant" : parseFloat(cant_gabinete[i].value)}
+
+    total+= element.cant;
+    gabinetes.push(element);
+  }
+
+  return data = [gabinetes, total];
+}
+
+
+
+function get_firewalls(){
+  var select_firewall = document.getElementsByClassName("firewall_modelo");
+  var cant_firewall = document.getElementsByClassName("firewall_cant");
+  var element = {}
+  var firewall = [];
+
+  for(var i = 0;i < select_firewall.length - 1; i++)
+  {
+    element = {"id" : $(select_firewall[i]).val(),
+                "modelo" : $(select_firewall[i]).children("option").filter(":selected").text(),
+                "cant" : cant_firewall[i].value}
+
+    firewall.push(element);
+  }
+
+  return firewall;
+
+}
+
+function get_switches(){
+  var select_switches = document.getElementsByClassName("switch_modelo");
+  var cant_switches = document.getElementsByClassName("switch_cant");
+  var element = {}
+  var switches = [];
+  var data = [];
+  var switch_cant = 0;
+
+  for(var i = 0;i < select_switches.length - 1; i++)
+  {
+    element = {"id" : $(select_switches[i]).val(),
+                "modelo" : $(select_switches[i]).children("option").filter(":selected").text(),
+                "cant" : cant_switches[i].value}
+
+    switches.push(element);
+    if(element.cant != "" && element.cant != 0){
+      switch_cant += parseInt(element.cant);
+    }
+
+  }
+
+  return data = [switches, switch_cant];
+
+}
+

@@ -38,7 +38,8 @@ function documentp_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
-  $.each(datajson, function(index, data){
+  data = datajson.filter(data => data.status != 'Denegado');
+  $.each(data, function(index, data){
     let type_doc = 'C';
     let badge = '';
     let parameters_icon = '';

@@ -19,7 +19,7 @@
 @section('content')
 
   @if( auth()->user()->can('View Document P') )
-    <div class="container">
+    <div class="">
       <!-- Validation wizard -->
       <div class="row" id="validation">
           <div class="col-12">

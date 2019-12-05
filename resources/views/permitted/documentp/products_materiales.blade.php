@@ -75,7 +75,7 @@
         <button type="button"
               data-id="{{$product->id}}"
               data-descripcion="{{$product->name}}"
-              data-price="{{$product->price}}"
+              data-price="{{$product->price}}" 
               data-proveedor="{{$product->provedor}}"
               data-codigo="{{$product->code}}"
               data-num-parte="{{$product->num_parte}}"

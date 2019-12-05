@@ -19,7 +19,7 @@
 @section('content')
 
   @if( auth()->user()->can('Create quoting') )
-    <div class="container">
+    <div class="">
       <!-- Validation wizard -->
       <div class="row" id="validation">
           <div class="col-sm-12">
