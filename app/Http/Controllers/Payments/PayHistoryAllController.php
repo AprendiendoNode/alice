@@ -44,7 +44,12 @@ class PayHistoryAllController extends Controller
 
       return view('permitted.payments.history_all_requests_pay',compact('proveedor','vertical', 'currency', 'way', 'area', 'application', 'options', 'classification', 'financing'));
   }
+  public function index_paycc()
+  {
+    $cuentas = DB::select('CALL px_cc_pagos()');
 
+    return view('permitted.payments.pay_cc_edit', compact('cuentas'));
+  }
   public function solicitudes_historic(Request $request)
   {
     $input1 = $request->startDate;

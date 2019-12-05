@@ -243,6 +243,10 @@ return [
     'pay_hist_all_request' => 'Historico',
     'subtitle_pay_hist_all' => 'de Pagos',
     'breadcrumb_pay_hist_all' => 'Historico de Pagos',
+    
+    'pay_cc_edit' => 'Edición de cc pagos.',
+    'subtitle_pay_cc' => 'de cuentas contables en pagos',
+    'breadcrumb_pay_cc' => 'Edición de cuentas contables en pagos',
 
     'subtitle_status_paid' => 'de pagos confirmados',
     'breadcrumb_status_paid' => 'Historial de pagos confirmados',

@@ -650,6 +650,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get_fact_idpay', 'Payments\PayHistoryController@get_fact_name');
     Route::post('/send_item_pay_authorized', 'Payments\PayHistoryController@approval_three');
     //Route::post('/send_item_pay_authorized_indv', 'Payments\PayHistoryController@approval_three_ind');
+    // Edit cuentas contables pagos.
+    Route::get('/edit_paycc','Payments\PayHistoryAllController@index_paycc');
   //- Modulo de definir cuentas por default
     Route::get('/view_pay_bank', 'Payments\BankAccountsController@index');
     Route::post('/get_table_bk', 'Payments\BankAccountsController@generate_table');
