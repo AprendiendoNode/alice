@@ -5,25 +5,9 @@ namespace App\Http\Controllers\Payments;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
+use Auth;
 use App\User; //Importar el modelo eloquent
-use App\Proveedor;
-use App\Vertical;
-use App\Reference;
-use App\Hotel;
-use App\Cadena;
-use App\Banco;
 use App\Currency;
-use App\Prov_bco_cta;
-use App\Pay_status_user;
-
-use App\Payments_application;
-use App\Payments_area;
-use App\Payments_classification;
-use App\Payments_comment;
-use App\Payments_financing;
-use App\Payments_project_options;
-use App\Payments_states;
-use App\Payments_verticals;
 use App\Models\Catalogs\PaymentWay;
 use App\Payments;
 
@@ -49,6 +33,32 @@ class PayHistoryAllController extends Controller
     $cuentas = DB::select('CALL px_cc_pagos()');
 
     return view('permitted.payments.pay_cc_edit', compact('cuentas'));
+  }
+  public function send_items_editcc(Request $request)
+  {
+    $solicitud_id = json_decode($request->idents);
+    $cc_nk = $request->key_name;
+    $user = Auth::user()->id;
+    $valor= 'false';
+    
+    $result = explode('|', $cc_nk);
+    $key_new = trim($result[0]);
+    $name_cc_new = trim($result[1]);
+
+    for ($i=0; $i <= (count($solicitud_id)-1); $i++) {
+      $sql = DB::table('pay_mov_cc')->select('id', 'key_cc','name_cc')->where('payments_id', $solicitud_id[$i])->first();
+      DB::connection('alicelog')->table('pay_mov_cc_log')->insert([
+        'pay_mov_cc_id' => $sql->id,
+        'payments_id' => $solicitud_id[$i],
+        'key_cc_old' => $sql->key_cc,
+        'key_cc_new' => $key_new,
+        'name_cc_old' => $sql->name_cc,
+        'name_cc_new' => $name_cc_new,
+      ]);
+      DB::table('pay_mov_cc')->where('payments_id', $solicitud_id[$i])->update(['key_cc' => $key_new, 'name_cc' => $name_cc_new]);
+      $valor= 'true';
+    }
+    return $valor;
   }
   public function solicitudes_historic(Request $request)
   {

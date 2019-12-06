@@ -72,7 +72,7 @@
                         <select class="form-control select2 pl-2" id="select_cc" name="select_cc">
                           <option value="">Elegir</option>
                           @forelse ($cuentas as $data_contable )
-                          <option value="{{ $data_contable->cuenta_contable }}"> {{ $data_contable->cuenta_contable }} </option>
+                          <option value="{{ $data_contable->cuenta_contable . ' | ' . $data_contable->cuenta_contable_name}}"> {{ $data_contable->cuenta_contable . ' | ' . $data_contable->cuenta_contable_name }} </option>
                           @empty
 
                           @endforelse

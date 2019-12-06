@@ -160,25 +160,26 @@ var Configuration_table_responsive_pay_2= {
             $('.cancel').prop('disabled', 'disabled');
             $('.confirm').prop('disabled', 'disabled');
             var rows_selected = $("#table_history_all").DataTable().column(0).checkboxes.selected();
+            var key_name = $('#select_cc').val();
             var _token = $('input[name="_token"]').val();
             // Iterate over all selected checkboxes
             var valores= new Array();
             $.each(rows_selected, function(index, rowId){
               valores.push(rowId);
             });
-            console.log(valores);
             if ( valores.length === 0){
               Swal.fire("Operación abortada", "Ningún registro seleccionado. :(", "error");
             }
             else {
-              /*$.ajax({
+              $.ajax({
                 type: "POST",
                 url: "/edit_paymov_cc",
-                data: { idents: JSON.stringify(valores), _token : _token },
+                data: { idents: JSON.stringify(valores), key_name: key_name,_token : _token },
                 success: function (data){
+                  console.log(data);
                   if (data === 'true') {
                     Swal.fire("Operación Completada!", "Las solicitudes seleccionadas han sido afectadas.", "success");
-                    payments_auto_table();
+                    get_table_history();
                   }
                   if (data === 'false') {
                     Swal.fire("Operación abortada!", "Las solicitudes seleccionadas no han sido afectadas.", "error");
@@ -187,7 +188,7 @@ var Configuration_table_responsive_pay_2= {
                 error: function (data) {
                   console.log('Error:', data);
                 }
-              });*/
+              });
             }
           }
         })
