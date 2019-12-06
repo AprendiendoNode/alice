@@ -52,18 +52,7 @@ $(function () {
   $("input[name='optionsMaterial']").on("change",function(e){
     let material = $("input[name='optionsMaterial']:checked").val();
     getTypeMaterial(material);
-    // var categoria = document.getElementById('categoria').value;
-    // var description = document.getElementById('description').value;
-    // var type = document.getElementById('tipo_material').value;
-    // var material = $("input[name='optionsMaterial']:checked").val();
-    // var medida = $("input[name='optionsMedida']:checked").val();
-    
-    // let url = ``;
 
-    // if(description.length >=3){
-    //   url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
-    //   getArticlesCategorias(url);
-    // }
   })
 
   $("input[name='optionsMedida']").on("change",function(e){
@@ -86,49 +75,178 @@ $(function () {
   })
 
   $("#get_viatics_button").on("click",function(e){
-    
-    var data_aps = get_aps();
-    var aps = JSON.stringify(data_aps[0]);
-    var api = data_aps[1];
-    var ape = data_aps[2];
-
-    url = `/items/ajax/five/${api}/${ape}`;
-    getArticlesViatics(url);
-
+    update_viaticos();
   })
 
-  function getArticlesViatics(url) {
-    $.ajax({
-        url : url
-    }).done(function (data) { 
-      var productosLS = obtenerProductosLocalStorage();
+  $('#add_shopping_cart').on('click', function(){
+    var data_switches = get_switches();
+    var data_gabinete = get_gabinetes();
+    var data_aps = get_aps();
+    console.log(data_aps);
+    var aps = JSON.stringify(data_aps[0]);
+    var firewalls = JSON.stringify(get_firewalls());
+    var switches = JSON.stringify(data_switches[0]);
+    var gabinetes = JSON.stringify(data_gabinete[0]);
+  
+    fetch(`/getProductsCart/${aps}/${firewalls}/${switches}/${gabinetes}`, miInit)
+         .then(function(response){
+           return response.json();
+         })
+         .then(function(products){
+           
+           products.forEach(product => {
+              var productosLS = obtenerProductosLocalStorage();
+              var id_product = product.id;
+              if(productosLS == '[]'){
+                //Primer producto del carrito
+                leerDatosProductMO(product);
+                menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
+              }else {
+                let count =  productosLS.filter(producto => producto.id == id_product);
+    
+                if(count.length == 1){
+                  //El producto existe
+                  menssage_toast('Error', '2', 'Este producto ya fue agregado al pedido' , '3000');
+                }else{
+                  leerDatosProductMO(product);
+                  menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
+                }
+              }
+           });
+         })
+         .catch(function(error){
+                 console.log(error);
+         });
+    
+  });
 
-        data.forEach(element => {
-          var productosLS = obtenerProductosLocalStorage();
-          var id_product = element.id;
-          if(productosLS == '[]'){
-            //Primer producto del carrito
-            leerDatosProductMO(element);
-            menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
-          }else {
-            let count =  productosLS.filter(producto => producto.id == id_product);
+  $('#delete_cart').on('click', function(e){
+    
+    Swal.fire({
+      title: '¿Estas seguro?',
+      text: "Se borraran todos los productos del cotizador. Esta accion no se podra revertir.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Continuar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        let id_doc = document.getElementById('id_documentp').value;
+        var data = new FormData();
+        data.append( "data", JSON.stringify({id_doc: id_doc}));
+        var initPost = { method: 'post',
+                        headers: headers,
+                        credentials: "same-origin",
+                        body: data,
+                        cache: 'default' };
 
-            if(count.length == 1){
-              //El producto existe
-              menssage_toast('Error', '2', 'Este producto ya fue agregado al pedido' , '3000');
-            }else{
-              leerDatosProductMO(element);
-              menssage_toast('Mensaje', '3', 'Producto agregado' , '2000');
+        fetch('/deleteProductsShoppingCart', initPost)
+          .then( response => {
+            if(response.ok){
+              localStorage.clear();
+              Swal.fire('Productos eliminados!', '', 'success');
             }
+          })
+          .catch( error => {
+            Swal.fire('Ocurrio un error inesperado', 'No se eliminaron los productos', 'error');
+            console.log(error);
+          })
+      }
+    })
+  });
 
-          }
+  function update_viaticos(){
 
+    var num_aps = 0;
+    var productos = obtenerProductosLocalStorage();
+      //Filtro de antenas
+    var products_aps = productos.filter(producto =>
+                       producto.codigo.substring(0, 3) == 'API' || producto.codigo.substring(0, 3) == 'APE');
+      
+      var viaticos_products = productos.filter(producto => producto.categoria_id == 15);
+      /* Si es mayor a 0 significa que hay aps
+         parte del usuario y se procede a recalcular las cantidades */
+      if(products_aps.length > 0){
+        $.each(products_aps, function( i, key ) {
+          num_aps += key.cant_req;
         })
-
-    }).fail(function () {
-        Swal.fire("Debe llenar las cantidades de los equipos","","warning");
-    });
+  
+        new_products =  productos.filter(producto => producto.categoria_id != 15);
+        localStorage.setItem('productos', JSON.stringify(new_products));
+  
+        $.ajax({
+          url :  `/items/ajax/five/0/${num_aps}`
+        }).done(function (data) {
+          var productosLS = obtenerProductosLocalStorage();
+            data.forEach(element => {
+              var productosLS = obtenerProductosLocalStorage();
+              var id_product = element.id;
+              if(productosLS == '[]'){
+                //Primer producto del carrito
+                leerDatosProductMO(element);
+              }else {
+                let count =  productosLS.filter(producto => producto.id == id_product);
+                (count.length == 1) ? console.log("producto existe") : leerDatosProductMO(element);
+              }
+            })
+              menssage_toast('Mensaje', '4', 'Viaticos actualizados' , '2000');
+            }).fail(function () {
+                Swal.fire("Ocurrio un error al actualizar mano de obra","","error");
+            });//Fin funcion ajax
+  
+        }else{
+          Swal.fire("El proyecto no tiene antenas","Agrega AP'S y vuelve a intentarlo","warning");
+        }
   }
+
+  function update_mo(){
+
+    var num_aps = 0;
+    var productos = obtenerProductosLocalStorage();
+      //Filtro de antenas
+    var products_aps = productos.filter(producto =>
+                       producto.codigo.substring(0, 3) == 'API' || producto.codigo.substring(0, 3) == 'APE');
+  
+      var mo_products = productos.filter(producto => producto.categoria_id == 7);
+      /* Si es mayor a 0 significa que se agrego mano de obra por
+         parte del usuario y se procede a recalcular las cantidades */
+      if(products_aps.length > 0){
+        $.each(products_aps, function( i, key ) {
+          num_aps += key.cant_req;
+        })
+  
+        new_products =  productos.filter(producto => producto.categoria_id != 7);
+        localStorage.setItem('productos', JSON.stringify(new_products));
+  
+        $.ajax({
+            url : `/items/ajax/four/0/${num_aps}`
+        }).done(function (data) {
+          var productosLS = obtenerProductosLocalStorage();
+            data.forEach(element => {
+              var productosLS = obtenerProductosLocalStorage();
+              var id_product = element.id;
+              if(productosLS == '[]'){
+                //Primer producto del carrito
+                leerDatosProductMO(element);
+              }else {
+                let count =  productosLS.filter(producto => producto.id == id_product);
+                (count.length == 1) ? console.log("producto existe") : leerDatosProductMO(element);
+              }
+            })
+              generate_table_products();
+              menssage_toast('Mensaje', '4', 'Mano de obra actualizada' , '2000');
+            }).fail(function () {
+                Swal.fire("Ocurrio un error al actualizar mano de obra","","error");
+            });//Fin funcion ajax
+  
+        }else{
+          Swal.fire("El proyecto no tiene antenas","Agrega AP'S y vuelve a intentarlo","warning");
+        }
+  }
+
+
 
   /**
 **** scripts del funcionamiento de la paginacion de Equip. activo, materiales,
@@ -152,29 +270,30 @@ $(function () {
 } 
 
   function get_aps(){
+    var select_aps = document.getElementsByClassName("aps_modelo");
     var cant_aps = document.getElementsByClassName("aps_cant");
-    var element = {}
+    var element = {};
     var aps = [];
     var api = 0;
     var ape = 0;
     var data = [];
-    var productos = obtenerProductosLocalStorage();
-    var products_aps = productos.filter(producto =>
-      producto.codigo.substring(0, 3) == 'API' || producto.codigo.substring(0, 3) == 'APE');
-      
-      $.each(products_aps, function( i, key ) {
-        element = {"id" : key.id,
-                  "cant" : key.cant_req}
-        aps.push(element);
-        cant_aps += key.cant_req;
-        
-        if(key.codigo.substring(0, 3) == 'API'){
-          api = api + parseInt(key.cant_req);
-        }else if(key.codigo.substring(0, 3) == 'APE'){
-          ape = ape + parseInt(key.cant_req);
-        }
-      });
 
+    for(var i = 0;i < select_aps.length - 1; i++)
+    {
+      element = {"id" : $(select_aps[i]).val(),
+                  "modelo" : $(select_aps[i]).children("option").filter(":selected").text(),
+                  "clave" : $(select_aps[i]).children("option").filter(":selected").data('key'),
+                  "cant" : cant_aps[i].value}
+
+      aps.push(element);
+
+      if(element.clave == "API"){
+        api = api + parseInt(element.cant);
+      }else if(element.clave == "APE"){
+        ape = ape + parseInt(element.cant);
+      }
+    }
+    
     return data = [aps,api,ape];
 
   }
@@ -197,6 +316,27 @@ $(function () {
       return firewall;
 
     }
+
+    function get_gabinetes(){
+      var data = [];
+      var select_gabinete = document.getElementsByClassName("gabinetes_select");
+      var cant_gabinete = document.getElementsByClassName("gabinetes_cant");
+      var element = {}
+      var gabinetes = [];
+      var total = 0;
+    
+      for(var i = 0;i < select_gabinete.length - 1; i++)
+      {
+        element = {"id" : $(select_gabinete[i]).val(),
+                    "cant" : parseFloat(cant_gabinete[i].value)}
+    
+        total+= element.cant;
+        gabinetes.push(element);
+      }
+    
+      return data = [gabinetes, total];
+    }
+    
 
     function get_switches(){
       var select_switches = document.getElementsByClassName("switch_modelo");
@@ -277,17 +417,20 @@ $(function () {
     $('#products-grid-materiales').on('click', '.pagination a', function(e) {
         e.preventDefault();
         var pg = getPaginationSelectedPage($(this).attr('href'));
-        var data_aps= get_aps();
+        var data_aps = get_aps();
         var data_switches = get_switches();
         var aps = JSON.stringify(data_aps[0]);
-        var api = data_aps[1];
-        var ape = data_aps[2];
-        var firewalls = JSON.stringify(get_firewalls());
-        var switches = JSON.stringify(data_switches[0]);
+        var api = parseInt(data_aps[1]);
+        var ape = parseInt(data_aps[2]);
         var switch_cant = data_switches[1];
+        var data_gabinete = get_gabinetes();
+        var gabinetes = data_gabinete[1];
+        var switches = data_switches[1];
+        var material = $('.material_select').val();
+        var medida = $('.medida_select').val();
 
         $.ajax({
-            url: `/items/ajax/second/${aps}/${api}/${ape}/${firewalls}/${switches}/${switch_cant}`,
+            url : `/items/ajax/second/${api}/${ape}/${switch_cant}/${gabinetes}/${material}/${medida}`,
             data: { page: pg },
             success: function(data) {
                 $('#products-grid-materiales').html(data);
@@ -349,7 +492,7 @@ $(function () {
     var firewalls = JSON.stringify(get_firewalls());
     var switches = JSON.stringify(data_switches[0]);
     var switch_cant = data_switches[1];
-
+    console.log(aps);
     getArticles(`/items/ajax/first/${aps}/${api}/${ape}/${firewalls}/${switches}/${switch_cant}`);
   })
 
@@ -357,33 +500,25 @@ $(function () {
     e.preventDefault();
     var data_aps = get_aps();
     var data_switches = get_switches();
-    var aps = JSON.stringify(data_aps[0]);
-    var api = data_aps[1];
-    var ape = data_aps[2];
-    var firewalls = JSON.stringify(get_firewalls());
-    var switches = JSON.stringify(data_switches[0]);
+    var api = parseInt(data_aps[1]);
+    var ape = parseInt(data_aps[2]);
     var switch_cant = data_switches[1];
+    var data_gabinete = get_gabinetes();
+    var gabinetes = data_gabinete[1];
+    var material = $('.material_select').val();
+    var medida = $('.medida_select').val();
 
-    url = `/items/ajax/second/${aps}/${api}/${ape}/${firewalls}/${switches}/${switch_cant}`;
+    url = `/items/ajax/second/${api}/${ape}/${switch_cant}/${gabinetes}/${material}/${medida}`;
+       
     getArticlesMateriales(url);
   })
 
   $("#get_mo_button").on("click",function(e){
     e.preventDefault();
-    var data_aps = get_aps();
-    var data_switches = get_switches();
-    var aps = JSON.stringify(data_aps[0]);
-    var api = data_aps[1];
-    var ape = data_aps[2];
-    var firewalls = JSON.stringify(get_firewalls());
-    var switches = JSON.stringify(data_switches[0]);
-    var switch_cant = data_switches[1];
-    url = `/items/ajax/four/${api}/${ape}`;
-    getArticlesManoObra(url);
-
+    update_mo();
   })
 
-  $("#get_categorias_button").on("click",function(e){
+  $("#get_categorias_button").on("click",function(e){ 
     e.preventDefault();
     var categoria = document.getElementById('categoria').value;
     var description = document.getElementById('description').value;

@@ -70,10 +70,10 @@
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
     <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
     <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v=2.0')}}" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v=3.0')}}" >
     <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_logs.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting_cart_general.js?v=2.2')}}"></script>
-    <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting.js?v=2.3')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting_cart_general.js?v=3.2')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/quoting/edit_quoting.js?v=3.3')}}"></script>
     <script type="text/javascript" src="{{asset('js/admin/quoting/metricas.js?v=4.3')}}"></script>
     <script type="text/javascript">
     $(function() {

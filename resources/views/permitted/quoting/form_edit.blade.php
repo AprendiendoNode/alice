@@ -486,36 +486,295 @@
     <!--     Step 2  ----------------------------->
     <h5>Paso 2 - Agregar materiales</h5>
     <section>
+        <div class="row">
+            <div class="col-md-4 fields_docp">
+              <div class="row mb-2">
+                <div class="col-md-8">
+                  <h4 class="text-center text-primary">AP'S</h4>
+                </div>
+                <div class="col-md-2">
+                  <button class="btn btn-sm btn-dark p-1 addButtonAP" type="button"><i class="fa fa-plus"></i></button>
+                </div>
+              </div>
+    
+              <div class="row mb-2">
+                <div class="form-row">
+                  <div class="col-6">
+                    <select class="form-control form-control-sm aps_modelo" name="aps_modelo[0]">
+                      <option value="0">Elija ...</option>
+                      @foreach ($product_ap as $product_ap_data)
+                        <option data-key="{{$product_ap_data->clave}}" value="{{$product_ap_data->id}}">{{$product_ap_data->equipo}}</option>
+                      @endforeach
+                      <option data-key="APE" value="1075">Nodos extra (Voz y datos) no para antenas</option>
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control form-control-sm aps_cant" min="0" type="number" value="0" name="aps_cant[0]" placeholder="Cantidad">
+                  </div>
+                  <div class="col-2"></div>
+                </div>
+              </div>
+              <div class="row clone d-none" id="optionTemplateAP">
+                <div class="form-row">
+                  <div class="col-6">
+                    <select class="form-control form-control-sm aps_modelo" name="aps_modelo">
+                      <option value="0"> Elija ...</option>
+                      @foreach ($product_ap as $product_ap_data)
+                        <option data-key="{{$product_ap_data->clave}}" value="{{$product_ap_data->id}}">{{$product_ap_data->equipo}}</option>
+                      @endforeach
+                      <option data-key="APE" value="1075">Nodos extra (Voz y datos) no para antenas</option>
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control form-control-sm aps_cant" value="0" min="0" type="number" name="aps_cant" placeholder="Cantidad">
+                  </div>
+                  <button type="button" class="col-1 btn removeButtonAP"><i class="fa fa-minus text-danger"></i></button>
+                </div>
+              </div>
+            </div><!--row antenas--->
+    
+            <div class="col-md-4 fields_docp">
+              <div class="row mb-2">
+                <div class="col-md-8">
+                  <h4 class="text-center text-primary">FIREWALL</h4>
+                </div>
+                <div class="col-md-2">
+                  <button class="btn btn-sm btn-dark p-1 addButtonFW" type="button" name="button"> <i class="fa fa-plus"></i></button>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="form-row">
+                  <div class="col-6">
+                    <select class="form-control form-control-sm firewall_modelo" name="firew_mod[0]">
+                      <option value="0">Elija ...</option>
+                      @foreach ($product_fw as $product_fw_data)
+                        <option value="{{$product_fw_data->id}}">{{$product_fw_data->equipo}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control form-control-sm firewall_cant" value="0" min="0" type="number" name="firew_cant[0]" placeholder="Cantidad">
+                  </div>
+                  <div class="col-2"></div>
+                </div>
+              </div>
+              <div class="row clone d-none" id="optionTemplateFIRE">
+                <div class="form-row">
+                  <div class="col-6">
+                    <select class="form-control form-control-sm firewall_modelo" name="firew_mod">
+                      <option value="0">Elija ...</option>
+                      @foreach ($product_fw as $product_fw_data)
+                        <option value="{{$product_fw_data->id}}">{{$product_fw_data->equipo}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control form-control-sm firewall_cant" value="0" value="0" min="0" type="number" name="firew_cant" placeholder="Cantidad">
+                  </div>
+                  <button type="button" class="col-1 btn removeButtonFW"><i class="fa fa-minus text-danger"></i></button>
+                </div>
+              </div>
+            </div><!--row firewall--->
+    
+            <div class="col-md-4 fields_docp">
+              <div class="row mb-2">
+                <div class="col-8">
+                  <h4 class="text-center text-primary">SWITCHES</h4>
+                </div>
+                <div class="col-2">
+                  <button class="btn btn-sm btn-dark p-1 addButtonSW" type="button" name="button"> <i class="fa fa-plus"></i></button>
+                </div>
+              </div>
+    
+              <div class="row mb-2">
+                <div class="form-row">
+                  <div class="col-6">
+                    <select class="form-control form-control-sm switch_modelo" name="switches_mod[0]">
+                      <option value="0">Elija ...</option>
+                      @foreach ($product_sw as $product_sw_data)
+                        <option value="{{$product_sw_data->id}}">{{$product_sw_data->equipo}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control form-control-sm switch_cant" value="0" min="0" type="number" name="switches_cant[0]" placeholder="Cantidad">
+                  </div>
+                  <div class="col-1"></div>
+                </div>
+              </div>
+    
+              <div class="row clone d-none" id="optionTemplateSW">
+                <div class="form-row">
+                  <div class="col-6">
+                    <select class="form-control form-control-sm switch_modelo" name="switches_mod">
+                      <option value="0">Elija ...</option>
+                      @foreach ($product_sw as $product_sw_data)
+                        <option value="{{$product_sw_data->id}}">{{$product_sw_data->equipo}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control form-control-sm switch_cant" value="0" min="0" type="number" name="switches_cant" placeholder="Cantidad">
+                  </div>
+                  <button type="button" class="col-1 btn removeButtonSW"><i class="fa fa-minus text-danger"></i></button>
+                  </div>
+                </div>
+              </div><!--row switches--->
+          </div><!---row-->
       <br>
-      <div class="row fields_docp">
-        <h4 class="text-danger">Mano de obra</h4>
+      <div class="row">
+      
+          <div class="col-md-4 fields_docp">
+            <div class="row mb-2">
+              <div class="col-8">
+                <h4 class="text-center text-success">Gabinetes</h4>
+              </div>
+              <div class="col-2">
+                <button class="btn btn-sm btn-dark p-1 addButtonGabinetes" type="button" name="button"> <i class="fa fa-plus"></i></button>
+              </div>
+            </div>
+  
+            <div class="row mb-2">
+              <div class="form-row">
+                <div class="col-6">
+                  <select class="form-control form-control-sm gabinetes_select" name="gabinetes_select[0]">
+                    <option value="0">Elija ...</option>
+                    @foreach ($products_gabinetes as $gabinetes)
+                      <option value="{{$gabinetes->id}}">{{$gabinetes->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-4">
+                  <input class="form-control form-control-sm gabinetes_cant" value="0" min="0" type="number" name="gabinetes_cant[0]" placeholder="Cantidad">
+                </div>
+                <div class="col-1"></div>
+              </div>
+            </div>
+            <div class="row clone d-none" id="optionTemplateGabinetes">
+              <div class="form-row">
+                <div class="col-6">
+                  <select class="form-control form-control-sm gabinetes_select" name="gabinetes_select">
+                    <option value="0">Elija ...</option>
+                    @foreach ($products_gabinetes as $gabinetes)
+                      <option value="{{$gabinetes->id}}">{{$gabinetes->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-4">
+                  <input class="form-control form-control-sm gabinetes_cant" value="0" min="0" type="number" name="gabinetes_cant" placeholder="Cantidad">
+                </div>
+                <button type="button" class="col-1 btn removeButtonGabinetes"><i class="fa fa-minus text-danger"></i></button>
+                </div>
+              </div>
+            </div><!--row gabinetes--->
+
+          <div class="col-md-2 fields_docp">
+            <div class="row mb-2">
+              <div class="col-12">
+                <h4 class="text-center text-success">Material</h4>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex justify-content-center">
+              <div class="form-row">
+                <div class="col-12">
+                  <select class="form-control form-control-sm material_select" name="material_select[0]">
+                    @foreach ($materiales as $material)
+                      <option value="{{$material->id}}">{{$material->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>  
+          </div><!--material--->
+          <div class="col-md-2 fields_docp">
+            <div class="row mb-2">
+              <div class="col-12">
+                <h4 class="text-center text-success">Medidas</h4>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex justify-content-center">
+              <div class="form-row">
+                <div class="col-12">
+                  <select class="form-control form-control-sm medida_select" name="medida_select[0]">
+                    @foreach ($medidas as $medida)
+                      <option value="{{$medida->id}}">{{$medida->unit}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>  
+          </div><!--Medidas--->
+          <div class="col-md-4 fields_docp">
+              <button type="button" id="add_shopping_cart" class="btn btn-sm btn-success m-2"> <i class="fas fa-cart-plus"></i> Agregar </button>
+              @if($data_header[0]->status_id != 3 &&
+              $data_header[0]->status_id != 5 &&
+              $data_header[0]->cotizador_status_id != 6)
+            <button type="button" id="delete_cart" class="btn btn-sm btn-danger m-2"> <i class="fas fa-trash-alt"></i> Vaciar carrito</button>
+          @endif
+          </div><!----->
       </div>
       <div class="row fields_docp">
-        <div class="col-md-4">
-          <div class="form-group">
-              <a href="#" class="btn btn-danger ml-20" id="get_mo_button" name=""><i class="fas fa-people-carry mr-2"></i> Agregar Mano de obra</a>
-          </div>
-        </div>
-      </div>
-      <br>
-      <div  class="row fields_docp">
-        <section id="products-grid-mo" class="products-grid-mo">
-        </section>
-      </div>
-      <br>
-      <!--------VIATICOS---------->
-      <div id="div_button_viatic" class="">
-        <div class="row fields_docp">
-          <h4 class="text-danger">Viaticos</h4>
+          <h4 class="text-danger">Equipo activo</h4>
         </div>
         <div class="row fields_docp">
           <div class="col-md-4">
             <div class="form-group">
-                <button type="button" class="btn btn-success ml-20" id="get_viatics_button" name=""><i class="fas fa-utensils mr-2"></i></i><i class="fas fa-suitcase-rolling mr-1"></i> Agregar Viaticos</button>
+                <a href="#" class="btn btn-dark ml-20" id="get_equipo_button" name=""><i class="fas fa-hdd mr-2"></i> Equipo activo sugerido</a>
             </div>
           </div>
         </div>
-      </div>
+        <div  class="row fields_docp">
+          <section class="col-12" id="products-grid" class="products-grid">
+  
+          </section>
+        </div>
+        <br>
+        <div class="row fields_docp">
+          <h4 class="text-danger">Materiales</h4>
+        </div>
+        <div class="row fields_docp">
+          <div class="col-md-4">
+            <div class="form-group">
+                <a href="#" class="btn btn-dark ml-20" id="get_materiales_button" name=""><i class="fas fa-tools mr-2"></i> Materiales sugeridos</a>
+            </div>
+          </div>
+        </div>
+        <div  class="row fields_docp">
+          <section class="col-12" id="products-grid-materiales" class="products-grid-materiales">
+          </section>
+        </div>
+        <br>
+  
+        <br>
+        <div class="row fields_docp">
+          <h4 class="text-danger">Mano de obra</h4>
+        </div>
+         <div class="row fields_docp">
+          <div class="col-md-4">
+            <div class="form-group">
+                <a href="#" class="btn btn-danger" id="get_mo_button" name=""><i class="fas fa-people-carry mr-2"></i> Agregar Mano de obra</a>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div  class="row fields_docp">
+          <section id="products-grid-mo" class="products-grid-mo">
+          </section>
+        </div>
+        <br>
+        <!--------VIATICOS---------->
+        <div id="div_button_viatic" class="">
+          <div class="row fields_docp">
+            <h4 class="text-danger">Viaticos</h4>
+          </div>
+          <div class="row fields_docp">
+            <div class="col-md-4">
+              <div class="form-group">
+                  <button type="button" class="btn btn-success ml-20" id="get_viatics_button" name=""><i class="fas fa-utensils mr-2"></i></i><i class="fas fa-suitcase-rolling mr-1"></i> Agregar Viaticos</button>
+              </div>
+            </div>
+          </div>
+        </div>
       <br>
       <div class="row">
         <h4 class="text-danger col-12">Agregar material extra</h4>

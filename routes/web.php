@@ -356,23 +356,27 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::get('/testWebSer', 'Tools\GuestToolsController@checkWebSer');
 
-  //MODULO DE COMPRAS - Documento P / M
+//MODULO DE COMPRAS - Documento P / M
   Route::resource('documentp', 'Projects\DocumentpController', ['only' => [
-     'store'
+  'store'
   ]]);
   Route::get('/documentp_cart', 'Projects\DocumentpCartController@index');
   Route::get('items/ajax/{type}/{aps}/{api}/{ape}/{firewalls}/{switches}/{switch_cant}',
-  ['uses'  => 'Projects\DocumentpCartController@getItemType'])->where('type', 'first|second');
+  ['uses'  => 'Projects\DocumentpCartController@getItemType'])->where('type', 'first');
+  Route::get('items/ajax/{type}/{api}/{ape}/{switch_cant}/{gabinetes}/{material}/{medida}',
+  ['uses'  => 'Projects\DocumentpCartController@getItemTypeMaterials'])->where('type', 'second');
   Route::get('items/ajax/third/{category}/{material}/{type}/{medida}', ['uses'  => 'Projects\DocumentpCartController@getCategories']);
   Route::get('items/ajax/third/{category}/{description}/{material}/{type}/{medida}',
-            ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']);
+          ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']);
   Route::get('items/ajax/four/{api}/{ape}', ['uses'  => 'Projects\DocumentpCartController@getMoProducts']);
   Route::get('items/ajax/four/{api}/{ape}/{id_doc}', ['uses'  => 'Projects\DocumentpCartController@getMoProductsCart']);
   Route::get('items/ajax/five/{api}/{ape}', ['uses'  => 'Projects\DocumentpCartController@getViaticsProducts']);
- // Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']);
+  Route::get('getProductsCart/{aps}/{firewalls}/{switches}/{gabinetes}', 'Projects\DocumentpCartController@getProductsCart');
+  // Route::get('items/ajax/third/{category}/{description}', ['uses'  => 'Projects\DocumentpCartController@getCategoriesDescription']);
+  Route::post('/deleteProductsShoppingCart', 'Projects\DocumentpCartController@deleteProductsShoppingCart');
   Route::get('/getTypeMaterial/material/{id}', function ($id) {
-    $result = DB::table('product_type_material')->select('id', 'name')->where('product_material_id', $id)->get();
-    return $result;
+  $result = DB::table('product_type_material')->select('id', 'name')->where('product_material_id', $id)->get();
+  return $result;
   });
   Route::get('/documentp_invoice/{id_documentp}/{id_cart}', 'Projects\DocumentpController@export_invoice');
   Route::get('/update_cant_cart/{id}/{cant}/{porcentaje_compra}', 'Projects\DocumentpController@update_cantidad_recibida');

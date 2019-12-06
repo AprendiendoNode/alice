@@ -122,15 +122,8 @@ $(function () {
   });
 
   $("#get_viatics_button").on("click",function(e){
-    
-    var data_aps = get_aps();
-    var aps = JSON.stringify(data_aps[0]);
-    var api = data_aps[1];
-    var ape = data_aps[2];
-
-    url = `/items/ajax/five/${api}/${ape}`;
-    getArticlesViatics(url);
-
+    e.preventDefault();
+    update_viaticos();
   })
 
   $('#add_shopping_cart').on('click', function(){
@@ -212,6 +205,95 @@ $(function () {
       }
     })
   });
+
+  function update_viaticos(){
+
+    var num_aps = 0;
+    var productos = obtenerProductosLocalStorage();
+      //Filtro de antenas
+    var products_aps = productos.filter(producto =>
+                       producto.codigo.substring(0, 3) == 'API' || producto.codigo.substring(0, 3) == 'APE');
+      
+      var viaticos_products = productos.filter(producto => producto.categoria_id == 15);
+      /* Si es mayor a 0 significa que hay aps
+         parte del usuario y se procede a recalcular las cantidades */
+      if(products_aps.length > 0){
+        $.each(products_aps, function( i, key ) {
+          num_aps += key.cant_req;
+        })
+  
+        new_products =  productos.filter(producto => producto.categoria_id != 15);
+        localStorage.setItem('productos', JSON.stringify(new_products));
+  
+        $.ajax({
+          url :  `/items/ajax/five/0/${num_aps}`
+        }).done(function (data) {
+          var productosLS = obtenerProductosLocalStorage();
+            data.forEach(element => {
+              var productosLS = obtenerProductosLocalStorage();
+              var id_product = element.id;
+              if(productosLS == '[]'){
+                //Primer producto del carrito
+                leerDatosProductMO(element);
+              }else {
+                let count =  productosLS.filter(producto => producto.id == id_product);
+                (count.length == 1) ? console.log("producto existe") : leerDatosProductMO(element);
+              }
+            })
+              menssage_toast('Mensaje', '4', 'Viaticos actualizados' , '2000');
+            }).fail(function () {
+                Swal.fire("Ocurrio un error al actualizar mano de obra","","error");
+            });//Fin funcion ajax
+  
+        }else{
+          Swal.fire("El proyecto no tiene antenas","Agrega AP'S y vuelve a intentarlo","warning");
+        }
+  }
+
+  function update_mo(){
+
+    var num_aps = 0;
+    var productos = obtenerProductosLocalStorage();
+      //Filtro de antenas
+    var products_aps = productos.filter(producto =>
+                       producto.codigo.substring(0, 3) == 'API' || producto.codigo.substring(0, 3) == 'APE');
+  
+      var mo_products = productos.filter(producto => producto.categoria_id == 7);
+      /* Si es mayor a 0 significa que se agrego mano de obra por
+         parte del usuario y se procede a recalcular las cantidades */
+      if(products_aps.length > 0){
+        $.each(products_aps, function( i, key ) {
+          num_aps += key.cant_req;
+        })
+  
+        new_products =  productos.filter(producto => producto.categoria_id != 7);
+        localStorage.setItem('productos', JSON.stringify(new_products));
+  
+        $.ajax({
+            url : `/items/ajax/four/0/${num_aps}`
+        }).done(function (data) {
+          var productosLS = obtenerProductosLocalStorage();
+            data.forEach(element => {
+              var productosLS = obtenerProductosLocalStorage();
+              var id_product = element.id;
+              if(productosLS == '[]'){
+                //Primer producto del carrito
+                leerDatosProductMO(element);
+              }else {
+                let count =  productosLS.filter(producto => producto.id == id_product);
+                (count.length == 1) ? console.log("producto existe") : leerDatosProductMO(element);
+              }
+            })
+              generate_table_products();
+              menssage_toast('Mensaje', '4', 'Mano de obra actualizada' , '2000');
+            }).fail(function () {
+                Swal.fire("Ocurrio un error al actualizar mano de obra","","error");
+            });//Fin funcion ajax
+  
+        }else{
+          Swal.fire("El proyecto no tiene antenas","Agrega AP'S y vuelve a intentarlo","warning");
+        }
+  }
 
   function getArticlesViatics(url) {
     $.ajax({
@@ -396,18 +478,7 @@ $(function () {
   $("input[name='optionsMaterial']").on("change",function(e){
     let material = $("input[name='optionsMaterial']:checked").val();
     getTypeMaterial(material);
-    // var categoria = document.getElementById('categoria').value;
-    // var description = document.getElementById('description').value;
-    // var type = document.getElementById('tipo_material').value;
-    // var material = $("input[name='optionsMaterial']:checked").val();
-    // var medida = $("input[name='optionsMedida']:checked").val();
-    
-    // let url = ``;
-
-    // if(description.length >=3){
-    //   url = `/items/ajax/third/${categoria}/${description}/${material}/${type}/${medida}`;
-    //   getArticlesCategorias(url);
-    // }
+ 
   })
 
   $("input[name='optionsMedida']").on("change",function(e){
@@ -545,15 +616,12 @@ $(function () {
         var aps = JSON.stringify(data_aps[0]);
         var api = parseInt(data_aps[1]);
         var ape = parseInt(data_aps[2]);
-        var firewalls = JSON.stringify(get_firewalls());
-        var switches = JSON.stringify(data_switches[0]);
         var switch_cant = data_switches[1];
         var data_gabinete = get_gabinetes();
         var gabinetes = data_gabinete[1];
         var switches = data_switches[1];
         var material = $('.material_select').val();
         var medida = $('.medida_select').val();
-    
 
         $.ajax({
             url : `/items/ajax/second/${api}/${ape}/${switch_cant}/${gabinetes}/${material}/${medida}`,
@@ -562,7 +630,7 @@ $(function () {
                 $('#products-grid-materiales').html(data);
             }
         });
-  });
+    });
 
     $('#products-grid-mo').on('click', '.pagination a', function(e) {
         e.preventDefault();
@@ -585,7 +653,6 @@ $(function () {
   
       var data_aps= get_aps();
       var data_switches = get_switches();
-      
       var aps = JSON.stringify(data_aps[0]);
       var api = data_aps[1];
       var ape = data_aps[2];
@@ -600,15 +667,11 @@ $(function () {
       e.preventDefault();
       var data_aps = get_aps();
       var data_switches = get_switches();
-      var aps = JSON.stringify(data_aps[0]);
       var api = parseInt(data_aps[1]);
       var ape = parseInt(data_aps[2]);
-      var firewalls = JSON.stringify(get_firewalls());
-      var switches = JSON.stringify(data_switches[0]);
       var switch_cant = data_switches[1];
       var data_gabinete = get_gabinetes();
       var gabinetes = data_gabinete[1];
-      var switches = data_switches[1];
       var material = $('.material_select').val();
       var medida = $('.medida_select').val();
 
@@ -619,17 +682,7 @@ $(function () {
 
   $("#get_mo_button").on("click",function(e){
     e.preventDefault();
-    var data_aps = get_aps();
-    var data_switches = get_switches();
-    var aps = JSON.stringify(data_aps[0]);
-    var api = data_aps[1];
-    var ape = data_aps[2];
-    var firewalls = JSON.stringify(get_firewalls());
-    var switches = JSON.stringify(data_switches[0]);
-    var switch_cant = data_switches[1];
-    url = `/items/ajax/four/${api}/${ape}`;
-    getArticlesManoObra(url);
-
+    update_mo();
   })
 
   $("#get_categorias_button").on("click",function(e){

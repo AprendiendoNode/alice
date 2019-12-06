@@ -38,7 +38,6 @@ class EditDocumentPController extends Controller
     $product_sw = DB::select('CALL px_products_swiches');
     $product_ap = DB::select('CALL px_products_antenas');
     $product_fw = DB::select('CALL px_products_firewalls');
-    $products_bobinas = DB::table('products')->where('name', 'LIKE', '%bobina%')->get();
     $products_gabinetes = DB::table('products')->where('name', 'LIKE', '%gabinete%')->get();
     $materiales = DB::table('product_material')->get();
     $medidas = DB::table('product_measure')->get();
@@ -53,7 +52,7 @@ class EditDocumentPController extends Controller
     $installation = DB::table('documentp_installation')->select('id', 'name')->get();
     $priorities = DB::table('documentp_priorities')->select('id', 'name')->get();
     $viewPermitted = view('permitted.documentp.show' ,compact('id_document', 'hour_created','grupos', 'anexos','data_header', 'tipo_cambio', 'categories', 'itc', 'verticals', 'comerciales', 
-    'type_service', 'priorities', 'installation','products_gabinetes' ,'products_bobinas','materiales', 'medidas','product_ap', 'product_sw', 'product_fw'));
+    'type_service', 'priorities', 'installation','products_gabinetes', 'materiales', 'medidas','product_ap', 'product_sw', 'product_fw'));
     $viewBlock = view('permitted.documentp.edit_documentp_block', compact('folio', 'hour_created'));
     //dd($this->validateHourEdit($hour_created, $num_edit));
     if($this->check_user_permission() == 0 || $this->check_user_permission() == 1){

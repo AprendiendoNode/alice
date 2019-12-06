@@ -33,8 +33,17 @@ class QuotingEditController extends Controller
       $num_edit = $documentP->num_edit;
       $cart = $documentP->documentp_cart_id;
       $document_cart = Documentp_cart::find($cart);
+      $tipo_cambio = 19.5;
       $in_document_cart = In_Documentp_cart::where('documentp_cart_id', $cart)->first();
-      $tipo_cambio = $in_document_cart->tipo_cambio;
+      if($in_document_cart != null){
+        $tipo_cambio = $in_document_cart->tipo_cambio;
+      }
+      $product_sw = DB::select('CALL px_products_swiches');
+      $product_ap = DB::select('CALL px_products_antenas');
+      $product_fw = DB::select('CALL px_products_firewalls');
+      $products_gabinetes = DB::table('products')->where('name', 'LIKE', '%gabinete%')->get();
+      $materiales = DB::table('product_material')->get();
+      $medidas = DB::table('product_measure')->get();
       $info = '';
       //Datos cotizador_id
       $cotizador = Cotizador::firstOrCreate(['id_doc' => $id_document]);
@@ -55,7 +64,7 @@ class QuotingEditController extends Controller
       $type_service = DB::table('documentp_type')->select('id', 'name')->get();
       $installation = DB::table('documentp_installation')->select('id', 'name')->get();
       $priorities = DB::table('documentp_priorities')->select('id', 'name')->get();
-      $viewPermitted = view('permitted.quoting.show' ,compact('id_document', 'hour_created','grupos', 'anexos','data_header', 'tipo_cambio',
+      $viewPermitted = view('permitted.quoting.show' ,compact('id_document', 'hour_created','grupos', 'anexos','data_header', 'tipo_cambio','products_gabinetes', 'materiales', 'medidas','product_ap', 'product_sw', 'product_fw',
                             'categories', 'itc', 'verticals', 'comerciales', 'type_service', 'priorities', 'installation', 'cotizador_opciones', 'cotizador_gastos_mensuales'));
       $viewBlock = view('permitted.documentp.edit_documentp_block', compact('folio', 'hour_created'));
 

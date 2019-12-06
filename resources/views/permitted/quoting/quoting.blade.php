@@ -59,10 +59,10 @@
   <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
   <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
 
-  <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css')}}" >
-  <script type="text/javascript" src="{{asset('js/admin/documentp/document_cart_general.js?v=2.2')}}"></script>
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v=3.0')}}" >
+  <script type="text/javascript" src="{{asset('js/admin/documentp/document_cart_general.js?v=3.2')}}"></script>
   <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_logs.js')}}"></script>
-  <script type="text/javascript" src="{{asset('js/admin/quoting/quoting.js?v=2.3')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/quoting/quoting.js?v=3.3')}}"></script>
   <script type="text/javascript" src="{{asset('js/admin/quoting/metricas.js?v=4.0')}}"></script>
   <script type="text/javascript">
   $(function() {

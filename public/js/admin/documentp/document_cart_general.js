@@ -683,6 +683,8 @@ function getArticlesCategorias(url) {
     });
 }
 
+
+
 //Localstorage
 
 function leerDatosProductMO(producto){

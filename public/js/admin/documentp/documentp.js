@@ -420,9 +420,9 @@ function generate_table_products(){
         var num_aps = 0;
         update_cantidades(id, parseFloat(newValue));
         document.getElementById(id).style.background = "#BDD3DE";
-        if(clave == 'API' || clave == 'APE'){
-          update_mano_de_obra();
-        }
+        // if(clave == 'API' || clave == 'APE'){
+        //   update_mano_de_obra();
+        // }
 
       }// Fin susccess
 

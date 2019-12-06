@@ -70,6 +70,7 @@ function leerDatosProduct(producto){
 
     const infoProducto = {
         id: $(button).attr('data-id'),
+        id_key: 0,
         descripcion: $(button).attr('data-descripcion'),
         img: producto.querySelector('img').src,
         codigo: $(button).attr('data-codigo'),
