@@ -135,18 +135,19 @@ class SabanaController extends Controller
     if($date_current==''){
     $date_current = date('Y');
     }
-    //$date = $date_current.'-01';
-    /*$input_date_i = $request->date;
-    if (empty($input_date_i)) {
-      $date_current = date('Y-m');
-      $date = $date_current.'-01';
-    }
-    else {
-      $date = $input_date_i.'-01';
-    } */
     $result = DB::select('CALL px_get_mount_PEjercidoxHotel(?,?)', array($id_hotel,$date_current));
     return $result;
 
+  }
+
+  public function get_budget_annual_cadena(Request $request){
+    $cadena = $request->id;
+    $date_current = $request->fecha;
+    if($date_current==''){
+    $date_current = date('Y');
+    }
+    $result = DB::select('CALL px_get_mount_PEjercidoxcadena(?,?)', array($cadena,$date_current));    
+    return $result;
   }
 
   public function get_payment_folios_gastos(Request $request)

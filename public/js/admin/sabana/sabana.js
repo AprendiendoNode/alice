@@ -41,7 +41,7 @@ $(function() {
 
 $('#tipo_sabana').on('change',function(){
   var opcion= parseInt($('#tipo_sabana').val());
-    console.log(opcion);
+    //console.log(opcion);
   switch (opcion) {
     case 1://Todo Sitwifi
     $("#select_proyecto").addClass("d-none");
@@ -122,7 +122,7 @@ $('#tipo_sabana').on('change',function(){
       url: "/informacionCadena",
       data: { cadena : cadena, _token : _token },
       success: function (data){
-        console.log(data);
+        //console.log(data);
         generate_table_info_cadena(data, $('#info_cadena'));
         /*$("#imagenCliente").attr("src", "../images/hotel/" + data[0].dirlogo1);
         $("#itcCliente").text(data[1].name + " -> " + data[1].email);
@@ -141,8 +141,8 @@ $('#tipo_sabana').on('change',function(){
     $("#cargando").removeClass("d-none");
 
     //TEMPORAL PRESUPUESTO CADENA
-    $("#terminado_presupuesto_cadena").addClass("d-none");
-    $("#construyendo_presupuesto_cadena").removeClass("d-none");
+    $("#terminado_presupuesto_cadena").removeClass("d-none");
+    $("#construyendo_presupuesto_cadena").addClass("d-none");
 
 $('#title_equipments').text('Todos los equipos de la cadena'); //Cambiamos el titulo de el apartado de equipos
 
@@ -157,6 +157,7 @@ get_graph_tickets_type_cadena(cadena);
 get_graph_tickets_status_cadena(cadena);
 getFoliosByCadena(cadena);
 getViaticsByCadena(cadena);
+get_table_budget_cadena(cadena,'');
 
   });
 
@@ -309,7 +310,7 @@ getViaticsByCadena(cadena);
       url: "/get_nps_cadena",
       data: { _token : _token, id: id, anio: anio },
       success: function (data){
-        console.log(data);
+        //console.log(data);
         //console.log(data[0]['nps']);
         //graph_nps_hotel('main_nps',data[0]['nps']);
         graph_gauge_hotel('main_nps_hotel', 'NPS', '100', '100', data[0]['nps']);
@@ -695,16 +696,52 @@ else  if (status.estado == '17') { span_identificador = '<span class="badge badg
   }
 $('#btn-filtrar').on('click',function(){
 var idcliente=$('#cliente').val();
+var cadena=$('#proyecto').val();
 var fecha= $('#date_presupuesto').val();
-get_table_budget(idcliente,fecha)
+if(idcliente!="" && cadena==""){
+get_table_budget(idcliente,fecha);
+}else{
+get_table_budget_cadena(cadena,fecha);
+}
+
 });
 
-  function get_table_budget(idcadena,fecha){
+  function get_table_budget(idcliente,fecha,ruta){
     var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
+    var id= idcliente;
     $.ajax({
         type: "POST",
-        url: "/get_budget_annual_hotel",
+        url:"/get_budget_annual_hotel",
+        data: { id: id,fecha:fecha, _token : _token },
+        success: function (data){
+          //console.log(data);
+          generate_table_budget(data, $('#table_budget_site'));
+
+          //!!!!!!!!!!!EL SIGUIENTE BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
+          $("#cargando").addClass("d-none");
+          $(".first_tab").removeClass("d-none");
+          if(document.getElementById("consumo_echarts").style.display == "block") {
+            graph_client_day(id);
+            graph_gigabyte_day(id);
+            graph_top_aps_table(id);
+            general_table_comparative(id);
+          }
+          //!!!!!!!!!!!EL ANTERIOR BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
+
+          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+    });
+  }
+
+  function get_table_budget_cadena(cadena,fecha,ruta){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var id= cadena;
+    $.ajax({
+        type: "POST",
+        url:"/get_budget_annual_cadena",
         data: { id: id,fecha:fecha, _token : _token },
         success: function (data){
           //console.log(data);

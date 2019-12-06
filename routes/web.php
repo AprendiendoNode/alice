@@ -850,6 +850,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_graph_equipments','SabanaController@get_graph_equipments');
     Route::post('get_graph_equipments_cadena','SabanaController@get_graph_equipments_cadena');
     Route::post('get_budget_annual_hotel','SabanaController@get_budget_annual_hotel');
+    Route::post('get_budget_annual_cadena','SabanaController@get_budget_annual_cadena');
     Route::post('get_payment_folios_gastos','SabanaController@get_payment_folios_gastos');
     Route::post('get_payment_folios_gastos_cadena','SabanaController@get_payment_folios_gastos_cadena');
     Route::post('get_viatics_gastos','SabanaController@get_viatics_gastos');
