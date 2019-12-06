@@ -440,10 +440,6 @@ function generate_table_products(){
         + '<button type="button" onclick="eliminarProductoLocalStorage('+key.id+');deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td>'
         + '</td></tr>');
      });
-     $('#tabla_productos tbody').append(
-      `<tr style="font-weight:bold !important"; class="bg-secondary text-white"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Mano de obra:</td><td>DLLS</td><td id="total_sitwifi" colspan="2">$0.00</td></tr>`);
-       document.getElementById("total_sitwifi").innerHTML = "$" + (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-       document.getElementById("total_sitwifi_footer").innerHTML =  (total_viaticos.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       $('#tabla_productos tbody').append(
         `<tr style="font-weight:bold !important"; class="bg-secondary text-white"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="3">Total Viaticos:</td><td>DLLS</td><td id="total_sitwifi" colspan="2">$0.00</td></tr>`);
          document.getElementById("total_sitwifi").innerHTML = "$" + (total_sitwifi.toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -772,61 +768,61 @@ $(".validation-wizard-master").steps({
         }
     },
     rules: {
-      // type_service: {
-      //   required: true
-      // },
-      // vertical: {
-      //   required: true
-      // },
-      // itc: {
-      //   required: true
-      // },
-      // servicio: {
-      //   required: true,
-      //   min: 1
-      // },
-      // plazo: {
-      //   required: true,
-      //   min: 1
-      // },
-      // densidad: {
-      //   required:true,
-      //   min: 1
-      // },
-      // comercial: {
-      //   required: true
-      // },
-      // lugar_instalacion: {
-      //   required: true
-      // },
-      // tipo_cambio: {
-      //   required: true
-      // },
-      // credito_mensual_percent:{
-      //   required: true,
-      //   min: 1
-      // },
-      // gasto_mtto_percent: {
-      //   required: true
-      // },
-      // capex: {
-      //   required: true
-      // },
-      // instalaciones: {
-      //   required: true
-      // },
-      // renta: {
-      //   required: true
-      // },
-      // indirectos: {
-      //   required: true
-      // },
-      // utilidad: {
-      //   required: true
-      // },
-      // deposito: {
-      //   required: true
-      // }
+      type_service: {
+        required: true
+      },
+      vertical: {
+        required: true
+      },
+      itc: {
+        required: true
+      },
+      servicio: {
+        required: true,
+        min: 1
+      },
+      plazo: {
+        required: true,
+        min: 1
+      },
+      densidad: {
+        required:true,
+        min: 1
+      },
+      comercial: {
+        required: true
+      },
+      lugar_instalacion: {
+        required: true
+      },
+      tipo_cambio: {
+        required: true
+      },
+      credito_mensual_percent:{
+        required: true,
+        min: 1
+      },
+      gasto_mtto_percent: {
+        required: true
+      },
+      capex: {
+        required: true
+      },
+      instalaciones: {
+        required: true
+      },
+      renta: {
+        required: true
+      },
+      indirectos: {
+        required: true
+      },
+      utilidad: {
+        required: true
+      },
+      deposito: {
+        required: true
+      }
     },
 
 })
