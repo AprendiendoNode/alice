@@ -31,22 +31,32 @@
            <div class="card-body">
              <div class="row">
            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-             <div class="row">
-               <form id="search_info" name="search_info" class="form-inline" method="post">
-                 {{ csrf_field() }}
-                 <div class="col-md-8">
-                   <div class="input-group">
-                     <span class="input-group-addon"><i class="fas fa-calendar-alt fa-2x"></i></span>
-                     <input id="date_to_search" type="text" class="form-control form-control-sm dateInput" name="date_to_search">
-                   </div>
-                 </div>
-                 <div class="col-md-4">
-                   <button id="boton-aplica-filtro" type="button" class="btn btn-sm btn-info filtrarDashboard">
-                     <i class="fas fa-filter" aria-hidden="true"></i>  Filtrar
-                   </button>
-                 </div>
-               </form>
-             </div>
+              <div class="row">
+                <form id="validation" name="validation" class="form-inline" method="post">
+                  {{ csrf_field() }}
+                  <div class="form-group">
+                     <label class="col-xs-4 control-label mr-2">Fecha Inicio</label>
+                     <div class="col-xs-8 dateContainer">
+                         <div class="input-group input-append date" id="startDatePicker" name="startDatePicker">
+                           <input type="text" class="form-control" id="startDate" name="startDate" />
+                           <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                         </div>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-xs-4 control-label mx-2">Fecha Fin</label>
+                    <div class="col-xs-8 dateContainer">
+                        <div class="input-group input-append date" id="endDatePicker" name="endDatePicker">
+                          <input type="text" class="form-control" id="endDate" name="endDate" />
+                          <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                    </div>
+                  </div>
+                  <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard ml-2">
+                    <i class="fas fa-filter" aria-hidden="true"></i>  Filtrar
+                  </button>
+                </form>
+              </div>
            </div>
 
            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
@@ -54,14 +64,18 @@
                <table id="table_balance" class="table table-striped table-bordered table-hover compact-tab w-100">
                  <thead>
                    <tr class="bg-primary" style="background: #088A68;">
-                     <!-- <th> <small></small> </th> -->
-                     <th> <small>Cuenta</small> </th>
-                     <th> <small>NAT</small> </th>
-                     <th> <small>Nombre</small> </th>
-                     <th> <small>Saldo Ini</small> </th>
-                     <th> <small>Cargos</small> </th>
-                     <th> <small>Abonos</small> </th>
-                     <th> <small>Saldo Fin</small> </th>
+                     <th> <small>cliente</small> </th>
+                     <th> <small>taxid</small> </th>
+                     <th> <small>numid</small> </th>
+                     <th> <small>cc</small> </th>
+                     <th> <small>currencies</small> </th>
+                     <th> <small>customer_id</small> </th>
+                     <th> <small>monto descuento</small> </th>
+                     <th> <small>monto s/impuesto</small> </th>
+                     <th> <small>monto impuesto</small> </th>
+                     <th> <small>monto ret</small> </th>
+                     <th> <small>subtotal</small> </th>
+                     <th> <small>total</small> </th>
                    </tr>
                  </thead>
                  <tbody>
@@ -69,6 +83,11 @@
                  <tfoot id='tfoot_average'>
                    <tr>
                      <!-- <th></th> -->
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
                      <th></th>
                      <th></th>
                      <th></th>
@@ -119,7 +138,6 @@
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
 
-    <script src="{{ asset('js/admin/payments/request_modal_payment.js')}}"></script>
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
     

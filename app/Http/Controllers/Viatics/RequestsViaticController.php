@@ -474,7 +474,7 @@ public function edit_status_two (Request $request) {
         'url' => $url
       ];
       $result = DB::select('CALL history_viatic_user_conceptos (?)', array($viaticos_id[$i]));
-      Mail::to($correos)->send(new NotifViatic($params));
+      Mail::to($benef_email)->send(new NotifViatic($params));
       $NotificationOBJ= new NotificationController();
       $leer=DB::table('notifications')->select('id')->where('data','like','%'.$folio.'%')->get();
       foreach($leer as $folioleido){
@@ -639,7 +639,7 @@ public function edit_status_three (Request $request) {
       //$result = DB::select('CALL history_viatic_user_conceptos (?)', array($viaticos_id[$i]));
       info($benef_email);
       $correos = [$benef_email, 'bdejesus@sitwifi.com'];
-      Mail::to($correos)->send(new NotifViatic($params));
+      Mail::to($benef_email)->send(new NotifViatic($params));
       $NotificationOBJ= new NotificationController();
       $leer=DB::table('notifications')->select('id')->where('data','like','%'.$folio.'%')->get();
       foreach($leer as $folioleido){
@@ -793,7 +793,7 @@ public function edit_status_four (Request $request) {
                                   'total' => $result[$j]->total]);
      }
      $correos = [$user_email, 'bdejesus@sitwifi.com'];
-     Mail::to($correos)->send(new ConfirmacionV($parametros1, $parametros2));
+     Mail::to($user_email)->send(new ConfirmacionV($parametros1, $parametros2));
      $NotificationOBJ= new NotificationController();
      $leer=DB::table('notifications')->select('id')->where('data','like','%'.$folio.'%')->get();
      foreach($leer as $folioleido){

@@ -1098,7 +1098,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   // Contabilidad
   Route::get('/view_balance_accounting','Accounting\BalanceController@index');
-  // Route::get('/holaa','Accounting\BalanceController@index2');
+  Route::post('/get_balance_data','Accounting\BalanceController@get_balance');
 });
 
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
