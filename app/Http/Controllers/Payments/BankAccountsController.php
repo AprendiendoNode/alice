@@ -22,35 +22,48 @@ class BankAccountsController extends Controller
     return $result;
   }
   public function set_bank(Request $request)
-  {
+  { info($request);
     $id_reg= $request->get('ident');
 
-    $id_prov = DB::table('prov_bco_ctas')
+    /* tablas antiguas
+    $id_prov = DB::table('prov_bco_ctas') //1
     ->where('id', $id_reg)
     ->value('prov_id');
 
-    $cant_reg = DB::table('prov_bco_ctas')
+    $cant_reg = DB::table('prov_bco_ctas') //
       ->where('prov_id', '=', $id_prov)
       ->where('id', '!=', $id_reg)
-      ->count();
+      ->count();*/
+
+      //Apuntamos a las tablas nuevas
+      $id_prov = DB::table('customer_bank_accounts') //1
+      ->where('id', $id_reg)
+      ->value('customer_id');
+
+      $cant_reg = DB::table('customer_bank_accounts') //
+        ->where('customer_id', '=', $id_prov)
+        ->where('id', '!=', $id_reg)
+        ->count();
+
 
     if ($cant_reg > 0)
     {
-      $actualizacion = DB::table('prov_bco_ctas')
-        ->where('prov_id', '=', $id_prov)
+      $actualizacion = DB::table('customer_bank_accounts')
+        ->where('customer_id', '=', $id_prov)
         ->where('id', '!=', $id_reg)
         ->update(
         [
-          'status_id' => '2',
+          'status_prov_id' => '2',
           'updated_at' => \Carbon\Carbon::now()
         ]);
+      //$actualizacion2 
     }
-    $res = DB::table('prov_bco_ctas')
-      ->where('prov_id', '=', $id_prov)
+    $res = DB::table('customer_bank_accounts')
+      ->where('customer_id', '=', $id_prov)
       ->where('id', '=', $id_reg)
       ->update(
       [
-        'status_id' => '1',
+        'status_prov_id' => '1',
         'updated_at' => \Carbon\Carbon::now()
       ]);
 
