@@ -69,7 +69,7 @@ class SabanaController extends Controller
   public function get_table_equipments_cadena(Request $request){
     $cadena=$request->id;
     $result= DB::Select('CALL px_equipmentsxcadena(?)',array($cadena));
-    return $result;
+    return datatables()->of($result)->make(true);
   }
   public function get_nps_hotel(Request $request){
     $id_hotel=$request->id;
@@ -146,7 +146,7 @@ class SabanaController extends Controller
     if($date_current==''){
     $date_current = date('Y');
     }
-    $result = DB::select('CALL px_get_mount_PEjercidoxcadena(?,?)', array($cadena,$date_current));    
+    $result = DB::select('CALL px_get_mount_PEjercidoxcadena(?,?)', array($cadena,$date_current));
     return $result;
   }
 

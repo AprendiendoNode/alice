@@ -68,7 +68,7 @@ return [
     */
 
     'timezone' => 'America/Cancun',
-    
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -175,7 +175,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        //Provider for ServerSideProcessing Datatables
+        Yajra\Datatables\DatatablesServiceProvider::class,
     ],
 
     /*
@@ -228,6 +229,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
     ],
 
 ];

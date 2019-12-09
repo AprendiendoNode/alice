@@ -516,19 +516,33 @@ get_table_budget_cadena(cadena,'');
   function get_info_equipments_cadena(cadena) {
     var _token = $('meta[name="csrf-token"]').attr('content');
     var id= cadena;
-    $.ajax({
-      type: "POST",
-      url: "/get_all_equipmentsbycadena",
-      data: { _token : _token, id: id },
-      success: function (data){
-        $('.divEQ').addClass('tableFixHead');
-        table_equipments(data, $("#all_equipments"));
-      },
-      error: function (data) {
-        console.log('Error:', data);
+    $('.divEQ').addClass('tableFixHead');
+    $("#all_equipments").DataTable().destroy();
+    $("#all_equipments").DataTable({
+      processing:true,
+      serverSide:true,
+      ajax:{
+        "type": "POST",
+        url:"/get_all_equipmentsbycadena",
+        "data":function(d){ //Lo que se envia al servidor
+          d._token = _token;
+          d.id = id;
+        },
+        dataFilter:function(inData){ //Lo que regresa el servidor
+          return inData;
       }
+      },
+      columns:[
+              {data:'tipo',name:'tipo'},
+              {data:'modelo',name:'modelo'},
+              {data:'MAC',name:'MAC'},
+              {data:'Serie',name:'Serie'},
+              {data:'Descripcion',name:'Descripcion'},
+              {data:'estado',name:'estado'},
+              {data:'Fecha_Registro',name:'Fecha_Baja'},
+              {data:'Fecha_Baja',name:'Fecha_Baja'}
+            ],
     });
-
   }
 
   function get_info_equipments(cliente) {

@@ -847,7 +847,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_all_contracts_by_cadena', 'SabanaController@get_all_contracts_by_cadena');
     Route::post('get_all_annexes_by_master', 'SabanaController@get_all_annexes_by_master');
     Route::post('get_all_equipmentsbyhotel', 'SabanaController@get_table_equipments');
-    Route::post('get_all_equipmentsbycadena', 'SabanaController@get_table_equipments_cadena');
+    Route::post('get_all_equipmentsbycadena', 'SabanaController@get_table_equipments_cadena');    
     Route::post('get_nps_hotel', 'SabanaController@get_nps_hotel');
     Route::post('get_nps_cadena', 'SabanaController@get_nps_cadena');
     Route::post('get_nps_comment_hotel', 'SabanaController@get_nps_comment_hotel');
@@ -1090,7 +1090,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/view_contracts_info', 'Sales\CustomerInvoiceController@view_contracts_info');
     Route::post('/search_currency_contract', 'Sales\CustomerInvoiceController@search_currency_contract');
     Route::post('/view_contracts_create', 'Sales\CustomerInvoiceController@view_contracts_create');
-    Route::post('/set_cliente_contrato', 'Sales\CustomerInvoiceController@set_cliente_contrato'); 
+    Route::post('/set_cliente_contrato', 'Sales\CustomerInvoiceController@set_cliente_contrato');
 
 
 });
