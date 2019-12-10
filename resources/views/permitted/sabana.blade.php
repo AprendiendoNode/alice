@@ -581,16 +581,6 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-12 mb-3">
-                          <div class="card" id="box_sin_response" style="cursor: pointer;">
-                            <div class="card-body">
-                              <div class="ml-sm-3 ml-md-0 ml-xl-0 mt-2 mt-sm-0 mt-md-2 mt-xl-0 text-center">
-                                <h4 id="unanswered" class="mb-2 text-danger font-weight-bold">84</h4>
-                								<h6 class="mb-0">Sin respuesta</h6>
-                							</div>
-                            </div>
-                          </div>
-                        </div>
                       </div>
                     </div>-->
 
@@ -642,6 +632,16 @@
                                   <small class="mb-1 text-muted font-weight-bold">Detractores</small>
                                   <h6 id="total_detractores" class="mr-2 mb-0">0</h6>
                                 </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                          <div class="card" id="box_sin_response" style="cursor: pointer;">
+                            <div class="card-body">
+                              <div class="ml-sm-3 ml-md-0 ml-xl-0 mt-2 mt-sm-0 mt-md-2 mt-xl-0 text-center">
+                                <h4 id="unanswered" class="mb-2 text-danger font-weight-bold">0</h4>
+                                <h6 class="mb-0">Sin respuesta</h6>
                               </div>
                             </div>
                           </div>

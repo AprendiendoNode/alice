@@ -290,6 +290,7 @@ get_table_budget_cadena(cadena,'');
         $('#total_promotores').text(data[0]['pr']);
         $('#total_pasivos').text(data[0]['ps']);
         $('#total_detractores').text(data[0]['d']);
+        $('#unanswered').text(data[0]['abstenidos']);
         //$('#total_survey').text(data[0]['enviadas']);
         //$('#answered').text(data[0]['respondieron']);
         //$('#unanswered').text(data[0]['abstenidos']);
@@ -529,7 +530,24 @@ get_table_budget_cadena(cadena,'');
           d.id = id;
         },
         dataFilter:function(inData){ //Lo que regresa el servidor
-          return inData;
+          var array=JSON.parse(inData);
+          //console.log(array);
+          //console.log(array.data[0]['tipo']);
+          $.each(array.data, function(index, status){
+            //console.log(status);
+            if (status.estado == '1') { status.estado = '<span class="badge badge-pill badge-success">Activo en Sitio</span>';}
+      else  if (status.estado == '2') { status.estado = '<span class="badge badge-pill badge-danger">Baja</span>';}
+      else  if (status.estado == '3') { status.estado = '<span class="badge badge-pill badge-warning text-white">Bodega</span>';}
+      else  if (status.estado == '4') { status.estado = '<span class="badge badge-pill badge-dark">Stock</span>';}
+      else  if (status.estado == '5') { status.estado = '<span class="badge badge-pill badge-info">Prestamo</span>';}
+      else  if (status.estado == '10') { status.estado = '<span class="badge badge-pill badge-primary">Venta</span>';}
+      else  if (status.estado == '13') { status.estado = '<span class="badge badge-pill text-white" style="background-color:#0DCAD6;">Propiedad del Cliente</span>';}
+      else  if (status.estado == '14') { status.estado = '<span class="badge badge-pill badge-secondary">Demo</span>';}
+      else  if (status.estado == '16') { status.estado = '<span class="badge badge-pill badge-secondary">Asignado [SITWIFI]</span>';}
+      else  if (status.estado == '17') { status.estado = '<span class="badge badge-pill badge-danger">Descontinuado</span>';}
+          });
+          var data = JSON.stringify(array);
+          return data;
       }
       },
       columns:[
