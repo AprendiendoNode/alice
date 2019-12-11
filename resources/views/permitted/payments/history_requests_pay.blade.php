@@ -463,7 +463,7 @@
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
 
-    <script src="{{ asset('js/admin/payments/request_modal_payment.js?v=v3.0.1')}}"></script>
+    <script src="{{ asset('js/admin/payments/request_modal_payment.js?v=v4.1.2')}}"></script>
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
     @if( auth()->user()->can('View level zero payment notification') )
