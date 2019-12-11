@@ -701,7 +701,7 @@ public function update_pay (Request $request) {
   $banco = $request -> get('banco'); //
   $cuenta = $request -> get('cuenta'); //
   $clabe = $request -> get('clabe'); //
-  //$referencia = $request -> get('referencia'); //
+  $referencia = $request -> get('referencia'); //
   $observacion = $request -> get('observacion'); //
   $monto = $request -> get('monto'); //
   $tasa = $request -> get('tasa'); //
@@ -715,6 +715,30 @@ public function update_pay (Request $request) {
   $payments_montos_table = DB::table('payments_montos')->select('*')->where('payments_id', $payment)->get();
   $payments_table = DB::table('payments')->select('*')->where('id', $payment)->get();
   $payments_comments_table = DB::table('payments_comments')->select('*')->where('payment_id', $payment)->get();
+
+  $vieja_referencia = "default";
+  $nueva_referencia = "default";
+  $result = DB::table('customer_bank_accounts')->select('referencia')->where('id', $cuenta)->first();
+
+  if(($payments_table[0]->referencia) == "default") {
+
+    if($referencia != ($result->referencia)) {
+
+      $nueva_referencia = $referencia;
+
+    }
+
+  } else {
+
+    $vieja_referencia = $payments_table[0]->referencia;
+
+    if($referencia != ($result->referencia)) {
+
+      $nueva_referencia = $referencia;
+
+    }
+
+  }
 
   //SÓLO FUNCIONA CORRECTAMENTE EN PAGOS QUE NO SEAN MÚLTIPLES
   DB::table('payments_montos')->where('payments_id', $payment)->update([
@@ -732,6 +756,7 @@ public function update_pay (Request $request) {
     'prov_bco_ctas_id' => $cuenta,
     'currency_id' => $currency,
     'name' => $observacion,
+    'referencia' => $nueva_referencia,
     'updated_at' => \Carbon\Carbon::now()
   ]);
 
@@ -754,6 +779,7 @@ public function update_pay (Request $request) {
     'monto_iva' => $payments_montos_table[0]->amount_iva." -> ".$montoIVA,
     'total' => $payments_table[0]->amount." -> ".$total,
     'currency' => $payments_table[0]->currency_id." -> ".$currency,
+    'referencia' => $vieja_referencia." -> ".$nueva_referencia,
     'user' => Auth::user()->name,
     'user_id' => Auth::user()->id,
     'action' => "Updated",

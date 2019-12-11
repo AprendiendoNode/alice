@@ -566,7 +566,7 @@
                               </div>
                               <div class="form-group col-md-6">
                                 <label for="reference_banc">{{ trans('pay.reference') }}:</label>
-                                <input type="text" class="form-control" id="reference_banc" name="reference_banc" placeholder="{{ trans('pay.reference_bank') }}" disabled>
+                                <input type="text" class="form-control" id="reference_banc" name="reference_banc" placeholder="{{ trans('pay.reference_bank') }}">
                               </div>
                             </div>
 

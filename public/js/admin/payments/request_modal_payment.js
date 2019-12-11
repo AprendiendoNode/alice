@@ -1,4 +1,4 @@
-var modificando, sitios, payment, proveedor_id, moneda;
+var modificando, sitios, payment, proveedor_id, moneda, tochange_account;
 
 function enviar(e, editing){
 
@@ -7,10 +7,12 @@ function enviar(e, editing){
    modificando = editing;
 
    if(modificando){
+     tochange_account = true;
      $('.no_aprobar_en_gastos').addClass("d-none");
      createEventListener_filePdf();
      createEventListener_fileXml();
    } else {
+     tochange_account = false;
      $('.no_aprobar_en_gastos').removeClass("d-none");
    }
    var valor= e.getAttribute('value');
@@ -648,6 +650,7 @@ async function disable_buttons(status) {
       console.log("Editando...");
       $('#rec_order_purchase').prop( "disabled", false);
       $('#rec_description').prop( "disabled", false);
+      $('#rec_reference').prop( "disabled", false);
       $('#rec_observation').prop( "disabled", false);
       $('#iva_format').prop( "disabled", false);
       $('#price').prop( "disabled", false);
@@ -713,6 +716,7 @@ async function disable_buttons(status) {
       console.log("No se puede modificar / Pago realizado / Solicitud múltiple");
       $('#rec_order_purchase').prop( "disabled", true);
       $('#rec_description').prop( "disabled", true);
+      $('#rec_reference').prop( "disabled", true);
       $('#rec_observation').prop( "disabled", true);
       $('#rec_way_pay').removeClass("d-none");
       $('#rec_way_pay_edit').addClass("d-none");
@@ -788,7 +792,11 @@ function getdataCuenta(campoa, campob) {
         success: function(data) {
             if (data == null || data == '[]') {
                 $('#rec_clabe').val('');
-                $('#rec_reference').val('');
+                if(tochange_account) {
+                  tochange_account = false;
+                } else {
+                  $('#rec_reference').val('');
+                }
             } else {
                 if ($.trim(data)) {
                     datax = JSON.parse(data);
@@ -796,7 +804,11 @@ function getdataCuenta(campoa, campob) {
                     currency.dataset.currency = datax[0].currency_id;
                     console.log("$" + currency.dataset.currency);
                     $('#rec_clabe').val(datax[0].clabe);
-                    $("#rec_reference").val(datax[0].referencia);
+                    if(tochange_account) {
+                      tochange_account = false;
+                    } else {
+                      $("#rec_reference").val(datax[0].referencia);
+                    }
                     checkCurrency();
                 } else {
                     $('#rec_clabe').val('');

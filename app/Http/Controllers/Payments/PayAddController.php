@@ -267,6 +267,7 @@ class PayAddController extends Controller
     $observacion = $request->observaciones;
     $banco = $request->bank;
     $account = $request->account;
+    $referencia = $request->reference_banc;
     $tasa = 16;
     $real_cc = "";
     $name_cc = "";
@@ -277,6 +278,17 @@ class PayAddController extends Controller
     $name_cc = trim($name_cc);
     $date_lim_f = str_replace('/', '-', $date_limit);
     $date_lim_f = date('Y-m-d', strtotime($date_lim_f));
+
+    $result = DB::table('customer_bank_accounts')->select('referencia')->where('id', $account)->first();
+
+    $nueva_referencia = "default";
+
+    if($referencia != ($result->referencia)) {
+
+      $nueva_referencia = $referencia;
+      
+    }
+
     /*if ($iva == 0) {
       //iva = parseFloat((subtotal * tasa)/100); 39.2
       $iva = (float)($monto * $tasa)/100;
@@ -323,6 +335,7 @@ class PayAddController extends Controller
       'name' => $observacion,
       'priority_id' => $id_priority,
       'pay_status_fact_id' => $check_fact,
+      'referencia' => $nueva_referencia,
       'created_at' => \Carbon\Carbon::now()
     ]);
 
