@@ -171,19 +171,23 @@ class ContratoController extends Controller
 
 
     $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()', array());
+    $payment_term_act = DB::select('CALL px_payment_terms_data ()', array());
+
     $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
     $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
     $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
     $countries = DB::select('CALL GetAllCountryActivev2 ()', array());
     $states = DB::select('CALL GetAllStateActivev2 ()', array());
     $cities = DB::select('CALL GetAllCitiesv2 ()', array());
+    $payment = DB::select('CALL GetAllCitiesv2 ()', array());
+
 
     return view('permitted.contract.cont_create_cont', compact(
       'unitmeasures','satproduct','classifications','verticals',
       'cadenas', 'sitio','currency', 'hotels', 'country', 'rz_type',
       'rz_nationality', 'rz_concept_invoice', 'contract_status', 'rz_customer',
       'iva', 'resguardo','vendedores','itconcierge',
-      'payment_term','payment_way','payment_methods','cfdi_uses','countries','states','cities'
+      'payment_term','payment_way','payment_methods','cfdi_uses','countries','states','cities', 'payment_term_act'
     ));
   }
 
@@ -370,8 +374,6 @@ class ContratoController extends Controller
     $id_comercial= $request->sel_business_executive;
     $id_status = $request->sel_estatus_anexo;
 
-    $plazo_vencto = $request->num_vto;
-
     $file_pdf = $request->file('fileInputAnexo');
     $file_extension = $file_pdf->getClientOriginalExtension(); //** get filename extension
     $fileName = $id_contrato_anexo.'.'.$file_extension;
@@ -399,6 +401,11 @@ class ContratoController extends Controller
       $fact_unidad_medida = $request->sel_unitmeasure;
       $fact_sat_product = $request->sel_satproduct;
 
+      $fact_plazo_vencto = $request->num_vto;
+      $fact_forma_pago = $request->payment_way_id;
+      $fact_metodo_pago = $request->payment_method_id;
+      $fact_uso_cfdi = $request->cfdi_use_id;
+
       //banderas vtc, venue,compartir ingreso
       $cont_vtc=$request->cont_vtc;
       $cont_venue=$request->cont_venue;
@@ -424,6 +431,10 @@ class ContratoController extends Controller
         'vtc'=>$cont_vtc,
         'venue'=>$cont_venue,
         'compartir_ingreso'=>$comp_ingreso,
+        'payment_term_id'=>$fact_plazo_vencto,
+        'payment_way_id'=>$fact_forma_pago,
+        'payment_method_id'=>$fact_metodo_pago,
+        'cfdi_user_id'=>$fact_uso_cfdi,
         'created_at' => \Carbon\Carbon::now()
       ]
     );
