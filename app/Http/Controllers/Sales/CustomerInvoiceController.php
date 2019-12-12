@@ -2382,7 +2382,7 @@ class CustomerInvoiceController extends Controller
     }
 
     public function complement(){
-      return view('permitted.sales.customer_invoices_complement',compact('complements'));
+      return view('permitted.sales.customer_invoices_complement');
     }
 
     public function get_complement(){

@@ -10,7 +10,7 @@ get_complements();
       url: "get_data_complements",
       data: { _token : _token},
       success: function (data){
-        console.log(data);
+        //console.log(data);
         table_complements(data,$('#table_complements'));
       },
       error: function (data) {
@@ -23,7 +23,7 @@ get_complements();
 
   function table_complements(datajson, table){
     table.DataTable().destroy();
-    var vartable = table.dataTable(Configuration_table_responsive_history);
+    var vartable = table.dataTable(Configuration_table_responsive_complement);
     vartable.fnClearTable();
 
     $.each(datajson, function(index, status){
@@ -39,7 +39,7 @@ get_complements();
       ]);
     });
   }
-  var Configuration_table_responsive_history={
+  var Configuration_table_responsive_complement={
     "select": true,
     "columnDefs": [
       { //Subida 1
@@ -88,9 +88,91 @@ get_complements();
     "select": {
       'style': 'multi',
     },
-    dom: "<'row'<'col-sm-3'l><'col-sm-9'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+    dom:  "<'row'<'col-sm-6'B><'col-sm-2'l><'col-sm-4'f>>" +
+          "<'row'<'col-sm-12'tr>>" +
+          "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+    buttons: [
+    {
+      text: '<i class="fa fa-check margin-r5"></i> Crear Complemento',
+      titleAttr: 'Crear Complemento',
+      className: 'btn btn-sm bg-dark m-1',
+      init: function(api, node, config) {
+         $(node).removeClass('btn-default')
+      },
+        action: function ( e, dt, node, config ) {
+            //alert( 'Button activated' );
+            var rows_selected = $("#table_complements").DataTable().column(0).checkboxes.selected();
+            var _token = $('input[name="_token"]').val();
+
+            var valores= new Array();//Creamos un array con los id
+            $.each(rows_selected, function(index, rowId){
+                //alert( rowId);
+               valores.push(rowId);
+           });
+           if ( valores.length === 0){
+             Swal.fire("Operación abortada", "Ninguna fila seleccionada :(", "error");
+           }else{
+             $('#ModalDataDif').modal('show');
+           }
+
+
+        }
+    },
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> Excel',
+      titleAttr: 'Excel',
+      title: function ( e, dt, node, config ) {
+        return 'Reporte de complementos.';
+      },
+      init: function(api, node, config) {
+         $(node).removeClass('btn-default')
+      },
+      exportOptions: {
+          columns: [ 1,2,3,4,5,6],
+          modifier: {
+              page: 'all',
+          }
+      },
+      className: 'btn btn-success btn-sm m-1',
+    },
+    {
+      extend: 'csvHtml5',
+      text: '<i class="fas fa-file-csv"></i> CSV',
+      titleAttr: 'CSV',
+      title: function ( e, dt, node, config ) {
+        return 'Reporte de complementos.';
+      },
+      init: function(api, node, config) {
+         $(node).removeClass('btn-default')
+      },
+      exportOptions: {
+          columns: [ 1,2,3,4,5,6],
+          modifier: {
+              page: 'all',
+          }
+      },
+      className: 'btn btn-info btn-sm m-1',
+    },
+    {
+      extend: 'pdf',
+      orientation: 'landscape',
+      text: '<i class="fas fa-file-pdf"></i>  PDF',
+      title: function ( e, dt, node, config ) {
+        return 'Reporte de complementos.';
+      },
+      init: function(api, node, config) {
+         $(node).removeClass('btn-default')
+      },
+      exportOptions: {
+          columns: [ 1,2,3,4,5,6],
+          modifier: {
+              page: 'all',
+          }
+      },
+      className: 'btn btn-danger btn-sm m-1',
+    }
+    ],
     "order": [[ 0, "asc" ]],
     paging: true,
     //"pagingType": "simple",

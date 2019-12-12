@@ -76,6 +76,66 @@
   </div>
 
 
+  <!-- Modal -->
+<div class="modal fade" id="ModalDataOne" tabindex="-1" role="dialog" aria-labelledby="Title_Pago_one" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Title_Pago_one"> Pago en una sola exhibición</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ..
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalDataDif" tabindex="-1" role="dialog" aria-labelledby="Title_Pago_Dif" aria-hidden="true">
+<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="Title_Pago_Dif">Pago en parcialidades o diferido</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-3">
+          <h4>Factura:</h4>
+        </div>
+        <div class="col-md-4">
+          <input class="form-control input-sm" type="text" name="" value="" readonly>
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-3">
+          <h4>Total:</h4>
+        </div>
+        <div class="col-md-4">
+          <input class="form-control input-sm" type="text" name="" value="" readonly>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      <button type="button" class="btn btn-primary">Guardar Cambios</button>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
   @else
     @include('default.denied')
   @endif
@@ -140,13 +200,11 @@
 
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-
   <!-- Main Quill library -->
   <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
   <!-- Theme included stylesheets -->
   <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-
-<script src="{{ asset('js/admin/sales/complement.js?v=1.0.1')}}"></script>
+  <script src="{{ asset('js/admin/sales/complement.js?v=1.0.1')}}"></script>
   @else
   @endif
 @endpush
