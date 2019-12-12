@@ -401,13 +401,26 @@
                             </div>
                           </div>
                         </div>
+
                         <div class="row">
                           <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="payment_term_id" class="control-label">Término de pago (Días) (Para facturación):</label>
+                              <select class="form-control required" id="payment_term_id" name="payment_term_id" style="width:100%;">
+                                <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                @forelse ($payment_term as $payment_term_data)
+                                  <option value="{{ $payment_term_data->id  }}">{{ $payment_term_data->name }}</option>
+                                @empty
+                                @endforelse
+                              </select>
+                            </div>
+                          </div>
+                          <!-- <div class="col-md-4">
                             <div class="form-group">
                               <label for="edit_num_vto" class="control-label">Plazo de vencimiento (Dias):</label>
                               <input class="form-control required" id="edit_num_vto" name="edit_num_vto" type="number" min="0" max="99" maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                             </div>
-                          </div>
+                          </div> -->
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="sel_unitmeasure">  Unidad de medida (Para facturación):
@@ -434,6 +447,47 @@
                               </select>
                             </div>
                           </div>
+                          <!-- Nuevo. -->
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label for="payment_way_id">  Forma de pago (Para facturación):
+                                </label>
+                                <select class="form-control required" id="payment_way_id" name="payment_way_id" style="width:100%;">
+                                  <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                  @forelse ($payment_way as $payment_way_data)
+                                    <option value="{{ $payment_way_data->id  }}">[{{ $payment_way_data->code }}] {{ $payment_way_data->name }}</option>
+                                  @empty
+                                  @endforelse
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label for="payment_method_id">  Método de pago (Para facturación):
+                                </label>
+                                <select class="form-control required" id="payment_method_id" name="payment_method_id" style="width:100%;">
+                                  <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                  @forelse ($payment_methods as $payment_methods_data)
+                                    <option value="{{ $payment_methods_data->id  }}">[{{ $payment_methods_data->code }}] {{ $payment_methods_data->name }}</option>
+                                  @empty
+                                  @endforelse
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label for="cfdi_use_id">  Uso de cfdi (Para facturación):
+                                </label>
+                                <select class="form-control required" id="cfdi_use_id" name="cfdi_use_id" style="width:100%;">
+                                  <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                  @forelse ($cfdi_uses as $cfdi_uses_data)
+                                    <option value="{{ $cfdi_uses_data->id  }}">[{{ $cfdi_uses_data->code }}] {{ $cfdi_uses_data->name }}</option>
+                                  @empty
+                                  @endforelse
+                                </select>
+                              </div>
+                            </div>
+                          <!-- End nuevo -->
                           <div class="col-md-12">
                             <div class="form-group">
                               <label for="description_fact" class="control-label">Descripcion (Para facturación):</label>
@@ -441,6 +495,7 @@
                             </div>
                           </div>
                         </div>
+
                         <div class="row">
                         <div class="pt-3 col-md-3">
                             <p>Contemplar para VTC</p>

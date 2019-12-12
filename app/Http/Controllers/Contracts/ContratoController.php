@@ -593,10 +593,12 @@ class ContratoController extends Controller
       $vendedores = DB::select('CALL px_resguardoXgrupo_users (?)', array('2'));
       $iva = DB::Table('ivas')->select('number')->get();
 
-      $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array());
-      $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
-
-      return view('permitted.contract.cont_edit_cont', compact('unitmeasures', 'satproduct', 'iva','currency','hotels', 'classifications','verticals','cadenas', 'contract_status', 'resguardo', 'rz_customer' , 'sitio', 'itconcierge', 'vendedores'));
+      $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
+      $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
+      $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
+      $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()', array());
+      
+      return view('permitted.contract.cont_edit_cont', compact('unitmeasures', 'satproduct', 'iva','currency','hotels', 'classifications','verticals','cadenas', 'contract_status', 'resguardo', 'rz_customer' , 'sitio', 'itconcierge', 'vendedores', 'payment_way', 'payment_methods', 'cfdi_uses', 'payment_term'));
   }
 
   public function get_digit_contract_master(Request $request)
@@ -756,11 +758,17 @@ class ContratoController extends Controller
     $no_month = $request->sel_no_month;
     $business_executive = $request->sel_business_executive;
     $flag = "false";
-    $plazo_vencto = $request->edit_num_vto;
-
-    $description_fact= $request->description_fact;
+    // $plazo_vencto = $request->edit_num_vto; //se va eliminar cambiar a payment_term_id
+    $termino_pago = $request->payment_term_id; // nuevo valor de facturacion.
     $unitmeasures = $request->sel_unitmeasure;
     $satproduct = $request->sel_satproduct;
+    // Nuevos 3 valores para facturacion.
+    $forma_pago = $request->payment_way_id;
+    $metodo_pago = $request->payment_method_id;
+    $uso_cfdi = $request->cfdi_use_id;
+    
+    $description_fact= $request->description_fact;
+
     $cont_vtc=$request->cont_vtc;
     $cont_venue=$request->cont_venue;
     $comp_ingreso=$request->comp_ingreso;
@@ -774,7 +782,7 @@ class ContratoController extends Controller
                                         ->update(['date_signature' => $contract_signature_date,
                                                  'date_scheduled_start' => $date_start_cont ,
                                                  'number_months' => $no_month,
-                                                 'number_expiration' => $plazo_vencto,
+                                                 // 'number_expiration' => $plazo_vencto, // ya no se usara?
                                                  'date_scheduled_end' => $date_end_cont_sist,
                                                  'date_real' => $contract_real_date,
                                                  'business_user_id' => $business_executive,
@@ -786,6 +794,10 @@ class ContratoController extends Controller
                                                  'compartir_ingreso'=>$comp_ingreso,
                                                  'itconcierge_id' => $itconcierge,
                                                  'contract_status_id' => $status,
+                                                 'payment_term_id' => $termino_pago,
+                                                 'payment_way_id' => $forma_pago,
+                                                 'payment_method_id' => $metodo_pago,
+                                                 'cfdi_user_id' => $uso_cfdi,
                                                  'updated_at' =>  \Carbon\Carbon::now()]);
 
       //Remplazando pdf si se subio
