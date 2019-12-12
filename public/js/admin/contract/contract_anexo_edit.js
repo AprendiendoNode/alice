@@ -572,7 +572,6 @@ function get_ids_anexos(service, vertical, cadena, key){
 // Obteniendo datos del anexo
 
 function get_data_anexos(id_contract){
-
   $.ajax({
     type: "POST",
     url: "/get_data_anexos",
@@ -582,7 +581,6 @@ function get_data_anexos(id_contract){
       console.log(key);
       $("input[name='key_anexo_contrato']").val(key.charAt(8));
       $("input[name='key_anexo_sitio']").val(key.charAt(10));
-
 
       var month_select = document.getElementById("sel_no_month");
       var option_month;
@@ -599,14 +597,27 @@ function get_data_anexos(id_contract){
       var prodsat_select = document.getElementById("sel_satproduct");
       var option_prodsat_select;
 
+      var payterm_select = document.getElementById("payment_term_id");
+      var option_payterm_select;
+
+      var payway_select = document.getElementById("payment_way_id");
+      var option_payway_select;
+
+      var paymethod_select = document.getElementById("payment_method_id");
+      var option_paymethod_select;
+
+      var cfdi_select = document.getElementById("cfdi_use_id");
+      var option_cfdi_select;
+
+
       $("#description_fact").val(data[0].description_fact);
 
       $("#contract_signature_date").val(data[0].date_signature);
       $("#date_start_cont").val(data[0].date_scheduled_start);
       $("#date_end_cont_sist").val(data[0].date_scheduled_end);
       $("#contract_real_date").val(data[0].date_real);
-      $("#edit_num_vto").val(data[0].number_expiration);
-
+      
+      // $("#edit_num_vto").val(data[0].number_expiration);
 
       // Setting unitMeasure
       for (var i=0; i < unit_select.options.length; i++) {
@@ -617,7 +628,6 @@ function get_data_anexos(id_contract){
               option_unit_select.removeAttribute('selected');
           }
       }
-
       // Setting satProduct
       for (var i=0; i < prodsat_select.options.length; i++) {
           option_prodsat_select = prodsat_select.options[i];
@@ -627,7 +637,42 @@ function get_data_anexos(id_contract){
               option_prodsat_select.removeAttribute('selected');
           }
       }
-
+      // Setting satPaymentterm
+      for (var i=0; i < payterm_select.options.length; i++) {
+          option_payterm_select = payterm_select.options[i];
+          if (option_payterm_select.value == data[0].payment_term_id) {
+              option_payterm_select.setAttribute('selected', true);
+          }else{
+              option_payterm_select.removeAttribute('selected');
+          }
+      }
+      // Setting satPaymentway
+      for (var i=0; i < payway_select.options.length; i++) {
+          option_payway_select = payway_select.options[i];
+          if (option_payway_select.value == data[0].payment_way_id) {
+              option_payway_select.setAttribute('selected', true);
+          }else{
+              option_payway_select.removeAttribute('selected');
+          }
+      }
+      // Setting satPaymentmethod
+      for (var i=0; i < paymethod_select.options.length; i++) {
+          option_paymethod_select = paymethod_select.options[i];
+          if (option_paymethod_select.value == data[0].payment_method_id) {
+              option_paymethod_select.setAttribute('selected', true);
+          }else{
+              option_paymethod_select.removeAttribute('selected');
+          }
+      }
+      // Setting satCfdiuse
+      for (var i=0; i < cfdi_select.options.length; i++) {
+          option_cfdi_select = cfdi_select.options[i];
+          if (option_cfdi_select.value == data[0].cfdi_user_id) {
+              option_cfdi_select.setAttribute('selected', true);
+          }else{
+              option_cfdi_select.removeAttribute('selected');
+          }
+      }
       // setting number months
       for (var i=0; i < month_select.options.length; i++) {
           option_month = month_select.options[i];

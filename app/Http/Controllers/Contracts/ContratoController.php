@@ -592,6 +592,8 @@ class ContratoController extends Controller
       $itconcierge = DB::select('CALL px_ITC_todos ()', array());
       $vendedores = DB::select('CALL px_resguardoXgrupo_users (?)', array('2'));
       $iva = DB::Table('ivas')->select('number')->get();
+      $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array()); 
+      $satproduct = DB::select('CALL GetSatProductActivev2 ()', array()); 
 
       $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
       $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
