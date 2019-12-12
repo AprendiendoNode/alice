@@ -2381,5 +2381,16 @@ class CustomerInvoiceController extends Controller
       return 'success';
     }
 
+    public function complement(){
+      return view('permitted.sales.customer_invoices_complement',compact('complements'));
+    }
+
+    public function get_complement(){
+      $complements = DB::select('CALL px_customer_invoices_data_saldo ()', array());
+      info($complements);
+      return $complements;
+    }
+
+
 
 }

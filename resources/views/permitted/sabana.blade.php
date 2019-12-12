@@ -1043,7 +1043,7 @@
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">
-    .tableFixHead          { overflow-y: auto; height: 600px; }
+    .tableFixHead          { overflow-y: auto; height: 620px; }
     .tableFixHead thead th { position: sticky !important; top: 0; }
     .bg-aqua{
     background: #02948c;
