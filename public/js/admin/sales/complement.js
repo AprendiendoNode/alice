@@ -1,6 +1,26 @@
 $(function(){
+  //Inicializamos el date picker con sus configuraciones para la fecha actual con la que se va a timbrar
+  $("#form input[name='date']").daterangepicker({
+     //container:'#ModalDataDif',
+      singleDatePicker: true,
+      timePicker: true,
+      timePicker24Hour: true,
+      showDropdowns: true,
+      minDate: moment(),
+      //maxDate : moment().add(3, 'days'),
+      locale: {
+          format: "DD-MM-YYYY HH:mm:ss"
+      },
+      autoUpdateInput: true
+  }, function (chosen_date) {
+      $("#form input[name='date']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
+  });
 
-get_complements();
+  $( "#ModalDataDif" ).scroll(function() {
+      $("#form input[name='date']").datepicker('place')
+  });
+
+  get_complements();//Obtenemos todos las facturas con saldos pendientes
 
   function get_complements(){
     var _token = $('input[name="_token"]').val();
@@ -20,7 +40,7 @@ get_complements();
 
   }
 
-
+  //LLenamos la tabla con las facturas
   function table_complements(datajson, table){
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table_responsive_complement);
@@ -93,8 +113,8 @@ get_complements();
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
     buttons: [
     {
-      text: '<i class="fa fa-check margin-r5"></i> Crear Complemento',
-      titleAttr: 'Crear Complemento',
+      text: '<i class="fa fa-check margin-r5"></i> Crear Pago',
+      titleAttr: 'Crear Pago',
       className: 'btn btn-sm bg-dark m-1',
       init: function(api, node, config) {
          $(node).removeClass('btn-default')
@@ -123,7 +143,7 @@ get_complements();
       text: '<i class="fas fa-file-excel"></i> Excel',
       titleAttr: 'Excel',
       title: function ( e, dt, node, config ) {
-        return 'Reporte de complementos.';
+        return 'Reporte.';
       },
       init: function(api, node, config) {
          $(node).removeClass('btn-default')
@@ -141,7 +161,7 @@ get_complements();
       text: '<i class="fas fa-file-csv"></i> CSV',
       titleAttr: 'CSV',
       title: function ( e, dt, node, config ) {
-        return 'Reporte de complementos.';
+        return 'Reporte.';
       },
       init: function(api, node, config) {
          $(node).removeClass('btn-default')
@@ -159,7 +179,7 @@ get_complements();
       orientation: 'landscape',
       text: '<i class="fas fa-file-pdf"></i>  PDF',
       title: function ( e, dt, node, config ) {
-        return 'Reporte de complementos.';
+        return 'Reporte.';
       },
       init: function(api, node, config) {
          $(node).removeClass('btn-default')
@@ -208,4 +228,31 @@ get_complements();
         }
   }
 
+  //Cuando el tipo de moneda cambie en el modal se le asiga 1 o en dado caso el tipo de cambio actual
+  $('#currency_id').on("change", function(){
+    var valor = $(this).val();
+    var token = $('input[name="_token"]').val();
+    if (valor === '1') {
+      $('#currency_value').val('1');
+    }else{
+      $.ajax({
+          url: "/sales/customer-invoices/currency_now",
+          type: "POST",
+          // dataType: "JSON",
+          data: { _token : token, id_currency: valor },
+          success: function (data) {
+            console.log(data);
+            $('#currency_value').val(data);
+          },
+          error: function (error, textStatus, errorThrown) {
+              if (error.status == 422) {
+                  var message = error.responseJSON.error;
+                  $("#general_messages").html(alertMessage("danger", message));
+              } else {
+                  alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+              }
+          }
+      });
+    }
+  });
 });
