@@ -2382,12 +2382,16 @@ class CustomerInvoiceController extends Controller
     }
 
     public function complement(){
-      return view('permitted.sales.customer_invoices_complement');
+      $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
+      $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
+      $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
+      return view('permitted.sales.customer_invoices_complement',
+      compact('sucursal','payment_way','currency'));
     }
 
     public function get_complement(){
       $complements = DB::select('CALL px_customer_invoices_data_saldo ()', array());
-      info($complements);
+      //info($complements);
       return $complements;
     }
 

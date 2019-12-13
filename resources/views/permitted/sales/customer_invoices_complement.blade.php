@@ -107,29 +107,96 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+    <form id="form" name="form" enctype="multipart/form-data">
+      {{ csrf_field() }}
     <div class="modal-body">
       <div class="row">
-        <div class="col-md-3">
-          <h4>Factura:</h4>
+        <div class="col-md-1">
+          <h5 class="mt-2">Rfc:</h5>
         </div>
         <div class="col-md-4">
           <input class="form-control input-sm" type="text" name="" value="" readonly>
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1">
+          <h5>Razón Social:</h5>
+        </div>
+        <div class="col-md-4">
+          <input class="form-control input-sm" type="text" name="" value="" readonly>
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="row mt-2">
+
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group">
+            <label for="branch_office_id" class="control-label">Sucursal:<span style="color: red;">*</span></label>
+            <select id="branch_office_id" name="branch_office_id" class="form-control required" style="width:100%;">
+              <option value="">{{ trans('message.selectopt') }}</option>
+              @forelse ($sucursal as $sucursal_data)
+                <option value="{{ $sucursal_data->id  }}">{{ $sucursal_data->name }}</option>
+              @empty
+              @endforelse
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group">
+            <label for="date">Fecha actual:<span style="color: red;">*</span></label>
+            <input type="text" class="form-control" id="date" name="date">
+          </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group">
+            <label for="payment_way_id" class="control-label">Forma de pago:<span style="color: red;">*</span></label>
+            <select id="payment_way_id" name="payment_way_id" class="form-control required" style="width:100%;">
+              <option value="">{{ trans('message.selectopt') }}</option>
+              @forelse ($payment_way as $payment_way_data)
+              <option value="{{ $payment_way_data->id }}"> {{ $payment_way_data->name }} </option>
+              @empty
+              @endforelse
+            </select>
+          </div>
+        </div>
+
+
       </div>
       <div class="row mt-2">
-        <div class="col-md-3">
-          <h4>Total:</h4>
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group">
+            <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
+            <select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
+              <option value="">{{ trans('message.selectopt') }}</option>
+              @forelse ($currency as $currency_data)
+                <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
+              @empty
+              @endforelse
+            </select>
+          </div>
         </div>
-        <div class="col-md-4">
-          <input class="form-control input-sm" type="text" name="" value="" readonly>
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group">
+            <label for="currency_value">TC:<span style="color: red;">*</span></label>
+            <input type="text" class="form-control" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;">
+          </div>
         </div>
-        <div class="col-md-2"></div>
-    </div>
+
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group">
+            <label for="mount_value">Monto:<span style="color: red;">*</span></label>
+            <input type="text" class="form-control" id="mount_value" name="mount_value" style="padding: 0.875rem 0.5rem;">
+          </div>
+        </div>
+
+      </div>
+      <div class="row m-5"></div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
       <button type="button" class="btn btn-primary">Guardar Cambios</button>
     </div>
+    </form>
   </div>
 </div>
 </div>
