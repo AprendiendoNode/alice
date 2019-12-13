@@ -64,6 +64,7 @@ $(function(){
       ]);
     });
   }
+  //Esta configuracion solo sirve para la tabla de facturas de la vista, NO REUTILIZAR
   var Configuration_table_responsive_complement={
     "select": true,
     "columnDefs": [
@@ -111,7 +112,7 @@ $(function(){
       }
     ],
     "select": {
-      'style': 'multi',
+      'style': 'single',
     },
     dom:  "<'row'<'col-sm-6'B><'col-sm-2'l><'col-sm-4'f>>" +
           "<'row'<'col-sm-12'tr>>" +
@@ -141,8 +142,10 @@ $(function(){
              $.each(valores, function(index, value) {
                 selected_complements.push(json_data[value - 1]);
              });
-             console.log(selected_complements);
+             //console.log(selected_complements);
              $('#ModalDataDif').modal('show');
+             fillSelected(selected_complements,$('#table_selected_complements'));
+
            }
 
 
@@ -211,6 +214,111 @@ $(function(){
     "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "Todos"]],
     //ordering: false,
     //"pageLength": 5,
+    bInfo: false,
+        language:{
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+              "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                  "sFirst":    "Primero",
+                  "sLast":     "Último",
+                  "sNext":     "Siguiente",
+                  "sPrevious": "Anterior"
+              },
+              "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+        }
+  }
+
+
+  function fillSelected(data,table){//Llena la tabla del modal con las facturas seleccionadas
+    table.DataTable().destroy();
+    var vartable = table.dataTable(Configuration_table);
+    vartable.fnClearTable();
+
+    $.each(data, function(index, status){
+      vartable.fnAddData([
+        status.customer_invoice_id,
+        status.name,
+        status.date_due,
+        status.uuid,
+        status.customers,
+        status.currencies,
+        //status.total,
+        //status.saldo,
+      ]);
+    });
+    $('#mount_total').val(data[0].total);
+    $('#mount_saldo').val(data[0].saldo);
+    $('#mount_value').on('change',function(){
+      let pagado= $('#mount_value').val()
+      $('#mount_pagado').val(pagado);
+    });
+
+
+
+  }
+
+  var Configuration_table = {
+    //"select": true,
+    "columnDefs": [
+      { //Subida 1
+        "targets": 0,
+        "visible": false,
+        "width": "1%",
+      },
+      {
+        "targets": 1,
+        "width": "1%",
+        "className": "text-center fix-colums",
+      },
+      {
+        "targets": 2,
+        "width": "1%",
+        "className": "text-center fix-colums",
+      },
+      {
+        "targets": 3,
+        "width": "1%",
+        "className": "text-center fix-columns",
+      },
+      {
+        "targets": 4,
+        "width": "1%",
+        "className": "text-center fix-columns",
+      },
+      {
+        "targets": 5,
+        "width": "0.2%",
+        "className": "text-center fix-columns",
+      },
+    ],
+    /*"select": {
+      'style': 'multi',
+    },*/
+    dom:  "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+          "<'row'<'col-sm-12'tr>>" +
+          "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    "order": [[ 0, "asc" ]],
+    paging: true,
+    //"pagingType": "simple",
+    Filter: true,
+    searching: true,
+    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "Todos"]],
+    //ordering: false,
+    //"pageLength": 5,
+    buttons:[],
     bInfo: false,
         language:{
                 "sProcessing":     "Procesando...",

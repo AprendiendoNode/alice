@@ -191,7 +191,73 @@
         </div>
 
       </div>
-      <div class="row m-5"></div>
+      <div class="row mt-2">
+        <div class="table-responsive table-data table-dropdown">
+          <table id="table_selected_complements" name='table_filter_fact' class="table table-striped table-hover table-condensed">
+            <thead>
+              <tr class="mini text-center">
+                  <th class="text-center" width="5%">@lang('general.column_actions')</th>
+                  <th class="text-center">
+                    {{  __('customer_invoice.column_name')}}
+                  </th>
+                  <th class="text-center">
+                      {{__('customer_invoice.column_date')}}
+                  </th>
+                  <th class="text-center">
+                      @lang('customer_invoice.column_uuid')
+                  </th>
+                  <th class="text-left">
+                      {{__('customer_invoice.column_customer')}}
+                  </th>
+                  <!--<th class="text-left">
+                      {{__('customer_invoice.column_salesperson')}}
+                  </th>-->
+                  <!--<th class="text-center">
+                      {{__('customer_invoice.column_date_due')}}
+                  </th>-->
+                  <th class="text-center">
+                      {{__('customer_invoice.column_currency')}}
+                  </th>
+                  <!--<th class="text-center">
+                      {{__('customer_invoice.column_amount_total')}}
+                  </th>
+                  <th class="text-center">
+                      {{__('customer_invoice.column_balance')}}
+                  </th> -->
+                  <!--<th class="text-center">
+                      {{__('customer_invoice.column_mail_sent')}}
+                  </th>
+                  <th class="text-center">
+                      {{__('customer_invoice.column_status')}}
+                  </th> -->
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      <div class="row mt-2 md-2">
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group">
+            <label for="mount_total">Total:</label>
+            <input type="text" class="form-control" id="mount_total" name="mount_total" style="padding: 0.875rem 0.5rem;" readonly>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group">
+            <label for="mount_saldo">Saldo pendiente:</label>
+            <input type="text" class="form-control" id="mount_saldo" name="mount_saldo" style="padding: 0.875rem 0.5rem;" readonly>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group">
+            <label for="mount_pagado">Monto pagado:</label>
+            <input type="text" class="form-control" id="mount_pagado" name="mount_pagado" style="padding: 0.875rem 0.5rem;" readonly>
+          </div>
+        </div>
+
+      </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
       <button type="button" class="btn btn-primary">Guardar Cambios</button>
