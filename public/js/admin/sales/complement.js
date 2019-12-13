@@ -126,22 +126,24 @@ $(function(){
          $(node).removeClass('btn-default')
       },
         action: function ( e, dt, node, config ) {
-            //alert( 'Button activated' );
-            var rows_selected = $("#table_complements").DataTable().column(0).checkboxes.selected();
-            var _token = $('input[name="_token"]').val();
+              //alert( 'Button activated' );
+              var rows_selected = $("#table_complements").DataTable().column(0).checkboxes.selected();
+              var _token = $('input[name="_token"]').val();
 
-            var valores= new Array();//Creamos un array con los id
-            $.each(rows_selected, function(index, rowId){
-                //alert( rowId);
-               valores.push(rowId);
-           });
-           if ( valores.length === 0){
-             Swal.fire("Operación abortada", "Ninguna fila seleccionada :(", "error");
-           }else{
-             var selected_complements = [];
-             $.each(valores, function(index, value) {
-                selected_complements.push(json_data[value - 1]);
+              var valores= new Array();//Creamos un array con los id
+              $.each(rows_selected, function(index, rowId){
+                  //alert( rowId);
+                 valores.push(rowId);
+              });
+
+             if ( valores.length === 0){
+               Swal.fire("Operación abortada", "Ninguna fila seleccionada :(", "error");
+             }else{
+
+             var selected_complements = json_data.filter(function (data) {
+               return data.customer_invoice_id == valores[0];
              });
+
              //console.log(selected_complements);
              $('#ModalDataDif').modal('show');
              fillSelected(selected_complements,$('#table_selected_complements'));
