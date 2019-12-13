@@ -153,7 +153,7 @@
     }
   </style>
   @if( auth()->user()->can('Aprobacion legal') )
-    <script src="{{ asset('js/admin/quoting/requests_quoting_signature_all.js?v=4.1')}}"></script>
+    <script src="{{ asset('js/admin/quoting/requests_quoting_signature_all.js?v=4.2')}}"></script>
     <script src="{{ asset('js/admin/quoting/request_modal_quoting.js?v=4.1')}}"></script>
   @else
     <script src="{{ asset('js/admin/quoting/requests_quoting_signature_0.js?v=4.1')}}"></script>

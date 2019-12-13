@@ -183,7 +183,17 @@ $(function() {
      
                         $('.cancel').prop('disabled', 'disabled');
                         $('.confirm').prop('disabled', 'disabled');
-    
+                        Swal.fire({
+                          title: 'Actualizando estatus...',
+                          allowOutsideClick: false,
+                          allowEscapeKey: false,
+                          allowEnterKey: false,
+                          onOpen: () => {
+                              Swal.showLoading()
+                          }
+                      })
+                        
+                        Swal.showLoading();
                         if(status_cotizador === ''){
                           Swal.fire("Operación abortada", "Debe seleccionar un estatus", "error")
                         }else{
@@ -191,8 +201,12 @@ $(function() {
                             type: "POST",
                             url: "/set_status_quoting",
                             data: { idents: JSON.stringify(valores), status_cotizador: status_cotizador , _token : _token },
+                            beforeSend : function(){
+                              Swal.showLoading();
+                            },
                             success: function (data){
                               if (data === 'true') {
+                                Swal.hideLoading()
                                 Swal.fire("Operación Completada!", "", "success");
                                 setTimeout("location.reload();", 2000);
                               }else{

@@ -12,6 +12,7 @@ use Illuminate\Database\Schema\Blueprint;
 use App\Models\Projects\{Documentp, Documentp_cart, In_Documentp_cart, Cotizador};
 use App\Models\Projects\{Cotizador_status_user, Cotizador_approvals, Cotizador_approval_propuesta};
 use App\Mail\SolicitudCompra;
+use App\Mail\NewKickoffProject;
 use App\User;
 use Carbon\Carbon;
 use View;
@@ -449,12 +450,16 @@ class QuotingController extends Controller
         $new_doc_state->cotizador_status_id = $status;
         $new_doc_state->save();
 
-        $document = Documentp::find($doc_id[$i]);
-        $document->fecha_aprobacion = \Carbon\Carbon::now();
-        $document->save();
+        if($status == 6){
+          $document = Documentp::find($doc_id[$i]);
+          $this->send_mail_new_kickoff($document->id);
+        }
 
         $valor= 'true';
       }
+
+      
+
       return $valor;
     }
 
@@ -570,6 +575,39 @@ class QuotingController extends Controller
           return (string)$num_folio;
         }
       }
+    }
+
+
+    public function send_mail_new_kickoff($id_doc)
+    {
+      $doc = Documentp::findOrFail($id_doc);
+      $folio = $doc->folio;
+      
+      $user_itc = User::findOrFail($doc->itc_id);
+      $user_elaboro = User::findOrFail($doc->user_id);
+
+      $elaboro_email = $user_elaboro->email;
+      $itc_email = $user_itc->email;
+      
+      $name_project = "";
+
+      if($doc->nombre_proyecto == null || $doc->nombre_proyecto == ''){
+        $sql = DB::table('hotels')->select('id','Nombre_hotel')->where('id', $doc->anexo_id)->get();
+        $name_project = $sql[0]->Nombre_hotel;
+      }else{
+        $name_project = $doc->nombre_proyecto;
+      }
+
+      $parametros = [
+        'folio' => $folio,
+        'nombre_proyecto' => $name_project,
+      ];
+
+      $copias = ['aespejo@sitwifi.com','mortiz@sitwifi.com', 'mflores@sitwifi.com','aarciga@sitwifi.com', 'crangel@sitwifi.com', 'admin@sitwifi.com',
+      'rdelgado@sitwifi.com', 'rgonzalez@sitwifi.com', 'jmartinez@sitwifi.com','jwalker@sitwifi.com	','mmoreno@sitwifi.com', $elaboro_email];
+      //Mail::to($itc_email)->cc($copias)->send(new SolicitudCompraAprobada($parametros1));
+      Mail::to($itc_email)->cc($copias)->send(new NewKickoffProject($parametros));
+      
     }
 
 

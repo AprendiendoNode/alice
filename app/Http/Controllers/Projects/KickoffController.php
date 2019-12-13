@@ -13,6 +13,7 @@ use App\Mail\SolicitudCompra;
 use App\Models\Base\Message;
 use App\Notifications\MessageDocumentp;
 use App\Mail\SolicitudCompraAprobada;
+use App\Mail\NewKickoffProject;
 use App\User;
 use App\Cadena;
 use View;
