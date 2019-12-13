@@ -32,7 +32,7 @@
             <table id="table_complements" name='table_filter_fact' class="table table-striped table-hover table-condensed">
               <thead>
                 <tr class="mini text-center">
-                    <th class="text-center" width="5%">@lang('general.column_actions')</th>
+                    <th id="nocheck"class="text-center actions" width="5%">@lang('general.column_actions')</th>
                     <th class="text-center">
                       {{  __('customer_invoice.column_name')}}
                     </th>
@@ -115,14 +115,14 @@
           <h5 class="mt-2">Rfc:</h5>
         </div>
         <div class="col-md-4">
-          <input class="form-control input-sm" type="text" name="" value="" readonly>
+          <input class="form-control input-sm" type="text" name="" value="{{ $companyname }}" readonly>
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-1">
           <h5>Razón Social:</h5>
         </div>
         <div class="col-md-4">
-          <input class="form-control input-sm" type="text" name="" value="" readonly>
+          <input class="form-control input-sm" type="text" name="" value="{{ $companyrfc }}" readonly>
         </div>
       </div>
       <div class="col-md-1"></div>

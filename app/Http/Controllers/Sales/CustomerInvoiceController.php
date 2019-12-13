@@ -2385,8 +2385,11 @@ class CustomerInvoiceController extends Controller
       $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
       $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
       $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
+      $companies = DB::select('CALL px_companies_data ()', array());
+      $companyname = $companies[0]->name;
+      $companyrfc = $companies[0]->taxid;
       return view('permitted.sales.customer_invoices_complement',
-      compact('sucursal','payment_way','currency'));
+      compact('sucursal','payment_way','currency','companyname','companyrfc'));
     }
 
     public function get_complement(){

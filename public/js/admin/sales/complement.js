@@ -313,10 +313,10 @@ $(function(){
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
     "order": [[ 0, "asc" ]],
-    paging: true,
+    paging: false,
     //"pagingType": "simple",
-    Filter: true,
-    searching: true,
+    Filter: false,
+    searching: false,
     "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "Todos"]],
     //ordering: false,
     //"pageLength": 5,
