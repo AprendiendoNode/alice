@@ -575,12 +575,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get_hotel_cadena', 'Payments\PayAddController@hotel_cadena');
     Route::post('/get_idubication_pay', 'Payments\PayAddController@sitio_ubication');
       // Cuentas contables.
-      Route::post('/get_class_serv', 'Payments\PayAddController@get_classxservice');
-      Route::post('/get_serv_concept', 'Payments\PayAddController@get_cxconcepts');
-      Route::post('/get_concept_desc', 'Payments\PayAddController@get_cxdescriptions');
-      Route::post('/get_chainxclassif', 'Payments\PayAddController@classif_vertical_chain');
+    Route::post('/get_class_serv', 'Payments\PayAddController@get_classxservice');
+    Route::post('/get_serv_concept', 'Payments\PayAddController@get_cxconcepts');
+    Route::post('/get_concept_desc', 'Payments\PayAddController@get_cxdescriptions');
+    Route::post('/get_chainxclassif', 'Payments\PayAddController@classif_vertical_chain');
     Route::post('/get_data_bank', 'Payments\PayAddController@get_bank');
     Route::post('/get_account_clabe', 'Payments\PayAddController@get_data_account');
+
+    Route::get('/view_providers', 'Payments\ProvidersController@index');
+    Route::post('/providers-show', 'Payments\ProvidersController@show');
+    Route::post('/providers-create', 'Payments\ProvidersController@create');
+    Route::post('/providers-update', 'Payments\ProvidersController@update');
 
     //Pagos solicitud
     Route::post('get_data_accw', 'Payments\PayAddController@info_account');
