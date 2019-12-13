@@ -1,4 +1,7 @@
 $(function(){
+
+  var json_data;
+
   //Inicializamos el date picker con sus configuraciones para la fecha actual con la que se va a timbrar
   $("#form input[name='date']").daterangepicker({
      //container:'#ModalDataDif',
@@ -45,6 +48,8 @@ $(function(){
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table_responsive_complement);
     vartable.fnClearTable();
+
+    json_data = datajson;
 
     $.each(datajson, function(index, status){
       vartable.fnAddData([
@@ -132,6 +137,11 @@ $(function(){
            if ( valores.length === 0){
              Swal.fire("Operación abortada", "Ninguna fila seleccionada :(", "error");
            }else{
+             var selected_complements = [];
+             $.each(valores, function(index, value) {
+                selected_complements.push(json_data[value - 1]);
+             });
+             console.log(selected_complements);
              $('#ModalDataDif').modal('show');
            }
 
