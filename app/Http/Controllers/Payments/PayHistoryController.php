@@ -75,8 +75,10 @@ class PayHistoryController extends Controller
   public function cc_account(Request $request)
   {
     $pay_id= $request->get('idpay');
-    $result = DB::select('CALL px_pay_mov_keyname (?)',array($pay_id));
-    return json_encode($result);
+    $cuentas = DB::select('CALL px_cc_pagos()');
+    $cuenta_pay = DB::select('CALL px_pay_mov_keyname (?)',array($pay_id));
+    array_push($cuenta_pay, $cuentas);
+    return json_encode($cuenta_pay);
   }
   public function get_proveedor_banks(Request $request)
   {

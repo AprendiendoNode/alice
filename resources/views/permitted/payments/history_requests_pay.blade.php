@@ -452,6 +452,8 @@
     </script>
   @endif
   @if( auth()->user()->can('View history of payment') )
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
+    <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>

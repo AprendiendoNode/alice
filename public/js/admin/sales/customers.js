@@ -378,8 +378,7 @@ function table_customers(datajson, table){
     }
     vartable.fnAddData([
       information.name,
-      information.taxid,
-      information.payment_terms,
+      information.taxid,      
       information.email,
       information.phone,
       information.countries,
@@ -408,11 +407,11 @@ function edit_customers(e){
             $('#inputEditPhone').val(data[0].phone);
             $('#inputEditMobile').val(data[0].phone_mobile);
 
-            $('#edit_select_one').val(data[0].payment_terms_id).trigger('change');
-            $('#edit_select_two').val(data[0].payment_ways_id).trigger('change');
-            $('#edit_select_three').val(data[0].payment_methods_id).trigger('change');
-            $('#edit_select_four').val(data[0].cfdi_uses_id).trigger('change');
-            $('#edit_select_five').val(data[0].salespersons_id).trigger('change');
+            // $('#edit_select_one').val(data[0].payment_terms_id).trigger('change');
+            // $('#edit_select_two').val(data[0].payment_ways_id).trigger('change');
+            // $('#edit_select_three').val(data[0].payment_methods_id).trigger('change');
+            // $('#edit_select_four').val(data[0].cfdi_uses_id).trigger('change');
+            // $('#edit_select_five').val(data[0].salespersons_id).trigger('change');
 
             $('#editCreatAddress_1').val(data[0].address_1);
             $('#editCreatAddress_2').val(data[0].address_2);

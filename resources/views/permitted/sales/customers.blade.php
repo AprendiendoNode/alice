@@ -67,7 +67,7 @@
                     <input type="text" class="form-control form-control-sm onlynumber" id="inputCreatMobile" name="inputCreatMobile" placeholder="" maxlength="12">
                   </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                   <label for="select_one" class="col-sm-3 col-form-label">Término de pago <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <select  id="select_one" name="select_one" class="form-control form-control-sm required"  style="width: 100%;">
@@ -122,7 +122,7 @@
                       @endforelse
                     </select>
                   </div>
-                </div>
+                </div> -->
                 <div class="form-group row">
                   <label for="inputCreatAddress_1" class="col-sm-3 col-form-label">Direccion<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
@@ -204,7 +204,7 @@
                 <div class="form-group row">
                   <label for="inputCreatComment" class="col-sm-3 col-form-label">Comentario</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm onlynumber" id="inputCreatComment" name="inputCreatComment" placeholder="" maxlength="100">
+                    <input type="text" class="form-control form-control-sm" id="inputCreatComment" name="inputCreatComment" placeholder="" maxlength="100">
                   </div>
                 </div>
 
@@ -283,7 +283,7 @@
                     <input type="text" class="form-control form-control-sm onlynumber" id="inputEditMobile" name="inputEditMobile" placeholder="" maxlength="12">
                   </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                   <label for="edit_select_one" class="col-sm-3 col-form-label">Termino de pago <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <select  id="edit_select_one" name="edit_select_one" class="form-control form-control-sm required"  style="width: 100%;">
@@ -342,7 +342,7 @@
                       @endforelse
                     </select>
                   </div>
-                </div>
+                </div> -->
                 <div class="form-group row">
                   <label for="editCreatAddress_1" class="col-sm-3 col-form-label">Direccion<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
@@ -467,7 +467,6 @@
                     <tr>
                       <th>Nombre</th>
                       <th>RFC</th>
-                      <th>Términos de pago</th>
                       <th>Correo electrónico</th>
                       <th>Teléfono</th>
                       <th>País</th>

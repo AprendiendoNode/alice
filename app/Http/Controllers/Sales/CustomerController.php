@@ -46,11 +46,11 @@ class CustomerController extends Controller
       $email= $request->inputCreatEmail;
       $phone= !empty($request->inputCreatPhone) ? $request->inputCreatPhone : '';
      $mobile= !empty($request->inputCreatMobile) ? $request->inputCreatMobile : '';
-  $term_pago= $request->select_one;
- $forma_pago= $request->select_two;
-   $met_pago= $request->select_three;
-   $uso_cfdi= $request->select_four;
- $vendedores= $request->select_five;
+ //  $term_pago= $request->select_one;
+ // $forma_pago= $request->select_two;
+ //   $met_pago= $request->select_three;
+ //   $uso_cfdi= $request->select_four;
+ // $vendedores= $request->select_five;
   $direccion= $request->inputCreatAddress_1;
 
       $numExt= !empty($request->inputCreatAddress_2) ? $request->inputCreatAddress_2 : '';
@@ -82,11 +82,11 @@ class CustomerController extends Controller
                          'email' => $email,
                          'phone' => $phone,
                   'phone_mobile' => $mobile,
-               'payment_term_id' => $term_pago,
-                'payment_way_id' => $forma_pago,
-             'payment_method_id' => $met_pago,
-                   'cfdi_use_id' => $uso_cfdi,
-                'salesperson_id' => $vendedores,
+             //   'payment_term_id' => $term_pago,
+             //    'payment_way_id' => $forma_pago,
+             // 'payment_method_id' => $met_pago,
+             //       'cfdi_use_id' => $uso_cfdi,
+             //    'salesperson_id' => $vendedores,
                      'address_1' => $direccion,
                      'address_2' => $numExt,
                      'address_3' => $numInt,
@@ -100,6 +100,7 @@ class CustomerController extends Controller
                        'comment' => $comment,
                     'sort_order' => $orden,
                         'status' => $status,
+                      'provider' => 0,
                    'created_uid' => $user_id,
                     'created_at' => \Carbon\Carbon::now()]);
            if(empty($newId)){
@@ -131,11 +132,13 @@ class CustomerController extends Controller
          $email= $request->inputEditEmail;
          $phone= !empty($request->inputEditPhone) ? $request->inputEditPhone : '';
         $mobile= !empty($request->inputEditMobile) ? $request->inputEditMobile : '';
-        $term_pago= $request->edit_select_one;
-        $forma_pago= $request->edit_select_two;
-        $met_pago= $request->edit_select_three;
-        $uso_cfdi= $request->edit_select_four;
-        $vendedores= $request->edit_select_five;
+
+        // $term_pago= $request->edit_select_one;
+        // $forma_pago= $request->edit_select_two;
+        // $met_pago= $request->edit_select_three;
+        // $uso_cfdi= $request->edit_select_four;
+        // $vendedores= $request->edit_select_five;
+
         $direccion= $request->editCreatAddress_1;
 
          $numExt= !empty($request->editCreatAddress_2) ? $request->editCreatAddress_2 : '';
@@ -167,11 +170,11 @@ class CustomerController extends Controller
                       'email' => $email,
                       'phone' => $phone,
                'phone_mobile' => $mobile,
-            'payment_term_id' => $term_pago,
-             'payment_way_id' => $forma_pago,
-          'payment_method_id' => $met_pago,
-                'cfdi_use_id' => $uso_cfdi,
-             'salesperson_id' => $vendedores,
+          //   'payment_term_id' => $term_pago,
+          //    'payment_way_id' => $forma_pago,
+          // 'payment_method_id' => $met_pago,
+          //       'cfdi_use_id' => $uso_cfdi,
+          //    'salesperson_id' => $vendedores,
                   'address_1' => $direccion,
                   'address_2' => $numExt,
                   'address_3' => $numInt,
@@ -208,7 +211,8 @@ class CustomerController extends Controller
      */
     public function show(Request $request)
     {
-      $resultados = DB::select('CALL GetCustomersv2 ()', array());
+      // 0 es clientes 1 es proveedores.
+      $resultados = DB::select('CALL GetCustomersv2 (?)', array(0));
       return json_encode($resultados);
     }
 

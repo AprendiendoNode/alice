@@ -2,7 +2,7 @@ var modificando, sitios, payment, proveedor_id, moneda, tochange_account;
 
 function enviar(e, editing){
 
-
+  // $('.select2').select2();
   //If editing...just edit by users with edit permie and if the payments have status 1 or 2
    modificando = editing;
 
@@ -92,9 +92,7 @@ $(".btn-print-invoice").on('click',function(){
               error: function (response) {
 
               }
-
         });
-
 });
 
 
@@ -593,12 +591,14 @@ $("#actualizar_solicitud").on('click', function() {
   console.log("Enviar actualizaciones...");
   //console.log(montoIVA);
   //Subtotal ISR
+  // agregar cc_key_sel para editar
+  var cc_key_sel = $('#cc_key_sel').val();
   var token = $('input[name="_token"]').val();
   $.ajax({
       type: "POST",
       url: "/update_pay",
       data: { ordenDeCompra: ordenDeCompra, concepto: concepto, formaDePago: formaDePago, banco: banco, cuenta: cuenta, clabe: clabe, referencia: referencia,
-        observacion: observacion, monto: monto, tasa: tasa, montoIVA: montoIVA, total: total, currency: currency, payment: payment, _token: token },
+        observacion: observacion, monto: monto, tasa: tasa, montoIVA: montoIVA, total: total, currency: currency, payment: payment, cc_key : cc_key_sel, _token: token },
       success: function(data) {
           console.log(data);
           if (data === undefined || data.length === 0) {
@@ -648,6 +648,7 @@ $("#actualizar_solicitud").on('click', function() {
 async function disable_buttons(status) {
     if(modificando && sitios <= 1) {
       console.log("Editando...");
+      // quitar disable al campo cc_keyname y cambiarlo a select.
       $('#rec_order_purchase').prop( "disabled", false);
       $('#rec_description').prop( "disabled", false);
       $('#rec_reference').prop( "disabled", false);
@@ -802,7 +803,7 @@ function getdataCuenta(campoa, campob) {
                     datax = JSON.parse(data);
                     var currency = document.getElementById('rec_clabe');
                     currency.dataset.currency = datax[0].currency_id;
-                    console.log("$" + currency.dataset.currency);
+                    // console.log("$" + currency.dataset.currency);
                     $('#rec_clabe').val(datax[0].clabe);
                     if(tochange_account) {
                       tochange_account = false;
@@ -1013,14 +1014,48 @@ function accounting_account(campoa, campob){
     url: "/cc_account",
     data: { idpay : campoa , _token : campob },
     success: function (data){
+      var data_select = [];
+      // console.log(data);
       if (data == null || data == '[]') {
-          $("#cc_key").val('No disponible.');
+        // datax = JSON.parse(data);
+        $("#cc_key").val('No disponible.');
+        data_select.push({
+          id: "",
+          text: "Elija ..."
+        });
+        $('#cc_key_sel').select2();
+        emptySelect('cc_key_sel');
+        $('#cc_key_sel').select2({
+            data: data_select
+        });
+        // $.each(datax[1], function(index, datos) {
+        //     data_select.push({
+        //       id: datos.cuenta_contable + '|' + datos.cuenta_contable_name,
+        //       text: datos.cuenta_contable + '|' + datos.cuenta_contable_name
+        //     });
+        // });
       }
       else {
+        datax = JSON.parse(data);
         if ($.trim(data)){
-          datax = JSON.parse(data);
           $("#cc_key").val(datax[0].keyname);
         }
+        data_select.push({
+          id: datax[0].keyname,
+          text: datax[0].keyname
+        });
+        $.each(datax[1], function(index, datos) {
+          data_select.push({
+              id: datos.cuenta_contable + '|' + datos.cuenta_contable_name,
+              text: datos.cuenta_contable + '|' + datos.cuenta_contable_name
+          });
+        });
+        // console.log(data_select);
+        $('#cc_key_sel').select2();
+        emptySelect('cc_key_sel');
+        $('#cc_key_sel').select2({
+            data: data_select
+        });
       }
     },
     error: function (data) {
@@ -1028,7 +1063,17 @@ function accounting_account(campoa, campob){
     }
   });
 }
+function emptySelect(selects) {
+    // var select = $('#cc_key_sel');
+    $('#'+ selects).empty();
+    $('#'+ selects).select2("destroy");
 
+    // formV.find('[name="' + selects + '"]').empty();
+    // formV.find('[name="' + selects + '"]').select2("destroy");
+    // formV.data('formValidation').resetField($('[name="' + selects + '"]'));
+
+    
+}
 function checkCurrency() {
     var coinBank;
     var coinId;

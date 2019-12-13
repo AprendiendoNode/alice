@@ -20,6 +20,7 @@
                           <div class="col-md-5 d-inline text-left">
                             <label class="control-label d-inline">C.C.</label>
                             <input type="text" class="form-control form-control-sm  d-inline" name="cc_key" id="cc_key" style="font-size:75%;"readonly="">
+                            <select id="cc_key_sel" name="cc_key_sel" class="form-control select2"><option value="">Elija ...</option></select>
                           </div>
 
 
