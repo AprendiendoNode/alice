@@ -249,14 +249,15 @@ function table_anexos(datajson, table){
   vartable.fnClearTable();
   $.each(JSON.parse(datajson), function(index, status){
     vartable.fnAddData([
-      status.id_contract_master,
-      status.cxclassification,
-      status.vertical,
-      status.cadena,
+      status.contract_annex_id,
+      status.cxclassifications,
+      status.verticals,
+      status.cadenas,
       status.key,
-      status.sum_annexes,
-      '<a href="javascript:void(0)" data-type="select" data-pk="'+ status.id_contract_master +'" data-title="Clientes" data-value="' + status.rz_customer_id + '" class="set-clientes">' + status.customers + '</a>',
-      '<a href="javascript:void(0);" onclick="view_info(this)" class="btn btn-primary  btn-sm mr-2 p-1" value="'+status.id_contract_master+'"><i class="fas fa-eye btn-icon-prepend fastable"></i></a>'
+      status.quantity,
+      status.customers
+      // '<a href="javascript:void(0)" data-type="select" data-pk="'+ status.id_contract_master +'" data-title="Clientes" data-value="' + status.rz_customer_id + '" class="set-clientes">' + status.customers + '</a>',
+      // '<a href="javascript:void(0);" onclick="view_info(this)" class="btn btn-primary  btn-sm mr-2 p-1" value="'+status.id_contract_master+'"><i class="fas fa-eye btn-icon-prepend fastable"></i></a>'
     ]);
   });
 }
@@ -302,11 +303,6 @@ var Configuration_table_responsive_simple_classification= {
             "width": "1%",
             "className": "text-center fix-columns",
           },
-          {
-            "targets": 7,
-            "width": "1%",
-            "className": "text-center fix-columns",
-          }
         ],
         "select": {
           'style': 'multi',
@@ -338,8 +334,9 @@ var Configuration_table_responsive_simple_classification= {
             },
             success: function(response, newValue) {
               var id = $(this).data('pk');
-              console.log(newValue);
-              setCliente(id, newValue);
+               // $(this).attr('pk',newValue);
+              // console.log(newValue);
+              // setCliente(id, newValue);
             }
           });
         },
@@ -357,7 +354,7 @@ var Configuration_table_responsive_simple_classification= {
               $(node).removeClass('btn-default')
             },
             exportOptions: {
-              columns: [ 1,2,3,4,5,6,7],
+              columns: [ 1,2,3,4,5,6],
               modifier: {
                 page: 'all',
               }

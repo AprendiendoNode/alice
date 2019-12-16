@@ -108,26 +108,6 @@
                   </div>
                   <div class="col-md-3 col-xs-12">
                     <div class="form-group">
-                      <label for="date_due">Fecha Vencimiento:</label>
-                      <input type="text" class="form-control form-control-sm" id="date_due" name="date_due" value="">
-                    </div>
-                  </div>
-                  <div class="col-md-3 col-xs-12">
-                    <div class="form-group">
-                      <label for="payment_term_id" class="control-label">Termino de pago:<span style="color: red;">*</span></label>
-                      <select id="payment_term_id" name="payment_term_id" class="form-control required" style="width:100%;">
-                        <option value="">{{ trans('message.selectopt') }}</option>
-                        @forelse ($payment_term as $payment_term_data)
-                        <option value="{{ $payment_term_data->id }}"> {{ $payment_term_data->name }} </option>
-                        @empty
-                        @endforelse
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-3 col-xs-12">
-                    <div class="form-group">
                       <label for="salesperson_id" class="control-label">Vendedor:<span style="color: red;">*</span></label>
                       <select id="salesperson_id" name="salesperson_id" class="form-control form-control-sm required" style="width:100%;">
                         <option value="">{{ trans('message.selectopt') }}</option>
@@ -138,42 +118,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-3 col-xs-12">
-                    <div class="form-group">
-                      <label for="payment_way_id" class="control-label">Forma de pago:<span style="color: red;">*</span></label>
-                      <select id="payment_way_id" name="payment_way_id" class="form-control form-control-sm required" style="width:100%;">
-                        <option value="">{{ trans('message.selectopt') }}</option>
-                        @forelse ($payment_way as $payment_way_data)
-                        <option value="{{ $payment_way_data->id }}"> {{ $payment_way_data->name }} </option>
-                        @empty
-                        @endforelse
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-3 col-xs-12">
-                    <div class="form-group">
-                      <label for="payment_method_id" class="control-label">Metodo de pago:<span style="color: red;">*</span></label>
-                      <select id="payment_method_id" name="payment_method_id" class="form-control form-control-sm required" style="width:100%;">
-                        <option value="">{{ trans('message.selectopt') }}</option>
-                        @forelse ($payment_methods as $payment_methods_data)
-                        <option value="{{ $payment_methods_data->id }}"> {{ $payment_methods_data->name }} </option>
-                        @empty
-                        @endforelse
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-3 col-xs-12">
-                    <div class="form-group">
-                      <label for="cfdi_use_id" class="control-label">Uso de cfdi:<span style="color: red;">*</span></label>
-                      <select id="cfdi_use_id" name="cfdi_use_id" class="form-control form-control-sm required" style="width:100%;">
-                        <option value="">{{ trans('message.selectopt') }}</option>
-                        @forelse ($cfdi_uses as $cfdi_uses_data)
-                        <option value="{{ $cfdi_uses_data->id }}"> {{ $cfdi_uses_data->name }} </option>
-                        @empty
-                        @endforelse
-                      </select>
-                    </div>
-                  </div>
+
                   <div class="col-md-3 col-xs-12">
                     <div class="form-group">
                       <label for="branch_office_id" class="control-label">Sucursal:<span style="color: red;">*</span></label>
@@ -186,7 +131,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-9 col-xs-12">
+                  <div class="col-md-12 col-xs-12">
                     <div class="form-group">
                       <label for="reference">Referencia:</label>
                       <input type="text" class="form-control form-control-sm" id="reference" name="reference" value="">
@@ -221,10 +166,10 @@
                             <th> <small>Clasificacion</small> </th>
                             <th> <small>Vertical</small> </th>
                             <th> <small>Cadena</small> </th>
-                            <th> <small>Contrato maestro</small> </th>
+                            <th> <small>Contrato anexo</small> </th>
                             <th> <small>Monto</small> </th>
                             <th> <small>Cliente</small> </th>
-                            <th> <small>Acciones</small> </th>
+                            {{-- <th> <small>Acciones</small> </th> --}}
                           </tr>
                         </thead>
                         <tbody>
@@ -237,7 +182,7 @@
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th></th>
+                            {{-- <th></th> --}}
                           </tr>
                         </tfoot>
                       </table>
@@ -248,8 +193,7 @@
                   <div class="col-md-12">
                     <button type="submit" class="btn btn-danger mt-3">Timbrar</button>
                   </div>
-                </div>
-
+                </div>                
               </form>
             </div>
           </div>

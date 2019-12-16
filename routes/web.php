@@ -1100,8 +1100,10 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     //Complementos de pago
     Route::get('/customer-invoices-complement', 'Sales\CustomerInvoiceController@complement');
     Route::post('/get_data_complements', 'Sales\CustomerInvoiceController@get_complement');
-    Route::post('/store_complement', 'Sales\CustomerInvoiceController@store_complement');    
+    Route::post('/store_complement', 'Sales\CustomerInvoiceController@store_complement');
 
+    Route::post('/get_data_complements', 'Sales\CustomerInvoiceController@get_complement');
+    Route::get('/cz', 'Sales\CustomerInvoiceController@tes'); 
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
