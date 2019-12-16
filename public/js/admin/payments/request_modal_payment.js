@@ -11,9 +11,13 @@ function enviar(e, editing){
      $('.no_aprobar_en_gastos').addClass("d-none");
      createEventListener_filePdf();
      createEventListener_fileXml();
+     $('.cc_edit_div').show();
+     $('.cc_unedit_div').hide();
    } else {
      tochange_account = false;
      $('.no_aprobar_en_gastos').removeClass("d-none");
+     $('.cc_edit_div').hide();
+     $('.cc_unedit_div').show();
    }
    var valor= e.getAttribute('value');
    payment = valor;

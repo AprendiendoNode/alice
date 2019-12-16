@@ -696,23 +696,24 @@ public function getInvoicePdf(Request $request)
 }
 
 public function update_pay (Request $request) {
-
-  $ordenDeCompra = $request -> get('ordenDeCompra');
-  $concepto = $request -> get('concepto');
-  $formaDePago = $request -> get('formaDePago');
-  $banco = $request -> get('banco'); //
-  $cuenta = $request -> get('cuenta'); //
-  $clabe = $request -> get('clabe'); //
-  $referencia = $request -> get('referencia'); //
-  $observacion = $request -> get('observacion'); //
-  $monto = $request -> get('monto'); //
-  $tasa = $request -> get('tasa'); //
-  $montoIVA = $request -> get('montoIVA'); //
-  $total = $request -> get('total'); //
-  $currency = $request -> get('currency');
-
-  $payment = $request -> get('payment');
-
+  $ordenDeCompra = $request->get('ordenDeCompra');
+  $concepto = $request->get('concepto');
+  $formaDePago = $request->get('formaDePago');
+  $banco = $request->get('banco'); //
+  $cuenta = $request->get('cuenta'); //
+  $clabe = $request->get('clabe'); //
+  $referencia = $request->get('referencia'); //
+  $observacion = $request->get('observacion'); //
+  $monto = $request->get('monto'); //
+  $tasa = $request->get('tasa'); //
+  $montoIVA = $request->get('montoIVA'); //
+  $total = $request->get('total'); //
+  $currency = $request->get('currency');
+  $payment = $request->get('payment');
+  
+  $result = explode('|', $request->cc_key);
+  $key_new = trim($result[0]);
+  $name_cc_new = trim($result[1]);
   //Checar cambios
   $payments_montos_table = DB::table('payments_montos')->select('*')->where('payments_id', $payment)->get();
   $payments_table = DB::table('payments')->select('*')->where('id', $payment)->get();
@@ -721,25 +722,18 @@ public function update_pay (Request $request) {
   $vieja_referencia = "default";
   $nueva_referencia = "default";
   $result = DB::table('customer_bank_accounts')->select('referencia')->where('id', $cuenta)->first();
+  
+  $sql = DB::table('pay_mov_cc')->select('id', 'key_cc','name_cc')->where('payments_id', $payment)->first();
 
   if(($payments_table[0]->referencia) == "default") {
-
     if($referencia != ($result->referencia)) {
-
       $nueva_referencia = $referencia;
-
     }
-
   } else {
-
     $vieja_referencia = $payments_table[0]->referencia;
-
     if($referencia != ($result->referencia)) {
-
       $nueva_referencia = $referencia;
-
     }
-
   }
 
   //SÓLO FUNCIONA CORRECTAMENTE EN PAGOS QUE NO SEAN MÚLTIPLES
@@ -767,6 +761,7 @@ public function update_pay (Request $request) {
     'updated_at' => \Carbon\Carbon::now()
   ]);
 
+  DB::table('pay_mov_cc')->where('payments_id', $payment)->update(['key_cc' => $key_new, 'name_cc' => $name_cc_new]);
   //Save logs
   DB::connection('alicelog')->table('edit_payments_log')->insert([
     'payment_id' => $payment,
@@ -788,7 +783,14 @@ public function update_pay (Request $request) {
     'db' => DB::connection()->getDatabaseName(),
     'created_at' => \Carbon\Carbon::now()
   ]);
-
+  DB::connection('alicelog')->table('pay_mov_cc_log')->insert([
+    'pay_mov_cc_id' => $sql->id,
+    'payments_id' => $payment,
+    'key_cc_old' => $sql->key_cc,
+    'key_cc_new' => $key_new,
+    'name_cc_old' => $sql->name_cc,
+    'name_cc_new' => $name_cc_new,
+  ]);
   return "OK";
 }
 
