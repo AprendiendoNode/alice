@@ -602,6 +602,10 @@ class CustomerInvoiceController extends Controller
 
       // Open a try/catch block
       try {
+
+info($request);
+throw new \Exception(__('general.error_cfdi_version'));
+
           //Logica
           $request->merge(['created_uid' => \Auth::user()->id]);
           $request->merge(['updated_uid' => \Auth::user()->id]);
@@ -2385,11 +2389,12 @@ class CustomerInvoiceController extends Controller
       $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
       $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
       $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
+      $cfdi_relations = DB::select('CALL GetAllCfdiRelationsv2 ()', array());
       $companies = DB::select('CALL px_companies_data ()', array());
       $companyname = $companies[0]->name;
       $companyrfc = $companies[0]->taxid;
       return view('permitted.sales.customer_invoices_complement',
-      compact('sucursal','payment_way','currency','companyname','companyrfc'));
+      compact('sucursal','payment_way','currency','cfdi_relations','companyname','companyrfc'));
     }
 
     public function get_complement(){
@@ -2400,6 +2405,83 @@ class CustomerInvoiceController extends Controller
     public function store_complement(Request $request){
       //Logic
       info($request);
+
+      try {
+        //Logica
+        $request->merge(['created_uid' => \Auth::user()->id]);
+        $request->merge(['updated_uid' => \Auth::user()->id]);
+        $request->merge(['status' => CustomerInvoice::OPEN]);
+        //Ajusta fecha y genera fecha de vencimiento
+        $date = Helper::createDateTime($request->date);
+        $request->merge(['date' => Helper::dateTimeToSql($date)]);
+        $date_due = $date; //La fecha de vencimiento por default
+        $date_due_fix = $request->date_due;//Fix valida si la fecha de vencimiento esta vacia en caso de error
+        if (!empty($request->date_due)) {
+            $date_due = Helper::createDate($request->date_due);
+        } else {
+            $payment_term = PaymentTerm::findOrFail($request->payment_term_id);
+            $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
+        }
+        $request->merge(['date_due' => Helper::dateToSql($date_due)]);
+
+        //Obtiene folio
+        $document_type = Helper::getNextDocumentTypeByCode($this->document_type_code);
+        $request->merge(['document_type_id' => $document_type['id']]);
+        $request->merge(['name' => $document_type['name']]);
+        $request->merge(['serie' => $document_type['serie']]);
+        $request->merge(['folio' => $document_type['folio']]);
+
+        //Guardar Registro principal
+        $customer_invoice = CustomerInvoice::create($request->input());
+
+        //ERASED...
+
+        //Cfdi relacionados
+        if (!empty($request->item_relation)) {
+            foreach ($request->item_relation as $key => $result) {
+                //Guardar
+                $customer_invoice_relation = CustomerInvoiceRelation::create([
+                    'created_uid' => \Auth::user()->id,
+                    'updated_uid' => \Auth::user()->id,
+                    'customer_invoice_id' => $customer_invoice->id,
+                    'relation_id' => $result['relation_id'],
+                    'sort_order' => $key,
+                    'status' => 1,
+                ]);
+            }
+        }
+
+        //Registros de cfdi
+        $customer_invoice_cfdi = CustomerInvoiceCfdi::create([
+            'created_uid' => \Auth::user()->id,
+            'updated_uid' => \Auth::user()->id,
+            'customer_invoice_id' => $customer_invoice->id,
+            'name' => $customer_invoice->name,
+            'status' => 1,
+        ]);
+
+      } catch(\Exception $e) {
+        $request->merge([
+              'date' => Helper::convertSqlToDateTime($request->date),
+        ]);
+        if (!empty($date_due_fix)) {
+              $request->merge([
+                  'date_due' => Helper::convertSqlToDate($request->date_due),
+              ]);
+        }else{
+              $request->merge([
+                  'date_due' => '',
+              ]);
+        }
+        // An error occured; cancel the transaction...
+        DB::rollback();
+
+        // and throw the error again.
+        // throw $e;
+        return $e;
+        // return __('general.error_cfdi_pac');
+      }
+
       return "success";
     }
 

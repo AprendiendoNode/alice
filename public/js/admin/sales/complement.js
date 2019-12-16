@@ -3,7 +3,7 @@ $(function(){
   var json_data;
 
   //Inicializamos el date picker con sus configuraciones para la fecha actual con la que se va a timbrar
-  $("#form input[name='date']").daterangepicker({
+  $("#form_c input[name='date']").daterangepicker({
      //container:'#ModalDataDif',
       singleDatePicker: true,
       timePicker: true,
@@ -16,11 +16,11 @@ $(function(){
       },
       autoUpdateInput: true
   }, function (chosen_date) {
-      $("#form input[name='date']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
+      $("#form_c input[name='date']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
   });
 
   $( "#ModalDataDif" ).scroll(function() {
-      $("#form input[name='date']").datepicker('place')
+      $("#form_c input[name='date']").datepicker('place')
   });
 
   get_complements();//Obtenemos todos las facturas con saldos pendientes

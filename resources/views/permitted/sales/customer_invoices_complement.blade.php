@@ -191,6 +191,24 @@
         </div>
 
       </div>
+
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-4 col-xs-12">
+          <div class="form-group row">
+              <label for="cfdi_relation_id" class="col-md-12 col-form-label ml-0">Tipo de relación<span style="color: red;">*</span></label>
+              <div class="col-md-12 ml-0">
+                  <select id="cfdi_relation_id" name="cfdi_relation_id" class="form-control form-control-sm" style="width: 100%;">
+                      <option value="">{{ trans('message.selectopt') }}</option>
+                      @forelse ($cfdi_relations as $cfdi_relations_data)
+                      <option value="{{ $cfdi_relations_data->id }}"> [{{ $cfdi_relations_data->code}}]{{ $cfdi_relations_data->name }} </option>
+                      @empty
+                      @endforelse
+                  </select>
+              </div>
+          </div>
+      </div>
+
       <div class="row mt-2">
         <div class="table-responsive table-data table-dropdown">
           <table id="table_selected_complements" name='table_filter_fact' class="table table-striped table-hover table-condensed">
