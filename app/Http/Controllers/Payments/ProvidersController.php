@@ -91,6 +91,7 @@ class ProvidersController extends Controller
                         'comment' => $comment,
                         'sort_order' => $orden,
                             'status' => $status,
+                            'provider' => 1,
                     'created_uid' => $user_id,
                         'created_at' => \Carbon\Carbon::now()]);
             if(empty($newId)){
