@@ -107,7 +107,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <form id="form" name="form" enctype="multipart/form-data">
+    <form id="form_c" name="form" enctype="multipart/form-data">
       {{ csrf_field() }}
     <div class="modal-body">
       <div class="row">
@@ -260,7 +260,7 @@
       </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-      <button type="button" class="btn btn-primary">Guardar Cambios</button>
+      <button id="send_complement"type="button" class="btn btn-primary">Guardar Cambios</button>
     </div>
     </form>
   </div>

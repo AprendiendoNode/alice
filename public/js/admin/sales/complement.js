@@ -375,4 +375,61 @@ $(function(){
       });
     }
   });
+
+  $('#send_complement').on('click',function(){
+    var form = $('#form_c')[0];
+    var formData = new FormData(form);
+
+    $.ajax({
+      type: "POST",
+      url: "/sales/store_complement",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (data){
+        if (data == 'success') {
+          let timerInterval;
+          Swal.fire({
+            type: 'success',
+            title: 'La factura se ha generado con éxito!',
+            html: 'Se estan aplicando los cambios.',
+            timer: 2500,
+            onBeforeOpen: () => {
+              Swal.showLoading()
+              timerInterval = setInterval(() => {
+                Swal.getContent().querySelector('strong')
+              }, 100)
+            },
+            onClose: () => {
+              clearInterval(timerInterval)
+            }
+          }).then((result) => {
+            if (
+              // Read more about handling dismissals
+              result.dismiss === Swal.DismissReason.timer
+            ) {
+              window.location.href = "/sales/customer-invoices-complement";
+            }
+          });
+        }
+        if (data == 'false') {
+          Swal.fire({
+             type: 'error',
+             title: 'Error encontrado..',
+             text: 'Error al crear el  CFDI!',
+           });
+        }
+        // console.log(data);
+      },
+      error: function (err) {
+        Swal.fire({
+           type: 'error',
+           title: 'Oops...',
+           text: err.statusText,
+         });
+      }
+    });
+    //
+  });
+
 });

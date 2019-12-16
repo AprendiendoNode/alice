@@ -2397,6 +2397,11 @@ class CustomerInvoiceController extends Controller
       //info($complements);
       return $complements;
     }
+    public function store_complement(Request $request){
+      //Logic
+      info($request);
+      return "success";
+    }
 
 
 
