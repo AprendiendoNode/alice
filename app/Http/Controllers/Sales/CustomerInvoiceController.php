@@ -79,7 +79,7 @@ class CustomerInvoiceController extends Controller
       //Si tiene CFDI obtiene la informacion de los nodos
       if(!empty($customer_invoice->customerInvoiceCfdi->file_xml_pac) && !empty($customer_invoice->customerInvoiceCfdi->uuid)){
         $path_xml = Helper::setDirectory(CustomerInvoice::PATH_XML_FILES_CI) . '/';
-          $file_xml_pac = $path_xml . $customer_invoice->customerInvoiceCfdi->file_xml_pac;
+        $file_xml_pac = $path_xml . $customer_invoice->customerInvoiceCfdi->file_xml_pac;
 
           //Valida que el archivo exista
           if(\Storage::exists($file_xml_pac)) {
@@ -93,7 +93,6 @@ class CustomerInvoiceController extends Controller
       }
       $format = new ConvertNumberToLetters();
       $ammount_letter = $format->convertir($customer_invoice->amount_total);
-
       // Enviando datos a la vista de la factura
       $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice', 'data', 'ammount_letter'));
       return $pdf->stream();
@@ -602,10 +601,6 @@ class CustomerInvoiceController extends Controller
 
       // Open a try/catch block
       try {
-
-info($request);
-throw new \Exception(__('general.error_cfdi_version'));
-
           //Logica
           $request->merge(['created_uid' => \Auth::user()->id]);
           $request->merge(['updated_uid' => \Auth::user()->id]);
@@ -2116,6 +2111,7 @@ throw new \Exception(__('general.error_cfdi_version'));
             $facturar_pay_way = $all_information_anexos[0]->payment_way_id;
             $facturar_pay_met = $all_information_anexos[0]->payment_method_id;
             $facturar_cfdi_use = $all_information_anexos[0]->cfdi_user_id;
+            $facturar_unit_measure = $all_information_anexos[0]->unit_measure_id;
 
             //Fix valida si la fecha de vencimiento esta vacia en caso de error
             $payment_term = PaymentTerm::findOrFail($all_information_anexos[0]->payment_term_id);
@@ -2135,6 +2131,13 @@ throw new \Exception(__('general.error_cfdi_version'));
             $request->merge(['name' => $document_type['name']]);
             $request->merge(['serie' => $document_type['serie']]);
             $request->merge(['folio' => $document_type['folio']]);
+            //Funciones añadidas
+            $request->merge(['payment_method_id' => $facturar_pay_met]);
+            $request->merge(['payment_term_id' => $facturar_pay_term]);
+            $request->merge(['payment_way_id' => $facturar_pay_way]);
+            $request->merge(['cfdi_use_id' => $facturar_cfdi_use]);
+            $request->merge(['unit_measure_id' => $facturar_unit_measure]);
+
             //Guardar Registro principal
             $customer_invoice = CustomerInvoice::create($request->input());
             //Registro de lineas
@@ -2253,7 +2256,7 @@ throw new \Exception(__('general.error_cfdi_version'));
           // throw $e;
           return $e;
       }
-    }    
+    }
     public function view_contracts_create_backup(Request $request)
     {
         $facturar_salesperson = $request->salesperson_id;

@@ -223,7 +223,7 @@
       <tr>
         <td class="text-center">{{ $result->satProduct->code }}</td>
         <td class="text-center">{{ number_format($result->quantity, 2,'.', ','),$result->unitMeasure->decimal_place }}</td>
-        <td class="text-center">{{ $result->unitMeasure->name_sat }}</td>
+        <td class="text-center">[{{ $result->unitMeasure->code }}] {{ $result->unitMeasure->name }}</td>
         <td colspan="2">{{ $result->name }}</td>
         <td class="text-center">{{number_format($result->amount_untaxed, 2,'.', ',') }}</td>
         <td class="text-center">{{number_format($result->discount, 2,'.', ',') }}</td>
