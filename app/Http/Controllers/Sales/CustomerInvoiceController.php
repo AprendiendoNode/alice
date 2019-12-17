@@ -2604,21 +2604,61 @@ class CustomerInvoiceController extends Controller
         //Guardar Registro principal
         $customer_invoice = CustomerInvoice::create($request->input());
 
-        //ERASED...
+        //Registro de lineas
+        $amount_subtotal = 0;
+        $amount_discount = 0;  //Descuento de cantidad
+        $amount_untaxed = 0;   //Cantidad sin impuestos
+        $amount_tax = 0;       //Importe impuesto
+        $amount_tax_ret = 0;   //Importe impuesto ret
+        $amount_total = 0;     //Cantidad total
+        $balance = 0;          //Balance
+        $taxes = array();      //Impuestos
+
+        $unitmeasure = UnitMeasure::select('id')->where('code','ACT')->get();
+        $sat_product_id = SatProduct::select('id')->where('code','84111506')->get();
+
+        //Guardar linea
+        $customer_invoice_line = CustomerInvoiceLine::create([
+            'created_uid' => \Auth::user()->id,
+            'updated_uid' => \Auth::user()->id,
+            'customer_invoice_id' => $customer_invoice->id,
+            'name' => "PAGO",
+            'sat_product_id' => $sat_product_id,
+            'unit_measure_id' => $unitmeasure,
+            'quantity' => 1,
+            'price_unit' => 0,
+            'discount' => 0,
+            'price_reduce' => 0,
+            'amount_discount' => 0,
+            // 'amount_discount' => $item_amount_discount,
+            'amount_untaxed' => 0,
+            // 'amount_untaxed' => $item_amount_untaxed,
+            'amount_tax' => 0,
+            'amount_tax_ret' => 0,
+            'amount_total' => 0,
+            'sort_order' => 1,
+            'status' => 1,
+            'currency_id' => $request->currency_id,
+            'currency_value' => $request->currency_value,
+        ]);
+
+        //Guardar impuestos por linea
+        if (!empty($item['taxes'])) {
+            $customer_invoice_line->taxes()->sync($item['taxes']);
+        } else {
+            $customer_invoice_line->taxes()->sync([]);
+        }
 
         //Cfdi relacionados
         if (!empty($request->item_relation)) {
-            foreach ($request->item_relation as $key => $result) {
-                //Guardar
-                $customer_invoice_relation = CustomerInvoiceRelation::create([
-                    'created_uid' => \Auth::user()->id,
-                    'updated_uid' => \Auth::user()->id,
-                    'customer_invoice_id' => $customer_invoice->id,
-                    'relation_id' => $result['relation_id'],
-                    'sort_order' => $key,
-                    'status' => 1,
-                ]);
-            }
+          $customer_invoice_relation = CustomerInvoiceRelation::create([
+              'created_uid' => \Auth::user()->id,
+              'updated_uid' => \Auth::user()->id,
+              'customer_invoice_id' => $customer_invoice->id,
+              'relation_id' => $request->item_relation,
+              'sort_order' => 1,
+              'status' => 1,
+          ]);
         }
 
         //Registros de cfdi
@@ -2629,6 +2669,43 @@ class CustomerInvoiceController extends Controller
             'name' => $customer_invoice->name,
             'status' => 1,
         ]);
+
+        //Actualiza registro principal con totales
+        $customer_invoice->amount_discount = $amount_discount;
+        $customer_invoice->amount_untaxed = $amount_subtotal;
+        $customer_invoice->amount_tax = $amount_tax;
+        $customer_invoice->amount_tax_ret = $amount_tax_ret;
+        $customer_invoice->amount_total = $amount_total;
+        $customer_invoice->balance = $amount_total;
+        $customer_invoice->update();
+
+        // dd(method_exists($this, $class_cfdi));
+        if (empty($class_cfdi) || $class_cfdi === '0') {
+            throw new \Exception(__('general.error_cfdi_version'));
+        }
+        if (!method_exists($this, $class_cfdi)) {
+            throw new \Exception(__('general.error_cfdi_class_exists'));
+        }
+
+        //Valida Empresa y PAC para timbrado
+        PacHelper::validateSatActions();
+
+        //Crear XML y timbra
+        $tmp = $this->$class_cfdi($customer_invoice);
+        //Guardar registros de CFDI
+        $customer_invoice_cfdi->fill(array_only($tmp,[
+            'pac_id',
+            'cfdi_version',
+            'uuid',
+            'date',
+            'file_xml',
+            'file_xml_pac',
+        ]));
+        $customer_invoice_cfdi->save();
+        // Commit the transaction
+        DB::commit();
+        return 'success';
+        // return __('general.text_success_customer_invoice_cfdi');
 
       } catch(\Exception $e) {
         $request->merge([
