@@ -243,7 +243,7 @@ $(function(){
         }
   }
 
-
+var datafactura=[];
   function fillSelected(data,table){//Llena la tabla del modal con las facturas seleccionadas
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table);
@@ -260,7 +260,12 @@ $(function(){
         //status.total,
         //status.saldo,
       ]);
+      datafactura[0]=data[0].customer_invoice_id;
+      datafactura[1]=data[0].date_due;
+      datafactura[2]=data[0].customer_id;
+      datafactura[3]=data[0].uuid;
     });
+
     $('#mount_total').val(data[0].total);
     $('#mount_saldo').val(data[0].saldo);
     $('#mount_value').on('change',function(){
@@ -377,13 +382,19 @@ $(function(){
   });
 
   $('#send_complement').on('click',function(){
+    var _token = $('input[name="_token"]').val();
     var form = $('#form_c')[0];
     var formData = new FormData(form);
+    formData.append("item_relation",datafactura[0]);
+    formData.append("date_due",datafactura[1]);
+    formData.append("customer_id",datafactura[2]);
+
+
 
     $.ajax({
       type: "POST",
       url: "/sales/store_complement",
-      data: formData,
+      data: formData ,
       contentType: false,
       processData: false,
       success: function (data){
@@ -412,7 +423,7 @@ $(function(){
             }
           });
         }
-        if (data == 'false') {
+        else {
           Swal.fire({
              type: 'error',
              title: 'Error encontrado..',

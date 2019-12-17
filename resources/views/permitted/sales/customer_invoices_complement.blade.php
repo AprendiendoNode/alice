@@ -190,9 +190,7 @@
           </div>
         </div>
 
-      </div>
-
-    </div>
+      </div>      
     <div class="row mt-2">
       <div class="col-md-4 col-xs-12">
           <div class="form-group row">
@@ -208,7 +206,7 @@
               </div>
           </div>
       </div>
-
+    </div>
       <div class="row mt-2">
         <div class="table-responsive table-data table-dropdown">
           <table id="table_selected_complements" name='table_filter_fact' class="table table-striped table-hover table-condensed">
