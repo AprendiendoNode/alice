@@ -386,7 +386,7 @@ var datafactura=[];
     var form = $('#form_c')[0];
     var formData = new FormData(form);
     formData.append("item_relation",datafactura[0]);
-    formData.append("date_due",datafactura[1]);
+    formData.append("date_due","27-12-2019");
     formData.append("customer_id",datafactura[2]);
 
 

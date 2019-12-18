@@ -1342,6 +1342,8 @@ class CustomerInvoiceController extends Controller
      private function cfdi33(CustomerInvoice $customer_invoice)
      {
 
+       info($customer_invoice);
+
          try {
              //Logica
              $company = Helper::defaultCompany(); //Empresa
@@ -1580,6 +1582,248 @@ class CustomerInvoiceController extends Controller
          } catch (\Exception $e) {
              throw $e;
          }
+     }
+
+   private function cfdi33_complement(CustomerInvoice $customer_invoice) {
+          info($customer_invoice);
+          try {
+              //Logica
+              $company = Helper::defaultCompany(); //Empresa
+              $pac = Pac::findOrFail(setting('default_pac_id')); //PAC
+
+              //Arreglo CFDI 3.3
+              $cfdi33 = [];
+              if (!empty($customer_invoice->serie)) {
+                  $cfdi33['Serie'] = $customer_invoice->serie;
+              }
+              $cfdi33['Folio'] = $customer_invoice->folio;
+              $cfdi33['Fecha'] = \Date::parse($customer_invoice->date)->format('Y-m-d\TH:i:s');
+              //$cfdi33['Sello']
+              $cfdi33['FormaPago'] = $customer_invoice->paymentWay->code;
+              $cfdi33['NoCertificado'] = $company->certificate_number;
+              //$cfdi33['Certificado']
+              //ERROR $cfdi33['CondicionesDePago'] = $customer_invoice->paymentTerm->name;
+              $cfdi33['SubTotal'] = Helper::numberFormat($customer_invoice->amount_untaxed + $customer_invoice->amount_discount,
+                  $customer_invoice->currency->decimal_place, false);
+              if($customer_invoice->amount_discount>0) {
+                  $cfdi33['Descuento'] = Helper::numberFormat($customer_invoice->amount_discount,
+                      $customer_invoice->currency->decimal_place, false);
+              }
+              $cfdi33['Moneda'] = $customer_invoice->currency->code;
+              if ($customer_invoice->currency->code != 'MXN') {
+                  $cfdi33['TipoCambio'] = Helper::numberFormat($customer_invoice->currency_value, 4, false);
+              }
+              $cfdi33['Total'] = Helper::numberFormat($customer_invoice->amount_total,
+                  $customer_invoice->currency->decimal_place, false);
+              $cfdi33['TipoDeComprobante'] = $customer_invoice->documentType->cfdiType->code;
+              //ERROR $cfdi33['MetodoPago'] = $customer_invoice->paymentMethod->code;
+              $cfdi33['LugarExpedicion'] = $customer_invoice->branchOffice->postcode;
+              if (!empty($customer_invoice->confirmacion)) {
+                  $cfdi33['Confirmacion'] = $customer_invoice->confirmacion;
+              }
+              //---Cfdi Relacionados
+              $cfdi33_relacionados = [];
+              $cfdi33_relacionado = [];
+              if (!empty($customer_invoice->cfdi_relation_id)) {
+                  $cfdi33_relacionados['TipoRelacion'] = $customer_invoice->cfdiRelation->code;
+                  if ($customer_invoice->customerInvoiceRelations->isNotEmpty()) {
+                      foreach ($customer_invoice->customerInvoiceRelations as $key => $result) {
+                          $cfdi33_relacionado[$key] = [];
+                          $cfdi33_relacionado[$key]['UUID'] = $result->relation->customerInvoiceCfdi->uuid;
+                      }
+                  }
+              }
+              //---Emisor
+              $cfdi33_emisor = [];
+              $cfdi33_emisor['Rfc'] = $company->taxid;
+              $cfdi33_emisor['Nombre'] = trim($company->name);
+              $cfdi33_emisor['RegimenFiscal'] = $company->taxRegimen->code;
+              //---Receptor
+              $cfdi33_receptor = [];
+              $cfdi33_receptor['Rfc'] = $customer_invoice->customer->taxid;
+              $cfdi33_receptor['Nombre'] = trim($customer_invoice->customer->name);
+              if ($customer_invoice->customer->taxid == 'XEXX010101000') {
+                  $cfdi33_receptor['ResidenciaFiscal'] = $customer_invoice->customer->country->code;
+                  $cfdi33_receptor['NumRegIdTrib'] = $customer_invoice->customer->numid;
+              }
+              //ERROR $cfdi33_receptor['UsoCFDI'] = $customer_invoice->cfdiUse->code;
+              //---Conceptos
+              $cfdi33_conceptos = [];
+              $cfdi33_conceptos_traslados = [];
+              $cfdi33_conceptos_retenciones = [];
+              foreach ($customer_invoice->customerInvoiceLines as $key => $result) {
+                  $cfdi33_conceptos [$key]['ClaveProdServ'] = $result->satProduct->code;
+                  if (!empty($result->product->code)) {
+                      $cfdi33_conceptos [$key]['NoIdentificacion'] = trim($result->product->code);
+                  }
+                  $cfdi33_conceptos [$key]['Cantidad'] = Helper::numberFormat($result->quantity, 6, false);
+                  $cfdi33_conceptos [$key]['ClaveUnidad'] = trim($result->unitMeasure->code);
+                  $cfdi33_conceptos [$key]['Unidad'] = str_limit(trim($result->unitMeasure->name),20,'');
+                  $cfdi33_conceptos [$key]['Descripcion'] = trim($result->name);
+                  $cfdi33_conceptos [$key]['ValorUnitario'] = Helper::numberFormat($result->price_unit, 6, false);
+                  $cfdi33_conceptos [$key]['Importe'] = Helper::numberFormat($result->amount_untaxed + $result->amount_discount,
+                      2, false);
+                  if($result->amount_discount>0) {
+                      $cfdi33_conceptos [$key]['Descuento'] = Helper::numberFormat($result->amount_discount, 2, false);
+                  }
+                  //['InformacionAduanera']
+                  //['CuentaPredial']
+                  //['ComplementoConcepto']
+                  //['Parte']
+                  //Complemento
+
+                  //Impuestos por concepto
+                  $cfdi33_conceptos_traslados[$key] = [];
+                  $cfdi33_conceptos_retenciones[$key] = [];
+                  if ($result->taxes) {
+                      foreach ($result->taxes as $key2 => $result2) {
+                          $tmp = 0;
+                          $rate = $result2->rate;
+                          if ($result2->factor == 'Tasa') {
+                              $rate /= 100;
+                              $tmp = $result->amount_untaxed * $rate;
+                          } elseif ($result2->factor == 'Cuota') {
+                              $tmp = $rate;
+                          }
+                          $tmp = round($tmp, 2);
+                          if ($tmp < 0) { //Retenciones
+                              $cfdi33_conceptos_retenciones[$key][$key2] = [];
+                              $cfdi33_conceptos_retenciones[$key][$key2]['Base'] = Helper::numberFormat($result->amount_untaxed,
+                                  2, false);
+                              $cfdi33_conceptos_retenciones[$key][$key2]['Impuesto'] = $result2->code;
+                              $cfdi33_conceptos_retenciones[$key][$key2]['TipoFactor'] = $result2->factor; //Para retenciones no hay excento
+                              $cfdi33_conceptos_retenciones[$key][$key2]['TasaOCuota'] = Helper::numberFormat(abs($rate),
+                                  6, false);
+                              $cfdi33_conceptos_retenciones[$key][$key2]['Importe'] = Helper::numberFormat(abs($tmp), 2,
+                                  false);
+                          } else { //Traslados
+                              $cfdi33_conceptos_traslados[$key][$key2] = [];
+                              $cfdi33_conceptos_traslados[$key][$key2]['Base'] = Helper::numberFormat($result->amount_untaxed,
+                                  2, false);
+                              $cfdi33_conceptos_traslados[$key][$key2]['Impuesto'] = $result2->code;
+                              $cfdi33_conceptos_traslados[$key][$key2]['TipoFactor'] = $result2->factor; //Para retenciones no hay excento
+                              if ($result2->factor != 'Exento') {
+                                  $cfdi33_conceptos_traslados[$key][$key2]['TasaOCuota'] = Helper::numberFormat(abs($rate),
+                                      6, false);
+                                  $cfdi33_conceptos_traslados[$key][$key2]['Importe'] = Helper::numberFormat(abs($tmp), 2,
+                                      false);
+                              }
+                          }
+                      }
+                  }
+              }
+              //Impuestos
+              $cfdi33_retenciones = [];
+              $cfdi33_traslados = [];
+              if ($customer_invoice->customerInvoiceTaxes->isNotEmpty()) {
+                  foreach ($customer_invoice->customerInvoiceTaxes as $key => $result) {
+                      $tmp = $result->amount_tax;
+                      $rate = $result->tax->rate;
+                      if ($result->tax->factor == 'Tasa') {
+                          $rate /= 100;
+                      }
+                      if ($tmp < 0) { //Retenciones
+                          $cfdi33_retenciones[$key] = [];
+                          $cfdi33_retenciones[$key]['Impuesto'] = $result->tax->code;
+                          $cfdi33_retenciones[$key]['Importe'] = Helper::numberFormat(abs($tmp), $customer_invoice->currency->decimal_place, false);
+                      } else { //Traslados
+                          if ($result->tax->factor != 'Exento') {
+                              $cfdi33_traslados[$key] = [];
+                              $cfdi33_traslados[$key]['Impuesto'] = $result->tax->code;
+                              $cfdi33_traslados[$key]['TipoFactor'] = $result->tax->factor;
+                              $cfdi33_traslados[$key]['TasaOCuota'] = Helper::numberFormat(abs($rate), 6, false);
+                              $cfdi33_traslados[$key]['Importe'] = Helper::numberFormat(abs($tmp), 2, false);
+                          }
+                      }
+                  }
+              }
+              $cfdi33_impuestos = [];
+              if (abs($customer_invoice->amount_tax_ret) > 0 || !empty($cfdi33_retenciones)) {
+                  $cfdi33_impuestos['TotalImpuestosRetenidos'] = Helper::numberFormat(abs($customer_invoice->amount_tax_ret),
+                      $customer_invoice->currency->decimal_place, false);
+              }
+              if (abs($customer_invoice->amount_tax) > 0 || !empty($cfdi33_traslados)) {
+                  $cfdi33_impuestos['TotalImpuestosTrasladados'] = Helper::numberFormat(abs($customer_invoice->amount_tax),
+                      $customer_invoice->currency->decimal_place, false);
+              }
+
+              //Genera XML
+              $certificado = new \CfdiUtils\Certificado\Certificado(\Storage::path($company->pathFileCer()));
+              $creator = new \CfdiUtils\CfdiCreator33($cfdi33, $certificado);
+              $creator->setXmlResolver(PacHelper::resourcePathCfdiUtils()); //Almacenamiento local
+              $comprobante = $creator->comprobante();
+              if (!empty($cfdi33_relacionados)) {
+                  $comprobante->addCfdiRelacionados($cfdi33_relacionados);
+              }
+              if (!empty($cfdi33_relacionado)) {
+                  foreach ($cfdi33_relacionado as $key => $result) {
+                      $comprobante->addCfdiRelacionado($result);
+                  }
+              }
+              $comprobante->addEmisor($cfdi33_emisor);
+              $comprobante->addReceptor($cfdi33_receptor);
+              //Conceptos
+              foreach ($cfdi33_conceptos as $key => $result) {
+                  $concepto = $comprobante->addConcepto($result);
+                  if (!empty($cfdi33_conceptos_traslados[$key])) {
+                      foreach ($cfdi33_conceptos_traslados[$key] as $result2) {
+                          $concepto->multiTraslado($result2);
+                      }
+                  }
+                  if (!empty($cfdi33_conceptos_retenciones[$key])) {
+                      foreach ($cfdi33_conceptos_retenciones[$key] as $result2) {
+                          $concepto->multiRetencion($result2);
+                      }
+                  }
+              }
+              //Impuestos
+              if(!empty($cfdi33_impuestos)) {
+                  $comprobante->addImpuestos($cfdi33_impuestos);
+                  if (!empty($cfdi33_retenciones)) {
+                      foreach ($cfdi33_retenciones as $result2) {
+                          $comprobante->multiRetencion($result2);
+                      }
+                  }
+                  if (!empty($cfdi33_traslados)) {
+                      foreach ($cfdi33_traslados as $result2) {
+                          $comprobante->multiTraslado($result2);
+                      }
+                  }
+              }
+              //Método de ayuda para establecer las sumas del comprobante e impuestos con base en la suma de los conceptos y la agrupación de sus impuestos
+              //$creator->addSumasConceptos(null, 2);
+              //Método de ayuda para generar el sello (obtener la cadena de origen y firmar con la llave privada)
+              $creator->addSello('file://' . \Storage::path($company->pathFileKeyPassPem()), Crypt::decryptString($company->password_key));
+              //Valida la estructura
+              //$creator->validate();
+
+              //Guarda XML
+              //dd($creator->asXml());
+              $path_xml = Helper::setDirectory(CustomerInvoice::PATH_XML_FILES_CI) . '/';
+              $file_xml = Helper::makeDirectoryCfdi($path_xml) . '/' . Str::random(40) . '.xml';
+              $creator->saveXml(\Storage::path($path_xml . $file_xml));
+
+
+              //Arreglo temporal para actualizar Customer Invoice CFDI
+              $tmp = [
+                  'pac_id' => $pac->id,
+                  'cfdi_version' => setting('cfdi_version'),
+                  'uuid' => '',
+                  'date' => '',
+                  'path_xml' => $path_xml,
+                  'file_xml' => $file_xml,
+                  'file_xml_pac' => '',
+                  'pac' => $pac,
+              ];
+
+              //Timbrado de XML
+              $class_pac = $pac->code;
+              $tmp = PacHelper::$class_pac($tmp, $creator);
+
+              return $tmp;
+          } catch (\Exception $e) {
+              throw $e;
+          }
      }
 
      /**
@@ -2573,8 +2817,8 @@ class CustomerInvoiceController extends Controller
       return $complements;
     }
     public function store_complement(Request $request){
-      //Logic
-      info($request);
+      // Begin a transaction
+      \DB::beginTransaction();
 
       try {
         //Logica
@@ -2623,8 +2867,8 @@ class CustomerInvoiceController extends Controller
             'updated_uid' => \Auth::user()->id,
             'customer_invoice_id' => $customer_invoice->id,
             'name' => "PAGO",
-            'sat_product_id' => $sat_product_id,
-            'unit_measure_id' => $unitmeasure,
+            'sat_product_id' => $sat_product_id[0]["id"],
+            'unit_measure_id' => $unitmeasure[0]["id"],
             'quantity' => 1,
             'price_unit' => 0,
             'discount' => 0,
@@ -2679,6 +2923,8 @@ class CustomerInvoiceController extends Controller
         $customer_invoice->balance = $amount_total;
         $customer_invoice->update();
 
+        $class_cfdi = setting('cfdi_version_2');
+
         // dd(method_exists($this, $class_cfdi));
         if (empty($class_cfdi) || $class_cfdi === '0') {
             throw new \Exception(__('general.error_cfdi_version'));
@@ -2708,6 +2954,7 @@ class CustomerInvoiceController extends Controller
         // return __('general.text_success_customer_invoice_cfdi');
 
       } catch(\Exception $e) {
+        info($e);
         $request->merge([
               'date' => Helper::convertSqlToDateTime($request->date),
         ]);
