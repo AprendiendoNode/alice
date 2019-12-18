@@ -27,20 +27,7 @@
               <h3 class="text-title">Resumen de compras</h3>
             </div>
             <div class="col-xs-12 col-md-6 col-md-offset-1">
-              {{-- <form id="search_info" name="search_info" class="form-inline" method="post">
-                {{ csrf_field() }}
-                <div class="col-xs-8 col-md-7">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input id="date_to_search" type="text" class="form-control" name="date_to_search">
-                  </div>
-                </div>
-                <div class="col-xs-3 col-md-5">
-                  <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard">
-                    <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>  Filtrar
-                  </button>
-                </div>
-              </form> --}}
+              
             </div>
           </div>
           <ul class="nav nav-tabs" role="tablist">
@@ -254,27 +241,24 @@
         </div>
       </div>
       <br>
-      <!---------------------------------------------------->
+      <!----------ESTATUS INSTALACION------------------------------------------>
       <div class="row">
         <div class="col-12 card">
           <div class="row">
             <div class="col-12 col-md-6">
-              <h4 class="text-title">Estatus de instalación / Facturación</h4>
+              <h4 class="text-title">Estatus de instalación</h4>
             </div>
             <div class="col-12 col-md-6">
               <h4 class="text-right pr-4"><span id="calif_projects">0 %</span> </h4>
             </div>
           </div>
           <div class="row d-flex mb-short">
-            <div class="col-xs-12 col-md-12 table-responsive">
-              <table id="table-dash" class="table table-sm table-bordered table-striped">
+            <div class="col-xs-12 col-md-6 table-responsive p-3">
+              <table id="table-dash" class="table table-sm table-bordered table-striped ">
                 <thead>
                   <tr>
-                    <th style="background:black" class="text-center text-white" colspan="7">
+                    <th class="text-center text-success text-weigh-bold" colspan="7">
                       Proyectos en ejecución
-                    </th>
-                    <th style="background:black" class="text-center text-white" colspan="4">
-                      Proyectos instalados
                     </th>
                   </tr>
                   <tr style="background: #193257;color:white;">
@@ -283,10 +267,6 @@
                     <th class="text-center">Atención</th>
                     <th class="text-center">Normal</th>
                     <th></th>
-                    <th colspan="2" class="text-center">USD</th>
-                    <th>Estatus</th>
-                    <th class="text-center">Instalado</th>
-                    <th colspan="2" class="text-center">USD</th>
                   </tr>
                   <tr id="status" class="">
                     <th class="text">Tipo de servicio</th>
@@ -294,12 +274,6 @@
                     <th class="text-center"><i style="color:yellow;" class="fa fa-circle" aria-hidden="true"></i></th>
                     <th class="text-center"><i style="color:green;" class="fa fa-circle" aria-hidden="true"></i></th>
                     <th class="text-center" rowspan="">Total</th>
-                    <th class="text-center">Inversión</th>
-                    <th class="text-center">Por facturar</th>
-                    <th class="text">Tipo de servicio</th>
-                    <th class="text-center"><i style="color:blue;" class="fa fa-circle" aria-hidden="true"></i></th>
-                    <th class="text-center">Inversión</th>
-                    <th class="text-center">Facturando</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -309,14 +283,6 @@
                     <td class="text-center">{{ $status_projects[0]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[0]->normal }}</td>
                     <td class="text-center font-weight-bold"> {{ $status_projects[0]->riesgo + $status_projects[0]->atencion + $status_projects[0]->normal }} </td>
-                    <!------------------------->
-                    <td class="text-right"> <span>{{ $status_projects[0]->total_usd }}</span> </td>
-                    <td class="text-right"> <span>{{ $status_projects[0]->por_facturar }} </span> </td>
-                    <!------------------------>
-                    <td> <strong>Cliente Nuevo</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects_instalado[0]->instalado }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[0]->total_usd }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[0]->facturando }}</td>
                   </tr>
                   <tr>
                     <td> <strong>Ampliación</strong> </td>
@@ -324,14 +290,6 @@
                     <td class="text-center">{{ $status_projects[1]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[1]->normal }}</td>
                     <td class="text-center font-weight-bold"> {{ $status_projects[1]->riesgo + $status_projects[1]->atencion + $status_projects[1]->normal }} </td>
-                    <!------------------------->
-                    <td class="text-right"> <span>{{ $status_projects[1]->total_usd }}</span> </td>
-                    <td class="text-right"> <span>{{ $status_projects[1]->por_facturar }} </span> </td>
-                    <!------------------------>
-                    <td> <strong>Ampliación</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects_instalado[1]->instalado }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[1]->total_usd }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[1]->facturando }}</td>
                   </tr>
                   <tr>
                     <td> <strong>Renovación</strong> </td>
@@ -339,32 +297,9 @@
                     <td class="text-center">{{ $status_projects[2]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[2]->normal }}</td>
                     <td class="text-center font-weight-bold"> {{ $status_projects[2]->riesgo + $status_projects[2]->atencion + $status_projects[2]->normal }} </td>
-                    <!------------------------->
-                    <td class="text-right"> <span>{{ $status_projects[2]->total_usd }}</span> </td>
-                    <td class="text-right"> <span>{{ $status_projects[2]->por_facturar }} </span> </td>
-                    <!------------------------>
-                    <td> <strong>Renovación</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects_instalado[2]->instalado }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[2]->total_usd }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[2]->facturando }}</td>
                   </tr>
-                  {{--<tr>
-                    <td> <strong>F & F</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects[5]->riesgo }}</td>
-                    <td class="text-center">{{ $status_projects[5]->atencion }}</td>
-                    <td class="text-center">{{ $status_projects[5]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[5]->riesgo + $status_projects[5]->atencion + $status_projects[5]->normal }} </td>
-                    <!------------------------->
-                    <td class="text-right"> <span>{{ $status_projects[5]->total_usd }}</span> </td>
-                    <td class="text-right"> <span>{{ $status_projects[5]->por_facturar }} </span> </td>
-                    <!------------------------>
-                    <td> <strong>F & F</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects_instalado[5]->instalado }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[5]->total_usd }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[5]->facturando }}</td>
-                  </tr> --}}
                 </tbody>
-                <tfooter>
+                <tfoot>
                   @php
                     $total_inversion = str_replace(',','',$status_projects[0]->total_usd) + str_replace(',','',$status_projects[1]->total_usd) + str_replace(',','',$status_projects[2]->total_usd);
                     $total_por_facturar = str_replace(',','',$status_projects[0]->por_facturar) + str_replace(',','',$status_projects[1]->por_facturar) + str_replace(',','',$status_projects[2]->por_facturar);
@@ -377,320 +312,362 @@
                     <td class="text-center"> <span id="total_amarillo">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion }}</span> </td>
                     <td class="text-center"> <span id="total_verde">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal }}</span> </td>
                     <th class="text-center"> <span id="total_project_instalation"></span>  </th>
-                    <td class="text-right"> <span id="">{{  number_format($total_inversion, 0, '.', ',')  }}</span> </td>
-                    <td class="text-right"> <span id="">{{  number_format($total_por_facturar, 0, '.', ',')  }}</span> </td>
-                    <!------------------------->
-                    <td><strong>Total</strong> </td>
-                    <td class="text-center"> <span id="">{{ $status_projects_instalado[0]->instalado + $status_projects_instalado[1]->instalado + $status_projects_instalado[2]->instalado }}</span> </td>
-                    <td class="text-right"> <span id="">{{  number_format($total_inversion_instalado, 0, '.', ',')  }}</span> </td>
-                    <td class="text-right"> <span id="">{{  number_format($total_facturando, 0, '.', ',')  }}</span> </td>
                   </tr>
-                </tfooter>
+                </tfoot>
               </table>
             </div>
-          </div>
-        </div>
-      </div>
-      <br>
-      <!----------------ESTATUS DE PROYECTOS DE VENTA------------------------------------>
-      <div class="row">
-        <div class="col-12 card">
-          <div class="row">
-            <div class="col-12 col-md-6">
-              <h4 class="text-title">Venta</h4>
-            </div>
-          </div>
-          <div class="row d-flex mb-short">
-            <div class="col-xs-12 col-md-12 table-responsive">
+            <!-------------------------------------------------->
+            <div class="col-xs-12 col-md-6 table-responsive p-3">
               <table id="table-dash" class="table table-sm table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th style="background:black" class="text-center text-white" colspan="7">
-                      Proyectos en ejecución
-                    </th>
-                    <th style="background:black" class="text-center text-white" colspan="4">
-                      Proyectos instalados
+                    <th class="text-center text-dark text-weigh-bold" colspan="7">
+                      Proyectos terminados
                     </th>
                   </tr>
                   <tr style="background: #193257;color:white;">
                     <th>Estatus</th>
-                    <th class="text-center">Riesgo</th>
-                    <th class="text-center">Atención</th>
-                    <th class="text-center">Normal</th>
-                    <th></th>
-                    <th colspan="2" class="text-center">USD</th>
-                    <th>Estatus</th>
                     <th class="text-center">Instalado</th>
-                    <th colspan="2" class="text-center">USD</th>
                   </tr>
                   <tr id="status" class="">
                     <th class="text">Tipo de servicio</th>
-                    <th class="text-center"><i style="color:red;" class="fa fa-circle" aria-hidden="true"></i></th>
-                    <th class="text-center"><i style="color:yellow;" class="fa fa-circle" aria-hidden="true"></i></th>
-                    <th class="text-center"><i style="color:green;" class="fa fa-circle" aria-hidden="true"></i></th>
-                    <th class="text-center" rowspan="">Total</th>
-                    <th class="text-center">Inversión</th>
-                    <th class="text-center">Por facturar</th>
-                    <th class="text">Tipo de servicio</th>
                     <th class="text-center"><i style="color:blue;" class="fa fa-circle" aria-hidden="true"></i></th>
-                    <th class="text-center">Inversión</th>
-                    <th class="text-center">Facturado</th>
                   </tr>
                 </thead>
                 <tbody>
-                   <tr>
-                    <td> <strong>Venta</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects[4]->riesgo }}</td>
-                    <td class="text-center">{{ $status_projects[4]->atencion }}</td>
-                    <td class="text-center">{{ $status_projects[4]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[4]->riesgo + $status_projects[4]->atencion + $status_projects[4]->normal }} </td>
-                    <!------------------------->
-                    <td class="text-right"> <span>{{ $status_projects[4]->total_usd }}</span> </td>
-                    <td class="text-right"> <span>{{ $status_projects[4]->por_facturar }} </span> </td>
-                    <!------------------------>
-                    <td> <strong>Venta</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects_instalado[4]->instalado }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[4]->total_usd }}</td>
-                    <td class="text-right">{{ $status_projects_instalado[4]->facturando }}</td>
-                  </tr>
-                </tbody>
-                
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br>
-      <!---ATRASOS------------------------------------------------------------------------------>
-      <div class="row">
-        <div class="col-12 card">
-          <div class="row d-flex mb-short">
-            <div class="col-12 col-md-6">
-              <h3 class="text-title">Atrasos</h3>
-            </div>
-
-          </div>
-          <div class="row mb-short">
-            <div class="col-12 col-md-6">
-              <div class="clearfix">
-                  <div id="graphicAtrasos" style="width: 100%; min-height: 370px; border:1px solid #ccc;padding:10px;"></div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 table-responsive">
-              <form class="form-inline mb-3">
-                  <div class="form-group">
-                    <label for="">Filtrar por:</label>
-                    <select id="select_tipo_servicio" class="form-control form-control-sm mr-2" name="">
-                      <option value="1">Cliente nuevo</option>
-                      <option value="2">Ampliación</option>
-                      <option value="3">Renovación</option>
-                    </select>
-                    <select id="select_atraso" class="form-control form-control-sm" name="">
-                      <option value="1">Compras</option>
-                      <option value="2">Instalación</option>
-                    </select>
-                  </div>
-              </form>
-              <table id="table_atrasos" class="cell-border compact stripe">
-                <thead>
                   <tr>
-                    <th>Proyecto</th>
-                    <th>Tipo servicio</th>
-                    <th>Atraso Compras</th>
-                    <th>Atraso instalación</th>
-                    <th>IT Concierge</th>
-                    <th></th>
+                    <td> <strong>Cliente Nuevo</strong> </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[0]->instalado }}</td>
                   </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-              </table>
-            </div>
-          </div><!------------->
-          <div class="row mb-short">
-            <div class="col-12 col-md-6">
-              <div class="clearfix">
-                  <div id="graphicAtrasosInstalado" style="width: 100%; min-height: 370px; border:1px solid #ccc;padding:10px;"></div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 table-responsive">
-              <form class="form-inline mb-3">
-                  <div class="form-group">
-                    <label for="">Filtrar por:</label>
-                    <select id="select_tipo_servicio_instalado" class="form-control form-control-sm mr-2" name="">
-                      <option value="1">Cliente nuevo</option>
-                      <option value="2">Ampliación</option>
-                      <option value="3">Renovación</option>
-                    </select>
-                    <select id="select_atraso_instalado" class="form-control form-control-sm" name="">
-                      <option value="1">Compras</option>
-                      <option value="2">Instalación</option>
-                    </select>
-                  </div>
-              </form>
-              <table id="table_atrasos_instalado" class="cell-border compact stripe">
-                <thead>
                   <tr>
-                    <th>Proyecto</th>
-                    <th>Tipo servicio</th>
-                    <th>Atraso Compras</th>
-                    <th>Atraso instalación</th>
-                    <th>IT Concierge</th>
-                    <th></th>
+                    <td> <strong>Ampliación</strong> </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[1]->instalado }}</td>
                   </tr>
-                </thead>
-                <tbody>
-
+                  <tr>
+                    <td> <strong>Renovación</strong> </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[2]->instalado }}</td>
+                  </tr>
                 </tbody>
+                <tfoot>
+                  <tr class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
+                    <td><strong>Total</strong> </td>
+                    <td class="text-center p-2"> <span id="">{{ $status_projects_instalado[0]->instalado + $status_projects_instalado[1]->instalado + $status_projects_instalado[2]->instalado }}</span> </td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           </div>
-        </div>
-      </div>
-      <br>
-      <!--------MOTIVOS DE ATRASO-------------------------------------------->
-      <div class="row">
-        <div class="col-12 card">
-          <div class="row d-flex mb-short">
-            <div class="col-12 col-md-6">
-              <h3 class="text-title">Motivos de atraso</h3>
-            </div>
-          </div>
-          <div class="row mb-short">
-            <div class="col-12 col-md-6">
-              <div class="clearfix">
-                  <div id="graphicMotives" style="width: 100%; min-height: 350px; border:1px solid #ccc;padding:10px;"></div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <form class="form-inline" >
-                <div class="form-group">
-                  <label class="" for="">Filtrar por:</label>
-                    <select id="select_motivo_atraso" class="form-control form-control-sm" name="">
-                      <option value="1">Cliente</option>
-                      <option value="2">Equipo</option>
-                      <option value="3">Comercial</option>
-                      <option value="4">Acceso</option>
-                      <option value="5">Material</option>
-                      <option value="6">Otros</option>
-                      <option value="7">N/A</option>
-                      <option value="8">Configuración</option>
-                      <option value="9">Instalaciones</option>
-                      <option value="10">Coordinación</option>
-                      <option value="11">Mano de obra</option>
-                      <option value="12">Carta de entrega</option>
-                    </select>
-                </div>
-              </form>
-                <div class="table-responsive">
-                  <table id="tabla_atraso_x_motivo" class="table table-bordered" style="min-width:100%">
-                    <thead>
-                      <tr>
-                        <th>Proyecto</th>
-                        <th>Motivo</th>
-                        <th>Atraso compras</th>
-                        <th>Atraso instalación</th>
-                        <th>IT Concierge</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                  </table>
-                </div>
-            </div>
-          </div><!------>
-          <div class="row mb-short">
-            <div class="col-12 col-md-6">
-              <div class="clearfix">
-                  <div id="graphicMotivesInstalado" style="width: 100%; min-height: 350px; border:1px solid #ccc;padding:10px;"></div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <form class="form-inline" >
-                <div class="form-group">
-                  <label class="" for="">Filtrar por:</label>
-                    <select id="select_motivo_atraso_instalado" class="form-control form-control-sm" name="">
-                      <option value="1">Cliente</option>
-                      <option value="2">Equipo</option>
-                      <option value="3">Comercial</option>
-                      <option value="4">Acceso</option>
-                      <option value="5">Material</option>
-                      <option value="6">Otros</option>
-                      <option value="7">N/A</option>
-                      <option value="8">Configuración</option>
-                      <option value="9">Instalaciones</option>
-                      <option value="10">Coordinación</option>
-                      <option value="11">Mano de obra</option>
-                      <option value="12">Carta de entrega</option>
-                    </select>
-                </div>
-              </form>
-                <div class="table-responsive">
-                  <table id="tabla_atraso_x_motivo_instalado" class="table table-bordered" style="min-width:100%">
-                    <thead>
-                      <tr>
-                        <th>Proyecto</th>
-                        <th>Motivo</th>
-                        <th>Atraso compras</th>
-                        <th>Atraso instalación</th>
-                        <th>IT Concierge</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                  </table>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br>
-      <!---------------------------------------------------------------------->
-      <div class="row">
-        <div class="col-12 card">
-          <div class="row d-flex mb-short">
-            <div class="col-xs-12 col-md-6">
-              <h3 class="text-title">Rentas perdidas por dia (USD)</h3>
-            </div>
-          </div>
-          <div class="row mb-short">
-            <div class="col-12 col-md-6">
-              <div class="clearfix">
-                  <div id="graphicRentasDia" style="width: 100%; min-height: 350px; border:1px solid #ccc;padding:10px;"></div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="clearfix">
-                  <div id="graphicRentasDiaInstalados" style="width: 100%; min-height: 350px; border:1px solid #ccc;padding:10px;"></div>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br>
-      <!---------------------------------------------------------------------->
-      <div class="row">
-        <div class="col-12 card">
-          <div class="row d-flex mb-short">
-            <div class="col-xs-12 col-md-12">
-              <h3 class="text-title">% Promedio de Presupuesto ejercido vs Instalado</h3>
-            </div>
-          </div>
-          <div class="row mb-short">
+          <!-----------VENTA------------->
+          <div class="row">
             <div class="col-12">
-              <div class="clearfix">
-                  <div id="graphicPresupuestoEjercido" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
+              <div class="row d-flex mb-short">
+                <div class="col-xs-12 col-md-6 table-responsive p-3">
+                  <table id="" class="table table-sm table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th class="text-center text-success text-weigh-bold" colspan="7">
+                          Proyectos en ejecución
+                        </th>
+                      </tr>
+                      <tr style="background: #193257;color:white;">
+                        <th>Estatus</th>
+                        <th class="text-center">Riesgo</th>
+                        <th class="text-center">Atención</th>
+                        <th class="text-center">Normal</th>
+                        <th></th>
+                      </tr>
+                      <tr id="status" class="">
+                        <th class="text">Tipo de servicio</th>
+                        <th class="text-center"><i style="color:red;" class="fa fa-circle" aria-hidden="true"></i></th>
+                        <th class="text-center"><i style="color:yellow;" class="fa fa-circle" aria-hidden="true"></i></th>
+                        <th class="text-center"><i style="color:green;" class="fa fa-circle" aria-hidden="true"></i></th>
+                        <th class="text-center" rowspan="">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <strong>Venta</strong> </td>
+                        <td class="text-center p-2">{{ $status_projects[4]->riesgo }}</td>
+                        <td class="text-center">{{ $status_projects[4]->atencion }}</td>
+                        <td class="text-center">{{ $status_projects[4]->normal }}</td>
+                        <td class="text-center font-weight-bold"> {{ $status_projects[4]->riesgo + $status_projects[4]->atencion + $status_projects[4]->normal }} </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
+                <div class="col-xs-12 col-md-6 table-responsive p-3">
+                  <table id="table-dash" class="table table-sm table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th class="text-center text-dark text-weigh-bold" colspan="7">
+                          Proyectos terminados
+                        </th>
+                      </tr>
+                      <tr style="background: #193257;color:white;">
+                        <th>Estatus</th>
+                        <th class="text-center">Instalado</th>
+                      </tr>
+                      <tr id="status" class="">
+                        <th class="text">Tipo de servicio</th>
+                        <th class="text-center"><i style="color:blue;" class="fa fa-circle" aria-hidden="true"></i></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <strong>Venta</strong> </td>
+                        <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[4]->instalado }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <br>
+      <!----------FACTURACION------------------------------------------>
+      <div class="row">
+        <div class="col-12 card">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <h4 class="text-title">Facturación</h4>
+            </div>
+          </div>
+          <div class="row d-flex mb-short">
+            <div class="col-xs-12 col-md-6 table-responsive p-3">
+              <table id="table-dash" class="table table-sm table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center text-success text-weigh-bold" colspan="7">
+                      Proyectos en ejecución
+                    </th>
+                  </tr>
+                  <tr style="background: #193257;color:white;">
+                    <th class="text-center">Tipo de servicio</th>
+                    <th class="text-center" colspan="2">Facturando</th>
+                    <th class="text-center" colspan="2">Sin facturar</th>
+                  </tr>
+                  <tr id="status" class="">
+                    <th></th>
+                    <th class="text-center">Cantidad</th>
+                    <th class="text-center" rowspan="">USD</th>
+                    <th class="text-center">Cantidad</th>
+                    <th class="text-center" rowspan="">USD</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td> <strong>Cliente Nuevo</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects[0]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[0]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[0]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[0]->riesgo + $status_projects[0]->atencion + $status_projects[0]->normal }} </td>
+                  </tr>
+                  <tr>
+                    <td> <strong>Ampliación</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects[1]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[1]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[1]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[1]->riesgo + $status_projects[1]->atencion + $status_projects[1]->normal }} </td>
+                  </tr>
+                  <tr>
+                    <td> <strong>Renovación</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects[2]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[2]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[2]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[2]->riesgo + $status_projects[2]->atencion + $status_projects[2]->normal }} </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="font-weight-bold" style="background-color: #D9D9D9 !important;">
+                    <td><strong>Total</strong> </td>
+                    <td class="text-center p-2"> <span id="">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo }}</span> </td>
+                    <td class="text-center"> <span id="">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion }}</span> </td>
+                    <td class="text-center"> <span id="">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal }}</span> </td>
+                    <th class="text-center"> <span id=""></span>  </th>
+                  </tr>
+                  <!-----------venta-------------->
+                  <tr>
+                    <td rowspan="2"><strong>Venta</strong></td>
+                    <td class="text-center font-weight-bold">Cantidad</td>
+                    <td class="text-center font-weight-bold" rowspan="">USD</td>
+                    <td class="text-center font-weight-bold">Cantidad</td>
+                    <td class="text-center font-weight-bold" rowspan="">USD</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">0</td>
+                    <td>0</td>
+                    <td class="text-center">0</td>
+                    <td>0</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-----------------Facturacion Instalados--------------------------------->
+            <div class="col-xs-12 col-md-6 table-responsive p-3">
+              <table id="" class="table table-sm table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center text-dark text-weigh-bold" colspan="7">
+                      Proyectos instalados
+                    </th>
+                  </tr>
+                  <tr style="background: #193257;color:white;">
+                    <th class="text-center">Tipo de servicio</th>
+                    <th class="text-center" colspan="2">Facturando</th>
+                    <th class="text-center" colspan="2">Sin facturar</th>
+                  </tr>
+                  <tr id="status" class="">
+                    <th></th>
+                    <th class="text-center">Cantidad</th>
+                    <th class="text-center" rowspan="">USD</th>
+                    <th class="text-center">Cantidad</th>
+                    <th class="text-center" rowspan="">USD</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td> <strong>Cliente Nuevo</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects[0]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[0]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[0]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[0]->riesgo + $status_projects[0]->atencion + $status_projects[0]->normal }} </td>
+                  </tr>
+                  <tr>
+                    <td> <strong>Ampliación</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects[1]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[1]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[1]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[1]->riesgo + $status_projects[1]->atencion + $status_projects[1]->normal }} </td>
+                  </tr>
+                  <tr>
+                    <td> <strong>Renovación</strong> </td>
+                    <td class="text-center p-2">{{ $status_projects[2]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[2]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[2]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[2]->riesgo + $status_projects[2]->atencion + $status_projects[2]->normal }} </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="font-weight-bold" style="background-color: #D9D9D9 !important;">
+                    <td><strong>Total</strong> </td>
+                    <td class="text-center p-2"> <span id="">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo }}</span> </td>
+                    <td class="text-center"> <span id="">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion }}</span> </td>
+                    <td class="text-center"> <span id="">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal }}</span> </td>
+                    <th class="text-center"> <span id=""></span>  </th>
+                  </tr>
+                  <!-----------venta-------------->
+                  <tr>
+                    <td rowspan="2"><strong>Venta</strong></td>
+                    <td class="text-center font-weight-bold">Cantidad</td>
+                    <td class="text-center font-weight-bold" rowspan="">USD</td>
+                    <td class="text-center font-weight-bold">Cantidad</td>
+                    <td class="text-center font-weight-bold" rowspan="">USD</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">0</td>
+                    <td>0</td>
+                    <td class="text-center">0</td>
+                    <td>0</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      <br>
+      <!---PORCETAJE DE FACTURACION POR MOTIVO DE ATRASO------------------------------------------------------------------------------>
+      <div class="row">
+        <div class="col-12 card">
+          <div class="row d-flex mb-short">
+            <div class="col-12 col-md-6">
+              <h3 class="text-title">% de facturación por motivo de atraso</h3>
+            </div>
+          </div>
+          <div class="row mb-short">
+            <div class="col-12 col-md-6 table-responsive">
+              <table class="table table-sm table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center text-success text-weigh-bold" colspan="6">
+                      Proyectos en ejecución
+                    </th>
+                  </tr>
+                  <tr style="background: #193257;color:white;">
+                    <th rowspan="2">Motivo</th>
+                    <th rowspan="2">Cantidad</th>
+                    <th rowspan="2">Renta mensual (USD)</th>
+                    <th colspan="2">Facturando</th>
+                    <th rowspan="2" class="text-center">% Facturación</th>
+                  </tr>
+                  <tr style="background: #193257;color:white;">
+                    <th class="text-center">Si</th>
+                    <th class="text-center">No</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Acceso</td>
+                    <td>1</td>
+                    <td>15,700</td>
+                    <td>0</td>
+                    <td>15,700</td>
+                    <td>0%</td>
+                  </tr>
+                </tbody>
+                <tfoot class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
+                  <tr>
+                    <td>Total</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!------------->
+            <div class="col-12 col-md-6 table-responsive">
+              <table class="table table-sm table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center text-dark text-weigh-bold" colspan="6">
+                      Proyectos instalados
+                    </th>
+                  </tr>
+                  <tr style="background: #193257;color:white;">
+                    <th rowspan="2">Motivo</th>
+                    <th rowspan="2">Cantidad</th>
+                    <th rowspan="2">Renta mensual (USD)</th>
+                    <th colspan="2">Facturando</th>
+                    <th rowspan="2" class="text-center">% Facturación</th>
+                  </tr>
+                  <tr style="background: #193257;color:white;">
+                    <th class="text-center">Si</th>
+                    <th class="text-center">No</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Acceso</td>
+                    <td>1</td>
+                    <td>15,700</td>
+                    <td>0</td>
+                    <td>15,700</td>
+                    <td>0%</td>
+                  </tr>
+                </tbody>
+                <tfoot class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
+                  <tr>
+                    <td>Total</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+   
     @else
       @include('default.denied')
     @endif

@@ -584,11 +584,11 @@ class QuotingController extends Controller
       $folio = $doc->folio;
       
       $user_itc = User::findOrFail($doc->itc_id);
-      $user_elaboro = User::findOrFail($doc->user_id);
+      $user_comercial = User::findOrFail($doc->comercial_id);
 
-      $elaboro_email = $user_elaboro->email;
+      $comercial_email = $user_comercial->email;
       $itc_email = $user_itc->email;
-      
+    
       $name_project = "";
 
       if($doc->nombre_proyecto == null || $doc->nombre_proyecto == ''){
@@ -604,8 +604,8 @@ class QuotingController extends Controller
       ];
 
       $copias = ['aespejo@sitwifi.com','mortiz@sitwifi.com', 'mflores@sitwifi.com','aarciga@sitwifi.com', 'crangel@sitwifi.com', 'admin@sitwifi.com',
-      'rdelgado@sitwifi.com', 'rgonzalez@sitwifi.com', 'jmartinez@sitwifi.com','jwalker@sitwifi.com	','mmoreno@sitwifi.com', $elaboro_email];
-      //Mail::to($itc_email)->cc($copias)->send(new SolicitudCompraAprobada($parametros1));
+      'rdelgado@sitwifi.com', 'rgonzalez@sitwifi.com', 'jmartinez@sitwifi.com','jwalker@sitwifi.com	','mmoreno@sitwifi.com', $comercial_email];
+      
       Mail::to($itc_email)->cc($copias)->send(new NewKickoffProject($parametros));
       
     }

@@ -14,7 +14,7 @@ class DocumentpDashboardController extends Controller
       $status_projects_instalado = DB::select('CALL px_tipo_servicio_acumulado_instalado()', array());
       $status_compras = DB::select('CALL px_documentp_status_doctype()', array());
       $status_cotizador = DB::select('CALL px_cotizador_status()', array());
-      
+      //dd($status_projects_instalado);
       return view('permitted.documentp.dashboard_project', compact('status_projects', 'status_compras', 'status_cotizador' ,'status_projects_instalado'));
     }
 

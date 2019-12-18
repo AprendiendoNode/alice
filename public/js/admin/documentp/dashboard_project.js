@@ -24,17 +24,17 @@ var initGet = { method: 'get',
   });
   $('#date_to_search').val('').datepicker('update');
 
-  graph_atraso_proyectos_ejecucion();
-  graph_atraso_proyectos_instalado();
-  graph_atraso_motivos_ejecucion();
-  graph_atraso_motivos_instalado();
-  graph_rentas_perdidas();
-  graph_rentas_perdidas_instalado();
-  graph_presupuesto_ejercido_prom();
-  get_table_filterby_servicio();
-  get_table_filterby_servicio_instalado()
-  get_table_filterby_atrasos();
-  get_table_filterby_atrasos_instalados();
+  // graph_atraso_proyectos_ejecucion();
+  // graph_atraso_proyectos_instalado();
+  // graph_atraso_motivos_ejecucion();
+  // graph_atraso_motivos_instalado();
+  // graph_rentas_perdidas();
+  // graph_rentas_perdidas_instalado();
+  // graph_presupuesto_ejercido_prom();
+  // get_table_filterby_servicio();
+  // get_table_filterby_servicio_instalado()
+  // get_table_filterby_atrasos();
+  // get_table_filterby_atrasos_instalados();
   get_calif_project();
   count_projects_instalation();
 })()
