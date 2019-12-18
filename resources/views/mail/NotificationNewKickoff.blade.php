@@ -105,7 +105,7 @@ background-color: #f6f6f6;
               <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                 <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                   <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-                    <h1 style="margin-top: 0; color: #2F3133;  font-size: 19px;  font-weight: bold;  text-align: left;">Nuevo proyecto en KICK-OFF </h1>
+                    <h1 style="margin-top: 0; color: #2F3133;  font-size: 19px;  font-weight: bold;  text-align: left;">Proyecto en KICK-OFF </h1>
                     <h2 style="margin-top: 0; color: #2F3133;  font-size: 14px;  font-weight: bold;  text-align: left;">Folio: {{$param['folio']}}</h2>
                     <h2 style="color:#080E33;font-size: 13px;">Favor de revisar la informacion y aprobar el siguiente proyecto:</h2>
 
