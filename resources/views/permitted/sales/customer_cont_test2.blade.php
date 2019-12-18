@@ -275,8 +275,6 @@
       .editable-popup{
         right: 0px !important;
       }
-
-
     </style>
 
 @else
