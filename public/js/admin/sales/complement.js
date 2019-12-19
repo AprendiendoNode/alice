@@ -1,6 +1,6 @@
 $(function(){
 
-  var json_data;
+  var json_data, monedas_iguales = [];
 
   //Inicializamos el date picker con sus configuraciones para la fecha actual con la que se va a timbrar
   $("#form_c input[name='date']").daterangepicker({
@@ -140,17 +140,30 @@ $(function(){
                Swal.fire("Operación abortada", "Ninguna fila seleccionada :(", "error");
              }else{
 
-            var i = 0;
+             var i = 0, entrar = true;
+             monedas_iguales = [];
+
              var selected_complements = json_data.filter(function (data) {
                if(data.customer_invoice_id == valores[i]) {
+                 if(i == 0) {
+                   monedas_iguales.push(data.currencies);
+                 } else if(monedas_iguales.indexOf(data.currencies) < 0) {
+                   Swal.fire("Operación abortada", "Facturas con diferente moneda :(", "error");
+                   entrar = false;
+                 }
                  i++;
                  return data.customer_invoice_id;
                }
              });
 
-             //console.log(selected_complements);
-             $('#ModalDataDif').modal('show');
-             fillSelected(selected_complements,$('#table_selected_complements'));
+             if(entrar) {
+               //console.log(selected_complements);
+               $('#ModalDataDif').modal('show');
+               fillSelected(selected_complements,$('#table_selected_complements'));
+               $('#currency_id').val(selected_complements[0].currency_id);
+               $('#currency_id').change();
+               $('#mount_pagado').val(0);
+             }
 
            }
 
@@ -247,7 +260,9 @@ $(function(){
         }
   }
 
-var datafactura=[];
+var datafactura = [], datafactura_total = 0, datafactura_saldo = 0;
+var cantidades_pagadas = [];
+
   function fillSelected(data,table){//Llena la tabla del modal con las facturas seleccionadas
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table);
@@ -263,21 +278,63 @@ var datafactura=[];
         status.currencies,
         status.total,
         status.saldo,
-        '<input id="" type="number" class="input-sm" step="0.01" name="" value="">',
+        '<input id="cp-'+status.customer_invoice_id+'" class="pagada input-sm" type="number" step="0.01" name="" value="0">',
       ]);
-      datafactura[0]=data[0].customer_invoice_id;
-      datafactura[1]=data[0].date_due;
-      datafactura[2]=data[0].customer_id;
-      datafactura[3]=data[0].uuid;
-      datafactura[4]+=parseFloat(data[0].total);
-      datafactura[5]+=parseFloat(data[0].saldo);
+
+      var rowfactura = [];
+
+      rowfactura[0]=data[index].customer_invoice_id;
+      rowfactura[1]=data[index].date_due;
+      rowfactura[2]=data[index].customer_id;
+      rowfactura[3]=data[index].uuid;
+      rowfactura[4]=parseFloat(data[index].total);
+      rowfactura[5]=parseFloat(data[index].saldo);
+      rowfactura[6]=data[index].currencies;
+
+      datafactura.push(rowfactura);
+      cantidades_pagadas.push(0);
+
+      datafactura_total += rowfactura[4];
+      datafactura_saldo += rowfactura[5];
+
     });
 
-    $('#mount_total').val(datafactura[4]);
-    $('#mount_saldo').val(datafactura[5]);
+    $('#mount_total').val(datafactura_total);
+    $('#mount_saldo').val(datafactura_saldo);
 
+  }
 
+  $(document).on('keyup', '.pagada', function(e) {
 
+    var id = $(this)[0].id;
+    var valor = $('#'+id).val() * $('#currency_value').val();
+
+    var comparacion = datafactura.filter(function (row) {
+      if(row[0] == id.split("-")[1]) {
+
+        if(valor > (row[5] * $('#currency_value').val()) || valor == 0) {
+          //console.log("Pasado");
+          $('#'+id).val(0);
+        }
+
+        return "Ok";
+      }
+    });
+
+    suma_pagadas();
+
+  });
+
+  function suma_pagadas() {
+
+    var sum = 0;
+
+    $(".pagada").each(function(index) {
+      sum += parseFloat($(this)[0].value);
+      cantidades_pagadas[index] = sum;
+    });
+
+    $('#mount_pagado').val(sum);
 
   }
 
@@ -389,9 +446,9 @@ var datafactura=[];
     var _token = $('input[name="_token"]').val();
     var form = $('#form_c')[0];
     var formData = new FormData(form);
-    formData.append("item_relation",datafactura[0]);
+    formData.append("item_relation",datafactura);
+    formData.append("cantidades_pagadas",cantidades_pagadas);
     formData.append("date_due","27-12-2019");
-    formData.append("customer_id",datafactura[2]);
 
 
 

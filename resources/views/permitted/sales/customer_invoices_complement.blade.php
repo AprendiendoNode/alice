@@ -167,7 +167,7 @@
         <div class="col-md-4 col-xs-12">
           <div class="form-group">
             <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
-            <select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
+            <select id="currency_id" name="currency_id" class="form-control required" disabled style="width:100%;">
               <option value="">{{ trans('message.selectopt') }}</option>
               @forelse ($currency as $currency_data)
                 <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
@@ -179,7 +179,7 @@
         <div class="col-md-4 col-xs-12">
           <div class="form-group">
             <label for="currency_value">TC:<span style="color: red;">*</span></label>
-            <input type="text" class="form-control" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;">
+            <input type="text" class="form-control" id="currency_value" name="currency_value" disabled style="padding: 0.875rem 0.5rem;">
           </div>
         </div>
 
@@ -263,7 +263,7 @@
         <div class="col-md-4 col-xs-12">
           <div class="form-group">
             <label for="mount_pagado">Monto pagado:</label>
-            <input type="text" class="form-control" id="mount_pagado" name="mount_pagado" style="padding: 0.875rem 0.5rem;" readonly>
+            <input type="text" class="form-control" id="mount_pagado" value="0" name="mount_pagado" style="padding: 0.875rem 0.5rem;" readonly>
           </div>
         </div>
 
