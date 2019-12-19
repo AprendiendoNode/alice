@@ -55,30 +55,30 @@ class kickoffapprovals extends Command
             for ($i=0; $i < $sql_count; $i++)
             {
                $emails = array();
-               array_push($emails, $sql[$i]->itc_email); 
-               array_push($emails, $sql[$i]->comercial_email);  
-               array_push($emails, $sql[$i]->proyectos_email);  
-               array_push($emails, $sql[$i]->soporte_email);  
-               array_push($emails, $sql[$i]->planeacion_email);  
-               array_push($emails, $sql[$i]->legal_email); 
-               array_push($emails, $sql[$i]->facturacion_email);
-               array_push($emails, $sql[$i]->servicio_cliente_email);
-               array_push($emails, $sql[$i]->investigacion_desarrollo_email);
+               array_push($emails, trim($sql[$i]->itc_email)); 
+               array_push($emails, trim($sql[$i]->comercial_email));  
+               array_push($emails, trim($sql[$i]->proyectos_email));  
+               array_push($emails, trim($sql[$i]->soporte_email));  
+               array_push($emails, trim($sql[$i]->planeacion_email));  
+               array_push($emails, trim($sql[$i]->legal_email)); 
+               array_push($emails, trim($sql[$i]->facturacion_email));
+               array_push($emails, trim($sql[$i]->servicio_cliente_email));
+               array_push($emails, trim($sql[$i]->investigacion_desarrollo_email));
 
                $approval_dir = DB::select('CALL px_valida_aprobado_direccion(?)', array($sql[$i]->approvals_id));
 
                if($approval_dir[0]->aprobado_direccion != 1){
-                array_push($emails, $sql[$i]->administracion_email); 
-                array_push($emails, $sql[$i]->director_comercial_email);  
-                array_push($emails, $sql[$i]->director_operaciones_email);  
-                array_push($emails, $sql[$i]->director_general_email);  
+                array_push($emails, trim($sql[$i]->administracion_email)); 
+                array_push($emails, trim($sql[$i]->director_comercial_email));  
+                array_push($emails, trim($sql[$i]->director_operaciones_email));  
+                array_push($emails, trim($sql[$i]->director_general_email));  
                }
                
                $emails_filter = Arr::where($emails, function ($value, $key) {
                 return $value != '';
                });
                       
-               $this->sentEmailReminder($sql[$i]->documentp_id, $emails);  
+               $this->sentEmailReminder($sql[$i]->documentp_id, $emails_filter);  
             }
         }
 

@@ -29,6 +29,7 @@ class Kernel extends ConsoleKernel
       Commands\weeklyxincome::class,
       Commands\weeklyxviatics::class,
       Commands\enchangeratefix::class,
+      Commands\kickoffapprovals::class,
     ];
 
     /**
@@ -58,7 +59,7 @@ class Kernel extends ConsoleKernel
       $schedule->command('weekly:viatic')->fridays()->at('19:02');
       $schedule->command('check:payments')->monthly(1, '4:00');
       $schedule->command('exchangerate:fix')->timezone('America/Mexico_City')->dailyAt('12:20');
-      //$schedule->command('kickoff:sendmails')->timezone('America/Mexico_City')->dailyAt('09:00');
+      $schedule->command('kickoff:sendmails')->timezone('America/Mexico_City')->dailyAt('09:00');
       //
       // $schedule->command('ticket:monthly')->weekly()->sundays()->at('23:00');
       // $schedule->command('test:prueba')->weekly();

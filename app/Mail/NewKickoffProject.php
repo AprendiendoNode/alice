@@ -30,6 +30,6 @@ class NewKickoffProject extends Mailable
      */
     public function build()
     {
-        return $this->subject('Nuevo Proyecto en Kickoff')->view('mail.NotificationNewKickoff');
+        return $this->subject('Proyecto en Kickoff')->view('mail.NotificationNewKickoff');
     }
 }
