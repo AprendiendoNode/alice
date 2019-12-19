@@ -300,12 +300,6 @@
                   </tr>
                 </tbody>
                 <tfoot>
-                  @php
-                    $total_inversion = str_replace(',','',$status_projects[0]->total_usd) + str_replace(',','',$status_projects[1]->total_usd) + str_replace(',','',$status_projects[2]->total_usd);
-                    $total_por_facturar = str_replace(',','',$status_projects[0]->por_facturar) + str_replace(',','',$status_projects[1]->por_facturar) + str_replace(',','',$status_projects[2]->por_facturar);
-                    $total_inversion_instalado = str_replace(',','',$status_projects_instalado[0]->total_usd) + str_replace(',','',$status_projects_instalado[1]->total_usd) + str_replace(',','',$status_projects_instalado[2]->total_usd);
-                    $total_facturando = str_replace(',','',$status_projects_instalado[0]->facturando) + str_replace(',','',$status_projects_instalado[1]->facturando) + str_replace(',','',$status_projects_instalado[2]->facturando);
-                   @endphp
                   <tr class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
                     <td><strong>Total</strong> </td>
                     <td class="text-center p-2"> <span id="total_rojo">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo }}</span> </td>
@@ -459,33 +453,37 @@
                 <tbody>
                   <tr>
                     <td> <strong>Cliente Nuevo</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects[0]->riesgo }}</td>
-                    <td class="text-center">{{ $status_projects[0]->atencion }}</td>
-                    <td class="text-center">{{ $status_projects[0]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[0]->riesgo + $status_projects[0]->atencion + $status_projects[0]->normal }} </td>
+                    <td class="text-center p-2">{{ $projects_ejecucion_fact[0]->cantidad_facturando }}</td>
+                    <td class="text-center font-weight-bold">{{ number_format($projects_ejecucion_fact[0]->suma_facturando, 0, '.', ',') }}</td>
+                    <td class="text-center">{{ $projects_ejecucion_fact[0]->cantidad_xfacturar }}</td>
+                    <td class="text-center font-weight-bold"> {{ number_format($projects_ejecucion_fact[0]->suma_xfacturar, 0, '.', ',')  }} </td>
                   </tr>
                   <tr>
                     <td> <strong>Ampliación</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects[1]->riesgo }}</td>
-                    <td class="text-center">{{ $status_projects[1]->atencion }}</td>
-                    <td class="text-center">{{ $status_projects[1]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[1]->riesgo + $status_projects[1]->atencion + $status_projects[1]->normal }} </td>
+                    <td class="text-center p-2">{{ $projects_ejecucion_fact[1]->cantidad_facturando }}</td>
+                    <td class="text-center font-weight-bold">{{ number_format($projects_ejecucion_fact[1]->suma_facturando, 0, '.', ',') }}</td>
+                    <td class="text-center">{{ $projects_ejecucion_fact[1]->cantidad_xfacturar }}</td>
+                    <td class="text-center font-weight-bold"> {{ number_format($projects_ejecucion_fact[1]->suma_xfacturar, 0, '.', ',')  }} </td>
                   </tr>
                   <tr>
                     <td> <strong>Renovación</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects[2]->riesgo }}</td>
-                    <td class="text-center">{{ $status_projects[2]->atencion }}</td>
-                    <td class="text-center">{{ $status_projects[2]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[2]->riesgo + $status_projects[2]->atencion + $status_projects[2]->normal }} </td>
+                    <td class="text-center p-2">{{ $projects_ejecucion_fact[4]->cantidad_facturando }}</td>
+                    <td class="text-center font-weight-bold">{{ number_format($projects_ejecucion_fact[4]->suma_facturando, 0, '.', ',') }}</td>
+                    <td class="text-center">{{ $projects_ejecucion_fact[4]->cantidad_xfacturar }}</td>
+                    <td class="text-center font-weight-bold"> {{ number_format($projects_ejecucion_fact[4]->suma_xfacturar, 0, '.', ',')  }} </td>
                   </tr>
                 </tbody>
                 <tfoot>
+                  @php
+                      $total_facturando_ejecucion = $projects_ejecucion_fact[0]->suma_facturando + $projects_ejecucion_fact[1]->suma_facturando + $projects_ejecucion_fact[4]->suma_facturando;
+                      $total_xfacturar_ejecucion = $projects_ejecucion_fact[0]->suma_xfacturar + $projects_ejecucion_fact[1]->suma_xfacturar + $projects_ejecucion_fact[4]->suma_xfacturar;
+                 @endphp
                   <tr class="font-weight-bold" style="background-color: #D9D9D9 !important;">
                     <td><strong>Total</strong> </td>
-                    <td class="text-center p-2"> <span id="">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo }}</span> </td>
-                    <td class="text-center"> <span id="">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion }}</span> </td>
-                    <td class="text-center"> <span id="">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal }}</span> </td>
-                    <th class="text-center"> <span id=""></span>  </th>
+                    <td class="text-center p-2"> <span id="">{{ $projects_ejecucion_fact[0]->cantidad_facturando + $projects_ejecucion_fact[1]->cantidad_facturando + $projects_ejecucion_fact[4]->cantidad_facturando }}</span> </td>
+                    <td class="text-center"> <span id="">{{ number_format($total_facturando_ejecucion ,  0, '.', ',') }}</span> </td>
+                    <td class="text-center"> <span id="">{{ $projects_ejecucion_fact[0]->cantidad_xfacturar + $projects_ejecucion_fact[1]->cantidad_xfacturar + $projects_ejecucion_fact[4]->cantidad_xfacturar }}</span> </td>
+                    <th class="text-center"> <span id=""></span> {{ number_format($total_xfacturar_ejecucion ,  0, '.', ',') }} </th>
                   </tr>
                   <!-----------venta-------------->
                   <tr>
@@ -496,10 +494,10 @@
                     <td class="text-center font-weight-bold" rowspan="">USD</td>
                   </tr>
                   <tr>
-                    <td class="text-center">0</td>
-                    <td>0</td>
-                    <td class="text-center">0</td>
-                    <td>0</td>
+                    <td class="text-center p-2">{{ $projects_ejecucion_fact[3]->cantidad_facturando }}</td>
+                    <td class="text-center font-weight-bold">{{ number_format($projects_ejecucion_fact[3]->suma_facturando, 0, '.', ',') }}</td>
+                    <td class="text-center">{{ $projects_ejecucion_fact[3]->cantidad_xfacturar }}</td>
+                    <td class="text-center font-weight-bold"> {{ number_format($projects_ejecucion_fact[3]->suma_xfacturar, 0, '.', ',')  }} </td>
                   </tr>
                 </tfoot>
               </table>
@@ -529,33 +527,37 @@
                 <tbody>
                   <tr>
                     <td> <strong>Cliente Nuevo</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects[0]->riesgo }}</td>
-                    <td class="text-center">{{ $status_projects[0]->atencion }}</td>
-                    <td class="text-center">{{ $status_projects[0]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[0]->riesgo + $status_projects[0]->atencion + $status_projects[0]->normal }} </td>
+                    <td class="text-center p-2">{{ $projects_instalacion_fact[0]->cantidad_facturando }}</td>
+                    <td class="text-center font-weight-bold">{{ number_format($projects_instalacion_fact[0]->suma_facturando, 0, '.', ',') }}</td>
+                    <td class="text-center">{{ $projects_instalacion_fact[0]->cantidad_xfacturar }}</td>
+                    <td class="text-center font-weight-bold"> {{ number_format($projects_instalacion_fact[0]->suma_xfacturar, 0, '.', ',')  }} </td>
                   </tr>
                   <tr>
                     <td> <strong>Ampliación</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects[1]->riesgo }}</td>
-                    <td class="text-center">{{ $status_projects[1]->atencion }}</td>
-                    <td class="text-center">{{ $status_projects[1]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[1]->riesgo + $status_projects[1]->atencion + $status_projects[1]->normal }} </td>
+                    <td class="text-center p-2">{{ $projects_instalacion_fact[1]->cantidad_facturando }}</td>
+                    <td class="text-center font-weight-bold">{{ number_format($projects_instalacion_fact[1]->suma_facturando, 0, '.', ',') }}</td>
+                    <td class="text-center">{{ $projects_instalacion_fact[1]->cantidad_xfacturar }}</td>
+                    <td class="text-center font-weight-bold"> {{ number_format($projects_instalacion_fact[1]->suma_xfacturar, 0, '.', ',')  }} </td>
                   </tr>
                   <tr>
                     <td> <strong>Renovación</strong> </td>
-                    <td class="text-center p-2">{{ $status_projects[2]->riesgo }}</td>
-                    <td class="text-center">{{ $status_projects[2]->atencion }}</td>
-                    <td class="text-center">{{ $status_projects[2]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[2]->riesgo + $status_projects[2]->atencion + $status_projects[2]->normal }} </td>
+                    <td class="text-center p-2">{{ $projects_instalacion_fact[2]->cantidad_facturando }}</td>
+                    <td class="text-center font-weight-bold">{{ number_format($projects_instalacion_fact[2]->suma_facturando, 0, '.', ',') }}</td>
+                    <td class="text-center">{{ $projects_instalacion_fact[2]->cantidad_xfacturar }}</td>
+                    <td class="text-center font-weight-bold"> {{ number_format($projects_instalacion_fact[2]->suma_xfacturar, 0, '.', ',')  }} </td>
                   </tr>
                 </tbody>
                 <tfoot>
+                  @php
+                      $total_facturando_instalacion = $projects_instalacion_fact[0]->suma_facturando + $projects_instalacion_fact[1]->suma_facturando + $projects_instalacion_fact[2]->suma_facturando;
+                      $total_xfacturar_instalacion = $projects_instalacion_fact[0]->suma_xfacturar + $projects_instalacion_fact[1]->suma_xfacturar + $projects_instalacion_fact[2]->suma_xfacturar;
+                  @endphp
                   <tr class="font-weight-bold" style="background-color: #D9D9D9 !important;">
                     <td><strong>Total</strong> </td>
-                    <td class="text-center p-2"> <span id="">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo }}</span> </td>
-                    <td class="text-center"> <span id="">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion }}</span> </td>
-                    <td class="text-center"> <span id="">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal }}</span> </td>
-                    <th class="text-center"> <span id=""></span>  </th>
+                    <td class="text-center p-2"> <span id="">{{ $projects_instalacion_fact[0]->cantidad_facturando + $projects_instalacion_fact[1]->cantidad_facturando + $projects_instalacion_fact[2]->cantidad_facturando }}</span> </td>
+                    <td class="text-center"> <span id="">{{ number_format($total_facturando_instalacion, 0, '.' , ',') }}</span> </td>
+                    <td class="text-center"> <span id="">{{ $projects_instalacion_fact[0]->cantidad_xfacturar + $projects_instalacion_fact[1]->cantidad_xfacturar + $projects_instalacion_fact[2]->cantidad_xfacturar }}</span> </td>
+                  <th class="text-center"> <span id=""></span>{{ number_format($total_xfacturar_instalacion, 0, '.' , ',') }}</th>
                   </tr>
                   <!-----------venta-------------->
                   <tr>
@@ -566,10 +568,10 @@
                     <td class="text-center font-weight-bold" rowspan="">USD</td>
                   </tr>
                   <tr>
-                    <td class="text-center">0</td>
-                    <td>0</td>
-                    <td class="text-center">0</td>
-                    <td>0</td>
+                    <td class="text-center p-2">{{ $projects_instalacion_fact[4]->cantidad_facturando }}</td>
+                    <td class="text-center font-weight-bold">{{ number_format($projects_instalacion_fact[4]->suma_facturando, 0, '.', ',') }}</td>
+                    <td class="text-center">{{ $projects_instalacion_fact[4]->cantidad_xfacturar }}</td>
+                    <td class="text-center font-weight-bold"> {{ number_format($projects_instalacion_fact[4]->suma_xfacturar, 0, '.', ',')  }} </td>
                   </tr>
                 </tfoot>
               </table>
@@ -609,14 +611,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Acceso</td>
-                    <td>1</td>
-                    <td>15,700</td>
-                    <td>0</td>
-                    <td>15,700</td>
-                    <td>0%</td>
-                  </tr>
+                    @foreach ($projects_ejecucion_motivo as $projects)
+                    <tr>
+                      <td>{{$projects->name}}</td>
+                      <td>-</td>
+                      <td>{{$projects->renta_mensual}}</td>
+                      <td>{{$projects->suma_facturando}}</td>
+                      <td>{{$projects->suma_xfacturar}}</td>
+                      <td>{{$projects->porc}}</td>
+                    </tr>
+                    @endforeach                
                 </tbody>
                 <tfoot class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
                   <tr>
@@ -648,12 +652,16 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Acceso</td>
-                    <td>1</td>
-                    <td>15,700</td>
-                    <td>0</td>
-                    <td>15,700</td>
-                    <td>0%</td>
+                    @foreach ($projects_instalados_motivo as $projects)
+                    <tr>
+                      <td>{{$projects->name}}</td>
+                      <td>-</td>
+                      <td>{{$projects->renta_mensual}}</td>
+                      <td>{{$projects->suma_facturando}}</td>
+                      <td>{{$projects->suma_xfacturar}}</td>
+                      <td>{{$projects->proc}}</td>
+                    </tr>
+                    @endforeach  
                   </tr>
                 </tbody>
                 <tfoot class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
