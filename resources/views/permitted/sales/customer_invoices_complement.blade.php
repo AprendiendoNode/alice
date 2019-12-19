@@ -227,13 +227,13 @@
                   <th class="text-center">
                       {{__('customer_invoice.column_currency')}}
                   </th>
-                  <th>Cantidad</th>
-                  <!--<th class="text-center">
-                      {{__('customer_invoice.column_amount_total')}}
+                  <th class="text-center">
+                      Total Factura
                   </th>
                   <th class="text-center">
                       {{__('customer_invoice.column_balance')}}
-                  </th> -->
+                  </th>
+                  <th>Cantidad pagada</th>
                   <!--<th class="text-center">
                       {{__('customer_invoice.column_mail_sent')}}
                   </th>

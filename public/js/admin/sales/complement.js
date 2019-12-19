@@ -261,18 +261,20 @@ var datafactura=[];
         status.uuid,
         status.customers,
         status.currencies,
+        status.total,
+        status.saldo,
         '<input id="" type="number" class="input-sm" step="0.01" name="" value="">',
-        //status.total,
-        //status.saldo,
       ]);
       datafactura[0]=data[0].customer_invoice_id;
       datafactura[1]=data[0].date_due;
       datafactura[2]=data[0].customer_id;
       datafactura[3]=data[0].uuid;
+      datafactura[4]+=parseFloat(data[0].total);
+      datafactura[5]+=parseFloat(data[0].saldo);
     });
 
-    $('#mount_total').val(data[0].total);
-    $('#mount_saldo').val(data[0].saldo);
+    $('#mount_total').val(datafactura[4]);
+    $('#mount_saldo').val(datafactura[5]);
 
 
 
