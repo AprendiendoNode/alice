@@ -260,13 +260,17 @@ $(function(){
         }
   }
 
-var datafactura = [], datafactura_total = 0, datafactura_saldo = 0;
-var cantidades_pagadas = [];
+var datafactura, datafactura_total, datafactura_saldo, cantidades_pagadas;
 
   function fillSelected(data,table){//Llena la tabla del modal con las facturas seleccionadas
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table);
     vartable.fnClearTable();
+
+    datafactura = [];
+    cantidades_pagadas = [];
+    datafactura_total = 0;
+    datafactura_saldo = 0;
 
     $.each(data, function(index, status){
       vartable.fnAddData([
@@ -331,7 +335,7 @@ var cantidades_pagadas = [];
 
     $(".pagada").each(function(index) {
       sum += parseFloat($(this)[0].value);
-      cantidades_pagadas[index] = sum;
+      cantidades_pagadas[index] = parseFloat($(this)[0].value);
     });
 
     $('#mount_pagado').val(sum);
@@ -446,8 +450,8 @@ var cantidades_pagadas = [];
     var _token = $('input[name="_token"]').val();
     var form = $('#form_c')[0];
     var formData = new FormData(form);
-    formData.append("item_relation",datafactura);
-    formData.append("cantidades_pagadas",cantidades_pagadas);
+    formData.append("item_relation",JSON.stringify(datafactura));
+    formData.append("cantidades_pagadas",JSON.stringify(cantidades_pagadas));
     formData.append("date_due","27-12-2019");
 
 
