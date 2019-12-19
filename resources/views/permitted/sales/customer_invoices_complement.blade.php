@@ -126,7 +126,7 @@
         </div>
       </div>
       <div class="col-md-1"></div>
-      <div class="row mt-2">
+      <div class="row mt-5">
 
         <div class="col-md-4 col-xs-12">
           <div class="form-group">
@@ -163,7 +163,7 @@
 
 
       </div>
-      <div class="row mt-2">
+      <div class="row mt-5">
         <div class="col-md-4 col-xs-12">
           <div class="form-group">
             <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
@@ -184,33 +184,26 @@
         </div>
 
         <div class="col-md-4 col-xs-12">
-          <div class="form-group">
-            <label for="mount_value">Monto:<span style="color: red;">*</span></label>
-            <input type="text" class="form-control" id="mount_value" name="mount_value" style="padding: 0.875rem 0.5rem;">
-          </div>
+            <div class="form-group row">
+                <label for="cfdi_relation_id" class="control-label">Tipo de relación:<span style="color: red;">*</span></label>
+                    <select id="cfdi_relation_id" name="cfdi_relation_id" class="form-control form-control-sm" style="width: 100%;">
+                        <option value="">{{ trans('message.selectopt') }}</option>
+                        @forelse ($cfdi_relations as $cfdi_relations_data)
+                        <option value="{{ $cfdi_relations_data->id }}"> [{{ $cfdi_relations_data->code}}]{{ $cfdi_relations_data->name }} </option>
+                        @empty
+                        @endforelse
+                    </select>
+
+            </div>
         </div>
 
-      </div>      
-    <div class="row mt-2">
-      <div class="col-md-4 col-xs-12">
-          <div class="form-group row">
-              <label for="cfdi_relation_id" class="col-md-12 col-form-label ml-0">Tipo de relación<span style="color: red;">*</span></label>
-              <div class="col-md-12 ml-0">
-                  <select id="cfdi_relation_id" name="cfdi_relation_id" class="form-control form-control-sm" style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
-                      @forelse ($cfdi_relations as $cfdi_relations_data)
-                      <option value="{{ $cfdi_relations_data->id }}"> [{{ $cfdi_relations_data->code}}]{{ $cfdi_relations_data->name }} </option>
-                      @empty
-                      @endforelse
-                  </select>
-              </div>
-          </div>
+
       </div>
-    </div>
+
       <div class="row mt-2">
         <div class="table-responsive table-data table-dropdown">
           <table id="table_selected_complements" name='table_filter_fact' class="table table-striped table-hover table-condensed">
-            <thead>
+            <thead class="">
               <tr class="mini text-center">
                   <th class="text-center" width="5%">@lang('general.column_actions')</th>
                   <th class="text-center">
@@ -234,6 +227,7 @@
                   <th class="text-center">
                       {{__('customer_invoice.column_currency')}}
                   </th>
+                  <th>Cantidad</th>
                   <!--<th class="text-center">
                       {{__('customer_invoice.column_amount_total')}}
                   </th>

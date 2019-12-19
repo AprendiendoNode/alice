@@ -831,14 +831,14 @@ class CustomerComplementController extends Controller
              $creator = new \CfdiUtils\CfdiCreator33($cfdi33, $certificado);
              $creator->setXmlResolver(PacHelper::resourcePathCfdiUtils()); //Almacenamiento local
              $comprobante = $creator->comprobante();
-             if (!empty($cfdi33_relacionados)) {
+             /*if (!empty($cfdi33_relacionados)) {
                  $comprobante->addCfdiRelacionados($cfdi33_relacionados);
              }
              if (!empty($cfdi33_relacionado)) {
                  foreach ($cfdi33_relacionado as $key => $result) {
                      $comprobante->addCfdiRelacionado($result);
                  }
-             }
+             }*/
              $comprobante->addEmisor($cfdi33_emisor);
              $comprobante->addReceptor($cfdi33_receptor);
              //Conceptos
@@ -869,9 +869,37 @@ class CustomerComplementController extends Controller
                      }
                  }
              }
+
+            $pagos =new \CfdiUtils\Nodes\Node(
+            'pago10:Pagos', // nombre del elemento raíz
+            [ // nodos obligatorios de XML y del nodo
+            'version' => '1.0',
+            ]);
+
+            $pagotot=$pagos->addChild(new \CfdiUtils\Nodes\Node(
+            'pago10:Pago', // nombre del elemento raíz
+            [ // nodos obligatorios de XML y del nodo
+            'FechaPago'=>"19-12-2019 07:59:24",
+            'FormaDePagoP'=>"03",
+            'MonedaP'=>"MXN",
+            'Monto'=>"116.00",
+            'NumOperacion'=>"TEST12",
+            ]));
+
+            $pagotot->addChild(new \CfdiUtils\Nodes\Node('pago10:DoctoRelacionado', [
+              'Folio'=>"00000697",
+              'IdDocumento'=>"9FB6ED1A-5F37-4FEF-980A-PMGNMZGVDH6B", //Docto relacionado
+              'ImpPagado'=>"50.00",
+              'ImpSaldoAnt'=>"116.00",
+              'ImpSaldoInsoluto'=>"66.00",
+              'MetodoDePagoDR'=>"PPD",
+              'MonedaDR'=>"MXN",
+              'NumParcialidad'=>"1",
+            ]));
              //Método de ayuda para establecer las sumas del comprobante e impuestos con base en la suma de los conceptos y la agrupación de sus impuestos
              //$creator->addSumasConceptos(null, 2);
              //Método de ayuda para generar el sello (obtener la cadena de origen y firmar con la llave privada)
+             $comprobante->addComplemento($pagos);
              $creator->addSello('file://' . \Storage::path($company->pathFileKeyPassPem()), Crypt::decryptString($company->password_key));
              //Valida la estructura
              //$creator->validate();

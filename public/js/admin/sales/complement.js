@@ -112,7 +112,7 @@ $(function(){
       }
     ],
     "select": {
-      'style': 'single',
+      'style': 'multi',
     },
     dom:  "<'row'<'col-sm-6'B><'col-sm-2'l><'col-sm-4'f>>" +
           "<'row'<'col-sm-12'tr>>" +
@@ -257,6 +257,7 @@ var datafactura=[];
         status.uuid,
         status.customers,
         status.currencies,
+        '<input id="" type="number" class="input-sm" step="0.01" name="" value="">',
         //status.total,
         //status.saldo,
       ]);
@@ -268,10 +269,7 @@ var datafactura=[];
 
     $('#mount_total').val(data[0].total);
     $('#mount_saldo').val(data[0].saldo);
-    $('#mount_value').on('change',function(){
-      let pagado= $('#mount_value').val()
-      $('#mount_pagado').val(pagado);
-    });
+
 
 
 
