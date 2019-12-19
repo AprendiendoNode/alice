@@ -140,8 +140,12 @@ $(function(){
                Swal.fire("Operación abortada", "Ninguna fila seleccionada :(", "error");
              }else{
 
+            var i = 0;
              var selected_complements = json_data.filter(function (data) {
-               return data.customer_invoice_id == valores[0];
+               if(data.customer_invoice_id == valores[i]) {
+                 i++;
+                 return data.customer_invoice_id;
+               }
              });
 
              //console.log(selected_complements);
