@@ -138,7 +138,7 @@ class CustomerInvoiceController extends Controller
     public function index()
     {
 
-      $customer = DB::select('CALL GetCustomersActivev2 ()', array());
+      $customer = DB::select('CALL px_only_customer_data ()', array());
       $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
       $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
       $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());

@@ -78,7 +78,7 @@ class CustomerCreditNoteController extends Controller
      */
     public function index()
     {
-      $customer = DB::select('CALL GetCustomersActivev2 ()', array());
+      $customer = DB::select('CALL px_only_customer_data ()', array());
       $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
       $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
       $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
@@ -855,5 +855,24 @@ class CustomerCreditNoteController extends Controller
 
         $resultados = DB::select('CALL px_customer_invoices_filters_type (?,?,?,?,?,?,?)',array($date_a, $date_b, $folio, $sucursal, $cliente, $estatus, '2'));
         return json_encode($resultados);
+      }
+      /**
+       * Descarga de archivo XML
+       *
+       * @param Request $request
+       * @param CustomerCreditNote $customer_credit_note
+       * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Symfony\Component\HttpFoundation\BinaryFileResponse
+       */
+      public function downloadXml($id)
+      {
+        $customer_credit_note = CustomerInvoice::findOrFail($id);
+        //Ruta y validacion del XML
+        $path_xml = Helper::setDirectory(CustomerCreditNote::PATH_XML_FILES_CCN) . '/';
+        return $file_xml_pac = $path_xml . $customer_credit_note->customerInvoiceCfdi->file_xml_pac;
+        if (!empty($file_xml_pac)) {
+            if (\Storage::exists($file_xml_pac)) {
+                return response()->download(\Storage::path($file_xml_pac), $customer_credit_note->name . '.xml');
+            }
+        }
       }
 }
