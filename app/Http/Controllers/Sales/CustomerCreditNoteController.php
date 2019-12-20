@@ -868,7 +868,7 @@ class CustomerCreditNoteController extends Controller
         $customer_credit_note = CustomerInvoice::findOrFail($id);
         //Ruta y validacion del XML
         $path_xml = Helper::setDirectory(CustomerCreditNote::PATH_XML_FILES_CCN) . '/';
-        return $file_xml_pac = $path_xml . $customer_credit_note->customerInvoiceCfdi->file_xml_pac;
+        $file_xml_pac = $path_xml . $customer_credit_note->customerInvoiceCfdi->file_xml_pac;
         if (!empty($file_xml_pac)) {
             if (\Storage::exists($file_xml_pac)) {
                 return response()->download(\Storage::path($file_xml_pac), $customer_credit_note->name . '.xml');

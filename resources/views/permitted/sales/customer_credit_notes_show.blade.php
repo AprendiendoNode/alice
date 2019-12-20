@@ -357,7 +357,7 @@
         ]);
       });
     }
-    function ta(datajson, table){
+    function table_filter(datajson, table){
       table.DataTable().destroy();
       var vartable = table.dataTable(Configuration_table_responsive_doctypes);
       vartable.fnClearTable();
@@ -396,25 +396,24 @@
         var a02 = '<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></button>';
         var a03 = '<div class="dropdown-menu">';
         var a04 = '<a class="dropdown-item" target="_blank" href="/sales/customer-invoice-pdf/'+information.id+'"><i class="fa fa-eye"></i> @lang('general.button_show')</a>';
-        var a05 = '<a class="dropdown-item" href="/sales/customer-invoices/download-xml/'+information.id+'"><i class="far fa-file-code"></i> @lang('general.button_download_xml')</a>';
+        var a05 = '<a class="dropdown-item" href="/sales/credit-notes/download-xml/'+information.id+'"><i class="far fa-file-code"></i> @lang('general.button_download_xml')</a>';
         var a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-envelope"></i> @lang('general.button_send_mail')</a>';
-        var a07 = '<a class="dropdown-item" href="javascript:void(0);"><i class="fa fa-print"></i> @lang('general.button_print')</a>';
-        var a08 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_credit_note.text_mark_sent')</a>';
-        var a09,a10,a12,a13,a14;
+        var a07 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_credit_note.text_mark_sent')</a>';
+        var a08 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
+        var a09='',a10='',a11='',a12='',a14='';
         if (parseInt(status) == RECONCILED) {
           var a09 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_open(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_credit_note.text_mark_open')</a>';
         }
         if (parseInt(status) == OPEN) {
           var a10 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_reconciled(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_credit_note.text_mark_reconciled')</a>';
         }
-        var a11 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
         if (parseInt(status) == CANCEL) {
-          var a12 = '<div class="dropdown-divider"></div>';
-          var a13 = '<a class="dropdown-item" href="javascript:void(0);"  onclick="link_cancel(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-trash-alt"></i> @lang('general.button_cancel')</a>';
+          var a11 = '<div class="dropdown-divider"></div>';
+          var a12 = '<a class="dropdown-item" href="javascript:void(0);"  onclick="link_cancel(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-trash-alt"></i> @lang('general.button_cancel')</a>';
         }
+        var a13 = '</div>';
         var a14 = '</div>';
-        var a15 = '</div>';
-        var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a10+a11+a12+a13+a14+a15;
+        var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a09+a10+a11+a12+a13+a14;
 
         vartable.fnAddData([
           dropdown,
@@ -493,6 +492,26 @@
         }
       }
     };
+
+    function link_send_mail() {
+      console.log('a1');
+    }
+    function mark_sent() {
+      console.log('a2');
+    }
+    function link_status_sat() {
+      console.log('a3');
+    }
+    function mark_open() {
+      console.log('a4');
+    }
+    function mark_reconciled() {
+      console.log('a5');
+    }
+    function link_cancel() {
+      console.log('a6');
+    }
+
 
     //-----------------------------------------------------------
     </script>
