@@ -65,9 +65,9 @@ class CustomerCreditNoteController extends Controller
     public function __construct()
     {
         $this->list_status = [
-            CustomerCreditNote::OPEN => __('sales/customer_credit_note.text_status_open'),
-            CustomerCreditNote::RECONCILED => __('sales/customer_credit_note.text_status_reconciled'),
-            CustomerCreditNote::CANCEL => __('sales/customer_credit_note.text_status_cancel'),
+            CustomerCreditNote::OPEN => __('customer_credit_note.text_status_open'),
+            CustomerCreditNote::RECONCILED => __('customer_credit_note.text_status_reconciled'),
+            CustomerCreditNote::CANCEL => __('customer_credit_note.text_status_cancel'),
         ];
     }
 
@@ -829,6 +829,31 @@ class CustomerCreditNoteController extends Controller
 
         $resultados = DB::select('CALL px_customer_note_credits_filters (?,?,?,?,?,?)', array($date_a, $date_b, $folio, $sucursal, $cliente, $estatus));
 
+        return json_encode($resultados);
+      }
+      public function show(Request $request)
+      {
+        $customer = DB::select('CALL px_only_customer_data ()', array());
+        $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
+        $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
+        $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
+        $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
+        $list_status = $this->list_status;
+        return view('permitted.sales.customer_credit_notes_show',compact('customer', 'sucursal', 'list_status'));
+      }
+      public function searchfilter(Request $request)
+      {
+        $folio = !empty($request->filter_name) ? $request->filter_name : '';
+        $date_from = $request->filter_date_from;
+        $date_to = $request->filter_date_to;
+        $sucursal = !empty($request->filter_branch_office_id) ? $request->filter_branch_office_id : '';
+        $cliente = !empty($request->filter_customer_id) ? $request->filter_customer_id : '';
+        $estatus = !empty($request->filter_status) ? $request->filter_status : '';
+
+        $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+        $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
+
+        $resultados = DB::select('CALL px_customer_invoices_filters_type (?,?,?,?,?,?,?)',array($date_a, $date_b, $folio, $sucursal, $cliente, $estatus, '2'));
         return json_encode($resultados);
       }
 }

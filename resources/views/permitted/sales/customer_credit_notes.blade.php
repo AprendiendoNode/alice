@@ -1168,11 +1168,11 @@
 
                         html += '<td class="text-right" style="padding-top: 11px;">';
 
-                        html += '<input type="text" id="item_reconciled_id_' + item_row + '" name="item_reconciled[' + item_row + '][id]" value="' + key.id + '"/> ';
-                        html += '<input type="text" id="item_reconciled_reconciled_id_' + item_row + '" name="item_reconciled[' + item_row + '][reconciled_id]" value="' + key.reconciled_id + '" /> ';
-                        html += '<input type="text" id="item_reconciled_name_' + item_row + '" name="item_reconciled[' + item_row + '][name]"  value="' + key.name + '" /> ';
-                        html += '<input type="text" id="item_reconciled_balance_' + item_row + '" name="item_reconciled[' + item_row + '][balance]" value="' + key.balance + '" /> ';
-                        html += '<input type="text" id="item_reconciled_currency_code_' + item_row + '" name="item_reconciled[' + item_row + '][currency_code]" value="' + key.currencie + '" /> ';
+                        html += '<input type="hidden" id="item_reconciled_id_' + item_row + '" name="item_reconciled[' + item_row + '][id]" value="' + key.id + '"/> ';
+                        html += '<input type="hidden" id="item_reconciled_reconciled_id_' + item_row + '" name="item_reconciled[' + item_row + '][reconciled_id]" value="' + key.reconciled_id + '" /> ';
+                        html += '<input type="hidden" id="item_reconciled_name_' + item_row + '" name="item_reconciled[' + item_row + '][name]"  value="' + key.name + '" /> ';
+                        html += '<input type="hidden" id="item_reconciled_balance_' + item_row + '" name="item_reconciled[' + item_row + '][balance]" value="' + key.balance + '" /> ';
+                        html += '<input type="hidden" id="item_reconciled_currency_code_' + item_row + '" name="item_reconciled[' + item_row + '][currency_code]" value="' + key.currencie + '" /> ';
 
                         html += '<span>' + key.name + '</span>';
                         html += '</td>';

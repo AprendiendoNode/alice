@@ -51,6 +51,13 @@ use \CfdiUtils\XmlResolver\XmlResolver;
 use \CfdiUtils\CadenaOrigen\DOMBuilder;
 use App\ConvertNumberToLetters;
 
+use App\Models\Sales\CustomerInvoice as CustomerCreditNote;
+use App\Models\Sales\CustomerInvoiceCfdi as CustomerCreditNoteCfdi;
+use App\Models\Sales\CustomerInvoiceLine as CustomerCreditNoteLine;
+use App\Models\Sales\CustomerInvoiceRelation as CustomerCreditNoteRelation;
+use App\Models\Sales\CustomerInvoiceTax as CustomerCreditNoteTax;
+use App\Models\Sales\CustomerInvoiceReconciled as CustomerCreditNoteReconciled;
+
 class CustomerInvoiceController extends Controller
 {
     private $list_status = [];
@@ -73,29 +80,55 @@ class CustomerInvoiceController extends Controller
 
     public function generate_invoice($id)
     {
-
-      $customer_invoice = CustomerInvoice::findOrFail($id);
-      $companies = DB::select('CALL px_companies_data ()', array());
-      //Si tiene CFDI obtiene la informacion de los nodos
-      if(!empty($customer_invoice->customerInvoiceCfdi->file_xml_pac) && !empty($customer_invoice->customerInvoiceCfdi->uuid)){
-        $path_xml = Helper::setDirectory(CustomerInvoice::PATH_XML_FILES_CI) . '/';
-        $file_xml_pac = $path_xml . $customer_invoice->customerInvoiceCfdi->file_xml_pac;
-
+      $document_type_id = DB::table('customer_invoices')->select('document_type_id')->where('id', $id)->value('document_type_id');
+      if ($document_type_id == 2) {
+        // Nota de crédito o Factura de Egreso
+        $customer_credit_note = CustomerInvoice::findOrFail($id);
+        $companies = DB::select('CALL px_companies_data ()', array());
+        $data = [];
+        //Si tiene CFDI obtiene la informacion de los nodos
+        if(!empty($customer_credit_note->customerInvoiceCfdi->file_xml_pac) && !empty($customer_credit_note->customerInvoiceCfdi->uuid)){
+            $path_xml = Helper::setDirectory(CustomerCreditNote::PATH_XML_FILES_CCN) . '/';
+            $file_xml_pac = $path_xml . $customer_credit_note->customerInvoiceCfdi->file_xml_pac;
+            //Valida que el archivo exista
+            if(\Storage::exists($file_xml_pac)) {
+                $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($file_xml_pac));
+                $data = Cfdi33Helper::getQuickArrayCfdi($cfdi);
+                //Genera codigo QR
+                $image = QrCode::format('png')->size(150)->margin(0)->generate($data['qr_cadena']);
+                $data['qr'] = 'data:image/png;base64,' . base64_encode($image);
+            }
+        }
+        $format = new ConvertNumberToLetters();
+        $ammount_letter = $format->convertir($customer_credit_note->amount_total);
+        // Enviando datos a la vista de la factura
+        $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_ntc', compact('companies', 'customer_credit_note', 'data', 'ammount_letter'));
+        return $pdf->stream();
+      }
+      else {
+        // Factura de Ingreso
+        $customer_invoice = CustomerInvoice::findOrFail($id);
+        $companies = DB::select('CALL px_companies_data ()', array());
+        $data = [];
+        //Si tiene CFDI obtiene la informacion de los nodos
+        if(!empty($customer_invoice->customerInvoiceCfdi->file_xml_pac) && !empty($customer_invoice->customerInvoiceCfdi->uuid)){
+          $path_xml = Helper::setDirectory(CustomerInvoice::PATH_XML_FILES_CI) . '/';
+          $file_xml_pac = $path_xml . $customer_invoice->customerInvoiceCfdi->file_xml_pac;
           //Valida que el archivo exista
           if(\Storage::exists($file_xml_pac)) {
-              $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($file_xml_pac));
-              $data = Cfdi33Helper::getQuickArrayCfdi($cfdi);
-
-              //Genera codigo QR
-              $image = QrCode::format('png')->size(150)->margin(0)->generate($data['qr_cadena']);
-              $data['qr'] = 'data:image/png;base64,' . base64_encode($image);
+            $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($file_xml_pac));
+            $data = Cfdi33Helper::getQuickArrayCfdi($cfdi);
+            //Genera codigo QR
+            $image = QrCode::format('png')->size(150)->margin(0)->generate($data['qr_cadena']);
+            $data['qr'] = 'data:image/png;base64,' . base64_encode($image);
           }
+        }
+        $format = new ConvertNumberToLetters();
+        $ammount_letter = $format->convertir($customer_invoice->amount_total);
+        // Enviando datos a la vista de la factura
+        $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice', 'data', 'ammount_letter'));
+        return $pdf->stream();
       }
-      $format = new ConvertNumberToLetters();
-      $ammount_letter = $format->convertir($customer_invoice->amount_total);
-      // Enviando datos a la vista de la factura
-      $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice', 'data', 'ammount_letter'));
-      return $pdf->stream();
     }
     /**
      * Display a listing of the resource.
@@ -1592,7 +1625,7 @@ class CustomerInvoiceController extends Controller
       public function show()
       {
 
-        $customer = DB::select('CALL GetCustomersActivev2 ()', array());
+        $customer = DB::select('CALL px_only_customer_data ()', array());
         $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
         $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
         $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
@@ -1614,8 +1647,8 @@ class CustomerInvoiceController extends Controller
 
         $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
         $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
-
-        $resultados = DB::select('CALL px_customer_invoices_filters (?,?,?,?,?,?)', array($date_a, $date_b, $folio, $sucursal, $cliente, $estatus));
+        $resultados = DB::select('CALL px_customer_invoices_filters_type (?,?,?,?,?,?,?)',array($date_a, $date_b, $folio, $sucursal, $cliente, $estatus, '1'));
+        // $resultados = DB::select('CALL px_customer_invoices_filters (?,?,?,?,?,?)', array($date_a, $date_b, $folio, $sucursal, $cliente, $estatus));
 
         return json_encode($resultados);
       }

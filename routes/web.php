@@ -1071,6 +1071,9 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-credit-notes-store', 'Sales\CustomerCreditNoteController@store');
 
     Route::get('customer-credit-notes/get-customer-credit-note', 'Sales\CustomerCreditNoteController@getCustomerCreditNote')->name('customer-credit-notes/get-customer-credit-note');
+    Route::get('/customer-credit-notes-show', 'Sales\CustomerCreditNoteController@show');
+    Route::post('/customer-credit-notes-searchfilter', 'Sales\CustomerCreditNoteController@searchfilter');
+
 
     Route::get('/customer-invoices/autocomplete-cfdi', 'Sales\CustomerInvoiceController@autocompleteCfdi');
     Route::get('customer-invoices/get-customer-invoice', 'Sales\CustomerInvoiceController@getCustomerInvoice')->name('customer-invoices/get-customer-invoice');
@@ -1102,6 +1105,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/get_data_complements', 'Sales\CustomerComplementController@get_complement');
     Route::post('/store_complement', 'Sales\CustomerComplementController@store_complement');
 
+    Route::post('/get_data_complements', 'Sales\CustomerInvoiceController@get_complement');
     Route::get('/cz', 'Sales\CustomerInvoiceController@tes');
 });
 
