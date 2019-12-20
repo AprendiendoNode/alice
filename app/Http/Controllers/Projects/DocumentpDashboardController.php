@@ -19,7 +19,7 @@ class DocumentpDashboardController extends Controller
       $projects_instalacion_fact = DB::select('CALL px_tipo_servicio_acumulado_instalado_facturacion()', array());
       $projects_ejecucion_motivo = DB:: select('CALL px_tipo_motivo_acumulado_ejecucion_facturacion()', array());
       $projects_instalados_motivo = DB:: select('CALL px_tipo_motivo_acumulado_instalado_facturacion()', array());
-      //dd($projects_instalados_motivo);
+      //dd($projects_ejecucion_motivo);
       return view('permitted.documentp.dashboard_project', 
              compact('status_projects', 'status_compras', 'status_cotizador'
              ,'status_projects_instalado', 'projects_ejecucion_fact', 'projects_instalacion_fact', 'projects_ejecucion_motivo', 'projects_instalados_motivo'));

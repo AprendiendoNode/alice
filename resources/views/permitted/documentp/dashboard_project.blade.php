@@ -601,7 +601,7 @@
                   <tr style="background: #193257;color:white;">
                     <th rowspan="2">Motivo</th>
                     <th rowspan="2">Cantidad</th>
-                    <th rowspan="2">Renta mensual (USD)</th>
+                    <th rowspan="2" class="text-center">Renta mensual (USD)</th>
                     <th colspan="2">Facturando</th>
                     <th rowspan="2" class="text-center">% Facturación</th>
                   </tr>
@@ -611,20 +611,41 @@
                   </tr>
                 </thead>
                 <tbody>
+                    @php
+                      $total_proyectos = 0; 
+                      $total_serv_mensual = 0; 
+                      $total_facturando = 0; 
+                      $total_xfacturar = 0; 
+                    @endphp
                     @foreach ($projects_ejecucion_motivo as $projects)
                     <tr>
-                      <td>{{$projects->name}}</td>
-                      <td>-</td>
-                      <td>{{$projects->renta_mensual}}</td>
-                      <td>{{$projects->suma_facturando}}</td>
-                      <td>{{$projects->suma_xfacturar}}</td>
-                      <td>{{$projects->porc}}</td>
+                      <td class="font-weight-bold">{{$projects->name}}</td>
+                      <td class="text-center">{{$projects->cantidad}}</td>
+                      <td class="font-weight-bold text-right">{{ number_format($projects->renta_mensual, 0, '.', ',') }}</td>
+                      <td class="text-right">{{ number_format($projects->suma_facturando, 0, '.', ',') }}</td>
+                      <td class="text-right">{{ number_format($projects->suma_xfacturar, 0, '.', ',') }}</td>
+                      <td class="font-weight-bold text-center">{{$projects->porc}}</td>
                     </tr>
-                    @endforeach                
+                      @php
+                         $total_proyectos += $projects->cantidad;
+                         $total_serv_mensual += $projects->renta_mensual;
+                         $total_facturando += $projects->suma_facturando;
+                         $total_xfacturar += $projects->suma_xfacturar;
+                      @endphp
+                    @endforeach
+                      @php
+                          $total_percent = 1 - ($total_xfacturar / ($total_serv_mensual + 0.001));
+                          $total_percent *= 100;
+                      @endphp                
                 </tbody>
                 <tfoot class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
-                  <tr>
+                  <tr style="color:#0A1747;">
                     <td>Total</td>
+                    <td class="text-center">{{number_format($total_proyectos, 0, '.', ',')}}</td>
+                    <td class="text-right">${{number_format($total_serv_mensual, 0, '.', ',')}}</td>
+                    <td class="text-right">${{number_format($total_facturando, 0, '.', ',')}}</td>
+                    <td class="text-right">${{number_format($total_xfacturar, 0, '.', ',')}}</td>
+                    <td class="text-center">{{number_format($total_percent, 0, '.', ',')}}%</td>
                   </tr>
                 </tfoot>
               </table>
@@ -641,7 +662,7 @@
                   <tr style="background: #193257;color:white;">
                     <th rowspan="2">Motivo</th>
                     <th rowspan="2">Cantidad</th>
-                    <th rowspan="2">Renta mensual (USD)</th>
+                    <th rowspan="2" class="text-center">Renta mensual (USD)</th>
                     <th colspan="2">Facturando</th>
                     <th rowspan="2" class="text-center">% Facturación</th>
                   </tr>
@@ -652,21 +673,42 @@
                 </thead>
                 <tbody>
                   <tr>
+                    @php
+                      $total_proyectos = 0; 
+                      $total_serv_mensual = 0; 
+                      $total_facturando = 0; 
+                      $total_xfacturar = 0; 
+                    @endphp
                     @foreach ($projects_instalados_motivo as $projects)
                     <tr>
-                      <td>{{$projects->name}}</td>
-                      <td>-</td>
-                      <td>{{$projects->renta_mensual}}</td>
-                      <td>{{$projects->suma_facturando}}</td>
-                      <td>{{$projects->suma_xfacturar}}</td>
-                      <td>{{$projects->proc}}</td>
+                      <td class="font-weight-bold">{{$projects->name}}</td>
+                      <td class="text-center">{{$projects->cantidad}}</td>
+                      <td class="font-weight-bold text-right">{{ number_format($projects->renta_mensual, 0, '.', ',') }}</td>
+                      <td class="text-right">{{ number_format($projects->suma_facturando, 0, '.', ',') }}</td>
+                      <td class="text-right">{{ number_format($projects->suma_xfacturar, 0, '.', ',') }}</td>
+                      <td class="font-weight-bold text-center">{{$projects->porc}}</td>
                     </tr>
-                    @endforeach  
+                     @php
+                         $total_proyectos += $projects->cantidad;
+                         $total_serv_mensual += $projects->renta_mensual;
+                         $total_facturando += $projects->suma_facturando;
+                         $total_xfacturar += $projects->suma_xfacturar;
+                     @endphp
+                    @endforeach 
+                     @php
+                          $total_percent = 1 - ($total_xfacturar / ($total_serv_mensual + 0.001));
+                          $total_percent *= 100;
+                      @endphp   
                   </tr>
                 </tbody>
                 <tfoot class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
-                  <tr>
+                  <tr style="color:#0A1747;">
                     <td>Total</td>
+                    <td class="text-center">{{number_format($total_proyectos, 0, '.', ',')}}</td>
+                    <td class="text-right">${{number_format($total_serv_mensual, 0, '.', ',')}}</td>
+                    <td class="text-right">${{number_format($total_facturando, 0, '.', ',')}}</td>
+                    <td class="text-right">${{number_format($total_xfacturar, 0, '.', ',')}}</td>
+                    <td class="text-center">{{number_format($total_percent, 0, '.', ',')}}%</td>
                   </tr>
                 </tfoot>
               </table>
@@ -689,7 +731,7 @@
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=3.1.0')}}"></script>
+    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=4.0.0')}}"></script>
     <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
 
 @else
