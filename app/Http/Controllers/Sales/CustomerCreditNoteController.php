@@ -875,4 +875,60 @@ class CustomerCreditNoteController extends Controller
             }
         }
       }
+
+      public function markOpen(Request $request)
+      {
+        $id = $request->token_b;
+        $customer_credit_note = CustomerInvoice::findOrFail($id);
+        //Logica.
+        if ((int)$customer_credit_note->status == CustomerCreditNote::RECONCILED) {
+          $customer_credit_note->updated_uid = \Auth::user()->id;
+          $customer_credit_note->status = CustomerCreditNote::OPEN;
+          $customer_credit_note->save();
+          return response()->json(['status' => 200]);
+        }
+        else{
+          return response()->json(['status' => 304]);
+        }
+      }
+      public function markSent(Request $request)
+      {
+        $id = $request->token_b;
+        $customer_credit_note = CustomerInvoice::findOrFail($id);
+        //Logica
+        if ((int)$customer_credit_note->mail_sent != 1) {
+          $customer_credit_note->updated_uid = \Auth::user()->id;
+          $customer_credit_note->mail_sent = 1;
+          $customer_credit_note->save();
+          return response()->json(['status' => 200]);
+        }
+        else{
+          return response()->json(['status' => 304]);
+        }
+      }
+      public function markReconciled(Request $request)
+      {
+        $id = $request->token_b;
+        $customer_credit_note = CustomerInvoice::findOrFail($id);
+        if ((int)$customer_credit_note->status == CustomerCreditNote::OPEN) {
+          $customer_credit_note->updated_uid = \Auth::user()->id;
+          $customer_credit_note->status = CustomerCreditNote::RECONCILED;
+          $customer_credit_note->save();
+          return response()->json(['status' => 200]);
+        }
+        else {
+          return response()->json(['status' => 304]);
+        }
+      }
+      /**
+       * Envio de factura por correo
+       *
+       * @param Request $request
+       * @param CustomerInvoice $customer_invoice
+       * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+       */
+      public function sendMail(Request $request)
+      {
+
+      }
 }

@@ -1073,7 +1073,10 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::get('customer-credit-notes/get-customer-credit-note', 'Sales\CustomerCreditNoteController@getCustomerCreditNote')->name('customer-credit-notes/get-customer-credit-note');
     Route::get('/customer-credit-notes-show', 'Sales\CustomerCreditNoteController@show');
     Route::post('/customer-credit-notes-searchfilter', 'Sales\CustomerCreditNoteController@searchfilter');
-    Route::get('/credit-notes/download-xml/{id}', 'Sales\CustomerCreditNoteController@downloadXml');
+    Route::get('/customer-credit-notes/download-xml/{id}', 'Sales\CustomerCreditNoteController@downloadXml');
+    Route::post('/customer-credit-notes/mark-sent', 'Sales\CustomerCreditNoteController@markSent');
+    Route::post('/customer-credit-notes/mark-open', 'Sales\CustomerCreditNoteController@markOpen');
+    Route::post('/customer-credit-notes/mark-reconciled', 'Sales\CustomerCreditNoteController@markReconciled');
 
 
     Route::get('/customer-invoices/autocomplete-cfdi', 'Sales\CustomerInvoiceController@autocompleteCfdi');

@@ -396,7 +396,7 @@
         var a02 = '<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></button>';
         var a03 = '<div class="dropdown-menu">';
         var a04 = '<a class="dropdown-item" target="_blank" href="/sales/customer-invoice-pdf/'+information.id+'"><i class="fa fa-eye"></i> @lang('general.button_show')</a>';
-        var a05 = '<a class="dropdown-item" href="/sales/credit-notes/download-xml/'+information.id+'"><i class="far fa-file-code"></i> @lang('general.button_download_xml')</a>';
+        var a05 = '<a class="dropdown-item" href="/sales/customer-credit-notes/download-xml/'+information.id+'"><i class="far fa-file-code"></i> @lang('general.button_download_xml')</a>';
         var a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-envelope"></i> @lang('general.button_send_mail')</a>';
         var a07 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_credit_note.text_mark_sent')</a>';
         var a08 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
@@ -493,21 +493,167 @@
       }
     };
 
-    function link_send_mail() {
-      console.log('a1');
+    //Modal para envio de correo
+    function link_send_mail(e){
+      var valor= e.getAttribute('value');
+      var folio= e.getAttribute('datas');
+      var _token = $('meta[name="csrf-token"]').attr('content');
+      $.ajax({
+           type: "POST",
+           url: '/sales/customer-invoices/modal-send-mail',
+           data: {token_b : valor, _token : _token},
+           success: function (data) {
+
+           },
+           error: function (err) {
+             Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: err.statusText,
+              });
+           }
+      });
     }
-    function mark_sent() {
-      console.log('a2');
+    //Marcar como enviada
+    function mark_sent(e){
+      var valor= e.getAttribute('value');
+      var _token = $('meta[name="csrf-token"]').attr('content');
+      var folio = e.getAttribute('datas');
+      Swal.fire({
+      title: '¿Estás seguro?',
+      text: "Se marcara como enviada, la factura con folio: "+folio,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.value) {
+          $.ajax({
+               type: "POST",
+               url: '/sales/customer-credit-notes/mark-sent',
+               data: {token_b : valor, _token : _token},
+               success: function (data) {
+                if(data.status == 200){
+                  Swal.fire('Operación completada!', '', 'success')
+                  .then(()=> {
+                    location.href ="/sales/customer-credit-notes-show";
+                  });
+                }
+                else {
+                  Swal.fire({
+                     type: 'error',
+                     title: 'Oops... Error: '+data.status,
+                     text: 'El recurso no se ha modificado, por el motivo que ya esta marcada como enviada',
+                  });
+                }
+               },
+               error: function (err) {
+                 Swal.fire({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: err.statusText,
+                  });
+               }
+           })
+        }
+      });
     }
     function link_status_sat() {
       console.log('a3');
     }
     function mark_open() {
-      console.log('a4');
+      var valor= e.getAttribute('value');
+      var _token = $('meta[name="csrf-token"]').attr('content');
+      var folio = e.getAttribute('datas');
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Se marcara como abierta, la factura con folio: "+folio,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.value) {
+            $.ajax({
+              type: "POST",
+              url: '/sales/customer-credit-notes/mark-open',
+              data: {token_b : valor, _token : _token},
+              success: function (data) {
+                if(data.status == 200){
+                  Swal.fire('Operación completada!', '', 'success')
+                  .then(()=> {
+                    location.href ="/sales/customer-credit-notes-show";
+                  });
+                }
+                else {
+                  Swal.fire({
+                     type: 'error',
+                     title: 'Oops... Error: '+data.status,
+                     text: 'El recurso no se ha modificado, por el motivo que ya esta marcada como enviada',
+                  });
+                }
+              },
+              error: function (err) {
+                Swal.fire({
+                   type: 'error',
+                   title: 'Oops...',
+                   text: err.statusText,
+                 });
+              }
+            })
+         }
+      });
     }
     function mark_reconciled() {
-      console.log('a5');
+      var valor= e.getAttribute('value');
+      var _token = $('meta[name="csrf-token"]').attr('content');
+      var folio = e.getAttribute('datas');
+      Swal.fire({
+      title: '¿Estás seguro?',
+      text: "Se marcara como abierta, la factura con folio: "+folio,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.value) {
+          $.ajax({
+            type: "POST",
+            url: '/sales/customer-credit-notes/mark-reconciled',
+            data: {token_b : valor, _token : _token},
+            success: function (data) {
+              if(data.status == 200){
+                Swal.fire('Operación completada!', '', 'success')
+                .then(()=> {
+                  location.href ="/sales/customer-credit-notes-show";
+                });
+              }
+              else {
+                Swal.fire({
+                   type: 'error',
+                   title: 'Oops... Error: '+data.status,
+                   text: 'El recurso no se ha modificado, por el motivo que ya esta marcada como enviada',
+                });
+              }
+            },
+            error: function (err) {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Oops...',
+                 text: err.statusText,
+               });
+            }
+          })
+       }
+     });
     }
+
     function link_cancel() {
       console.log('a6');
     }
