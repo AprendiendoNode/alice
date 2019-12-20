@@ -288,7 +288,7 @@ $(".validation-wizard-anexo").on('change','#sel_master_to_anexo',function(){
   var service = $("#sel_anexo_service").val();
   var vertical = $("#sel_anexo_vertical").val();
   var cadena = $("#sel_anexo_cadenas").val();
-  var key = $("#sel_master_to_anexo option:selected").text();
+  var key = $("#sel_master_to_anexo").val();
 
   $('#sel_anexo').empty().append('<option selected="selected" value="test">Elegir</option>');
   get_ids_anexos(service, vertical, cadena, key);
