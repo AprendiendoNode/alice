@@ -660,10 +660,10 @@ class CustomerComplementController extends Controller
       * @return array|\CfdiUtils\Elements\Cfdi33\Concepto|float|int
       * @throws \Exception
       */
-     private function cfdi33(CustomerInvoice $customer_invoice)
+     private function cfdi33(CustomerInvoice $customer_invoice,$complement_gral,$complements_array)
      {
 
-       info($customer_invoice);
+       //info($customer_invoice);
 
          try {
              //Logica
@@ -681,7 +681,7 @@ class CustomerComplementController extends Controller
              $cfdi33['FormaPago'] = $customer_invoice->paymentWay->code;
              $cfdi33['NoCertificado'] = $company->certificate_number;
              //$cfdi33['Certificado']
-             //$cfdi33['CondicionesDePago'] = $customer_invoice->paymentTerm->name; CAUSA ERROR EN COMPLEMENTO
+             //$cfdi33['CondicionesDePago'] = $customer_invoice->paymentTerm->name; NO SE USA EN COMPLEMENTO DE PAGO Y CAUSA ERROR EN COMPLEMENTO
              $cfdi33['SubTotal'] = Helper::numberFormat($customer_invoice->amount_untaxed + $customer_invoice->amount_discount,
                  $customer_invoice->currency->decimal_place, false);
              if($customer_invoice->amount_discount>0) {
@@ -695,7 +695,7 @@ class CustomerComplementController extends Controller
              $cfdi33['Total'] = Helper::numberFormat($customer_invoice->amount_total,
                  $customer_invoice->currency->decimal_place, false);
              $cfdi33['TipoDeComprobante'] = $customer_invoice->documentType->cfdiType->code;
-             //$cfdi33['MetodoPago'] = $customer_invoice->paymentMethod->code; CAUSA ERROR EN COMPLEMENTO
+             //$cfdi33['MetodoPago'] = $customer_invoice->paymentMethod->code; NO SE USA EN COMPLEMENTO DE PAGO Y CAUSA ERROR EN COMPLEMENTO
              $cfdi33['LugarExpedicion'] = $customer_invoice->branchOffice->postcode;
              if (!empty($customer_invoice->confirmacion)) {
                  $cfdi33['Confirmacion'] = $customer_invoice->confirmacion;
@@ -725,7 +725,9 @@ class CustomerComplementController extends Controller
                  $cfdi33_receptor['ResidenciaFiscal'] = $customer_invoice->customer->country->code;
                  $cfdi33_receptor['NumRegIdTrib'] = $customer_invoice->customer->numid;
              }
-             //$cfdi33_receptor['UsoCFDI'] = $customer_invoice->cfdiUse->code; CAUSA ERROR EN COMPLEMENTO
+             //$cfdi33_receptor['UsoCFDI'] = $customer_invoice->cfdiUse->code; //VERIFICAR
+             $usocfdi=CfdiUse::Select('code')->Where('name','Por definir')->get(); //VERIFICAR
+             $cfdi33_receptor['UsoCFDI'] = $usocfdi[0]->code;
              //---Conceptos
              $cfdi33_conceptos = [];
              $cfdi33_conceptos_traslados = [];
@@ -882,7 +884,7 @@ class CustomerComplementController extends Controller
             'FechaPago'=>"19-12-2019 07:59:24",
             'FormaDePagoP'=>"03",
             'MonedaP'=>"MXN",
-            'Monto'=>"116.00",
+            'Monto'=>"50.00",
             'NumOperacion'=>"TEST12",
             ]));
 
@@ -1457,6 +1459,11 @@ class CustomerComplementController extends Controller
       \DB::beginTransaction();
 
       try {
+
+        //info($request);
+        //info(json_decode($request->item_relation)[0]);
+        //Cfdi relacionados
+
         //Logica
         $request->merge(['created_uid' => \Auth::user()->id]);
         $request->merge(['updated_uid' => \Auth::user()->id]);
@@ -1523,24 +1530,27 @@ class CustomerComplementController extends Controller
         ]);
 
         //Guardar impuestos por linea
-        if (!empty($item['taxes'])) {
+        /*if (!empty($item['taxes'])) {
             $customer_invoice_line->taxes()->sync($item['taxes']);
         } else {
             $customer_invoice_line->taxes()->sync([]);
-        }
+        } */
 
-        //Cfdi relacionados
+        //Cfdi relacionados LISTO
         if (!empty($request->item_relation)) {
+          foreach (json_decode($request->item_relation) as $key => $result) {
           $customer_invoice_relation = CustomerInvoiceRelation::create([
               'created_uid' => \Auth::user()->id,
               'updated_uid' => \Auth::user()->id,
               'customer_invoice_id' => $customer_invoice->id,
-              'relation_id' => $request->item_relation,
-              'sort_order' => 1,
+              'relation_id' => $result[0],
+              'sort_order' => $key,
               'status' => 1,
           ]);
-        }
 
+        }
+        }
+        info(json_decode($request->item_relation)[0][8]);
         //Registros de cfdi
         $customer_invoice_cfdi = CustomerInvoiceCfdi::create([
             'created_uid' => \Auth::user()->id,
@@ -1555,9 +1565,72 @@ class CustomerComplementController extends Controller
         $customer_invoice->amount_untaxed = $amount_subtotal;
         $customer_invoice->amount_tax = $amount_tax;
         $customer_invoice->amount_tax_ret = $amount_tax_ret;
-        $customer_invoice->amount_total = $amount_total;
-        $customer_invoice->balance = $amount_total;
+        $customer_invoice->amount_total = $amount_total; //VERIFICAR
+        $customer_invoice->balance = $amount_total; //VERIFICAR
         $customer_invoice->update();
+
+        //Registro general de los complementos
+        $complement_gral_id=DB::table('customer_invoice_complements_gral')->insertGetId(
+          ['formapago_id'   => $request->payment_way_id,
+           'montototal' => $request->mount_pagado,
+           'currency_id'   => json_decode($request->item_relation)[0][8],//$customer_invoice->currency_id por alguna razon currency_id no funciono, le pase directo el de uno de los contratos porque todos son la misma moneda hasta ahora.
+           'numoperacion'   => 'test',
+           'fecha_pago'   => $request->date,
+           'created_uid'   => \Auth::user()->id,
+           'updated_uid'   => \Auth::user()->id,
+           'created_at'   => Carbon::Now(),
+           'updated_at'   => Carbon::Now(),
+         ]
+        );
+
+        //info($complement_gral);
+        //Verificamos que existan complementos
+        if (!empty($request->item_relation)) {
+          $i=0;
+          //Recorremos todos los complementos
+          foreach (json_decode($request->item_relation) as $key => $result) {
+
+          //Pasos a seguir
+          $cantidadpagada=json_decode($request->cantidades_pagadas);//Transformar los saldos en array para recorrerlo
+
+          //Consultar parcialidad
+          $parcialidad=DB::table('customer_invoice_line_complements')->select('noparcialidad')->where('uuid',$result[3])->orderBy('id','desc')->limit(1)->get();
+          if(count($parcialidad)==0){
+          $numero= 1;
+          }else{
+          $numero= $parcialidad[0]->noparcialidad+1;
+          }
+          //Registros de complementos individualmente
+          DB::table('customer_invoice_line_complements')->insert(
+            [
+             'customer_invoice_line_id'   => $customer_invoice_line->id,
+             'name' => '',
+             'sort_order' => 1,
+             'status'   => 1,
+             'importepagado'   => $cantidadpagada[$i],//Pagado en ese complemento de pago
+             'importesaldoant'   => $result[5],//Saldo anterior
+             'importesaldoIns'   => ($result[5]-$cantidadpagada[$i]), //Saldo insoluto = saldo - cantidad pagada
+             'payment_method_id'   => $request->formapago_id,
+             'currency_id'   => $result[8], //Moneda utilizada
+             'noparcialidad'   => $numero,
+             'uuid'   => $result[3],
+             'folio'   => 0,
+             'cust_comp_gral_id'=>$complement_gral_id,
+             'created_uid'   => \Auth::user()->id,
+             'updated_uid'   => \Auth::user()->id,
+             'created_at'   => Carbon::Now(),
+             'updated_at'   => Carbon::Now(),
+           ]
+          );
+
+          CustomerInvoice::where('id',$result[0])->update(['balance'=>($result[5]-$cantidadpagada[$i])]);//Actualiza el saldo(balance).
+          //substr($result[6],0,3), //Toma los 3 primeros carácteres del tipo de moneda ej. "MXN - Peso Me.." solo tomaria "MXN"
+          $i++;
+        }
+      }
+        // Pasamos los complementos a un array para enviarlo al método Cfdi33
+        $complement_gral = DB::Table('customer_invoice_complements_gral')->where('id',$complement_gral_id)->get();
+        $complements_array=json_decode($request->item_relation);
 
         $class_cfdi = setting('cfdi_version');
 
@@ -1573,7 +1646,7 @@ class CustomerComplementController extends Controller
         PacHelper::validateSatActions();
 
         //Crear XML y timbra
-        $tmp = $this->$class_cfdi($customer_invoice);
+       $tmp = $this->$class_cfdi($customer_invoice,$complement_gral,$complements_array); //Comentado temporalmente
         //Guardar registros de CFDI
         $customer_invoice_cfdi->fill(array_only($tmp,[
             'pac_id',

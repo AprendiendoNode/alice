@@ -294,6 +294,8 @@ var datafactura, datafactura_total, datafactura_saldo, cantidades_pagadas;
       rowfactura[4]=parseFloat(data[index].total);
       rowfactura[5]=parseFloat(data[index].saldo);
       rowfactura[6]=data[index].currencies;
+      rowfactura[7]=data[index].folio;
+      rowfactura[8]=data[index].currency_id;
 
       datafactura.push(rowfactura);
       cantidades_pagadas.push(0);
@@ -449,7 +451,7 @@ var datafactura, datafactura_total, datafactura_saldo, cantidades_pagadas;
   $('#send_complement').on('click',function(){
     var _token = $('input[name="_token"]').val();
     var form = $('#form_c')[0];
-    var formData = new FormData(form);
+    var formData = new FormData(form);    
     formData.append("item_relation",JSON.stringify(datafactura));
     formData.append("cantidades_pagadas",JSON.stringify(cantidades_pagadas));
     formData.append("date_due","27-12-2019");
