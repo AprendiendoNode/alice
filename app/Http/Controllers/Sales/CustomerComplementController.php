@@ -1587,6 +1587,7 @@ class CustomerComplementController extends Controller
         //Verificamos que existan complementos
         if (!empty($request->item_relation)) {
           $i=0;
+          $complements_array= [];
           //Recorremos todos los complementos
           foreach (json_decode($request->item_relation) as $key => $result) {
 
@@ -1601,7 +1602,7 @@ class CustomerComplementController extends Controller
           $numero= $parcialidad[0]->noparcialidad+1;
           }
           //Registros de complementos individualmente
-          DB::table('customer_invoice_line_complements')->insert(
+          $rowid=DB::table('customer_invoice_line_complements')->insertGetId(
             [
              'customer_invoice_line_id'   => $customer_invoice_line->id,
              'name' => '',
@@ -1624,13 +1625,16 @@ class CustomerComplementController extends Controller
           );
 
           CustomerInvoice::where('id',$result[0])->update(['balance'=>($result[5]-$cantidadpagada[$i])]);//Actualiza el saldo(balance).
+
+          $RowComplement=DB::Table('customer_invoice_line_complements')->where('id',$rowid)->get();
+          $complements_array[$i]=$RowComplement[0];
+          //info($complements_array);
           //substr($result[6],0,3), //Toma los 3 primeros carácteres del tipo de moneda ej. "MXN - Peso Me.." solo tomaria "MXN"
           $i++;
         }
       }
         // Pasamos los complementos a un array para enviarlo al método Cfdi33
         $complement_gral = DB::Table('customer_invoice_complements_gral')->where('id',$complement_gral_id)->get();
-        $complements_array=json_decode($request->item_relation);
 
         $class_cfdi = setting('cfdi_version');
 
