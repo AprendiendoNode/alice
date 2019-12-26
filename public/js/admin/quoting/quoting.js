@@ -768,61 +768,61 @@ $(".validation-wizard-master").steps({
         }
     },
     rules: {
-      type_service: {
-        required: true
-      },
-      vertical: {
-        required: true
-      },
-      itc: {
-        required: true
-      },
-      servicio: {
-        required: true,
-        min: 1
-      },
-      plazo: {
-        required: true,
-        min: 1
-      },
-      densidad: {
-        required:true,
-        min: 1
-      },
-      comercial: {
-        required: true
-      },
-      lugar_instalacion: {
-        required: true
-      },
-      tipo_cambio: {
-        required: true
-      },
-      credito_mensual_percent:{
-        required: true,
-        min: 1
-      },
-      gasto_mtto_percent: {
-        required: true
-      },
-      capex: {
-        required: true
-      },
-      instalaciones: {
-        required: true
-      },
-      renta: {
-        required: true
-      },
-      indirectos: {
-        required: true
-      },
-      utilidad: {
-        required: true
-      },
-      deposito: {
-        required: true
-      }
+      // type_service: {
+      //   required: true
+      // },
+      // vertical: {
+      //   required: true
+      // },
+      // itc: {
+      //   required: true
+      // },
+      // servicio: {
+      //   required: true,
+      //   min: 1
+      // },
+      // plazo: {
+      //   required: true,
+      //   min: 1
+      // },
+      // densidad: {
+      //   required:true,
+      //   min: 1
+      // },
+      // comercial: {
+      //   required: true
+      // },
+      // lugar_instalacion: {
+      //   required: true
+      // },
+      // tipo_cambio: {
+      //   required: true
+      // },
+      // credito_mensual_percent:{
+      //   required: true,
+      //   min: 1
+      // },
+      // gasto_mtto_percent: {
+      //   required: true
+      // },
+      // capex: {
+      //   required: true
+      // },
+      // instalaciones: {
+      //   required: true
+      // },
+      // renta: {
+      //   required: true
+      // },
+      // indirectos: {
+      //   required: true
+      // },
+      // utilidad: {
+      //   required: true
+      // },
+      // deposito: {
+      //   required: true
+      // }
     },
 
 })

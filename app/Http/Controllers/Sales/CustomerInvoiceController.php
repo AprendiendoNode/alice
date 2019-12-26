@@ -201,6 +201,10 @@ class CustomerInvoiceController extends Controller
     }
     public function search_view_contracts(Request $request)
     {
+        $date = str_replace('/', '-', $request->date_search);
+        $month= date("Y-m-d", strtotime($date));
+        
+        //dd($month);
         $moneda = $request->currency_id;
         $result = DB::select('CALL px_contract_annexes_quantity (?)', array($moneda));
         return json_encode($result);
@@ -2122,9 +2126,7 @@ class CustomerInvoiceController extends Controller
       $facturar_salesperson = $request->salesperson_id;
       $facturar_brand_office = $request->branch_office_id;
       $facturar_refence = !empty($request->reference) ? $request->reference : '';
-      $facturar_description = $request->description;
       $facturar_desc_month = $request->description_month;
-      $facturar_desc_all = $facturar_description.' '.$facturar_desc_month;
 
       $facturar_currency = $request->currency_id;
       $facturar_value_tc = $request->currency_value;
@@ -2142,12 +2144,13 @@ class CustomerInvoiceController extends Controller
           $order = 1;
           for ($i=0; $i <= (count($contract_id)-1); $i++) {
             $all_information_anexos = DB::select('CALL px_contract_annexes_data (?)', array($contract_id[$i]));
+            
             $facturar_pay_term = $all_information_anexos[0]->payment_term_id;
             $facturar_pay_way = $all_information_anexos[0]->payment_way_id;
             $facturar_pay_met = $all_information_anexos[0]->payment_method_id;
             $facturar_cfdi_use = $all_information_anexos[0]->cfdi_user_id;
             $facturar_unit_measure = $all_information_anexos[0]->unit_measure_id;
-
+            $anexo_id = $all_information_anexos[0]->id;
             //Fix valida si la fecha de vencimiento esta vacia en caso de error
             $payment_term = PaymentTerm::findOrFail($all_information_anexos[0]->payment_term_id);
             $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
@@ -2220,11 +2223,11 @@ class CustomerInvoiceController extends Controller
 
             //Guardar linea -- Por cada anexo de contrato
             $customer_invoice_line = CustomerInvoiceLine::create([
-                'created_uid' => \Auth::user()->id,
-                'updated_uid' => \Auth::user()->id,
+                'created_uid' => Auth::user()->id,
+                'updated_uid' => Auth::user()->id,
                 'customer_invoice_id' => $customer_invoice->id,
-                'name' => $facturar_desc_all,
-                'contract_annex_id' => $all_information_anexos[0]->id,
+                'name' => $all_information_anexos[0]->description_fact . ' ' . $facturar_desc_month,
+                'contract_annex_id' => $anexo_id,
                 'sat_product_id' => $all_information_anexos[0]->sat_product_id,
                 'unit_measure_id' => $all_information_anexos[0]->unit_measure_id,
                 'quantity' => $item_quantity,
@@ -2243,8 +2246,8 @@ class CustomerInvoiceController extends Controller
             ]);
             //Registros de cfdi
             $customer_invoice_cfdi = CustomerInvoiceCfdi::create([
-                'created_uid' => \Auth::user()->id,
-                'updated_uid' => \Auth::user()->id,
+                'created_uid' => Auth::user()->id,
+                'updated_uid' => Auth::user()->id,
                 'customer_invoice_id' => $customer_invoice->id,
                 'name' => $customer_invoice->name,
                 'status' => 1,

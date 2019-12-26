@@ -63,21 +63,21 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Busqueda de contratos en base a su moneda</h5>
-              <form id="search_info" name="search_info" method="post">
+              <form id="search_info" name="search_info" method="post" class="form-inline">
                 {{ csrf_field() }}
                 <div class="row">
-                  <div class="col">
+                  <div class="form-group">
+                    <label for="date_search">Fecha:<span style="color: red;">*</span></label>
+                    <input type="text" class="form-control form-control-sm date_search" id="date_search" name="date_search">
                       <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
-                      <select id="currency_id" name="currency_id" class="form-control form-control-sm required" style="width:100%;">
+                      <select id="currency_id" name="currency_id" class="form-control form-control-sm required">
                         <option value="">{{ trans('message.selectopt') }}</option>
                         @forelse ($currency as $currency_data)
                           <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
                         @empty
                         @endforelse
                       </select>
-                  </div>
-                  <div class="col my-2">
-                    <button type="submit" class="btn btn-danger mt-3">Generar</button>
+                      <button type="submit" class="btn btn-danger mt-3">Generar</button>
                   </div>
                 </div>
               </form>
@@ -139,12 +139,12 @@
                   </div>
                   <div class="col-md-12 col-xs-12">
                     <div class="form-group">
-                      <label for="description">Descripción de facturación:</label>
+                      <label for="description">Mes de facturación:</label>
                       <div class="input-group input-group-sm mb-5">
-                        <input type="text" class="form-control" name="description" name="description" value="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS">
+                        {{-- <input type="text" class="form-control" name="description" name="description" value="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS">
                         <div class="input-group-prepend input-group-append">
                           <span class="input-group-text">-</span>
-                        </div>
+                        </div> --}}
                         <input type="text" class="form-control" name="description_month" name="description_month">
                       </div>
                     </div>
@@ -230,7 +230,7 @@
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
 
-    <script src="{{ asset('js/admin/sales/fact_masiva_clon.js')}}"></script>
+    <script src="{{ asset('js/admin/sales/fact_masiva_clon.js?v=2.0')}}"></script>
 
     <style>
       #table_contracts td, #table_contracts th{

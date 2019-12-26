@@ -547,15 +547,7 @@ $(function () {
   })
 
   $("#get_viatics_button").on("click",function(e){
-    
-    var data_aps = get_aps();
-    var aps = JSON.stringify(data_aps[0]);
-    var api = data_aps[1];
-    var ape = data_aps[2];
-
-    url = `/items/ajax/five/${api}/${ape}`;
-    getArticlesViatics(url);
-
+    update_viaticos();
   })
 
   $("#get_categorias_button").on("click",function(e){
@@ -638,6 +630,50 @@ function getArticlesManoObra(url) {
     }).fail(function () {
         swal("Debe llenar las cantidades de los equipos","","warning");
     });
+}
+
+function update_viaticos(){
+
+  var num_aps = 0;
+  var productos = obtenerProductosLocalStorage();
+    //Filtro de antenas
+  var products_aps = productos.filter(producto =>
+                     producto.codigo.substring(0, 3) == 'API' || producto.codigo.substring(0, 3) == 'APE');
+    
+    var viaticos_products = productos.filter(producto => producto.categoria_id == 15);
+    /* Si es mayor a 0 significa que hay aps
+       parte del usuario y se procede a recalcular las cantidades */
+    if(products_aps.length > 0){
+      $.each(products_aps, function( i, key ) {
+        num_aps += key.cant_req;
+      })
+
+      new_products =  productos.filter(producto => producto.categoria_id != 15);
+      localStorage.setItem('productos', JSON.stringify(new_products));
+
+      $.ajax({
+        url :  `/items/ajax/five/0/${num_aps}`
+      }).done(function (data) {
+        var productosLS = obtenerProductosLocalStorage();
+          data.forEach(element => {
+            var productosLS = obtenerProductosLocalStorage();
+            var id_product = element.id;
+            if(productosLS == '[]'){
+              //Primer producto del carrito
+              leerDatosProductMO(element);
+            }else {
+              let count =  productosLS.filter(producto => producto.id == id_product);
+              (count.length == 1) ? console.log("producto existe") : leerDatosProductMO(element);
+            }
+          })
+            menssage_toast('Mensaje', '4', 'Viaticos actualizados' , '2000');
+          }).fail(function () {
+              Swal.fire("Ocurrio un error al actualizar mano de obra","","error");
+          });//Fin funcion ajax
+
+      }else{
+        Swal.fire("El proyecto no tiene antenas","Agrega AP'S y vuelve a intentarlo","warning");
+      }
 }
 
   function getArticlesViatics(url) {

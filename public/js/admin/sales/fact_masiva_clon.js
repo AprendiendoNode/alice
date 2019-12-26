@@ -61,6 +61,11 @@ $(function(){
   }, function (chosen_date) {
       $("#form input[name='date_due']").val(chosen_date.format("DD-MM-YYYY"));
   });
+  /////////////////////////////////////////////////\
+  $('#date_search').daterangepicker({
+    singleDatePicker: true,
+    showDropdowns: true,
+});
   //-----------------------------------------------------------
   $("#search_info").validate({
     ignore: "input[type=hidden]",
