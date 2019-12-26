@@ -937,7 +937,7 @@
             timePicker: true,
             timePicker24Hour: true,
             showDropdowns: true,
-            minDate: moment(),
+            minDate: moment().subtract(4, 'months'),
             maxDate : moment().add(3, 'days'),
             locale: {
                 format: "DD-MM-YYYY HH:mm:ss"
@@ -950,7 +950,7 @@
         $("#form input[name='date_due']").daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
-            minDate: moment(),
+            minDate: moment().subtract(4, 'months'),
             locale: {
                 format: "DD-MM-YYYY"
             },

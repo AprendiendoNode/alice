@@ -302,7 +302,7 @@
                                         class="text-right">
                                         Total
                                     </th>
-                                    <th width="3%"
+                                    <th width="6%"
                                         class="text-right">
                                         TC Usado
                                     </th>
@@ -645,10 +645,10 @@
         moment.locale('es'); //anadir
 
 		var check_group_sites = document.getElementById("check_group_sites");
-		
+
         check_group_sites.addEventListener('click', (e) => {
 			var contract_master = $('#cont_maestro_id').val();
-			
+
 			if(contract_master == '' || contract_master == null){
 				Swal.fire('Seleccione un contrato maestro','','warning');
 			}else{
@@ -667,7 +667,7 @@
 				$("#items tbody").append(html);
 				getDataContractAnnexes();
 			}
-			
+
         });
 
     //-----------------------------------------------------------
@@ -721,7 +721,7 @@
               var check_group_sites = document.getElementById("check_group_sites");
               if(check_group_sites.checked == true){
                 group_sites = 1;
-              }  
+              }
               var form = $('#form')[0];
               var formData = new FormData(form);
               formData.append('group_sites', group_sites);
@@ -734,7 +734,7 @@
                 processData: false,
                 success: function (data){
                   if (data == 'success') {
-                    
+
                     let timerInterval;
                     Swal.fire({
                       type: 'success',
@@ -758,7 +758,7 @@
                         window.location.href = "/sales/customer-invoices-cont";
                       }
                     });
-                    
+
                   }
                   if (data == 'false') {
                     Swal.fire({
@@ -842,8 +842,10 @@
       $(document).on("change", "#form #items tbody .col-taxes", function () {
           totalItem();
       });
-      $(document).on("keyup", "#form #items tbody .col-quantity,#form #items tbody .col-price-unit,#form #items tbody .col-discount", function () {
-          totalItem();
+      $(document).on("keyup", "#form #items tbody .col-quantity,#form #items tbody .col-price-unit,#form #items tbody .col-discount,#form #items tbody .col-exchange", function () {
+        setTimeout(function () {
+            totalItem();
+        }, 1500);
       });
       $('#currency_id').on("change", function(){
         var valor = $(this).val();
@@ -881,12 +883,12 @@
             data: $("#form").serialize(),
             success: function (data) {
                 if (data) {
-                    console.log(data);
+                    //console.log(data);
                     $.each(data.items, function (key, value) {
                         $("#item_txt_amount_untaxed_" + key).html(value);
                     });
                     $.each(data.tc_used, function (key, value) {
-                        $("#exchange_rate_applied" + key).html(value);
+                        $("#exchange_rate_applied" + key).val(value);
                     });
                     // $("#form #txt_amount_untaxed").html(data.amount_untaxed);
                     $("#form #txt_amount_untaxed").html(data.amount_subtotal);
@@ -913,7 +915,7 @@
             timePicker: true,
             timePicker24Hour: true,
             showDropdowns: true,
-            minDate: moment(),
+            minDate: moment().subtract(4, 'months'),
             maxDate : moment().add(3, 'days'),
             locale: {
                 format: "DD-MM-YYYY HH:mm:ss"
@@ -926,7 +928,7 @@
         $("#form input[name='date_due']").daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
-            minDate: moment(),
+            minDate: moment().subtract(4, 'months'),
             locale: {
                 format: "DD-MM-YYYY"
             },
@@ -1150,14 +1152,14 @@
                  });
                  $("select[name='cont_maestro_id']").val('');
               }
-              else {          
+              else {
                 //Si no esta seleccionado la opcion de agrupar sitio se depliegan todos los anexos
                 if(check != true){
                   data.forEach(function(key,i) {
                     var html = '';
                     var current_unit= key.unit_measure_id;
                     var current_sat = key.sat_product_id;
-                    
+
                     html += '<tr id="item_row_' + item_row + '">';
                     html += '<td class="text-center" style="vertical-align: middle;">';
                     html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
@@ -1183,7 +1185,7 @@
                     html += '</div>';
                     html += '</td>';
 
-                    var text_description = key.description_fact +' '+fecha3;
+                    var text_description = key.description_fact +' '+fecha3+' '+key.sitio;
                     html += '<td>';
                     html += '<div class="form-group form-group-sm">';
                     html += '<textarea class="form-control form-control-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="4" autocomplete="off" >';
@@ -1276,8 +1278,10 @@
                     html += '<span id="item_txt_amount_untaxed_' + i + '">0</span>';
                     html += '</td>';
 
-                    html += '<td class="text-right" style="padding-top: 11px;">';
-                    html += '<span id="exchange_rate_applied' + item_row + '">0</span>';
+                    html += '<td>';
+                    html += '<div class="form-group form-group-md">';
+                    html += '<input type="number" class="form-control  text-center col-exchange" style="width:10vw" name="item[' + item_row + '][exchange]" id="exchange_rate_applied' + item_row + '"/>';
+                    html += '</div>';
                     html += '</td>';
 
                     html += '</tr>';
@@ -1296,7 +1300,7 @@
 					var html = '';
                     var current_unit= data[0].unit_measure_id;
                     var current_sat = data[0].sat_product_id;
-    
+
                     html += '<tr id="item_row_' + item_row + '">';
                     html += '<td class="text-center" style="vertical-align: middle;">';
                     html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
@@ -1414,16 +1418,18 @@
                     html += '<span id="item_txt_amount_untaxed_' + 0 + '">0</span>';
                     html += '</td>';
 
-                    html += '<td class="text-right" style="padding-top: 11px;">';
-                    html += '<span id="exchange_rate_applied' + item_row + '">0</span>';
+                    html += '<td>';
+                    html += '<div class="form-group form-group-md">';
+                    html += '<input type="number" class="form-control  text-center col-exchange"  name="item[' + item_row + '][exchange]" id="exchange_rate_applied' + item_row + '"/>';
+                    html += '</div>';
                     html += '</td>';
 
                     html += '</tr>';
                     $("#form #items tbody #add_item").before(html);
                     /* Configura lineas*/
-                    $("#item_current_"+item_row+" option[value='" + data[0].currency_id +"']").attr('selected', true);		
+                    $("#item_current_"+item_row+" option[value='" + data[0].currency_id +"']").attr('selected', true);
 				}
-                
+
                 initItem();
                 totalItem();
               }
@@ -1434,7 +1440,7 @@
         });
 
 	  }
-	  
+
 	  // Funciones para cuentas contables dinamicas.
         /*var select2_options = {
               theme: "bootstrap",
@@ -1688,7 +1694,7 @@
         });*/
       //
 
-      
+
   </script>
 
   <style media="screen">

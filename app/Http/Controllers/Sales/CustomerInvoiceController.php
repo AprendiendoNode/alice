@@ -271,6 +271,9 @@ class CustomerInvoiceController extends Controller
                $item_quantity = (double)$item['quantity'];
                $item_price_unit = (double)$item['price_unit'];
                $item_discount = (double)$item['discount'];
+               if(isset($item['exchange'])){
+                 $input_currency_value=(double)$item['exchange'];
+               }
 
                $item_subtotal_quantity = round($item_price_unit * $item_quantity, 2);
 
@@ -312,8 +315,12 @@ class CustomerInvoiceController extends Controller
                }
                elseif ( $item['current'] != $currency_id) {
                  if ( $item['current'] === '2') { //ES DOLAR
+                   if(empty($input_currency_value) || $input_currency_value==1 ){
                    $current_select_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
-                   $currency_value = $current_select_rate->current_rate;
+                   $currency_value = $current_select_rate->current_rate;}
+                   else{
+                     $currency_value=$input_currency_value;
+                   }
                    $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $currency_id)->value('code_banxico');
                    $item_amount_tax = $item_amount_tax * $currency_value;
                    $item_amount_tax_ret = $item_amount_tax_ret * $currency_value;
@@ -326,7 +333,11 @@ class CustomerInvoiceController extends Controller
                    $items_tc [$key] =$currency_value;//ALMACENO TIPO CAMBIO
                  }
                  else { //moneda distinta
-                   $currency_value = DB::table('currencies')->select('rate')->where('id', $item['current'])->value('rate');
+                   if(empty($input_currency_value)){
+                  $currency_value = DB::table('currencies')->select('rate')->where('id', $item['current'])->value('rate');
+                  }else{
+                  $currency_value=$input_currency_value;
+                  }
                    $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item['current'])->value('code_banxico');
                    if ($currency_id === '2') { //SI LA MONEDA SELECCIONADA ES DOLAR
                       $item_amount_total = $item_amount_total/$resp_currency_value;
@@ -1016,7 +1027,8 @@ class CustomerInvoiceController extends Controller
                  //Tipo de cambio
                  $item_currency_id = $item['current'];
                  $item_currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item_currency_id)->value('code_banxico');
-                 $item_currency_value = $currency_pral_value;
+                 //$item_currency_value = $currency_pral_value;
+                 $item_currency_value = $item['exchange'];;
                  //--------------------------------------------------------------------------------------------------------------------------//
                  //Moneda principal es dolar
                  if ($currency_pral_id == '2') {
@@ -1024,16 +1036,16 @@ class CustomerInvoiceController extends Controller
                      $item_currency_value = $currency_pral_value; //Tipo de cambio a usar
                    }
                    else {
-                     $item_currency_value = $currency_pral_value; //Tipo de cambio a usar
+                     //$item_currency_value = $currency_pral_value; //Tipo de cambio a usar
                      //Tranformamos a dolar
-                     $item_amount_tax = $item_amount_tax / $item_currency_value;
-                     $item_amount_total = $item_amount_total / $item_currency_value;
-                     $item_subtotal = $item_subtotal / $item_currency_value;
-                      $item_subtotal_clean = $item_subtotal_clean / $item_currency_value;
-                      $item_discount_clean = $item_discount_clean / $item_currency_value;
+                     $item_amount_tax = $item_amount_tax / $currency_pral_value;
+                     $item_amount_total = $item_amount_total / $currency_pral_value;
+                     $item_subtotal = $item_subtotal / $currency_pral_value;
+                      $item_subtotal_clean = $item_subtotal_clean / $currency_pral_value;
+                      $item_discount_clean = $item_discount_clean / $currency_pral_value;
                       foreach ($taxes as $tax_id => $result) {
-                        $taxes[$tax_id]['amount_base'] = $result['amount_base'] / $item_currency_value;
-                        $taxes[$tax_id]['amount_tax'] = $result['amount_tax'] / $item_currency_value;
+                        $taxes[$tax_id]['amount_base'] = $result['amount_base'] / $currency_pral_value;
+                        $taxes[$tax_id]['amount_tax'] = $result['amount_tax'] / $currency_pral_value;
                       }
                    }
                  }
@@ -1041,7 +1053,7 @@ class CustomerInvoiceController extends Controller
                  else {
                    if ($item_currency_id == '2') { //bien
                      $exchange_rates = DB::table('exchange_rates')->select('current_rate')->latest()->first();
-                     $item_currency_value = $exchange_rates->current_rate; //Tipo de cambio a usar
+                     //$item_currency_value = $exchange_rates->current_rate; //Tipo de cambio a usar
                      //Tranformamos a dolar
                      $item_amount_tax = $item_amount_tax * $item_currency_value;
                      $item_amount_total = $item_amount_total * $item_currency_value;
@@ -1055,7 +1067,7 @@ class CustomerInvoiceController extends Controller
 
                    }
                    else {
-                     $item_currency_value = DB::table('currencies')->select('rate')->where('id', $item_currency_id)->value('rate');
+                     //$item_currency_value = DB::table('currencies')->select('rate')->where('id', $item_currency_id)->value('rate');
                      //Tranformamos al valor de la moneda seleccionada
                      $item_amount_tax = $item_amount_tax * $item_currency_value;
                      $item_amount_total = $item_amount_total * $item_currency_value;
