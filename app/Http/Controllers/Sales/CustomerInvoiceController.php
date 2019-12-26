@@ -203,10 +203,8 @@ class CustomerInvoiceController extends Controller
     {
         $date = str_replace('/', '-', $request->date_search);
         $month= date("Y-m-d", strtotime($date));
-        
-        //dd($month);
         $moneda = $request->currency_id;
-        $result = DB::select('CALL px_contract_annexes_quantity (?)', array($moneda));
+        $result = DB::select('CALL px_contract_annexes_quantity (?, ?)', array($moneda, $month));
         return json_encode($result);
     }
     public function view_contracts_info(Request $request)
