@@ -7,12 +7,11 @@ $(function(){
 
   $dt.on('change', 'tbody input', function() {
     let info = $dt.DataTable().row($(this).closest('tr')).data();
-    let total = parseFloat($total.val());
+    let total = parseFloat($total.val().replace(/,/g, ""));
     let price = parseFloat(info[5]);
+    total += this.checked ? price :  (0 - price);
 
-    total += this.checked ? price : price * -1;
-
-    $total.val(total);
+    $total.val(total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
   });
   $dt.on('change', 'thead input', function (evt) {
     let checked = this.checked;
@@ -21,7 +20,9 @@ $(function(){
 
     $dt.DataTable().data().each(function (info) {
       // var txt = info[0];
+  
       if (checked) {
+        
         total += parseFloat(info[5]);
         // txt = txt.substr(0, txt.length - 1) + ' checked>';
       } else {
@@ -31,7 +32,7 @@ $(function(){
       data.push(info);
     });
     // $dt.DataTable().clear().rows.add(data).draw();
-    $total.val(total);
+    $total.val(total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
   });
   $("#form input[name='date']").daterangepicker({
       singleDatePicker: true,

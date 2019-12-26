@@ -230,7 +230,7 @@
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
 
-    <script src="{{ asset('js/admin/sales/fact_masiva_clon.js?v=2.0')}}"></script>
+    <script src="{{ asset('js/admin/sales/fact_masiva_clon.js?v=2.1')}}"></script>
 
     <style>
       #table_contracts td, #table_contracts th{
