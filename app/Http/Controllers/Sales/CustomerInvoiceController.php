@@ -2132,7 +2132,7 @@ class CustomerInvoiceController extends Controller
       }
     }
     public function view_contracts_create(Request $request)
-    {
+    { info($request);
       $facturar_salesperson = $request->salesperson_id;
       $facturar_brand_office = $request->branch_office_id;
       $facturar_refence = !empty($request->reference) ? $request->reference : '';
@@ -2154,7 +2154,7 @@ class CustomerInvoiceController extends Controller
           $order = 1;
           for ($i=0; $i <= (count($contract_id)-1); $i++) {
             $all_information_anexos = DB::select('CALL px_contract_annexes_data (?)', array($contract_id[$i]));
-            
+
             $facturar_pay_term = $all_information_anexos[0]->payment_term_id;
             $facturar_pay_way = $all_information_anexos[0]->payment_way_id;
             $facturar_pay_met = $all_information_anexos[0]->payment_method_id;
@@ -2210,7 +2210,15 @@ class CustomerInvoiceController extends Controller
             $item_price_reduce = ($item_price_unit * (100 - $item_discount) / 100); //Precio reducido
             $item_amount_untaxed = round($item_quantity * $item_price_reduce, 2); //libre de impuestos
             $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed;//descuento
-            $item_amount_tax = 0;//impuesto a la cantidad del artículo
+            if($all_information_anexos[0]->iva_id==2){
+              $item_amount_tax = ($item_amount_untaxed*0.16);//impuesto a la cantidad del artículo
+              $taxes[$i]= array(
+                'amount_base'=>16,
+                'amount_tax'=>$item_amount_tax
+              );
+            }else{
+              $item_amount_tax=0;
+            }
             $item_amount_tax_ret = 0;// cantidad de artículo retiro de impuestos
 
             //Tipo de cambio
@@ -2254,6 +2262,13 @@ class CustomerInvoiceController extends Controller
                 'currency_id' => $item_currency_id,
                 'currency_value' => $item_currency_value,
             ]);
+
+            //Guardar impuestos por linea
+            if (!empty($taxes)) {
+              $customer_invoice_line->taxes()->sync($taxes);
+            } else {
+              $customer_invoice_line->taxes()->sync([]);
+            }
             //Registros de cfdi
             $customer_invoice_cfdi = CustomerInvoiceCfdi::create([
                 'created_uid' => Auth::user()->id,
