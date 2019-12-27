@@ -1389,7 +1389,7 @@ class CustomerInvoiceController extends Controller
      private function cfdi33(CustomerInvoice $customer_invoice)
      {
 
-       info($customer_invoice);
+       //info($customer_invoice);
 
          try {
              //Logica
@@ -2132,7 +2132,7 @@ class CustomerInvoiceController extends Controller
       }
     }
     public function view_contracts_create(Request $request)
-    { info($request);
+    { //info($request);
       $facturar_salesperson = $request->salesperson_id;
       $facturar_brand_office = $request->branch_office_id;
       $facturar_refence = !empty($request->reference) ? $request->reference : '';
@@ -2199,7 +2199,7 @@ class CustomerInvoiceController extends Controller
             $taxes = array();      //Impuestos
             $currency_pral_id = $request->currency_id;      //Moneda principal
             $currency_pral_value = $request->currency_value;//Valor o TC de la moneda principal
-
+            $taxtype=0;
             $item_quantity = 1;  //cantidad de artículo - default 1 un contrato anexo
             $item_price_unit= $all_information_anexos[0]->quantity; //monto contrato
             $customer_general= $all_information_anexos[0]->rz_customer_id; //cliente id
@@ -2212,7 +2212,7 @@ class CustomerInvoiceController extends Controller
             $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed;//descuento
             if($all_information_anexos[0]->iva_id==2){
               $item_amount_tax = ($item_amount_untaxed*0.16);//impuesto a la cantidad del artículo
-              $taxes[$i]= array(
+              $taxes[0]= array(
                 'amount_base'=>16,
                 'amount_tax'=>$item_amount_tax
               );
@@ -2264,11 +2264,32 @@ class CustomerInvoiceController extends Controller
             ]);
 
             //Guardar impuestos por linea
-            if (!empty($taxes)) {
-              $customer_invoice_line->taxes()->sync($taxes);
+            if (!empty($all_information_anexos[0]->iva_id)) {
+              if($all_information_anexos[0]->iva_id==2){
+              $customer_invoice_line->taxes()->sync([1]); //Aqui era impuesto del item
+              $taxtype=1;//IVA 16% = IVA GENERAL en la tabla taxes
+              }
             } else {
               $customer_invoice_line->taxes()->sync([]);
+              $taxtype=3;
             }
+
+            //Resumen de impuestos
+            if (!empty($taxtype)) {
+                    $tax = Tax::findOrFail($taxtype);//Tipo de impuesto
+                    $customer_invoice_tax = CustomerInvoiceTax::create([
+                        'created_uid' => \Auth::user()->id,
+                        'updated_uid' => \Auth::user()->id,
+                        'customer_invoice_id' => $customer_invoice->id,
+                        'name' => $tax->name,
+                        'tax_id' => $taxtype,
+                        'amount_base' => $taxes[0]['amount_base'],
+                        'amount_tax' => $taxes[0]['amount_tax'],
+                        'sort_order' => 1, //Iteracion .. en este caso aplica 1 vez ..
+                        'status' => 1,
+                    ]);
+            }
+
             //Registros de cfdi
             $customer_invoice_cfdi = CustomerInvoiceCfdi::create([
                 'created_uid' => Auth::user()->id,
@@ -2315,6 +2336,7 @@ class CustomerInvoiceController extends Controller
       catch (\Exception $e) {
           // An error occured; cancel the transaction...
           DB::rollback();
+          info($e);
           // and throw the error again.
           // throw $e;
           return $e;
