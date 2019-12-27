@@ -682,18 +682,18 @@ class CustomerComplementController extends Controller
              $cfdi33['NoCertificado'] = $company->certificate_number;
              //$cfdi33['Certificado']
              //$cfdi33['CondicionesDePago'] = $customer_invoice->paymentTerm->name; NO SE USA EN COMPLEMENTO DE PAGO Y CAUSA ERROR EN COMPLEMENTO
-             $cfdi33['SubTotal'] = Helper::numberFormat($customer_invoice->amount_untaxed + $customer_invoice->amount_discount,
-                 $customer_invoice->currency->decimal_place, false);
+             //$cfdi33['SubTotal'] = Helper::numberFormat($customer_invoice->amount_untaxed + $customer_invoice->amount_discount,
+             //    $customer_invoice->currency->decimal_place, false);
              if($customer_invoice->amount_discount>0) {
                  $cfdi33['Descuento'] = Helper::numberFormat($customer_invoice->amount_discount,
                      $customer_invoice->currency->decimal_place, false);
              }
-             $cfdi33['Moneda'] = $customer_invoice->currency->code;
-             if ($customer_invoice->currency->code != 'MXN') {
+             $cfdi33['Moneda'] = "XXX";
+             /*if ($customer_invoice->currency->code != 'MXN') {
                  $cfdi33['TipoCambio'] = Helper::numberFormat($customer_invoice->currency_value, 4, false);
-             }
-             $cfdi33['Total'] = Helper::numberFormat($customer_invoice->amount_total,
-                 $customer_invoice->currency->decimal_place, false);
+             }*/
+             //$cfdi33['Total'] = Helper::numberFormat($customer_invoice->amount_total,
+             //    $customer_invoice->currency->decimal_place, false);
              $cfdi33['TipoDeComprobante'] = $customer_invoice->documentType->cfdiType->code;
              //$cfdi33['MetodoPago'] = $customer_invoice->paymentMethod->code; NO SE USA EN COMPLEMENTO DE PAGO Y CAUSA ERROR EN COMPLEMENTO
              $cfdi33['LugarExpedicion'] = $customer_invoice->branchOffice->postcode;
@@ -719,12 +719,12 @@ class CustomerComplementController extends Controller
              $cfdi33_emisor['RegimenFiscal'] = $company->taxRegimen->code;
              //---Receptor
              $cfdi33_receptor = [];
-             $cfdi33_receptor['Rfc'] = $customer_invoice->customer->taxid;
-             $cfdi33_receptor['Nombre'] = trim($customer_invoice->customer->name);
-             if ($customer_invoice->customer->taxid == 'XEXX010101000') {
+             //$cfdi33_receptor['Rfc'] = $customer_invoice->customer->taxid;
+             //$cfdi33_receptor['Nombre'] = trim($customer_invoice->customer->name);
+             /*if ($customer_invoice->customer->taxid == 'XEXX010101000') {
                  $cfdi33_receptor['ResidenciaFiscal'] = $customer_invoice->customer->country->code;
                  $cfdi33_receptor['NumRegIdTrib'] = $customer_invoice->customer->numid;
-             }
+             }*/
              //$cfdi33_receptor['UsoCFDI'] = $customer_invoice->cfdiUse->code; //VERIFICAR
              $usocfdi=CfdiUse::Select('code')->Where('name','Por definir')->get(); //VERIFICAR
              $cfdi33_receptor['UsoCFDI'] = $usocfdi[0]->code;
