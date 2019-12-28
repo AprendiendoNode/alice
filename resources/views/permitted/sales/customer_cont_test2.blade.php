@@ -137,16 +137,21 @@
                       <input type="text" class="form-control form-control-sm" id="reference" name="reference" value="">
                     </div>
                   </div>
-                  <div class="col-md-12 col-xs-12">
+                  <div class="col-md-6 col-xs-12">
+                    <div class="form-group">
+                      <label for="description">Tipo factura:</label>
+                      <select class="form-control" required name="document_type" id="document_type">
+                        <option value="">Elije...</option>
+                        @foreach ($document_type as $data)
+                          <option value="{{$data->code}}">{{$data->prefix}}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xs-12">
                     <div class="form-group">
                       <label for="description">Mes de facturación:</label>
-                      <div class="input-group input-group-sm mb-5">
-                        {{-- <input type="text" class="form-control" name="description" name="description" value="SERVICIO ADMINISTRADO A SEÑAL INALAMBRICA Y RED DE DATOS">
-                        <div class="input-group-prepend input-group-append">
-                          <span class="input-group-text">-</span>
-                        </div> --}}
-                        <input type="text" class="form-control" name="description_month" name="description_month">
-                      </div>
+                      <input type="text" class="form-control" name="description_month" name="description_month">
                     </div>
                   </div>
                   <div class="col-md-12 col-xs-12">

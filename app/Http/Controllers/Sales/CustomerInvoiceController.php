@@ -17,6 +17,7 @@ use App\Helpers\PacHelper;
 use App\Models\Base\BranchOffice;
 use App\Models\Base\Company;
 use App\Models\Base\Pac;
+use App\Models\Base\DocumentType;
 use App\Models\Catalogs\CfdiRelation;
 use App\Models\Catalogs\State;
 use App\Models\Catalogs\country;
@@ -83,7 +84,8 @@ class CustomerInvoiceController extends Controller
     public function generate_invoice($id)
     {
       $document_type_id = DB::table('customer_invoices')->select('document_type_id')->where('id', $id)->value('document_type_id');
-      if ($document_type_id == 2) {
+      $cfdi_type_id = DB::table('document_types')->select('cfdi_type_id')->where('id', $document_type_id)->value('cfdi_type_id');
+      if ($cfdi_type_id == 2) {
         // Nota de crédito o Factura de Egreso
         $customer_credit_note = CustomerInvoice::findOrFail($id);
         $companies = DB::select('CALL px_companies_data ()', array());
@@ -182,11 +184,14 @@ class CustomerInvoiceController extends Controller
         $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
         $cfdi_relations = DB::select('CALL GetAllCfdiRelationsv2 ()', array());
 
+        $document_type = DocumentType::where('cfdi_type_id', 1)->get();// Solo documentos de ingresos
+
         return view('permitted.sales.customer_cont_test2', compact(
           'customer','sucursal','currency',
           'salespersons','payment_way','payment_term',
-          'payment_methods', 'cfdi_uses', 'cfdi_relations'
+          'payment_methods', 'cfdi_uses', 'cfdi_relations', 'document_type'
         ));
+
     }
     public function view_contracts2()
     {
@@ -967,7 +972,7 @@ class CustomerInvoiceController extends Controller
          }
          $request->merge(['date_due' => Helper::dateToSql($date_due)]);
          //Obtiene folio
-         $document_type = Helper::getNextDocumentTypeByCode($this->document_type_code);
+         $document_type = Helper::getNextDocumentTypeByCode($request->document_type);
          $request->merge(['document_type_id' => $document_type['id']]);
          $request->merge(['name' => $document_type['name']]);
          $request->merge(['serie' => $document_type['serie']]);
@@ -2086,13 +2091,14 @@ class CustomerInvoiceController extends Controller
 
       $cadenas =  DB::select('CALL px_cadenas ()', array());
       $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
+      $document_type = DocumentType::all();// Solo documentos de ingresos
 
       return view('permitted.sales.customer_invoices_cont',compact(
         'cadenas',
         'customer','sucursal','currency',
         'salespersons','payment_way','payment_term',
         'payment_methods', 'cfdi_uses', 'cfdi_relations',
-        'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications'
+        'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications', 'document_type'
       ));
     }
     public function search_cont(Request $request)
@@ -2181,7 +2187,7 @@ class CustomerInvoiceController extends Controller
             $request->merge(['date' => $date_format ]);
             $request->merge(['date_due' => $date_due_format]);
             //Obtiene folio
-            $document_type = Helper::getNextDocumentTypeByCode($this->document_type_code);
+            $document_type = Helper::getNextDocumentTypeByCode($request->document_type);
             $request->merge(['document_type_id' => $document_type['id']]);
             $request->merge(['name' => $document_type['name']]);
             $request->merge(['serie' => $document_type['serie']]);

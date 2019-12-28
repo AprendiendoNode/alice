@@ -279,7 +279,7 @@ class ConvertNumberToLetters
 
   public function millon($nummiero){
   if ($nummiero >= 1000000 && $nummiero <2000000){
-  $num_letramm = "UN MILLON ".(cienmiles($nummiero%1000000));
+  $num_letramm = "UN MILLON ".($this->cienmiles($nummiero%1000000));
   }
   if ($nummiero >= 2000000 && $nummiero <10000000){
   $num_letramm = $this->unidad(Floor($nummiero/1000000))." MILLONES ".($this->cienmiles($nummiero%1000000));
