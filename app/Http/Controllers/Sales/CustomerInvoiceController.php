@@ -18,6 +18,8 @@ use App\Models\Base\BranchOffice;
 use App\Models\Base\Company;
 use App\Models\Base\Pac;
 use App\Models\Catalogs\CfdiRelation;
+use App\Models\Catalogs\State;
+use App\Models\Catalogs\country;
 use App\Models\Catalogs\CfdiUse;
 use App\Models\Catalogs\Currency;
 use App\Models\Catalogs\PaymentMethod;
@@ -108,6 +110,11 @@ class CustomerInvoiceController extends Controller
       else {
         // Factura de Ingreso
         $customer_invoice = CustomerInvoice::findOrFail($id);
+        $cfdi_contract=CfdiUse::findOrFail($customer_invoice->cfdi_use_id);
+        $customer_invoice->customer->cfdiUse->code=$cfdi_contract->code;
+        $customer_invoice->customer->cfdiUse->name=$cfdi_contract->name;
+        $estado = State::findOrFail($customer_invoice->customer->state_id)->name;
+        $pais = Country::findOrFail($customer_invoice->customer->country_id)->name;
         $companies = DB::select('CALL px_companies_data ()', array());
         $data = [];
         //Si tiene CFDI obtiene la informacion de los nodos
@@ -126,7 +133,7 @@ class CustomerInvoiceController extends Controller
         $format = new ConvertNumberToLetters();
         $ammount_letter = $format->convertir($customer_invoice->amount_total);
         // Enviando datos a la vista de la factura
-        $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice', 'data', 'ammount_letter'));
+        $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice', 'data', 'ammount_letter', 'estado', 'pais'));
         return $pdf->stream();
       }
     }
