@@ -54,7 +54,7 @@ use App\ConvertNumberToLetters;
 class CustomerComplementController extends Controller
 {
     private $list_status = [];
-    private $document_type_code = 'customer.invoice';
+    private $document_type_code = 'customer.payment';
 
     /**
      * Create a new controller instance.
@@ -663,7 +663,7 @@ class CustomerComplementController extends Controller
      private function cfdi33(CustomerInvoice $customer_invoice,$complement_gral,$complements_array)
      {
 
-       //info($customer_invoice);
+       info($customer_invoice);
 
          try {
              //Logica
@@ -682,8 +682,7 @@ class CustomerComplementController extends Controller
              $cfdi33['NoCertificado'] = $company->certificate_number;
              //$cfdi33['Certificado']
              //$cfdi33['CondicionesDePago'] = $customer_invoice->paymentTerm->name; NO SE USA EN COMPLEMENTO DE PAGO Y CAUSA ERROR EN COMPLEMENTO
-             //$cfdi33['SubTotal'] = Helper::numberFormat($customer_invoice->amount_untaxed + $customer_invoice->amount_discount,
-             //    $customer_invoice->currency->decimal_place, false);
+             $cfdi33['SubTotal'] = 0;
              if($customer_invoice->amount_discount>0) {
                  $cfdi33['Descuento'] = Helper::numberFormat($customer_invoice->amount_discount,
                      $customer_invoice->currency->decimal_place, false);
@@ -692,8 +691,7 @@ class CustomerComplementController extends Controller
              /*if ($customer_invoice->currency->code != 'MXN') {
                  $cfdi33['TipoCambio'] = Helper::numberFormat($customer_invoice->currency_value, 4, false);
              }*/
-             //$cfdi33['Total'] = Helper::numberFormat($customer_invoice->amount_total,
-             //    $customer_invoice->currency->decimal_place, false);
+             $cfdi33['Total'] = 0;
              $cfdi33['TipoDeComprobante'] = $customer_invoice->documentType->cfdiType->code;
              //$cfdi33['MetodoPago'] = $customer_invoice->paymentMethod->code; NO SE USA EN COMPLEMENTO DE PAGO Y CAUSA ERROR EN COMPLEMENTO
              $cfdi33['LugarExpedicion'] = $customer_invoice->branchOffice->postcode;
@@ -719,12 +717,10 @@ class CustomerComplementController extends Controller
              $cfdi33_emisor['RegimenFiscal'] = $company->taxRegimen->code;
              //---Receptor
              $cfdi33_receptor = [];
-             //$cfdi33_receptor['Rfc'] = $customer_invoice->customer->taxid;
-             //$cfdi33_receptor['Nombre'] = trim($customer_invoice->customer->name);
-             /*if ($customer_invoice->customer->taxid == 'XEXX010101000') {
-                 $cfdi33_receptor['ResidenciaFiscal'] = $customer_invoice->customer->country->code;
-                 $cfdi33_receptor['NumRegIdTrib'] = $customer_invoice->customer->numid;
-             }*/
+             $cfdi33_receptor['Rfc'] = "rfc";
+             $cfdi33_receptor['Nombre'] = "sierra";
+             $cfdi33_receptor['ResidenciaFiscal'] = "mmm";
+                 $cfdi33_receptor['NumRegIdTrib'] = "mmmx2";
              //$cfdi33_receptor['UsoCFDI'] = $customer_invoice->cfdiUse->code; //VERIFICAR
              $usocfdi=CfdiUse::Select('code')->Where('name','Por definir')->get(); //VERIFICAR
              $cfdi33_receptor['UsoCFDI'] = $usocfdi[0]->code;
@@ -873,31 +869,34 @@ class CustomerComplementController extends Controller
              }
 
             $pagos =new \CfdiUtils\Nodes\Node(
-            'pago10:Pagos', // nombre del elemento raíz
-            [ // nodos obligatorios de XML y del nodo
-            'version' => '1.0',
+              'pago10:Pagos', // nombre del elemento raíz
+              [ // nodos obligatorios de XML y del nodo
+              'version' => '1.0',
             ]);
 
             $pagotot=$pagos->addChild(new \CfdiUtils\Nodes\Node(
-            'pago10:Pago', // nombre del elemento raíz
-            [ // nodos obligatorios de XML y del nodo
-            'FechaPago'=>"19-12-2019 07:59:24",
-            'FormaDePagoP'=>"03",
-            'MonedaP'=>"MXN",
-            'Monto'=>"50.00",
-            'NumOperacion'=>"TEST12",
+              'pago10:Pago', // nombre del elemento raíz
+              [ // nodos obligatorios de XML y del nodo
+              'FechaPago'=>$complement_gral[0]->fecha_pago,
+              'FormaDePagoP'=>$complement_gral[0]->formapago_id,
+              'MonedaP'=>$complement_gral[0]->formapago_id,
+              'Monto'=>$complement_gral[0]->currency_id,
+              'NumOperacion'=>$complement_gral[0]->numoperacion,
             ]));
 
-            $pagotot->addChild(new \CfdiUtils\Nodes\Node('pago10:DoctoRelacionado', [
-              'Folio'=>"00000697",
-              'IdDocumento'=>"9FB6ED1A-5F37-4FEF-980A-PMGNMZGVDH6B", //Docto relacionado
-              'ImpPagado'=>"50.00",
-              'ImpSaldoAnt'=>"116.00",
-              'ImpSaldoInsoluto'=>"66.00",
-              'MetodoDePagoDR'=>"PPD",
-              'MonedaDR'=>"MXN",
-              'NumParcialidad'=>"1",
-            ]));
+            foreach ($complements_array as $compl) {
+              $pagotot->addChild(new \CfdiUtils\Nodes\Node('pago10:DoctoRelacionado', [
+                'Folio'=>$compl->folio,
+                'IdDocumento'=>$compl->uuid, //Docto relacionado
+                'ImpPagado'=>$compl->importepagado,
+                'ImpSaldoAnt'=>$compl->importesaldoant,
+                'ImpSaldoInsoluto'=>$compl->importesaldoIns,
+                'MetodoDePagoDR'=>"PPD",
+                'MonedaDR'=>$compl->currency_id,
+                'NumParcialidad'=>$compl->noparcialidad,
+              ]));
+            }
+
              //Método de ayuda para establecer las sumas del comprobante e impuestos con base en la suma de los conceptos y la agrupación de sus impuestos
              //$creator->addSumasConceptos(null, 2);
              //Método de ayuda para generar el sello (obtener la cadena de origen y firmar con la llave privada)
@@ -1550,7 +1549,7 @@ class CustomerComplementController extends Controller
 
         }
         }
-        info(json_decode($request->item_relation)[0][8]);
+        info(json_decode($request->item_relation));
         //Registros de cfdi
         $customer_invoice_cfdi = CustomerInvoiceCfdi::create([
             'created_uid' => \Auth::user()->id,
@@ -1650,7 +1649,7 @@ class CustomerComplementController extends Controller
         PacHelper::validateSatActions();
 
         //Crear XML y timbra
-       $tmp = $this->$class_cfdi($customer_invoice,$complement_gral,$complements_array); //Comentado temporalmente
+       $tmp = $this->$class_cfdi($customer_invoice,json_decode($complement_gral),$complements_array); //Comentado temporalmente
         //Guardar registros de CFDI
         $customer_invoice_cfdi->fill(array_only($tmp,[
             'pac_id',
