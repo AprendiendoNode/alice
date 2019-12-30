@@ -287,7 +287,16 @@
 @push('scripts')
   @if( auth()->user()->can('View customers invoices show') )
   <style media="screen">
-    .editor-wrapper {
+
+      input[type=number]::-webkit-inner-spin-button,
+      input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      input[type=number] { -moz-appearance:textfield; }
+
+     .editor-wrapper {
       min-height: 250px;
       background-color: #fff;
       border-collapse: separate;
@@ -298,10 +307,10 @@
       overflow: scroll;
       outline: 0;
       border-radius: 3px;
-    }
-    .editor_quill {
+     }
+     .editor_quill {
       margin-bottom: 5rem !important;
-    }
+     }
 
     .white {background-color: #ffffff;}
     .select2-selection__rendered {

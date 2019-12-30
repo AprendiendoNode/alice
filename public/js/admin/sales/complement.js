@@ -142,13 +142,18 @@ $(function(){
 
              var i = 0, entrar = true;
              monedas_iguales = [];
+             clientes_iguales = [];
 
              var selected_complements = json_data.filter(function (data) {
                if(data.customer_invoice_id == valores[i]) {
                  if(i == 0) {
                    monedas_iguales.push(data.currencies);
+                   clientes_iguales.push(data.customer_id);
                  } else if(monedas_iguales.indexOf(data.currencies) < 0) {
                    Swal.fire("Operación abortada", "Facturas con diferente moneda :(", "error");
+                   entrar = false;
+                 } else if(clientes_iguales.indexOf(data.customer_id) < 0) {
+                   Swal.fire("Operación abortada", "Facturas con diferente cliente :(", "error");
                    entrar = false;
                  }
                  i++;
@@ -282,7 +287,7 @@ var datafactura, datafactura_total, datafactura_saldo, cantidades_pagadas;
         status.currencies,
         status.total,
         status.saldo,
-        '<input id="cp-'+status.customer_invoice_id+'" class="pagada input-sm" type="number" step="0.01" name="" value="0">',
+        '<input id="cp-'+status.customer_invoice_id+'" class="pagada input-sm" type="number" step="0.01" name="">',
       ]);
 
       var rowfactura = [];
@@ -320,7 +325,7 @@ var datafactura, datafactura_total, datafactura_saldo, cantidades_pagadas;
 
         if(valor > (row[5] * $('#currency_value').val()) || valor == 0) {
           //console.log("Pasado");
-          $('#'+id).val(0);
+          $('#'+id).val("");
         }
 
         return "Ok";
@@ -457,57 +462,64 @@ var datafactura, datafactura_total, datafactura_saldo, cantidades_pagadas;
     formData.append("date_due","27-12-2019"); //PENDIENTE DE CAMBIAR
     formData.append("customer_id",datafactura[0][2]);
 
-
-    $.ajax({
-      type: "POST",
-      url: "/sales/store_complement",
-      data: formData ,
-      contentType: false,
-      processData: false,
-      success: function (data){
-        if (data == 'success') {
-          let timerInterval;
-          Swal.fire({
-            type: 'success',
-            title: 'La factura se ha generado con éxito!',
-            html: 'Se estan aplicando los cambios.',
-            timer: 2500,
-            onBeforeOpen: () => {
-              Swal.showLoading()
-              timerInterval = setInterval(() => {
-                Swal.getContent().querySelector('strong')
-              }, 100)
-            },
-            onClose: () => {
-              clearInterval(timerInterval)
-            }
-          }).then((result) => {
-            if (
-              // Read more about handling dismissals
-              result.dismiss === Swal.DismissReason.timer
-            ) {
-              window.location.href = "/sales/customer-invoices-complement";
-            }
-          });
-        }
-        else {
+    if($('#branch_office_id').val() == "" || $('#date').val() == "" || $('#payment_way_id').val() == "" || $('#cfdi_relation_id').val() == "") {
+      Swal.fire("Operación abortada", "Todos los campos son obligatorios.", "error");
+    } else if($('#mount_pagado').val() == 0 || isNaN($('#mount_pagado').val())) {
+      Swal.fire("Operación abortada", "Monto no válido :(", "error");
+    } else {
+      console.log("OK");
+      $.ajax({
+        type: "POST",
+        url: "/sales/store_complement",
+        data: formData ,
+        contentType: false,
+        processData: false,
+        success: function (data){
+          if (data == 'success') {
+            let timerInterval;
+            Swal.fire({
+              type: 'success',
+              title: 'La factura se ha generado con éxito!',
+              html: 'Se estan aplicando los cambios.',
+              timer: 2500,
+              onBeforeOpen: () => {
+                Swal.showLoading()
+                timerInterval = setInterval(() => {
+                  Swal.getContent().querySelector('strong')
+                }, 100)
+              },
+              onClose: () => {
+                clearInterval(timerInterval)
+              }
+            }).then((result) => {
+              if (
+                // Read more about handling dismissals
+                result.dismiss === Swal.DismissReason.timer
+              ) {
+                window.location.href = "/sales/customer-invoices-complement";
+              }
+            });
+          }
+          else {
+            Swal.fire({
+               type: 'error',
+               title: 'Error encontrado..',
+               text: 'Error al crear el  CFDI!',
+             });
+          }
+          // console.log(data);
+        },
+        error: function (err) {
           Swal.fire({
              type: 'error',
-             title: 'Error encontrado..',
-             text: 'Error al crear el  CFDI!',
+             title: 'Oops...',
+             text: err.statusText,
            });
         }
-        // console.log(data);
-      },
-      error: function (err) {
-        Swal.fire({
-           type: 'error',
-           title: 'Oops...',
-           text: err.statusText,
-         });
-      }
-    });
-    //
+      });
+      
+    }
+
   });
 
 });
