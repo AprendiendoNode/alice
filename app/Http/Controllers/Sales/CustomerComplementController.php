@@ -717,12 +717,13 @@ class CustomerComplementController extends Controller
              $cfdi33_emisor['RegimenFiscal'] = $company->taxRegimen->code;
              //---Receptor
              $cfdi33_receptor = [];
-             $cfdi33_receptor['Rfc'] = "rfc";
-             $cfdi33_receptor['Nombre'] = "sierra";
-             $cfdi33_receptor['ResidenciaFiscal'] = "mmm";
-                 $cfdi33_receptor['NumRegIdTrib'] = "mmmx2";
-             //$cfdi33_receptor['UsoCFDI'] = $customer_invoice->cfdiUse->code; //VERIFICAR
-             $usocfdi=CfdiUse::Select('code')->Where('name','Por definir')->get(); //VERIFICAR
+             $cfdi33_receptor['Rfc'] = $customer_invoice->customer->taxid;
+             $cfdi33_receptor['Nombre'] = trim($customer_invoice->customer->name);
+             if ($customer_invoice->customer->taxid == 'XEXX010101000') {
+                 $cfdi33_receptor['ResidenciaFiscal'] = $customer_invoice->customer->country->code;
+                 $cfdi33_receptor['NumRegIdTrib'] = $customer_invoice->customer->numid;
+             }
+             $usocfdi=CfdiUse::Select('code')->Where('name','Por definir')->get();
              $cfdi33_receptor['UsoCFDI'] = $usocfdi[0]->code;
              //---Conceptos
              $cfdi33_conceptos = [];
