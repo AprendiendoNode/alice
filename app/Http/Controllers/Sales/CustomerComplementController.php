@@ -908,7 +908,7 @@ class CustomerComplementController extends Controller
 
              //Guarda XML
              //dd($creator->asXml());
-             $path_xml = Helper::setDirectory(CustomerInvoice::PATH_XML_FILES_CI) . '/';
+             $path_xml = Helper::setDirectory(CustomerInvoice::PATH_XML_FILES_CMP) . '/';
              $file_xml = Helper::makeDirectoryCfdi($path_xml) . '/' . Str::random(40) . '.xml';
              $creator->saveXml(\Storage::path($path_xml . $file_xml));
 
@@ -1467,7 +1467,7 @@ class CustomerComplementController extends Controller
         //Logica
         $request->merge(['created_uid' => \Auth::user()->id]);
         $request->merge(['updated_uid' => \Auth::user()->id]);
-        $request->merge(['status' => CustomerInvoice::OPEN]);
+        $request->merge(['status' => CustomerInvoice::PAID]);
         //Ajusta fecha y genera fecha de vencimiento
         $date = Helper::createDateTime($request->date);
         $request->merge(['date' => Helper::dateTimeToSql($date)]);
@@ -1482,7 +1482,7 @@ class CustomerComplementController extends Controller
         $request->merge(['date_due' => Helper::dateToSql($date_due)]);
 
         //Obtiene folio
-        $document_type = Helper::getNextDocumentTypeByCode($this->document_type_code);
+        $document_type = Helper::getNextDocumentTypeByCode('customer.payment');
         $request->merge(['document_type_id' => $document_type['id']]);
         $request->merge(['name' => $document_type['name']]);
         $request->merge(['serie' => $document_type['serie']]);
@@ -1550,7 +1550,7 @@ class CustomerComplementController extends Controller
 
         }
         }
-        info(json_decode($request->item_relation));
+        //info(json_decode($request->item_relation));
         //Registros de cfdi
         $customer_invoice_cfdi = CustomerInvoiceCfdi::create([
             'created_uid' => \Auth::user()->id,
@@ -1602,6 +1602,7 @@ class CustomerComplementController extends Controller
           $numero= $parcialidad[0]->noparcialidad+1;
           }
           //Registros de complementos individualmente
+          $balance=($result[5]-$cantidadpagada[$i]);//De una vez  hacemos la resta 
           $rowid=DB::table('customer_invoice_line_complements')->insertGetId(
             [
              'customer_invoice_line_id'   => $customer_invoice_line->id,
@@ -1610,7 +1611,7 @@ class CustomerComplementController extends Controller
              'status'   => 1,
              'importepagado'   => $cantidadpagada[$i],//Pagado en ese complemento de pago
              'importesaldoant'   => $result[5],//Saldo anterior
-             'importesaldoIns'   => ($result[5]-$cantidadpagada[$i]), //Saldo insoluto = saldo - cantidad pagada
+             'importesaldoIns'   => $balance, //Saldo insoluto = saldo - cantidad pagada
              'payment_method_id'   => $request->formapago_id,
              'currency_id'   => $result[8], //Moneda utilizada
              'noparcialidad'   => $numero,
@@ -1624,7 +1625,20 @@ class CustomerComplementController extends Controller
            ]
           );
 
-          CustomerInvoice::where('id',$result[0])->update(['balance'=>($result[5]-$cantidadpagada[$i])]);//Actualiza el saldo(balance).
+        //Actualiza el saldo(balance).
+        if($balance==0){//Ya se pago
+        $facturaConciliada=CustomerInvoice::where('id',$result[0])->update(
+            ['balance'=>$balance,
+            'status'=>CustomerInvoice::PAID
+            ]
+          );
+        }else{//Todavia queda un saldo pendiente.
+          $facturaConciliada=CustomerInvoice::where('id',$result[0])->update(
+              ['balance'=>$balance,
+              'status'=>CustomerInvoice::RECONCILED
+              ]
+            );
+        }
 
           $RowComplement=DB::Table('customer_invoice_line_complements')->where('id',$rowid)->get();
           $complements_array[$i]=$RowComplement[0];

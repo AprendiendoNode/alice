@@ -28,6 +28,7 @@ class CustomerInvoice extends Model
 
   const PATH_XML_FILES_CI = 'files/customer_invoices/xml';
   const PATH_XML_FILES_CCN = 'files/customer_credit_notes/xml';
+  const PATH_XML_FILES_CMP = 'files/customer_complement/xml';
   const PATH_XML_FILES_CTR = 'files/customer_transfers/xml';
   const PATH_XML_FILES_LEA = 'files/customer_leases/xml';
   const PATH_XML_FILES_FEE = 'files/customer_fees/xml';

@@ -85,7 +85,38 @@ class CustomerInvoiceController extends Controller
     {
       $document_type_id = DB::table('customer_invoices')->select('document_type_id')->where('id', $id)->value('document_type_id');
       $cfdi_type_id = DB::table('document_types')->select('cfdi_type_id')->where('id', $document_type_id)->value('cfdi_type_id');
-      if ($cfdi_type_id == 2) {
+      if ($cfdi_type_id == 3) {
+            // Complemento de pago
+            $customer_complement = CustomerInvoice::findOrFail($id);
+            $companies = DB::select('CALL px_companies_data ()', array());
+            $data = [];
+            $invoicelineID = $customer_complement->customerInvoiceLines[0]->id;
+            $complements=DB::Table('customer_invoice_line_complements')->Where('customer_invoice_line_id',$invoicelineID)->get();
+            $complement_gral=DB::Table('customer_invoice_complements_gral')->Where('id',$complements[0]->cust_comp_gral_id)->get();
+            $estado = State::findOrFail($customer_complement->customer->state_id)->name;
+            $pais = Country::findOrFail($customer_complement->customer->country_id)->name;
+            $moneda=Currency::findOrFail($complement_gral[0]->currency_id)->code;
+            $Fpago='['.PaymentWay::findOrFail($complement_gral[0]->formapago_id)->code.'] '.PaymentWay::findOrFail($complement_gral[0]->formapago_id)->name;
+            //Si tiene CFDI obtiene la informacion de los nodos
+            if(!empty($customer_complement->customerInvoiceCfdi->file_xml_pac) && !empty($customer_complement->customerInvoiceCfdi->uuid)){
+                $path_xml = Helper::setDirectory(CustomerInvoice::PATH_XML_FILES_CMP) . '/';
+                $file_xml_pac = $path_xml . $customer_complement->customerInvoiceCfdi->file_xml_pac;
+                //Valida que el archivo exista
+                if(\Storage::exists($file_xml_pac)) {
+                    $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($file_xml_pac));
+                    $data = Cfdi33Helper::getQuickArrayCfdi($cfdi);
+                    //Genera codigo QR
+                    $image = QrCode::format('png')->size(150)->margin(0)->generate($data['qr_cadena']);
+                    $data['qr'] = 'data:image/png;base64,' . base64_encode($image);
+                }
+            }
+            $format = new ConvertNumberToLetters();
+            $ammount_letter = $format->convertir($customer_complement->amount_total);
+            // Enviando datos a la vista de la factura
+            $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_cmp', compact('companies', 'customer_complement','complement_gral','complements','moneda','Fpago', 'data', 'ammount_letter','estado','pais'));
+            return $pdf->stream();
+          }
+      else if ($cfdi_type_id == 2) {
         // Nota de crédito o Factura de Egreso
         $customer_credit_note = CustomerInvoice::findOrFail($id);
         $companies = DB::select('CALL px_companies_data ()', array());
