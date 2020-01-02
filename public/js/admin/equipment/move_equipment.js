@@ -58,6 +58,7 @@ function general_table_equipment_excel() {
       url: "/search_excel_equipament",
       data: { ident1: macs, ident2: series, _token : _token },
       success: function (data){
+        no_encontrados(JSON.parse(data), macs, series);
         table_move_equipament_excel(data, $("#table_move2"), $("#table_check2"));
       },
       error: function (data) {
@@ -120,6 +121,49 @@ function table_move_equipament_excel(datajson, table, form){
         ]);
       });
       document.getElementById("table_move2_wrapper").childNodes[0].setAttribute("class", "form-inline");
+}
+
+function no_encontrados(data, macs, series) {
+
+  data.forEach(row => {
+
+    for(var i = 0; i < macs.length ; i++) {
+
+      if(macs[i] == row.MAC.replace(/:/g,"") || series[i] == row.Serie) {
+
+        macs.splice(i, 1);
+        series.splice(i, 1);
+
+        break;
+
+      }
+
+    }
+
+  });
+
+  if(macs.length > 0) {
+
+    var mensaje = "";
+
+    for(var i = 0 ; i < macs.length ; i++) {
+
+      if(macs[i] == undefined) {
+
+        mensaje += series[i] + ", ";
+
+      } else {
+
+        mensaje +=  macs[0][0] + macs[0][1] + ":" + macs[0][2] + macs[0][3] + ":" + macs[0][4] + macs[0][5] + ":" + macs[0][6] + macs[0][7] + ":" + macs[0][8] + macs[0][9] + ":" + macs[0][10] + macs[0][11] + ", ";
+
+      }
+
+    }
+
+    Swal.fire(macs.length + " Equipos no encontrados:", mensaje.slice(0, -2), "warning");
+
+  }
+
 }
 
 $(".btnconf").on("click", function () {

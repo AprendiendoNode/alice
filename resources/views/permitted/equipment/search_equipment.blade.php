@@ -146,6 +146,47 @@
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pb-3">
           <div class="card">
             <div class="card-header">
+              <h3 class="card-title">Reporte múltiple</h3>
+            </div>
+            <div class="card-body">
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                 <div style="text-align: center;">
+                   <input style="background-color:#f7f7f7; font-size: 18px; text-align: center; padding: 7px 10px;" type="file" id="files" name="files"/>
+                 </div>
+                 <div style="text-align: center;">
+                   <a href="formats/excel/EjemploMovimientoEquipos.xlsx" style="font-size: 18px;" download>Descargar excel de ejemplo</a>
+                 </div>
+              </div>
+              <div class="py-3">
+                <div class="table-responsive">
+                     <table id="table_multiple" cellspacing="0" class="table table-striped table-bordered table-hover compact-tab">
+                       <thead>
+                         <tr class="bg-primary" style="background: #088A68;">
+                           <th> <small>Cliente.</small> </th>
+                           <th> <small>Equipo.</small> </th>
+                           <th> <small>Marca.</small> </th>
+                           <th> <small>Mac.</small> </th>
+                           <th> <small>Serie.</small> </th>
+                           <th> <small>Modelo.</small> </th>
+                           <th> <small>Estado.</small> </th>
+                           <th> <small>Fecha Registro.</small> </th>
+                         </tr>
+                       </thead>
+                       <tbody>
+                       </tbody>
+                     </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pb-3">
+          <div class="card">
+            <div class="card-header">
             <h3 class="card-title">Reporte de salidas de bodega</h3>
             </div>
             <div class="card-body">
@@ -318,8 +359,9 @@
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-extras-margins-padding.css')}}" >
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
     <script src="{{ asset('js/admin/equipment/new_req_fac_mod.js')}}"></script>
-    <script src="{{ asset('js/admin/equipment/search_equipment.js')}}"></script>
+    <script src="{{ asset('js/admin/equipment/search_equipment.js?v=1.0.1')}}"></script>
   @else
     <!--NO VER-->
   @endif

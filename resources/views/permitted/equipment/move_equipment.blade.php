@@ -351,7 +351,7 @@
 <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
 <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
-<script src="{{ asset('js/admin/equipment/move_equipment.js')}}"></script>
+<script src="{{ asset('js/admin/equipment/move_equipment.js?v=1.0.1')}}"></script>
 @else
 <!--NO VER-->
 @endif

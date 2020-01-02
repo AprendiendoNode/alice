@@ -1,5 +1,6 @@
 $(function() {
     $('.input-daterange').datepicker({language: 'es', format: "yyyy-mm-dd",});
+    $('#files').change(obtenerExcel);
     general_table_equipment();
 });
 
@@ -16,6 +17,96 @@ $(".btn-search-range").on("click", function () {
   }
 });
 
+//Se ha subido un archivo
+var excelMACS = [], excelSeries = [];
+
+function obtenerExcel(e) {
+ var files = e.target.files;
+ var i, f;
+ for (i = 0, f = files[i]; i != files.length; ++i) {
+   var reader = new FileReader();
+   var name = f.name;
+   reader.onload = function (e) {
+     var data = e.target.result;
+     var result;
+     var workbook = XLSX.read(data, { type: 'binary' });
+     var sheet_name_list = workbook.SheetNames;
+     sheet_name_list.forEach(function (y) {
+       var roa = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
+       if (roa.length > 0) {
+         result = roa;
+       }
+     });
+     for(var i = 0; i < result.length ; i++) {
+       excelMACS[i] = result[i].MAC;
+       excelSeries[i] = result[i].SERIE;
+     }
+     general_table_equipment_excel();
+   };
+   reader.readAsArrayBuffer(f);
+ }
+}
+
+function general_table_equipment_excel() {
+  var _token = $('input[name="_token"]').val();
+  var macs = excelMACS;
+  var series = excelSeries;
+  $.ajax({
+      type: "POST",
+      url: "/search_excel_equipament",
+      data: { ident1: macs, ident2: series, _token : _token },
+      success: function (data){
+        no_encontrados(JSON.parse(data), macs, series);
+        tabla_search_mac(data, $('#table_multiple'));
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+  });
+}
+
+function no_encontrados(data, macs, series) {
+
+  data.forEach(row => {
+
+    for(var i = 0; i < macs.length ; i++) {
+
+      if(macs[i] == row.MAC.replace(/:/g,"") || series[i] == row.Serie) {
+
+        macs.splice(i, 1);
+        series.splice(i, 1);
+
+        break;
+
+      }
+
+    }
+
+  });
+
+  if(macs.length > 0) {
+
+    var mensaje = "";
+
+    for(var i = 0 ; i < macs.length ; i++) {
+
+      if(macs[i] == undefined) {
+
+        mensaje += series[i] + ", ";
+
+      } else {
+
+        mensaje +=  macs[0][0] + macs[0][1] + ":" + macs[0][2] + macs[0][3] + ":" + macs[0][4] + macs[0][5] + ":" + macs[0][6] + macs[0][7] + ":" + macs[0][8] + macs[0][9] + ":" + macs[0][10] + macs[0][11] + ", ";
+
+      }
+
+    }
+
+    Swal.fire(macs.length + " Equipos no encontrados:", mensaje.slice(0, -2), "warning");
+
+  }
+
+}
 
 function general_table_equipment() {
   var _token = $('input[name="_token"]').val();
