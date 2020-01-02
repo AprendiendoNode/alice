@@ -1602,11 +1602,12 @@ class CustomerComplementController extends Controller
           $numero= $parcialidad[0]->noparcialidad+1;
           }
           //Registros de complementos individualmente
-          $balance=($result[5]-$cantidadpagada[$i]);//De una vez  hacemos la resta 
+          $invoice_by_uuid = CustomerInvoiceCfdi::where('uuid',$result[3])->select('customer_invoice_id')->get()[0]->customer_invoice_id;
+          $balance=($result[5]-$cantidadpagada[$i]);//De una vez  hacemos la resta
           $rowid=DB::table('customer_invoice_line_complements')->insertGetId(
             [
              'customer_invoice_line_id'   => $customer_invoice_line->id,
-             'name' => '',
+             'name' => CustomerInvoice::where('id',$invoice_by_uuid)->select('name')->get()[0]->name,
              'sort_order' => 1,
              'status'   => 1,
              'importepagado'   => $cantidadpagada[$i],//Pagado en ese complemento de pago
@@ -1616,7 +1617,7 @@ class CustomerComplementController extends Controller
              'currency_id'   => $result[8], //Moneda utilizada
              'noparcialidad'   => $numero,
              'uuid'   => $result[3],
-             'folio'   => 0,
+             'folio'   => CustomerInvoice::where('id',$invoice_by_uuid)->select('folio')->get()[0]->folio,
              'cust_comp_gral_id'=>$complement_gral_id,
              'created_uid'   => \Auth::user()->id,
              'updated_uid'   => \Auth::user()->id,

@@ -183,7 +183,7 @@
           </div>
         </div>
 
-        <div class="col-md-4 col-xs-12">
+        <!--<div class="col-md-4 col-xs-12">
             <div class="form-group row">
                 <label for="cfdi_relation_id" class="control-label">Tipo de relación:<span style="color: red;">*</span></label>
                     <select id="cfdi_relation_id" name="cfdi_relation_id" class="form-control form-control-sm" style="width: 100%;">
@@ -195,7 +195,7 @@
                     </select>
 
             </div>
-        </div>
+        </div>-->
 
 
       </div>

@@ -462,7 +462,7 @@ var datafactura, datafactura_total, datafactura_saldo, cantidades_pagadas;
     formData.append("date_due","27-12-2019"); //PENDIENTE DE CAMBIAR
     formData.append("customer_id",datafactura[0][2]);
 
-    if($('#branch_office_id').val() == "" || $('#date').val() == "" || $('#payment_way_id').val() == "" || $('#cfdi_relation_id').val() == "") {
+    if($('#branch_office_id').val() == "" || $('#date').val() == "" || $('#payment_way_id').val() == "") {
       Swal.fire("Operación abortada", "Todos los campos son obligatorios.", "error");
     } else if($('#mount_pagado').val() == 0 || isNaN($('#mount_pagado').val())) {
       Swal.fire("Operación abortada", "Monto no válido :(", "error");
@@ -517,7 +517,7 @@ var datafactura, datafactura_total, datafactura_saldo, cantidades_pagadas;
            });
         }
       });
-      
+
     }
 
   });
