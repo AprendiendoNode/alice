@@ -1574,7 +1574,7 @@ class CustomerComplementController extends Controller
           ['formapago_id'   => $request->payment_way_id,
            'montototal' => $request->mount_pagado,
            'currency_id'   => json_decode($request->item_relation)[0][8],//$customer_invoice->currency_id por alguna razon currency_id no funciono, le pase directo el de uno de los contratos porque todos son la misma moneda hasta ahora.
-           'numoperacion'   => 'test',
+           'numoperacion'   => $request->NoOperation,
            'fecha_pago'   => $request->date,
            'created_uid'   => \Auth::user()->id,
            'updated_uid'   => \Auth::user()->id,

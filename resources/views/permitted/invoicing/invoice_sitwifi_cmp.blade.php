@@ -201,7 +201,7 @@
         <p>Tipo de cambio: <span>{{ number_format($customer_complement->currency_value,4,'.',',') }}</span> </p>
         <p>Tipo de comprobante: <span>[{{ $customer_complement->documentType->cfdiType->code ?? ''}}] = Pago</span></p><!--MODIFICADO-->
         <p>Moneda: <span>{{ $cfdi33['Moneda'] }}</span></p><!--MODIFICADO-->
-        <br/>
+        <br/><br/>
     </div>
   </div>
   <!--------->
@@ -229,9 +229,9 @@
         <th align="center">C. Srv.Prd.</th>
         <th align="center">Cantidad</th>
         <th align="center">Unidad</th>
-        <th colspan="2">Descripción</th>
-        <th>Precio Unitario</th>
-        <th>Desc. %</th>
+        <th align="center" colspan="2">Descripción</th>
+        <th align="center">Precio Unitario</th>
+        <th align="center">Desc. %</th>
         <th align="center">Importe</th>
       </tr>
     </thead>
@@ -241,7 +241,7 @@
         <td class="text-center">{{ $result->satProduct->code }}</td>
         <td class="text-center">{{ number_format($result->quantity, 2,'.', ','),$result->unitMeasure->decimal_place }}</td>
         <td class="text-center">[{{ $result->unitMeasure->code }}] {{ $result->unitMeasure->name }}</td>
-        <td colspan="2">{{ $result->name }}</td>
+        <td class="text-center" colspan="2">{{ $result->name }}</td>
         <td class="text-center">{{number_format($result->amount_untaxed, 2,'.', ',') }}</td>
         <td class="text-center">{{number_format($result->discount, 2,'.', ',') }}</td>
         <td align="right">${{ number_format($result->amount_total, 2,'.', ','),$customer_complement->currency->code ?? ''}}</td><!--MODIFICADO-->
@@ -290,7 +290,7 @@
         <td valign="right" colspan="2"><b>Forma de pago:</b><span></span> {{ $Fpago ?? ''}}</td><!--MODIFICADO-->
       </tr>
       <tr>
-        <td align="left" colspan="2"><b>Importe Pagado:</b><span> {{ $complement_gral[0]->montototal ?? ''}}</span> </td>
+        <td align="left" colspan="2"><b>Importe Pagado:</b><span> {{ number_format($complement_gral[0]->montototal ?? '', 2,'.', ',')}}</span> </td>
         <td valign="right" colspan="2"><b>Moneda pago:</b><span>  {{ $moneda ?? ''}}</span></td><!--MODIFICADO-->
       </tr>
       <tr>
@@ -306,27 +306,24 @@
       <th colspan="10" class="text-center"><b>Documentos relacionados al pago:</b></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody style="font-size:10px;">
       @foreach($complements as $result)
       <tr>
-        <td>----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</td>
+        <td>------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</td>
       </tr>
       <tr>
         <td valign="left" colspan="2"><b>Id documento:</b><span> {{ $result->uuid ?? '' }}</span> </td><!--MODIFICADO-->
-        <td valign="right" colspan="1"><b>Moneda:</b><span> {{ $moneda ?? ''}}</span> </td><!--MODIFICADO-->
-        <td valign="right" colspan="1"><b>Método de pago:</b><span> </span> </td><!--MODIFICADO-->
+        <td valign="right" colspan="2"><b>Moneda:</b><span> {{ $moneda ?? ''}}</span> </td><!--MODIFICADO-->
+        <td valign="right" colspan="2"><b>Método de pago:</b><span>[PPD] Pago en parcialidades o diferido</span> </td><!--MODIFICADO-->
       </tr>
       <tr>
-        <td align="left" colspan="1"><b>Serie Folio:</b><span> {{ $result->folio ?? '' }}</span> </td>
-        <td align="center" colspan="1"></td>
-        <td valign="right" colspan="1"><b>No. parcialidad:</b><span> {{ $result->noparcialidad ?? '' }}</span> </td><!--MODIFICADO-->
-        <td align="right" colspan="1"></td>
+        <td align="left" colspan="2"><b>Serie Folio:</b><span> {{ $result->folio ?? '' }}</span> </td>
+        <td valign="right" colspan="2"><b>No. parcialidad:</b><span> {{ $result->noparcialidad ?? '' }}</span> </td><!--MODIFICADO-->
       </tr>
       <tr>
-        <td align="left" colspan="1"><b>Saldo anterior:</b><span> {{ $result->importesaldoant ?? '' }}</span> </td>
-        <td align="left" colspan="1"><b>Importe pagado:</b><span> {{ $result->importepagado ?? '' }}</span> </td>
-        <td valign="right" colspan="1"><b>Saldo insoluto:</b><span> {{ $result->importesaldoIns ?? '' }}</span> </td><!--MODIFICADO-->
-        <td align="right" colspan="1"></td>
+        <td align="left" colspan="2"><b>Saldo anterior:</b><span> {{ number_format($result->importesaldoant ?? '', 2,'.', ',') }}</span> </td>
+        <td align="left" colspan="2"><b>Importe pagado:</b><span> {{ number_format($result->importepagado ?? '', 2,'.', ',') }}</span> </td>
+        <td valign="right" colspan="2"><b>Saldo insoluto:</b><span> {{ number_format($result->importesaldoIns ?? '', 2,'.', ',') }}</span> </td><!--MODIFICADO-->
       </tr>
       @endforeach
     </tbody>

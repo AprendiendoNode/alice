@@ -3,7 +3,7 @@
 @section('contentheader_title')
   @if( auth()->user()->can('View customers invoices show') )
     <!--{{ trans('invoicing.customers_invoices_show') }}-->
-    Complementos de pago
+    Generar complementos de pago
   @else
   {{ trans('message.denied') }}
   @endif
@@ -12,7 +12,7 @@
 @section('breadcrumb_title')
   @if( auth()->user()->can('View customers invoices show') )
     <!--{{ trans('invoicing.customers_invoices_show') }}-->
-    Complementos de pago
+    Generar complementos de pago
   @else
   {{ trans('message.denied') }}
   @endif
@@ -29,7 +29,7 @@
       <div class="card">
         <div class="card-body">
           <div class="table-responsive table-data table-dropdown">
-            <table id="table_complements" name='table_filter_fact' class="table table-striped table-hover table-condensed">
+            <table id="table_complements" name='table_filter_fact' class="table table-striped table-hover table-condensed w-100">
               <thead>
                 <tr class="mini text-center">
                     <th id="nocheck"class="text-center actions" width="5%">@lang('general.column_actions')</th>
@@ -37,7 +37,7 @@
                       {{  __('customer_invoice.column_name')}}
                     </th>
                     <th class="text-center">
-                        {{__('customer_invoice.column_date')}}
+                        {{__('customer_invoice.column_date_due')}}
                     </th>
                     <th class="text-center">
                         @lang('customer_invoice.column_uuid')
@@ -196,13 +196,19 @@
 
             </div>
         </div>-->
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group row">
+            <label for="NoOperation" class="control-label">Núm. Operación:</label>
+            <input type="text" class="form-control" name="NoOperation" id ="NoOperation" value="" maxlength="100" placeholder="Campo Opcional">
+          </div>
+        </div>
 
 
       </div>
 
       <div class="row mt-2">
         <div class="table-responsive table-data table-dropdown">
-          <table id="table_selected_complements" name='table_filter_fact' class="table table-striped table-hover table-condensed">
+          <table id="table_selected_complements" name='table_filter_fact' class="table table-striped table-hover table-condensed" >
             <thead class="">
               <tr class="mini text-center">
                   <th class="text-center" width="5%">@lang('general.column_actions')</th>
@@ -210,7 +216,7 @@
                     {{  __('customer_invoice.column_name')}}
                   </th>
                   <th class="text-center">
-                      {{__('customer_invoice.column_date')}}
+                      {{__('customer_invoice.column_date_due')}}
                   </th>
                   <th class="text-center">
                       @lang('customer_invoice.column_uuid')
