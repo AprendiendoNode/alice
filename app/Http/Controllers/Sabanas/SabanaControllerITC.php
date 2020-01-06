@@ -21,8 +21,8 @@ class SabanaControllerITC extends Controller
   {
     $user_id = Auth::user()->id;
     $cadena = Cadena::select('id', 'name')->get();
-    $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array($user_id, "SuperAdmin"));
-    return view('permitted.sabanas.sabana_itc', compact('hotels','cadena'));
+    $users = DB::select('CALL list_user_itc()');
+    return view('permitted.sabanas.sabana_itc', compact('users','cadena'));
   }
   public function informacionCliente(Request $request)
   {

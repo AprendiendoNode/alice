@@ -52,8 +52,8 @@
         <label class="mr-1">Sitio:</label>
         <select id="cliente" class="form-control select2">
           <option value="" selected> Elija uno... </option>
-          @forelse ($hotels as $hotel)
-            <option value="{{ $hotel->id }}"> {{ $hotel->Nombre_hotel }} </option>
+          @forelse ($users as $user)
+            <option value="{{ $user->id }}"> {{ $user->name }} </option>
           @empty
           @endforelse
         </select>
