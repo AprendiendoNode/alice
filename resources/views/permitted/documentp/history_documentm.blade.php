@@ -33,18 +33,7 @@
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
           <div class="row">
             <form id="search_info" name="search_info" class="form-inline" method="post">
-              {{ csrf_field() }}
-              {{-- <div class="col-sm-2">
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                  <input id="date_to_search" type="text" class="form-control" name="date_to_search">
-                </div>
-              </div>
-              <div class="col-sm-10">
-                <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard">
-                  <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>  Filtrar
-                </button>
-              </div> --}}
+              {{ csrf_field() }}              
             </form>
           </div>
         </div>
@@ -56,7 +45,9 @@
             <table id="table_documentp" class="table table-striped table-bordered table-hover table-condensed">
               <thead>
                 <tr style="background: #088A68;">
+                  <th> <small></small> </th>
                   <th> <small>Fecha de solicitud</small> </th>
+                  <th> <small>Folio</small> </th>
                   <th> <small>Nombre del proyecto</small> </th>
                   <th> <small>$ EA USD</small> </th>
                   <th> <small>$ ENA USD</small> </th>
@@ -67,14 +58,14 @@
                   <th> <small>% Compra</small> </th>
                   <th> <small>Dias de compra</small> </th>
                   <th> <small>Doc.</small> </th>
-                  <th> <small>Serv. mensual</small> </th>
-                  <th> <small></small> </th>
+                  <th> <small>Serv. mensual</small> </th>              
                 </tr>
               </thead>
               <tbody>
               </tbody>
               <tfoot id='tfoot_average'>
                 <tr>
+                  <th></th>
                   <th></th>
                   <th></th>
                   <th></th>
@@ -111,7 +102,9 @@
             <table  id="table_documentp" class="table table-striped table-bordered table-hover nowrap">
               <thead>
                 <tr class="" style="background: #088A68;">
+                  <th> <small></small> </th>
                   <th> <small>Fecha de solicitud</small> </th>
+                  <th> <small>Folio</small> </th>
                   <th> <small>Nombre del proyecto</small> </th>
                   <th> <small>$ EA USD</small> </th>
                   <th> <small>$ ENA USD</small> </th>
@@ -123,7 +116,6 @@
                   <th> <small>Dias de compra</small> </th>
                   <th> <small>Doc.</small> </th>
                   <th> <small>Prioridad</small> </th>
-                  <th> <small></small> </th>
                   <th> <small>status</small> </th>
                 </tr>
               </thead>
@@ -131,6 +123,7 @@
               </tbody>
               <tfoot id='tfoot_average'>
                 <tr>
+                  <th></th>
                   <th></th>
                   <th></th>
                   <th></th>
@@ -158,17 +151,6 @@
           <div class="row">
             <form id="search_info" name="search_info" class="form-inline" method="post">
               {{ csrf_field() }}
-              {{-- <div class="col-sm-2">
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                  <input id="date_to_search" type="text" class="form-control" name="date_to_search">
-                </div>
-              </div>
-              <div class="col-sm-10">
-                <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard">
-                  <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>  Filtrar
-                </button>
-              </div> --}}
             </form>
           </div>
         </div>
@@ -181,7 +163,9 @@
               <thead>
                 <tr class="" style="background: #088A68;">
                   <th> <small></small> </th>
+                  <th> <small></small> </th>
                   <th> <small>Fecha de solicitud</small> </th>
+                  <th> <small>Folio</small> </th>
                   <th> <small>Nombre del proyecto</small> </th>
                   <th> <small>$ EA USD</small> </th>
                   <th> <small>$ ENA USD</small> </th>
@@ -193,7 +177,6 @@
                   <th> <small>Dias de compra</small> </th>
                   <th> <small>Doc.</small> </th>
                   <th> <small>Prioridad</small> </th>
-                  <th> <small></small> </th>
                   <th> <small>status</small> </th>
                   <th> <small>Cant Sug</small> </th>
                   <th> <small>Cant Req</small> </th>
@@ -203,6 +186,7 @@
               </tbody>
               <tfoot id='tfoot_average'>
                 <tr>
+                  <th></th>
                   <th></th>
                   <th></th>
                   <th></th>
@@ -231,17 +215,6 @@
           <div class="row">
             <form id="search_info" name="search_info" class="form-inline" method="post">
               {{ csrf_field() }}
-              {{-- <div class="col-sm-2">
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                  <input id="date_to_search" type="text" class="form-control" name="date_to_search">
-                </div>
-              </div>
-              <div class="col-sm-10">
-                <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard">
-                  <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>  Filtrar
-                </button>
-              </div> --}}
             </form>
           </div>
         </div>
@@ -254,7 +227,9 @@
               <thead>
                 <tr class="" style="background: #088A68;">
                   <th> <small></small> </th>
+                  <th> <small></small> </th>
                   <th> <small>Fecha de solicitud</small> </th>
+                  <th> <small>Folio</small> </th>
                   <th> <small>Nombre del proyecto</small> </th>
                   <th> <small>$ EA USD</small> </th>
                   <th> <small>$ ENA USD</small> </th>
@@ -266,7 +241,6 @@
                   <th> <small>Dias de compra</small> </th>
                   <th> <small>Doc.</small> </th>
                   <th> <small>Prioridad</small> </th>
-                  <th> <small></small> </th>
                   <th> <small>status</small> </th>
                   <th> <small>Cant Sug</small> </th>
                   <th> <small>Cant Req</small> </th>
@@ -313,13 +287,10 @@
     <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
     <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v=2.0.0')}}" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v=2.1')}}" >
     <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
     <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
     <style>
-      .cell-large{
-          min-width: 200px !important;
-        }
 
         .dataTables_wrapper .dataTable .btn{
           width: 50px !important;
@@ -330,16 +301,16 @@
         }
     </style>
       @if( auth()->user()->can('View level zero documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_0.js?v=3.0.3')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_0.js?v=3.1')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @elseif ( auth()->user()->can('View level one documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_1.js?v=3.0.0')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_1.js?v=3.1')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @elseif ( auth()->user()->can('View level two documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_2.js?v=3.0.1')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_2.js?v=3.1')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @elseif ( auth()->user()->can('View level three documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_3.js?v=3.0.0')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_3.js?v=3.1')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @endif
   @else

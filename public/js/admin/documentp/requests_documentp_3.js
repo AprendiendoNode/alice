@@ -62,18 +62,6 @@ function documentp_table(datajson, table){
     }
     vartable.fnAddData([
       data.id,
-      data.fecha,
-      data.nombre_proyecto,
-      '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      data.elaboro,
-      badge,
-      data.num_edit,
-      parseInt(data.porcentaje_compra) + '%',
-      data.atraso,
-      type_doc,
-      data.prioridad ,
       `<div class="btn-group">
         <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-ellipsis-h"></i>
@@ -88,6 +76,19 @@ function documentp_table(datajson, table){
             <a class="dropdown-item" href="javascript:void(0);" onclick="deny_docp(this)" value="${data.id}" role="button" data-target="#modal-deny"><span class="fa fa-ban"></span> Denegar</a>
         </div>
        </div>`,
+      data.fecha,
+      data.folio,
+      data.nombre_proyecto,
+      '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      data.elaboro,
+      badge,
+      data.num_edit,
+      parseInt(data.porcentaje_compra) + '%',
+      data.atraso,
+      type_doc,
+      data.prioridad ,
       data.status,
       data.cant_sug_total,
       data.cant_req_total
@@ -96,7 +97,7 @@ function documentp_table(datajson, table){
 
 }
 var Configuration_table_responsive_documentp= {
-        "order": [[ 1, "desc" ]],
+        "order": [[ 2, "desc" ]],
         "select": true,
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
         "columnDefs": [
@@ -112,11 +113,11 @@ var Configuration_table_responsive_documentp= {
                 "width": "0.1%",
                 "createdCell": function (td, cellData, rowData, row, col){
                   if ( cellData > 0 ) {
-                    if(rowData[14] != 'Reviso'){
+                    if(rowData[15] != 'Reviso'){
                       this.api().cell(td).checkboxes.disable();
                     }
-                    if(rowData[15] != null){
-                      if(rowData[15] != rowData[16]){
+                    if(rowData[16] != null){
+                      if(rowData[16] != rowData[17]){
                         $(td).parent().addClass('highlight-doc');
                       }
 
@@ -127,8 +128,8 @@ var Configuration_table_responsive_documentp= {
             },
             {
               "targets": 1,
-              "width": "0.1%",
-              "className": "text-center cell-name",
+              "width": "1.0%",
+              "className": "text-center ",
             },
             {
               "targets": 2,
@@ -137,13 +138,13 @@ var Configuration_table_responsive_documentp= {
             },
             {
               "targets": 3,
-              "width": "0.5%",
-              "className": "text-right cell-price",
+              "width": "2.5%",
+              "className": "text-center cell-large",
             },
             {
               "targets": 4,
               "width": "0.5%",
-              "className": "text-right cell-price",
+              "className": "text-center",
             },
             {
               "targets": 5,
@@ -153,23 +154,23 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 6,
               "width": "1.8%",
-              "className": "text-center cell-name",
+              "className": "text-right cell-price",
             },
             {
               "targets": 7,
               "width": "0.1%",
-              "className": "text-center",
+              "className": "text-right cell-price",
             },
             {
               "targets": 8,
               "width": "0.1%",
-              "className": "text-center cell-short",
+              "className": "text-center",
               "visible": false
             },
             {
               "targets": 9,
               "width": "0.1%",
-              "className": "text-center cell-short",
+              "className": "text-center",
             },
             {
               "targets": 10,
@@ -193,16 +194,21 @@ var Configuration_table_responsive_documentp= {
             },
             {
               "targets": 14,
-              "visible": false,
-              "searchable": false
+              "width": "3%",
+              "className": "text-center",
             },
             {
               "targets": 15,
               "visible": false,
-              "searchable": false
+              "className": "text-center",
             },
             {
               "targets": 16,
+              "visible": false,
+              "searchable": false
+            },
+            {
+              "targets": 17,
               "visible": false,
               "searchable": false
             }
@@ -314,7 +320,7 @@ var Configuration_table_responsive_documentp= {
                       $(node).removeClass('btn-default')
                     },
                     exportOptions: {
-                      columns: [ 1,2,3,4,5,6,7,8,9,10,11 ],
+                      columns: [ 2,3,4,5,6,7,8,9,10,11,12,13 ],
                       modifier: {
                         page: 'all',
                       }
@@ -344,7 +350,7 @@ var Configuration_table_responsive_documentp= {
                       $(node).removeClass('btn-default')
                     },
                     exportOptions: {
-                      columns: [ 1,2,3,4,5,6,7,8,9,10,11 ],
+                      columns: [ 2,3,4,5,6,7,8,9,10,11,12,13 ],
                       modifier: {
                         page: 'all',
                       }
@@ -373,7 +379,7 @@ var Configuration_table_responsive_documentp= {
                       $(node).removeClass('btn-default')
                     },
                     exportOptions: {
-                      columns: [ 1,2,3,4,5,6,7,8,9,10,11 ],
+                      columns: [ 2,3,4,5,6,7,8,9,10,11,12,13 ],
                       modifier: {
                         page: 'all',
                       }

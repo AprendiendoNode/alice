@@ -99,7 +99,20 @@ function documentp_table(datajson, table){
          break;
     }
   vartable.fnAddData([
+      `<div class="btn-group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a class="dropdown-item" href="javascript:void(0);" onclick="editar(this)" data-id="${data.id}" data-cart="${data.documentp_cart_id}" value="${data.id}"><span class="fa fa-edit"></span> Editar</a>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="kickoff(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-tasks"></i> Kick-off</a>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="editar_cotizador(this)" data-id="${data.id}" data-cart="${data.documentp_cart_id}" value="${data.id}"><span class="fa fa-calculator"></span> Ir a cotizador</a>
+                <a class="dropdown-item" target="_blank" href="/documentp_invoice/${data.id}/${data.documentp_cart_id}"><span class="far fa-file-pdf"></span> Imprimir productos</a>
+            </div>
+         </div>`,
         data.fecha,
+        data.folio,
         data.nombre_proyecto,
         '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
         '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
@@ -111,24 +124,12 @@ function documentp_table(datajson, table){
         data.atraso,
         type_doc,
         '<a href="" data-type="select" data-pk="'+ data.id +'" data-title="Prioridad" data-value="' + data.id_prioridad + '" class="set-priority">',
-        `<div class="btn-group">
-          <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-ellipsis-h"></i>
-          </button>
-          <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-              <a class="dropdown-item" href="javascript:void(0);" onclick="editar(this)" data-id="${data.id}" data-cart="${data.documentp_cart_id}" value="${data.id}"><span class="fa fa-edit"></span> Editar</a>
-              <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
-              <a class="dropdown-item" href="javascript:void(0);" onclick="kickoff(this)" data-id="${data.id}" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-tasks"></i> Kick-off</a>
-              <a class="dropdown-item" href="javascript:void(0);" onclick="editar_cotizador(this)" data-id="${data.id}" data-cart="${data.documentp_cart_id}" value="${data.id}"><span class="fa fa-calculator"></span> Ir a cotizador</a>
-              <a class="dropdown-item" target="_blank" href="/documentp_invoice/${data.id}/${data.documentp_cart_id}"><span class="far fa-file-pdf"></span> Imprimir productos</a>
-          </div>
-         </div>`,
         data.status
     ]);
   });
 }
 var Configuration_table_responsive_documentp= {
-        "order": [[ 0, "desc" ]],
+        "order": [[ 1, "desc" ]],
         "select": true,
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
         "fnDrawCallback": function() {
@@ -159,12 +160,12 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 2,
               "width": "0.5%",
-              "className": "text-right cell-price",
+              "className": "text-center cell-large",
             },
             {
               "targets": 3,
               "width": "0.5%",
-              "className": "text-right cell-price",
+              "className": "text-center cell-name",
             },
             {
               "targets": 4,
@@ -174,7 +175,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 5,
               "width": "1.6%",
-              "className": "text-center cell-name",
+              "className": "text-right cell-price",
             },
             {
               "targets": 6,
@@ -184,13 +185,13 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 7,
               "width": "0.1%",
-              "className": "text-center cell-short",
+              "className": "text-center cell-center",
               "visible" : false
             },
             {
               "targets": 8,
               "width": "0.2%",
-              "className": "text-center cell-short",
+              "className": "text-center",
             },
             {
               "targets": 9,
@@ -200,7 +201,7 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 10,
               "width": "0.2%",
-              "className": "text-center",
+              "className": "text-center cell-short",
             },
             {
               "targets": 11,
@@ -214,6 +215,11 @@ var Configuration_table_responsive_documentp= {
             },
             {
               "targets": 13,
+              "width": "1.5%",
+              "className": "text-center",
+            },
+            {
+              "targets": 14,
               "width": "1.5%",
               "visible": false,
             }
@@ -245,7 +251,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 0,1,2,3,4,5,6,7,8,9,10,11 ],
+                columns: [ 1,2,3,4,5,6,7,8,9,10,11,12 ],
                 modifier: {
                     page: 'all',
                 }
