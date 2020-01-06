@@ -884,6 +884,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_tickets_by_itc','Sabanas\SabanaControllerITC@get_tickets_by_itc');
     Route::post('get_ticketsxtipo_itc','Sabanas\SabanaControllerITC@get_ticketsxtype_itc');
     Route::post('get_ticketsxstatus_itc','Sabanas\SabanaControllerITC@get_ticketsxstatus_itc');
+    Route::post('get_viatics_gastos_itc','Sabanas\SabanaControllerITC@get_viatics_gastos_itc');
+
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');
     Route::post('/search_info_gen', 'Viatics\DashboardViaticController@info_gen');

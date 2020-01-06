@@ -605,7 +605,7 @@
                 </div>
               </div>
               <div class="tab_content">
-                  <h3 style="font-weight: bold; margin-left: 45%;">Pagos</h3>
+                  <!--<h3 style="font-weight: bold; margin-left: 45%;">Pagos</h3>
                   <div class="row">
                     <div class="col-md-1"></div>
                     <div class="d-flex justify-content-center border-bottom w-100 col-md-5">
@@ -648,7 +648,7 @@
                       </tfoot>
                     </table>
                 </div>
-                <br>
+                <br>-->
                 <h3 style="font-weight: bold; margin-left: 44%;">Viáticos</h3>
                 <div class="d-flex justify-content-center border-bottom w-100">
                   <div id="graph_viatics" style="min-height: 300px;left: 0px;right: 0px;"> </div>

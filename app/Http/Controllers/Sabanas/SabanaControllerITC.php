@@ -162,18 +162,10 @@ class SabanaControllerITC extends Controller
     return $res;
   }
 
-  public function get_viatics_gastos(Request $request)
+  public function get_viatics_gastos_itc(Request $request)
   {
     $id = $request->id;
-    $res =  DB::select('CALL px_history_viatics_sitio(?)', array($id));
-    return $res;
-  }
-
-
-  public function get_viatics_gastos_cadena(Request $request)
-  {
-    $cadena = $request->id;
-    $res =  DB::select('CALL px_history_viatics_cadena(?)', array($cadena));
+    $res =  DB::select('CALL px_history_viatics_itc(?)', array($id));
     return $res;
   }
 

@@ -83,7 +83,7 @@ $(function() {
     get_table_tickets(itc_email);
     get_graph_tickets_type(itc_email);
     get_graph_tickets_status(itc_email);
-    getFoliosByHotel(itc);
+    //getFoliosByHotel(itc);
     getViaticsByHotel(itc);
     get_table_budget(itc,'');
   });
@@ -1092,15 +1092,15 @@ function getFoliosByCadena(cadena){
   });
 }
 
-function getViaticsByHotel(cliente){
-  var id = cliente;
+function getViaticsByHotel(itc){
+  var id = itc;
   var _token = $('input[name="_token"]').val();
   $.ajax({
     type: "POST",
-    url: "/get_viatics_gastos",
+    url: "/get_viatics_gastos_itc",
     data: { id : id, _token : _token },
     success: function (data){
-      //console.log(data);
+      console.log(data);
 
       var data2 = [], savedGastos = [];
 
@@ -1118,7 +1118,7 @@ function getViaticsByHotel(cliente){
       });
 
       //console.log(data2);
-      //graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
+      graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
       viatics_table(data, $("#table_viatics"));
     },
     error: function (data) {
@@ -1564,7 +1564,7 @@ function payments_table(datajson, table){
         }
     });
   }*/
-/*
+
 function graph_equipments(title,data,text,subtext) {
   //$('#'+title).width($('#'+title).width());
   //$('#'+title).height($('#'+title).height());
@@ -1634,7 +1634,7 @@ function graph_equipments(title,data,text,subtext) {
 
       }
   });
-} */
+}
 
 
 function graph_tickets_type(title,data) {
