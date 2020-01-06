@@ -206,7 +206,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/detailed_hotel_disqn','Inventory\DistributionController@getDristributionQuantitys');
   Route::post('/detailed_hotel_models','Inventory\DistributionController@getEquipmentModels');
   Route::post('/detailed_hotel_table','Inventory\DistributionController@getDetailedEquipment');
-
+  Route::get('/getApsAllSites','Inventory\DistributionController@getApsAllSites');
+  Route::get('/getApsSitesByCadena/cadena/{cadena}','Inventory\DistributionController@getApsSitesByCadena');
+  Route::get('/getApsBySite/hotel/{hotel}','Inventory\DistributionController@getApsBySite');
 
   //Modulo de reportes - Asignacion tipo de reportes
   Route::get('/type_report' , 'TypereportController@index');
@@ -891,6 +893,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/create_rza_by_contract', 'Contracts\ContratoController@create_rza_by_contract');
     Route::post('/reset_rza_by_contract', 'Contracts\ContratoController@reset_rza_by_contract');
     Route::post('/search_client_contract', 'Contracts\ContratoController@search_client_contract');
+    Route::get('/qualification_itc', 'QualificationItcController@index');
 
 });
 

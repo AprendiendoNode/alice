@@ -16,8 +16,9 @@ class DistributionController extends Controller
      */
     public function index()
     {
+      $cadenas = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
       $hotels= DB::table('hotels')->select('id','Nombre_hotel')->where('filter', 1)->whereNull('deleted_at')->orderBy('Nombre_hotel','ASC')->get();
-      return view('permitted.inventory.det_distribution',compact('hotels'));
+      return view('permitted.inventory.det_distribution',compact('hotels', 'cadenas'));
     }
 
     public function show(Request $request)
@@ -157,6 +158,27 @@ public function show_device(Request $request)
         $result = DB::select('CALL GetDetail_Disp_Venue2 (?)', array($hotel));
       }
       return json_encode($result);
+    }
+
+    public function getApsAllSites()
+    {
+      $result = DB::select('CALL px_cadenas_sitios_aps_todos()', array());
+
+      return $result;
+    }
+
+    public function getApsSitesByCadena($cadena)
+    {
+      $result = DB::select('CALL px_cadenas_sitios_aps_xcadena(?)', array($cadena));
+
+      return $result;
+    }
+
+    public function getApsBySite($hotel)
+    {
+      $result = DB::select('CALL px_cadenas_sitios_aps_xsitio(?)', array($hotel));
+
+      return $result;
     }
 
 

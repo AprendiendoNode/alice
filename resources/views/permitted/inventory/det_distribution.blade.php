@@ -79,13 +79,21 @@
                       <div class="form-inline">
                           {{ csrf_field() }}
                           <div class="form-group">
-                            <label for="select_two" class="control-label">{{ trans('message.hotel') }}: </label>
-                            <select id="select_two" name="select_two"  class="form-control select2" required>
+                            <label for="cadena" class="control-label">Cadena: </label>
+                            <select id="cadena" name="cadena"  class="form-control select2 form-control-sm" required>
                               <option value="" selected> Elija </option>
-                              @forelse ($hotels as $data_hotel)
-                                <option value="{{ $data_hotel->id }}"> {{ $data_hotel->Nombre_hotel }} </option>
+                              <option value="0"> Todos </option>
+                              @forelse ($cadenas as $cadena)
+                                <option value="{{ $cadena->id }}"> {{ $cadena->name }} </option>
                               @empty
                               @endforelse
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="hotel" class="control-label">{{ trans('message.hotel') }}: </label>
+                            <select id="hotel" name="hotel"  class="form-control select2 form-control-sm" required>
+                              <option value="" selected> Elija </option>
+                              
                             </select>
                           </div>
                       </div>
@@ -93,11 +101,11 @@
                         <table id="table_equipment_all" class="table table-striped table-bordered table-hover">
                           <thead>
                             <tr>
+                              <th>Cadena</th>
                               <th>{{ trans('general.hotel') }}</th>
                               <th>{{ trans('general.equipo') }}</th>
                               <th>{{ trans('general.modelo') }}</th>
                               <th>{{ trans('general.cantidad') }}</th>
-                              <th>{{ trans('general.estado') }}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -122,9 +130,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/pdf.css')}}" >
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCD07V9hwyUjrRCXiJHo9YdftE0VJIbRP8"></script>
-    <script src="{{ asset('js/admin/inventory/distribucion.js')}}"></script>
+    <script src="{{ asset('js/admin/inventory/distribucion.js?v=2.0')}}"></script>
   @else
   @endif
 @endpush

@@ -162,7 +162,6 @@ var Configuration_table_responsive_documentp= {
               "targets": 8,
               "width": "0.1%",
               "className": "text-center",
-              "visible": false
             },
             {
               "targets": 9,
@@ -173,6 +172,7 @@ var Configuration_table_responsive_documentp= {
               "targets": 10,
               "width": "0.2%",
               "className": "text-center cell-short",
+              "visible": false
             },
             {
               "targets": 11,

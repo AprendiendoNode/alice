@@ -9,7 +9,6 @@ $(function() {
   graph_tree_one();
   graph_tree_two();
   graph_resumen();
-  general_table_equipment();
 });
 
 function init() {
@@ -176,15 +175,14 @@ $('#select_two').on('change', function(e){
   }
 });
 
-function general_table_equipment() {
+function general_table_equipment(url) {
   var _token = $('input[name="_token"]').val();
-  var indent = $('#select_two').val();
   $.ajax({
-      type: "POST",
-      url: "/detailed_equipament_all",
-      data: { ident: indent,_token : _token },
+      type: "GET",
+      url: url,
+
       success: function (data){
-        table_equipment(data, $("#table_equipment_all"));
+        table_equipment_aps(data, $("#table_equipment_all"));
       },
       error: function (data) {
         console.log('Error:', data);
@@ -203,5 +201,74 @@ function table_equipment(datajson, table){
       status.Cantidad,
       "<center><kbd style='background-color:grey'>"+status.Nombre_estado+"</kbd></center>",
     ]);
+  });
+  
+}
+
+$('#cadena').on('change', function(){
+  let cadena = $(this).val();
+  let url = '';
+  if(cadena == 0 && cadena != ''){
+    url = '/getApsAllSites';
+    general_table_equipment(url);
+  }else if(cadena != 0 && cadena != ''){
+    url = `/getApsSitesByCadena/cadena/${cadena}`;
+    general_table_equipment(url);
+  }
+  getSites(cadena);
+})
+
+$('#hotel').on('change', function(){
+  let hotel = $(this).val();
+  let url = '';
+  if(hotel != ''){
+    url = `/getApsBySite/hotel/${hotel}`;
+    general_table_equipment(url);
+  }
+  
+})
+
+
+
+function table_equipment_aps(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_responsive_distribution);
+  vartable.fnClearTable();
+  console.log(datajson);
+  $.each(datajson, function(index, key){ //Este es el bueno
+    vartable.fnAddData([
+      key.cadena,
+      key.Sitio,
+      key.Equipo,
+      key.Modelo,
+      key.Aps,
+    ]);
+  });
+}
+
+function getSites(id_cadena){
+  let _token = $('input[name="_token"]').val();
+  $.ajax({
+    type: "POST",
+    url: "/get_hotel_cadena_doc",
+    data: { data_one : id_cadena, _token : _token },
+    success: function (data){
+      datax = JSON.parse(data);
+      if ($.trim(data)){
+        $('#hotel').empty();
+        $('#hotel').append(`<option value="">Elija</option>`);
+        $.each(datax, function(i, item) {
+            $('#hotel').append(`<option value="${item.id}">${item.Nombre_hotel}</option>`);
+        });
+        get_vertical_anexo();
+        get_table_estimation();
+      }
+      else{
+        $("#hotel").text('');
+      }
+    },
+    error: function (data) {
+      console.log('Error:', data);
+    }
   });
 }
