@@ -55,16 +55,20 @@ $(function() {
 
     $.ajax({
       type: "POST",
-      url: "/informacionCliente",
-      data: { cliente : itc, _token : _token },
+      url: "/informacionITC",
+      data: { itc : itc, _token : _token },
       success: function (data){
         //console.log(data);
-        $("#imagenCliente").attr("src", "../images/hotel/" + data[0].dirlogo1);
-        $("#itcCliente").text(data[1].name + " -> " + data[1].email);
-        $("#cuartosCliente").text(data[0].num_hab == null ? "Sin informacion" : data[0].num_hab);
-        $("#telefonoCliente").text(data[0].Telefono);
-        $("#direccionCliente").text(data[0].Direccion);
-        $("#correoCliente").text(data[2].correo == null ? "Sin informacion" : data[2].correo);
+        $("#imagenCliente").attr("src", $('#select_itc').find(':selected').data("foto"));
+        $("#nombreITC").text($('#select_itc').find(':selected').data("name"));
+        $("#correoITC").text($('#select_itc').find(':selected').data("email"));
+        $("#localizacionITC").text($('#select_itc').find(':selected').data("city"));
+        var i = 1;
+        $("#sitiosITC").empty();
+        data.forEach(site => {
+          $("#sitiosITC").append('<p class="card-text">'+i+'. '+site.Nombre_hotel+'</p>');
+          i++;
+        });
       },
       error: function (data) {
         console.log('Error:', data);

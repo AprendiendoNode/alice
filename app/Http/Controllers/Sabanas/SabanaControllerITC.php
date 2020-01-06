@@ -24,13 +24,11 @@ class SabanaControllerITC extends Controller
     $users = DB::select('CALL list_user_itc()');
     return view('permitted.sabanas.sabana_itc', compact('users','cadena'));
   }
-  public function informacionCliente(Request $request)
+  public function informacionITC(Request $request)
   {
-    $hotel = $request->cliente;
-    $result1 = DB::table('hotels')->where("id",$hotel)->get();
-    $itc = DB::select('CALL setemailsnmp(?)', array($hotel));
-    $email = DB::table('hotels')->join("sucursals", "hotels.sucursal_id", "=", "sucursals.id")->select("sucursals.correo")->where("hotels.id",$hotel)->get();
-    return array_merge(json_decode($result1),$itc,json_decode($email));
+    $itc = $request->itc;
+    $sites = DB::table('hotel_user')->join("hotels", "hotels.id", "=", "hotel_user.hotel_id")->select("hotels.Nombre_hotel")->where('user_id',$itc)->get();
+    return $sites;
   }
 
   public function informacionCadena(Request $request)

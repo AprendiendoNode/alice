@@ -32,7 +32,7 @@
         <select id="select_itc" class="form-control select2">
           <option value="" selected> Elija uno... </option>
           @forelse ($users as $user)
-            <option value="{{ $user->id }}" data-email="{{$user->email}}"> {{ $user->name }} </option>
+            <option value="{{ $user->id }}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-city="{{$user->city}}"> {{ $user->name }} </option>
           @empty
           @endforelse
         </select>
@@ -361,24 +361,24 @@
                   <h3 style="font-weight: bold; margin-left: 40%;">Información general</h3>
                   <div id="gral_sitio" class="row">
                     <div class="card col-md-6" style="width: 18rem;">
-                      <img id="imagenCliente" class="card-img-top" style="max-height: 300px;" alt="Logo no encontrado :(">
+                      <img id="imagenCliente" class="card-img-top" style="max-height: 300px;" alt="Sin foto :(">
+                      <div class="card-body text-center">
+                        <h5 class="card-title">Nombre completo:</h5>
+                        <p id="nombreITC" class="card-text"></p>
+                        <br>
+                        <h5 class="card-title">Correo:</h5>
+                        <p id="correoITC" class="card-text"></p>
+                        <br>
+                      </div>
                     </div>
                     <div class="card col-md-6" style="width: 18rem;">
                       <div class="card-body text-center">
-                        <h5 class="card-title">ITC asignado:</h5>
-                        <p id="itcCliente" class="card-text"></p>
+                        <h5 class="card-title">Localización:</h5>
+                        <p id="localizacionITC" class="card-text"></p>
                         <br>
-                        <h5 class="card-title">Número de cuartos:</h5>
-                        <p id="cuartosCliente" class="card-text"></p>
+                        <h5 class="card-title">Sitios:</h5>
+                        <div id="sitiosITC"></div>
                         <br>
-                        <h5 class="card-title">Teléfono de contacto:</h5>
-                        <p id="telefonoCliente" class="card-text"></p>
-                        <br>
-                        <h5 class="card-title">Dirección:</h5>
-                        <p id="direccionCliente" class="card-text"></p>
-                        <br>
-                        <h5 class="card-title">Correo:</h5>
-                        <p id="correoCliente" class="card-text"></p>
                       </div>
                     </div>
                   </div>
