@@ -28,29 +28,8 @@
     @if( auth()->user()->can('View dash sabana') )
 
       <div class="input-group mb-3">
-      <label class="mr-1">Tipo de informe:</label>
-      <select id="tipo_sabana" class="form-control select2">
-         <option value="0">Elige</option>
-         <!--<option value="1">Todo Sitwifi</option>-->
-         <option value="2">Por Proyecto</option>
-         <option value="3">Por Sitio</option>
-       </select>
-     </div>
-
-     <div id="select_proyecto"class="input-group mb-3">
-       <label class="mr-1">Proyecto:</label>
-       <select id="proyecto" class="form-control select2">
-         <option value="" selected> Elija </option>
-         @forelse ($cadena as $data_cadena)
-           <option value="{{ $data_cadena->id }}"> {{ $data_cadena->name }} </option>
-         @empty
-         @endforelse
-       </select>
-     </div>
-
-      <div id="select_sitio"class="input-group mb-3">
-        <label class="mr-1">Sitio:</label>
-        <select id="cliente" class="form-control select2">
+        <label class="mr-1">ITC:</label>
+        <select id="select_itc" class="form-control select2">
           <option value="" selected> Elija uno... </option>
           @forelse ($users as $user)
             <option value="{{ $user->id }}"> {{ $user->name }} </option>
@@ -58,70 +37,6 @@
           @endforelse
         </select>
       </div>
-      <!--<div id="sabana" class="container card d-none">
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#informacion"><i class="fas fa-user-circle"></i> Información</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#contrato"><i class="fas fa-file-contract"></i> Contrato</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#nps"><i class="fas fa-tachometer-alt"></i> NPS</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#equipos"><i class="fas fa-box-open"></i> Equipos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#tickets"><i class="fas fa-clipboard-list"></i> Tickets</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#presupuesto"><i class="fas fa-funnel-dollar"></i> Presupuesto</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#gastos"><i class="fas fa-hand-holding-usd"></i></i> Gastos</a>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div id="informacion" class="container tab-pane active"><br>
-            <h3 style="margin-left: 40%;">Información general</h3>
-            <div class="row">
-              <div class="card" style="width: 18rem;">
-                <img id="imagenCliente" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 id="telefonoCliente" class="card-title"></h5>
-                  <p id="direccionCliente" class="card-text"></p>
-                  <a href="#" class="btn btn-primary">Más detalles</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div id="contrato" class="container tab-pane fade"><br>
-            <h3>Contrato</h3>
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-          </div>
-          <div id="nps" class="container tab-pane fade"><br>
-            <h3>NPS</h3>
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-          </div>
-          <div id="equipos" class="container tab-pane fade"><br>
-            <h3>Equipos</h3>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-          </div>
-          <div id="tickets" class="container tab-pane fade"><br>
-            <h3>Tickets</h3>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-          </div>
-          <div id="presupuesto" class="container tab-pane fade"><br>
-            <h3>Presupuesto</h3>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-          </div>
-          <div id="gastos" class="container tab-pane fade"><br>
-            <h3>Gastos</h3>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-          </div>
-        </div>
-      </div>-->
 
       <div class="modal modal-default fade" id="modal-view-ppd" data-backdrop="static">
           <div class="modal-dialog" >
@@ -432,14 +347,14 @@
       <div class="tab_wrapper first_tab d-none">
           <ul class="tab_list">
               <li class="active"><i class="fas fa-user-circle"></i> Información</li>
-              <li><i class="fas fa-file-contract"></i> Contratos</li>
+              <!--<li><i class="fas fa-file-contract"></i> Contratos</li>-->
               <li><i class="fas fa-tachometer-alt"></i> NPS</li>
-              <li><i class="fas fa-box-open"></i> Equipos</li>
+              <!--<li><i class="fas fa-box-open"></i> Equipos</li>-->
               <li><i class="fas fa-clipboard-list"></i> Tickets</li>
-              <li><i class="fas fa-funnel-dollar"></i> Presupuesto</li>
+              <!--<li><i class="fas fa-funnel-dollar"></i> Presupuesto</li>-->
               <li><i class="fas fa-hand-holding-usd"></i></i> Gastos</li>
-              <li><i class="fas fa-wifi"></i></i> Disponibilidad Enlaces/Antenas</li>
-              <li id="tab_consumo"><i class="fas fa-chart-bar"></i></i> Estadísticas de consumo</li>
+              <li><i class="fas fa-file-contract"></i></i> Proyectos</li>
+              <!--<li id="tab_consumo"><i class="fas fa-chart-bar"></i></i> Estadísticas de consumo</li>-->
           </ul>
           <div class="content_wrapper">
               <div class="tab_content active">
@@ -499,41 +414,6 @@
                     </div>
                   </div>
               </div>
-              <div class="tab_content">
-                  <h3 style="font-weight: bold; margin-left: 45%;">Maestros</h3>
-                  <div class="table-responsive">
-                    <table id="all_contracts" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
-                      <thead>
-                        <tr class="bg-aqua text-center">
-                          <th> <small>Id</small> </th>
-                          <th> <small>Razón social</small> </th>
-                          <th > <small>Clasificación</small> </th>
-                          <th > <small>Vertical</small> </th>
-                          <th id="header_cadena"> <small >Cadena</small> </th>
-                          <th > <small>Estado</small> </th>
-                          <th > <small>Vencimiento</small> </th>
-                          <th > <small>Anexos</small> </th>
-                        </tr>
-                      </thead>
-                      <tbody class="text-center">
-                      </tbody>
-                      <tfoot >
-                        <tr >
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th ></th>
-                          <th></th>
-                          <th ></th>
-                          <th ></th>
-                          <th ></th>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-              </div>
-
-
               <div class="tab_content">
                 <section>
                 <div class="row">
@@ -685,50 +565,6 @@
                   </section>
               </div>
 
-
-              <div class="tab_content">
-                  <h3 id ="title_equipments"style="font-weight: bold; margin-left: 34%;">Todos los equipos del sitio</h3>
-                  <div class="row">
-                  <div class=" col-sm-1 col-md-1 mr-3"></div>
-                  <div class="d-flex justify-content-center border-bottom w-100 col-sm-5 col-md-5">
-                    <div  id="graph_equipments" style="min-height: 300px;left: 0px;right: 0px;"> </div>
-                  </div>
-                  <div class="d-flex justify-content-center border-bottom w-30 col-sm-5 col-md-5">
-                    <div  id="graph_equipments_status" > </div>
-                  </div>
-                  <div class=" col-sm-1 col-md-1"></div>
-                </div>
-
-                  <div class="divEQ table-responsive">
-                  <table id="all_equipments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
-                    <thead>
-                      <tr class="bg-aqua">
-                        <th class="bg-aqua"> <small>Tipo</small> </th>
-                        <th class="bg-aqua"> <small>Modelo</small> </th>
-                        <th class="bg-aqua"> <small>Mac</small> </th>
-                        <th class="bg-aqua"> <small>Serie</small> </th>
-                        <th class="bg-aqua"> <small>Descripción</small> </th>
-                        <th class="bg-aqua"> <small>Estado</small> </th>
-                        <th class="bg-aqua"> <small>Fecha Registro</small> </th>
-                        <th class="bg-aqua"> <small>Fecha Baja</small> </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot >
-                      <tr >
-                        <th></th>
-                        <th></th>
-                        <th ></th>
-                        <th></th>
-                        <th></th>
-                        <th ></th>
-                        <th ></th>
-                      </tr>
-                    </tfoot>
-                  </table>
-                  </div>
-              </div>
               <div class="tab_content">
                 <div class="text-center">
                   <h3 style="font-weight:bold;" >Todos los tickets </h3>
@@ -767,81 +603,6 @@
                   </table>
                   </div>
                 </div>
-              </div>
-              <div class="tab_content">
-                <div id="terminado_presupuesto_cadena">
-                  <div class="row">
-                    <div class="w-100 text-center">
-                      <h3 style="font-weight: bold;">Presupuesto anual de mantenimiento del sitio</h3>
-                      <h4>Montos en dólares</h4>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-4 col-xs-12"></div>
-                    <div class="col-md-4 col-xs-12 mb-3">
-                      <div class="input-group  flex-nowrap">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
-                        </div>
-                        <input id="date_presupuesto" type="text" class="form-control" aria-describedby="button-addon2">
-                        <div class="input-group-append">
-                          <button class="btn btn-outline-info" type="button" id="btn-filtrar">Filtrar</button>
-                        </div>
-                      </div>
-                  </div>
-                  </div>
-
-                    <div class="table-responsive">
-                      <table id="table_budget_site" name='table_budget_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
-                        <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
-                        <thead>
-                          <tr class="bg-aqua text-center">
-                            <th><small>Cuenta</small> </th>
-                            <th class="sum_col"><small>Presupuesto</small> </th>
-                            <th class="sum_col"><small>Ene.</small> </th>
-                            <th class="sum_col"><small>Feb.</small> </th>
-                            <th class="sum_col"><small>Mar.</small> </th>
-                            <th class="sum_col"><small>Abr.</small> </th>
-                            <th class="sum_col"><small>May.</small> </th>
-                            <th class="sum_col"><small>Jun.</small> </th>
-                            <th class="sum_col"><small>Jul.</small> </th>
-                            <th class="sum_col"><small>Ago.</small> </th>
-                            <th class="sum_col"><small>Sep.</small> </th>
-                            <th class="sum_col"><small>Oct.</small> </th>
-                            <th class="sum_col"><small>Nov.</small> </th>
-                            <th class="sum_col"><small>Dic.</small> </th>
-                            <th class="sum_ejer"><small>% Ejercido</small> </th>
-                          </tr>
-                        </thead>
-                        <tbody class="text-center">
-
-                        </tbody>
-                        <tfoot id='tfoot_average' class="bg-dark text-center text-white">
-                          <tr>
-                            <th>TOTAL</th>
-                            <th id="total_presupuesto"></th>
-                            <th id="total_ene"></th>
-                            <th id="total_feb"></th>
-                            <th id="total_mar"></th>
-                            <th id="total_abr"></th>
-                            <th id="total_may"></th>
-                            <th id="total_jun"></th>
-                            <th id="total_jul"></th>
-                            <th id="total_ago"></th>
-                            <th id="total_sep"></th>
-                            <th id="total_oct"></th>
-                            <th id="total_nov"></th>
-                            <th id="total_dic"></th>
-                            <th id="total_ejercido"></th>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                  </div>
-                  <div id="construyendo_presupuesto_cadena" class="text-center">
-                    <h3 style="font-weight: bold;" >En construcción</h3>
-                    <img src="/images/docs/under_construction.svg" style="width: 50%;">
-                  </div>
               </div>
               <div class="tab_content">
                   <h3 style="font-weight: bold; margin-left: 45%;">Pagos</h3>
@@ -925,89 +686,10 @@
                   </table>
                 </div>
               </div>
-
               <div class="tab_content">
                 <div class="text-center">
                   <h3 style="font-weight: bold;" >En construcción</h3>
                   <img src="/images/docs/under_construction.svg" style="width: 50%;">
-                </div>
-              </div>
-              <div id="consumo_echarts" class="tab_content">
-                <div class="text-center">
-                  <h3 style="font-weight:bold;" >Consumos</h3>
-                </div>
-                <div class="row">
-                  <div class="col-md-4 col-xs-12"></div>
-                  <div class="col-md-4 col-xs-12 mb-3">
-                    <div class="input-group  flex-nowrap">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
-                      </div>
-                      <input id="date_consumos" type="text" class="form-control" aria-describedby="button-addon2">
-                      <div class="input-group-append">
-                        <button class="btn btn-outline-info" type="button" id="btn-filtrar-consumos">Filtrar</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row pad-top-botm client-info">
-                  <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="clearfix">
-                        <div id="main_client_day" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
-                      </div>
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="clearfix">
-                        <div id="main_gigabyte_day" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
-                      </div>
-                  </div>
-                </div>
-                <div class="text-center">
-                  <h3 style="font-weight:bold; margin-top: 10px;" >APS</h3>
-                </div>
-                <div class="row pad-top-botm client-info">
-                  <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="clearfix">
-                        <div id="main_top_aps" class="mt-3" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
-                      </div>
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="table-responsive">
-                      <table id="table_top_aps" class="table table-striped table-bordered table-hover">
-                        <thead>
-                          <tr>
-                            <th>Descripción</th>
-                            <th>MAC</th>
-                            <th>No. Clientes.</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <div class="text-center">
-                  <h3 style="font-weight:bold; margin-top: 10px;" >Tabla comparativa</h3>
-                </div>
-                <div class="row pad-top-botm client-info">
-                  <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="table-responsive">
-                      <table id="table_comparative" class="table table-striped table-bordered table-hover">
-                        <thead>
-                          <tr>
-                            <th>Concepto</th>
-                            <th>Mes 1</th>
-                            <th>Mes 2</th>
-                            <th>Identificador</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
                 </div>
               </div>
           </div>
@@ -1039,7 +721,7 @@
     <script src="{{ asset('bower_components/highcharts/highcharts.js')}}"></script>
     <script src="{{ asset('bower_components/highcharts/series-label.js')}}"></script>
     <script src="{{ asset('bower_components/highcharts/exporting.js')}}"></script>
-    <script src="{{ asset('js/admin/sabana/sabana.js?v=4.3.6')}}"></script>
+    <script src="{{ asset('js/admin/sabana/sabana_itc.js?v=4.3.6')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">

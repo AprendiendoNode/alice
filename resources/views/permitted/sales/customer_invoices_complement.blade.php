@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View payment complement') )
     <!--{{ trans('invoicing.customers_invoices_show') }}-->
     Generar complementos de pago
   @else
@@ -10,7 +10,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View payment complement') )
     <!--{{ trans('invoicing.customers_invoices_show') }}-->
     Generar complementos de pago
   @else
@@ -19,7 +19,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View payment complement') )
     <form id="form" name="form" enctype="multipart/form-data">
       {{ csrf_field() }}
     </form>
@@ -291,7 +291,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View payment complement') )
   <style media="screen">
 
       input[type=number]::-webkit-inner-spin-button,
