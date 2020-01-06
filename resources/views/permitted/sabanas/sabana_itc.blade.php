@@ -32,7 +32,7 @@
         <select id="select_itc" class="form-control select2">
           <option value="" selected> Elija uno... </option>
           @forelse ($users as $user)
-            <option value="{{ $user->id }}"> {{ $user->name }} </option>
+            <option value="{{ $user->id }}" data-email="{{$user->email}}"> {{ $user->name }} </option>
           @empty
           @endforelse
         </select>
@@ -581,7 +581,7 @@
                 </div>
                 <div class="row mt-1">
                   <div class="col-md-12 table-responsive divEQ">
-                  <table id="table_tickets_site" name='table_tickets_site' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
+                  <table id="table_tickets_itc" name='table_tickets_itc' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
                     <thead>
                         <tr class="bg-aqua text-center" style="color: white">
                             <!--<th> <small>Sitio</small> </th>-->

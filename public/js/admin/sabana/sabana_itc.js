@@ -42,7 +42,8 @@ $(function() {
   //Por sitio
   $("#select_itc").on('change', function(e) {
     var _token = $('input[name="_token"]').val();
-    var cliente = $('#select_itc').val();
+    var itc = $('#select_itc').val();
+    var itc_email=$('#select_itc').find(':selected').data("email");
     $(".first_tab").addClass("d-none");
     $("#cargando").removeClass("d-none");
     $('#gral_sitio').removeClass('d-none');//Muestra la informacion por sitio
@@ -55,7 +56,7 @@ $(function() {
     $.ajax({
       type: "POST",
       url: "/informacionCliente",
-      data: { cliente : cliente, _token : _token },
+      data: { cliente : itc, _token : _token },
       success: function (data){
         //console.log(data);
         $("#imagenCliente").attr("src", "../images/hotel/" + data[0].dirlogo1);
@@ -69,19 +70,20 @@ $(function() {
         console.log('Error:', data);
       }
     });
-    get_contracts(cliente);
-    get_info_equipments(cliente);
-    get_nps_hotel(cliente);
-    get_nps_comment(cliente);
-    get_graph_equipments(cliente);
-    get_graph_equipments_status(cliente);
-    get_table_tickets(cliente);
-    get_graph_tickets_type(cliente);
-    get_graph_tickets_status(cliente);
-    getFoliosByHotel(cliente);
-    getViaticsByHotel(cliente);
-    get_table_budget(cliente,'');
+    get_contracts(itc);
+    get_info_equipments(itc);
+    get_nps_hotel(itc);
+    get_nps_comment(itc);
+    //get_graph_equipments(itc);
+    //get_graph_equipments_status(itc);
+    get_table_tickets(itc_email);
+    get_graph_tickets_type(itc_email);
+    get_graph_tickets_status(itc_email);
+    getFoliosByHotel(itc);
+    getViaticsByHotel(itc);
+    get_table_budget(itc,'');
   });
+  /*
   //Por cadena
   $('#proyecto').on('change',function(){
     var _token = $('input[name="_token"]').val();
@@ -95,12 +97,12 @@ $(function() {
       success: function (data){
         //console.log(data);
         generate_table_info_cadena(data, $('#info_cadena'));
-        /*$("#imagenCliente").attr("src", "../images/hotel/" + data[0].dirlogo1);
+        $("#imagenCliente").attr("src", "../images/hotel/" + data[0].dirlogo1);
         $("#itcCliente").text(data[1].name + " -> " + data[1].email);
         $("#cuartosCliente").text(data[0].num_hab == null ? "Sin informacion" : data[0].num_hab);
         $("#telefonoCliente").text(data[0].Telefono);
         $("#direccionCliente").text(data[0].Direccion);
-        $("#correoCliente").text(data[2].correo == null ? "Sin informacion" : data[2].correo);*/
+        $("#correoCliente").text(data[2].correo == null ? "Sin informacion" : data[2].correo);
       },
       error: function (data) {
         console.log('Error:', data);
@@ -130,7 +132,7 @@ getFoliosByCadena(cadena);
 getViaticsByCadena(cadena);
 get_table_budget_cadena(cadena,'');
 
-  });
+});*/
 
 
   //Por sitio
@@ -553,7 +555,7 @@ get_table_budget_cadena(cadena,'');
 
   }
 
-  function get_graph_equipments(idcadena) {
+  /*function get_graph_equipments(idcadena) {
     var _token = $('meta[name="csrf-token"]').attr('content');
     var id= idcadena;
     $.ajax({
@@ -571,7 +573,7 @@ get_table_budget_cadena(cadena,'');
       }
     });
 
-  }
+  } */
 
   function get_graph_equipments_cadena(idcadena) {
     var _token = $('meta[name="csrf-token"]').attr('content');
@@ -723,12 +725,12 @@ get_table_budget_cadena(cadena,fecha);
           //!!!!!!!!!!!EL SIGUIENTE BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
           $("#cargando").addClass("d-none");
           $(".first_tab").removeClass("d-none");
-          if(document.getElementById("consumo_echarts").style.display == "block") {
+          /*if(document.getElementById("consumo_echarts").style.display == "block") {
             graph_client_day(id);
             graph_gigabyte_day(id);
             graph_top_aps_table(id);
             general_table_comparative(id);
-          }
+          }*/
           //!!!!!!!!!!!EL ANTERIOR BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
 
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
@@ -769,16 +771,15 @@ get_table_budget_cadena(cadena,fecha);
     });
   }
 
-  function get_table_tickets(id_sitio){
+  function get_table_tickets(itc_email){
     var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= id_sitio;
     $.ajax({
         type: "POST",
-        url: "/get_tickets_by_hotel",
-        data: { id: id, _token : _token },
+        url: "/get_tickets_by_itc",
+        data: { itc_email: itc_email, _token : _token },
         success: function (data){
           //console.log(data);
-          generate_table_tickets(data, $('#table_tickets_site'));
+          generate_table_tickets(data, $('#table_tickets_itc'));
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
         },
         error: function (data) {
@@ -787,56 +788,20 @@ get_table_budget_cadena(cadena,fecha);
     });
   }
 
-  function get_table_tickets_cadena(idcadena){
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
-    $.ajax({
-        type: "POST",
-        url: "/get_tickets_by_cadena",
-        data: { id: id, _token : _token },
-        success: function (data){
-          //console.log(data);
-          generate_table_tickets(data, $('#table_tickets_site'));
-          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
-        },
-        error: function (data) {
-          console.log('Error:', data);
-        }
-    });
-  }
 
-  function get_graph_tickets_type(idsitio){
+
+  function get_graph_tickets_type(itc_email){
     var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idsitio;
     $.ajax({
         type: "POST",
-        url: "/get_ticketsxtipo_hotel",
-        data: { id: id, _token : _token },
+        url: "/get_ticketsxtipo_itc",
+        data: { itc_email: itc_email, _token : _token },
         success: function (data){
           //console.log(data);
           if(data==''){
             data=[{},{},{},{},{}] //Necesario para evitar errores cuando es vacio.
           }
-          graph_tickets_type('graph_type_tickets',data);
-          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
-        },
-        error: function (data) {
-          console.log('Error:', data);
-        }
-    });
-  }
-  function get_graph_tickets_type_cadena(idcadena){
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
-    $.ajax({
-        type: "POST",
-        url: "/get_ticketsxtipo_cadena",
-        data: { id: id, _token : _token },
-        success: function (data){
-          //console.log(data);
-          if(data==''){
-            data=[{},{},{},{},{}] //Necesario para evitar errores cuando es vacio.
-          }
+          console.log(data);
           graph_tickets_type('graph_type_tickets',data);
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
         },
@@ -846,13 +811,13 @@ get_table_budget_cadena(cadena,fecha);
     });
   }
 
-  function get_graph_tickets_status(idsitio){
+
+  function get_graph_tickets_status(itc_email){
     var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idsitio;
     $.ajax({
         type: "POST",
-        url: "/get_ticketsxstatus_hotel",
-        data: { id: id, _token : _token },
+        url: "/get_ticketsxstatus_itc",
+        data: { itc_email: itc_email, _token : _token },
         success: function (data){
           //console.log(data);
           graph_tickets_status('graph_status_tickets',data);
@@ -864,24 +829,6 @@ get_table_budget_cadena(cadena,fecha);
     });
   }
 
-  function get_graph_tickets_status_cadena(idcadena){
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
-    $.ajax({
-        type: "POST",
-        url: "/get_ticketsxstatus_cadena",
-        data: { id: id, _token : _token },
-        success: function (data){
-          //console.log(data);
-          graph_tickets_status('graph_status_tickets',data);
-          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
-
-        },
-        error: function (data) {
-          console.log('Error:', data);
-        }
-    });
-  }
 
 function overflow(numrow){
   var tabla=document.getElementById("table_budget_site").getElementsByTagName("tr");
@@ -1079,8 +1026,8 @@ function getFoliosByHotel(cliente){
 
       //console.log(dataMXN);
       //console.log(dataUSD);
-      graph_equipments('graph_payments1', dataMXN, "", "PESOS"); //El string PESOS no debe ser cambiado!
-      graph_equipments('graph_payments2', dataUSD, "", "DÓLARES"); //El string DÓLARES no debe ser cambiado!
+      //graph_equipments('graph_payments1', dataMXN, "", "PESOS"); //El string PESOS no debe ser cambiado!
+      //graph_equipments('graph_payments2', dataUSD, "", "DÓLARES"); //El string DÓLARES no debe ser cambiado!
       payments_table(data, $("#table_pays"));
     },
     error: function (data) {
@@ -1167,7 +1114,7 @@ function getViaticsByHotel(cliente){
       });
 
       //console.log(data2);
-      graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
+      //graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
       viatics_table(data, $("#table_viatics"));
     },
     error: function (data) {
@@ -1554,7 +1501,7 @@ function payments_table(datajson, table){
         }
     });
   }
-
+/*
   function graph_equipments_status(title,data) {
     //$('#'+title).width($('#'+title).width());
     //$('#'+title).height($('#'+title).height());
@@ -1612,8 +1559,8 @@ function payments_table(datajson, table){
 
         }
     });
-  }
-
+  }*/
+/*
 function graph_equipments(title,data,text,subtext) {
   //$('#'+title).width($('#'+title).width());
   //$('#'+title).height($('#'+title).height());
@@ -1683,7 +1630,7 @@ function graph_equipments(title,data,text,subtext) {
 
       }
   });
-}
+} */
 
 
 function graph_tickets_type(title,data) {
