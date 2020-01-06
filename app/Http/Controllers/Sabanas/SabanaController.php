@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Sabanas;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -22,7 +22,7 @@ class SabanaController extends Controller
     $user_id = Auth::user()->id;
     $cadena = Cadena::select('id', 'name')->get();
     $hotels = DB::select('CALL px_sitiosXusuario_rol(?, ?)', array($user_id, "SuperAdmin"));
-    return view('permitted.sabana', compact('hotels','cadena'));
+    return view('permitted.sabanas.sabana', compact('hotels','cadena'));
   }
   public function informacionCliente(Request $request)
   {

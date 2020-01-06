@@ -845,36 +845,40 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/create_survey_admin' , 'Survey\CreateSurveyController@index');
     Route::post('/store_new_survey_admin' , 'Survey\CreateSurveyController@store');
 
-    Route::get('dash_sabana', 'SabanaController@index');
-    Route::post('informacionCliente', 'SabanaController@informacionCliente');
-    Route::post('informacionCadena', 'SabanaController@informacionCadena');
-    Route::post('get_all_contracts_by_hotel', 'SabanaController@get_all_contracts_by_hotel');
-    Route::post('get_all_contracts_by_cadena', 'SabanaController@get_all_contracts_by_cadena');
-    Route::post('get_all_annexes_by_master', 'SabanaController@get_all_annexes_by_master');
-    Route::post('get_all_equipmentsbyhotel', 'SabanaController@get_table_equipments');
-    Route::post('get_all_equipmentsbycadena', 'SabanaController@get_table_equipments_cadena');
-    Route::post('get_nps_hotel', 'SabanaController@get_nps_hotel');
-    Route::post('get_nps_cadena', 'SabanaController@get_nps_cadena');
-    Route::post('get_nps_comment_hotel', 'SabanaController@get_nps_comment_hotel');
-    Route::post('get_nps_comment_cadena', 'SabanaController@get_nps_comment_cadena');
-    Route::post('get_graph_equipments','SabanaController@get_graph_equipments');
-    Route::post('get_graph_equipments_cadena','SabanaController@get_graph_equipments_cadena');
-    Route::post('get_budget_annual_hotel','SabanaController@get_budget_annual_hotel');
-    Route::post('get_budget_annual_cadena','SabanaController@get_budget_annual_cadena');
-    Route::post('get_payment_folios_gastos','SabanaController@get_payment_folios_gastos');
-    Route::post('get_payment_folios_gastos_cadena','SabanaController@get_payment_folios_gastos_cadena');
-    Route::post('get_viatics_gastos','SabanaController@get_viatics_gastos');
-    Route::post('get_viatics_gastos_cadena','SabanaController@get_viatics_gastos_cadena');
-    Route::post('get_tickets_by_hotel','SabanaController@get_tickets_by_hotel');
-    Route::post('get_tickets_by_cadena','SabanaController@get_tickets_by_cadena');
-    Route::post('get_ticketsxtipo_hotel','SabanaController@get_ticketsxtype_hotel');
-    Route::post('get_ticketsxtipo_cadena','SabanaController@get_ticketsxtype_cadena');
-    Route::post('get_ticketsxstatus_hotel','SabanaController@get_ticketsxstatus_hotel');
-    Route::post('get_ticketsxstatus_cadena','SabanaController@get_ticketsxstatus_cadena');
-    Route::post('get_graph_equipments_status','SabanaController@get_graph_equipments_status');
-    Route::post('get_graph_equipments_status_cadena','SabanaController@get_graph_equipments_status_cadena');
-    Route::post('sabana_modal_encuestas','SabanaController@sabana_modal_encuestas');
-    Route::post('sabana_modal_encuestas_cadena','SabanaController@sabana_modal_encuestas_cadena');
+    Route::get('dash_sabana', 'Sabanas\SabanaController@index');
+    Route::post('informacionCliente', 'Sabanas\SabanaController@informacionCliente');
+    Route::post('informacionCadena', 'Sabanas\SabanaController@informacionCadena');
+    Route::post('get_all_contracts_by_hotel', 'Sabanas\SabanaController@get_all_contracts_by_hotel');
+    Route::post('get_all_contracts_by_cadena', 'Sabanas\SabanaController@get_all_contracts_by_cadena');
+    Route::post('get_all_annexes_by_master', 'Sabanas\SabanaController@get_all_annexes_by_master');
+    Route::post('get_all_equipmentsbyhotel', 'Sabanas\SabanaController@get_table_equipments');
+    Route::post('get_all_equipmentsbycadena', 'Sabanas\SabanaController@get_table_equipments_cadena');
+    Route::post('get_nps_hotel', 'Sabanas\SabanaController@get_nps_hotel');
+    Route::post('get_nps_cadena', 'Sabanas\SabanaController@get_nps_cadena');
+    Route::post('get_nps_comment_hotel', 'Sabanas\SabanaController@get_nps_comment_hotel');
+    Route::post('get_nps_comment_cadena', 'Sabanas\SabanaController@get_nps_comment_cadena');
+    Route::post('get_graph_equipments','Sabanas\SabanaController@get_graph_equipments');
+    Route::post('get_graph_equipments_cadena','Sabanas\SabanaController@get_graph_equipments_cadena');
+    Route::post('get_budget_annual_hotel','Sabanas\SabanaController@get_budget_annual_hotel');
+    Route::post('get_budget_annual_cadena','Sabanas\SabanaController@get_budget_annual_cadena');
+    Route::post('get_payment_folios_gastos','Sabanas\SabanaController@get_payment_folios_gastos');
+    Route::post('get_payment_folios_gastos_cadena','Sabanas\SabanaController@get_payment_folios_gastos_cadena');
+    Route::post('get_viatics_gastos','Sabanas\SabanaController@get_viatics_gastos');
+    Route::post('get_viatics_gastos_cadena','Sabanas\SabanaController@get_viatics_gastos_cadena');
+    Route::post('get_tickets_by_hotel','Sabanas\SabanaController@get_tickets_by_hotel');
+    Route::post('get_tickets_by_cadena','Sabanas\SabanaController@get_tickets_by_cadena');
+    Route::post('get_ticketsxtipo_hotel','Sabanas\SabanaController@get_ticketsxtype_hotel');
+    Route::post('get_ticketsxtipo_cadena','Sabanas\SabanaController@get_ticketsxtype_cadena');
+    Route::post('get_ticketsxstatus_hotel','Sabanas\SabanaController@get_ticketsxstatus_hotel');
+    Route::post('get_ticketsxstatus_cadena','Sabanas\SabanaController@get_ticketsxstatus_cadena');
+    Route::post('get_graph_equipments_status','Sabanas\SabanaController@get_graph_equipments_status');
+    Route::post('get_graph_equipments_status_cadena','Sabanas\SabanaController@get_graph_equipments_status_cadena');
+    Route::post('sabana_modal_encuestas','Sabanas\SabanaController@sabana_modal_encuestas');
+    Route::post('sabana_modal_encuestas_cadena','Sabanas\SabanaController@sabana_modal_encuestas_cadena');
+
+    //SábanaITC
+    Route::get('dash_sabana_itc', 'Sabanas\SabanaControllerITC@index');
+
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');
     Route::post('/search_info_gen', 'Viatics\DashboardViaticController@info_gen');
@@ -1109,7 +1113,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/get_data_complements', 'Sales\CustomerComplementController@get_complement');
     Route::post('/store_complement', 'Sales\CustomerComplementController@store_complement');
 
-    
+
     Route::get('/cz', 'Sales\CustomerInvoiceController@tes');
 });
 
