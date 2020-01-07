@@ -78,11 +78,14 @@ return [
     'breadcrumb_group_equipment' => 'Grupos de equipos',
 
     'title_review' => 'Diagnóstico',
+    'title_paquetes' => 'Paquetes',
     'subtitle_server_review' => 'de Servidores',
     'breadcrumb_server_review' => 'Diagnóstico de servidores',
 
     'subtitle_guest_review' => 'de Huéspedes',
     'breadcrumb_guest_review' => 'Diagnóstico de Huéspedes',
+    'breadcrumb_paquetes' => 'Vista de paquetes',
+
 
     'subtitle_test_zd' => 'de Zone Director',
     'breadcrumb_test_zd' => 'Test ZD',

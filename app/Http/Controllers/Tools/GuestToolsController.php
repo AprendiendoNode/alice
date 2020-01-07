@@ -27,7 +27,24 @@ XML;
   {
     return view('permitted.tools.tools_hacienda');
   }
-
+  public function getPaquetesMonth(Request $request)
+  {
+    $input_date_i= $request->get('date_to_search');
+    if ($input_date_i != '') {
+      $date = $input_date_i.'-01';
+    }
+    else {
+      $date_current = date('Y-m');
+      $date = $date_current.'-01';
+    }
+    $result = DB::connection('portales')->select('CALL px_paquetes_comprados_mes (?)', array($date));
+    return $result;
+  }
+  public function getPaquetesAll(Request $request)
+  {
+    $result = DB::connection('portales')->select('CALL px_paquetes_comprados ()');
+    return $result;
+  }
   public function getUsersHC(Request $request)
   {
       $hotel_code = $request->hotelCode;

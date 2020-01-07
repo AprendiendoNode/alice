@@ -347,7 +347,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/getInfoZD', 'Tools\ZoneToolsController@getInfo');
   Route::post('/testzonedir', 'Tools\ZoneToolsController@testRequest');
   Route::get('/detailed_paquetes','Tools\GuestToolsController@hacienda_view');
-
+  Route::post('/get_paquetes_month','Tools\GuestToolsController@getPaquetesMonth'); 
+  Route::post('/get_paquetes_all','Tools\GuestToolsController@getPaquetesAll'); 
+  
   Route::post('/existenceUsers', 'Tools\GuestToolsController@getUsersHC');
   Route::post('/existenceUsersAll', 'Tools\GuestToolsController@getPortalUsers');
 
