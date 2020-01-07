@@ -30,6 +30,9 @@ class enchangeratefix extends Command
 
     public function handle()
     {
+      // Fix dias no habiles,
+      // crear array con los dias y validar antes de insertar...
+
       $result = ExchangeRate::getExchangeRateFix();
       $mutable = Carbon::now();
       // $mutable = Carbon::create(2019, 10, 21, 0);

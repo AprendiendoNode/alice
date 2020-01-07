@@ -23,6 +23,11 @@ XML;
     return view('permitted.tools.guest_tools');
   }
 
+  public function hacienda_view()
+  {
+    return view('permitted.tools.tools_hacienda');
+  }
+
   public function getUsersHC(Request $request)
   {
       $hotel_code = $request->hotelCode;

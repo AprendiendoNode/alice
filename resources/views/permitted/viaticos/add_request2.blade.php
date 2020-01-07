@@ -183,24 +183,7 @@
 
                                 <div class="wizard-pane" id="validationW2" role="tabpanel">
 
-                                  <div class="row">
-                                  <!--  <div class="col-xs-6 pull-left">
-                                      <select name="slc_plantilla" id="slc_plantilla" class="form-control select2">
-                                        <option value="" selected>Elige plantilla</option>
-                                          @forelse ($plantilla as $data_plantilla)
-                                            <option value="{{ $data_plantilla->id }}"> {{ $data_plantilla->name }} </option>
-                                          @empty
-                                          @endforelse
-                                      </select>
-                                    </div>
-                                    <div class="col-xs-4">
-                                      <button class="btn btn-primary" type="button" id="btn_plantilla">Añadir</button>
-                                    </div> -->
-                                    <div class="col-md-11 col-lg-11 col-sm-11 col-xs-11">&nbsp;</div>
-                                    <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
-                                        <button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
-                                    </div>
-                                  </div>
+
 
                                     <div class="row">
                                       <!-- <input type="text" name="array_vacio" id="array_vacio"> -->
@@ -339,6 +322,25 @@
                                             </div>
                                           </div>
                                         </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row">
+                                      <!--  <div class="col-xs-6 pull-left">
+                                        <select name="slc_plantilla" id="slc_plantilla" class="form-control select2">
+                                          <option value="" selected>Elige plantilla</option>
+                                            @forelse ($plantilla as $data_plantilla)
+                                              <option value="{{ $data_plantilla->id }}"> {{ $data_plantilla->name }} </option>
+                                            @empty
+                                            @endforelse
+                                        </select>
+                                      </div>
+                                      <div class="col-xs-4">
+                                        <button class="btn btn-primary" type="button" id="btn_plantilla">Añadir</button>
+                                      </div> -->
+                                      <div class="col-md-11 col-lg-11 col-sm-11 col-xs-11">&nbsp;</div>
+                                      <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
+                                          <button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
                                       </div>
                                     </div>
 

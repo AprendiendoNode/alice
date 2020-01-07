@@ -88,7 +88,7 @@
                                   <th>Concepto</th>
                                   <th>Monto</th>
                                   <th>Estatus</th>
-                                  <th>Hotel</th>
+                                  <th>Sitio</th>
                                   <th>Justificacion</th>
                                 </tr>
                               </thead>
