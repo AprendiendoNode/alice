@@ -93,8 +93,15 @@ class HomeController extends Controller
         $sub_month = strtotime ( '-1 month' , strtotime ( $date_current ) ) ;
         $sub_month = date ( 'Y-m' , $sub_month );
         $date = $sub_month.'-01';
-
       }
+
+      if(explode("-", $date)[1] == '00') {
+        $date_current = date('Y');
+        $sub_year = strtotime ( '-1 year' , strtotime ( $date_current ) ) ;
+        $sub_year = date ( 'Y' , $sub_year );
+        $date = $sub_year.'-12-01';
+      }
+
       $result = DB::select('CALL NPS_MONTH (?)', array($date));
       return json_encode($result);
 
