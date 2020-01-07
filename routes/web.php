@@ -347,9 +347,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/getInfoZD', 'Tools\ZoneToolsController@getInfo');
   Route::post('/testzonedir', 'Tools\ZoneToolsController@testRequest');
   Route::get('/detailed_paquetes','Tools\GuestToolsController@hacienda_view');
-  Route::post('/get_paquetes_month','Tools\GuestToolsController@getPaquetesMonth'); 
-  Route::post('/get_paquetes_all','Tools\GuestToolsController@getPaquetesAll'); 
-  
+  Route::post('/get_paquetes_month','Tools\GuestToolsController@getPaquetesMonth');
+  Route::post('/get_paquetes_all','Tools\GuestToolsController@getPaquetesAll');
+
   Route::post('/existenceUsers', 'Tools\GuestToolsController@getUsersHC');
   Route::post('/existenceUsersAll', 'Tools\GuestToolsController@getPortalUsers');
 
@@ -889,6 +889,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_ticketsxtipo_itc','Sabanas\SabanaControllerITC@get_ticketsxtype_itc');
     Route::post('get_ticketsxstatus_itc','Sabanas\SabanaControllerITC@get_ticketsxstatus_itc');
     Route::post('get_viatics_gastos_itc','Sabanas\SabanaControllerITC@get_viatics_gastos_itc');
+    Route::post('get_projects_itc','Sabanas\SabanaControllerITC@get_projects_itc');
 
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');

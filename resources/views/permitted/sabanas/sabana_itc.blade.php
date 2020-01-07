@@ -84,7 +84,7 @@
       </div>
 
       <div class="modal modal-default fade" id="modal-view-viatics" data-backdrop="static"  tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" style="width:45%" >
+        <div class="modal-dialog modal-lg" style="width:50%" >
           <div class="modal-content">
             <div class="modal-header">
 
@@ -147,8 +147,8 @@
                           <div class="col-lg-12 col-md-12 col-sm-12">
                             <p class="text-center" style="border: 1px solid #3D9970" >Conceptos</p>
                             <div class="clearfix">
-                              <table id="table_concept" class="table table-striped table-bordered table-hover">
-                                <thead>
+                              <table id="table_concept" class="table compact-tab table-striped table-bordered table-hover">
+                                <thead class="bg-primary">
                                   <tr>
                                     <th>Concepto</th>
                                     <th>Monto</th>
@@ -645,6 +645,16 @@
                 </div>
                 <br>-->
                 <h3 style="font-weight: bold; margin-left: 44%;">Viáticos</h3>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="badge rounded badge-dark text-white font-weight-bold w-80" style="font-size: 1.2em;">
+                      Total: <span id="total_viatic" class="badge rounded badge-light font-weight-bolder" style="font-size: 0.9em;">0</span>
+                    </div>
+                  </div>
+                  <div class="col-md-9">
+
+                  </div>
+                </div>
                 <div class="d-flex justify-content-center border-bottom w-100">
                   <div id="graph_viatics" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                 </div>
@@ -685,7 +695,7 @@
     <h3 class="text-title">Resumen de compras</h3>
     <hr>
     <div class="row">
-        <div class="col-md-2 mb-3">
+        <!--<div class="col-md-2 mb-3">
             <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Doc P</a>
@@ -693,15 +703,16 @@
                 <li class="nav-item">
                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Doc M</a>
                 </li>
-                <!--<li class="nav-item">
+                <li class="nav-item">
             <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-          </li>-->
+          </li>-
             </ul>
-        </div>
+        </div>-->
         <!-- /.col-md-4 -->
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div class="row m-3"></div>
+                <div class="" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <h2>Documento P</h2>
                     <div class="row">
                         <div class="container-box col-md-2">
@@ -710,7 +721,7 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default">Total Autorizado USD</p>
-                                <h4><strong>${{number_format($status_compras[0]->Total_autorizado, 2, '.', ',')}}</strong></h4>
+                                <h4><strong>$<span id="total_auth_p"></span></strong></h4>
                             </div>
                         </div>
 
@@ -720,7 +731,7 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default">Total</p>
-                                <h4><strong>{{ $status_compras[0]->Total_solicitudes }}</strong></h4>
+                                <h4><strong><span id="total_sol_p"></span></strong></h4>
                             </div>
                         </div>
 
@@ -730,7 +741,7 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default">Autorizado</p>
-                                <h4><strong>{{ $status_compras[0]->Autorizado }}</strong></h4>
+                                <h4><strong><span id="autorizado_p"></span></strong></h4>
                             </div>
                         </div>
 
@@ -740,7 +751,7 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default">Entregado</p>
-                                <h4><strong>{{ $status_compras[0]->Entregado}}</strong></h4>
+                                <h4><strong><span id="entregado_p"></span></strong></h4>
                             </div>
                         </div>
                         <div class="container-box col-md-2">
@@ -749,7 +760,7 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default">Revisado</p>
-                                <h4><strong>{{ $status_compras[0]->Revisado}}</strong></h4>
+                                <h4><strong><span id="revisado_p"></span></strong></h4>
                             </div>
                         </div>
 
@@ -759,13 +770,14 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default"> Nuevos </p>
-                                <h4><strong>{{ $status_compras[0]->Nuevo }}</strong></h4>
+                                <h4><strong><span id="nuevo_p"></span></strong></h4>
                             </div>
                         </div>
 
                     </div>
                 </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <hr>
+                <div class="" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <h2>Documento M</h2>
                     <div class="row">
                         <div class="container-box col-md-2">
@@ -774,7 +786,7 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default">Total Autorizado USD</p>
-                                <h4><strong>{{number_format($status_compras[1]->Total_autorizado, 2, '.', ',')}}</strong></h4>
+                                <h4><strong>$<span id="total_auth_m"></span></strong></h4>
                             </div>
                         </div>
 
@@ -784,7 +796,7 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default">Total</p>
-                                <h4><strong>{{ $status_compras[1]->Total_solicitudes }}</strong></h4>
+                                <h4><strong><span id="total_sol_m"></span></strong></h4>
                             </div>
                         </div>
 
@@ -794,7 +806,7 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default">Autorizado</p>
-                                <h4><strong>{{ $status_compras[1]->Autorizado }}</strong></h4>
+                                <h4><strong><span id="autorizado_m"></span></strong></h4>
                             </div>
                         </div>
 
@@ -804,7 +816,7 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default">Entregado</p>
-                                <h4><strong>{{ $status_compras[1]->Entregado}}</strong></h4>
+                                <h4><strong><span id="entregado_m"></span></strong></h4>
                             </div>
                         </div>
                         <div class="container-box col-md-2">
@@ -813,7 +825,7 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default">Revisado</p>
-                                <h4><strong>{{ $status_compras[1]->Revisado}}</strong></h4>
+                                <h4><strong><span id="revisado_m"></span></strong></h4>
                             </div>
                         </div>
 
@@ -823,7 +835,7 @@
                             </div>
                             <div class="info_head_dash">
                                 <p class="text-default"> Nuevos </p>
-                                <h4><strong>{{ $status_compras[1]->Nuevo }}</strong></h4>
+                                <h4><strong><span id="nuevo_m"></span></strong></h4>
                             </div>
                         </div>
 
@@ -876,7 +888,7 @@
     .tableFixHead          { overflow-y: auto; height: 620px; }
     .tableFixHead thead th { position: sticky !important; top: 0; }
     .bg-aqua{
-    background: #02948c;
+    background: #1776D2;
     }
     .color-green{ color:#0fe81e;}
     .color-red{ color:#f0120a;}

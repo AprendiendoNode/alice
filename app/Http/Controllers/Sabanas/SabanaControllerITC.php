@@ -232,4 +232,10 @@ info($date."-".$encuestas."-".$cadena);
     return json_encode($result);
   }
 
+  public function get_projects_itc(Request $request){
+    $id = $request->itc_id;
+    $result= DB::Select('CALL px_documentp_status_doctype_itc(?)',array($id));
+    return $result;
+  }
+
 }

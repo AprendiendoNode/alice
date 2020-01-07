@@ -58,7 +58,7 @@ $(function() {
       url: "/informacionITC",
       data: { itc : itc, _token : _token },
       success: function (data){
-        console.log(data);
+        //console.log(data);
         $('#imagenCliente').attr("src", "../images/users/pictures/default.png");
         $("#imagenCliente").attr("src", $('#select_itc').find(':selected').data("foto"));
         $("#nombreITC").text($('#select_itc').find(':selected').data("name"));
@@ -95,57 +95,8 @@ $(function() {
     //getFoliosByHotel(itc);
     getViaticsByHotel(itc);
     get_table_budget(itc,'');
+    getProjects(itc);
   });
-  /*
-  //Por cadena
-  $('#proyecto').on('change',function(){
-    var _token = $('input[name="_token"]').val();
-    var cadena = $('#proyecto').val();
-    $('#gral_sitio').addClass('d-none'); //Oculta la informacion de sitio
-    $('#gral_cadena').removeClass('d-none');//Muestra la tabla de informacion cadena
-    $.ajax({
-      type: "POST",
-      url: "/informacionCadena",
-      data: { cadena : cadena, _token : _token },
-      success: function (data){
-        //console.log(data);
-        generate_table_info_cadena(data, $('#info_cadena'));
-        $("#imagenCliente").attr("src", "../images/hotel/" + data[0].dirlogo1);
-        $("#itcCliente").text(data[1].name + " -> " + data[1].email);
-        $("#cuartosCliente").text(data[0].num_hab == null ? "Sin informacion" : data[0].num_hab);
-        $("#telefonoCliente").text(data[0].Telefono);
-        $("#direccionCliente").text(data[0].Direccion);
-        $("#correoCliente").text(data[2].correo == null ? "Sin informacion" : data[2].correo);
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
-
-    //$(".first_tab").addClass("d-none");
-    $(".first_tab").addClass("d-none");
-    $("#cargando").removeClass("d-none");
-
-    //TEMPORAL PRESUPUESTO CADENA
-    $("#terminado_presupuesto_cadena").removeClass("d-none");
-    $("#construyendo_presupuesto_cadena").addClass("d-none");
-
-$('#title_equipments').text('Todos los equipos de la cadena'); //Cambiamos el titulo de el apartado de equipos
-
-get_contracts_cadena(cadena);//Obtenemos contratos maestros
-get_info_equipments_cadena(cadena);
-get_graph_equipments_cadena(cadena);
-get_graph_equipments_status_cadena(cadena);
-get_nps_cadena(cadena);
-get_nps_comment_cadena(cadena);
-get_table_tickets_cadena(cadena);
-get_graph_tickets_type_cadena(cadena);
-get_graph_tickets_status_cadena(cadena);
-getFoliosByCadena(cadena);
-getViaticsByCadena(cadena);
-get_table_budget_cadena(cadena,'');
-
-});*/
 
 
   //Por sitio
@@ -571,26 +522,6 @@ get_table_budget_cadena(cadena,'');
     });
 
   }
-
-  /*function get_graph_equipments(idcadena) {
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
-    $.ajax({
-      type: "POST",
-      url: "/get_graph_equipments",
-      data: { _token : _token, id: id },
-      success: function (data){
-        //$('.divEQ').addClass('tableFixHead');
-        //table_equipments(data, $("#all_equipments"));
-        //console.log(data);
-        graph_equipments('graph_equipments',data,"Clasificación","Tipo de equipo");
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
-
-  } */
 
   function get_graph_equipments_cadena(idcadena) {
     var _token = $('meta[name="csrf-token"]').attr('content');
@@ -1116,7 +1047,7 @@ function getViaticsByHotel(itc){
       console.log(data);
 
       var data2 = [], savedGastos = [];
-
+      var montoTotal=0;
       data.forEach(function(row){
         var i = savedGastos.indexOf(row.name.toLowerCase().trim());
         if(i < 0) {
@@ -1128,8 +1059,10 @@ function getViaticsByHotel(itc){
         } else {
           data2[i].cantidad += row.aprobado;
         }
-      });
+        montoTotal+=parseFloat(row.aprobado);
 
+      });
+      $('#total_viatic').text("$" + montoTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " MXN");
       //console.log(data2);
       graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
       viatics_table(data, $("#table_viatics"));
@@ -1518,65 +1451,6 @@ function payments_table(datajson, table){
         }
     });
   }
-/*
-  function graph_equipments_status(title,data) {
-    //$('#'+title).width($('#'+title).width());
-    //$('#'+title).height($('#'+title).height());
-    //console.log('entra');
-   var chart = document.getElementById(title);
-    var resizeMainContainer = function () {
-     chart.style.width = 520+'px';
-     chart.style.height = 320+'px';
-   };
-    resizeMainContainer();
-      var myChart = echarts.init(chart);
-      var group=[];
-      var titles=[];
-      var i=0;
-
-      data.forEach(function(element){
-      group[i] ={name: element.estado,type: 'bar',label: {normal: {show: true,position: 'inside'}},data: [element.cantidad]};
-      titles[i] = element.estado;
-      i++;
-      });
-
-      option = {
-          title: {
-              text: 'Equipos por estado',
-              x:'center',
-              top:-5
-          },
-          legend: {
-              data: titles,
-              orient: 'horizontal',
-              align: 'left',
-              center:'center',
-              top:20
-
-          },
-          //color: ['#474B4F','#ff5400','#e92e29','#FFDE40','#4dd60d','#00BFF3','#096dc9','#f90000'],
-          color: ['#34cd36','#ff0800','#FFDE40','#474B4F','#0dcad6','#008df4','#0f8d95','#7a7a7a','#7a7a7a','#ff0800'],
-          toolbox: {},
-          tooltip: {},
-          xAxis: {},
-          yAxis: {type: 'category'},
-          series:group,
-      };
-
-
-    myChart.setOption(option);
-
-    $(window).on('resize', function(){
-        if(myChart != null && myChart != undefined){
-           //chart.style.width = 100+'%';
-           //chart.style.height = 100+'%';
-           chart.style.width = $(window).width()*0.5;
-           chart.style.height = $(window).width()*0.5;
-            myChart.resize();
-
-        }
-    });
-  }*/
 
 function graph_equipments(title,data,text,subtext) {
   //$('#'+title).width($('#'+title).width());
@@ -2357,3 +2231,36 @@ $(window).on('resize', function(){
     general_table_comparative($('#cliente').val());
   }
 });
+
+function getProjects(itc){
+  var _token = $('input[name="_token"]').val();
+  $.ajax({
+      type: "POST",
+      url: "/get_projects_itc",
+      data: {itc_id : itc, _token : _token},
+      success: function (data){
+        //console.log(data[0]);
+        //console.log(data[1]);
+        //Doc P
+        $('#total_auth_p').text(data[0].Total_autorizado);
+        $('#total_sol_p').text(data[0].Total_solicitudes);
+        $('#autorizado_p').text(data[0].Autorizado);
+        $('#entregado_p').text(data[0].Entregado);
+        $('#revisado_p').text(data[0].Revisado);
+        $('#nuevo_p').text(data[0].Nuevo);
+        //Doc M
+        $('#total_auth_m').text(data[1].Total_autorizado);
+        $('#total_sol_m').text(data[1].Total_solicitudes);
+        $('#autorizado_m').text(data[1].Autorizado);
+        $('#entregado_m').text(data[1].Entregado);
+        $('#revisado_m').text(data[1].Revisado);
+        $('#nuevo_m').text(data[1].Nuevo);
+
+
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+  });
+
+}
