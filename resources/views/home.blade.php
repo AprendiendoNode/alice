@@ -252,11 +252,10 @@
       });
       var _token = $('meta[name="csrf-token"]').attr('content');
       var d = new Date();
-      var month = d.getMonth();
+      var month = d.getMonth();//enero =0, febrero = 1, marzo=2...
       var day = d.getDate();
-      var output = d.getFullYear() + '-' +((''+month).length<2 ? '0' : '') + month;
+      var output = month==0? '2019-12': d.getFullYear() + '-' +  ((''+month).length<2 ? '0' : '') + (month+1);
       $('.mes_nps').text(output);
-
       $('.btn_graph1').on('click', function(e){
         graph_graph1();
       });

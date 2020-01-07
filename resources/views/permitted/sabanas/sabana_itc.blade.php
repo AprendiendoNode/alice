@@ -361,7 +361,9 @@
                   <h3 style="font-weight: bold; margin-left: 40%;">Información general</h3>
                   <div id="gral_sitio" class="row">
                     <div class="card col-md-6" style="width: 18rem;">
-                      <img id="imagenCliente" class="card-img-top" style="max-height: 300px;" alt="Sin foto :(">
+                      <div class="d-block mx-auto">
+                        <img id="imagenCliente" class="card-img-top" style="max-height: 300px;max-width: 200px;" alt="Sin foto :(">
+                      </div>
                       <div class="card-body text-center">
                         <h5 class="card-title">Nombre completo:</h5>
                         <p id="nombreITC" class="card-text"></p>
@@ -686,11 +688,164 @@
                   </table>
                 </div>
               </div>
-              <div class="tab_content">
-                <div class="text-center">
-                  <h3 style="font-weight: bold;" >En construcción</h3>
-                  <img src="/images/docs/under_construction.svg" style="width: 50%;">
+  <div class="tab_content">
+    <h3 class="text-title">Resumen de compras</h3>
+    <hr>
+    <div class="row">
+        <div class="col-md-2 mb-3">
+            <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Doc P</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Doc M</a>
+                </li>
+                <!--<li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+          </li>-->
+            </ul>
+        </div>
+        <!-- /.col-md-4 -->
+        <div class="col-md-10">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h2>Documento P</h2>
+                    <div class="row">
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fa fa-usd text-success" aria-hidden="true"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default">Total Autorizado USD</p>
+                                <h4><strong>${{number_format($status_compras[0]->Total_autorizado, 2, '.', ',')}}</strong></h4>
+                            </div>
+                        </div>
+
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fa fa-hashtag text-danger" aria-hidden="true"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default">Total</p>
+                                <h4><strong>{{ $status_compras[0]->Total_solicitudes }}</strong></h4>
+                            </div>
+                        </div>
+
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fas fa-check-square text-success"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default">Autorizado</p>
+                                <h4><strong>{{ $status_compras[0]->Autorizado }}</strong></h4>
+                            </div>
+                        </div>
+
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fa fa-paper-plane text-primary" aria-hidden="true"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default">Entregado</p>
+                                <h4><strong>{{ $status_compras[0]->Entregado}}</strong></h4>
+                            </div>
+                        </div>
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fa fa-eye text-warning" aria-hidden="true"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default">Revisado</p>
+                                <h4><strong>{{ $status_compras[0]->Revisado}}</strong></h4>
+                            </div>
+                        </div>
+
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fa fa-plus-square text-info" aria-hidden="true"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default"> Nuevos </p>
+                                <h4><strong>{{ $status_compras[0]->Nuevo }}</strong></h4>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <h2>Documento M</h2>
+                    <div class="row">
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fa fa-usd text-success" aria-hidden="true"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default">Total Autorizado USD</p>
+                                <h4><strong>{{number_format($status_compras[1]->Total_autorizado, 2, '.', ',')}}</strong></h4>
+                            </div>
+                        </div>
+
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fa fa-hashtag text-danger" aria-hidden="true"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default">Total</p>
+                                <h4><strong>{{ $status_compras[1]->Total_solicitudes }}</strong></h4>
+                            </div>
+                        </div>
+
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fas fa-check-square text-success"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default">Autorizado</p>
+                                <h4><strong>{{ $status_compras[1]->Autorizado }}</strong></h4>
+                            </div>
+                        </div>
+
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fa fa-paper-plane text-primary" aria-hidden="true"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default">Entregado</p>
+                                <h4><strong>{{ $status_compras[1]->Entregado}}</strong></h4>
+                            </div>
+                        </div>
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fa fa-eye text-warning" aria-hidden="true"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default">Revisado</p>
+                                <h4><strong>{{ $status_compras[1]->Revisado}}</strong></h4>
+                            </div>
+                        </div>
+
+                        <div class="container-box col-md-2">
+                            <div class="icon_head_dash">
+                                <i class="fa fa-plus-square text-info" aria-hidden="true"></i>
+                            </div>
+                            <div class="info_head_dash">
+                                <p class="text-default"> Nuevos </p>
+                                <h4><strong>{{ $status_compras[1]->Nuevo }}</strong></h4>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!--<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+  <h2>Contact</h2>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, eveniet earum. Sed accusantium eligendi molestiae quo hic velit nobis et, tempora placeat ratione rem blanditiis voluptates vel ipsam? Facilis, earum!</p>
+
+  </div>-->
+            </div>
+        </div>
+        <!-- /.col-md-8 -->
+    </div>
+
               </div>
           </div>
       </div>
@@ -733,6 +888,34 @@
     .color-green{ color:#0fe81e;}
     .color-red{ color:#f0120a;}
     .color-yellow{ color:#f6a60a;}
+
+    .icon_head_dash i{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px;
+      font-size: 2em;
+    }
+
+    .info_head_dash{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px;
+      text-align: center;
+    }
+
+    .container-box div{
+      display: inline-block;
+    }
+
+    .container-box{
+      margin-top: 1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-right: 1px solid #eee;
+    }
     </style>
   @else
     <!--NO SCRIPTS-->

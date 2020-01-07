@@ -22,7 +22,8 @@ class SabanaControllerITC extends Controller
     $user_id = Auth::user()->id;
     $cadena = Cadena::select('id', 'name')->get();
     $users = DB::select('CALL list_user_itc()');
-    return view('permitted.sabanas.sabana_itc', compact('users','cadena'));
+    $status_compras = DB::select('CALL px_documentp_status_doctype()', array());
+    return view('permitted.sabanas.sabana_itc', compact('users','cadena','status_compras'));
   }
   public function informacionITC(Request $request)
   {

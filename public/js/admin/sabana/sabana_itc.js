@@ -59,6 +59,7 @@ $(function() {
       data: { itc : itc, _token : _token },
       success: function (data){
         //console.log(data);
+        $('#imagenCliente').attr("src", "../images/users/pictures/default.png");
         $("#imagenCliente").attr("src", $('#select_itc').find(':selected').data("foto"));
         $("#nombreITC").text($('#select_itc').find(':selected').data("name"));
         $("#correoITC").text($('#select_itc').find(':selected').data("email"));
