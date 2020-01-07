@@ -28,16 +28,13 @@ class SabanaControllerITC extends Controller
   public function informacionITC(Request $request)
   {
     $itc = $request->itc;
-    $sites = DB::table('hotel_user')->join("hotels", "hotels.id", "=", "hotel_user.hotel_id")->select("hotels.Nombre_hotel")->where('user_id',$itc)->get();
-    return $sites;
+    $result = DB::select('CALL px_sitios_by_itc(?)', array($itc));
+    return $result;
   }
-
-  public function informacionCadena(Request $request)
+  public function antenasITC(Request $request)
   {
-    $cadena = $request->cadena;
-    //$result1 = DB::table('hotels')->where("cadena_id",$cadena)->get();
-    $result = DB::select('CALL px_setemailsnmp_cadena(?)', array($cadena));
-    //$email = DB::table('hotels')->join("sucursals", "hotels.sucursal_id", "=", "sucursals.id")->select("sucursals.correo")->where("hotels.id",$hotel)->get();
+    $itc = $request->itc;
+    $result = DB::select('CALL px_cantidad_aps_xusuario(?)', array($itc));
     return $result;
   }
 

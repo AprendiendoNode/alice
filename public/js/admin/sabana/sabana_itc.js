@@ -58,17 +58,25 @@ $(function() {
       url: "/informacionITC",
       data: { itc : itc, _token : _token },
       success: function (data){
-        //console.log(data);
+        console.log(data);
         $('#imagenCliente').attr("src", "../images/users/pictures/default.png");
         $("#imagenCliente").attr("src", $('#select_itc').find(':selected').data("foto"));
         $("#nombreITC").text($('#select_itc').find(':selected').data("name"));
         $("#correoITC").text($('#select_itc').find(':selected').data("email"));
         $("#localizacionITC").text($('#select_itc').find(':selected').data("city"));
-        var i = 1;
-        $("#sitiosITC").empty();
-        data.forEach(site => {
-          $("#sitiosITC").append('<p class="card-text">'+i+'. '+site.Nombre_hotel+'</p>');
-          i++;
+        $("#total_sitios").text(data.length);
+        generate_table_info_sitios(data, $('#info_sitios'));
+        $.ajax({
+          type: "POST",
+          url: "/antenasITC",
+          data: { itc : itc, _token : _token },
+          success: function (data){
+            console.log(data);
+            $("#total_antenas").text(data[0].cantidad);
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
         });
       },
       error: function (data) {
@@ -306,7 +314,7 @@ get_table_budget_cadena(cadena,'');
     });
 
   }
-  function generate_table_info_cadena(datajson, table){
+  function generate_table_info_sitios(datajson, table){
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table);
     vartable.fnClearTable();
@@ -317,11 +325,15 @@ get_table_budget_cadena(cadena,'');
         status.Direccion,
         status.Telefono,
         status.num_hab,
-        status.name,
-        status.email
+        status.aps + ' <a href="javascript:void(0);" onclick="enviar_antenas(this)" value="' + status.id +'" class="btn btn-default btn-sm" role="button" data-target="#modal-antenas-sitio"><span class="fa fa-eye"></span></a>',
+        "Pendiente"
       ]);
     });
   }
+
+  $('#ver_antenas').on('click', function(){
+    $('#modal-antenas-sitio').modal('show');
+  });
 
   function table_masters(datajson, table){
     table.DataTable().destroy();

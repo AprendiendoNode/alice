@@ -346,7 +346,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/testzone', 'Tools\ZoneToolsController@index');
   Route::post('/getInfoZD', 'Tools\ZoneToolsController@getInfo');
   Route::post('/testzonedir', 'Tools\ZoneToolsController@testRequest');
-  Route::get('/detailed_paquetes','Tools\GuestToolsController@hacienda_view'); 
+  Route::get('/detailed_paquetes','Tools\GuestToolsController@hacienda_view');
 
   Route::post('/existenceUsers', 'Tools\GuestToolsController@getUsersHC');
   Route::post('/existenceUsersAll', 'Tools\GuestToolsController@getPortalUsers');
@@ -882,6 +882,7 @@ Route::group(['middleware' => 'auth'], function () {
     //SábanaITC
     Route::get('dash_sabana_itc', 'Sabanas\SabanaControllerITC@index');
     Route::post('informacionITC', 'Sabanas\SabanaControllerITC@informacionITC');
+    Route::post('antenasITC', 'Sabanas\SabanaControllerITC@antenasITC');
     Route::post('get_tickets_by_itc','Sabanas\SabanaControllerITC@get_tickets_by_itc');
     Route::post('get_ticketsxtipo_itc','Sabanas\SabanaControllerITC@get_ticketsxtype_itc');
     Route::post('get_ticketsxstatus_itc','Sabanas\SabanaControllerITC@get_ticketsxstatus_itc');

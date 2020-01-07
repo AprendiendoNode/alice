@@ -254,11 +254,11 @@
         </div>
       </div>
       <!-- Modal -->
-      <div class="modal fade" id="anexosModal" tabindex="-1" role="dialog" aria-labelledby="anexosModalLabel" aria-hidden="true">
+      <div class="modal fade" id="modal-antenas-sitio" tabindex="-1" role="dialog" aria-labelledby="modal-antenas-sitioLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="anexosModalLabel"></h5>
+              <h5 class="modal-title" id="modal-antenas-sitioLabel"></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -346,7 +346,7 @@
 
       <div class="tab_wrapper first_tab d-none">
           <ul class="tab_list">
-              <li class="active"><i class="fas fa-user-circle"></i> Información</li>
+              <li class="active"><i class="fas fa-user-circle"></i> General</li>
               <!--<li><i class="fas fa-file-contract"></i> Contratos</li>-->
               <li><i class="fas fa-tachometer-alt"></i> NPS</li>
               <!--<li><i class="fas fa-box-open"></i> Equipos</li>-->
@@ -358,36 +358,29 @@
           </ul>
           <div class="content_wrapper">
               <div class="tab_content active">
-                  <h3 style="font-weight: bold; margin-left: 40%;">Información general</h3>
+                  <div class="w-100 mb-1">
+                    <h3 class="d-inline" style="font-weight: bold;">Total Sitios: <span id="total_sitios">0</span></h3>
+                    <h3 class="ml-5 d-inline" style="font-weight: bold;">Total Antenas: <span id="total_antenas">0</span></h3>
+                    <a href="javascript:void(0);" id="ver_antenas" class="btn btn-default btn-sm" role="button"><span class="fa fa-eye fa-2x"></span></a>
+                  </div>
                   <div id="gral_sitio" class="row">
-                    <div class="card col-md-6" style="width: 18rem;">
-                      <div class="d-block mx-auto">
-                        <img id="imagenCliente" class="card-img-top" style="max-height: 300px;max-width: 200px;" alt="Sin foto :(">
-                      </div>
-                      <div class="card-body text-center">
-                        <h5 class="card-title">Nombre completo:</h5>
-                        <p id="nombreITC" class="card-text"></p>
-                        <br>
-                        <h5 class="card-title">Correo:</h5>
-                        <p id="correoITC" class="card-text"></p>
-                        <br>
+                    <div class="card col-md-4" style="width: 18rem;">
+                      <div class="d-block mx-auto my-auto">
+                        <img id="imagenCliente" class="card-img-top" style="max-height: 200px;max-width: 100px;" alt="Sin foto :(">
                       </div>
                     </div>
-                    <div class="card col-md-6" style="width: 18rem;">
+                    <div class="card col-md-8" style="width: 18rem;">
                       <div class="card-body text-center">
-                        <h5 class="card-title">Localización:</h5>
-                        <p id="localizacionITC" class="card-text"></p>
-                        <br>
-                        <h5 class="card-title">Sitios:</h5>
-                        <div id="sitiosITC"></div>
-                        <br>
+                        <h5 class="card-title">Nombre completo: <span id="nombreITC" class="card-text text-gray"></span></h5>
+                        <h5 class="card-title">Correo: <span id="correoITC" class="card-text text-gray"></span></h5>
+                        <h5 class="card-title">Localización: <span id="localizacionITC" class="card-text text-gray"></span></h5>
                       </div>
                     </div>
                   </div>
 
-                  <div id="gral_cadena" class="row">
+                  <div id="gral_sitios" class="row">
                     <div class="table-responsive">
-                      <table id="info_cadena" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
+                      <table id="info_sitios" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>
                           <tr class="bg-aqua text-center">
                             <th > <small>Logo</small> </th>
@@ -395,8 +388,8 @@
                             <th> <small>Direccion</small> </th>
                             <th > <small>Teléfono</small> </th>
                             <th > <small>Habitaciones</small> </th>
-                            <th > <small>ITC</small> </th>
-                            <th > <small>Correo</small> </th>
+                            <th > <small>Antenas</small> </th>
+                            <th > <small>Facturación</small> </th>
                           </tr>
                         </thead>
                         <tbody class="text-center">
