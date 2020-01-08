@@ -44,11 +44,11 @@ $(function() {
     var _token = $('input[name="_token"]').val();
     var itc = $('#select_itc').val();
     var itc_email=$('#select_itc').find(':selected').data("email");
-    $(".first_tab").removeClass("d-none");
+    $(".first_tab").addClass("d-none");
     //$("#cargando").removeClass("d-none");
     $('#gral_sitio').removeClass('d-none');//Muestra la informacion por sitio
     $('#gral_cadena').addClass('d-none');//oculta la informacion por cadena.
-
+    loading(1000);
     //TEMPORAL PRESUPUESTO CADENA
     $("#terminado_presupuesto_cadena").removeClass("d-none");
     $("#construyendo_presupuesto_cadena").addClass("d-none");
@@ -589,6 +589,9 @@ function getViaticsByHotel(itc){
         montoTotal+=parseFloat(row.aprobado);
 
       });
+      $("#cargando").addClass("d-none");
+      $(".first_tab").removeClass("d-none");
+      
       $('#total_viatic').text("$" + montoTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " MXN");
       //console.log(data2);
       graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
@@ -1376,4 +1379,32 @@ function getProjects(itc){
       }
   });
 
+}
+
+function loading(time){
+  let timerInterval
+
+Swal.fire({
+  title: 'Cargando información!',
+  html: 'Buscando en los registros <b></b> .',
+  timer: time,
+  timerProgressBar: true,
+  onBeforeOpen: () => {
+    Swal.showLoading()
+    /*timerInterval = setInterval(() => {
+      Swal.getContent().querySelector('b')
+        .textContent = Swal.getTimerLeft()
+    }, 100) */
+  },
+  onClose: () => {
+    clearInterval(timerInterval)
+  }
+}).then((result) => {
+  if (
+    /* Read more about handling dismissals below */
+    result.dismiss === Swal.DismissReason.timer
+  ){
+    //Otra accion
+  }
+})
 }
