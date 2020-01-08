@@ -1066,6 +1066,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices-store', 'Sales\CustomerInvoiceController@store');
     Route::post('/customer-invoices-edit', 'Sales\CustomerInvoiceController@edit');
     Route::post('/customer-invoices-sendmail-fact', 'Sales\CustomerInvoiceController@send_mail_pdf_propuesta');
+    Route::post('/customer-invoices-sendmail-fact', 'Sales\CustomerInvoiceController@sendmail_facts_customers');
     //
     Route::post('/customer-invoices-store-cont', 'Sales\CustomerInvoiceController@store_cont');
 

@@ -84,11 +84,12 @@ class CustomerInvoiceController extends Controller
 
     public function generate_invoice($id)
     {
-      $pdf = $this->get_pdf_invoice($id);
+      $files = $this->get_pdf_xml_files($id);
+      $pdf = $files['pdf'];;
       return $pdf->stream();
     }
 
-    public function get_pdf_invoice($id)
+    public function get_pdf_xml_files($id)
     {
       $document_type_id = DB::table('customer_invoices')->select('document_type_id')->where('id', $id)->value('document_type_id');
       $cfdi_type_id = DB::table('document_types')->select('cfdi_type_id')->where('id', $document_type_id)->value('cfdi_type_id');
@@ -121,7 +122,7 @@ class CustomerInvoiceController extends Controller
             $ammount_letter = $format->convertir($customer_complement->amount_total);
             // Enviando datos a la vista de la factura
             $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_cmp', compact('companies', 'customer_complement','complement_gral','complements','moneda','Fpago', 'data', 'ammount_letter','estado','pais'));
-            return $pdf;
+           
           }
       else if ($cfdi_type_id == 2) {
         // Nota de crédito o Factura de Egreso
@@ -145,7 +146,7 @@ class CustomerInvoiceController extends Controller
         $ammount_letter = $format->convertir($customer_credit_note->amount_total);
         // Enviando datos a la vista de la factura
         $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_ntc', compact('companies', 'customer_credit_note', 'data', 'ammount_letter'));
-        return $pdf;
+        
       }
       else {
         // Factura de Ingreso
@@ -174,8 +175,18 @@ class CustomerInvoiceController extends Controller
         $ammount_letter = $format->convertir($customer_invoice->amount_total);
         // Enviando datos a la vista de la factura
         $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice', 'data', 'ammount_letter', 'estado', 'pais'));
-        return $pdf;
+        
       }
+
+      $xml = Storage::get($file_xml_pac);
+
+      $files = array(
+        "pdf" => $pdf,
+        "xml" => $xml,
+      );
+
+      return $files;
+      
     }
     /**
      * Display a listing of the resource.
@@ -2701,24 +2712,26 @@ class CustomerInvoiceController extends Controller
         $facturar_cfdi_use = $all_information_anexos[0]->cfdi_user_id;
     }
 
-    public function send_mail_pdf_propuesta(Request $request)
+    public function sendmail_facts_customers(Request $request)
     {
+        $files = $this->get_pdf_xml_files($request->customer_invoice_id);
+        $pdf = $files['pdf'];
+        $xml = $files['xml'];
         
-     $pdf = $this->get_pdf_invoice(277);
+        $data = [];
 
-      //$xml_file = Storage::get($file_xml_pac);
-      $data = [];
-      Mail::send('mail.propuestaComercial', $data,function ($message) use ($pdf){
-          $message->subject('Factura electronica' );
-          $message->from('desarrollo@sitwifi.com', 'Factura sitwifi');
-          $message->to('rkuman@sitwifi.com');
-          $message->attachData($pdf->output(), 'FASA_'.'.pdf');
-          //$message->attachData($xml_file, 'FASA_'.'.xml', ['mime'=>'application/xml']);
-      });
+        Mail::send('mail.propuestaComercial', $data,function ($message) use ($request, $pdf, $xml){
+            $message->subject($request->subject);
+            $message->from('desarrollo@sitwifi.com', 'Factura sitwifi');
+            $message->to($request->to);
+            $message->attachData($pdf->output(), $request->subject . '.pdf');
+            $message->attachData($xml, $request->subject .'.xml', ['mime'=>'application/xml']);
+        });
 
-      return response()->json([
-         'xml' => 'test'
-      ]);
+        return response()->json([
+            'message' => 'Factura enviada',
+            'code' => 200
+        ]);
 
     }
 

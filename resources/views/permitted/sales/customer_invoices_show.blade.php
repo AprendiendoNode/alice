@@ -345,39 +345,42 @@
           </button>
         </div>
         <!--Body-->
-        <div class="modal-body">
-          <div class="row">
-              <div class="col-md-12 col-xs-12">
-                  <div class="form-group form-group-sm">
-                    <label for="subject" class="control-label">Subject <span class="required text-danger">*</span></label>
-                    <input class="form-control" placeholder="Asunto" required="" name="subject" type="text" value="" id="subject">
+        <div class="modal-body"> 
+          <form id="form_email_fact">
+              <div class="row">
+                <input id="customer_invoice_id" name="customer_invoice_id" type="hidden" value="">
+                  <div class="col-md-12 col-xs-12">
+                    <div class="form-group form-group-sm">
+                      <label for="subject" class="control-label">Subject <span class="required text-danger">*</span></label>
+                      <input class="form-control" placeholder="Asunto" required="" name="subject" type="text" value="" id="subject">
+                    </div>
                   </div>
-              </div>
-              <div class="col-md-12 col-xs-12">
-                  <div class="form-group form-group-sm">
-                    <label for="to" class="control-label">Para <span class="required text-danger">*</span></label>
-                    <select id='to' name='to[]' class="form-control" multiple="multiple">
-                    </select>
+                  <div class="col-md-12 col-xs-12">
+                      <div class="form-group form-group-sm">
+                        <label for="to" class="control-label">Para <span class="required text-danger">*</span></label>
+                        <select id='to' name='to[]' class="form-control" multiple="multiple">
+                        </select>
+                      </div>
                   </div>
-              </div>
-              <div class="col-md-12 col-xs-12">
-                <div class="form-group form-group-sm">
-                  <label for="attach" class="control-label">{{__('general.entry_mail_attach')}} <span class="required text-danger">*</span></label>
-                  <select id='attach' name='attach[]' class="form-control" multiple="multiple">
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-12 col-xs-12 editor_quill">
-                  <div class="form-group form-group-sm">
-                    <label for="attach" class="control-label">{{__('general.entry_mail_message')}} <span class="required text-danger">*</span></label>
+                  <div class="col-md-12 col-xs-12">
+                    <div class="form-group form-group-sm">
+                      <label for="attach" class="control-label">{{__('general.entry_mail_attach')}} <span class="required text-danger">*</span></label>
+                      <select id='attach' name='attach[]' class="form-control" multiple="multiple">
+                      </select>
+                    </div>
                   </div>
-                  <div name="message" id="message" class="mb-4"></div>
-              </div>
-          </div>
+                  <div class="col-md-12 col-xs-12 editor_quill">
+                      <div class="form-group form-group-sm">
+                        <label for="attach" class="control-label">{{__('general.entry_mail_message')}} <span class="required text-danger">*</span></label>
+                      </div>
+                      <div name="message" id="message" class="mb-4"></div>
+                  </div>
+              </div>    
+          </form>
         </div>
         <div class="modal-footer">
           <div class="pull-right">
-            <button type="submit" id="send_mail_button" class="btn btn-xs btn-info "> <i class="fas fa-paper-plane"> Enviar </i></button>
+            <button type="button" id="send_mail_button" class="btn btn-xs btn-info "> <i class="fas fa-paper-plane"> Enviar </i></button>
             <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"> <i class="fa fas fa-times"> {{ __('general.button_close') }} </i></button>
           </div>
         </div>
@@ -1084,7 +1087,7 @@
                });
                $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").val(data.files_selected).trigger("change");
 
-
+               $("#customer_invoice_id").val(data.customer_invoice.id);
                //Asunto
                $("#subject").val(data.customer_invoice.name);
                //PARA
@@ -1113,6 +1116,8 @@
 
     $('#send_mail_button').on('click', function(){
       let _token = $('meta[name="csrf-token"]').attr('content');
+      let form = $('#form_email_fact')[0];
+      let formData = new FormData(form);
       const headers = new Headers({        
                "Accept": "application/json",
                "X-Requested-With": "XMLHttpRequest",
@@ -1121,6 +1126,7 @@
 
       let miInit = { method: 'post',
                         headers: headers,
+                        body: formData,
                         credentials: "same-origin",
                         cache: 'default' };
 
@@ -1130,6 +1136,9 @@
         })
         .then(data => {
           console.log(data);
+          if(data.code == 200){
+            Swal.fire(data.message,'','success');
+          }
         })
         .catch(error => {
           console.log(error);
