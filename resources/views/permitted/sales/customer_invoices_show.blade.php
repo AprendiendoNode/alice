@@ -377,7 +377,7 @@
         </div>
         <div class="modal-footer">
           <div class="pull-right">
-            <button type="submit" class="btn btn-xs btn-info "> <i class="fa fa-filter"> {{__('general.button_search')}}</i></button>
+            <button type="submit" id="send_mail_button" class="btn btn-xs btn-info "> <i class="fas fa-paper-plane"> Enviar </i></button>
             <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"> <i class="fa fas fa-times"> {{ __('general.button_close') }} </i></button>
           </div>
         </div>
@@ -1109,6 +1109,32 @@
              }
         })
       }
+
+
+    $('#send_mail_button').on('click', function(){
+      let _token = $('meta[name="csrf-token"]').attr('content');
+      const headers = new Headers({        
+               "Accept": "application/json",
+               "X-Requested-With": "XMLHttpRequest",
+               "X-CSRF-TOKEN": _token
+             })
+
+      let miInit = { method: 'post',
+                        headers: headers,
+                        credentials: "same-origin",
+                        cache: 'default' };
+
+      fetch('customer-invoices-sendmail-fact', miInit)
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    })
   </script>
   @else
   @endif

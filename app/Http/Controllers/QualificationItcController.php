@@ -10,8 +10,11 @@ class QualificationItcController extends Controller
 {
     public function index()
     {   
-    
-      return view('permitted.qualification.qualification_itc');
+        $itc = DB::select('CALL px_ITC_todos()', array());
+
+        
+        
+        return view('permitted.qualification.qualification_itc', compact('itc'));
     }
 
     

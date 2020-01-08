@@ -53,6 +53,7 @@ use Illuminate\Support\Facades\Schema;
 use \CfdiUtils\XmlResolver\XmlResolver;
 use \CfdiUtils\CadenaOrigen\DOMBuilder;
 use App\ConvertNumberToLetters;
+use Mail;
 
 use App\Models\Sales\CustomerInvoice as CustomerCreditNote;
 use App\Models\Sales\CustomerInvoiceCfdi as CustomerCreditNoteCfdi;
@@ -82,6 +83,12 @@ class CustomerInvoiceController extends Controller
     }
 
     public function generate_invoice($id)
+    {
+      $pdf = $this->get_pdf_invoice($id);
+      return $pdf->stream();
+    }
+
+    public function get_pdf_invoice($id)
     {
       $document_type_id = DB::table('customer_invoices')->select('document_type_id')->where('id', $id)->value('document_type_id');
       $cfdi_type_id = DB::table('document_types')->select('cfdi_type_id')->where('id', $document_type_id)->value('cfdi_type_id');
@@ -114,7 +121,7 @@ class CustomerInvoiceController extends Controller
             $ammount_letter = $format->convertir($customer_complement->amount_total);
             // Enviando datos a la vista de la factura
             $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_cmp', compact('companies', 'customer_complement','complement_gral','complements','moneda','Fpago', 'data', 'ammount_letter','estado','pais'));
-            return $pdf->stream();
+            return $pdf;
           }
       else if ($cfdi_type_id == 2) {
         // Nota de crédito o Factura de Egreso
@@ -138,7 +145,7 @@ class CustomerInvoiceController extends Controller
         $ammount_letter = $format->convertir($customer_credit_note->amount_total);
         // Enviando datos a la vista de la factura
         $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_ntc', compact('companies', 'customer_credit_note', 'data', 'ammount_letter'));
-        return $pdf->stream();
+        return $pdf;
       }
       else {
         // Factura de Ingreso
@@ -167,7 +174,7 @@ class CustomerInvoiceController extends Controller
         $ammount_letter = $format->convertir($customer_invoice->amount_total);
         // Enviando datos a la vista de la factura
         $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice', 'data', 'ammount_letter', 'estado', 'pais'));
-        return $pdf->stream();
+        return $pdf;
       }
     }
     /**
@@ -2692,6 +2699,27 @@ class CustomerInvoiceController extends Controller
         $facturar_pay_way = $all_information_anexos[0]->payment_way_id;
         $facturar_pay_met = $all_information_anexos[0]->payment_method_id;
         $facturar_cfdi_use = $all_information_anexos[0]->cfdi_user_id;
+    }
+
+    public function send_mail_pdf_propuesta(Request $request)
+    {
+        
+     $pdf = $this->get_pdf_invoice(277);
+
+      //$xml_file = Storage::get($file_xml_pac);
+      $data = [];
+      Mail::send('mail.propuestaComercial', $data,function ($message) use ($pdf){
+          $message->subject('Factura electronica' );
+          $message->from('desarrollo@sitwifi.com', 'Factura sitwifi');
+          $message->to('rkuman@sitwifi.com');
+          $message->attachData($pdf->output(), 'FASA_'.'.pdf');
+          //$message->attachData($xml_file, 'FASA_'.'.xml', ['mime'=>'application/xml']);
+      });
+
+      return response()->json([
+         'xml' => 'test'
+      ]);
+
     }
 
 }
