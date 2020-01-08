@@ -417,7 +417,7 @@ class ContratoController extends Controller
         'date_signature' => $text_signature_date,
         'date_scheduled_start' => $text_start_cont,
         'number_months' => $text_no_month,
-        'number_expiration' => $plazo_vencto,
+        //'number_expiration' => $plazo_vencto,
         'date_scheduled_end' => $text_date_end_cont,
         'date_real' => $text_date_real,
         'itconcierge_id' => $id_ingeniero,
@@ -592,14 +592,14 @@ class ContratoController extends Controller
       $itconcierge = DB::select('CALL px_ITC_todos ()', array());
       $vendedores = DB::select('CALL px_resguardoXgrupo_users (?)', array('2'));
       $iva = DB::Table('ivas')->select('number')->get();
-      $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array()); 
-      $satproduct = DB::select('CALL GetSatProductActivev2 ()', array()); 
+      $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array());
+      $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
 
       $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
       $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
       $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
       $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()', array());
-      
+
       return view('permitted.contract.cont_edit_cont', compact('unitmeasures', 'satproduct', 'iva','currency','hotels', 'classifications','verticals','cadenas', 'contract_status', 'resguardo', 'rz_customer' , 'sitio', 'itconcierge', 'vendedores', 'payment_way', 'payment_methods', 'cfdi_uses', 'payment_term'));
   }
 
@@ -768,7 +768,7 @@ class ContratoController extends Controller
     $forma_pago = $request->payment_way_id;
     $metodo_pago = $request->payment_method_id;
     $uso_cfdi = $request->cfdi_use_id;
-    
+
     $description_fact= $request->description_fact;
 
     $cont_vtc=$request->cont_vtc;
