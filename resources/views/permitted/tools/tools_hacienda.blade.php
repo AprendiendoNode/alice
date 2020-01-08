@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View guest review') )
+  @if( auth()->user()->can('View paquetes hacienda') )
     {{ trans('message.title_paquetes') }}
   @else
     {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View detailed for hotel') )
+  @if( auth()->user()->can('View paquetes hacienda') )
     {{ trans('message.breadcrumb_paquetes') }}
   @else
     {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View guest review') )
+  @if( auth()->user()->can('View paquetes hacienda') )
       <div class="row">
         <div class="col-md-12 grid-margin-onerem  stretch-card">
           <div class="card">
@@ -89,7 +89,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View detailed for hotel') )
+  @if( auth()->user()->can('View paquetes hacienda') )
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
