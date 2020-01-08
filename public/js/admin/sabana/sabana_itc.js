@@ -276,19 +276,59 @@ $(function() {
         status.Direccion,
         status.Telefono,
         status.num_hab,
-        status.aps + ' <a href="javascript:void(0);" onclick="enviar_antenas(this)" value="' + status.id +'" class="btn btn-default btn-sm" role="button" data-target="#modal-antenas-sitio"><span class="fa fa-eye"></span></a>',
+        status.aps + ' <button id="ver-'+status.id+'-'+status.sitio+'" class="btn btn-default btn-sm ver_antenas_sitio"><span class="fa fa-eye"></span></button>',
         "Pendiente"
       ]);
     });
   }
 
+  $(document).on("click", ".ver_antenas_sitio", function() {
+    var boton = $(this)[0].id.split("-");
+    $("#modal-antenas-sitioLabel").text("Antenas del sitio "+boton[2]+":");
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var itc = $('#select_itc').val();
+    $.ajax({
+      type: "POST",
+      url: "/tabla_antenas_sitio",
+      data: { _token : _token, sitio: boton[1], itc: itc },
+      success: function (data){
+
+        table_antenas(data, $("#tabla_antenas"));
+
+        $('#modal-antenas-sitio').modal('show');
+
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+  });
+
   $('#ver_antenas').on('click', function(){
-    $('#modal-antenas-sitio').modal('show');
+    $("#modal-antenas-sitioLabel").text("Todas las antenas:");
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var itc = $('#select_itc').val();
+    $.ajax({
+      type: "POST",
+      url: "/tabla_antenas_ITC",
+      data: { _token : _token, itc: itc },
+      success: function (data){
+
+        table_antenas(data, $("#tabla_antenas"));
+
+        $('#modal-antenas-sitio').modal('show');
+
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+
   });
 
   function table_masters(datajson, table){
     table.DataTable().destroy();
-    var vartable = table.dataTable(Configuration_table_contracts);
+    var vartable = table.dataTable(Configuration_table_antenas);
     vartable.fnClearTable();
     $.each(datajson, function(index, status){
     var estado = '';
@@ -321,48 +361,21 @@ $(function() {
     });
   }
 
-  function table_annexes(datajson, table){
+  function table_antenas(datajson, table){
     table.DataTable().destroy();
-    var vartable = table.dataTable(Configuration_table_contracts);
+    var vartable = table.dataTable(Configuration_table_antenas);
     vartable.fnClearTable();
 
-    var totalPesos = 0, totalDolares = 0;
-
     $.each(datajson, function(index, status){
-      var estado = '';
-
-      switch (status.estatus) {
-        case 1:
-        estado ='<span class="badge badge-pill text-white bg-success">Activo</span>';
-          break;
-        case 2:
-          estado ='<span class="badge badge-pill text-white bg-warning">Pausado</span>';
-          break;
-        case 3:
-          estado ='<span class="badge badge-pill text-white bg-danger">Cancelado</span>';
-          break;
-        case 4:
-          estado ='<span class="badge badge-pill text-white bg-dark">Terminado</span>';
-          break;
-        default:
-      }
-
-      totalPesos += (status.pesos == null ? 0 : parseFloat(status.pesos));
-      totalDolares += (status.dolares == null ? 0 : parseFloat(status.dolares));
 
       vartable.fnAddData([
-        status.key,
-        status.date_signature,
-        status.date_scheduled_start,
-        status.date_scheduled_end,
-        status.date_real,
-        status.pesos,
-        status.dolares,
-        estado
+        status.modelo,
+        status.MAC,
+        status.Serie,
+        '<span class="badge badge-pill text-white bg-success">Activo en sitio</span>',
+        status.Fecha_Registro
       ]);
     });
-
-    $('#label_totales').text("Total Pesos: $" + totalPesos + " Total Dólares: $" + totalDolares);
 
   }
 
@@ -1123,7 +1136,7 @@ function getViaticsByCadena(cadena){
 
 function viatics_table(datajson, table){
   table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table_contracts);
+  var vartable = table.dataTable(Configuration_table_antenas);
   vartable.fnClearTable();
   var site="";
   $.each(datajson, function(index, status){
@@ -1146,7 +1159,7 @@ function viatics_table(datajson, table){
 
 function payments_table(datajson, table){
   table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table_contracts);
+  var vartable = table.dataTable(Configuration_table_antenas);
   vartable.fnClearTable();
   //console.log(datajson);
   $.each(datajson, function(index, value){
@@ -1699,7 +1712,7 @@ function graph_tickets_status(title,data) {
   });
 }
 
-  var Configuration_table_contracts = {
+  var Configuration_table_antenas = {
     "order": [[ 0, "asc" ]],
     paging: true,
     //"pagingType": "simple",

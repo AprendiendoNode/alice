@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View dash sabana') )
-    <strong>Dashboard General Por Sitio</strong>
+    <strong>Dashboard General Por ITC</strong>
   @else
     {{ trans('message.denied') }}
   @endif
@@ -18,7 +18,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View dash sabana') )
-    Sitio
+    ITC
   @else
     {{ trans('message.denied') }}
   @endif
@@ -258,24 +258,21 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="modal-antenas-sitioLabel"></h5>
+              <h3 class="modal-title" id="modal-antenas-sitioLabel"></h3>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <div class="table-responsive">
-                <table id="all_annexes" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
+                <table id="tabla_antenas" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                   <thead>
                     <tr class="bg-aqua text-center">
-                      <th> <small>Id</small> </th>
-                      <th> <small>F. Firma de contrato</small> </th>
-                      <th > <small>F. Inicio de contrato (programada)</small> </th>
-                      <th > <small>F. Fin de contrato (calculada)</small> </th>
-                      <th > <small>F. Inicio real</small> </th>
-                      <th > <small>Monto (pesos)</small> </th>
-                      <th > <small>Monto (dólares)</small> </th>
+                      <th> <small>Modelo</small> </th>
+                      <th> <small>Mac</small> </th>
+                      <th > <small>Serie</small> </th>
                       <th > <small>Estado</small> </th>
+                      <th > <small>Fecha Registro</small> </th>
                     </tr>
                   </thead>
                   <tbody class="text-center">
@@ -287,8 +284,6 @@
                       <th></th>
                       <th ></th>
                       <th></th>
-                      <th></th>
-                      <th ></th>
                     </tr>
                   </tfoot>
                 </table>
@@ -692,7 +687,6 @@
                 </div>
               </div>
   <div class="tab_content">
-    <h3 class="text-title">Resumen de compras</h3>
     <hr>
     <div class="row">
         <!--<div class="col-md-2 mb-3">

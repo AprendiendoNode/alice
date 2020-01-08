@@ -37,25 +37,18 @@ class SabanaControllerITC extends Controller
     $result = DB::select('CALL px_cantidad_aps_xusuario(?)', array($itc));
     return $result;
   }
-
-  public function get_all_contracts_by_hotel(Request $request)
+  public function tabla_antenas_ITC(Request $request)
   {
-    $hotel = $request->id;
-    $maestro = DB::select('CALL px_contrac_master_data_site(?)', array($hotel));
-    return $maestro;
+    $itc = $request->itc;
+    $result = DB::select('CALL px_tabla_apsxusuario(?)', array($itc));
+    return $result;
   }
-
-  public function get_all_contracts_by_cadena(Request $request){
-    $cadena = $request->id;
-    $maestro = DB::select('CALL px_contrac_master_data_cadena(?)', array($cadena));
-    return $maestro;
-  }
-
-  public function get_all_annexes_by_master(Request $request)
+  public function tabla_antenas_sitio(Request $request)
   {
-    $master = $request->id;
-    $anexos = DB::select('CALL px_anexos_masters(?)', array($master));
-    return $anexos;
+    $sitio = $request->sitio;
+    $itc = $request->itc;
+    $result = DB::select('CALL px_tabla_apsxsitio(?, ?)', array($sitio, $itc));
+    return $result;
   }
   public function get_table_equipments(Request $request){
     $id_hotel=$request->id;

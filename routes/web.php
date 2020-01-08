@@ -885,6 +885,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('dash_sabana_itc', 'Sabanas\SabanaControllerITC@index');
     Route::post('informacionITC', 'Sabanas\SabanaControllerITC@informacionITC');
     Route::post('antenasITC', 'Sabanas\SabanaControllerITC@antenasITC');
+    Route::post('tabla_antenas_ITC', 'Sabanas\SabanaControllerITC@tabla_antenas_ITC');
+    Route::post('tabla_antenas_sitio', 'Sabanas\SabanaControllerITC@tabla_antenas_sitio');
     Route::post('get_tickets_by_itc','Sabanas\SabanaControllerITC@get_tickets_by_itc');
     Route::post('get_ticketsxtipo_itc','Sabanas\SabanaControllerITC@get_ticketsxtype_itc');
     Route::post('get_ticketsxstatus_itc','Sabanas\SabanaControllerITC@get_ticketsxstatus_itc');
