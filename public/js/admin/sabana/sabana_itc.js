@@ -44,8 +44,8 @@ $(function() {
     var _token = $('input[name="_token"]').val();
     var itc = $('#select_itc').val();
     var itc_email=$('#select_itc').find(':selected').data("email");
-    $(".first_tab").addClass("d-none");
-    $("#cargando").removeClass("d-none");
+    $(".first_tab").removeClass("d-none");
+    //$("#cargando").removeClass("d-none");
     $('#gral_sitio').removeClass('d-none');//Muestra la informacion por sitio
     $('#gral_cadena').addClass('d-none');//oculta la informacion por cadena.
 
@@ -83,8 +83,6 @@ $(function() {
         console.log('Error:', data);
       }
     });
-    get_contracts(itc);
-    get_info_equipments(itc);
     get_nps_hotel(itc);
     get_nps_comment(itc);
     //get_graph_equipments(itc);
@@ -94,50 +92,8 @@ $(function() {
     get_graph_tickets_status(itc_email);
     //getFoliosByHotel(itc);
     getViaticsByHotel(itc);
-    get_table_budget(itc,'');
     getProjects(itc);
   });
-
-
-  //Por sitio
-  function get_contracts(cliente) {
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id = cliente;
-    $.ajax({
-      type: "POST",
-      url: "/get_all_contracts_by_hotel",
-      data: { _token : _token, id: id },
-      success: function (data){
-
-        table_masters(data, $("#all_contracts"));
-
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
-  }
-  //Por cadena
-
-  function get_contracts_cadena(cadena){
-    var _token= $('meta[name="csrf-token"]').attr('content');
-    var id = cadena;
-    $.ajax({
-      type: "POST",
-      url: "/get_all_contracts_by_cadena",
-      data: { _token : _token, id: id },
-      success: function (data){
-        //console.log(data);
-        //$('#header_cadena small').text('Hotel');
-        table_masters(data, $("#all_contracts"));
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
-  }
-
-
 
   $('.filtrarDashboard').on('click', function(){
     get_nps_hotel($('#cliente').val());
@@ -326,41 +282,6 @@ $(function() {
 
   });
 
-  function table_masters(datajson, table){
-    table.DataTable().destroy();
-    var vartable = table.dataTable(Configuration_table_antenas);
-    vartable.fnClearTable();
-    $.each(datajson, function(index, status){
-    var estado = '';
-
-    switch (status.estatus) {
-      case 'Activo':
-      estado ='<span class="badge badge-pill text-white bg-success">Activo</span>';
-        break;
-      case 'Pausado':
-        estado ='<span class="badge badge-pill text-white bg-warning">Pausado</span>';
-        break;
-      case 'Cancelado':
-        estado ='<span class="badge badge-pill text-white bg-danger">Cancelado</span>';
-        break;
-      case 'Terminado':
-        estado ='<span class="badge badge-pill text-white bg-dark">Terminado</span>';
-        break;
-      default:
-    }
-      vartable.fnAddData([
-        status.key,
-        status.razon,
-        status.cxclassification,
-        status.vertical,
-        status.cadena,
-        estado,
-        status.xvenc,
-        "<button id='verAnexos~"+status.id+"~"+status.key+"' class='verAnexos btn btn-info'><i class='fas fa-file-signature'></i></button>"
-      ]);
-    });
-  }
-
   function table_antenas(datajson, table){
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table_antenas);
@@ -468,134 +389,6 @@ $(function() {
 
   }
 
-  function get_info_equipments_cadena(cadena) {
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= cadena;
-    $('.divEQ').addClass('tableFixHead');
-    $("#all_equipments").DataTable().destroy();
-    $("#all_equipments").DataTable({
-      processing:true,
-      serverSide:true,
-      ajax:{
-        "type": "POST",
-        url:"/get_all_equipmentsbycadena",
-        "data":function(d){ //Lo que se envia al servidor
-          d._token = _token;
-          d.id = id;
-        },
-        dataFilter:function(inData){ //Lo que regresa el servidor
-          var array=JSON.parse(inData);
-          //console.log(array);
-          //console.log(array.data[0]['tipo']);
-          $.each(array.data, function(index, status){
-            //console.log(status);
-            if (status.estado == '1') { status.estado = '<span class="badge badge-pill badge-success">Activo en Sitio</span>';}
-      else  if (status.estado == '2') { status.estado = '<span class="badge badge-pill badge-danger">Baja</span>';}
-      else  if (status.estado == '3') { status.estado = '<span class="badge badge-pill badge-warning text-white">Bodega</span>';}
-      else  if (status.estado == '4') { status.estado = '<span class="badge badge-pill badge-dark">Stock</span>';}
-      else  if (status.estado == '5') { status.estado = '<span class="badge badge-pill badge-info">Prestamo</span>';}
-      else  if (status.estado == '10') { status.estado = '<span class="badge badge-pill badge-primary">Venta</span>';}
-      else  if (status.estado == '13') { status.estado = '<span class="badge badge-pill text-white" style="background-color:#0DCAD6;">Propiedad del Cliente</span>';}
-      else  if (status.estado == '14') { status.estado = '<span class="badge badge-pill badge-secondary">Demo</span>';}
-      else  if (status.estado == '16') { status.estado = '<span class="badge badge-pill badge-secondary">Asignado [SITWIFI]</span>';}
-      else  if (status.estado == '17') { status.estado = '<span class="badge badge-pill badge-danger">Descontinuado</span>';}
-          });
-          var data = JSON.stringify(array);
-          return data;
-      }
-      },
-      columns:[
-              {data:'tipo',name:'tipo'},
-              {data:'modelo',name:'modelo'},
-              {data:'MAC',name:'MAC'},
-              {data:'Serie',name:'Serie'},
-              {data:'Descripcion',name:'Descripcion'},
-              {data:'estado',name:'estado'},
-              {data:'Fecha_Registro',name:'Fecha_Baja'},
-              {data:'Fecha_Baja',name:'Fecha_Baja'}
-            ],
-    });
-  }
-
-  function get_info_equipments(cliente) {
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= cliente;
-    $.ajax({
-      type: "POST",
-      url: "/get_all_equipmentsbyhotel",
-      data: { _token : _token, id: id },
-      success: function (data){
-        $('.divEQ').addClass('tableFixHead');
-        table_equipments(data, $("#all_equipments"));
-
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
-
-  }
-
-  function get_graph_equipments_cadena(idcadena) {
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
-    $.ajax({
-      type: "POST",
-      url: "/get_graph_equipments_cadena",
-      data: { _token : _token, id: id },
-      success: function (data){
-
-        graph_equipments('graph_equipments',data,"Clasificación","Tipo de equipo");
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
-
-  }
-
-
-  function get_graph_equipments_status(idsitio) {
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idsitio;
-    $.ajax({
-      type: "POST",
-      url: "/get_graph_equipments_status",
-      data: { _token : _token, id: id },
-      success: function (data){
-        //$('.divEQ').addClass('tableFixHead');
-        //table_equipments(data, $("#all_equipments"));
-        //console.log(data);
-        graph_equipments_status('graph_equipments_status',data);
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
-
-  }
-
-
-  function get_graph_equipments_status_cadena(idcadena) {
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
-    $.ajax({
-      type: "POST",
-      url: "/get_graph_equipments_status_cadena",
-      data: { _token : _token, id: id },
-      success: function (data){
-        //$('.divEQ').addClass('tableFixHead');
-        //table_equipments(data, $("#all_equipments"));
-        //console.log(data);
-        graph_equipments_status('graph_equipments_status',data);
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
-
-  }
-
   function table_comments_hotel(datajson, table){
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table);
@@ -631,107 +424,6 @@ $(function() {
     });
   }
 
-  function table_equipments(datajson, table){
-    table.DataTable().destroy();
-    var vartable = table.dataTable(Configuration_table_equipments);
-    vartable.fnClearTable();
-    $.each(datajson, function(index, status){
-      var span_identificador = '';
-      if (status.estado == '1') { span_identificador = '<span class="badge badge-pill badge-success">Activo en Sitio</span>';}
-else  if (status.estado == '2') { span_identificador = '<span class="badge badge-pill badge-danger">Baja</span>';}
-else  if (status.estado == '3') { span_identificador = '<span class="badge badge-pill badge-warning text-white">Bodega</span>';}
-else  if (status.estado == '4') { span_identificador = '<span class="badge badge-pill badge-dark">Stock</span>';}
-else  if (status.estado == '5') { span_identificador = '<span class="badge badge-pill badge-info">Prestamo</span>';}
-else  if (status.estado == '10') { span_identificador = '<span class="badge badge-pill badge-primary">Venta</span>';}
-else  if (status.estado == '13') { span_identificador = '<span class="badge badge-pill text-white" style="background-color:#0DCAD6;">Propiedad del Cliente</span>';}
-else  if (status.estado == '14') { span_identificador = '<span class="badge badge-pill badge-secondary">Demo</span>';}
-else  if (status.estado == '16') { span_identificador = '<span class="badge badge-pill badge-secondary">Asignado [SITWIFI]</span>';}
-else  if (status.estado == '17') { span_identificador = '<span class="badge badge-pill badge-danger">Descontinuado</span>';}
-      vartable.fnAddData([
-        status.tipo,
-        status.modelo,
-        status.MAC,
-        status.Serie,
-        status.Descripcion,
-        span_identificador,
-        status.Fecha_Registro,
-        status.Fecha_Baja
-
-      ]);
-    });
-  }
-$('#btn-filtrar').on('click',function(){
-var idcliente=$('#cliente').val();
-var cadena=$('#proyecto').val();
-var fecha= $('#date_presupuesto').val();
-if(idcliente!="" && cadena==""){
-get_table_budget(idcliente,fecha);
-}else{
-get_table_budget_cadena(cadena,fecha);
-}
-
-});
-
-  function get_table_budget(idcliente,fecha,ruta){
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcliente;
-    $.ajax({
-        type: "POST",
-        url:"/get_budget_annual_hotel",
-        data: { id: id,fecha:fecha, _token : _token },
-        success: function (data){
-          //console.log(data);
-          generate_table_budget(data, $('#table_budget_site'));
-
-          //!!!!!!!!!!!EL SIGUIENTE BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
-          $("#cargando").addClass("d-none");
-          $(".first_tab").removeClass("d-none");
-          /*if(document.getElementById("consumo_echarts").style.display == "block") {
-            graph_client_day(id);
-            graph_gigabyte_day(id);
-            graph_top_aps_table(id);
-            general_table_comparative(id);
-          }*/
-          //!!!!!!!!!!!EL ANTERIOR BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
-
-          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
-        },
-        error: function (data) {
-          console.log('Error:', data);
-        }
-    });
-  }
-
-  function get_table_budget_cadena(cadena,fecha,ruta){
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= cadena;
-    $.ajax({
-        type: "POST",
-        url:"/get_budget_annual_cadena",
-        data: { id: id,fecha:fecha, _token : _token },
-        success: function (data){
-          //console.log(data);
-          generate_table_budget(data, $('#table_budget_site'));
-
-          //!!!!!!!!!!!EL SIGUIENTE BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
-          $("#cargando").addClass("d-none");
-          $(".first_tab").removeClass("d-none");
-          if(document.getElementById("consumo_echarts").style.display == "block") {
-            graph_client_day(id);
-            graph_gigabyte_day(id);
-            graph_top_aps_table(id);
-            general_table_comparative(id);
-          }
-          //!!!!!!!!!!!EL ANTERIOR BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
-
-          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
-        },
-        error: function (data) {
-          console.log('Error:', data);
-        }
-    });
-  }
-
   function get_table_tickets(itc_email){
     var _token = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
@@ -748,8 +440,6 @@ get_table_budget_cadena(cadena,fecha);
         }
     });
   }
-
-
 
   function get_graph_tickets_type(itc_email){
     var _token = $('meta[name="csrf-token"]').attr('content');
@@ -800,78 +490,6 @@ function morethan100(number){
 var val=''
 number>100? val='<span style="color:red; font-weight:bold;">'+number+'%'+'</span>': val='<span style="font-weight:bold;">'+number+'%'+'</span>';
 return val;
-}
-
-function generate_table_budget(datajson, table){
-  table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table);
-  vartable.fnClearTable();
-  var suma=0;
-  var mensual = 0;
-  var totales=new Array(0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-  var numrow=1;
-  //console.log(new Date().getMilliseconds());
-  $.each(datajson, function(index, data){
-    suma =(parseInt(data.enero) +parseInt(data.febrero) + parseInt(data.marzo) + parseInt(data.abril) + parseInt(data.mayo) +parseInt(data.junio)
-    + parseInt(data.julio) + parseInt(data.agosto) +parseInt(data.septiembre) + parseInt(data.octubre) + parseInt(data.noviembre) + parseInt(data.diciembre));
-    mensual = parseInt((suma*100)/data.monto);
-    isNaN(mensual)==true? mensual=0:mensual;
-
-    vartable.fnAddData([
-      //data.id,
-      //data.Nombre_hotel,
-      data.categoria,
-      '$'+data.monto.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.enero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.febrero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.marzo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.abril.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.mayo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.junio.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.julio.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.agosto.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.septiembre.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.octubre.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.noviembre.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '$'+data.diciembre.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      morethan100(mensual),
-    ]);
-      mensual>100?overflow(numrow): '';
-      suma>data.monto?overflow(numrow):'';
-      numrow++;
-      totales[0]=totales[0]+parseInt(data.monto);
-      totales[1]=totales[1]+parseInt(data.enero);
-      totales[2]=totales[2]+parseInt(data.febrero);
-      totales[3]=totales[3]+parseInt(data.marzo);
-      totales[4]=totales[4]+parseInt(data.abril);
-      totales[5]=totales[5]+parseInt(data.mayo);
-      totales[6]=totales[6]+parseInt(data.junio);
-      totales[7]=totales[7]+parseInt(data.julio);
-      totales[8]=totales[8]+parseInt(data.agosto);
-      totales[9]=totales[9]+parseInt(data.septiembre);
-      totales[10]=totales[10]+parseInt(data.octubre);
-      totales[11]=totales[11]+parseInt(data.noviembre);
-      totales[12]=totales[12]+parseInt(data.diciembre);
-
-      totales[13]=totales[1]+totales[2]+totales[3]+totales[4]+totales[5]+
-      totales[6]+totales[7]+totales[8]+totales[9]+totales[10]+totales[11]+totales[12];
-  });
-  $('#total_presupuesto').text('$'+totales[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_ene').text('$'+totales[1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_feb').text('$'+totales[2].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_mar').text('$'+totales[3].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_abr').text('$'+totales[4].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_may').text('$'+totales[5].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_jun').text('$'+totales[6].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_jul').text('$'+totales[7].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_ago').text('$'+totales[8].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_sep').text('$'+totales[9].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_oct').text('$'+totales[10].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_nov').text('$'+totales[11].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  $('#total_dic').text('$'+totales[12].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  var result = isNaN(parseInt((totales[13]*100)/totales[0]))?0:parseInt((totales[13]*100)/totales[0]);
-  $('#total_ejercido').html(morethan100(result));
-    //console.log(new Date().getMilliseconds());
 }
 
 function generate_table_tickets(datajson, table){
@@ -945,110 +563,6 @@ function generate_table_tickets(datajson, table){
   });
 }
 
-function getFoliosByHotel(cliente){
-  var id = cliente;
-  var _token = $('input[name="_token"]').val();
-  $.ajax({
-    type: "POST",
-    url: "/get_payment_folios_gastos",
-    data: { id : id, _token : _token },
-    success: function (data){
-      //console.log(data); //Ya tenemos la conversión a pesos de los dólares pero no es exacta
-
-      var dataMXN = [], savedGastosMXN = [], dataUSD = [], savedGastosUSD = [];
-
-      data.forEach(function(row){
-
-        if(row.monto_str.split(" ")[1] == "MXN") {
-          var i = savedGastosMXN.indexOf(row.name_cc.toLowerCase().trim());
-          if(i < 0) {
-            dataMXN.push({
-              cantidad: parseFloat(row.monto_str.split(" ")[0].replace(",","")),
-              tipo: row.name_cc
-            });
-            savedGastosMXN.push(row.name_cc.toLowerCase().trim());
-          } else {
-            dataMXN[i].cantidad += parseFloat(row.monto_str.split(" ")[0].replace(",",""));
-          }
-        } else {
-          var i = savedGastosUSD.indexOf(row.name_cc.toLowerCase().trim());
-          if(i < 0) {
-            dataUSD.push({
-              cantidad: parseFloat(row.monto_str.split(" ")[0].replace(",","")),
-              tipo: row.name_cc
-            });
-            savedGastosUSD.push(row.name_cc.toLowerCase().trim());
-          } else {
-            dataUSD[i].cantidad += parseFloat(row.monto_str.split(" ")[0].replace(",",""));
-          }
-        }
-
-      });
-
-      //console.log(dataMXN);
-      //console.log(dataUSD);
-      //graph_equipments('graph_payments1', dataMXN, "", "PESOS"); //El string PESOS no debe ser cambiado!
-      //graph_equipments('graph_payments2', dataUSD, "", "DÓLARES"); //El string DÓLARES no debe ser cambiado!
-      payments_table(data, $("#table_pays"));
-    },
-    error: function (data) {
-      console.log('Error:', data);
-    }
-  });
-}
-
-function getFoliosByCadena(cadena){
-  var id = cadena;
-  var _token = $('input[name="_token"]').val();
-  $.ajax({
-    type: "POST",
-    url: "/get_payment_folios_gastos_cadena",
-    data: { id : id, _token : _token },
-    success: function (data){
-      //console.log(data); //Ya tenemos la conversión a pesos de los dólares pero no es exacta
-
-      var dataMXN = [], savedGastosMXN = [], dataUSD = [], savedGastosUSD = [];
-
-      data.forEach(function(row){
-
-        if(row.monto_str.split(" ")[1] == "MXN") {
-          var i = savedGastosMXN.indexOf(row.name_cc.toLowerCase().trim());
-          if(i < 0) {
-            dataMXN.push({
-              cantidad: parseFloat(row.monto_str.split(" ")[0].replace(",","")),
-              tipo: row.name_cc
-            });
-            savedGastosMXN.push(row.name_cc.toLowerCase().trim());
-          } else {
-            dataMXN[i].cantidad += parseFloat(row.monto_str.split(" ")[0].replace(",",""));
-          }
-        } else {
-          var i = savedGastosUSD.indexOf(row.name_cc.toLowerCase().trim());
-          if(i < 0) {
-            dataUSD.push({
-              cantidad: parseFloat(row.monto_str.split(" ")[0].replace(",","")),
-              tipo: row.name_cc
-            });
-            savedGastosUSD.push(row.name_cc.toLowerCase().trim());
-          } else {
-            dataUSD[i].cantidad += parseFloat(row.monto_str.split(" ")[0].replace(",",""));
-          }
-        }
-
-      });
-
-      //console.log(dataMXN);
-      //console.log(dataUSD);
-      graph_equipments('graph_payments1', dataMXN, "", "PESOS"); //El string PESOS no debe ser cambiado!
-      graph_equipments('graph_payments2', dataUSD, "", "DÓLARES"); //El string DÓLARES no debe ser cambiado!
-      payments_table(data, $("#table_pays"));
-    },
-    error: function (data) {
-      console.log('Error:', data);
-    }
-  });
-}
-
 function getViaticsByHotel(itc){
   var id = itc;
   var _token = $('input[name="_token"]').val();
@@ -1086,54 +600,6 @@ function getViaticsByHotel(itc){
   });
 }
 
-function getViaticsByCadena(cadena){
-  var id = cadena;
-  var _token = $('input[name="_token"]').val();
-  $.ajax({
-    type: "POST",
-    url: "/get_viatics_gastos_cadena",
-    data: { id : id, _token : _token },
-    success: function (data){
-      //console.log(data);
-
-      var data2 = [], savedGastos = [];
-
-      data.forEach(function(row){
-        var i = savedGastos.indexOf(row.name.toLowerCase().trim());
-        if(i < 0) {
-          data2.push({
-            cantidad: parseFloat(row.aprobado.split(" ")[0].replace(",","")),
-            tipo: row.name
-          });
-          savedGastos.push(row.name.toLowerCase().trim());
-        } else {
-          data2[i].cantidad += parseFloat(row.aprobado.split(" ")[0].replace(",",""));
-        }
-      });
-
-      //console.log(data2);
-          /*  $('#table_viatics thead').find('tr').each(function(){ $(this).find('th').eq(0).before('<th id="viatic_site"><small>Sitio</small></th>'); });*/
-      graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
-      viatics_table(data, $("#table_viatics"));
-
-      //!!!!!!!!!!!EL SIGUIENTE BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
-      $("#cargando").addClass("d-none");
-      $(".first_tab").removeClass("d-none");
-      if(document.getElementById("consumo_echarts").style.display == "block") {
-        graph_client_day_cadena(id);
-        graph_gigabyte_day_cadena(id);
-        graph_top_aps_table_cadena(id);
-        general_table_comparative_cadena(id);
-      }
-      //!!!!!!!!!!!EL ANTERIOR BLOQUE DE CÓDIGO DEBE MOVERSE COMPLETO!!!!!!!!!!!//
-
-    },
-    error: function (data) {
-      console.log('Error:', data);
-    }
-  });
-}
-
 function viatics_table(datajson, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_antenas);
@@ -1155,28 +621,6 @@ function viatics_table(datajson, table){
     '<a href="javascript:void(0);" onclick="enviar_via(this)" value="'+status.id+'" class="btn btn-default btn-sm" role="button"><span class="far fa-edit"></span></a>',
     ]);
   });
-}
-
-function payments_table(datajson, table){
-  table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table_antenas);
-  vartable.fnClearTable();
-  //console.log(datajson);
-  $.each(datajson, function(index, value){
-    vartable.fnAddData([
-      value.factura,
-      value.proveedor,
-      '<span class="badge badge-pill  badge-success">'+value.estatus+'</span>',
-      value.monto_str,
-      value.elaboro,
-      value.fecha_solicitud,
-      value.fecha_limite,
-      value.key_cc,
-      value.name_cc,
-      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+value.id+'" class="btn btn-default btn-sm" role="button"><i class="far fa-edit" aria-hidden="true"></i></a>',
-      ]);
-  });
-  $('.no_aprobar_en_gastos').css("display","none");
 }
 
   var Configuration_table = {
@@ -1465,77 +909,76 @@ function payments_table(datajson, table){
     });
   }
 
-function graph_equipments(title,data,text,subtext) {
-  //$('#'+title).width($('#'+title).width());
-  //$('#'+title).height($('#'+title).height());
+  function graph_equipments(title,data,text,subtext) {
+    //$('#'+title).width($('#'+title).width());
+    //$('#'+title).height($('#'+title).height());
 
- var chart = document.getElementById(title);
-  var resizeMainContainer = function () {
-   chart.style.width = 720+'px';
-   chart.style.height = 320+'px';
- };
-  resizeMainContainer();
-    var myChart = echarts.init(chart);
-    var group=[];
-    var i=0;
+   var chart = document.getElementById(title);
+    var resizeMainContainer = function () {
+     chart.style.width = 720+'px';
+     chart.style.height = 320+'px';
+   };
+    resizeMainContainer();
+      var myChart = echarts.init(chart);
+      var group=[];
+      var i=0;
 
-    data.forEach(function(element){
-    if(subtext == "PAGADOS" || subtext == "PESOS") group[i] = {value:element.cantidad,name: element.tipo+' ($'+element.cantidad.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+' MXN)'};
-    else if(subtext == "DÓLARES") group[i] = {value:element.cantidad,name: element.tipo+' ($'+element.cantidad.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+' USD)'};
-    else group[i] = {value:element.cantidad,name: element.tipo+' ('+element.cantidad+')'};
-    i++;
+      data.forEach(function(element){
+      if(subtext == "PAGADOS" || subtext == "PESOS") group[i] = {value:element.cantidad,name: element.tipo+' ($'+element.cantidad.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+' MXN)'};
+      else if(subtext == "DÓLARES") group[i] = {value:element.cantidad,name: element.tipo+' ($'+element.cantidad.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+' USD)'};
+      else group[i] = {value:element.cantidad,name: element.tipo+' ('+element.cantidad+')'};
+      i++;
+      });
+
+      option = {
+          title : {
+              text: text,
+              subtext: subtext,
+              x:'center'
+          },
+           //color: ['#AD50D0','#00EEB1','#00CAE5','#DB3841','#D87DAF','#2B4078','#AD50D0','#AD50D0'],
+           color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#4dd60d','#096dc9','#f90000'],
+          tooltip : {
+              trigger: 'item',
+              formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend: {
+              orient: 'vertical',
+              left: 60+'px',
+
+          },
+          series : [
+              {
+                  name: subtext,
+                  type: 'pie',
+                  radius : '55%',
+                  center: ['50%', '60%'],
+                  data:group,
+                  itemStyle: {
+                      emphasis: {
+                          shadowBlur: 10,
+                          shadowOffsetX: 0,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                      }
+                  }
+              }
+          ]
+      };
+
+
+    myChart.setOption(option);
+
+    $(window).on('resize', function(){
+        if(myChart != null && myChart != undefined){
+           //chart.style.width = 100+'%';
+           //chart.style.height = 100+'%';
+           chart.style.width = $(window).width()*0.5;
+           chart.style.height = $(window).width()*0.5;
+            myChart.resize();
+
+        }
     });
-
-    option = {
-        title : {
-            text: text,
-            subtext: subtext,
-            x:'center'
-        },
-         //color: ['#AD50D0','#00EEB1','#00CAE5','#DB3841','#D87DAF','#2B4078','#AD50D0','#AD50D0'],
-         color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#4dd60d','#096dc9','#f90000'],
-        tooltip : {
-            trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        legend: {
-            orient: 'vertical',
-            left: 60+'px',
-
-        },
-        series : [
-            {
-                name: subtext,
-                type: 'pie',
-                radius : '55%',
-                center: ['50%', '60%'],
-                data:group,
-                itemStyle: {
-                    emphasis: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                }
-            }
-        ]
-    };
-
-
-  myChart.setOption(option);
-
-  $(window).on('resize', function(){
-      if(myChart != null && myChart != undefined){
-         //chart.style.width = 100+'%';
-         //chart.style.height = 100+'%';
-         chart.style.width = $(window).width()*0.5;
-         chart.style.height = $(window).width()*0.5;
-          myChart.resize();
-
-      }
-  });
-}
-
+  }
 
 function graph_tickets_type(title,data) {
   //$('#'+title).width($('#'+title).width());
@@ -1901,349 +1344,6 @@ function getValueCurrent(qty) {
   }
   return retval;
 }
-
-function graph_client_day(cliente) {
-  var date = $('#date_consumos').val();
-  var _token = $('input[name="_token"]').val();
-
-  // var data_count1 = [120, 132, 101, 134, 90, 230, 210,267,117,50, 121,22, 182, 191, 234, 290, 330, 310, 123, 442,321, 90, 149, 210, 122, 133, 334,121,22,56,19];
-  // var data_name1 = ['1','2','3','4','5','6','7','8','9','10', '11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
-
-  var data_count = [];
-  var data_name = [];
-
-  $.ajax({
-      type: "POST",
-      url: "/get_user_month",
-      data: { data_one : cliente , data_two : date , _token : _token },
-      success: function (data){
-        //console.log(data);
-        $.each(JSON.parse(data),function(index, objdata){
-          data_name.push(objdata.Dia);
-          data_count.push(objdata.NumClientes);
-        });
-          graph_area_four_default('main_client_day', data_name, data_count, 'Clientes', 'Consumo diario','right', 90, 8, 'rgba(255, 126, 80, 1)', 'rgba(255, 126, 80, 0.5)');
-        //console.log(data_count);
-      },
-      error: function (data) {
-        console.log('Error:', data);
-        //alert('3');
-      }
-  });
-
-  //graph_area_four_default('main_client_day', data_name1, data_count1, 'Clientes', 'Consumo diario','right', 90, 8, 'rgba(255, 126, 80, 1)', 'rgba(255, 126, 80, 0.5)');
-}
-
-function graph_client_day_cadena(cadena) {
-  var date = $('#date_consumos').val();
-  var _token = $('input[name="_token"]').val();
-
-  // var data_count1 = [120, 132, 101, 134, 90, 230, 210,267,117,50, 121,22, 182, 191, 234, 290, 330, 310, 123, 442,321, 90, 149, 210, 122, 133, 334,121,22,56,19];
-  // var data_name1 = ['1','2','3','4','5','6','7','8','9','10', '11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
-
-  var data_count = [];
-  var data_name = [];
-
-  $.ajax({
-      type: "POST",
-      url: "/get_user_month_cadena",
-      data: { data_one : cadena , data_two : date , _token : _token },
-      success: function (data){
-        //console.log(data);
-        $.each(JSON.parse(data),function(index, objdata){
-          data_name.push(objdata.Dia);
-          data_count.push(objdata.NumClientes);
-        });
-          graph_area_four_default('main_client_day', data_name, data_count, 'Clientes', 'Consumo diario','right', 90, 8, 'rgba(255, 126, 80, 1)', 'rgba(255, 126, 80, 0.5)');
-        //console.log(data_count);
-      },
-      error: function (data) {
-        console.log('Error:', data);
-        //alert('3');
-      }
-  });
-
-  //graph_area_four_default('main_client_day', data_name1, data_count1, 'Clientes', 'Consumo diario','right', 90, 8, 'rgba(255, 126, 80, 1)', 'rgba(255, 126, 80, 0.5)');
-}
-
-function graph_gigabyte_day(cliente) {
-  var date = $('#date_consumos').val();
-  var _token = $('input[name="_token"]').val();
-
-  // var data_count1 = [120, 132, 101, 134, 90, 230, 210,267,117,50, 121,22, 182, 191, 234, 290, 330, 310, 123, 442,321, 90, 149, 210, 122, 133, 334,121,22,56,19];
-  // var data_name1 = ['1','2','3','4','5','6','7','8','9','10', '11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
-
-  var data_count = [];
-  var data_name = [];
-
-  $.ajax({
-      type: "POST",
-      url: "/get_gb_month",
-      data: { data_one : cliente , data_two : date , _token : _token },
-      success: function (data){
-        //console.log(data);
-        $.each(JSON.parse(data),function(index, objdata){
-          data_name.push(objdata.Dia);
-          data_count.push(objdata.GB);
-        });
-        //document.getElementById("main_gigabyte_day").style.width = 500+'px';
-        //document.getElementById("main_gigabyte_day").style.height = 500+'px';
-        graph_area_four_default('main_gigabyte_day', data_name, data_count, 'Gigabyte', 'Consumo diario','right', 90, 8, 'rgba(35, 160, 164, 1)', 'rgba(35, 160, 164, 0.5)');
-        //console.log(data_count);
-      },
-      error: function (data) {
-        console.log('Error:', data);
-        //alert('3');
-      }
-  });
-
-  //graph_area_four_default('main_gigabyte_day_sabana', data_name1, data_count1, 'Gigabyte', 'Consumo diario','right', 90, 8, 'rgba(35, 160, 164, 1)', 'rgba(35, 160, 164, 0.5)');
-}
-
-function graph_gigabyte_day_cadena(cadena) {
-  var date = $('#date_consumos').val();
-  var _token = $('input[name="_token"]').val();
-
-  // var data_count1 = [120, 132, 101, 134, 90, 230, 210,267,117,50, 121,22, 182, 191, 234, 290, 330, 310, 123, 442,321, 90, 149, 210, 122, 133, 334,121,22,56,19];
-  // var data_name1 = ['1','2','3','4','5','6','7','8','9','10', '11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
-
-  var data_count = [];
-  var data_name = [];
-
-  $.ajax({
-      type: "POST",
-      url: "/get_gb_month_cadena",
-      data: { data_one : cadena , data_two : date , _token : _token },
-      success: function (data){
-        //console.log(data);
-        $.each(JSON.parse(data),function(index, objdata){
-          data_name.push(objdata.Dia);
-          data_count.push(objdata.GB);
-        });
-        //document.getElementById("main_gigabyte_day").style.width = 500+'px';
-        //document.getElementById("main_gigabyte_day").style.height = 500+'px';
-        graph_area_four_default('main_gigabyte_day', data_name, data_count, 'Gigabyte', 'Consumo diario','right', 90, 8, 'rgba(35, 160, 164, 1)', 'rgba(35, 160, 164, 0.5)');
-        //console.log(data_count);
-      },
-      error: function (data) {
-        console.log('Error:', data);
-        //alert('3');
-      }
-  });
-
-  //graph_area_four_default('main_gigabyte_day_sabana', data_name1, data_count1, 'Gigabyte', 'Consumo diario','right', 90, 8, 'rgba(35, 160, 164, 1)', 'rgba(35, 160, 164, 0.5)');
-}
-
-function graph_top_aps_table(cliente) {
-  var date = $('#date_consumos').val();
-  var _token = $('input[name="_token"]').val();
-
-  // var data_count1 = [{value:15646, name:'Mexico = 15646'},{value:447, name:'Jamaica = 447'},{value:1483, name:'Republica dominicana = 1483'}];
-  // var data_name1 = ["Mexico = 15646","Jamaica = 447","Republica dominicana = 1483"];
-
-  var data_count = [];
-  var data_name = [];
-  var data_data = [];
-
-  $.ajax({
-      type: "POST",
-      url: "/get_mostAP_top5",
-      data: { data_one : cliente , data_two : date , _token : _token },
-      success: function (data){
-        //console.log(data);
-        $.each(JSON.parse(data),function(index, objdata){
-          data_name.push(objdata.Descripcion + ' = ' + objdata.count);
-          data_count.push({ value: objdata.count, name: objdata.Descripcion + ' = ' + objdata.count},);
-          data_data.push({"descripcion": objdata.Descripcion,"mac": objdata.MAC,"nclient": objdata.count});
-        });
-        graph_douhnut_two_default('main_top_aps', 'Top 5', 'Aps & Unidades', 'left', data_name, data_count);
-        table_aps_top(data_data, $("#table_top_aps"));
-        //console.log(data_count);
-      },
-      error: function (data) {
-        console.log('Error:', data);
-        //alert('3');
-      }
-  });
-
-  //graph_douhnut_two_default('main_top_aps', 'Top 5', 'Aps & Unidades', 'left', data_name1, data_count1);
-}
-
-function graph_top_aps_table_cadena(cadena) {
-  var date = $('#date_consumos').val();
-  var _token = $('input[name="_token"]').val();
-
-  // var data_count1 = [{value:15646, name:'Mexico = 15646'},{value:447, name:'Jamaica = 447'},{value:1483, name:'Republica dominicana = 1483'}];
-  // var data_name1 = ["Mexico = 15646","Jamaica = 447","Republica dominicana = 1483"];
-
-  var data_count = [];
-  var data_name = [];
-  var data_data = [];
-
-  $.ajax({
-      type: "POST",
-      url: "/get_mostAP_top5_cadena",
-      data: { data_one : cadena , data_two : date , _token : _token },
-      success: function (data){
-        //console.log(data);
-        $.each(JSON.parse(data),function(index, objdata){
-          data_name.push(objdata.Descripcion + ' = ' + objdata.count);
-          data_count.push({ value: objdata.count, name: objdata.Descripcion + ' = ' + objdata.count},);
-          data_data.push({"descripcion": objdata.Descripcion,"mac": objdata.MAC,"nclient": objdata.count});
-        });
-        graph_douhnut_two_default('main_top_aps', 'Top 5', 'Aps & Unidades', 'left', data_name, data_count);
-        table_aps_top(data_data, $("#table_top_aps"));
-        //console.log(data_count);
-      },
-      error: function (data) {
-        console.log('Error:', data);
-        //alert('3');
-      }
-  });
-
-  //graph_douhnut_two_default('main_top_aps', 'Top 5', 'Aps & Unidades', 'left', data_name1, data_count1);
-}
-
-function table_aps_top(datajson, table){
-  table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table_responsive_simple);
-  vartable.fnClearTable();
-  // $.each(JSON.parse(datajson), function(index, status){ //Este es el bueno
-  $.each(datajson, function(index, status){
-    vartable.fnAddData([
-      status.descripcion,
-      status.mac,
-      status.nclient
-    ]);
-  });
-}
-
-function general_table_comparative(cliente) {
-  var date = $('#date_consumos').val();
-  var _token = $('input[name="_token"]').val();
-  var data_data = [];
-  let comp = 0, ind1 = 0;
-  $.ajax({
-      type: "POST",
-      url: "/get_comparative",
-      data: {data_one : cliente , data_two : date , _token : _token},
-      success: function (data){
-        //console.log(data);
-        $.each(JSON.parse(data),function(index, objdata){
-          comp = parseInt(objdata.Indicador);
-          if (comp === 1) {
-            ind1 = '<i class="fa fa-arrow-down"></i>';
-          }else if (comp === 2) {
-            ind1 = '<i class="fa fa-arrow-up"></i>';
-          }else{
-            ind1 = '<i class="fa fa-arrow-right"></i>';
-          }
-          data_data.push({"concepto": objdata.Concepto,"mes1": objdata.Anterior,"mes2": objdata.Actual, "identificador": ind1});
-        });
-        remplazar_thead_th($("#table_comparative"), 1 ,2);
-        table_comparative(data_data, $("#table_comparative"));
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-  });
-}
-
-function general_table_comparative_cadena(cadena) {
-  var date = $('#date_consumos').val();
-  var _token = $('input[name="_token"]').val();
-  var data_data = [];
-  let comp = 0, ind1 = 0;
-  $.ajax({
-      type: "POST",
-      url: "/get_comparative_cadena",
-      data: {data_one : cadena , data_two : date , _token : _token},
-      success: function (data){
-        //console.log(data);
-        $.each(JSON.parse(data),function(index, objdata){
-          comp = parseInt(objdata.Indicador);
-          if (comp === 1) {
-            ind1 = '<i class="fa fa-arrow-down"></i>';
-          }else if (comp === 2) {
-            ind1 = '<i class="fa fa-arrow-up"></i>';
-          }else{
-            ind1 = '<i class="fa fa-arrow-right"></i>';
-          }
-          data_data.push({"concepto": objdata.Concepto,"mes1": objdata.Anterior,"mes2": objdata.Actual, "identificador": ind1});
-        });
-        remplazar_thead_th($("#table_comparative"), 1 ,2);
-        table_comparative(data_data, $("#table_comparative"));
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-  });
-}
-function table_comparative(datajson, table){
-  table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table_responsive_simple);
-  vartable.fnClearTable();
-  // $.each(JSON.parse(datajson), function(index, status){ //Este es el bueno
-  $.each(datajson, function(index, status){
-    vartable.fnAddData([
-      status.concepto,
-      status.mes1,
-      status.mes2,
-      status.identificador
-    ]);
-  });
-}
-
-function remplazar_thead_th(table, posicionini, posicionfin) {
-  var datepicker3 = $('#date_consumos').val();
-  if (datepicker3 == ''){
-    var datepicker3 = moment().subtract(1, 'months').format('YYYY-MM');
-  }
-  var datemod = datepicker3.split("-");
-  var goodFormat = datemod[0] + "-" + datemod[1];
-  var j= posicionfin-posicionini;
-
-  for (var i = posicionini; i <= posicionfin; i++) {
-    table.DataTable().columns(i).header().to$().text(
-      moment(goodFormat).subtract(j, 'months').format('MMMM YYYY')
-    );
-    j--;
-  }
-}
-
-$('#btn-filtrar-consumos, #tab_consumo').on('click', function() {
-  var tipo = parseInt($('#tipo_sabana').val());
-  if(tipo == 1) {
-    //TODO SITWIFI
-  } else if (tipo == 2) {
-    graph_client_day_cadena($('#proyecto').val());
-    graph_gigabyte_day_cadena($('#proyecto').val());
-    graph_top_aps_table_cadena($('#proyecto').val());
-    general_table_comparative_cadena($('#proyecto').val());
-  } else if(tipo == 3) {
-    graph_client_day($('#cliente').val());
-    graph_gigabyte_day($('#cliente').val());
-    graph_top_aps_table($('#cliente').val());
-    general_table_comparative($('#cliente').val());
-  }
-});
-
-$(window).on('resize', function(){
-  var tipo = parseInt($('#tipo_sabana').val());
-  if(tipo == 1) {
-    //TODO SITWIFI
-  } else if (tipo == 2) {
-    graph_client_day_cadena($('#proyecto').val());
-    graph_gigabyte_day_cadena($('#proyecto').val());
-    graph_top_aps_table_cadena($('#proyecto').val());
-    general_table_comparative_cadena($('#proyecto').val());
-  } else if(tipo == 3) {
-    graph_client_day($('#cliente').val());
-    graph_gigabyte_day($('#cliente').val());
-    graph_top_aps_table($('#cliente').val());
-    general_table_comparative($('#cliente').val());
-  }
-});
 
 function getProjects(itc){
   var _token = $('input[name="_token"]').val();
