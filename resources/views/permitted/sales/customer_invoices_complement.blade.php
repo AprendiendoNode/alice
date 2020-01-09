@@ -143,7 +143,7 @@
 
         <div class="col-md-4 col-xs-12">
           <div class="form-group">
-            <label for="date">Fecha actual:<span style="color: red;">*</span></label>
+            <label for="date">Fecha de pago:<span style="color: red;">*</span></label>
             <input type="text" class="form-control" id="date" name="date">
           </div>
         </div>
@@ -179,7 +179,7 @@
         <div class="col-md-4 col-xs-12">
           <div class="form-group">
             <label for="currency_value">TC:<span style="color: red;">*</span></label>
-            <input type="text" class="form-control" id="currency_value" name="currency_value" disabled style="padding: 0.875rem 0.5rem;">
+            <input type="text" class="form-control" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;">
           </div>
         </div>
 

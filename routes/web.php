@@ -1130,6 +1130,10 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/get_data_complements', 'Sales\CustomerComplementController@get_complement');
     Route::post('/store_complement', 'Sales\CustomerComplementController@store_complement');
 
+    //Cuentas bancarias Clientes
+    Route::get('/customer-banks', 'Sales\CustomerBanksController@index');
+    Route::post('/load-data-customer', 'Sales\CustomerBanksController@load_data_customer');
+
     Route::get('/cz', 'Sales\CustomerInvoiceController@tes');
 
     //Complemento de pagos
