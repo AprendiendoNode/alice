@@ -1108,6 +1108,9 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
 
     Route::post('/customer-invoices/mark-sent', 'Sales\CustomerInvoiceController@markSent');
     Route::post('/customer-invoices/mark-paid', 'Sales\CustomerInvoiceController@markPaid');
+    Route::post('/customer-invoices/mark-open', 'Sales\CustomerInvoiceController@markOpen');
+    Route::post('/customer-invoices/cancel-authorized', 'Sales\CustomerInvoiceController@cancelAuthorized');
+    Route::post('/customer-invoices/cancel-rejected', 'Sales\CustomerInvoiceController@cancelRejected');
 
     Route::post('/customer-invoices/modal-payment-history-head', 'Sales\CustomerInvoiceController@modalPaymentHistoryhead');
     Route::post('/customer-invoices/modal-payment-history', 'Sales\CustomerInvoiceController@modalPaymentHistory');
@@ -1144,7 +1147,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::get('/customer-payments/balances', 'Sales\CustomerPaymentController@balances');//Buscar las facturas
     Route::post('customer-payments/total-reconciled-lines', 'Sales\CustomerPaymentController@totalReconciledLines');
     Route::post('customer-payments/customer-payments-store', 'Sales\CustomerPaymentController@store');
-    
+
     //Historial de los complemento
     Route::get('customer-payments-show', 'Sales\CustomerPaymentController@show');
     Route::post('customer-payments-search', 'Sales\CustomerPaymentController@search');

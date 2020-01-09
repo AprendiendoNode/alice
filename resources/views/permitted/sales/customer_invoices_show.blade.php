@@ -345,7 +345,7 @@
           </button>
         </div>
         <!--Body-->
-        <div class="modal-body"> 
+        <div class="modal-body">
           <form id="form_email_fact">
               <div class="row">
                   <input id="customer_invoice_id" name="customer_invoice_id" type="hidden" value="">
@@ -377,7 +377,7 @@
                       </div>
                       <div name="message" id="message" class="mb-4"></div>
                   </div>
-              </div>    
+              </div>
           </form>
         </div>
         <div class="modal-footer">
@@ -579,71 +579,90 @@
       });
 
       function table_filter(datajson, table){
-      table.DataTable().destroy();
-      var vartable = table.dataTable(Configuration_table_responsive_doctypes);
-      vartable.fnClearTable();
-      $.each(JSON.parse(datajson), function(index, information){
-        var status = information.status;
-        var mail = information.mail_sent;
+        table.DataTable().destroy();
+        var vartable = table.dataTable(Configuration_table_responsive_doctypes);
+        vartable.fnClearTable();
+        $.each(JSON.parse(datajson), function(index, information){
+          var status = information.status;
+          var mail = information.mail_sent;
 
-        var OPEN = "{{ \App\Models\Sales\CustomerInvoice::OPEN }}";
-        var PAID = "{{ \App\Models\Sales\CustomerInvoice::PAID }}";
-        var CANCEL = "{{ \App\Models\Sales\CustomerInvoice::CANCEL }}";
-        var CANCEL_PER_AUTHORIZED = "{{ \App\Models\Sales\CustomerInvoice::CANCEL_PER_AUTHORIZED }}";
-        var RECONCILED = "{{ \App\Models\Sales\CustomerInvoice::RECONCILED }}";
-        var html = "";
+          var OPEN = "{{ \App\Models\Sales\CustomerInvoice::OPEN }}";
+          var PAID = "{{ \App\Models\Sales\CustomerInvoice::PAID }}";
+          var CANCEL = "{{ \App\Models\Sales\CustomerInvoice::CANCEL }}";
+          var RECONCILED = "{{ \App\Models\Sales\CustomerInvoice::RECONCILED }}";
+          var CANCEL_PER_AUTHORIZED = "{{ \App\Models\Sales\CustomerInvoice::CANCEL_PER_AUTHORIZED }}";
+          var html = "";
 
-        if (parseInt(status) == OPEN) {
-            html = '<span class="badge badge-info">{{__("customer_invoice.text_status_open")}}</span>';
-        } else if (parseInt(status) == PAID) {
-            html = '<span class="badge badge-primary">{{__("customer_invoice.text_status_paid")}}</span>';
-        } else if (parseInt(status) == CANCEL) {
-            html = '<span class="badge badge-default">{{__("customer_invoice.text_status_cancel")}}</span>';
-        } else if (parseInt(status) == CANCEL_PER_AUTHORIZED) {
-            html = '<span class="badge badge-dark">{{__("customer_invoice.text_status_cancel_per_authorized")}}</span>';
-        } else if (parseInt(status) == RECONCILED) {
-            html = '<span class="badge badge-success">{{__("customer_credit_note.text_status_reconciled")}}</span>';
-        }
+          if (parseInt(status) == OPEN) {
+              html = '<span class="badge badge-info">{{__("customer_invoice.text_status_open")}}</span>';
+          } else if (parseInt(status) == PAID) {
+              html = '<span class="badge badge-primary">{{__("customer_invoice.text_status_paid")}}</span>';
+          } else if (parseInt(status) == CANCEL) {
+              html = '<span class="badge badge-default">{{__("customer_invoice.text_status_cancel")}}</span>';
+          } else if (parseInt(status) == CANCEL_PER_AUTHORIZED) {
+              html = '<span class="badge badge-dark">{{__("customer_invoice.text_status_cancel_per_authorized")}}</span>';
+          } else if (parseInt(status) == RECONCILED) {
+              html = '<span class="badge badge-success">{{__("customer_credit_note.text_status_reconciled")}}</span>';
+          }
 
-        if (parseInt(mail) != 0) {
-            mail_status = '<i class="fas fa-check text-success"></i>';
-        }
-        else {
-          mail_status = '<i class="fas fa-times text-danger"></i>';
-        }
+          if (parseInt(mail) != 0) {
+              mail_status = '<i class="fas fa-check text-success"></i>';
+          }
+          else {
+            mail_status = '<i class="fas fa-times text-danger"></i>';
+          }
 
-        var a01 = '<div class="btn-group">';
-        var a02 = '<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></button>';
-        var a03 = '<div class="dropdown-menu">';
-        var a04 = '<a class="dropdown-item" target="_blank" href="/sales/customer-invoice-pdf/'+information.id+'"><i class="fa fa-eye"></i> @lang('general.button_show')</a>';
-        var a05 = '<a class="dropdown-item" href="/sales/customer-invoices/download-xml/'+information.id+'"><i class="far fa-file-code"></i> @lang('general.button_download_xml')</a>';
-        var a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-envelope"></i> @lang('general.button_send_mail')</a>';
-        var a07 = '<a class="dropdown-item" href="javascript:void(0);"><i class="fa fa-print"></i> @lang('general.button_print')</a>';
-        var a08 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_invoice.text_mark_sent')</a>';
-        var a09 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_paid(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_invoice.text_mark_paid')</a>';
-        var a10 = '<a class="dropdown-item" href="javascript:void(0);" onclick="payment_history(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fa fa-history"></i> @lang('customer_invoice.text_payment_history')</a>';
-        var a11 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
-        var a12 = '<div class="dropdown-divider"></div>';
-        var a13 = '<a class="dropdown-item" href="javascript:void(0);"  onclick="link_cancel(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-trash-alt"></i> @lang('general.button_cancel')</a>';
-        var a14 = '</div>';
-        var a15 = '</div>';
-        var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a10+a11+a12+a13+a14+a15;
+          var a01 = '<div class="btn-group">';
+          var a02 = '<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></button>';
+          var a03 = '<div class="dropdown-menu">';
+          var a04 = '<a class="dropdown-item" target="_blank" href="/sales/customer-invoice-pdf/'+information.id+'"><i class="fa fa-eye"></i> @lang('general.button_show')</a>';
+          var a05 = '', a06 ='', a07 ='', a08 ='', a09 ='', a10 ='', a11 ='', a12 ='', a13 ='', a14 ='', a15 ='', a16='', a17='' ;
+          if ( parseInt(status) == OPEN || parseInt(status) == PAID || parseInt(status) == CANCEL && information.uuid != ""  ) {
+            a05 = '<a class="dropdown-item" href="/sales/customer-invoices/download-xml/'+information.id+'"><i class="far fa-file-code"></i> @lang('general.button_download_xml')</a>';
+            a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-envelope"></i> @lang('general.button_send_mail')</a>';
+          }
+          if (parseInt(mail) == 0) {
+            a08 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_invoice.text_mark_sent')</a>';
+          }
+          if (parseInt(status) == PAID) {
+            a09 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_open(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_invoice.text_mark_open')</a>';
+          }
+          if (parseInt(status) == OPEN) {
+            a10 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_paid(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_invoice.text_mark_paid')</a>';
+          }
+          if ( information.balance < information.amount_total ) {
+            a11 = '<a class="dropdown-item" href="javascript:void(0);" onclick="payment_history(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fa fa-history"></i> @lang('customer_invoice.text_payment_history')</a>';
+          }
+          if ( information.uuid != "" ) {
+            a12 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
+          }
+          if ( parseInt(status) != CANCEL || parseInt(status) != CANCEL_PER_AUTHORIZED || information.balance >= information.amount_total ) {
+            a13 = '<div class="dropdown-divider"></div>';
+            a14 = '<a class="dropdown-item" href="javascript:void(0);"  onclick="link_cancel(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-trash-alt"></i> @lang('general.button_cancel')</a>';
+            a15 = '</div>';
+          }
+          if ( parseInt(status) == CANCEL_PER_AUTHORIZED ) {
+            a16 = '<a class="dropdown-item" href="javascript:void(0);" onclick="cancel_authorized(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('customer_invoice.text_cancel_authorized')</a>';
+            a17 = '<a class="dropdown-item" href="javascript:void(0);" onclick="cancel_rejected(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('customer_invoice.text_cancel_rejected')</a>';
+          }
+          var a18 = '</div>';
+          var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a09+a10+a11+a12+a13+a14+a15+a16+a17+a18;
 
-        vartable.fnAddData([
-          dropdown,
-          information.name,
-          information.date,
-          information.uuid,
-          information.customer,
-          information.salesperson,
-          information.date_due,
-          information.currency,
-          information.amount_total,
-          information.balance,
-          mail_status,
-          html,
-        ]);
-      });
+          vartable.fnAddData([
+            dropdown,
+            information.name,
+            information.date,
+            information.uuid,
+            information.customer,
+            information.salesperson,
+            information.date_due,
+            information.currency,
+            information.amount_total,
+            information.balance,
+            mail_status,
+            html,
+          ]);
+        });
       }
 
       $('.table-responsive').on('show.bs.dropdown', function () {
@@ -816,6 +835,144 @@
                })
             }
           })
+      }
+      //Marcar como abierta
+      function mark_open(e){
+        var valor= e.getAttribute('value');
+        var folio= e.getAttribute('datas');
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Se marcara como abierta, la factura con folio: "+folio,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.value) {
+            $.ajax({
+                 type: "POST",
+                 url: '/sales/customer-invoices/mark-open',
+                 data: {token_b : valor, _token : _token},
+                 success: function (data) {
+                  if(data.status == 200){
+                    Swal.fire('Operación completada!', '', 'success')
+                    .then(()=> {
+                      location.href ="/sales/customer-invoices-show";
+                    });
+                  }
+                  else {
+                    Swal.fire({
+                       type: 'error',
+                       title: 'Oops... Error: '+data.status,
+                       text: 'El recurso no se ha modificado',
+                    });
+                  }
+                 },
+                 error: function (err) {
+                   Swal.fire({
+                      type: 'error',
+                      title: 'Oops...',
+                      text: err.statusText,
+                    });
+                 }
+             })
+          }
+        });
+      }
+      //Cancelación autorizada
+      function cancel_authorized(e){
+        var valor= e.getAttribute('value');
+        var folio= e.getAttribute('datas');
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Se marcara como cancelación autorizada, la factura con folio: "+folio,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.value) {
+            $.ajax({
+                 type: "POST",
+                 url: '/sales/customer-invoices/cancel-authorized',
+                 data: {token_b : valor, _token : _token},
+                 success: function (data) {
+                  if(data.status == 200){
+                    Swal.fire('Operación completada!', '', 'success')
+                    .then(()=> {
+                      location.href ="/sales/customer-invoices-show";
+                    });
+                  }
+                  else {
+                    Swal.fire({
+                       type: 'error',
+                       title: 'Oops... Error: '+data.status,
+                       text: 'El recurso no se ha modificado',
+                    });
+                  }
+                 },
+                 error: function (err) {
+                   Swal.fire({
+                      type: 'error',
+                      title: 'Oops...',
+                      text: err.statusText,
+                    });
+                 }
+             })
+          }
+        });
+      }
+      //Cancelación rechazada
+      function cancel_rejected(e){
+        var valor= e.getAttribute('value');
+        var folio= e.getAttribute('datas');
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Se marcara como cancelación rechazada, la factura con folio: "+folio,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.value) {
+            $.ajax({
+                 type: "POST",
+                 url: '/sales/customer-invoices/cancel-rejected',
+                 data: {token_b : valor, _token : _token},
+                 success: function (data) {
+                  if(data.status == 200){
+                    Swal.fire('Operación completada!', '', 'success')
+                    .then(()=> {
+                      location.href ="/sales/customer-invoices-show";
+                    });
+                  }
+                  else {
+                    Swal.fire({
+                       type: 'error',
+                       title: 'Oops... Error: '+data.status,
+                       text: 'El recurso no se ha modificado',
+                    });
+                  }
+                 },
+                 error: function (err) {
+                   Swal.fire({
+                      type: 'error',
+                      title: 'Oops...',
+                      text: err.statusText,
+                    });
+                 }
+             })
+          }
+        });
       }
       //Historial de pagos
       function payment_history(e){
@@ -1030,7 +1187,7 @@
                   var cliente = 'Cliente= '+data.customer_invoice.customer.name;
                   var fecha = 'Fecha = '+data.customer_invoice.date;
                   $("#to").html('');
-                  
+
                   quill.setContents([
                       { insert: inicio, attributes: { bold: true } },
                       { insert: '\n' },
@@ -1097,7 +1254,7 @@
       let _token = $('meta[name="csrf-token"]').attr('content');
       let form = $('#form_email_fact')[0];
       let formData = new FormData(form);
-      const headers = new Headers({        
+      const headers = new Headers({
                "Accept": "application/json",
                "X-Requested-With": "XMLHttpRequest",
                "X-CSRF-TOKEN": _token

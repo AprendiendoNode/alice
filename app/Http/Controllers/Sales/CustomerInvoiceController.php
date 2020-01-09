@@ -1780,6 +1780,76 @@ class CustomerInvoiceController extends Controller
         }
       }
       /**
+       * Cambiar estatus a abierta
+       *
+       * @param CustomerInvoice $customer_invoice
+       * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+       */
+      public function markOpen(Request $request)
+      {
+        $id = $request->token_b;
+        $customer_invoice = CustomerInvoice::findOrFail($id);
+
+        if ((int)$customer_invoice->status == CustomerInvoice::PAID) {
+          $customer_invoice->updated_uid = \Auth::user()->id;
+          $customer_invoice->status = CustomerInvoice::OPEN;
+          $customer_invoice->save();
+          return response()->json(['status' => 200]);
+        }
+        else {
+          return response()->json(['status' => 304]);
+        }
+      }
+      /**
+       * Funcion para autorizar la cancelacion
+       *
+       * @param CustomerInvoice $customer_invoice
+       * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+       */
+      public function cancelAuthorized(Request $request)
+      {
+        $id = $request->token_b;
+        $customer_invoice = CustomerInvoice::findOrFail($id);
+        if((int) $customer_invoice->status == CustomerInvoice::CANCEL_PER_AUTHORIZED) {
+          //Actualiza registro principal
+          $customer_invoice->updated_uid = \Auth::user()->id;
+          $customer_invoice->status = CustomerInvoice::CANCEL;
+          $customer_invoice->save();
+          return response()->json(['status' => 200]);
+        }
+        else {
+          return response()->json(['status' => 304]);
+        }
+      }
+      /**
+       *
+       * Funcion para cancelar la cancelacion
+       *
+       * @param CustomerInvoice $customer_invoice
+       * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+       */
+      public function cancelRejected(Request $request)
+      {
+        $id = $request->token_b;
+        $customer_invoice = CustomerInvoice::findOrFail($id);
+        if((int) $customer_invoice->status == CustomerInvoice::CANCEL_PER_AUTHORIZED) {
+          //Actualiza registro principal
+          $customer_invoice->updated_uid = \Auth::user()->id;
+          $customer_invoice->status = CustomerInvoice::OPEN;
+          $customer_invoice->save();
+          //Actualiza el cfdi
+          $customer_invoice->CustomerInvoiceCfdi->cancel_date = null;
+          $customer_invoice->CustomerInvoiceCfdi->cancel_response = null;
+          $customer_invoice->CustomerInvoiceCfdi->cancel_state = null;
+          $customer_invoice->CustomerInvoiceCfdi->status = 1;
+          $customer_invoice->CustomerInvoiceCfdi->save();
+          return response()->json(['status' => 200]);
+        }
+        else {
+          return response()->json(['status' => 304]);
+        }
+      }      
+      /**
        * Modal para historial de pagos
        *
        * @param Request $request
@@ -2014,7 +2084,7 @@ class CustomerInvoiceController extends Controller
             if (!empty($customer_invoice->customer->email)) {
                 $email = $customer_invoice->customer->email;
                 $email = explode(";", $email);
-                
+
                 $to_selected [] = $email;
             }
             //Etiquetas solo son demostrativas
@@ -2727,7 +2797,7 @@ class CustomerInvoiceController extends Controller
         $files = $this->get_pdf_xml_files($request->customer_invoice_id);
         $pdf = $files['pdf'];
         $xml = $files['xml'];
-        
+
         $data = [
             'factura' => $request->fact_name,
             'cliente' => $request->cliente_name,
@@ -2742,7 +2812,7 @@ class CustomerInvoiceController extends Controller
                 $message->attachData($pdf->output(), $request->fact_name . '.pdf');
                 $message->attachData($xml, $request->fact_name .'.xml', ['mime'=>'application/xml']);
             });
-    
+
             return response()->json([
                 'message' => 'Factura enviada',
                 'code' => 200
