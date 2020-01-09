@@ -76,7 +76,7 @@ var Configuration_table_responsive_customers = {
     buttons: [
       {
         extend: 'excelHtml5',
-        title: 'Clientes',
+        title: 'Paquetes H_M',
         init: function(api, node, config) {
            $(node).removeClass('btn-secondary')
         },
@@ -84,12 +84,12 @@ var Configuration_table_responsive_customers = {
         titleAttr: 'Excel',
         className: 'btn btn-success btn-sm',
         exportOptions: {
-            columns: [ 0, 1, 2, 3]
+            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
         },
       },
       {
         extend: 'csvHtml5',
-        title: 'Clientes',
+        title: 'Paquetes H_M',
         init: function(api, node, config) {
            $(node).removeClass('btn-secondary')
         },
@@ -97,7 +97,7 @@ var Configuration_table_responsive_customers = {
         titleAttr: 'CSV',
         className: 'btn btn-primary btn-sm',
         exportOptions: {
-            columns: [ 0, 1, 2, 3]
+            columns: [ 0, 1, 2, 3, 4 , 5, 6, 7, 8, 9 ]
         },
       }
   ],
