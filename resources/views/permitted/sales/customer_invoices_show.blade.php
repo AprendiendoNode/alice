@@ -1029,10 +1029,10 @@
         $.each(JSON.parse(datajson), function(index, status){
           vartable.fnAddData([
             status.name,
-            status.current,
+            status.currency,
             status.date,
             status.payment_way,
-            '0',
+            status.amount_reconciled,
             status.amount,
           ]);
         });
