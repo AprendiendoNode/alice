@@ -28,7 +28,7 @@ class SabanaControllerITC extends Controller
   public function informacionITC(Request $request)
   {
     $itc = $request->itc;
-    $result = DB::select('CALL px_sitios_by_itc(?)', array($itc));
+    $result = DB::select('CALL px_sitios_by_itc_12meses(?, ?)', array($itc, date('Y-m-d')));
     return $result;
   }
   public function antenasITC(Request $request)

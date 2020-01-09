@@ -58,13 +58,13 @@ $(function() {
       url: "/informacionITC",
       data: { itc : itc, _token : _token },
       success: function (data){
-        //console.log(data);
+        console.log(data);
         $('#imagenCliente').attr("src", "../images/users/pictures/default.png");
         $("#imagenCliente").attr("src", $('#select_itc').find(':selected').data("foto"));
         $("#nombreITC").text($('#select_itc').find(':selected').data("name"));
         $("#correoITC").text($('#select_itc').find(':selected').data("email"));
         $("#localizacionITC").text($('#select_itc').find(':selected').data("city"));
-        $("#total_sitios").text(data.length);
+        $("#total_sitios").text(data.length-1);
         generate_table_info_sitios(data, $('#info_sitios'));
         $.ajax({
           type: "POST",
@@ -225,17 +225,51 @@ $(function() {
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table);
     vartable.fnClearTable();
+    var sumaNPS = 0;
+    var sumaFact = 0;
     $.each(datajson, function(index, status){
-      vartable.fnAddData([
-        '<img src="../images/hotel/'+status.dirlogo1+'" class="w-100" alt="">',
-        status.sitio,
-        status.Direccion,
-        status.Telefono,
-        status.num_hab,
-        status.aps + ' <button id="ver-'+status.id+'-'+status.sitio+'" class="btn btn-default btn-sm ver_antenas_sitio"><span class="fa fa-eye"></span></button>',
-        "Pendiente"
-      ]);
+
+      if(index == 0) {
+        $("#NPS1").text(status.NPS1);
+        $("#NPS2").text(status.NPS2);
+        $("#NPS3").text(status.NPS3);
+        $("#NPS4").text(status.NPS4);
+        $("#NPS5").text(status.NPS5);
+        $("#NPS6").text(status.NPS6);
+        $("#NPS7").text(status.NPS7);
+        $("#NPS8").text(status.NPS8);
+        $("#NPS9").text(status.NPS9);
+        $("#NPS10").text(status.NPS10);
+        $("#NPS11").text(status.NPS11);
+        $("#NPS12").text(status.NPS12);
+      } else {
+        sumaNPS += parseInt(0);
+        sumaFact += parseInt(0);
+        vartable.fnAddData([
+          status.sitio,
+          '<a href="javascript:void(0);" id="ver-'+status.hotel_id+'-'+status.sitio+'" class="ver_antenas_sitio">'+status.aps+'</a>',
+          0,
+          status.NPS1,
+          status.NPS2,
+          status.NPS3,
+          status.NPS4,
+          status.NPS5,
+          status.NPS6,
+          status.NPS7,
+          status.NPS8,
+          status.NPS9,
+          status.NPS10,
+          status.NPS11,
+          status.NPS12,
+          0
+          //status.aps + ' <button id="ver-'+status.id+'-'+status.sitio+'" class="btn btn-default btn-sm ver_antenas_sitio"><span class="fa fa-eye"></span></button>',
+        ]);
+      }
+
     });
+
+    $("#npsPromedio").text(sumaNPS / parseInt($("#total_sitios").text()));
+    $("#total_faturacion").text(sumaFact / parseInt($("#total_sitios").text()));
   }
 
   $(document).on("click", ".ver_antenas_sitio", function() {
@@ -260,8 +294,8 @@ $(function() {
     });
   });
 
-  $('#ver_antenas').on('click', function(){
-    $("#modal-antenas-sitioLabel").text("Todas las antenas:");
+  $('#total_antenas').on('click', function(){
+    $("#modal-antenas-sitioLabel").text("Antenas:");
     var _token = $('meta[name="csrf-token"]').attr('content');
     var itc = $('#select_itc').val();
     $.ajax({
@@ -591,7 +625,7 @@ function getViaticsByHotel(itc){
       });
       $("#cargando").addClass("d-none");
       $(".first_tab").removeClass("d-none");
-      
+
       $('#total_viatic').text("$" + montoTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " MXN");
       //console.log(data2);
       graph_equipments('graph_viatics', data2, "", "PAGADOS"); //El string PAGADOS no debe ser cambiado!
@@ -630,7 +664,7 @@ function viatics_table(datajson, table){
     //"order": [[ 0, "asc" ]],
     paging: true,
     //"pagingType": "simple",
-    "iDisplayLength": 7,
+    "iDisplayLength": 5,
     Filter: true,
     searching: true,
     ordering:false,

@@ -353,53 +353,80 @@
           </ul>
           <div class="content_wrapper">
               <div class="tab_content active">
-                  <div class="w-100 mb-1">
-                    <h3 class="d-inline" style="font-weight: bold;">Total Sitios: <span id="total_sitios">0</span></h3>
-                    <h3 class="ml-5 d-inline" style="font-weight: bold;">Total Antenas: <span id="total_antenas">0</span></h3>
-                    <a href="javascript:void(0);" id="ver_antenas" class="btn btn-default btn-sm" role="button"><span class="fa fa-eye fa-2x"></span></a>
-                  </div>
-                  <div id="gral_sitio" class="row">
-                    <div class="card col-md-4" style="width: 18rem;">
-                      <div class="d-block mx-auto my-auto">
-                        <img id="imagenCliente" class="card-img-top" style="max-height: 200px;max-width: 100px;" alt="Sin foto :(">
-                      </div>
+                  <div class="mb-1">
+                    <div class="d-inline mr-3">
+                      <img id="imagenCliente" style="max-height: 150px; max-width: 75px;" alt="Sin foto :(">
                     </div>
-                    <div class="card col-md-8" style="width: 18rem;">
-                      <div class="card-body text-center">
-                        <h5 class="card-title">Nombre completo: <span id="nombreITC" class="card-text text-gray"></span></h5>
-                        <h5 class="card-title">Correo: <span id="correoITC" class="card-text text-gray"></span></h5>
-                        <h5 class="card-title">Localización: <span id="localizacionITC" class="card-text text-gray"></span></h5>
-                      </div>
+                    <div class="d-inline">
+                      <table border="1" cellpadding="3" style="text-align: center; display: inline;">
+                        <thead class="bg-dark text-white">
+                          <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Sitios</th>
+                            <th>NPS Promedio</th>
+                            <th>AP's</th>
+                            <th>Facturación</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th><span id="nombreITC">XXX</span></th>
+                            <th><span id="correoITC">XXX</span></th>
+                            <th><span id="total_sitios">0</span></th>
+                            <th><span id="npsPromedio">0</span></th>
+                            <th><a href="javascript:void(0);" id="total_antenas">0</a></th>
+                            <th><span id="total_faturacion">0</span></th>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
-
                   <div id="gral_sitios" class="row">
                     <div class="table-responsive">
                       <table id="info_sitios" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>
-                          <tr class="bg-aqua text-center">
-                            <th > <small>Logo</small> </th>
-                            <th> <small>Sitio</small> </th>
-                            <th> <small>Direccion</small> </th>
-                            <th > <small>Teléfono</small> </th>
-                            <th > <small>Habitaciones</small> </th>
-                            <th > <small>Antenas</small> </th>
-                            <th > <small>Facturación</small> </th>
+                          <tr class="bg-secondary text-center">
+                            <th>Sitio</th>
+                            <th>Antenas</th>
+                            <th>Facturación</th>
+                            <th id="NPS1">1</th>
+                            <th id="NPS2">2</th>
+                            <th id="NPS3">3</th>
+                            <th id="NPS4">4</th>
+                            <th id="NPS5">5</th>
+                            <th id="NPS6">6</th>
+                            <th id="NPS7">7</th>
+                            <th id="NPS8">8</th>
+                            <th id="NPS9">9</th>
+                            <th id="NPS10">10</th>
+                            <th id="NPS11">11</th>
+                            <th id="NPS12">12</th>
+                            <th>Prom.</th>
                           </tr>
                         </thead>
-                        <tbody class="text-center">
+                        <tbody class="text-center" style="font-weight: bold;">
                         </tbody>
-                        <tfoot >
-                          <tr >
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th ></th>
-                            <th></th>
-                            <th ></th>
-                            <th ></th>
+                        <!--<tfoot>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                           </tr>
-                        </tfoot>
+                        </tfoot>-->
                       </table>
                     </div>
                   </div>
