@@ -1130,8 +1130,29 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/get_data_complements', 'Sales\CustomerComplementController@get_complement');
     Route::post('/store_complement', 'Sales\CustomerComplementController@store_complement');
 
-
     Route::get('/cz', 'Sales\CustomerInvoiceController@tes');
+
+    //Complemento de pagos
+    //Crear complemento
+    Route::get('customer-payments', 'Sales\CustomerPaymentController@index');
+    Route::get('customer-payments/autocomplete-cfdi', 'Sales\CustomerPaymentController@autocompleteCfdi');
+    Route::get('customer-payments/get-customer-payment', 'Sales\CustomerPaymentController@getCustomerPayment');
+    Route::get('/customer-payments/balances', 'Sales\CustomerPaymentController@balances');//Buscar las facturas
+    Route::post('customer-payments/total-reconciled-lines', 'Sales\CustomerPaymentController@totalReconciledLines');
+    Route::post('customer-payments/customer-payments-store', 'Sales\CustomerPaymentController@store');
+    
+    //Historial de los complemento
+    Route::get('customer-payments-show', 'Sales\CustomerPaymentController@show');
+    Route::post('customer-payments-search', 'Sales\CustomerPaymentController@search');
+    Route::post('customer-payments/mark-sent', 'Sales\CustomerPaymentController@markSent');
+    Route::post('customer-payments/mark-open', 'Sales\CustomerPaymentController@markOpen');
+    Route::post('customer-payments/mark-reconciled', 'Sales\CustomerPaymentController@markReconciled');
+    Route::post('customer-payments/modal-status-sat', 'Sales\CustomerPaymentController@modalStatusSat');
+    Route::post('customer-payments/modal-cancel', 'Sales\CustomerPaymentController@modalCancel');
+
+    Route::post('customer-payments/destroy', 'Sales\CustomerPaymentController@destroy');
+    Route::get('/customer-payments/download-xml/{id}', 'Sales\CustomerPaymentController@downloadXml');
+    Route::get('/customer-payments-pdf/{id}', 'Sales\CustomerPaymentController@generatePdf');
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){

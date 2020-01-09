@@ -60,6 +60,65 @@ class CustomerPayment extends Model
         'cadena_pago',
         'sello_pago',
     ];
+    public function scopeFilter($query, array $input = [])
+    {
+        if (!empty($input['filter_search'])) {
+            $search = $input['filter_search'];
+            $query->orWhere('name', 'like', '%' . str_replace(' ', '%%', $search) . '%');
+        }
+        if (!empty($input['filter_document_type_code'])) {
+            $filter_document_type_code = $input['filter_document_type_code'];
+            $query->WhereHas('documentType', function ($q) use ($filter_document_type_code) {
+                $q->where('document_types.code', '=', $filter_document_type_code);
+            });
+        }
+        if (!empty($input['filter_name'])) {
+            $name = $input['filter_name'];
+            $query->where('name', 'like', '%' . str_replace(' ', '%%', $name) . '%');
+        }
+        if (!empty($input['filter_date_from'])) {
+            $query->whereDate('date', '>=', Helper::convertDateToSql($input['filter_date_from']));
+        }
+        if (!empty($input['filter_date_to'])) {
+            $query->whereDate('date', '<=', Helper::convertDateToSql($input['filter_date_to']));
+        }
+        if (!empty($input['filter_payment_way_id'])) {
+            $payment_way_id = $input['filter_payment_way_id'];
+            $query->where('payment_way_id', '=', $payment_way_id);
+        }
+        if (!empty($input['filter_customer_id'])) {
+            $customer_id = $input['filter_customer_id'];
+            $query->where('customer_id', '=', $customer_id);
+        }
+        if (!empty($input['filter_currency_id'])) {
+            $currency_id = $input['filter_currency_id'];
+            $query->where('currency_id', '=', $currency_id);
+        }
+        if (!empty($input['filter_branch_office_id'])) {
+            $branch_office_id = $input['filter_branch_office_id'];
+            $query->where('branch_office_id', '=', $branch_office_id);
+        }
+        if (!empty($input['filter_status'])) {
+            $status = $input['filter_status'];
+            $query->where('status', '=', $status);
+        }
+        if (!empty($input['filter_search_cfdi_select2'])) {
+            $search = $input['filter_search_cfdi_select2'];
+            //agregar los estatus y que tengan UUID para buscar
+            $query->whereIn('status', [self::OPEN, self::RECONCILED, self::CANCEL])
+                ->whereHas('customerPaymentCfdi', function ($q) {
+                    $q->where('customer_payment_cfdis.uuid', '<>', '');
+                })
+                ->where(function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . str_replace(' ', '%%', $search) . '%')
+                        ->orWhereHas('customerPaymentCfdi', function ($q) use ($search) {
+                            $q->where('customer_payment_cfdis.uuid', 'like',
+                                '%' . str_replace(' ', '%%', $search) . '%');
+                        });
+                });
+        }
+        return $query;
+    }
     public function companyBankAccount()
     {
         return $this->belongsTo(CompanyBankAccount::class);

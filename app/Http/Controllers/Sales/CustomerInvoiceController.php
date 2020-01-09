@@ -122,7 +122,7 @@ class CustomerInvoiceController extends Controller
             $ammount_letter = $format->convertir($customer_complement->amount_total);
             // Enviando datos a la vista de la factura
             $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_cmp', compact('companies', 'customer_complement','complement_gral','complements','moneda','Fpago', 'data', 'ammount_letter','estado','pais'));
-           
+
           }
       else if ($cfdi_type_id == 2) {
         // Nota de crédito o Factura de Egreso
@@ -146,7 +146,7 @@ class CustomerInvoiceController extends Controller
         $ammount_letter = $format->convertir($customer_credit_note->amount_total);
         // Enviando datos a la vista de la factura
         $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_ntc', compact('companies', 'customer_credit_note', 'data', 'ammount_letter'));
-        
+
       }
       else {
         // Factura de Ingreso
@@ -175,7 +175,7 @@ class CustomerInvoiceController extends Controller
         $ammount_letter = $format->convertir($customer_invoice->amount_total);
         // Enviando datos a la vista de la factura
         $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice', 'data', 'ammount_letter', 'estado', 'pais'));
-        
+
       }
 
       $xml = Storage::get($file_xml_pac);
@@ -186,7 +186,7 @@ class CustomerInvoiceController extends Controller
       );
 
       return $files;
-      
+
     }
     /**
      * Display a listing of the resource.
@@ -569,11 +569,20 @@ class CustomerInvoiceController extends Controller
    }
    public function get_currency(Request $request)
    {
-      $current_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
-      if (empty($current_rate)) {
-        return response()->json(['error' => __('general.error_general')], 422);
-      }else{
-        return $current_rate->current_rate;
+      $currency = $request->id_currency;
+      if ($request->id_currency == 2) {
+        $current_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+        if (empty($current_rate)) {
+          return response()->json(['error' => __('general.error_general')], 422);
+        }
+        else{
+          return $current_rate->current_rate;
+        }
+      }
+      else {
+        $item_currency_code = DB::table('currencies')->select('rate')
+        ->where('id', $currency)->value('rate');
+        return $item_currency_code;
       }
    }
 
@@ -2717,7 +2726,7 @@ class CustomerInvoiceController extends Controller
         $files = $this->get_pdf_xml_files($request->customer_invoice_id);
         $pdf = $files['pdf'];
         $xml = $files['xml'];
-        
+
         $data = [];
 
         Mail::send('mail.propuestaComercial', $data,function ($message) use ($request, $pdf, $xml){

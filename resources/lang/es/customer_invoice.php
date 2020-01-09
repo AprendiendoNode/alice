@@ -28,7 +28,7 @@ return [
     'text_mail_text_8' => 'Este mensaje ha sido enviado desde una dirección de correo electrónico exclusivamente de notificación, que no admite mensajes. Por favor, no responda al mismo.',
     'text_modal_send_mail' => 'Enviar',
     'text_modal_cancel' => 'Cancelar %s',
-    'text_modal_status_sat' => 'Estatus SAT - %s',
+    'text_modal_status_sat' => 'Estatus SAT -',
     'text_modal_cancel_help1' => '¿Esta seguro de cancelar la <strong>%s</strong>?',
     'text_modal_cancel_help1_1' => 'La <strong>%s</strong> no puede ser cancelada',
     'text_modal_cancel_help2' => 'Esta acción no se podrá deshacer una vez confirmada la cancelación',

@@ -180,4 +180,36 @@ class CustomerInvoice extends Model
                 $q->whereIn('customer_payments.status', [CustomerPayment::OPEN,CustomerPayment::RECONCILED]);
             });
     }
+
+    public function scopeFilter($query, array $input = [])
+    {
+        if (!empty($input['filter_document_type_code'])) {
+            $filter_document_type_code = $input['filter_document_type_code'];
+            $query->WhereHas('documentType', function ($q) use ($filter_document_type_code) {
+                if(is_array($filter_document_type_code)){
+                    $q->whereIn('document_types.code', $filter_document_type_code);
+                }else {
+                    $q->where('document_types.code', '=', $filter_document_type_code);
+                }
+            });
+        }      
+        if (!empty($input['filter_customer_id'])) {
+            $customer_id = $input['filter_customer_id'];
+            $query->where('customer_id', '=', $customer_id);
+        }
+        if (!empty($input['filter_currency_id'])) {
+            $currency_id = $input['filter_currency_id'];
+            $query->where('currency_id', '=', $currency_id);
+        }
+        if (!empty($input['filter_status'])) {
+            $status = $input['filter_status'];
+            $query->where('status', '=', $status);
+        }
+        if (!empty($input['filter_balances'])) {
+            $query->whereIn('status', [self::OPEN])
+                ->where('balance','>',0);
+        }
+
+        return $query;
+    }
 }
