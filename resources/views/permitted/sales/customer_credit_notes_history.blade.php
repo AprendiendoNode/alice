@@ -209,38 +209,43 @@
         </div>
         <!--Body-->
         <div class="modal-body">
-          <div class="row">
-              <div class="col-md-12 col-xs-12">
+          <form id="form_email_fact">
+            <div class="row">
+              <input id="customer_invoice_id" name="customer_invoice_id" type="hidden" value="">
+              <input id="fact_name" name="fact_name" type="hidden" value="">
+              <input id="cliente_name" name="cliente_name" type="hidden" value="">
+                <div class="col-md-12 col-xs-12">
+                    <div class="form-group form-group-sm">
+                      <label for="subject" class="control-label">Subject <span class="required text-danger">*</span></label>
+                      <input class="form-control" placeholder="Asunto" required="" name="subject" type="text" value="" id="subject">
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12">
+                    <div class="form-group form-group-sm">
+                      <label for="to" class="control-label">Para <span class="required text-danger">*</span></label>
+                      <select id='to' name='to[]' class="form-control" multiple="multiple">
+                      </select>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12">
                   <div class="form-group form-group-sm">
-                    <label for="subject" class="control-label">Subject <span class="required text-danger">*</span></label>
-                    <input class="form-control" placeholder="Asunto" required="" name="subject" type="text" value="" id="subject">
-                  </div>
-              </div>
-              <div class="col-md-12 col-xs-12">
-                  <div class="form-group form-group-sm">
-                    <label for="to" class="control-label">Para <span class="required text-danger">*</span></label>
-                    <select id='to' name='to[]' class="form-control" multiple="multiple">
+                    <label for="attach" class="control-label">{{__('general.entry_mail_attach')}} <span class="required text-danger">*</span></label>
+                    <select id='attach' name='attach[]' class="form-control" multiple="multiple">
                     </select>
                   </div>
-              </div>
-              <div class="col-md-12 col-xs-12">
-                <div class="form-group form-group-sm">
-                  <label for="attach" class="control-label">{{__('general.entry_mail_attach')}} <span class="required text-danger">*</span></label>
-                  <select id='attach' name='attach[]' class="form-control" multiple="multiple">
-                  </select>
                 </div>
-              </div>
-              <div class="col-md-12 col-xs-12 editor_quill">
-                  <div class="form-group form-group-sm">
-                    <label for="attach" class="control-label">{{__('general.entry_mail_message')}} <span class="required text-danger">*</span></label>
-                  </div>
-                  <div name="message" id="message" class="mb-4"></div>
-              </div>
-          </div>
+                <div class="col-md-12 col-xs-12 editor_quill">
+                    <div class="form-group form-group-sm">
+                      <label for="attach" class="control-label">{{__('general.entry_mail_message')}} <span class="required text-danger">*</span></label>
+                    </div>
+                    <div name="message" id="message" class="mb-4"></div>
+                </div>
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
           <div class="pull-right">
-            <button type="submit" class="btn btn-xs btn-info "> <i class="fa fa-filter"> {{__('general.button_search')}}</i></button>
+            <button type="button" id="send_mail_button" class="btn btn-xs btn-info "> <i class="fa fa-filter"> {{__('general.button_search')}}</i></button>
             <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"> <i class="fa fas fa-times"> {{ __('general.button_close') }} </i></button>
           </div>
         </div>
@@ -869,6 +874,7 @@
                 var factura = 'Factura= '+data.customer_invoice.name;
                 var cliente = 'Cliente= '+data.customer_invoice.customer.name;
                 var fecha = 'Fecha = '+data.customer_invoice.date;
+                $("#to").html('');
 
                 quill.setContents([
                     { insert: inicio, attributes: { bold: true } },
@@ -890,7 +896,7 @@
                  language: "{{ str_replace('_', '-', app()->getLocale()) }}",
                  tags: true,
                  tokenSeparators: [',', ' '],
-                 data: data.to_selected
+                 data: data.to_selected[0]
              });
              $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").val(data.to_selected).trigger("change");
              //Archivos
@@ -905,7 +911,9 @@
              });
              $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").val(data.files_selected).trigger("change");
 
-
+             $("#customer_invoice_id").val(data.customer_invoice.id);
+             $("#fact_name").val(data.customer_invoice.name);
+             $("#cliente_name").val(data.customer_invoice.customer.name);
              //Asunto
              $("#subject").val(data.customer_invoice.name);
        
@@ -923,6 +931,38 @@
            }
       })
     }
+
+    $('#send_mail_button').on('click', function(){
+      let _token = $('meta[name="csrf-token"]').attr('content');
+      let form = $('#form_email_fact')[0];
+      let formData = new FormData(form);
+      const headers = new Headers({        
+               "Accept": "application/json",
+               "X-Requested-With": "XMLHttpRequest",
+               "X-CSRF-TOKEN": _token
+             })
+
+      let miInit = { method: 'post',
+                        headers: headers,
+                        body: formData,
+                        credentials: "same-origin",
+                        cache: 'default' };
+
+      fetch('customer-invoices-sendmail-fact', miInit)
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          if(data.code == 200){
+            Swal.fire(data.message,'','success');
+          }else{
+            Swal.fire(data.message,'','error');
+          }
+        })
+        .catch(error => {
+          Swal.fire('Ocurrio un error inesperado','','error');
+        })
+    })
 </script>
   @else
   @endif

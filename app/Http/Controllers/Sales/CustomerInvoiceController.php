@@ -2013,7 +2013,8 @@ class CustomerInvoiceController extends Controller
             $to_selected = [];
             if (!empty($customer_invoice->customer->email)) {
                 $email = $customer_invoice->customer->email;
-                $to[$email] = $email;
+                $email = explode(";", $email);
+                
                 $to_selected [] = $email;
             }
             //Etiquetas solo son demostrativas
@@ -2726,21 +2727,33 @@ class CustomerInvoiceController extends Controller
         $files = $this->get_pdf_xml_files($request->customer_invoice_id);
         $pdf = $files['pdf'];
         $xml = $files['xml'];
+        
+        $data = [
+            'factura' => $request->fact_name,
+            'cliente' => $request->cliente_name,
+        ];
 
-        $data = [];
+        try{
 
-        Mail::send('mail.propuestaComercial', $data,function ($message) use ($request, $pdf, $xml){
-            $message->subject($request->subject);
-            $message->from('desarrollo@sitwifi.com', 'Factura sitwifi');
-            $message->to($request->to);
-            $message->attachData($pdf->output(), $request->subject . '.pdf');
-            $message->attachData($xml, $request->subject .'.xml', ['mime'=>'application/xml']);
-        });
+            Mail::send('mail.facturacion.facturas', ['data' => $data],function ($message) use ($request, $pdf, $xml){
+                $message->subject($request->subject);
+                $message->from('desarrollo@sitwifi.com', 'Factura sitwifi');
+                $message->to($request->to);
+                $message->attachData($pdf->output(), $request->fact_name . '.pdf');
+                $message->attachData($xml, $request->fact_name .'.xml', ['mime'=>'application/xml']);
+            });
+    
+            return response()->json([
+                'message' => 'Factura enviada',
+                'code' => 200
+            ]);
 
-        return response()->json([
-            'message' => 'Factura enviada',
-            'code' => 200
-        ]);
+        }catch(\Swift_RfcComplianceException $e){
+            return response()->json([
+                'message' => 'Error al intentar enviar la factura, revise que los correos sean validos',
+                'code' => 500
+            ]);
+        }
 
     }
 

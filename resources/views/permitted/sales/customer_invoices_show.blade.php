@@ -348,7 +348,9 @@
         <div class="modal-body"> 
           <form id="form_email_fact">
               <div class="row">
-                <input id="customer_invoice_id" name="customer_invoice_id" type="hidden" value="">
+                  <input id="customer_invoice_id" name="customer_invoice_id" type="hidden" value="">
+                  <input id="fact_name" name="fact_name" type="hidden" value="">
+                  <input id="cliente_name" name="cliente_name" type="hidden" value="">
                   <div class="col-md-12 col-xs-12">
                     <div class="form-group form-group-sm">
                       <label for="subject" class="control-label">Subject <span class="required text-danger">*</span></label>
@@ -1027,11 +1029,8 @@
                   var factura = 'Factura= '+data.customer_invoice.name;
                   var cliente = 'Cliente= '+data.customer_invoice.customer.name;
                   var fecha = 'Fecha = '+data.customer_invoice.date;
-                  // quill.setText('Le remitimos adjunta la siguiente factura:\nFAC1!\n');
-                  //
-                  // // quill.formatLine(1, 2, 'align', 'left');   // right aligns the first line
-                  // quill.formatLine(1, 2, 'align', 'center');  // center aligns both lines
-                  //
+                  $("#to").html('');
+                  
                   quill.setContents([
                       { insert: inicio, attributes: { bold: true } },
                       { insert: '\n' },
@@ -1043,26 +1042,6 @@
                       { insert: '\n' }
                     ]);
 
-                /*
-               //Editor
-               $('#message').summernote('reset');
-               $('#message').summernote(
-                 {
-                  height: 100,
-                  placeholder: 'Ingresé una descripción del correo electrónico',
-                  toolbar: [
-                    // [groupName, [list of button]]
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']]
-                  ],
-                 }
-               );
-               $('#message').summernote('pasteHTML', data.custom_message);
-               */
                //Correos para
                $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").select2({
                    placeholder: "@lang('general.text_select')",
@@ -1072,7 +1051,7 @@
                    language: "{{ str_replace('_', '-', app()->getLocale()) }}",
                    tags: true,
                    tokenSeparators: [',', ' '],
-                   data: data.to_selected
+                   data: data.to_selected[0],
                });
                $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").val(data.to_selected).trigger("change");
                //Archivos
@@ -1088,13 +1067,13 @@
                $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").val(data.files_selected).trigger("change");
 
                $("#customer_invoice_id").val(data.customer_invoice.id);
+               $("#fact_name").val(data.customer_invoice.name);
+               $("#cliente_name").val(data.customer_invoice.customer.name);
                //Asunto
                $("#subject").val(data.customer_invoice.name);
                //PARA
                // $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").select2({data: data.to_selected});
                //
-               console.log(data.files);
-               console.log(data.files_selected);
 
                // $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").select2({data: data.files});
                // $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").val(data.files).trigger("change");
@@ -1135,13 +1114,16 @@
           return res.json();
         })
         .then(data => {
-          console.log(data);
           if(data.code == 200){
             Swal.fire(data.message,'','success');
+          }else{
+            Swal.fire('Ocurrio un error inesperado',
+            'Revise que los correos sean validos.',
+            'error');
           }
         })
         .catch(error => {
-          console.log(error);
+          Swal.fire('Ocurrio un error inesperado','','error');
         })
     })
   </script>
