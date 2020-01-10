@@ -899,6 +899,9 @@
                  data: data.to_selected[0]
              });
              $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").val(data.to_selected).trigger("change");
+             $('#to option').each(function(){
+                    $(this).prop('selected', true);
+              });
              //Archivos
              $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").select2({
                  placeholder: "@lang('general.text_select')",

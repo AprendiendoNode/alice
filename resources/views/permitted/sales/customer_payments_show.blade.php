@@ -225,6 +225,65 @@
       </div>
     </div>
 
+    <!-- modal about -->
+  <div id="modal_customer_invoice_send_mail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalmail" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+      <!--Content-->
+      <div class="modal-content">
+        <!--Header-->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalmail"> {{ __('customer_invoice.text_modal_send_mail')}} </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+        <!--Body-->
+        <div class="modal-body">
+          <form id="form_email_fact">
+              <div class="row">
+                  <input id="customer_invoice_id" name="customer_invoice_id" type="hidden" value="">
+                  <input id="fact_name" name="fact_name" type="hidden" value="">
+                  <input id="cliente_name" name="cliente_name" type="hidden" value="">
+                  <div class="col-md-12 col-xs-12">
+                    <div class="form-group form-group-sm">
+                      <label for="subject" class="control-label">Subject <span class="required text-danger">*</span></label>
+                      <input class="form-control" placeholder="Asunto" required="" name="subject" type="text" value="" id="subject">
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-xs-12">
+                      <div class="form-group form-group-sm">
+                        <label for="to" class="control-label">Para <span class="required text-danger">*</span></label>
+                        <select style="height:180px !important;" id='to' name='to[]' class="form-control" multiple="multiple">
+                        </select>
+                      </div>
+                  </div>
+                  <div class="col-md-12 col-xs-12">
+                    <div class="form-group form-group-sm">
+                      <label for="attach" class="control-label">{{__('general.entry_mail_attach')}} <span class="required text-danger">*</span></label>
+                      <select id='attach' name='attach[]' class="form-control" multiple="multiple">
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-xs-12 editor_quill">
+                      <div class="form-group form-group-sm">
+                        <label for="attach" class="control-label">{{__('general.entry_mail_message')}} <span class="required text-danger">*</span></label>
+                      </div>
+                      <div name="message" id="message" class="mb-4"></div>
+                  </div>
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="pull-right">
+            <button type="button" id="send_mail_button" class="btn btn-xs btn-info "> <i class="fas fa-paper-plane"> Enviar </i></button>
+            <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"> <i class="fa fas fa-times"> {{ __('general.button_close') }} </i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /modal about -->
+
   @else
     @include('default.denied')
   @endif
@@ -272,6 +331,7 @@
 
     <script type="text/javascript">
       $(function() {
+        var quill;
         //-----------------------------------------------------------
         $("#form").validate({
           ignore: "input[type=hidden]",
@@ -391,7 +451,7 @@
 
           if ( parseInt(status) == OPEN || parseInt(status) == RECONCILED || parseInt(status) == CANCEL && information.uuid != ""  ) {
             a06 = '<a class="dropdown-item" href="/sales/customer-payments/download-xml/'+information.id+'"> <i class="far fa-file-code"></i> @lang('general.button_download_xml')</a>';
-            a07 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.folio+'"><i class="far fa-envelope"></i> @lang('general.button_send_mail')</a>';
+            a07 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-envelope"></i> @lang('general.button_send_mail')</a>';
           }
 
           if (parseInt(mail) == 0) {
@@ -752,6 +812,108 @@
         })
       }
 
+       //Modal para envio de correo
+       function link_send_mail(e){
+        var valor= e.getAttribute('value');
+        var folio= e.getAttribute('datas');
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+             type: "POST",
+             url: '/sales/customer-payments/modal-send-mail',
+             data: {token_b : valor, _token : _token},
+             success: function (data) {
+               console.log(data);
+               $("#modal_customer_invoice_send_mail").modal("show");
+               
+                $("#to").html('');
+
+
+               //Correos para
+               $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").select2({
+                   placeholder: "@lang('general.text_select')",
+                   theme: "bootstrap",
+                   width: "auto",
+                   dropdownAutoWidth: true,
+                   language: "{{ str_replace('_', '-', app()->getLocale()) }}",
+                   tags: true,
+                   tokenSeparators: [',', ' '],
+                   data: data.to_selected[0],
+               });
+               $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").val(data.to_selected[0]).trigger("change");
+               $('#to option').each(function(){
+                    $(this).prop('selected', true);
+                });
+               //Archivos
+               $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").select2({
+                   placeholder: "@lang('general.text_select')",
+                   theme: "bootstrap",
+                   width: "auto",
+                   dropdownAutoWidth: true,
+                   language: "{{ str_replace('_', '-', app()->getLocale()) }}",
+                   disabled: true,
+                   data: data.files_selected
+               });
+               $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").val(data.files_selected).trigger("change");
+
+               $("#customer_invoice_id").val(data.customer_invoice.id);
+               $("#fact_name").val(data.customer_invoice.name);
+               $("#cliente_name").val(data.customer_invoice.customer.name);
+               //Asunto
+               $("#subject").val(data.customer_invoice.name);
+               //PARA
+               // $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").select2({data: data.to_selected});
+               //
+
+               // $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").select2({data: data.files});
+               // $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").val(data.files).trigger("change");
+               //
+               // $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").val(data.to_selected);
+               // $("#to").select2("val", $("#to").select2("val").concat(data.to_selected));
+
+             },
+             error: function (err) {
+               Swal.fire({
+                  type: 'error',
+                  title: 'Oops...',
+                  text: err.statusText,
+                });
+             }
+        })
+      }
+
+      $('#send_mail_button').on('click', function(){
+      let _token = $('meta[name="csrf-token"]').attr('content');
+      let form = $('#form_email_fact')[0];
+      let formData = new FormData(form);
+      const headers = new Headers({
+               "Accept": "application/json",
+               "X-Requested-With": "XMLHttpRequest",
+               "X-CSRF-TOKEN": _token
+             })
+
+      let miInit = { method: 'post',
+                        headers: headers,
+                        body: formData,
+                        credentials: "same-origin",
+                        cache: 'default' };
+
+      fetch('customer-payments-sendmail-fact', miInit)
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          if(data.code == 200){
+            Swal.fire(data.message,'','success');
+          }else{
+            Swal.fire('Ocurrio un error inesperado',
+            'Revise que los correos sean validos.',
+            'error');
+          }
+        })
+        .catch(error => {
+          Swal.fire('Ocurrio un error inesperado','','error');
+        })
+    })
 
     </script>
 

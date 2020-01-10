@@ -1069,7 +1069,6 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices-create', 'Sales\CustomerInvoiceController@create');
     Route::post('/customer-invoices-store', 'Sales\CustomerInvoiceController@store');
     Route::post('/customer-invoices-edit', 'Sales\CustomerInvoiceController@edit');
-    Route::post('/customer-invoices-sendmail-fact', 'Sales\CustomerInvoiceController@send_mail_pdf_propuesta');
     Route::post('/customer-invoices-sendmail-fact', 'Sales\CustomerInvoiceController@sendmail_facts_customers');
     //
     Route::post('/customer-invoices-store-cont', 'Sales\CustomerInvoiceController@store_cont');
@@ -1161,7 +1160,8 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('customer-payments/mark-reconciled', 'Sales\CustomerPaymentController@markReconciled');
     Route::post('customer-payments/modal-status-sat', 'Sales\CustomerPaymentController@modalStatusSat');
     Route::post('customer-payments/modal-cancel', 'Sales\CustomerPaymentController@modalCancel');
-
+    Route::post('customer-payments/modal-send-mail', 'Sales\CustomerPaymentController@modalSendMail');
+    Route::post('/customer-payments-sendmail-fact', 'Sales\CustomerPaymentController@sendmail_facts_customers');
     Route::post('customer-payments/destroy', 'Sales\CustomerPaymentController@destroy');
     Route::get('/customer-payments/download-xml/{id}', 'Sales\CustomerPaymentController@downloadXml');
     Route::get('/customer-payments-pdf/{id}', 'Sales\CustomerPaymentController@generatePdf');

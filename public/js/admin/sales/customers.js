@@ -30,9 +30,6 @@ $(function () {
              notEmpty: {
                message: 'The field is required'
              },
-             emailAddress: {
-                 message: 'The value is not a valid email address'
-             }
          }
      },
      select_one: {
@@ -206,9 +203,6 @@ $(function () {
               notEmpty: {
                 message: 'The field is required'
               },
-              emailAddress: {
-                  message: 'The value is not a valid email address'
-              }
           }
       },
       edit_select_one: {

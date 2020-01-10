@@ -50,6 +50,7 @@ use App\Models\Sales\CustomerInvoiceCfdi;
 use App\Models\Sales\CustomerInvoiceLine;
 use App\Models\Sales\CustomerInvoiceRelation;
 use App\Models\Sales\CustomerInvoiceTax;
+use Mail;
 
 class CustomerPaymentController extends Controller
 {
@@ -172,6 +173,60 @@ class CustomerPaymentController extends Controller
       else {
         return response()->json(['status' => 304]);
       }
+    }
+
+    /**
+     * Modal para envio de correo de factura
+     *
+     * @param Request $request
+     * @param CustomerInvoice $customer_invoice
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function modalSendMail(Request $request)
+    {
+        //Variables
+        $id = $request->token_b;
+        $company = Helper::defaultCompany(); //Empresa
+        $customer_payment = CustomerPayment::findOrFail($id);
+        //Logica
+        if ($request->ajax() && !empty($id)) {
+            //Correo default del cliente
+            $to = [];
+            $to_selected = [];
+            if (!empty($customer_payment->customer->email)) {
+                $email = $customer_payment->customer->email;
+                $email = explode(";", $email);
+
+                $to_selected [] = $email;
+            }
+            //Etiquetas solo son demostrativas
+            $files = [
+                'pdf' => $customer_payment->name . '.pdf',
+                'xml' => $customer_payment->name . '.xml'
+            ];
+            $files_selected = array_keys($files);
+
+
+            $a3 = '<b>Le remitimos adjunta la siguiente factura:</b>'.'<br>';
+            $a2 = $customer_payment->name;
+            $a1 = Helper::convertSqlToDateTime($customer_payment->date);
+            $a0 = '<br>';
+
+
+            $data_result = [
+                'customer_invoice' => $customer_payment,
+                'company' => $company,
+                'to' => $to,
+                'to_selected' => $to_selected,
+                'files' => $files,
+                'files_selected' => $files_selected,
+                'custom_message' => $a1.$a0.$a2.$a0.$a3
+            ];
+            return $data_result;
+
+        }
+        return response()->json(['error' => __('general.error_general')], 422);
     }
 
     /**
@@ -385,6 +440,38 @@ class CustomerPaymentController extends Controller
       // Enviando datos a la vista de la factura
       $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_compPago',compact('companies', 'customer_payment', 'data'));
       return $pdf->stream();
+    }
+
+    public function get_pdf_xml_files($id)
+    {
+      $customer_payment = CustomerPayment::findOrFail($id);
+      $companies = DB::select('CALL px_companies_data ()', array());
+      $data = [];
+      //Si tiene CFDI obtiene la informacion de los nodos
+      if(!empty($customer_payment->customerPaymentCfdi->file_xml_pac) && !empty($customer_payment->customerPaymentCfdi->uuid)){
+        $path_xml = Helper::setDirectory(CustomerPayment::PATH_XML_FILES) . '/';
+        $file_xml_pac = $path_xml . $customer_payment->customerPaymentCfdi->file_xml_pac;
+        //Valida que el archivo exista
+        if(\Storage::exists($file_xml_pac)) {
+            $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($file_xml_pac));
+            $data = Cfdi33Helper::getQuickArrayCfdi($cfdi);
+            //Genera codigo QR
+            $image = QrCode::format('png')->size(150)->margin(0)->generate($data['qr_cadena']);
+            $data['qr'] = 'data:image/png;base64,' . base64_encode($image);
+        }
+      }
+      // Enviando datos a la vista de la factura
+      $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_compPago',compact('companies', 'customer_payment', 'data'));
+
+      $xml = Storage::get($file_xml_pac);
+
+      $files = array(
+        "pdf" => $pdf,
+        "xml" => $xml,
+      );
+
+      return $files;
+
     }
     /**
      * Autoacompletar select2 de facturas solo activas del SAT
@@ -1050,6 +1137,45 @@ class CustomerPaymentController extends Controller
         return response()->json($resultados, 200);
       }
       return response()->json(['error' => __('general.error500')], 422);
+    }
+
+    /*
+     *  Recupera archivos PDF y XMl de la factura y las
+     *  envia al array de emails proporcionado
+     */
+    public function sendmail_facts_customers(Request $request)
+    {
+        $files = $this->get_pdf_xml_files($request->customer_invoice_id);
+        $pdf = $files['pdf'];
+        $xml = $files['xml'];
+
+        $data = [
+            'factura' => $request->fact_name,
+            'cliente' => $request->cliente_name,
+        ];
+
+        try{
+
+            Mail::send('mail.facturacion.facturas', ['data' => $data],function ($message) use ($request, $pdf, $xml){
+                $message->subject($request->subject);
+                $message->from('desarrollo@sitwifi.com', 'Factura sitwifi');
+                $message->to($request->to);
+                $message->attachData($pdf->output(), $request->fact_name . '.pdf');
+                $message->attachData($xml, $request->fact_name .'.xml', ['mime'=>'application/xml']);
+            });
+
+            return response()->json([
+                'message' => 'Factura enviada',
+                'code' => 200
+            ]);
+
+        }catch(\Swift_RfcComplianceException $e){
+            return response()->json([
+                'message' => 'Error al intentar enviar la factura, revise que los correos sean validos',
+                'code' => 500
+            ]);
+        }
+
     }
 
 }

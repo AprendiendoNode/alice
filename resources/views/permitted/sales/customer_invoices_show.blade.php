@@ -360,7 +360,7 @@
                   <div class="col-md-12 col-xs-12">
                       <div class="form-group form-group-sm">
                         <label for="to" class="control-label">Para <span class="required text-danger">*</span></label>
-                        <select id='to' name='to[]' class="form-control" multiple="multiple">
+                        <select style="height:180px !important;" id='to' name='to[]' class="form-control" multiple="multiple">
                         </select>
                       </div>
                   </div>
@@ -1210,7 +1210,10 @@
                    tokenSeparators: [',', ' '],
                    data: data.to_selected[0],
                });
-               $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").val(data.to_selected).trigger("change");
+               $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").val(data.to_selected[0]).trigger("change");
+               $('#to option').each(function(){
+                    $(this).prop('selected', true);
+                });
                //Archivos
                $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").select2({
                    placeholder: "@lang('general.text_select')",
