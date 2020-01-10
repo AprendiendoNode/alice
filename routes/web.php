@@ -1102,6 +1102,8 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-credit-notes/mark-open', 'Sales\CustomerCreditNoteController@markOpen');
     Route::post('/customer-credit-notes/mark-reconciled', 'Sales\CustomerCreditNoteController@markReconciled');
     Route::post('/customer-credit-notes/modal-status-sat', 'Sales\CustomerCreditNoteController@modalStatusSat');
+    Route::post('/customer-credit-notes/modal-send-mail', 'Sales\CustomerCreditNoteController@modalSendMail');
+    Route::post('/customer-credit-notes-sendmail-fact', 'Sales\CustomerInvoiceController@sendmail_notecredit_customers');
 
     Route::get('/customer-invoices/autocomplete-cfdi', 'Sales\CustomerInvoiceController@autocompleteCfdi');
     Route::get('customer-invoices/get-customer-invoice', 'Sales\CustomerInvoiceController@getCustomerInvoice')->name('customer-invoices/get-customer-invoice');

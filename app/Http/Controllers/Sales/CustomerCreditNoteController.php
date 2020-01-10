@@ -51,6 +51,7 @@ use Illuminate\Support\Facades\Schema;
 use \CfdiUtils\XmlResolver\XmlResolver;
 use \CfdiUtils\CadenaOrigen\DOMBuilder;
 use App\ConvertNumberToLetters;
+use Mail;
 
 class CustomerCreditNoteController extends Controller
 {
@@ -947,6 +948,53 @@ class CustomerCreditNoteController extends Controller
           return response()->json(['status' => 304]);
         }
       }
+
+      public function modalSendMail(Request $request)
+      {
+          
+          $id = $request->token_b;
+          $company = Helper::defaultCompany(); //Empresa
+          $customer_credit_note = CustomerCreditNote::findOrFail($id);
+          //Logica
+          if ($request->ajax() && !empty($id)) {
+              //Correo default del cliente
+              $to = [];
+              $to_selected = [];
+              if (!empty($customer_credit_note->customer->email)) {
+                  $email = $customer_credit_note->customer->email;
+                  $email = explode(";", $email);
+
+                  $to_selected [] = $email;
+              }
+              //Etiquetas solo son demostrativas
+              $files = [
+                  'pdf' => $customer_credit_note->name . '.pdf',
+                  'xml' => $customer_credit_note->name . '.xml'
+              ];
+              $files_selected = array_keys($files);
+
+
+              $a3 = '<b>Le remitimos adjunta la siguiente factura:</b>'.'<br>';
+              $a2 = $customer_credit_note->name;
+              $a1 = Helper::convertSqlToDateTime($customer_credit_note->date);
+              $a0 = '<br>';
+
+
+              $data_result = [
+                  'customer_invoice' => $customer_credit_note,
+                  'company' => $company,
+                  'to' => $to,
+                  'to_selected' => $to_selected,
+                  'files' => $files,
+                  'files_selected' => $files_selected,
+                  'custom_message' => $a1.$a0.$a2.$a0.$a3
+              ];
+              return $data_result;
+
+          }
+          return response()->json(['error' => __('general.error_general')], 422);
+      }
+
       public function markReconciled(Request $request)
       {
         $id = $request->token_b;
@@ -1040,4 +1088,43 @@ class CustomerCreditNoteController extends Controller
           return response()->json(['error' => $e->getMessage()]);
         }
       }
+
+      /*
+     *  Recupera archivos PDF y XMl de la factura y las
+     *  envia al array de emails proporcionado
+     */
+    public function sendmail_facts_customers(Request $request)
+    {
+        $files = $this->get_pdf_xml_files($request->customer_invoice_id);
+        $pdf = $files['pdf'];
+        $xml = $files['xml'];
+
+        $data = [
+            'factura' => $request->fact_name,
+            'cliente' => $request->cliente_name,
+        ];
+
+        try{
+
+            Mail::send('mail.facturacion.facturas', ['data' => $data],function ($message) use ($request, $pdf, $xml){
+                $message->subject($request->subject);
+                $message->from('desarrollo@sitwifi.com', 'Factura sitwifi');
+                $message->to($request->to);
+                $message->attachData($pdf->output(), $request->fact_name . '.pdf');
+                $message->attachData($xml, $request->fact_name .'.xml', ['mime'=>'application/xml']);
+            });
+
+            return response()->json([
+                'message' => 'Factura enviada',
+                'code' => 200
+            ]);
+
+        }catch(\Swift_RfcComplianceException $e){
+            return response()->json([
+                'message' => 'Error al intentar enviar la factura, revise que los correos sean validos',
+                'code' => 500
+            ]);
+        }
+
+    }
 }

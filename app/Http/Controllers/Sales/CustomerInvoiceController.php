@@ -242,6 +242,40 @@ class CustomerInvoiceController extends Controller
       $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_ntc', compact('companies', 'customer_credit_note', 'data', 'ammount_letter'));
       return $pdf->stream();
     }
+
+    public function get_note_credit_pdf_xml_files($id)
+    {
+        $document_type_id = DB::table('customer_invoices')->select('document_type_id')->where('id', $id)->value('document_type_id');
+        // Nota de crédito o Factura de Egreso
+        $customer_credit_note = CustomerInvoice::findOrFail($id);
+        $companies = DB::select('CALL px_companies_data ()', array());
+        $data = [];
+        //Si tiene CFDI obtiene la informacion de los nodos
+        if(!empty($customer_credit_note->customerInvoiceCfdi->file_xml_pac) && !empty($customer_credit_note->customerInvoiceCfdi->uuid)){
+            $path_xml = Helper::setDirectory(CustomerCreditNote::PATH_XML_FILES_CCN) . '/';
+            $file_xml_pac = $path_xml . $customer_credit_note->customerInvoiceCfdi->file_xml_pac;
+            //Valida que el archivo exista
+            if(\Storage::exists($file_xml_pac)) {
+                $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($file_xml_pac));
+                $data = Cfdi33Helper::getQuickArrayCfdi($cfdi);
+                //Genera codigo QR
+                $image = QrCode::format('png')->size(150)->margin(0)->generate($data['qr_cadena']);
+                $data['qr'] = 'data:image/png;base64,' . base64_encode($image);
+            }
+        }
+        $format = new ConvertNumberToLetters();
+        $ammount_letter = $format->convertir($customer_credit_note->amount_total);
+        // Enviando datos a la vista de la factura
+        $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_ntc', compact('companies', 'customer_credit_note', 'data', 'ammount_letter'));
+        $xml = Storage::get($file_xml_pac);
+
+        $files = array(
+            "pdf" => $pdf,
+            "xml" => $xml,
+        );
+
+        return $files;   
+    }
     /**
      * Display a listing of the resource.
      *
@@ -2849,6 +2883,41 @@ class CustomerInvoiceController extends Controller
     public function sendmail_facts_customers(Request $request)
     {
         $files = $this->get_pdf_xml_files($request->customer_invoice_id);
+        $pdf = $files['pdf'];
+        $xml = $files['xml'];
+
+        $data = [
+            'factura' => $request->fact_name,
+            'cliente' => $request->cliente_name,
+        ];
+
+        try{
+
+            Mail::send('mail.facturacion.facturas', ['data' => $data],function ($message) use ($request, $pdf, $xml){
+                $message->subject($request->subject);
+                $message->from('desarrollo@sitwifi.com', 'Factura sitwifi');
+                $message->to($request->to);
+                $message->attachData($pdf->output(), $request->fact_name . '.pdf');
+                $message->attachData($xml, $request->fact_name .'.xml', ['mime'=>'application/xml']);
+            });
+
+            return response()->json([
+                'message' => 'Factura enviada',
+                'code' => 200
+            ]);
+
+        }catch(\Swift_RfcComplianceException $e){
+            return response()->json([
+                'message' => 'Error al intentar enviar la factura, revise que los correos sean validos',
+                'code' => 500
+            ]);
+        }
+
+    }
+
+    public function sendmail_notecredit_customers(Request $request)
+    {
+        $files = $this->get_note_credit_pdf_xml_files($request->customer_invoice_id);
         $pdf = $files['pdf'];
         $xml = $files['xml'];
 
