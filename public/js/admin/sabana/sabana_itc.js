@@ -243,7 +243,7 @@ $(function() {
         $("#NPS11").text(status.NPS11);
         $("#NPS12").text(status.NPS12);
       } else {
-        sumaNPS += parseInt(0);
+        sumaNPS += parseInt(status.NPS_resul);
         sumaFact += parseInt(0);
         vartable.fnAddData([
           status.sitio,
@@ -261,7 +261,7 @@ $(function() {
           status.NPS10,
           status.NPS11,
           status.NPS12,
-          0
+          status.NPS_resul
           //status.aps + ' <button id="ver-'+status.id+'-'+status.sitio+'" class="btn btn-default btn-sm ver_antenas_sitio"><span class="fa fa-eye"></span></button>',
         ]);
       }

@@ -1061,7 +1061,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
 
     //Facturacion
     Route::get('/customer-invoice-pdf/{id}', 'Sales\CustomerInvoiceController@generate_invoice');
-    
+
     Route::get('/customer-invoice-pdfs/{id}', 'Sales\CustomerInvoiceController@generate_invoice_pdfs');
     Route::get('/customer-credit-notes-pdfs/{id}', 'Sales\CustomerInvoiceController@generate_ntc_pdf');
 
@@ -1140,6 +1140,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     //Cuentas bancarias Clientes
     Route::get('/customer-banks', 'Sales\CustomerBanksController@index');
     Route::post('/load-data-customer', 'Sales\CustomerBanksController@load_data_customer');
+    Route::post('/edit_data_customer', 'Sales\CustomerBanksController@edit_data_customer');
 
     Route::get('/cz', 'Sales\CustomerInvoiceController@tes');
 

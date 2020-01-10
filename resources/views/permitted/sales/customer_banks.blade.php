@@ -38,7 +38,7 @@
 
                                   <div class="form-group form-group-sm">
                                     Seleccione el cliente
-                                  <select id="select_customer"class="form-control input-sm" name="item_bank_account[' + item_bank_account_row + '][bank_id]" id="item_bank_account_bank_id_' + item_bank_account_row + '" required>
+                                  <select id="select_customer"class="form-control input-sm" id="item_bank_account_bank_id_' + item_bank_account_row + '" required>
                                   <option selected="selected" value="">@lang('message.selectopt')</option>
                                     @forelse ($customers as $customer_data)
                                     <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
@@ -56,11 +56,11 @@
                                             <table class="table table-items table-condensed table-hover table-bordered table-striped" id="items_bank_account">
                                                 <thead>
                                                     <tr>
-                                                        <th width="5%" class="text-center">Opciones</th>
                                                         <th width="15%" class="text-center">Banco</th>
                                                         <th width="15%" class="text-center">Moneda</th>
                                                         <th width="25%" class="text-center">Número de cuenta</th>
                                                         <th width="25%%" class="text-left">Descripción</th>
+                                                        <th width="5%" class="text-center">Estado</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -131,16 +131,10 @@
             }
         }
 
-        var item_bank_account_row ='';//Revisa el original, este esta vacío para que funcione.
+        var item_bank_account_row=0;//Revisa el original, este esta vacío para que funcione.
         function addItemBankAccount() {
             var html = '';
-            html += '<tr id="item_bank_account_row_' + item_bank_account_row + '">';
-            html += '<td class="text-center" style="vertical-align: middle;">';
-            html += '<button type="button" onclick="$(\'#item_bank_account_row_' + item_bank_account_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
-            html += '<i class="fas fa-trash-alt"></i>';
-            html += '</button>';
-            html += '<input type="hidden" name="item_bank_account[' + item_bank_account_row + '][id]" id="item_bank_account_id_' + item_bank_account_row + '" /> ';
-            html += '</td>';
+            html += '<tr id="item_bank_account_row_' + item_bank_account_row + '" class="no-plus">';
 
             html += '<td>';
             html += '<div class="form-group form-group-sm">';
@@ -178,10 +172,21 @@
             html += '</div>';
             html += '</td>';
 
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<input type="checkbox" class="form-control input-sm" name="item_bank_account[' + item_bank_account_row + '][status]" id="item_bank_status_' + item_bank_account_row + '" checked>';
+            html += '</div>';
+            html += '</td>';
+
+            html += '<td class="text-center" style="vertical-align: middle;">';
+            html += '<button type="button" onclick="$(\'#item_bank_account_row_' + item_bank_account_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
+            html += '<i class="fas fa-trash-alt"></i>';
+            html += '</button>';
+            html += '</td>';
 
             html += '</tr>';
 
-            $("#form #items_bank_account tbody #add_item_bank_account").before(html);
+            $("#add_item_bank_account").before(html);
 
             item_bank_account_row++;
         }
@@ -189,7 +194,7 @@
         //Carga datos
 
         $('#select_customer').on('change',function(){
-          $('#items_bank_account tbody tr').html('');
+          $('.no-plus').html('');
           var customer_id = $('#select_customer').val();
           var _token = $('input[name="_token"]').val();
 
@@ -199,17 +204,12 @@
             data: {customer_id:customer_id,_token:_token},
             success: function (data){
               //console.log(data);
-              var item_bank_account_row=0;
+              item_bank_account_row=0;
               data.forEach(function(element){
                 //console.log(element);
                 var html = '';
-                html += '<tr id="item_bank_account_row_' + item_bank_account_row + '">';
-                html += '<td class="text-center" style="vertical-align: middle;">';
-                html += '<button type="button" onclick="$(\'#item_bank_account_row_' + item_bank_account_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
-                html += '<i class="fas fa-trash-alt"></i>';
-                html += '</button>';
-                html += '<input type="hidden" name="item_bank_account[' + item_bank_account_row + '][id]" id="item_bank_account_id_' + item_bank_account_row + '" /> ';
-                html += '</td>';
+                html += '<tr id="item_bank_account_row_' + item_bank_account_row + '" class="no-plus">';
+                html += '<input type="hidden" value="'+element.id+'" name="item_bank_account[' + item_bank_account_row + '][id]" id="item_bank_account_id_' + item_bank_account_row + '" /> ';
 
                 html += '<td>';
                 html += '<div class="form-group form-group-sm">';
@@ -255,10 +255,19 @@
                 html += '</div>';
                 html += '</td>';
 
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                if(element.status == 1) {
+                  html += '<input type="checkbox" class="form-control input-sm" name="item_bank_account[' + item_bank_account_row + '][status]" id="item_bank_status_' + item_bank_account_row + '" checked>';
+                } else {
+                  html += '<input type="checkbox" class="form-control input-sm" name="item_bank_account[' + item_bank_account_row + '][status]" id="item_bank_status_' + item_bank_account_row + '">';
+                }
+                html += '</div>';
+                html += '</td>';
 
                 html += '</tr>';
 
-                $("#form #items_bank_account tbody #add_item_bank_account").before(html);
+                $("#add_item_bank_account").before(html);
 
                 item_bank_account_row++;
 
