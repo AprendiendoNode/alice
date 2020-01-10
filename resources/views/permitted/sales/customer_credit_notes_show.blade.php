@@ -17,6 +17,49 @@
 @endsection
 
 @section('content')
+  <!-- Estatus sat-->
+  <div id="modal_customer_invoice_status_sat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalhistory" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <!--Content-->
+      <div class="modal-content">
+        <!--Header-->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalhistory"> {{ __('customer_invoice.text_modal_status_sat')}} <span id='text_folio'></span> </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+        <!--Body-->
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-3">
+              <p></p>
+              <p class="text-center">
+                <i class="fas fa-question-circle fa-8x btn-primary mt-3"></i>
+              </p>
+            </div>
+
+            <div class="col-9 my-4">
+              <p>
+                <strong>Folio fiscal (UUID) = </strong> <br> <span id='text_a'></span>
+              </p>
+              <p>
+                <strong>@lang('general.text_is_cancelable_cfdi') = </strong> <span id='text_b'></span>
+              </p>
+              <p>
+                <strong>@lang('general.text_status_cfdi') = </strong> <span id='text_c'></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--Footer-->
+        <div class="modal-footer flex-center">
+          <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+        </div>
+      </div>
+      <!--/.Content-->
+    </div>
+  </div>
   @if( auth()->user()->can('View customers invoices show') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
@@ -316,13 +359,13 @@
         var html = "";
 
         if (parseInt(status) == OPEN) {
-          html = '<span class="badge badge-success">{{__("customer_credit_note.text_status_open")}}</span>';
+          html = '<span class="badge badge-info">{{__("customer_credit_note.text_status_open")}}</span>';
         }
         else if (parseInt(status) == PAID) {
-          html = '<span class="badge badge-success">{{__("customer_credit_note.text_status_paid")}}</span>';
+          html = '<span class="badge badge-primary">{{__("customer_credit_note.text_status_paid")}}</span>';
         }
         else if (parseInt(status) == CANCEL) {
-          html = '<span class="badge badge-success">{{__("customer_credit_note.text_status_cancel")}}</span>';
+          html = '<span class="badge badge-default">{{__("customer_credit_note.text_status_cancel")}}</span>';
         }
         else if (parseInt(status) == RECONCILED) {
           html = '<span class="badge badge-success">{{__("customer_credit_note.text_status_reconciled")}}</span>';
@@ -335,84 +378,35 @@
         else {
           mail_status = '<i class="fas fa-times text-danger"></i>';
         }
-        var a01 = '<div class="btn-group">';
-        var a02 = '<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></button>';
-        var a03 = '<div class="dropdown-menu">';
-        var a14 = '</div>';
-        var a15 = '</div>';
-        var dropdown = a01+a02+a03+a14+a15;
-
-        vartable.fnAddData([
-          dropdown,
-          information.name,
-          information.date,
-          information.uuid,
-          information.customer,
-          information.salesperson,
-          information.currency,
-          information.amount_total,
-          information.balance,
-          mail_status,
-          html,
-        ]);
-      });
-    }
-    function table_filter(datajson, table){
-      table.DataTable().destroy();
-      var vartable = table.dataTable(Configuration_table_responsive_doctypes);
-      vartable.fnClearTable();
-      $.each(JSON.parse(datajson), function(index, information){
-        var status = information.status;
-        var mail = information.mail_sent;
-
-        var OPEN = "{{ \App\Models\Sales\CustomerInvoice::OPEN }}";
-        var PAID = "{{ \App\Models\Sales\CustomerInvoice::PAID }}";
-        var CANCEL = "{{ \App\Models\Sales\CustomerInvoice::CANCEL }}";
-        var RECONCILED = "{{ \App\Models\Sales\CustomerInvoice::RECONCILED }}";
-        var html = "";
-
-        if (parseInt(status) == OPEN) {
-          html = '<span class="badge badge-success">{{__("customer_credit_note.text_status_open")}}</span>';
-        }
-        else if (parseInt(status) == PAID) {
-          html = '<span class="badge badge-success">{{__("customer_credit_note.text_status_paid")}}</span>';
-        }
-        else if (parseInt(status) == CANCEL) {
-          html = '<span class="badge badge-success">{{__("customer_credit_note.text_status_cancel")}}</span>';
-        }
-        else if (parseInt(status) == RECONCILED) {
-          html = '<span class="badge badge-success">{{__("customer_credit_note.text_status_reconciled")}}</span>';
-        }
-        else {
-        }
-        if (parseInt(mail) != 0) {
-            mail_status = '<i class="fas fa-check text-success"></i>';
-        }
-        else {
-          mail_status = '<i class="fas fa-times text-danger"></i>';
-        }
+        var a04='',a05='',a06='',a07='',a08='',a09='',a10='',a11='',a12='',a13='',a14='';
 
         var a01 = '<div class="btn-group">';
         var a02 = '<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></button>';
         var a03 = '<div class="dropdown-menu">';
-        var a04 = '<a class="dropdown-item" target="_blank" href="/sales/customer-invoice-pdf/'+information.id+'"><i class="fa fa-eye"></i> @lang('general.button_show')</a>';
-        var a05 = '<a class="dropdown-item" href="/sales/customer-credit-notes/download-xml/'+information.id+'"><i class="far fa-file-code"></i> @lang('general.button_download_xml')</a>';
-        var a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-envelope"></i> @lang('general.button_send_mail')</a>';
-        var a07 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_credit_note.text_mark_sent')</a>';
-        var a08 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
-        var a09='',a10='',a11='',a12='',a14='';
+        var a04 = '<a class="dropdown-item" target="_blank" href="/sales/customer-credit-notes-pdfs/'+information.id+'"><i class="fa fa-eye"></i> @lang('general.button_show')</a>';
+
+        if ( parseInt(status) == OPEN || parseInt(status) == RECONCILED || parseInt(status) == CANCEL && information.uuid != ""  ) {
+          a05 = '<a class="dropdown-item" href="/sales/customer-credit-notes/download-xml/'+information.id+'"><i class="far fa-file-code"></i> @lang('general.button_download_xml')</a>';
+          a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-envelope"></i> @lang('general.button_send_mail')</a>';
+        }
         if (parseInt(status) == RECONCILED) {
-          var a09 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_open(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_credit_note.text_mark_open')</a>';
+          a09 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_open(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_credit_note.text_mark_open')</a>';
         }
         if (parseInt(status) == OPEN) {
-          var a10 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_reconciled(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_credit_note.text_mark_reconciled')</a>';
+          a10 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_reconciled(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_credit_note.text_mark_reconciled')</a>';
         }
-        if (parseInt(status) == CANCEL) {
-          var a11 = '<div class="dropdown-divider"></div>';
-          var a12 = '<a class="dropdown-item" href="javascript:void(0);"  onclick="link_cancel(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-trash-alt"></i> @lang('general.button_cancel')</a>';
+        if (parseInt(mail) == 0) {
+          a07 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_credit_note.text_mark_sent')</a>';
         }
-        var a13 = '</div>';
-        var a14 = '</div>';
+        if ( information.uuid != "" ) {
+          a08 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
+        }
+        if (parseInt(status) != CANCEL) {
+          a11 = '<div class="dropdown-divider"></div>';
+          a12 = '<a class="dropdown-item" href="javascript:void(0);"  onclick="link_cancel(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-trash-alt"></i> @lang('general.button_cancel')</a>';
+        }
+        a13 = '</div>';
+        a14 = '</div>';
         var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a09+a10+a11+a12+a13+a14;
 
         vartable.fnAddData([
@@ -498,72 +492,9 @@
       var valor= e.getAttribute('value');
       var folio= e.getAttribute('datas');
       var _token = $('meta[name="csrf-token"]').attr('content');
-      $.ajax({
-           type: "POST",
-           url: '/sales/customer-invoices/modal-send-mail',
-           data: {token_b : valor, _token : _token},
-           success: function (data) {
-
-           },
-           error: function (err) {
-             Swal.fire({
-                type: 'error',
-                title: 'Oops...',
-                text: err.statusText,
-              });
-           }
-      });
     }
-    //Marcar como enviada
-    function mark_sent(e){
-      var valor= e.getAttribute('value');
-      var _token = $('meta[name="csrf-token"]').attr('content');
-      var folio = e.getAttribute('datas');
-      Swal.fire({
-      title: '¿Estás seguro?',
-      text: "Se marcara como enviada, la factura con folio: "+folio,
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.value) {
-          $.ajax({
-               type: "POST",
-               url: '/sales/customer-credit-notes/mark-sent',
-               data: {token_b : valor, _token : _token},
-               success: function (data) {
-                if(data.status == 200){
-                  Swal.fire('Operación completada!', '', 'success')
-                  .then(()=> {
-                    location.href ="/sales/customer-credit-notes-show";
-                  });
-                }
-                else {
-                  Swal.fire({
-                     type: 'error',
-                     title: 'Oops... Error: '+data.status,
-                     text: 'El recurso no se ha modificado, por el motivo que ya esta marcada como enviada',
-                  });
-                }
-               },
-               error: function (err) {
-                 Swal.fire({
-                    type: 'error',
-                    title: 'Oops...',
-                    text: err.statusText,
-                  });
-               }
-           })
-        }
-      });
-    }
-    function link_status_sat() {
-      console.log('a3');
-    }
-    function mark_open() {
+    //Marcar como abierta
+    function mark_open(e) {
       var valor= e.getAttribute('value');
       var _token = $('meta[name="csrf-token"]').attr('content');
       var folio = e.getAttribute('datas');
@@ -608,19 +539,20 @@
          }
       });
     }
-    function mark_reconciled() {
+    //Marcar como conciliada
+    function mark_reconciled(e) {
       var valor= e.getAttribute('value');
       var _token = $('meta[name="csrf-token"]').attr('content');
       var folio = e.getAttribute('datas');
       Swal.fire({
-      title: '¿Estás seguro?',
-      text: "Se marcara como abierta, la factura con folio: "+folio,
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar'
+        title: '¿Estás seguro?',
+        text: "Se marcara como abierta, la factura con folio: "+folio,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
       }).then((result) => {
         if (result.value) {
           $.ajax({
@@ -636,26 +568,97 @@
               }
               else {
                 Swal.fire({
-                   type: 'error',
-                   title: 'Oops... Error: '+data.status,
-                   text: 'El recurso no se ha modificado, por el motivo que ya esta marcada como enviada',
+                  type: 'error',
+                  title: 'Oops... Error: '+data.status,
+                  text: 'El recurso no se ha modificado, por el motivo que ya esta marcada como enviada',
                 });
               }
             },
             error: function (err) {
               Swal.fire({
-                 type: 'error',
-                 title: 'Oops...',
-                 text: err.statusText,
-               });
+                type: 'error',
+                title: 'Oops...',
+                text: err.statusText,
+              });
             }
           })
-       }
-     });
+        }
+      });
+    }
+    //Marcar como enviada
+    function mark_sent(e){
+
+    }
+    //Modal para estatus de CFDI
+    function link_status_sat(e){
+      var valor= e.getAttribute('value');
+      var folio= e.getAttribute('datas');
+      var _token = $('meta[name="csrf-token"]').attr('content');
+      $.ajax({
+           type: "POST",
+           url: '/sales/customer-credit-notes/modal-status-sat',
+           data: {token_b : valor, _token : _token},
+           success: function (data) {
+             $('#text_a').text(data.uuid);
+             $('#text_b').text(data.text_is_cancelable_cfdi);
+             $('#text_c').text(data.text_status_cfdi);
+             $('#modal_customer_invoice_status_sat').modal('show');
+           },
+           error: function (err) {
+             Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: err.statusText,
+              });
+           }
+      })
     }
 
-    function link_cancel() {
-      console.log('a6');
+    //Cancelar
+    function link_cancel(e) {
+      var valor= e.getAttribute('value');
+      var folio= e.getAttribute('datas');
+      var _token = $('meta[name="csrf-token"]').attr('content');
+      Swal.fire({
+        title: '¿Estás seguro de cancelar?',
+        text: "Se cancelara la factura con folio: "+folio+". Esta acción no se podrá deshacer.",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.value) {
+          $.ajax({
+            type: "POST",
+            url: '/sales/customer-credit-notes/destroy',
+            data: {token_b : valor, _token : _token},
+            success: function (data) {
+              if(data.status == 200){
+                Swal.fire('Operación completada!', '', 'success')
+                .then(()=> {
+                  location.href ="/sales/customer-credit-notes-show";
+                });
+              }
+              else {
+                Swal.fire({
+                  type: 'error',
+                  title: 'Oops... Error: '+data.status,
+                  text: 'Acción no realizada',
+                });
+              }
+            },
+            error: function (err) {
+              Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: err.statusText,
+              });
+            }
+          })
+        }
+      });
     }
 
 

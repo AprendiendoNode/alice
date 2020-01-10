@@ -2,7 +2,8 @@
 <head>
 <meta charset="UTF-8">
 <title>
-
+  {{ $customer_payment->serie  }}
+  {{ $customer_payment->folio }}
 </title>
 
 <style type="text/css">

@@ -1061,6 +1061,10 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
 
     //Facturacion
     Route::get('/customer-invoice-pdf/{id}', 'Sales\CustomerInvoiceController@generate_invoice');
+    
+    Route::get('/customer-invoice-pdfs/{id}', 'Sales\CustomerInvoiceController@generate_invoice_pdfs');
+    Route::get('/customer-credit-notes-pdfs/{id}', 'Sales\CustomerInvoiceController@generate_ntc_pdf');
+
     Route::get('/customer-invoices', 'Sales\CustomerInvoiceController@index');
     Route::post('/customer-invoices-create', 'Sales\CustomerInvoiceController@create');
     Route::post('/customer-invoices-store', 'Sales\CustomerInvoiceController@store');
@@ -1098,7 +1102,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-credit-notes/mark-sent', 'Sales\CustomerCreditNoteController@markSent');
     Route::post('/customer-credit-notes/mark-open', 'Sales\CustomerCreditNoteController@markOpen');
     Route::post('/customer-credit-notes/mark-reconciled', 'Sales\CustomerCreditNoteController@markReconciled');
-
+    Route::post('/customer-credit-notes/modal-status-sat', 'Sales\CustomerCreditNoteController@modalStatusSat');
 
     Route::get('/customer-invoices/autocomplete-cfdi', 'Sales\CustomerInvoiceController@autocompleteCfdi');
     Route::get('customer-invoices/get-customer-invoice', 'Sales\CustomerInvoiceController@getCustomerInvoice')->name('customer-invoices/get-customer-invoice');

@@ -188,6 +188,60 @@ class CustomerInvoiceController extends Controller
       return $files;
 
     }
+
+    public function generate_invoice_pdfs($id)
+    {
+      $document_type_id = DB::table('customer_invoices')->select('document_type_id')->where('id', $id)->value('document_type_id');
+      // Factura de Ingreso
+      $customer_invoice = CustomerInvoice::findOrFail($id);
+      $companies = DB::select('CALL px_companies_data ()', array());
+      $data = [];
+      //Si tiene CFDI obtiene la informacion de los nodos
+      if(!empty($customer_invoice->customerInvoiceCfdi->file_xml_pac) && !empty($customer_invoice->customerInvoiceCfdi->uuid)){
+        $path_xml = Helper::setDirectory(CustomerInvoice::PATH_XML_FILES_CI) . '/';
+        $file_xml_pac = $path_xml . $customer_invoice->customerInvoiceCfdi->file_xml_pac;
+        //Valida que el archivo exista
+        if(\Storage::exists($file_xml_pac)) {
+          $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($file_xml_pac));
+          $data = Cfdi33Helper::getQuickArrayCfdi($cfdi);
+          //Genera codigo QR
+          $image = QrCode::format('png')->size(150)->margin(0)->generate($data['qr_cadena']);
+          $data['qr'] = 'data:image/png;base64,' . base64_encode($image);
+        }
+      }
+      $format = new ConvertNumberToLetters();
+      $ammount_letter = $format->convertir($customer_invoice->amount_total);
+      // Enviando datos a la vista de la factura
+      $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice', 'data', 'ammount_letter'));
+      return $pdf->stream();
+    }
+
+    public function generate_ntc_pdf($id)
+    {
+      $document_type_id = DB::table('customer_invoices')->select('document_type_id')->where('id', $id)->value('document_type_id');
+      // Nota de crédito o Factura de Egreso
+      $customer_credit_note = CustomerInvoice::findOrFail($id);
+      $companies = DB::select('CALL px_companies_data ()', array());
+      $data = [];
+      //Si tiene CFDI obtiene la informacion de los nodos
+      if(!empty($customer_credit_note->customerInvoiceCfdi->file_xml_pac) && !empty($customer_credit_note->customerInvoiceCfdi->uuid)){
+          $path_xml = Helper::setDirectory(CustomerCreditNote::PATH_XML_FILES_CCN) . '/';
+          $file_xml_pac = $path_xml . $customer_credit_note->customerInvoiceCfdi->file_xml_pac;
+          //Valida que el archivo exista
+          if(\Storage::exists($file_xml_pac)) {
+              $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($file_xml_pac));
+              $data = Cfdi33Helper::getQuickArrayCfdi($cfdi);
+              //Genera codigo QR
+              $image = QrCode::format('png')->size(150)->margin(0)->generate($data['qr_cadena']);
+              $data['qr'] = 'data:image/png;base64,' . base64_encode($image);
+          }
+      }
+      $format = new ConvertNumberToLetters();
+      $ammount_letter = $format->convertir($customer_credit_note->amount_total);
+      // Enviando datos a la vista de la factura
+      $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi_ntc', compact('companies', 'customer_credit_note', 'data', 'ammount_letter'));
+      return $pdf->stream();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -1848,7 +1902,7 @@ class CustomerInvoiceController extends Controller
         else {
           return response()->json(['status' => 304]);
         }
-      }      
+      }
       /**
        * Modal para historial de pagos
        *

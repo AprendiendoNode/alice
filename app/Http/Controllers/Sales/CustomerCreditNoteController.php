@@ -875,11 +875,52 @@ class CustomerCreditNoteController extends Controller
             }
         }
       }
-
+      /**
+       * Modal para estatus de CFDI
+       *
+       */
+      public function modalStatusSat(Request $request)
+      {
+        //Variables
+        $id = $request->token_b;
+        $company = Helper::defaultCompany(); //Empresa
+        $customer_credit_note = CustomerCreditNote::findOrFail($id);
+        //Logica
+        if ($request->ajax()) {
+          //Obtener informacion de estatus
+          $data_status_sat = [
+            'cancelable' => 1,
+            'pac_is_cancelable' => ''
+          ];
+          if (!empty($customer_credit_note->customerInvoiceCfdi->cfdi_version) && !empty($customer_credit_note->customerInvoiceCfdi->uuid)) {
+                $tmp = [
+                    'rfcR' => $customer_credit_note->customer->taxid,
+                    'uuid' => $customer_credit_note->customerInvoiceCfdi->uuid,
+                    'total' => Helper::numberFormat($customer_credit_note->amount_total, $customer_credit_note->currency->decimal_place, false),
+                ];
+                $class_pac = $customer_credit_note->customerInvoiceCfdi->pac->code . 'Status';
+                $data_status_sat = PacHelper::$class_pac($tmp,$customer_credit_note->customerInvoiceCfdi->pac);
+            }
+          $is_cancelable = true;
+          if($data_status_sat['cancelable'] == 3){
+              $is_cancelable = false;
+          }
+          //modal de visualizar estatus en el SAT
+          $data_result = [
+            'folio' => $customer_credit_note->name,
+            'uuid' => $customer_credit_note->customerInvoiceCfdi->uuid,
+            'data_status_sat' => $data_status_sat,
+            'is_cancelable' => $is_cancelable,
+            'text_is_cancelable_cfdi' => !empty($data_status_sat['pac_is_cancelable']) ? $data_status_sat['pac_is_cancelable'] : '&nbsp;',
+            'text_status_cfdi' => !empty($data_status_sat['pac_status']) ? $data_status_sat['pac_status'] : '&nbsp;'
+          ];
+          return $data_result;
+        }
+      }
       public function markOpen(Request $request)
       {
         $id = $request->token_b;
-        $customer_credit_note = CustomerInvoice::findOrFail($id);
+        $customer_credit_note = CustomerCreditNote::findOrFail($id);
         //Logica.
         if ((int)$customer_credit_note->status == CustomerCreditNote::RECONCILED) {
           $customer_credit_note->updated_uid = \Auth::user()->id;
@@ -894,7 +935,7 @@ class CustomerCreditNoteController extends Controller
       public function markSent(Request $request)
       {
         $id = $request->token_b;
-        $customer_credit_note = CustomerInvoice::findOrFail($id);
+        $customer_credit_note = CustomerCreditNote::findOrFail($id);
         //Logica
         if ((int)$customer_credit_note->mail_sent != 1) {
           $customer_credit_note->updated_uid = \Auth::user()->id;
@@ -909,7 +950,7 @@ class CustomerCreditNoteController extends Controller
       public function markReconciled(Request $request)
       {
         $id = $request->token_b;
-        $customer_credit_note = CustomerInvoice::findOrFail($id);
+        $customer_credit_note = CustomerCreditNote::findOrFail($id);
         if ((int)$customer_credit_note->status == CustomerCreditNote::OPEN) {
           $customer_credit_note->updated_uid = \Auth::user()->id;
           $customer_credit_note->status = CustomerCreditNote::RECONCILED;
@@ -930,5 +971,73 @@ class CustomerCreditNoteController extends Controller
       public function sendMail(Request $request)
       {
 
+      }
+      /**
+       * Remove the specified resource from storage.
+       *
+       * @param  \App\Models\Sales\CustomerInvoice as CustomerCreditNote  $customer_credit_note
+       * @return \Illuminate\Http\Response
+      */
+      public function destroy(Request $request)
+      {
+        \DB::beginTransaction();
+        try {
+          $id = $request->token_b;
+          $customer_credit_note = CustomerCreditNote::findOrFail($id);
+          //Logica
+          if ((int)$customer_credit_note->status != CustomerCreditNote::CANCEL) {
+            //Actualiza status
+            $customer_credit_note->updated_uid = \Auth::user()->id;
+            $customer_credit_note->status = CustomerCreditNote::CANCEL;
+            $customer_credit_note->save();
+            //Actualiza saldos de facturas
+            if($customer_credit_note->customerInvoiceReconcileds->isNotEmpty()){
+              foreach($customer_credit_note->customerInvoiceReconcileds as $result){
+                //Datos de factura
+                $customer_invoice = CustomerInvoice::findOrFail($result->reconciled_id);
+                //Actualiza el saldo de la factura relacionada
+                $customer_invoice->balance += round(Helper::invertBalanceCurrency($customer_credit_note->currency,$result->amount_reconciled,$customer_invoice->currency->code,$result->currency_value),2);
+                if($customer_invoice->balance > 0){
+                    $customer_invoice->status = CustomerInvoice::OPEN;
+                }
+                $customer_invoice->save();
+              }
+            }
+            //Actualiza status CFDI
+            $customer_credit_note->customerInvoiceCfdi->status = 0;
+            $customer_credit_note->customerInvoiceCfdi->save();
+            //Cancelacion del timbre fiscal
+            if (!empty($customer_credit_note->customerInvoiceCfdi->cfdi_version) && !empty($customer_credit_note->customerInvoiceCfdi->uuid)) {
+              //Valida Empresa y PAC para cancelar timbrado
+              PacHelper::validateSatCancelActions($customer_credit_note->customerInvoiceCfdi->pac);
+              //Arreglo temporal para actualizar Customer Credit Note CFDI
+              $tmp = [
+                  'cancel_date' => Helper::dateTimeToSql(\Date::now()),
+                  'cancel_response' => '',
+                  'cancel_state' => '',
+                  'rfcR' => $customer_credit_note->customer->taxid,
+                  'uuid' => $customer_credit_note->customerInvoiceCfdi->uuid,
+                  'total' => Helper::numberFormat($customer_credit_note->amount_total,
+                      $customer_credit_note->currency->decimal_place, false),
+              ];
+              //Cancelar Timbrado de XML
+              $class_pac = $customer_credit_note->customerInvoiceCfdi->pac->code . 'Cancel';
+              $tmp = PacHelper::$class_pac($tmp,$customer_credit_note->customerInvoiceCfdi->pac);
+              //Guardar registros de CFDI
+              $customer_credit_note->customerInvoiceCfdi->fill(array_only($tmp,[
+                'cancel_date',
+                'cancel_response',
+                'cancel_state',
+              ]));
+              $customer_credit_note->customerInvoiceCfdi->save();
+            }
+          }
+          \DB::commit();
+          return response()->json(['status' => 200]);
+        }
+        catch (\Exception $e) {
+          DB::rollback();
+          return response()->json(['error' => $e->getMessage()]);
+        }
       }
 }
