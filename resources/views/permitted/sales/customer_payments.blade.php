@@ -91,7 +91,7 @@
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="company_bank_account_id" class="control-label">Cuenta beneficiaria:</label>
-                    <select id="company_bank_account_id" name="company_bank_account_id" class="form-control" style="width:100%;">
+                    <select id="company_bank_account_id" name="company_bank_account_id" class="form-control" style="width:100%;" disabled>
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($company_bank_accounts as $company_bank_accounts_data)
                         <option value="{{ $company_bank_accounts_data->id  }}"> [{{$company_bank_accounts_data->currencies}}] {{ $company_bank_accounts_data->bank }}</option>
@@ -103,7 +103,7 @@
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="customer_bank_account_id" class="control-label">Cuenta ordenante/cliente:</label>
-                    <select id="customer_bank_account_id" name="customer_bank_account_id" class="form-control" style="width:100%;">
+                    <select id="customer_bank_account_id" name="customer_bank_account_id" class="form-control" style="width:100%;" disabled>
                       <option value="">{{ trans('message.selectopt') }}</option>
                     </select>
                   </div>
@@ -435,7 +435,6 @@
 
         var item_relation_na_row = "{{ $item_relation_na_row }}";
 
-
         function addItemNa() {
           var html = '';
 
@@ -601,6 +600,32 @@
         $('#currency_id').on("change", function(){
           var valor = $(this).val();
           var token = $('input[name="_token"]').val();
+          
+          if ( $(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 18 ) {
+            var company_bank = $('#company_bank_account_id').val();
+            var moneda = $('#currency_id').val();
+            if (company_bank != "") {
+              $.ajax({
+                  type: "POST",
+                  url: "/sales/customer-payments/check_currency_bank",
+                  data: { _token : token, customer_bank : company_bank, moneda : moneda  },
+                  success: function (data){
+                    if (data == '0') {
+                      Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Seleccione una cuenta con la misma MONEDA seleccionada para poder seleccionar una cuenta beneficiaria.',
+                      });
+                    }
+                    $('#company_bank_account_id').val("");
+                  },
+                  error: function (data) {
+                    console.log('Error:', data);
+                  }
+              });
+            }
+          }
+
           if (valor == 1) {
             $('#currency_value').val('1');
             //Obtener facturas con saldos
@@ -636,8 +661,76 @@
         $('#customer_id').on("change", function(){
           //Obtener facturas con saldos
           getCustomerInvoiceBalances(); //AQUI
+          // Llenar cuenta ordenante/cliente
+          getCuentasOrdenantes();
         });
 
+        $('#payment_way_id').on('change', function(){
+          if ( $(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 18 ) {
+            $('#company_bank_account_id').prop("disabled", false);
+            $('#customer_bank_account_id').prop("disabled", false);
+          }else{
+            $('#company_bank_account_id').prop("disabled", true).val('');
+            $('#customer_bank_account_id').prop("disabled", true).val('');
+          }
+        });
+
+        $('#company_bank_account_id').on('change', function(){
+          var customer = $('#customer_id').val();
+          var moneda = $('#currency_id').val();
+          var token = $('input[name="_token"]').val();
+
+          if (customer == "" || moneda == "") {
+            $(this).val('');
+            Swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Seleccione un CLIENTE y una MONEDA para poder seleccionar una cuenta.',
+            });
+            // $("#customer_id").fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+            // $("#currency_id").fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+          }else{
+            if ($(this).val() != '') {
+              $.ajax({
+                  type: "POST",
+                  url: "/sales/customer-payments/check_currency_bank",
+                  data: { _token : token, customer_bank : $(this).val(), moneda : moneda  },
+                  success: function (data){
+                    if (data == '0') {
+                      Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Seleccione una cuenta con la misma MONEDA seleccionada para poder seleccionar una cuenta beneficiaria.',
+                      });
+                    }
+                  },
+                  error: function (data) {
+                    console.log('Error:', data);
+                  }
+              });
+            }
+            
+          }
+
+        });
+        function getCuentasOrdenantes(){
+          let token = $('input[name="_token"]').val();
+          let customer_id = $("#form select[name='customer_id']").val();
+          $.ajax({
+              type: "POST",
+              url: "/sales/customer-payments/get_cuentaOrdenante", // nueva ruta para obtener cuenta ordenante
+              data: { _token : token, customer_id : customer_id },
+              success: function (data){
+                console.log(data);
+                // Llenar select  $('#customer_bank_account_id');
+                
+              },
+              error: function (data) {
+                console.log('Error:', data);
+              }
+          });
+          
+        }
         function getCustomerInvoiceBalances(){
           let customer_id = $("#form select[name='customer_id']").val();
           let currency_id = $("#form select[name='currency_id']").val();
@@ -884,6 +977,9 @@
               if (data) {
                 $.each(data.items_reconciled, function (key, value) {
                     $("#form #item_reconciled_txt_balance_" + key).html(value);
+                });
+                $.each(data.monto_conciliado, function (key, value) {
+                    $("#items #item_reconciled_amount_reconciled_" + key).val(value);
                 });
                 $("#form #reconciled_txt_amount").html(data.amount);
                 $("#form #reconciled_txt_amount_reconciled").html(data.amount_reconciled);

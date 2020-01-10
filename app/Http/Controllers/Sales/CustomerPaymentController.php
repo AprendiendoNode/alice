@@ -548,21 +548,49 @@ class CustomerPaymentController extends Controller
         $amount_reconciled = !empty($request->amount_reconciled) ? (double)$request->amount_reconciled : 0;
         $amount_per_reconciled = 0;
         $items_reconciled = [];
+        $monto_conciliado = [];
+        $flag_concepts = [];
+
         if (!empty($input_items_reconciled)) {
           foreach ($input_items_reconciled as $key => $item_reconciled) {
             //Logica
             $item_reconciled_balance = (double)$item_reconciled['balance'];
             $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
-            $amount_reconciled += (double)$item_reconciled['amount_reconciled'];
             $items_reconciled[$key] = Helper::convertBalanceCurrency($currency,$item_reconciled_balance,$item_reconciled['currency_code'],$item_reconciled_currency_value);
+
+            if ((double)$item_reconciled['amount_reconciled'] > $items_reconciled[$key]) {
+              $amount_reconciled += (double)$item_reconciled['balance'];
+
+              // $item_reconciled_balance = (double)$item_reconciled['balance'];
+              // $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
+              // $items_reconciled[$key] = Helper::convertBalanceCurrency($currency,$item_reconciled_balance,$item_reconciled['currency_code'],$item_reconciled_currency_value);
+
+              $monto_conciliado[$key] = (double)$item_reconciled['balance'];
+              $flag_concepts[$key] = 0;
+            }else{
+              $amount_reconciled += (double)$item_reconciled['amount_reconciled'];
+
+              if ($amount_reconciled > $amount) {
+                $amount_reconciled -= (double)$item_reconciled['amount_reconciled'];
+                $monto_conciliado[$key] = 0;
+              }else{
+                $monto_conciliado[$key] = (double)$item_reconciled['amount_reconciled'];
+              }
+              $flag_concepts[$key] = 1;
+              
+              // $item_reconciled_balance = (double)$item_reconciled['balance'];
+              // $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
+              // $items_reconciled[$key] = Helper::convertBalanceCurrency($currency,$item_reconciled_balance,$item_reconciled['currency_code'],$item_reconciled_currency_value);
+            }
           }
         }
         //Respuesta
+        $json->monto_conciliado = $monto_conciliado;
+        $json->flag_concepts = $flag_concepts;
         $json->items_reconciled = $items_reconciled;
         $json->amount = $amount;
         $json->amount_reconciled = $amount_reconciled;
         $json->amount_per_reconciled = $amount - $amount_reconciled;
-
         return response()->json($json);
       }
     }
@@ -1176,6 +1204,28 @@ class CustomerPaymentController extends Controller
             ]);
         }
 
+    }
+
+    public function check_currency_bank(Request $request)
+    {
+      $moneda = (int)$request->moneda;
+      $customer_bank = (int)$request->customer_bank;
+      
+      $res = DB::table('company_bank_accounts')->select('currency_id')->where('id', $customer_bank)->value('currency_id');
+      
+      if ($moneda == $res) {
+        return '1';
+      }else{
+        return '0';
+      }
+    }
+    public function getCuentasOrdenantes(Request $request)
+    {
+      $customer_id = $request->customer_id;
+
+      $result = DB::select('CALL GetDataCustomerBanks (?)', array($customer_id));
+
+      return $result;
     }
 
 }

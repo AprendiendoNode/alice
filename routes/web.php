@@ -1153,6 +1153,9 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::get('/customer-payments/balances', 'Sales\CustomerPaymentController@balances');//Buscar las facturas
     Route::post('customer-payments/total-reconciled-lines', 'Sales\CustomerPaymentController@totalReconciledLines');
     Route::post('customer-payments/customer-payments-store', 'Sales\CustomerPaymentController@store');
+    
+    Route::post('/customer-payments/check_currency_bank', 'Sales\CustomerPaymentController@check_currency_bank');
+    Route::post('/customer-payments/get_cuentaOrdenante', 'Sales\CustomerPaymentController@getCuentasOrdenantes');
 
     //Historial de los complemento
     Route::get('customer-payments-show', 'Sales\CustomerPaymentController@show');
