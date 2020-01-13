@@ -797,6 +797,9 @@
 
                     </div>
                 </div>
+                <div class="d-flex justify-content-center border-bottom w-40 col-sm-5 col-md-5">
+                  <div id="graph_doc_p"class=""></div>
+                </div>
                 <hr>
                 <div class="" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <h2>Documento M</h2>

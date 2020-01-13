@@ -58,7 +58,7 @@ $(function() {
       url: "/informacionITC",
       data: { itc : itc, _token : _token },
       success: function (data){
-        console.log(data);
+        //console.log(data);
         $('#imagenCliente').attr("src", "../images/users/pictures/default.png");
         $("#imagenCliente").attr("src", $('#select_itc').find(':selected').data("foto"));
         $("#nombreITC").text($('#select_itc').find(':selected').data("name"));
@@ -71,7 +71,7 @@ $(function() {
           url: "/antenasITC",
           data: { itc : itc, _token : _token },
           success: function (data){
-            console.log(data);
+            //console.log(data);
             $("#total_antenas").text(data[0].cantidad);
           },
           error: function (data) {
@@ -486,7 +486,7 @@ $(function() {
           if(data==''){
             data=[{},{},{},{},{}] //Necesario para evitar errores cuando es vacio.
           }
-          console.log(data);
+          //console.log(data);
           graph_tickets_type('graph_type_tickets',data);
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
         },
@@ -605,7 +605,7 @@ function getViaticsByHotel(itc){
     url: "/get_viatics_gastos_itc",
     data: { id : id, _token : _token },
     success: function (data){
-      console.log(data);
+      //console.log(data);
 
       var data2 = [], savedGastos = [];
       var montoTotal=0;
@@ -1413,6 +1413,24 @@ function getProjects(itc){
       }
   });
 
+
+      $.ajax({
+        type: "POST",
+        url: "/get_graph_docx",
+        data: { itc_id : itc,tipo_doc:1, _token : _token },
+        success: function (data){
+          //console.log(data);
+          //Gráfica DOC P
+          graph_document('graph_doc_p',data);
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+      });
+
+
+
+
 }
 
 function loading(time){
@@ -1441,4 +1459,153 @@ Swal.fire({
     //Otra accion
   }
 })
+}
+
+
+function graph_document(title,data) {
+
+ var chart = document.getElementById(title);
+  var resizeMainContainer = function () {
+   chart.style.width = 420+'px';
+   chart.style.height = 320+'px';
+ };
+  resizeMainContainer();
+    var myChart = echarts.init(chart);
+    var auxdate=[];
+    var date=[];
+    var count=[];
+    var quantity=[];
+    var aux_amount=[];
+    var amount=[];
+    var i=0;
+
+    data.forEach(function(element){
+    auxdate[i] = element.fecha; //Metemos las fechas en un array
+    aux_amount[i]= parseFloat(element.total_usd);
+    count[i] = i;//array de las posiciones
+    i++;
+    });
+    //console.log(Math.max.apply(null,amount));
+    auxdate.sort();//Ordenamos los elementos
+    var current = null;
+    var cnt=0;
+    var k=0;
+    var testamount=0;
+
+    for (var j = 0; j < auxdate.length; j++) { //Revisamos cuantas veces se repitio 'X' fecha
+      if (auxdate[j] != current) {
+          if (cnt > 0) {
+              console.log(current + ' repitio --> ' + cnt + 'veces');
+              quantity[k]=cnt;
+              k++;
+              testamount+=aux_amount[j];
+          }
+          current = auxdate[j];
+          cnt = 1;
+          testamount=0;
+          testamount+=aux_amount[j];
+      } else {
+          cnt++;
+          testamount+=aux_amount[j];
+          amount[k]= parseFloat(testamount.toFixed(2));
+      }
+    }
+    k++;
+    if (cnt > 0) {
+        console.log(current + ' rep --> ' + cnt + ' veces');
+        quantity[k]=cnt;
+    }
+
+  //console.log(amount);
+  console.log('count: ' +count);
+  console.log('date: '+date);
+  option = {
+      title: {
+          text: 'Documento P',
+          subtext: 'Resultados'
+      },
+      tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+              type: 'cross',
+              label: {
+                  backgroundColor: '#283b56'
+              }
+          }
+      },
+      legend: {
+          data:['Cantidad', 'Monto']
+      },
+      toolbox: {
+          show: true,
+          feature: {
+              dataView: {readOnly: false},
+              restore: {},
+              saveAsImage: {}
+          }
+      },
+      dataZoom: {
+          show: false,
+          start: 0,
+          end: 100
+      },
+      xAxis: [
+          {
+              type: 'category',
+              boundaryGap: true,
+              data: [1,2],
+          },
+          {
+              type: 'category',
+              boundaryGap: true,
+              data: [1,2],//count,
+          }
+      ],
+      yAxis: [
+          {
+              type: 'value',
+              scale: true,
+              name: '',
+              max: Math.max.apply(null,amount),///Cantidad máxima del monto aprobado
+              min: 0,
+              boundaryGap: [0.2, 0.2]
+          },
+          {
+              type: 'value',
+              scale: true,
+              name: '',
+              max: Math.max.apply(null,quantity.filter(Boolean)),//Cantidad máxima de documentos P autorizados
+              min: 0,
+              boundaryGap: [0.2, 0.2]
+          }
+      ],
+      series: [
+          {
+              name: 'Cantidad',
+              type: 'bar',
+              xAxisIndex: 1,
+              yAxisIndex: 1,
+              data: quantity.filter(Boolean),//Barra cantidad
+          },
+          {
+              name: 'Monto',
+              type: 'line',
+              data: amount,//Linea monto
+          }
+      ]
+  };
+
+
+  myChart.setOption(option);
+
+  $(window).on('resize', function(){
+      if(myChart != null && myChart != undefined){
+         //chart.style.width = 100+'%';
+         //chart.style.height = 100+'%';
+         chart.style.width = $(window).width()*0.5;
+         chart.style.height = $(window).width()*0.5;
+          myChart.resize();
+
+      }
+  });
 }

@@ -892,7 +892,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_ticketsxstatus_itc','Sabanas\SabanaControllerITC@get_ticketsxstatus_itc');
     Route::post('get_viatics_gastos_itc','Sabanas\SabanaControllerITC@get_viatics_gastos_itc');
     Route::post('get_projects_itc','Sabanas\SabanaControllerITC@get_projects_itc');
-
+    Route::post('get_graph_docx','Sabanas\SabanaControllerITC@docs_x');
+    
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');
     Route::post('/search_info_gen', 'Viatics\DashboardViaticController@info_gen');
@@ -1153,7 +1154,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::get('/customer-payments/balances', 'Sales\CustomerPaymentController@balances');//Buscar las facturas
     Route::post('customer-payments/total-reconciled-lines', 'Sales\CustomerPaymentController@totalReconciledLines');
     Route::post('customer-payments/customer-payments-store', 'Sales\CustomerPaymentController@store');
-    
+
     Route::post('/customer-payments/check_currency_bank', 'Sales\CustomerPaymentController@check_currency_bank');
     Route::post('/customer-payments/get_cuentaOrdenante', 'Sales\CustomerPaymentController@getCuentasOrdenantes');
 
