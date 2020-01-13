@@ -15,7 +15,7 @@ use Auth;
 use Mail;
 use App\Cadena;
 
-class SabanaControllerITC extends Controller
+class SabanaITController extends Controller
 {
   public function index()
   {
@@ -236,7 +236,7 @@ info($date."-".$encuestas."-".$cadena);
     $result= DB::Select('CALL px_documentp_status_doctype_itc(?)',array($id));
     return $result;
   }
-  
+
   public function docs_x(Request $request){
     $itc_id = $request->itc_id;
     $tipo_doc = $request->tipo_doc;

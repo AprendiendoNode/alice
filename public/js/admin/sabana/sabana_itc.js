@@ -106,6 +106,11 @@ $(function() {
     getProjects(itc);
   });
 
+  $('#graph_viaticos_x_mes').on('click', function(){
+    console.log($('i[rel]').tooltip());
+    $('i[rel]').tooltip().trigger('click');
+  });
+
   $('.filtrarDashboard').on('click', function(){
     get_nps_hotel($('#cliente').val());
   });

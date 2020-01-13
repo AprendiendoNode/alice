@@ -347,7 +347,7 @@
               <!--<li><i class="fas fa-box-open"></i> Equipos</li>-->
               <li><i class="fas fa-clipboard-list"></i> Tickets</li>
               <!--<li><i class="fas fa-funnel-dollar"></i> Presupuesto</li>-->
-              <li><i class="fas fa-hand-holding-usd"></i></i> Gastos</li>
+              <li><i class="fas fa-hand-holding-usd"></i></i> Viáticos</li>
               <li><i class="fas fa-file-contract"></i></i> Proyectos</li>
               <!--<li id="tab_consumo"><i class="fas fa-chart-bar"></i></i> Estadísticas de consumo</li>-->
           </ul>
@@ -674,7 +674,9 @@
                     </table>
                 </div>
                 <br>-->
-                <h3 style="font-weight: bold; margin-left: 44%;">Viáticos</h3>
+                <div class="text-center">
+                  <h3 style="font-weight:bold;" >Todos los viáticos </h3>
+                </div>
                 <div class="row">
                   <div class="col-md-3">
                     <div class="badge rounded badge-dark text-white font-weight-bold w-80" style="font-size: 1.2em;">

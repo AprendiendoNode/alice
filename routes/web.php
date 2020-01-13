@@ -882,19 +882,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('sabana_modal_encuestas_cadena','Sabanas\SabanaController@sabana_modal_encuestas_cadena');
 
     //SábanaITC
-    Route::get('dash_sabana_itc', 'Sabanas\SabanaControllerITC@index');
-    Route::post('informacionITC', 'Sabanas\SabanaControllerITC@informacionITC');
-    Route::post('antenasITC', 'Sabanas\SabanaControllerITC@antenasITC');
-    Route::post('tabla_antenas_ITC', 'Sabanas\SabanaControllerITC@tabla_antenas_ITC');
-    Route::post('tabla_antenas_sitio', 'Sabanas\SabanaControllerITC@tabla_antenas_sitio');
-    Route::post('viaticos_x_mes', 'Sabanas\SabanaControllerITC@viaticos_x_mes');
-    Route::post('get_tickets_by_itc','Sabanas\SabanaControllerITC@get_tickets_by_itc');
-    Route::post('get_ticketsxtipo_itc','Sabanas\SabanaControllerITC@get_ticketsxtype_itc');
-    Route::post('get_ticketsxstatus_itc','Sabanas\SabanaControllerITC@get_ticketsxstatus_itc');
-    Route::post('get_viatics_gastos_itc','Sabanas\SabanaControllerITC@get_viatics_gastos_itc');
-    Route::post('get_projects_itc','Sabanas\SabanaControllerITC@get_projects_itc');
-    Route::post('get_graph_docx','Sabanas\SabanaControllerITC@docs_x');
-    
+    Route::get('dash_sabana_itc', 'Sabanas\SabanaITController@index');
+    Route::post('informacionITC', 'Sabanas\SabanaITController@informacionITC');
+    Route::post('antenasITC', 'Sabanas\SabanaITController@antenasITC');
+    Route::post('tabla_antenas_ITC', 'Sabanas\SabanaITController@tabla_antenas_ITC');
+    Route::post('tabla_antenas_sitio', 'Sabanas\SabanaITController@tabla_antenas_sitio');
+    Route::post('viaticos_x_mes', 'Sabanas\SabanaITController@viaticos_x_mes');
+    Route::post('get_tickets_by_itc','Sabanas\SabanaITController@get_tickets_by_itc');
+    Route::post('get_ticketsxtipo_itc','Sabanas\SabanaITController@get_ticketsxtype_itc');
+    Route::post('get_ticketsxstatus_itc','Sabanas\SabanaITController@get_ticketsxstatus_itc');
+    Route::post('get_viatics_gastos_itc','Sabanas\SabanaITController@get_viatics_gastos_itc');
+    Route::post('get_projects_itc','Sabanas\SabanaITController@get_projects_itc');
+    Route::post('get_graph_docx','Sabanas\SabanaITController@docs_x');
+
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');
     Route::post('/search_info_gen', 'Viatics\DashboardViaticController@info_gen');
