@@ -384,7 +384,7 @@
                   </div>
                   <div id="gral_sitios" class="row">
                     <div class="table-responsive">
-                      <table id="info_sitios" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
+                      <table id="info_sitios" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%;">
                         <thead>
                           <tr class="bg-secondary text-center">
                             <th>Sitio</th>
@@ -429,6 +429,14 @@
                         </tfoot>-->
                       </table>
                     </div>
+                  </div>
+                  <div class="row">
+                      <div class="d-flex justify-content-center border-bottom w-100 col-sm-6 col-md-6">
+                        <div id="graph_calificaciones_x_mes"> </div>
+                      </div>
+                      <div class="d-flex justify-content-center border-bottom w-40 col-sm-6 col-md-6">
+                        <div id="graph_viaticos_x_mes"> </div>
+                      </div>
                   </div>
               </div>
               <div class="tab_content">

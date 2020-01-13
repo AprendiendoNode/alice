@@ -38,7 +38,7 @@
 
                                   <div class="form-group form-group-sm">
                                     Seleccione el cliente
-                                  <select id="select_customer"class="form-control input-sm" id="item_bank_account_bank_id_' + item_bank_account_row + '" required>
+                                  <select id="select_customer"class="form-control input-sm mb-4" id="item_bank_account_bank_id_' + item_bank_account_row + '" required>
                                   <option selected="selected" value="">@lang('message.selectopt')</option>
                                     @forelse ($customers as $customer_data)
                                     <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>

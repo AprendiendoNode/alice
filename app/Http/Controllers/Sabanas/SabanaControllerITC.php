@@ -43,6 +43,12 @@ class SabanaControllerITC extends Controller
     $result = DB::select('CALL px_tabla_apsxusuario(?)', array($itc));
     return $result;
   }
+  public function viaticos_x_mes(Request $request)
+  {
+    $itc = $request->itc;
+    $result = DB::select('CALL px_viaticos_x_mes(?, ?)', array($itc, date('Y-m-d')));
+    return $result;
+  }
   public function tabla_antenas_sitio(Request $request)
   {
     $sitio = $request->sitio;

@@ -78,6 +78,17 @@ $(function() {
             console.log('Error:', data);
           }
         });
+        $.ajax({
+          type: "POST",
+          url: "/viaticos_x_mes",
+          data: { itc : itc, _token : _token },
+          success: function (data){
+            graph_viaticos_x_mes('graph_viaticos_x_mes', Object.values(data[0]), Object.values(data[1]));
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+        });
       },
       error: function (data) {
         console.log('Error:', data);
@@ -227,21 +238,22 @@ $(function() {
     vartable.fnClearTable();
     var sumaNPS = 0;
     var sumaFact = 0;
+    var meses = [];
     $.each(datajson, function(index, status){
 
       if(index == 0) {
-        $("#NPS1").text(status.NPS1);
-        $("#NPS2").text(status.NPS2);
-        $("#NPS3").text(status.NPS3);
-        $("#NPS4").text(status.NPS4);
-        $("#NPS5").text(status.NPS5);
-        $("#NPS6").text(status.NPS6);
-        $("#NPS7").text(status.NPS7);
-        $("#NPS8").text(status.NPS8);
-        $("#NPS9").text(status.NPS9);
-        $("#NPS10").text(status.NPS10);
-        $("#NPS11").text(status.NPS11);
-        $("#NPS12").text(status.NPS12);
+        $("#NPS1").text(status.NPS1); meses.push(status.NPS1);
+        $("#NPS2").text(status.NPS2); meses.push(status.NPS2);
+        $("#NPS3").text(status.NPS3); meses.push(status.NPS3);
+        $("#NPS4").text(status.NPS4); meses.push(status.NPS4);
+        $("#NPS5").text(status.NPS5); meses.push(status.NPS5);
+        $("#NPS6").text(status.NPS6); meses.push(status.NPS6);
+        $("#NPS7").text(status.NPS7); meses.push(status.NPS7);
+        $("#NPS8").text(status.NPS8); meses.push(status.NPS8);
+        $("#NPS9").text(status.NPS9); meses.push(status.NPS9);
+        $("#NPS10").text(status.NPS10); meses.push(status.NPS10);
+        $("#NPS11").text(status.NPS11); meses.push(status.NPS11);
+        $("#NPS12").text(status.NPS12); meses.push(status.NPS12);
       } else {
         sumaNPS += parseInt(status.NPS_resul);
         sumaFact += parseInt(0);
@@ -268,8 +280,18 @@ $(function() {
 
     });
 
-    $("#npsPromedio").text(sumaNPS / parseInt($("#total_sitios").text()));
+    $("#npsPromedio").text(parseInt(sumaNPS / parseInt($("#total_sitios").text())));
     $("#total_faturacion").text(sumaFact / parseInt($("#total_sitios").text()));
+
+    var promotores = [], pasivos = [], detractores = [];
+
+    for(var i = 0; i < 12 ; i++) { //Las clases mes y promotor, pasivo o detractor se añaden directamente desde la base de datos.
+      promotores[i] = $(".mes"+(i+1)+".promotor").length;
+      pasivos[i] = $(".mes"+(i+1)+".pasivo").length;
+      detractores[i] = $(".mes"+(i+1)+".detractor").length;
+    }
+
+    graph_calificaciones_x_mes('graph_calificaciones_x_mes', meses, promotores, pasivos, detractores);
   }
 
   $(document).on("click", ".ver_antenas_sitio", function() {
@@ -664,7 +686,7 @@ function viatics_table(datajson, table){
     //"order": [[ 0, "asc" ]],
     paging: true,
     //"pagingType": "simple",
-    "iDisplayLength": 5,
+    "iDisplayLength": 100,
     Filter: true,
     searching: true,
     ordering:false,
@@ -1075,6 +1097,158 @@ function graph_tickets_type(title,data) {
          chart.style.height = $(window).width()*0.5;
           myChart.resize();
 
+      }
+  });
+}
+
+function graph_calificaciones_x_mes(title, meses, promotores, pasivos, detractores) {
+  //$('#'+title).width($('#'+title).width());
+  //$('#'+title).height($('#'+title).height());
+
+ var chart = document.getElementById(title);
+  var resizeMainContainer = function () {
+    chart.style.width = '40vw';
+    chart.style.height = 300+'px';
+ };
+    resizeMainContainer();
+    var myChart = echarts.init(chart);
+    var group=[];
+    var titles=[];
+    var i=0;
+
+    /*data.forEach(function(element){
+    element.type=="" ?  element.type="other": element.type;
+    group[i] ={name: element.type,type: 'bar',label: {normal: {show: true,position: 'inside'}},data: [element.cantidad]};
+    titles[i] = element.type;
+    i++;
+  });*/
+    //console.log(titles);
+    //console.log(group);
+
+
+    option = {
+      title: {
+          text: 'Calificaciones x mes'
+      },
+      tooltip: {
+          trigger: 'axis'
+      },
+      legend: {
+        top: '10%',
+          data: ['Promotores', 'Pasivos', 'Detractores']
+      },
+      grid: {
+          containLabel: true
+      },
+      xAxis: {
+          type: 'category',
+          boundaryGap: true,
+          data: meses,
+          axisTick: {
+              alignWithLabel: true
+          },
+          axisLabel : {
+             show: true,
+             interval: '0',
+             rotate: 45
+          }
+      },
+      yAxis: {
+          type: 'value'
+      },
+      series: [
+          {
+              name: 'Promotores',
+              type: 'line',
+              data: promotores
+          },
+          {
+              name: 'Pasivos',
+              type: 'line',
+              data: pasivos
+          },
+          {
+              name: 'Detractores',
+              type: 'line',
+              data: detractores
+          }
+      ],
+      color: ['green','orange', 'red']
+    };
+
+
+  myChart.setOption(option);
+
+  $(window).on('resize', function(){
+      if(myChart != null && myChart != undefined){
+        //chart.style.width = 100+'%';
+        //chart.style.height = 100+'%';
+        chart.style.width = "40vw";
+        chart.style.height = $(window).width()*0.5;
+         myChart.resize();
+
+      }
+  });
+}
+
+function graph_viaticos_x_mes(title, meses, gastos) {
+ var chart = document.getElementById(title);
+  var resizeMainContainer = function () {
+    chart.style.width = '40vw';
+    chart.style.height = 300+'px';
+ };
+    resizeMainContainer();
+    var myChart = echarts.init(chart);
+
+
+    option = {
+      title: {
+          text: 'Viáticos x mes'
+      },
+      tooltip: {
+          trigger: 'axis'
+      },
+      legend: {
+        top: '10%',
+          data: ['Promotores', 'Pasivos', 'Detractores']
+      },
+      grid: {
+          containLabel: true
+      },
+      xAxis: {
+          type: 'category',
+          boundaryGap: true,
+          data: meses,
+          axisTick: {
+              alignWithLabel: true
+          },
+          axisLabel : {
+             show: true,
+             interval: '0',
+             rotate: 45
+          }
+      },
+      yAxis: {
+          type: 'value'
+      },
+      series: [
+          {
+              name: 'Viáticos',
+              type: 'line',
+              data: gastos,
+              label: {
+                show: true
+              }
+          }
+      ],
+      color: ['brown']
+    };
+
+  myChart.setOption(option);
+
+  $(window).on('resize', function(){
+      if(myChart != null && myChart != undefined){
+         myChart.resize();
       }
   });
 }
