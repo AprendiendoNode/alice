@@ -197,9 +197,6 @@
                     var clicked_tab = $(this).attr("rel");
                     var get_new_closest_parent = $(this).closest(".tab_wrapper");
                     var get_closest_tab_list = $(this).closest(".tab_list");
-                    console.log(clicked_tab);
-                    console.log(get_new_closest_parent);
-                    console.log(get_closest_tab_list);
                     get_closest_tab_list.next(".content_wrapper").find(" >.accordian_header").removeClass("active");
 
                     get_new_closest_parent.find(".accordian_header." + clicked_tab).addClass("active");

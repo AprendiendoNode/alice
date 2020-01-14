@@ -106,9 +106,22 @@ $(function() {
     getProjects(itc);
   });
 
+  $('#graph_calificaciones_x_mes').on('click', function(){
+    $('li[rel=tab_1_2]').tooltip().addClass("active"); //Mostrar la pestaña de NPS
+    $('.tab_1_2').addClass("active"); //Mostrar la pestaña de NPS del acordeón
+    $('.tab_content.tab_1_2').css("display","block"); //Mostrar el div de NPS
+    $('li[rel=tab_1_1]').tooltip().removeClass("active"); //Ocultar la pestaña de general
+    $('.tab_1_1').removeClass("active"); //Ocultar la pestaña de general del acordeón
+    $('.tab_content.tab_1_1').css("display","none"); //Ocultar el div de general
+  });
+
   $('#graph_viaticos_x_mes').on('click', function(){
-    console.log($('i[rel]').tooltip());
-    $('i[rel]').tooltip().trigger('click');
+    $('li[rel=tab_1_4]').tooltip().addClass("active"); //Mostrar la pestaña de viáticos
+    $('.tab_1_4').addClass("active"); //Mostrar la pestaña de viáticos del acordeón
+    $('.tab_content.tab_1_4').css("display","block"); //Mostrar el div de viáticos
+    $('li[rel=tab_1_1]').tooltip().removeClass("active"); //Ocultar la pestaña de general
+    $('.tab_1_1').removeClass("active"); //Ocultar la pestaña de general del acordeón
+    $('.tab_content.tab_1_1').css("display","none"); //Ocultar el div de general
   });
 
   $('.filtrarDashboard').on('click', function(){
@@ -261,11 +274,11 @@ $(function() {
         $("#NPS12").text(status.NPS12); meses.push(status.NPS12);
       } else {
         sumaNPS += parseInt(status.NPS_resul);
-        sumaFact += parseInt(0);
+        sumaFact += status.facturacion == null ? 0 : parseInt(status.facturacion);
         vartable.fnAddData([
           status.sitio,
           '<a href="javascript:void(0);" id="ver-'+status.hotel_id+'-'+status.sitio+'" class="ver_antenas_sitio">'+status.aps+'</a>',
-          0,
+          status.facturacion == null ? 0 : parseInt(status.facturacion),
           status.NPS1,
           status.NPS2,
           status.NPS3,
@@ -286,7 +299,7 @@ $(function() {
     });
 
     $("#npsPromedio").text(parseInt(sumaNPS / parseInt($("#total_sitios").text())));
-    $("#total_faturacion").text(sumaFact / parseInt($("#total_sitios").text()));
+    $("#total_faturacion").text(sumaFact);
 
     var promotores = [], pasivos = [], detractores = [];
 

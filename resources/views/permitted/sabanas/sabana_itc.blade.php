@@ -434,7 +434,7 @@
                       <div class="d-flex justify-content-center border-bottom w-100 col-sm-6 col-md-6">
                         <div id="graph_calificaciones_x_mes"> </div>
                       </div>
-                      <div class="d-flex justify-content-center border-bottom w-40 col-sm-6 col-md-6">
+                      <div class="d-flex justify-content-center border-bottom w-100 col-sm-6 col-md-6">
                         <div id="graph_viaticos_x_mes"> </div>
                       </div>
                   </div>
