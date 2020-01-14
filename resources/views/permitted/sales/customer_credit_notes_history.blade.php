@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View note credit history') )
+  @if( auth()->user()->can('View customer credit notes history') )
     Historial egresos
   @else
   {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View note credit history') )
+  @if( auth()->user()->can('View customer credit notes history') )
     Historial egresos
   @else
   {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View note credit history') )
+  @if( auth()->user()->can('View customer credit notes history') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -83,7 +83,7 @@
                   </select>
                 </div>
               </div>
-              
+
               <div class="col-md-3 col-xs-12 pt-4">
                 <button type="submit"
                         onclick=""
@@ -260,7 +260,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View note credit history') )
+  @if( auth()->user()->can('View customer credit notes history') )
   <style media="screen">
     .editor-wrapper {
       min-height: 250px;
@@ -373,7 +373,7 @@
           // debug: true,
           // errorElement: "label",
           submitHandler: function(e){
-            
+
             var form = $('#form')[0];
             var formData = new FormData(form);
             $.ajax({
@@ -471,7 +471,7 @@
       var a09 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_paid(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_invoice.text_mark_paid')</a>';
       var a10 = '';
       var a11 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
-  
+
       var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a10+a11;
 
       vartable.fnAddData([
@@ -887,7 +887,7 @@
                     { insert: '\n' }
                   ]);
 
-              
+
              $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").select2({
                  placeholder: "@lang('general.text_select')",
                  theme: "bootstrap",
@@ -919,7 +919,7 @@
              $("#cliente_name").val(data.customer_invoice.customer.name);
              //Asunto
              $("#subject").val(data.customer_invoice.name);
-       
+
              console.log(data.files);
              console.log(data.files_selected);
 
@@ -939,7 +939,7 @@
       let _token = $('meta[name="csrf-token"]').attr('content');
       let form = $('#form_email_fact')[0];
       let formData = new FormData(form);
-      const headers = new Headers({        
+      const headers = new Headers({
                "Accept": "application/json",
                "X-Requested-With": "XMLHttpRequest",
                "X-CSRF-TOKEN": _token
