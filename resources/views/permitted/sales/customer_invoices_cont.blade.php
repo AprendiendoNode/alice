@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View customers invoices cont') )
     {{ trans('invoicing.customers_invoices') }} Contratos
   @else
   {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View customers invoices cont') )
     {{ trans('invoicing.customers_invoices') }} Contratos
   @else
   {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View customers invoices cont') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -620,7 +620,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View customers invoices cont') )
   {{-- <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
   <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script> --}}
   <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
@@ -1722,10 +1722,10 @@
     }
 
     #items th, #items td {
-		padding: .75rem 0.7375rem;
-		vertical-align: top;
-		border-top: 1px solid #f3f3f3;
-	}
+  		padding: .75rem 0.7375rem;
+  		vertical-align: top;
+  		border-top: 1px solid #f3f3f3;
+  	}
   </style>
   @else
   @endif

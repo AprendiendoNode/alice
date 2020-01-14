@@ -1,19 +1,19 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View customer credit notes history') )
     Historial de {{ trans('invoicing.customers_credit_notes') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+    {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('breadcrumb_title')
-  {{-- @if( auth()->user()->can('View cover') ) --}}
+  @if( auth()->user()->can('View customer credit notes history') )
     Historial de {{ trans('invoicing.customers_credit_notes') }}
-  {{-- @else --}}
-  {{-- {{ trans('message.denied') }} --}}
-  {{-- @endif --}}
+  @else
+    {{ trans('message.denied') }}
+  @endif
 @endsection
 
 @section('content')
@@ -60,7 +60,7 @@
       <!--/.Content-->
     </div>
   </div>
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View customer credit notes history') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -262,7 +262,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View customer credit notes history') )
     <style media="screen">
       .white {background-color: #ffffff;}
       .select2-selection__rendered {
@@ -731,7 +731,7 @@
              success: function (data) {
                console.log(data);
                $("#modal_customer_invoice_send_mail").modal("show");
-               
+
                 $("#to").html('');
 
 

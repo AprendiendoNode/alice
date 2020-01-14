@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View customer payments') )
     Complemento de pago
   @else
     {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View customer payments') )
     Complemento de pago
   @else
     {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View customer payments') )
     <div class="row">
       <div class="col-md-12 grid-margin-onerem  stretch-card">
         <div class="card">
@@ -395,7 +395,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View customer payments') )
     <style media="screen">
       th { font-size: 12px !important; }
       td { font-size: 10px !important; }
@@ -600,7 +600,7 @@
         $('#currency_id').on("change", function(){
           var valor = $(this).val();
           var token = $('input[name="_token"]').val();
-          
+
           if ( $(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 18 ) {
             var company_bank = $('#company_bank_account_id').val();
             var moneda = $('#currency_id').val();
@@ -709,7 +709,7 @@
                   }
               });
             }
-            
+
           }
 
         });
@@ -723,13 +723,13 @@
               success: function (data){
                 console.log(data);
                 // Llenar select  $('#customer_bank_account_id');
-                
+
               },
               error: function (data) {
                 console.log('Error:', data);
               }
           });
-          
+
         }
         function getCustomerInvoiceBalances(){
           let customer_id = $("#form select[name='customer_id']").val();
