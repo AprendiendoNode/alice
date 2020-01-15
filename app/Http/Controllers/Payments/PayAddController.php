@@ -79,7 +79,7 @@ class PayAddController extends Controller
     $verticals = DB::table('verticals')->select('id', 'name')->get();
     $cadenas = DB::table('cadenas')->select('id', 'name')->get();
     $currency = Currency::select('id','name')->get();
-    $banquitos = DB::table('bancos')->select('id', 'nombre')->get();
+    $banquitos = DB::table('banks')->select('id', 'name')->where('sitwifi', 0)->get();
     $way = PaymentWay::select('id','name')->get();
     $priority = DB::table('payments_priorities')->select('id', 'name')->get();
     return view('permitted.payments.add_request_test', compact('proveedor', 'cxclassifications', 'cxservices', 'verticals', 'cadenas', 'banquitos', 'currency', 'way', 'priority'));

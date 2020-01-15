@@ -25,6 +25,13 @@
           <form id="form" name="form" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="row">
+              <select id="aux" style="display: none">
+                <option value="" selected> Elija </option>
+                @forelse ($bancos as $banco)
+                  <option value="{{ $banco->id }}"> {{ $banco->name }} </option>
+                @empty
+                @endforelse
+              </select>
               <div class="col-md-3 col-xs-12">
                 <div class="form-group">
                   <label class="control-label" for="filter_name">
@@ -797,7 +804,10 @@
         var folio = e.getAttribute('datas');
           Swal.fire({
           title: '¿Estás seguro?',
-          text: "Se marcara como pagada, la factura con folio: "+folio,
+          // text: "Se marcara como pagada, la factura con folio: "+folio,
+          html: "Se marcara como pagada, la factura con folio: "+folio +
+            "<br><br><div><label>Fecha de cobro: </label><input style='display: block;' class='datepicker form-control' type='text' placeholder='Fecha del cobro' id='fecha_cobro'></div>"+
+            "<div><label>Banco: </label><select class='form-control' style='display: block;' id='banco'></select></div>",
           type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -806,35 +816,58 @@
           cancelButtonText: 'Cancelar'
           }).then((result) => {
             if (result.value) {
-              $.ajax({
-                   type: "POST",
-                   url: '/sales/customer-invoices/mark-paid',
-                   data: {token_b : valor, _token : _token},
-                   success: function (data) {
-                    if(data.status == 200){
-                      Swal.fire('Pago registrado!', '', 'success')
-                      .then(()=> {
-                        location.href ="/sales/customer-invoices-show";
-                      });
-                    }
-                    else {
-                      Swal.fire({
-                         type: 'error',
-                         title: 'Oops... Error: '+data.status,
-                         text: 'El recurso no se ha modificado, por el motivo que ya esta marcada como pagada',
-                      });
-                    }
-                   },
-                   error: function (err) {
-                     Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: err.statusText,
-                      });
-                   }
-               })
+              var fecha_cobro = $('#fecha_cobro').val();
+              var banco = $('#banco').val();
+              $('.cancel').prop('disabled', 'disabled');
+              $('.confirm').prop('disabled', 'disabled');
+              if(fecha_cobro === ''){
+                Swal.fire("Operación abortada", "Debe seleccionar la fecha del cobro.", "error")
+              }else if(banco === ''){
+                Swal.fire("Operación abortada", "Debe elegir un banco.", "error")
+              }else{
+                $.ajax({
+                     type: "POST",
+                     url: '/sales/customer-invoices/mark-paid',
+                     data: {token_b : valor, banco : banco , fecha_cobro : fecha_cobro , _token : _token},
+                     success: function (data) {
+                      if(data.status == 200){
+                        Swal.fire('Pago registrado!', '', 'success')
+                        .then(()=> {
+                          location.href ="/sales/customer-invoices-show";
+                        });
+                      }
+                      else {
+                        Swal.fire({
+                           type: 'error',
+                           title: 'Oops... Error: '+data.status,
+                           text: 'El recurso no se ha modificado, por el motivo que ya esta marcada como pagada',
+                        });
+                      }
+                     },
+                     error: function (err) {
+                       Swal.fire({
+                          type: 'error',
+                          title: 'Oops...',
+                          text: err.statusText,
+                        });
+                     }
+                })
+              }
             }
           })
+        $(".swal-wide").scrollTop(0);
+        var $options = $("#aux > option").clone();
+        $('#banco').append($options);
+        // $('#factura').val(name_fact);
+        $('.datepicker').datepicker({
+          language: 'es',
+          format: "yyyy-mm-dd",
+          viewMode: "days",
+          minViewMode: "days",
+          //endDate: '1m',
+          autoclose: true,
+          clearBtn: true
+        });
       }
       //Marcar como abierta
       function mark_open(e){

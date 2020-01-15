@@ -63,7 +63,8 @@ class PayHistoryController extends Controller
   public function index3()
   {
     //return 'Confirm Pay';
-    $bancos = DB::connection('banks')->select('select * from bancos');
+    // $bancos = DB::connection('banks')->select('select * from bancos');
+    $bancos = DB::table('banks')->where('sitwifi', 1)->get();
     return view('permitted.payments.history_confirm_pay', compact('bancos'));
   }
   //edit_pay_ways

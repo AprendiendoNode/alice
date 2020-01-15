@@ -1803,9 +1803,9 @@ class CustomerInvoiceController extends Controller
         $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
         $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
         $list_status = $this->list_status;
-
+        $bancos = DB::table('banks')->where('sitwifi', 1)->get();
         return view('permitted.sales.customer_invoices_show',compact(
-          'customer', 'sucursal', 'list_status'
+          'customer', 'sucursal', 'list_status', 'bancos'
         ));
       }
       public function search(Request $request)
@@ -1856,11 +1856,21 @@ class CustomerInvoiceController extends Controller
       {
         $id = $request->token_b;
         $customer_invoice = CustomerInvoice::findOrFail($id);
+        $banco = $request->banco;
+        $fecha_cobro = $request->fecha_cobro;
+
 
         if ((int)$customer_invoice->status == CustomerInvoice::OPEN) {
           $customer_invoice->updated_uid = \Auth::user()->id;
           $customer_invoice->status = CustomerInvoice::PAID;
           $customer_invoice->save();
+
+          DB::table('customer_invoice_bankpay')->insert([
+            'customer_invoice_id' => $id,
+            'bank_id' => $banco,
+            'fecha_pago' => $fecha_cobro
+          ]);
+
           return response()->json(['status' => 200]);
         }
         else {

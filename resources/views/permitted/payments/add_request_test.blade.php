@@ -48,7 +48,7 @@
                           <select id="reg_bancos" name="reg_bancos" class="col-md-9 form-control select2" style="width:100%;">
                             <option value="" selected>{{ trans('pay.select_op') }}</option>
                             @forelse ($banquitos as $data_banquitos)
-                              <option value="{{ $data_banquitos->id }}"> {{ $data_banquitos->nombre }} </option>
+                              <option value="{{ $data_banquitos->id }}"> {{ $data_banquitos->name }} </option>
                             @empty
                             @endforelse
                           </select>

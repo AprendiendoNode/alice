@@ -30,7 +30,7 @@
             <select id="aux" style="display: none">
               <option value="" selected> Elija </option>
               @forelse ($bancos as $banco)
-                <option value="{{ $banco->id }}"> {{ $banco->banco }} </option>
+                <option value="{{ $banco->id }}"> {{ $banco->name }} </option>
               @empty
               @endforelse
             </select>
