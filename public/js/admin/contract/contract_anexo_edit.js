@@ -303,6 +303,7 @@ $(".validation-wizard-anexo").on('change','#sel_anexo',function(){
   get_data_anexos(id_contrat);
 
   genTablecoin(id_contrat);
+  getRfcSitesAnnexes(id_contrat);
 });
 function genTablesite(id_contract) {
   $.ajax({
@@ -341,7 +342,32 @@ if(comp_ingreso==1){
 
 }
 
+function getRfcSitesAnnexes(id_anexo){
+	$('#rz_annexo').text('');
+	$('#rfc_annexo').text('');
+	$('#sitios_anexos').empty();
+	if(id_anexo != ''){
+		$.ajax({
+			type: "POST",
+			url: "/getRfcSitesAnnexes",
+			data: { id_anexo : id_anexo , _token : _token },
+			success: function (data){
+				console.log(data);
+				$('#rz_annexo').text(data[0].customers);
+				$('#rfc_annexo').text(data[0].taxid);
+				
+				data.forEach(sitio => {
+					$('#sitios_anexos').append(`<li>${sitio.Nombre_hotel}</li>`);
+				  });
 
+			},
+			error: function (data) {
+			  console.log('Error:', data);
+			}
+		});
+	}
+
+}
 
 
 function generate_site(datajson, table){

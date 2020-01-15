@@ -251,54 +251,68 @@
                       <h6>Paso 1 - Buscar Contrato Anexo</h6>
                       <section>
                         <div class="row">
-                          <div class="col-md-8 col-md-offset-2">
-                            <div class="form-group">
-                              <label for="sel_anexo_service"> Selecciona el servicio:
-                              </label>
-                              <select id="sel_anexo_service" name="sel_anexo_service" class="form-control required" name="location" style="width:100%;">
-                                <option value="" selected>{{ trans('pay.select_op') }}</option>
-                                @forelse ($classifications as $data_classifications)
-                                <option value="{{ $data_classifications->id }}"> {{ $data_classifications->name }} </option>
-                                @empty
-                                @endforelse
-                              </select>
+                          <div class="col-7">
+                            <div class="row">
+                              <div class="col-md-10 col-md-offset-2">
+                                <div class="form-group">
+                                  <label for="sel_anexo_service"> Selecciona el servicio:
+                                  </label>
+                                  <select id="sel_anexo_service" name="sel_anexo_service" class="form-control form-control-sm required" name="location" style="width:100%;">
+                                    <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                    @forelse ($classifications as $data_classifications)
+                                    <option value="{{ $data_classifications->id }}"> {{ $data_classifications->name }} </option>
+                                    @empty
+                                    @endforelse
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-md-10 col-md-offset-2">
+                                <div class="form-group">
+                                  <label for="sel_anexo_vertical"> Selecciona la vertical:
+                                  </label>
+                                  <select class="form-control form-control-sm required" id="sel_anexo_vertical" name="sel_anexo_vertical" style="width:100%;">
+                                    <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-md-10 col-md-offset-2">
+                                <label for="sel_anexo_cadenas"> Selecciona el grupo:
+                                </label>
+                                <select id="sel_anexo_cadenas" name="sel_anexo_cadenas" class="form-control form-control-sm required" style="width:100%;">
+                                  <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                </select>
+                              </div>
+                              <div class="col-md-10 col-md-offset-2">
+                                <div class="form-group">
+                                  <label for="sel_master_to_anexo"> Selecciona el contrato maestro:
+                                  </label>
+                                  <select class="form-control form-control-sm required" id="sel_master_to_anexo" name="sel_master_to_anexo" style="width:100%;">
+                                    <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-md-10 col-md-offset-2">
+                                <div class="form-group">
+                                  <label for="sel_master_to_anexo"> Selecciona el contrato anexo:
+                                  </label>
+                                  <select class="form-control form-control-sm required" id="sel_anexo" name="sel_anexo" style="width:100%;">
+                                    <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="clearfix mt-20"></div>
                             </div>
-                          </div>
-                          <div class="col-md-8 col-md-offset-2">
-                            <div class="form-group">
-                              <label for="sel_anexo_vertical"> Selecciona la vertical:
-                              </label>
-                              <select class="form-control required" id="sel_anexo_vertical" name="sel_anexo_vertical" style="width:100%;">
-                                <option value="" selected>{{ trans('pay.select_op') }}</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-md-8 col-md-offset-2">
-                            <label for="sel_anexo_cadenas"> Selecciona el grupo:
-                            </label>
-                            <select id="sel_anexo_cadenas" name="sel_anexo_cadenas" class="form-control required" style="width:100%;">
-                              <option value="" selected>{{ trans('pay.select_op') }}</option>
-                            </select>
-                          </div>
-                          <div class="col-md-8 col-md-offset-2">
-                            <div class="form-group">
-                              <label for="sel_master_to_anexo"> Selecciona el contrato maestro:
-                              </label>
-                              <select class="form-control required" id="sel_master_to_anexo" name="sel_master_to_anexo" style="width:100%;">
-                                <option value="" selected>{{ trans('pay.select_op') }}</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-md-8 col-md-offset-2">
-                            <div class="form-group">
-                              <label for="sel_master_to_anexo"> Selecciona el contrato anexo:
-                              </label>
-                              <select class="form-control required" id="sel_anexo" name="sel_anexo" style="width:100%;">
-                                <option value="" selected>{{ trans('pay.select_op') }}</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="clearfix mt-20"></div>
+						  </div>
+						  <!-------->
+						  <div class="col-md-5">
+							<h5 class="text-dark">Resumen del anexo</h5>
+							<p><strong>Razón social: <span id="rz_annexo"></span></strong></p>
+							<p><strong>RFC: <span id="rfc_annexo"></span></strong></p>
+							<p><strong>Sitios: </strong></p>
+							<ul id="sitios_anexos">
+								
+							</ul>
+						  </div>
                         </div>
                       </section>
                       <!-- Step 2 -->

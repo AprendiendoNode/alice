@@ -1072,4 +1072,12 @@ class ContratoController extends Controller
    return json_encode($result);
  }
 
+ public function getRfcSitesAnnexes(Request $request)
+ {
+    $result = DB::select('CALL px_sitios_xanexo(?)', array($request->id_anexo));
+
+    return $result;
+ }
+
+
 }
