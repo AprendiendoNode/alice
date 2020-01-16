@@ -114,6 +114,10 @@
             </div>
             <div class="col-md-3 col-xs-12">
               <div class="form-group">
+                <label for="date_due">Fecha Vencimiento:</label>
+                <input type="text" class="form-control form-control-sm" id="date_due" name="date_due" value="">
+              </div>
+              <!-- <div class="form-group">
                 <label for="payment_term_id" class="control-label">Termino de pago:<span style="color: red;">*</span></label>
                 <select id="payment_term_id" name="payment_term_id" class="form-control required" style="width:100%;">
                   <option value="">{{ trans('message.selectopt') }}</option>
@@ -122,16 +126,8 @@
                   @empty
                   @endforelse
                 </select>
-              </div>
+              </div> -->
             </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="date_due">Fecha Vencimiento:</label>
-                <input type="text" class="form-control form-control-sm" id="date_due" name="date_due" value="">
-              </div>
-            </div>
-          </div>
-          <div class="row">
             <div class="col-md-3 col-xs-12">
               <div class="form-group">
                 <label for="salesperson_id" class="control-label">Vendedor:<span style="color: red;">*</span></label>
@@ -143,42 +139,10 @@
                   @endforelse
                 </select>
               </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="payment_way_id" class="control-label">Forma de pago:<span style="color: red;">*</span></label>
-                <select id="payment_way_id" name="payment_way_id" class="form-control form-control-sm required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($payment_way as $payment_way_data)
-                  <option value="{{ $payment_way_data->id }}"> {{ $payment_way_data->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="payment_method_id" class="control-label">Metodo de pago:<span style="color: red;">*</span></label>
-                <select id="payment_method_id" name="payment_method_id" class="form-control form-control-sm required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($payment_methods as $payment_methods_data)
-                  <option value="{{ $payment_methods_data->id }}"> {{ $payment_methods_data->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="cfdi_use_id" class="control-label">Uso de cfdi:<span style="color: red;">*</span></label>
-                <select id="cfdi_use_id" name="cfdi_use_id" class="form-control form-control-sm required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($cfdi_uses as $cfdi_uses_data)
-                  <option value="{{ $cfdi_uses_data->id }}"> {{ $cfdi_uses_data->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
+              <!-- <div class="form-group">
+                <label for="date_due">Fecha Vencimiento:</label>
+                <input type="text" class="form-control form-control-sm" id="date_due" name="date_due" value="">
+              </div> -->
             </div>
             <div class="col-md-6 col-xs-12">
               <div class="form-group">
@@ -191,6 +155,49 @@
                 </select>
               </div>
             </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 col-xs-12">
+            </div>
+
+            <div class="col-md-3 col-xs-12">
+              <!-- <div class="form-group">
+                <label for="payment_way_id" class="control-label">Forma de pago:<span style="color: red;">*</span></label>
+                <select id="payment_way_id" name="payment_way_id" class="form-control form-control-sm required" style="width:100%;">
+                  <option value="">{{ trans('message.selectopt') }}</option>
+                  @forelse ($payment_way as $payment_way_data)
+                  <option value="{{ $payment_way_data->id }}"> {{ $payment_way_data->name }} </option>
+                  @empty
+                  @endforelse
+                </select>
+              </div> -->
+            </div>
+            <div class="col-md-3 col-xs-12">
+              <!-- <div class="form-group">
+                <label for="payment_method_id" class="control-label">Metodo de pago:<span style="color: red;">*</span></label>
+                <select id="payment_method_id" name="payment_method_id" class="form-control form-control-sm required" style="width:100%;">
+                  <option value="">{{ trans('message.selectopt') }}</option>
+                  @forelse ($payment_methods as $payment_methods_data)
+                  <option value="{{ $payment_methods_data->id }}"> {{ $payment_methods_data->name }} </option>
+                  @empty
+                  @endforelse
+                </select>
+              </div> -->
+            </div>
+            <div class="col-md-3 col-xs-12">
+              <!-- <div class="form-group">
+                <label for="cfdi_use_id" class="control-label">Uso de cfdi:<span style="color: red;">*</span></label>
+                <select id="cfdi_use_id" name="cfdi_use_id" class="form-control form-control-sm required" style="width:100%;">
+                  <option value="">{{ trans('message.selectopt') }}</option>
+                  @forelse ($cfdi_uses as $cfdi_uses_data)
+                  <option value="{{ $cfdi_uses_data->id }}"> {{ $cfdi_uses_data->name }} </option>
+                  @empty
+                  @endforelse
+                </select>
+              </div> -->
+            </div>
+
+            
             <div class="col-md-6 col-xs-12">
               <div class="form-group">
                 <label for="reference">Referencia:</label>
@@ -736,7 +743,7 @@
               var form = $('#form')[0];
               var formData = new FormData(form);
               formData.append('group_sites', group_sites);
-              console.log(group_sites);
+              // console.log(group_sites);
               $.ajax({
                 type: "POST",
                 url: "/sales/customer-invoices-store-cont",
@@ -744,8 +751,8 @@
                 contentType: false,
                 processData: false,
                 success: function (data){
+                  console.log(data);
                   if (data == 'success') {
-
                     let timerInterval;
                     Swal.fire({
                       type: 'success',
@@ -769,7 +776,6 @@
                         window.location.href = "/sales/customer-invoices-cont";
                       }
                     });
-
                   }
                   if (data == 'false') {
                     Swal.fire({
@@ -778,7 +784,6 @@
                        text: 'Error al crear el  CFDI!',
                      });
                   }
-                  // console.log(data);
                 },
                 error: function (err) {
                   Swal.fire({
@@ -883,7 +888,6 @@
               }
           });
         }
-
       });
 
       function totalItem() {
@@ -1255,7 +1259,7 @@
 
                     html += '<td>';
                     html += '<div class="form-group form-group-sm">';
-                    html += '<input type="number" class="form-control form-control-sm text-center col-discount" name="item[' + item_row + '][discount]" id="item_discount_' + item_row + '" step="any" />';
+                    html += '<input type="number" class="form-control form-control-sm text-center col-discount" value="' + key.descuento + '" name="item[' + item_row + '][discount]" id="item_discount_' + item_row + '" step="any" />';
                     html += '</div>';
                     html += '</td>';
 
@@ -1449,8 +1453,7 @@
               console.log(error)
             }
         });
-
-	  }
+	    }
 
 	  // Funciones para cuentas contables dinamicas.
         /*var select2_options = {

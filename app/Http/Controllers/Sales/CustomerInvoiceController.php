@@ -1102,6 +1102,15 @@ class CustomerInvoiceController extends Controller
        // Open a try/catch block
        try {
          //Logica
+         
+         $cont_maestro_id = $request->cont_maestro_id;
+         $result = DB::select('CALL px_data_fact_sat(?)', array($cont_maestro_id));
+         
+         $payment_way_id = $result[0]->payment_way_id;
+         $payment_term_id = $result[0]->payment_term_id;
+         $payment_method_id = $result[0]->payment_method_id;
+         $cfdi_uses = $result[0]->cfdi_user_id;
+         
          $request->merge(['created_uid' => \Auth::user()->id]);
          $request->merge(['updated_uid' => \Auth::user()->id]);
          $request->merge(['status' => CustomerInvoice::OPEN]);
@@ -1123,6 +1132,11 @@ class CustomerInvoiceController extends Controller
          $request->merge(['name' => $document_type['name']]);
          $request->merge(['serie' => $document_type['serie']]);
          $request->merge(['folio' => $document_type['folio']]);
+         $request->merge(['payment_term_id' => $payment_term_id]);
+         $request->merge(['payment_way_id' => $payment_way_id]);
+         $request->merge(['payment_method_id' => $payment_method_id]);
+         $request->merge(['cfdi_use_id' => $cfdi_uses]);
+
          //Guardar Registro principal
          $customer_invoice = CustomerInvoice::create($request->input());
          //Registro de lineas
@@ -1139,7 +1153,7 @@ class CustomerInvoiceController extends Controller
          $currency_pral_value = $request->currency_value;//Valor o TC de la moneda principal
          //Lineas
          if (!empty($request->item)) {
-             foreach ($request->item as $key => $item) {
+            foreach ($request->item as $key => $item) {
                  //Logica
                  $item_quantity = (double)$item['quantity']; //cantidad de artículo
                  $item_price_unit = (double)$item['price_unit']; //unidad de precio del artículo
@@ -1282,7 +1296,7 @@ class CustomerInvoiceController extends Controller
                  } else {
                      $customer_invoice_line->taxes()->sync([]);
                  }
-             }
+            }
          }
 
          //Resumen de impuestos
@@ -2304,10 +2318,12 @@ class CustomerInvoiceController extends Controller
       $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
       $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
       $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
+
       $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
       $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()', array());
       $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
       $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
+
       $cfdi_relations = DB::select('CALL GetAllCfdiRelationsv2 ()', array());
 
 
