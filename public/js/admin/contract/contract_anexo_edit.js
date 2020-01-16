@@ -1006,7 +1006,9 @@ function generate_coin(datajson, table){
         data.exchange_range,
         data.exchange_range_value,
         data.iva,
-        '<a href="javascript:void(0);" onclick="deletecoin(this)" value="'+data.id+'" class="btn btn-danger btn-xs" role="button" title="Eliminar"><span class="fa fa-trash"></span></a>',
+        data.descuento,
+        `<a href="javascript:void(0);" onclick="modal_edit_coin(this)" value="${data.id}" class="btn btn-primary btn-xs" role="button" title="Editar"><span class="fas fa-edit"></span></a>
+         <a href="javascript:void(0);" onclick="deletecoin(this)" value="${data.id}" class="btn btn-danger btn-xs ml-2" role="button" title="Eliminar"><span class="fa fa-trash"></span></a>`,
       ]);
   });
 }
@@ -1231,4 +1233,43 @@ function deletecoin(e){
     }
   })
   //------------
+}
+
+function modal_edit_coin(e){
+  var valor = e.getAttribute('value');
+  console.log(valor);
+
+  /*$('#mensualidad_edit').val();
+  $('#moneda_edit').val();
+  $('#formatcoption_edit').val();
+  $('#iva_edit').val();
+  $('#descuento_edit').val();
+  $('#monto_descuento_edit').val();
+  $('#mensualidad_edit').val();
+  $('#monto_sin_descuento_edit').val();*/
+
+  /* $.ajax({
+    type: "POST",
+    url: "/getContractsPaymentsDataById",
+    data: { valor : valor , _token : _token },
+    success: function (data){
+      datax = JSON.parse(data);
+      if (datax[0].resultado == 1) {
+        var id_contrat = $('#sel_anexo option:selected').val();
+        genTablecoin(id_contrat);
+        Swal.fire("Operación success", "Cambio efectuado :)", "success");
+      }
+      else{
+        Swal.fire("Operación abortada", "Problema de conexión :(", "error");
+      }
+    },
+    error: function (data) {
+      console.log('Error:', data);
+    }
+  });*/
+  $('#modal-Editcoin').modal('show');
+}
+
+function edit_coin(){
+
 }

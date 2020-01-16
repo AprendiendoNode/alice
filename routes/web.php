@@ -768,7 +768,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_data_master_anexo', 'Contracts\ContratoController@get_data_master_anexo');
     Route::post('update_contract_anexo', 'Contracts\ContratoController@update_contract_anexo');
     Route::post('getRfcSitesAnnexes', 'Contracts\ContratoController@getRfcSitesAnnexes');
-
+    Route::post('getContractsPaymentsDataById', 'Contracts\ContratoController@getContractsPaymentsDataById');
+    
     Route::post('/data_contractsite', 'Contracts\ContratoController@all_site_anexo');
     Route::post('/data_editcontractsite', 'Contracts\ContratoController@edit_site_anexo');
     Route::post('/addsiteanexocont', 'Contracts\ContratoController@add_site_anexo');

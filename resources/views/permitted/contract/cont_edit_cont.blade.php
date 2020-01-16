@@ -557,7 +557,8 @@
                                     <th> <small>Moneda</small> </th>
                                     <th> <small>TC</small> </th>
                                     <th> <small>Valor TC</small> </th>
-                                    <th> <small>iva</small> </th>
+                                    <th> <small>Iva</small> </th>
+                                    <th> <small>Descuento</small> </th>
                                     <th> <small>Opciones</small> </th>
                                   </tr>
                                 </thead>
@@ -631,7 +632,7 @@
           </div>
         </div>
     </div>
-
+    <!---MODAL ADD COIN--->
     <div class="modal modal-default fade" id="modal-Creatcoin" data-backdrop="static">
         <div class="modal-dialog" >
           <div class="modal-content">
@@ -704,12 +705,144 @@
                           <label for="mensconiva_add" class="col-md-4 control-label">Mensualidad c/iva:</label>
                           <div class="col-md-8">
                             <input class="form-control" type="text" name="mensconiva_add" id="mensconiva_add" readonly>
+                          </div> 
+                        </div>
+                        <div class="form-group">
+                          <label for="descuento_add" class="col-md-4 control-label">Descuento %:</label>
+                          <div class="col-md-8">
+                            <input class="form-control" value="0" type="text" name="descuento_add" id="descuento_add">
                           </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="monto_descuento_add" class="col-md-4 control-label">Monto descuento :</label>
+                          <div class="col-md-8">
+                            <input class="form-control" type="text" name="monto_descuento_add" id="monto_descuento_add">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="monto_sin_descuento_add" class="col-md-4 control-label">Monto sin descuento :</label>
+                          <div class="col-md-8">
+                            <input class="form-control" type="text" name="monto_sin_descuento_add" id="monto_sin_descuento_add">
+                          </div>
+                        </div>
+                        <div class="form-group">
                           <div class="col-md-12 text-right">
                             <br><p><strong>Nota:</strong> Solo se puede dar de alta una moneda de cada tipo.</p>
                           </div>
                         </div>
+                        
+                        <button type="submit" class="btn bg-navy"><i class="fa fa-plus-square-o" style="margin-right: 4px;"></i>Actualizar</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.cancelar') }} & {{ trans('message.ccmodal') }}</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+    </div>
+  <!----EDIT COIN MODAL------->
+    <div class="modal modal-default fade" id="modal-Editcoin" data-backdrop="static">
+        <div class="modal-dialog" >
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title"><i class="fa fa-pencil-square-o" style="margin-right: 4px;"></i>Editar</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="card table-responsive">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <form class="form-horizontal" id="Editnewcoin" name="Editnewcoin">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                          <label for="mensualidad_edit" class="col-md-4 control-label">Mensualidad:</label>
+                          <div class="col-md-8">
+                            <input class="form-control required" type="text" name="mensualidad_edit" id="mensualidad_edit" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                          </div>
+                        </div>
 
+                        <div class="form-group">
+                          <label for="moneda_edit" class="col-xs-4 control-label">Elija la moneda:</label>
+                          <div class="col-xs-8">
+                            <select id="moneda_edit" name="moneda_edit" class="form-control select2 required" style="width:100%;">
+                              <option value="" selected>{{ trans('pay.select_op') }}</option>
+                              @forelse ($currency as $data_currency)
+                                <option value="{{ $data_currency->id }}"> {{ $data_currency->name }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-xs-4 text-right">
+                            <label for="formatcoption" class="control-label text-right">Tipo de cambio:</label>
+                          </div>
+                          <div class="col-xs-8">
+                            <div id="cont_tp_edit" class="input-group">
+                              <span class="input-group-btn">
+                                <select datas="tp_forma" class="form-control required" id="formatcoption_edit" name="formatcoption_edit">
+                                  <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                  <option value="1"> Fijo</option>
+                                  <option value="2"> Al dia</option>
+                                </select>
+                              </span>
+                              <span class="input-group-btn">
+                                <input datas="tp_valor" type="text" class="form-control" id="formatcvalue_edit" name="formatcvalue_edit" placeholder="TC" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly/>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="iva_add" class="col-xs-4 control-label">IVA%:</label>
+                          <div class="col-xs-8">
+                            <select id="iva_edit" name="iva_edit" class="form-control select2 required" style="width:100%;">
+                              @forelse ($iva as $data_iva)
+                                @if ( $data_iva->number == 16)
+                                  <option value="{{ $data_iva->number }}" selected> {{ $data_iva->number }} </option>
+                                @else
+                                  <option value="{{ $data_iva->number }}"> {{ $data_iva->number }} </option>
+                                @endif
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="mensconiva_edit" class="col-md-4 control-label">Mensualidad c/iva:</label>
+                          <div class="col-md-8">
+                            <input class="form-control" type="text" name="mensconiva_edit" id="mensconiva_edit" readonly>
+                          </div> 
+                        </div>
+                        <div class="form-group">
+                          <label for="descuento_edit" class="col-md-4 control-label">Descuento %:</label>
+                          <div class="col-md-8">
+                            <input class="form-control" value="0" type="text" name="descuento_edit" id="descuento_edit">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="monto_descuento_edit" class="col-md-4 control-label">Monto descuento :</label>
+                          <div class="col-md-8">
+                            <input class="form-control" type="text" name="monto_descuento_edit" id="monto_descuento_edit">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="monto_sin_descuento_edit" class="col-md-4 control-label">Monto sin descuento :</label>
+                          <div class="col-md-8">
+                            <input class="form-control" type="text" name="monto_sin_descuento_edit" id="monto_sin_descuento_edit">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12 text-right">
+                            <br><p><strong>Nota:</strong> Solo se puede dar de alta una moneda de cada tipo.</p>
+                          </div>
+                        </div>
+                        
                         <button type="submit" class="btn bg-navy"><i class="fa fa-plus-square-o" style="margin-right: 4px;"></i>Actualizar</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.cancelar') }} & {{ trans('message.ccmodal') }}</button>
                       </form>

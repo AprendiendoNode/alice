@@ -962,6 +962,7 @@ class ContratoController extends Controller
           'exchange_range_id' => $tcoption,
           'exchange_range_value' => $tcvalue,
           'iva_id' => $id_iva,
+          'descuento' => $request->descuento_add,
           'contract_annex_id' => $idubicacion,
           'created_at' => \Carbon\Carbon::now() ]);
         if(empty($newId)){
@@ -1075,6 +1076,13 @@ class ContratoController extends Controller
  public function getRfcSitesAnnexes(Request $request)
  {
     $result = DB::select('CALL px_sitios_xanexo(?)', array($request->id_anexo));
+
+    return $result;
+ }
+
+ public function getContractsPaymentsDataById(Request $request)
+ {
+    $result = DB::select('CALL ', array($request->id_coin));
 
     return $result;
  }
