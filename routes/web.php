@@ -769,7 +769,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('update_contract_anexo', 'Contracts\ContratoController@update_contract_anexo');
     Route::post('getRfcSitesAnnexes', 'Contracts\ContratoController@getRfcSitesAnnexes');
     Route::post('getContractsPaymentsDataById', 'Contracts\ContratoController@getContractsPaymentsDataById');
-    
+
     Route::post('/data_contractsite', 'Contracts\ContratoController@all_site_anexo');
     Route::post('/data_editcontractsite', 'Contracts\ContratoController@edit_site_anexo');
     Route::post('/addsiteanexocont', 'Contracts\ContratoController@add_site_anexo');
@@ -896,6 +896,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_viatics_gastos_itc','Sabanas\SabanaITController@get_viatics_gastos_itc');
     Route::post('get_projects_itc','Sabanas\SabanaITController@get_projects_itc');
     Route::post('get_graph_docx','Sabanas\SabanaITController@docs_x');
+
+    //Sabana Directiva
+    Route::get('dash_sabana_directiva', 'Sabanas\SabanaDirectivaController@index');
+    Route::post('getAllCadena','Sabanas\SabanaDirectivaController@getAllCadena');
+    Route::post('getAllSites','Sabanas\SabanaDirectivaController@getAllSites');
 
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');
