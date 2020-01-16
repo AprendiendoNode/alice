@@ -173,6 +173,7 @@
                             <th> <small>Cadena</small> </th>
                             <th> <small>Contrato anexo</small> </th>
                             <th> <small>Monto</small> </th>
+                            <th> <small>Descuento</small> </th>
                             <th> <small>Cliente</small> </th>
                             {{-- <th> <small>Acciones</small> </th> --}}
                           </tr>
@@ -181,6 +182,7 @@
                         </tbody>
                         <tfoot id='tfoot_average'>
                           <tr>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>

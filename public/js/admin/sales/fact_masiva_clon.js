@@ -9,7 +9,15 @@ $(function(){
     let info = $dt.DataTable().row($(this).closest('tr')).data();
     let total = parseFloat($total.val().replace(/,/g, ""));
     let price = parseFloat(info[5]);
-    total += this.checked ? price :  (0 - price);
+    let discount = parseFloat(info[6]);
+    let monto_descuento = 0;
+    discount = (discount / 100);
+    monto_descuento = (price * discount);
+    let price_discounted = (price - monto_descuento);
+    // let test_monto = (0 - price);
+    // console.log("monto descuento: " + monto_descuento + "  total con descuento: " + price_discounted + "  operacion: " + test_monto);
+
+    total += this.checked ? price_discounted :  (0 - price_discounted);
 
     $total.val(total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
   });
@@ -19,10 +27,8 @@ $(function(){
     let data = [];
 
     $dt.DataTable().data().each(function (info) {
-      // var txt = info[0];
-  
+      // var discount = info[6];
       if (checked) {
-        
         total += parseFloat(info[5]);
         // txt = txt.substr(0, txt.length - 1) + ' checked>';
       } else {
@@ -34,6 +40,7 @@ $(function(){
     // $dt.DataTable().clear().rows.add(data).draw();
     $total.val(total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
   });
+
   $("#form input[name='date']").daterangepicker({
       singleDatePicker: true,
       timePicker: true,
@@ -261,6 +268,7 @@ function table_anexos(datajson, table){
       status.cadenas,
       status.key,
       status.quantity,
+      status.descuento,
       status.customers
       // '<a href="javascript:void(0)" data-type="select" data-pk="'+ status.id_contract_master +'" data-title="Clientes" data-value="' + status.rz_customer_id + '" class="set-clientes">' + status.customers + '</a>',
       // '<a href="javascript:void(0);" onclick="view_info(this)" class="btn btn-primary  btn-sm mr-2 p-1" value="'+status.id_contract_master+'"><i class="fas fa-eye btn-icon-prepend fastable"></i></a>'
