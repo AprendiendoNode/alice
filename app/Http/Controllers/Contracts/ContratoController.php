@@ -940,8 +940,15 @@ class ContratoController extends Controller
       $iva = $request->iva_add;
       $idubicacion = $request->id_anexo;
       $mensiva = $request->mensconiva_add;
+
       $mensualidad_str = str_replace(',', '', $mensualidad);
       $mensualidad_str = (float)$mensualidad_str;
+
+      $monto_descuento = str_replace(',', '', $request->monto_descuento_add);
+      $monto_descuento = (float)$monto_descuento;
+  
+      $monto_con_descuento = str_replace(',', '', $request->monto_con_descuento_add);
+      $monto_con_descuento = (float)$monto_con_descuento;
 
       $validacion= 0;
       $existe = DB::table('contract_payments')
@@ -963,6 +970,8 @@ class ContratoController extends Controller
           'exchange_range_value' => $tcvalue,
           'iva_id' => $id_iva,
           'descuento' => $request->descuento_add,
+          'monto_descuento' => $monto_descuento,
+          'monto_con_descuento' => $monto_con_descuento,
           'contract_annex_id' => $idubicacion,
           'created_at' => \Carbon\Carbon::now() ]);
         if(empty($newId)){
@@ -972,6 +981,54 @@ class ContratoController extends Controller
            return $newId; // returns id reg
         }
       }
+ }
+ public function edit_coin_anexo(Request $request)
+ {
+      $mensualidad = $request->mensualidad_edit;
+      $moneda = $request->moneda_edit;
+      $tcoption = $request->formatcoption_edit;
+      $tcvalue = $request->formatcvalue_edit;
+      $iva = $request->iva_edit;
+      $idubicacion = $request->id_anexo;
+      $mensiva = $request->mensconiva_add;
+
+      $mensualidad_str = str_replace(',', '', $mensualidad);
+      $mensualidad_str = (float)$mensualidad_str;
+
+      $monto_descuento = str_replace(',', '', $request->monto_descuento_edit);
+      $monto_descuento = (float)$monto_descuento;
+  
+      $monto_con_descuento = str_replace(',', '', $request->monto_con_descuento_edit);
+      $monto_con_descuento = (float)$monto_con_descuento;
+      
+      $validacion= 0;
+      $existe = DB::table('contract_payments')
+                ->where('contract_annex_id', $idubicacion)
+                ->where('currency_id', $moneda)
+                ->count();
+     $id_iva = DB::table('ivas')->where('number', $iva)->value('id');
+
+      if ($request->formatcvalue_edit == '') { $tcvalue = 0; }
+
+      /*if ($existe > 0) {
+        return $validacion;
+      }*/
+    
+      $result = DB::table('contract_payments')
+        ->where('id', $request->contract_payment_id)
+        ->update([
+          'quantity' => $mensualidad_str,
+          'exchange_range_id' => $tcoption,
+          'exchange_range_value' => $tcvalue,
+          'iva_id' => $id_iva,
+          'descuento' => $request->descuento_edit,
+          'monto_descuento' => $monto_descuento,
+          'monto_con_descuento' => $monto_con_descuento,
+          'contract_annex_id' => $idubicacion,
+          'created_at' => \Carbon\Carbon::now() ]);
+
+         return $result;
+      
  }
  public function delete_coin_anexo(Request $request)
  {
@@ -1082,7 +1139,7 @@ class ContratoController extends Controller
 
  public function getContractsPaymentsDataById(Request $request)
  {
-    $result = DB::select('CALL ', array($request->id_coin));
+    $result = DB::select('CALL px_contract_payments_data1(?)', array($request->id_coin));
 
     return $result;
  }

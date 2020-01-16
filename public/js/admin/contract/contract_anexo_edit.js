@@ -1018,6 +1018,9 @@ function operationadd(){
       tipo_moneda = $('#moneda_add').val(),
 tipo_forma_cambio = $('#formatcoption').val(),
       tipo_cambio = $('#formatcvalue').val(),
+        descuento = $('#descuento_add').val(),
+        monto_descuento = $('#monto_descuento_add').val(),
+        monto_con_descuento = $('#monto_con_descuento_add').val(),
         valor_iva = $('#iva_add').val(),
         unir_iva = '1.'+valor_iva,
        mensconiva = 0;
@@ -1047,9 +1050,84 @@ tipo_forma_cambio = $('#formatcoption').val(),
         $('input[name="formatcvalue"]').val('');
       }
     }
+
+    //Calculando descuento
+    monto_descuento = (descuento * mensconiva) / 100;
+    monto_con_descuento = parseFloat(mensconiva) - parseFloat(monto_descuento);
+
     $('#mensconiva_add').val(parseFloat(mensconiva).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    $('#monto_descuento_add').val(parseFloat(monto_descuento).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    $('#monto_con_descuento_add').val(parseFloat(monto_con_descuento).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 
 }
+
+function operationedit(){
+  var mensualidad = $('#mensualidad_edit').val().replace(/,/g, ''),
+      tipo_moneda = $('#moneda_edit').val(),
+tipo_forma_cambio = $('#formatcoption_edit').val(),
+      tipo_cambio = $('#formatcvalue_edit').val(),
+        valor_iva = $('#iva_edit').val(),
+        descuento = $('#descuento_edit').val(),
+        monto_descuento = $('#monto_descuento_edit').val(),
+        monto_con_descuento = $('#monto_con_descuento_edit').val(),
+        unir_iva = '1.'+valor_iva,
+       mensconiva = 0;
+
+       mensualidad = (mensualidad == null || mensualidad == undefined || mensualidad == "") ? 0 : mensualidad;
+      tipo_cambio = (tipo_cambio == null || tipo_cambio == undefined || tipo_cambio == "") ? 0 : tipo_cambio;
+
+    if(tipo_moneda == '1') {
+      mensconiva = mensualidad * unir_iva;
+      // $('[name="formatcoption"').val('2').trigger('change');
+      $('input[name="formatcvalue_edit"]').prop("readonly", true);
+      $('input[name="formatcvalue_edit"]').val('');
+    }
+    else {
+      if(tipo_forma_cambio == ''){
+        mensconiva = mensualidad * unir_iva;
+        $('input[name="formatcvalue_edit"]').prop("readonly", true);
+        $('input[name="formatcvalue_edit"]').val('');
+      }
+      if(tipo_forma_cambio == '1'){
+        tranformar_tc = mensualidad * tipo_cambio;
+        mensconiva = tranformar_tc * unir_iva;
+      }
+      if(tipo_forma_cambio == '2'){
+        mensconiva = mensualidad * unir_iva;
+        $('input[name="formatcvalue_edit"]').prop("readonly", true);
+        $('input[name="formatcvalue_edit"]').val('');
+      }
+    }
+
+    //Calculando descuento
+    monto_descuento = (descuento * mensconiva) / 100;
+    monto_con_descuento = parseFloat(mensconiva) - parseFloat(monto_descuento);
+
+    $('#mensconiva_edit').val(parseFloat(mensconiva).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    $('#monto_descuento_edit').val(parseFloat(monto_descuento).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    $('#monto_con_descuento_edit').val(parseFloat(monto_con_descuento).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+}
+
+
+function testDecimals(currentVal) {
+    var count;
+    currentVal.match(/\./g) === null ? count = 0 : count = currentVal.match(/\./g);
+    return count;
+}
+function replaceCommas(yourNumber) {
+    var components = yourNumber.toString().split(".");
+    if (components.length === 1)
+        components[0] = yourNumber;
+    components[0] = components[0].replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if (components.length === 2)
+        components[1] = components[1].replace(/\D/g, "");
+    return components.join(".");
+}
+
+/*
+  **** EVENTOS ADD COIN  *****
+*/ 
 
 $("#mensualidad_add").on("keyup", function(event) {
   //Convertir formato pesos
@@ -1066,20 +1144,6 @@ $("#mensualidad_add").on("keyup", function(event) {
   operationadd();
   //---------------------------------------------------------------
 });
-function testDecimals(currentVal) {
-    var count;
-    currentVal.match(/\./g) === null ? count = 0 : count = currentVal.match(/\./g);
-    return count;
-}
-function replaceCommas(yourNumber) {
-    var components = yourNumber.toString().split(".");
-    if (components.length === 1)
-        components[0] = yourNumber;
-    components[0] = components[0].replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    if (components.length === 2)
-        components[1] = components[1].replace(/\D/g, "");
-    return components.join(".");
-}
 
 $("#moneda_add").on('change',function(){
   var change_coin = $(this).val();
@@ -1121,6 +1185,76 @@ $("#formatcvalue").on("keyup", function(event) {
 $("#iva_add").on('change',function(){
   operationadd();
 });
+$("#descuento_add").on('keyup',function(event){
+  operationadd();
+});
+
+/*
+  **** EVENTOS EDIT COIN  *****
+*/ 
+
+$("#mensualidad_edit").on("keyup", function(event) {
+  //Convertir formato pesos
+  if (event.which >= 37 && event.which <= 40) {
+      event.preventDefault();
+  }
+  var currentVal = this.value;
+  var testDecimal = testDecimals(currentVal);
+  if (testDecimal.length > 1) {
+      currentVal = currentVal.slice(0, -1);
+  }
+  $(this).val(replaceCommas(currentVal));
+  //---------------------------------------------------------------
+  operationedit();
+  //---------------------------------------------------------------
+});
+
+$("#moneda_edit").on('change',function(){
+  var change_coin = $(this).val();
+  if (change_coin == '') {
+    $('[name="formatcoption"').val('').trigger('change');
+    $('input[name="formatcvalue_edit"]').prop("readonly", true);
+    $('input[name="formatcvalue_edit"]').val('');
+    operationedit();
+  }
+  else if (change_coin == '1') {
+    // console.log(2);
+    $('[name="formatcoption"').val('2').trigger('change');
+    $('input[name="formatcvalue_edit"]').prop("readonly", true);
+    $('input[name="formatcvalue_edit"]').val('');
+    operationedit();
+  }
+  else{
+    $('input[name="formatcvalue_edit"]').prop("readonly", false);
+    $('input[name="formatcvalue_edit"]').val('');
+    operationedit();
+  }
+      // operationadd();
+});
+$("#formatcoption_edit").on('change',function(){
+  var change_option = $(this).val();
+  if (change_option == '' || change_option == '2') {
+    $('input[name="formatcvalue_edit"]').prop("readonly", true);
+    $('input[name="formatcvalue_edit"]').val('');
+  }
+  else {
+    $('input[name="formatcvalue_edit"]').prop("readonly", false);
+    $('input[name="formatcvalue_edit"]').val('');
+  }
+  operationedit();
+});
+$("#formatcvalue_edit").on("keyup", function(event) {
+  operationedit();
+});
+$("#iva_edit").on('change',function(){
+  operationedit();
+});
+$("#descuento_edit").on('keyup',function(event){
+  operationedit();
+});
+
+
+/** ******************************************************** */
 
 $("#Creatnewcoin").validate({
     ignore: "input[type=hidden]",
@@ -1194,6 +1328,76 @@ $("#Creatnewcoin").validate({
       //------------------
     }
 });
+
+/**************************************************************************/ 
+$("#Editnewcoin").validate({
+  ignore: "input[type=hidden]",
+  errorClass: "text-danger",
+  successClass: "text-success",
+  errorPlacement: function (error, element) {
+    error.insertAfter(element);
+  },
+  rules: {
+  },
+  messages: {
+  },
+  // debug: true,
+  // errorElement: "label",
+  submitHandler: function(form){
+    // swal("Operación abortada", "Ningúna operación afectuada, Ingrese la latitud y longitud :)", "error");
+    Swal.fire({
+      title: "Estás seguro?",
+      text: "",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonClass: "btn-danger",
+      confirmButtonText: "Continuar.!",
+      cancelButtonText: "Cancelar.!",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+    }).then((result) => {
+      if (result.value) {
+        // The AJAX
+        var form = $('#Editnewcoin')[0];
+        var formData = new FormData(form);
+        var idanexo =$('#sel_anexo option:selected').val();
+        formData.append('id_anexo', idanexo);
+        $.ajax({
+          type: 'POST',
+          url: "/editcoinanexocont",
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (data){
+            //console.log(data);
+            datax = data;
+            if (datax != '0') {
+             
+              var id_contrat = $('#sel_anexo option:selected').val();
+              genTablecoin(id_contrat);
+              Swal.fire("Operación Completada!", ":)", "success");
+            }
+            else {
+              Swal.fire("Operación abortada", "Error al registrar intente otra vez :(", "error");
+            }
+          },
+          error: function (data) {
+            Swal.fire("Operación abortada", "Ocurrio un error inesperado", "error");
+          }
+        });
+      } //if result.value
+      else {
+        Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
+        $("#Creatnewcoin")[0].reset();
+        var validator = $( "#Creatnewcoin" ).validate();
+        validator.resetForm();
+        $('#modal-Creatcoin').modal('toggle');
+      }
+    })
+    //------------------
+  }
+});
+
 function deletecoin(e){
   var valor= e.getAttribute('value');
   Swal.fire({
@@ -1237,39 +1441,33 @@ function deletecoin(e){
 
 function modal_edit_coin(e){
   var valor = e.getAttribute('value');
-  console.log(valor);
-
-  /*$('#mensualidad_edit').val();
+  $('#mensualidad_edit').val();
   $('#moneda_edit').val();
   $('#formatcoption_edit').val();
   $('#iva_edit').val();
   $('#descuento_edit').val();
   $('#monto_descuento_edit').val();
-  $('#mensualidad_edit').val();
-  $('#monto_sin_descuento_edit').val();*/
+  $('#monto_sin_descuento_edit').val();
 
-  /* $.ajax({
+   $.ajax({
     type: "POST",
     url: "/getContractsPaymentsDataById",
-    data: { valor : valor , _token : _token },
+    data: { id_coin : valor , _token : _token },
     success: function (data){
-      datax = JSON.parse(data);
-      if (datax[0].resultado == 1) {
-        var id_contrat = $('#sel_anexo option:selected').val();
-        genTablecoin(id_contrat);
-        Swal.fire("Operación success", "Cambio efectuado :)", "success");
-      }
-      else{
-        Swal.fire("Operación abortada", "Problema de conexión :(", "error");
-      }
+      $('#contract_payment_id').val(valor);
+      $('#mensualidad_edit').val(data[0].quantity);
+      $('#moneda_edit').val(data[0].currency_id).trigger('change');
+      $('#formatcoption_edit').val(data[0].exchange_range_id).trigger('change');
+      $('#iva_edit').val(data[0].iva).trigger('change');
+      $('#descuento_edit').val(data[0].descuento);
+      $('#monto_descuento_edit').val(data[0].monto_descuento);
+      $('#monto_sin_descuento_edit').val(data[0].monto_sin_descuento);
+      operationedit();
+      $('#modal-Editcoin').modal('show');
     },
     error: function (data) {
       console.log('Error:', data);
     }
-  });*/
-  $('#modal-Editcoin').modal('show');
-}
-
-function edit_coin(){
-
+  });
+  
 }

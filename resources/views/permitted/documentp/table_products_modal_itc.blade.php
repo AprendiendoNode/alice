@@ -250,6 +250,7 @@ table tfoot td, table tfoot th {
 .progress-bar{
   margin: 4px !important;
   color: #393E46;
+  max-width: 100% !important;
 }
 
 .bg-primary{

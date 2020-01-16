@@ -778,6 +778,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/data_contractcoin', 'Contracts\ContratoController@all_coin_anexo');
     Route::post('/addcoinanexocont', 'Contracts\ContratoController@add_new_coin_anexo');
     Route::post('/delete_coin_anexo', 'Contracts\ContratoController@delete_coin_anexo');
+    Route::post('/editcoinanexocont', 'Contracts\ContratoController@edit_coin_anexo');
     //Contratos
     Route::get('cont_filemanager', 'Contracts\CFilemanagerController@index');
     Route::post('find_fact_pend', 'Contracts\CFilemanagerController@find_fact_pend');

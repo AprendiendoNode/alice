@@ -788,7 +788,7 @@
                 <label for="">Medida:</label>
                 <div class="btn-group btn-group-sm btn-group-toggle d-flex justify-content-center" data-toggle="buttons">
                   <label class="btn btn-danger active">
-                    <input type="radio" name="optionsMedida" id="option1" value="1" checked> 1"
+                    <input type="radio" name="optionsMedida" id="option1" value="4" checked> 1"
                   </label>
                   <label class="btn btn-danger">
                     <input type="radio" name="optionsMedida" id="option2" value="2"> 1/2"
@@ -797,7 +797,7 @@
                     <input type="radio" name="optionsMedida" id="option3" value="3"> 3/4"
                   </label>
                   <label class="btn btn-danger">
-                    <input type="radio" name="optionsMedida" id="option3" value="4"> 2"
+                    <input type="radio" name="optionsMedida" id="option3" value="8"> 2"
                   </label>
                 </div>
               </div>

@@ -720,9 +720,9 @@
                           </div>
                         </div>
                         <div class="form-group">
-                          <label for="monto_sin_descuento_add" class="col-md-4 control-label">Monto sin descuento :</label>
+                          <label for="monto_con_descuento_add" class="col-md-4 control-label">Monto sin descuento :</label>
                           <div class="col-md-8">
-                            <input class="form-control" type="text" name="monto_sin_descuento_add" id="monto_sin_descuento_add">
+                            <input class="form-control" type="text" name="monto_con_descuento_add" id="monto_con_descuento_add">
                           </div>
                         </div>
                         <div class="form-group">
@@ -759,6 +759,7 @@
                     <div class="col-xs-12">
                       <form class="form-horizontal" id="Editnewcoin" name="Editnewcoin">
                         {{ csrf_field() }}
+                        <input name="contract_payment_id" id="contract_payment_id" type="hidden" value="">
                         <div class="form-group">
                           <label for="mensualidad_edit" class="col-md-4 control-label">Mensualidad:</label>
                           <div class="col-md-8">
@@ -769,7 +770,7 @@
                         <div class="form-group">
                           <label for="moneda_edit" class="col-xs-4 control-label">Elija la moneda:</label>
                           <div class="col-xs-8">
-                            <select id="moneda_edit" name="moneda_edit" class="form-control select2 required" style="width:100%;">
+                            <select disabled id="moneda_edit" name="moneda_edit" class="form-control select2 required" style="width:100%;">
                               <option value="" selected>{{ trans('pay.select_op') }}</option>
                               @forelse ($currency as $data_currency)
                                 <option value="{{ $data_currency->id }}"> {{ $data_currency->name }} </option>
@@ -780,7 +781,7 @@
                         </div>
                         <div class="form-group">
                           <div class="col-xs-4 text-right">
-                            <label for="formatcoption" class="control-label text-right">Tipo de cambio:</label>
+                            <label for="formatcoption_edit" class="control-label text-right">Tipo de cambio:</label>
                           </div>
                           <div class="col-xs-8">
                             <div id="cont_tp_edit" class="input-group">
@@ -798,7 +799,7 @@
                           </div>
                         </div>
                         <div class="form-group">
-                          <label for="iva_add" class="col-xs-4 control-label">IVA%:</label>
+                          <label for="iva_edit" class="col-xs-4 control-label">IVA%:</label>
                           <div class="col-xs-8">
                             <select id="iva_edit" name="iva_edit" class="form-control select2 required" style="width:100%;">
                               @forelse ($iva as $data_iva)
@@ -828,13 +829,13 @@
                         <div class="form-group">
                           <label for="monto_descuento_edit" class="col-md-4 control-label">Monto descuento :</label>
                           <div class="col-md-8">
-                            <input class="form-control" type="text" name="monto_descuento_edit" id="monto_descuento_edit">
+                            <input readonly class="form-control" type="text" name="monto_descuento_edit" id="monto_descuento_edit">
                           </div>
                         </div>
                         <div class="form-group">
-                          <label for="monto_sin_descuento_edit" class="col-md-4 control-label">Monto sin descuento :</label>
+                          <label for="monto_con_descuento_edit" class="col-md-4 control-label">Monto con descuento :</label>
                           <div class="col-md-8">
-                            <input class="form-control" type="text" name="monto_sin_descuento_edit" id="monto_sin_descuento_edit">
+                            <input readonly class="form-control" type="text" name="monto_con_descuento_edit" id="monto_con_descuento_edit">
                           </div>
                         </div>
                         <div class="form-group">

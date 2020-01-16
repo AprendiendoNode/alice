@@ -406,8 +406,6 @@ $( document ).ready(function() {
               return 'Este campo es requerido';
           else if(!isFinite(newValue))
               return 'Debe ingresar un valor númerico';
-          else if(parseFloat(newValue) > $(this).data('cant'))
-              return 'El número no puede exceder a la cantidad solicitada: ' + $(this).data('cant');
           else if(newValue <  0)
               return 'No puede ingresar valores negativos';
         },
@@ -522,7 +520,7 @@ $( document ).ready(function() {
     function update_percent_progress(id, porcentaje_compra){
       $( "#" + `${id}`).find( "div.progress-bar" ).css( "width", porcentaje_compra + '%' );
       $( "#" + `${id}`).find( "div.progress-bar").find("span").text(porcentaje_compra + '%');
-      if(porcentaje_compra == 100.00){
+      if(porcentaje_compra >= 100.00){
         $( "#" + `${id}`).find( "div.progress-bar").removeClass( "bg-warning" ).addClass( "bg-success" );
       }else if(porcentaje_compra > 0.0 && porcentaje_compra < 100){
         $( "#" + `${id}`).find( "div.progress-bar").removeClass( "bg-success" ).addClass( "bg-warning" );
@@ -539,6 +537,7 @@ $( document ).ready(function() {
 .progress-bar{
   margin: 4px !important;
   color: #393E46;
+  max-width: 100% !important;
 }
 
 .bg-primary{
