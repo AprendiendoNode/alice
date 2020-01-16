@@ -240,7 +240,7 @@ info($date."-".$encuestas."-".$cadena);
   public function docs_x(Request $request){
     $itc_id = $request->itc_id;
     $tipo_doc = $request->tipo_doc;
-    $result=DB::Select('CALL px_documentxtype_itc(?,?)',array($itc_id,$tipo_doc));
+    $result=DB::Select('CALL px_documentxtype_itc_v2(?,?,?)',array($itc_id, date('Y-m-d'), $tipo_doc));
     return $result;
   }
 

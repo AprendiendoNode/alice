@@ -48,7 +48,7 @@ $(function() {
     //$("#cargando").removeClass("d-none");
     $('#gral_sitio').removeClass('d-none');//Muestra la informacion por sitio
     $('#gral_cadena').addClass('d-none');//oculta la informacion por cadena.
-    loading(1000);
+    loading(3000);
     //TEMPORAL PRESUPUESTO CADENA
     $("#terminado_presupuesto_cadena").removeClass("d-none");
     $("#construyendo_presupuesto_cadena").addClass("d-none");
@@ -113,6 +113,7 @@ $(function() {
     $('li[rel=tab_1_1]').tooltip().removeClass("active"); //Ocultar la pestaña de general
     $('.tab_1_1').removeClass("active"); //Ocultar la pestaña de general del acordeón
     $('.tab_content.tab_1_1').css("display","none"); //Ocultar el div de general
+    $('html, body').animate({scrollTop:0}, 'slow');
   });
 
   $('#graph_viaticos_x_mes').on('click', function(){
@@ -122,6 +123,17 @@ $(function() {
     $('li[rel=tab_1_1]').tooltip().removeClass("active"); //Ocultar la pestaña de general
     $('.tab_1_1').removeClass("active"); //Ocultar la pestaña de general del acordeón
     $('.tab_content.tab_1_1').css("display","none"); //Ocultar el div de general
+    $('html, body').animate({scrollTop:0}, 'slow');
+  });
+
+  $('#graph_doc_p, #graph_doc_m').on('click', function(){
+    $('li[rel=tab_1_5]').tooltip().addClass("active"); //Mostrar la pestaña de proyectos
+    $('.tab_1_5').addClass("active"); //Mostrar la pestaña de proyectos del acordeón
+    $('.tab_content.tab_1_5').css("display","block"); //Mostrar el div de proyectos
+    $('li[rel=tab_1_1]').tooltip().removeClass("active"); //Ocultar la pestaña de general
+    $('.tab_1_1').removeClass("active"); //Ocultar la pestaña de general del acordeón
+    $('.tab_content.tab_1_1').css("display","none"); //Ocultar el div de general
+    $('html, body').animate({scrollTop:0}, 'slow');
   });
 
   $('.filtrarDashboard').on('click', function(){
@@ -1146,7 +1158,7 @@ function graph_calificaciones_x_mes(title, meses, promotores, pasivos, detractor
 
     option = {
       title: {
-          text: 'Calificaciones x mes'
+          text: 'Calificaciones x mes (NPS)'
       },
       tooltip: {
           trigger: 'axis'
@@ -1221,7 +1233,7 @@ function graph_viaticos_x_mes(title, meses, gastos) {
 
     option = {
       title: {
-          text: 'Viáticos x mes'
+          text: 'Viáticos x mes (Pagados)'
       },
       tooltip: {
           trigger: 'axis'
@@ -1605,15 +1617,28 @@ function getProjects(itc){
       }
   });
 
+      $.ajax({
+        type: "POST",
+        url: "/get_graph_docx",
+        data: { itc_id : itc, tipo_doc : 1, _token : _token },
+        success: function (data){
+          console.log(data);
+          //Gráfica DOC P
+          graph_document('graph_doc_p', 'Documento P (Entregados)', data);
+        },
+        error: function (data) {
+          console.log('Error:', data);
+        }
+      });
 
       $.ajax({
         type: "POST",
         url: "/get_graph_docx",
-        data: { itc_id : itc,tipo_doc:1, _token : _token },
+        data: { itc_id : itc, tipo_doc : 2, _token : _token },
         success: function (data){
-          //console.log(data);
+          console.log(data);
           //Gráfica DOC P
-          graph_document('graph_doc_p',data);
+          graph_document('graph_doc_m', 'Documento M (Entregados)', data);
         },
         error: function (data) {
           console.log('Error:', data);
@@ -1654,150 +1679,114 @@ Swal.fire({
 }
 
 
-function graph_document(title,data) {
-
- var chart = document.getElementById(title);
-  var resizeMainContainer = function () {
-   chart.style.width = 420+'px';
-   chart.style.height = 320+'px';
- };
-  resizeMainContainer();
-    var myChart = echarts.init(chart);
-    var auxdate=[];
-    var date=[];
-    var count=[];
-    var quantity=[];
-    var aux_amount=[];
-    var amount=[];
-    var i=0;
-
-    data.forEach(function(element){
-    auxdate[i] = element.fecha; //Metemos las fechas en un array
-    aux_amount[i]= parseFloat(element.total_usd);
-    count[i] = i;//array de las posiciones
-    i++;
-    });
-    //console.log(Math.max.apply(null,amount));
-    auxdate.sort();//Ordenamos los elementos
-    var current = null;
-    var cnt=0;
-    var k=0;
-    var testamount=0;
-
-    for (var j = 0; j < auxdate.length; j++) { //Revisamos cuantas veces se repitio 'X' fecha
-      if (auxdate[j] != current) {
-          if (cnt > 0) {
-              console.log(current + ' repitio --> ' + cnt + 'veces');
-              quantity[k]=cnt;
-              k++;
-              testamount+=aux_amount[j];
-          }
-          current = auxdate[j];
-          cnt = 1;
-          testamount=0;
-          testamount+=aux_amount[j];
-      } else {
-          cnt++;
-          testamount+=aux_amount[j];
-          amount[k]= parseFloat(testamount.toFixed(2));
-      }
-    }
-    k++;
-    if (cnt > 0) {
-        console.log(current + ' rep --> ' + cnt + ' veces');
-        quantity[k]=cnt;
-    }
-
-  //console.log(amount);
-  console.log('count: ' +count);
-  console.log('date: '+date);
-  option = {
-      title: {
-          text: 'Documento P',
-          subtext: 'Resultados'
-      },
-      tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-              type: 'cross',
-              label: {
-                  backgroundColor: '#283b56'
-              }
-          }
-      },
-      legend: {
-          data:['Cantidad', 'Monto']
-      },
-      toolbox: {
-          show: true,
-          feature: {
-              dataView: {readOnly: false},
-              restore: {},
-              saveAsImage: {}
-          }
-      },
-      dataZoom: {
-          show: false,
-          start: 0,
-          end: 100
-      },
-      xAxis: [
-          {
-              type: 'category',
-              boundaryGap: true,
-              data: [1,2],
-          },
-          {
-              type: 'category',
-              boundaryGap: true,
-              data: [1,2],//count,
-          }
-      ],
-      yAxis: [
-          {
-              type: 'value',
-              scale: true,
-              name: '',
-              max: Math.max.apply(null,amount),///Cantidad máxima del monto aprobado
-              min: 0,
-              boundaryGap: [0.2, 0.2]
-          },
-          {
-              type: 'value',
-              scale: true,
-              name: '',
-              max: Math.max.apply(null,quantity.filter(Boolean)),//Cantidad máxima de documentos P autorizados
-              min: 0,
-              boundaryGap: [0.2, 0.2]
-          }
-      ],
-      series: [
-          {
-              name: 'Cantidad',
-              type: 'bar',
-              xAxisIndex: 1,
-              yAxisIndex: 1,
-              data: quantity.filter(Boolean),//Barra cantidad
-          },
-          {
-              name: 'Monto',
-              type: 'line',
-              data: amount,//Linea monto
-          }
-      ]
+function graph_document(title, name, data) {
+  var chart = document.getElementById(title);
+   var resizeMainContainer = function () {
+     chart.style.width = '40vw';
+     chart.style.height = 300+'px';
   };
+     resizeMainContainer();
+     var myChart = echarts.init(chart);
 
+     var max_monto = Object.values(data[1]), max_cantidad = Object.values(data[2]);
 
-  myChart.setOption(option);
+     for(var i = 0; i < 12 ; i++) {
 
-  $(window).on('resize', function(){
-      if(myChart != null && myChart != undefined){
-         //chart.style.width = 100+'%';
-         //chart.style.height = 100+'%';
-         chart.style.width = $(window).width()*0.5;
-         chart.style.height = $(window).width()*0.5;
+       max_monto[i] = parseInt(max_monto[i]);
+       max_cantidad[i] = parseInt(max_cantidad[i]);
+
+     }
+     max_monto = parseInt(Math.max.apply(Math, max_monto) * 1.2);
+     //max_cantidad = parseInt(Math.max.apply(Math, max_cantidad) * 1.2);
+     max_cantidad = Math.max.apply(Math, max_cantidad) + 1;
+
+     option = {
+         title: {
+             text: name
+         },
+         tooltip: {
+             trigger: 'axis',
+             axisPointer: {
+                 type: 'cross',
+                 label: {
+                     backgroundColor: '#283b56'
+                 }
+             }
+         },
+         legend: {
+             top: '10%',
+             data:['Cantidad', 'Monto']
+         },
+         dataZoom: {
+             show: false,
+             start: 0,
+             end: 100
+         },
+         xAxis: [
+             {
+                 type: 'category',
+                 boundaryGap: true,
+                 data: Object.values(data[0]),
+                 axisTick: {
+                     alignWithLabel: true
+                 },
+                 axisLabel : {
+                    show: true,
+                    interval: '0',
+                    rotate: 45
+                 }
+             },
+             {
+                 type: 'category',
+                 boundaryGap: true,
+                 data: ['','','','','','','','','','','','']
+             }
+         ],
+         yAxis: [
+             {
+                 type: 'value',
+                 scale: true,
+                 name: '',
+                 max: max_monto,
+                 min: 0,
+                 boundaryGap: [0.2, 0.2]
+             },
+             {
+                 type: 'value',
+                 scale: true,
+                 name: '',
+                 max: max_cantidad,
+                 min: 0,
+                 boundaryGap: [0.2, 0.2]
+             }
+         ],
+         series: [
+             {
+                 name: 'Monto',
+                 type: 'line',
+                 data: Object.values(data[1]),
+                 label: {
+                   show: true
+                 }
+             },
+             {
+                 name: 'Cantidad',
+                 type: 'bar',
+                 xAxisIndex: 1,
+                 yAxisIndex: 1,
+                 data: Object.values(data[2]),
+                 label: {
+                   show: true
+                 }
+             }
+         ]
+     };
+
+   myChart.setOption(option);
+
+   $(window).on('resize', function(){
+       if(myChart != null && myChart != undefined){
           myChart.resize();
-
-      }
-  });
+       }
+   });
 }

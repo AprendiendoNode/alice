@@ -431,11 +431,19 @@
                     </div>
                   </div>
                   <div class="row">
-                      <div class="d-flex justify-content-center border-bottom w-100 col-sm-6 col-md-6">
+                      <div class="d-flex justify-content-center w-100 col-sm-6 col-md-6">
                         <div id="graph_calificaciones_x_mes"> </div>
                       </div>
-                      <div class="d-flex justify-content-center border-bottom w-100 col-sm-6 col-md-6">
+                      <div class="d-flex justify-content-center w-100 col-sm-6 col-md-6">
                         <div id="graph_viaticos_x_mes"> </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="d-flex justify-content-center w-100 col-sm-6 col-md-6">
+                        <div id="graph_doc_p"> </div>
+                      </div>
+                      <div class="d-flex justify-content-center w-100 col-sm-6 col-md-6">
+                        <div id="graph_doc_m"> </div>
                       </div>
                   </div>
               </div>
@@ -444,7 +452,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="w-100 text-center">
-                      <h3 style="font-weight: bold;">NPS</h3>
+                      <h3 style="font-weight: bold;">NPS Anual</h3>
                     </div>
                   </div>
                 </div>
@@ -724,6 +732,9 @@
                 </div>
               </div>
   <div class="tab_content">
+    <div class="text-center">
+      <h3 style="font-weight:bold;" >Todos los documentos</h3>
+    </div>
     <hr>
     <div class="row">
         <!--<div class="col-md-2 mb-3">
@@ -742,7 +753,7 @@
         <!-- /.col-md-4 -->
         <div class="col-md-12">
             <div class="tab-content" id="myTabContent">
-              <div class="row m-3"></div>
+              <div class="row"></div>
                 <div class="" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <h2>Documento P</h2>
                     <div class="row">
@@ -808,7 +819,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center border-bottom w-40 col-sm-5 col-md-5">
-                  <div id="graph_doc_p"class=""></div>
+                  
                 </div>
                 <hr>
                 <div class="" id="profile" role="tabpanel" aria-labelledby="profile-tab">
