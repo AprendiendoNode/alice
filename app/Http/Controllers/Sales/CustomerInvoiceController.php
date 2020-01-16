@@ -1407,7 +1407,12 @@ class CustomerInvoiceController extends Controller
        }
      }
 
-
+     public function getrzcustomerid(Request $request)
+     {
+       $contract_master_id = $request->contract_master;
+       $res = DB::table('contract_masters')->where('id', $contract_master_id)->value('rz_customer_id');
+       return $res;
+     }
      //Inserta sitios agrupados a CustomerInvoiceLines
 
      public function insert_sites_annexes_lines(Request $request, $customer_invoice)

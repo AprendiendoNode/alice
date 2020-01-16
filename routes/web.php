@@ -1086,6 +1086,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::get('/customer-invoices-cont', 'Sales\CustomerInvoiceController@index2');
     Route::post('/customer-invoices-cont-search', 'Sales\CustomerInvoiceController@search_cont');
     Route::post('/customer-data-annexes', 'Sales\CustomerInvoiceController@getDataContractAnnexes');
+    Route::post('/customer-data-rzcustomer','Sales\CustomerInvoiceController@getrzcustomerid');
 
     //Notas de credito
     Route::get('/customer-credit-notes', 'Sales\CustomerCreditNoteController@index');

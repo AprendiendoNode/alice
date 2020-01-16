@@ -33,24 +33,6 @@
 
 
           <div class="row">
-            <div class="col-md-6 col-xs-12">
-              <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
-              <div class="input-group">
-                <select class="custom-select" id="customer_id" name="customer_id">
-                  <option value="" selected>Selecciona...</option>
-                  @forelse ($customer as $customer_data)
-                    {{-- <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option> --}}
-                    <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
-                  @empty
-                  @endforelse
-                </select>
-                <div class="input-group-append">
-                  {{-- <button class="btn btn btn-outline-primary btn-xs" type="button"><i class="fas fa-search"></i></button> --}}
-                  <button class="btn btn-outline-info btn-xs" type="button"><i class="fas fa-plus-square"></i></button>
-                </div>
-              </div>
-            </div>
-
             <div class="col-md-3 col-xs-12">
               <div class="form-group">
                 <label for="cadena_id" class="control-label">Cadena:<span style="color: red;">*</span></label>
@@ -70,7 +52,23 @@
                 </select>
               </div>
             </div>
-
+            <div class="col-md-6 col-xs-12">
+              <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
+              <div class="input-group">
+                <select class="custom-select" id="customer_id" name="customer_id">
+                  <option value="" selected>Selecciona...</option>
+                  @forelse ($customer as $customer_data)
+                    {{-- <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option> --}}
+                    <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
+                  @empty
+                  @endforelse
+                </select>
+                <div class="input-group-append">
+                  {{-- <button class="btn btn btn-outline-primary btn-xs" type="button"><i class="fas fa-search"></i></button> --}}
+                  <button class="btn btn-outline-info btn-xs" type="button"><i class="fas fa-plus-square"></i></button>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="col-md-3 col-xs-12">
@@ -1141,9 +1139,28 @@
                         <td class="text-right" colspan="12"></td>
                       </tr>`;
         $("#items tbody").append(html);
+        get_rzcustomer($(this).val());
         getDataContractAnnexes();
       })
+      function get_rzcustomer(id) {
+        var token = $('input[name="_token"]').val();
+        
+        $.ajax({
+            type: "POST",
+            url: "/sales/customer-data-rzcustomer",
+            data: { _token : token, contract_master: id },
+            success: function (data){
+              // console.log(data);
+              $('#customer_id').val(data).trigger('change');
+            },
+            error: function (data) {
+              console.log('Error:', data);
+            }
+        });
+        
 
+
+      }
       function getDataContractAnnexes(){
         var token = $('input[name="_token"]').val();
         var cadena_id = $('#cadena_id').val();
@@ -1166,6 +1183,7 @@
                    text: 'Selecciona la moneda a usar e ingresa un TC',
                  });
                  $("select[name='cont_maestro_id']").val('');
+                 $('#customer_id').val('').trigger('change');
               }
               else {
                 //Si no esta seleccionado la opcion de agrupar sitio se depliegan todos los anexos
