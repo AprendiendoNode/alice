@@ -1,32 +1,52 @@
 $(function(){
 var _token = $('input[name="_token"]').val();
-var anio = new Date().getFullYear();
-//console.log(_token);
-$.ajax({
-  type:"POST",
-  url:"getAllCadena",
-  data:{ anio:anio, _token:_token },
-  success:function(data){
-    var data1=data;
-    $.ajax({
-      type:"POST",
-      url:"/getAllSites",
-      data:{ anio:anio, _token:_token },
-      success:function(data){
-        var data_sites=data;
-        table_general(data1,data_sites,$('#table_budget_cadena'));
-      },
-      error:function(data){
-        console.log('Error:', data);
-      }
-    });
 
-  },
-  error:function(data){
-    console.log('Error:', data);
-  }
+$('#date_select').datepicker({
+  language: 'es',
+  format: "yyyy",
+  viewMode: "years",
+  minViewMode: "years",
+  //startDate: '2016',
+  endDate: '-0y',
+  autoclose: true,
+  clearBtn: true
+}).datepicker("setDate",'now');
+
+var anio = parseInt($('#date_select').val());
+
+llenar_tablas();
+
+function llenar_tablas() {
+  $.ajax({
+    type:"POST",
+    url:"getAllCadena",
+    data:{ anio:anio, _token:_token },
+    success:function(data){
+      var data1=data;
+      $.ajax({
+        type:"POST",
+        url:"/getAllSites",
+        data:{ anio:anio, _token:_token },
+        success:function(data){
+          var data_sites=data;
+          table_general(data1,data_sites,$('#table_budget_cadena'));
+        },
+        error:function(data){
+          console.log('Error:', data);
+        }
+      });
+
+    },
+    error:function(data){
+      console.log('Error:', data);
+    }
+  });
+}
+
+$('#boton-aplica-filtro').on('click',function(){
+  anio = parseInt($('#date_select').val());
+  llenar_tablas();
 });
-
 
 function table_general(data,data_sites, table) {
   table.DataTable().destroy();
@@ -34,7 +54,7 @@ function table_general(data,data_sites, table) {
   var totalFacturado=0;
   var cadenas= new Array();
   vartable.fnClearTable();
-  var first_elem={id: "A1", "text":"SITWIFI", "start_date":new Date(2020,00,01),"end_date":"01-04-2029",progress: 1,open: true};
+  var first_elem={id: "A1", "text":"SITWIFI", "start_date":new Date(anio,00,01),"end_date":"01-04-2029",progress: 1,open: true};
   cadenas.push(first_elem);
   var i=2;
   //CADENAS
@@ -47,14 +67,14 @@ function table_general(data,data_sites, table) {
     ]);
 
     totalFacturado+=parseFloat(status.USD);
-    var aux_cad={id:"C"+status.cadena_id, "text":status.cadena.toString().trim(), "start_date":new Date(2020,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2),"presupuesto_anual_USD":parseFloat(status.presupuesto_anual_USD).toFixed(2),progress: 1, open: false,parent:"A1"};
+    var aux_cad={id:"C"+status.cadena_id, "text":status.cadena.toString().trim(), "start_date":new Date(anio,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2),"presupuesto_anual_USD":parseFloat(status.presupuesto_anual_USD).toFixed(2),progress: 1, open: false,parent:"A1"};
     cadenas.push(aux_cad);
     i++;
   });
   //SITIOS de cada cadena
   $.each(data_sites, function(index, status){
-    console.log('sitio'+status.Nombre_hotel);
-    var aux_sitios={id: status.hotel_id, "text":status.Nombre_hotel.toString().trim(), "start_date":new Date(2020,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2),"presupuesto_anual_USD": parseFloat(status.presupuesto_anual_USD).toFixed(2),progress: 1,color:"green",open: true,parent:"C"+status.cadena_id};
+    //console.log('sitio'+status.Nombre_hotel);
+    var aux_sitios={id: status.hotel_id, "text":status.Nombre_hotel.toString().trim(), "start_date":new Date(anio,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2),"presupuesto_anual_USD": parseFloat(status.presupuesto_anual_USD).toFixed(2),progress: 1,color:"green",open: true,parent:"C"+status.cadena_id};
     cadenas.push(aux_sitios);
   });
 
@@ -126,6 +146,10 @@ function load_gantt(data,title){
    chart.style.width = $(window).width()*0.5;
    chart.style.height = $(window).width()*0.5;
 
+   if (gantt.$container) {
+   gantt.clearAll();
+   }
+
     gantt.config.readonly = true; //Modo lectura
 
     gantt.config.scales = [//Multiples escalas
@@ -174,7 +198,7 @@ function load_gantt(data,title){
     //Colorear celdas especificas
     gantt.templates.scale_cell_class = function(date){
         if(date.getFullYear()){
-          console.log(date.getFullYear());
+          //console.log(date.getFullYear());
             return "year";
         }
     };
@@ -240,7 +264,7 @@ function load_gantt(data,title){
 });
 function enviar_cadena(e){
   var idcadena= e.getAttribute('value');
-  var anio = new Date().getFullYear();
+  var anio = parseInt($('#date_select').val());
   var _token = $('input[name="_token"]').val();
 
   $.ajax({
@@ -249,7 +273,7 @@ function enviar_cadena(e){
     data:{ anio:anio,idcadena:idcadena, _token:_token },
     success:function(data)
     {
-      console.log(data);
+      //console.log(data);
       table_sites(data,$('#table_sites'));
     },
     error:function(data)

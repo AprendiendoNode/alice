@@ -269,6 +269,7 @@ $(function() {
     var sumaNPS = 0;
     var sumaFact = 0;
     var meses = [];
+    var sitios_sin_calif = 0;
     $.each(datajson, function(index, status){
 
       if(index == 0) {
@@ -285,12 +286,17 @@ $(function() {
         $("#NPS11").text(status.NPS11); meses.push(status.NPS11);
         $("#NPS12").text(status.NPS12); meses.push(status.NPS12);
       } else {
-        sumaNPS += parseInt(status.NPS_resul);
+        if(parseInt(status.NPS_resul) == 255) {
+          sitios_sin_calif++;
+          status.NPS_resul = "-";
+        } else {
+          sumaNPS += parseInt(status.NPS_resul);
+        }
         sumaFact += status.facturacion == null ? 0 : parseInt(status.facturacion);
         vartable.fnAddData([
           status.sitio,
           '<a href="javascript:void(0);" id="ver-'+status.hotel_id+'-'+status.sitio+'" class="ver_antenas_sitio">'+status.aps+'</a>',
-          status.facturacion == null ? 0 : parseInt(status.facturacion),
+          (status.facturacion == null ? 0 : parseInt(status.facturacion)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
           status.NPS1,
           status.NPS2,
           status.NPS3,
@@ -310,8 +316,8 @@ $(function() {
 
     });
 
-    $("#npsPromedio").text(parseInt(sumaNPS / parseInt($("#total_sitios").text())));
-    $("#total_faturacion").text(sumaFact);
+    $("#npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
+    $("#total_faturacion").text(sumaFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 
     var promotores = [], pasivos = [], detractores = [];
 

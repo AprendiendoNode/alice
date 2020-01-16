@@ -123,9 +123,20 @@
   </div>
   <div class="p-5 bg-white rounded shadow mb-5">
     <div class="row pt-2 pb-2">
-      <div class="d-block mx-auto">
-        <h3>Vigencia de contratos</h3>
+      <div class="d-block mr-auto">
+        <h3><i class="fas fa-file-contract"></i> Vigencia de contratos</h3>
       </div>
+      <div class="col-md-4 col-xs-12 mb-3">
+        <div class="input-group  flex-nowrap">
+          <div class="input-group-prepend">
+            <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
+          </div>
+          <input id="date_select" type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-outline-info filtrarDashboard" type="button" id="boton-aplica-filtro">Filtrar</button>
+          </div>
+        </div>
+    </div>
     </div>
 
     <div class="row pb-3">
