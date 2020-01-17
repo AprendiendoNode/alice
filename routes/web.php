@@ -1181,6 +1181,9 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('customer-payments/destroy', 'Sales\CustomerPaymentController@destroy');
     Route::get('/customer-payments/download-xml/{id}', 'Sales\CustomerPaymentController@downloadXml');
     Route::get('/customer-payments-pdf/{id}', 'Sales\CustomerPaymentController@generatePdf');
+
+  //REPORTES FACTURACION Y CONTABILIDAD
+  Route::get('/billing_report', 'Sales\BillingReportController@index');
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
