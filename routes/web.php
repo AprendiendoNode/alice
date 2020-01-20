@@ -897,6 +897,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_viatics_gastos_itc','Sabanas\SabanaITController@get_viatics_gastos_itc');
     Route::post('get_projects_itc','Sabanas\SabanaITController@get_projects_itc');
     Route::post('get_graph_docx','Sabanas\SabanaITController@docs_x');
+    Route::post('get_nps_itc', 'Sabanas\SabanaITController@get_nps_itc');
+    Route::post('sabana_itc_modal_encuestas','Sabanas\SabanaITController@sabana_itc_modal_encuestas');
+    Route::post('get_nps_comment_itc', 'Sabanas\SabanaITController@get_nps_comment_itc');
 
     //Sabana Directiva
     Route::get('dash_sabana_directiva', 'Sabanas\SabanaDirectivaController@index');

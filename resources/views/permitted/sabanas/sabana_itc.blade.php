@@ -32,7 +32,7 @@
         <select id="select_itc" class="form-control select2">
           <option value="" selected> Elija uno... </option>
           @forelse ($users as $user)
-            <option value="{{ $user->id }}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-city="{{$user->city}}"> {{ $user->name }} </option>
+            <option value="{{ $user->id }}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-avatar="{{$user->avatar}}" data-city="{{$user->city}}"> {{ $user->name }} </option>
           @empty
           @endforelse
         </select>
@@ -355,7 +355,7 @@
               <div class="tab_content active">
                   <div class="mb-1">
                     <div class="d-inline mr-3">
-                      <img id="imagenCliente" style="max-height: 150px; max-width: 75px;" alt="Sin foto :(">
+                      <img id="imagenCliente" style="max-height: 100px; max-width: 90px;" alt="Sin foto">
                     </div>
                     <div class="d-inline">
                       <table border="1" cellpadding="3" style="text-align: center; display: inline;">
@@ -819,7 +819,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center border-bottom w-40 col-sm-5 col-md-5">
-                  
+
                 </div>
                 <hr>
                 <div class="" id="profile" role="tabpanel" aria-labelledby="profile-tab">

@@ -59,8 +59,7 @@ $(function() {
       data: { itc : itc, _token : _token },
       success: function (data){
         //console.log(data);
-        $('#imagenCliente').attr("src", "../images/users/pictures/default.png");
-        $("#imagenCliente").attr("src", $('#select_itc').find(':selected').data("foto"));
+        $("#imagenCliente").attr("src", $('#select_itc').find(':selected').data("avatar"));
         $("#nombreITC").text($('#select_itc').find(':selected').data("name"));
         $("#correoITC").text($('#select_itc').find(':selected').data("email"));
         $("#localizacionITC").text($('#select_itc').find(':selected').data("city"));
@@ -94,7 +93,7 @@ $(function() {
         console.log('Error:', data);
       }
     });
-    get_nps_hotel(itc);
+    get_nps_itc(itc);
     get_nps_comment(itc);
     //get_graph_equipments(itc);
     //get_graph_equipments_status(itc);
@@ -137,7 +136,7 @@ $(function() {
   });
 
   $('.filtrarDashboard').on('click', function(){
-    get_nps_hotel($('#cliente').val());
+    get_nps_itc($('#select_itc').val());
   });
 
   $('#box_promotores').on('click', function(){
@@ -156,17 +155,12 @@ $(function() {
   function boxes_cali_modal(encuestas) {
     var _token = $('meta[name="csrf-token"]').attr('content');
     var anio = $('#date_to_search').val();
-    var id = $('#cliente').val();
-    var cadena = $('#proyecto').val();
-    var tipo = parseInt($('#tipo_sabana').val());
+    var id = $('#select_itc').val();
 
-    if(tipo == 1) {
-      //TODO SITWIFI
-    } else if(tipo == 2) {
       $.ajax({
           type: "POST",
-          url: "/sabana_modal_encuestas_cadena",
-          data: { _token: _token, anio: anio, encuestas: encuestas, cadena: cadena },
+          url: "/sabana_itc_modal_encuestas",
+          data: { _token: _token, anio: anio, encuestas: encuestas, itc: id },
           success: function (data){
             table_boxes_cali(data, $('#table_boxes_ppd'));
             document.getElementById("table_boxes_ppd_wrapper").childNodes[0].setAttribute("class", "form-inline");
@@ -175,20 +169,6 @@ $(function() {
             console.log('Error:', data);
           }
       });
-    } else if(tipo == 3) {
-      $.ajax({
-          type: "POST",
-          url: "/sabana_modal_encuestas",
-          data: { _token: _token, anio: anio, encuestas: encuestas, hotel: id },
-          success: function (data){
-            table_boxes_cali(data, $('#table_boxes_ppd'));
-            document.getElementById("table_boxes_ppd_wrapper").childNodes[0].setAttribute("class", "form-inline");
-          },
-          error: function (data) {
-            console.log('Error:', data);
-          }
-      });
-    }
 
   }
 
@@ -208,16 +188,16 @@ $(function() {
     });
   }
 
-  function get_nps_hotel(idcadena){
+  function get_nps_itc(itc){
     var _token = $('meta[name="csrf-token"]').attr('content');
     var anio = $('#date_to_search').val();
-    var id= idcadena;
+    var id= itc;
     $.ajax({
       type: "POST",
-      url: "/get_nps_hotel",
-      data: { _token : _token, id: id, anio: anio },
+      url: "/get_nps_itc",
+      data: { _token : _token, itc: id, anio: anio },
       success: function (data){
-        //console.log(data);
+        console.log(data);
         //console.log(data[0]['nps']);
         //graph_nps_hotel('main_nps',data[0]['nps']);
         graph_gauge_hotel('main_nps_hotel', 'NPS', '100', '100', data[0]['nps']);
@@ -273,18 +253,18 @@ $(function() {
     $.each(datajson, function(index, status){
 
       if(index == 0) {
-        $("#NPS1").text(status.NPS1); meses.push(status.NPS1);
-        $("#NPS2").text(status.NPS2); meses.push(status.NPS2);
-        $("#NPS3").text(status.NPS3); meses.push(status.NPS3);
-        $("#NPS4").text(status.NPS4); meses.push(status.NPS4);
-        $("#NPS5").text(status.NPS5); meses.push(status.NPS5);
-        $("#NPS6").text(status.NPS6); meses.push(status.NPS6);
-        $("#NPS7").text(status.NPS7); meses.push(status.NPS7);
-        $("#NPS8").text(status.NPS8); meses.push(status.NPS8);
-        $("#NPS9").text(status.NPS9); meses.push(status.NPS9);
-        $("#NPS10").text(status.NPS10); meses.push(status.NPS10);
-        $("#NPS11").text(status.NPS11); meses.push(status.NPS11);
-        $("#NPS12").text(status.NPS12); meses.push(status.NPS12);
+        $("#NPS1").text(status.Cal1); meses.push(status.Cal1);
+        $("#NPS2").text(status.Cal2); meses.push(status.Cal2);
+        $("#NPS3").text(status.Cal3); meses.push(status.Cal3);
+        $("#NPS4").text(status.Cal4); meses.push(status.Cal4);
+        $("#NPS5").text(status.Cal5); meses.push(status.Cal5);
+        $("#NPS6").text(status.Cal6); meses.push(status.Cal6);
+        $("#NPS7").text(status.Cal7); meses.push(status.Cal7);
+        $("#NPS8").text(status.Cal8); meses.push(status.Cal8);
+        $("#NPS9").text(status.Cal9); meses.push(status.Cal9);
+        $("#NPS10").text(status.Cal10); meses.push(status.Cal10);
+        $("#NPS11").text(status.Cal11); meses.push(status.Cal11);
+        $("#NPS12").text(status.Cal12); meses.push(status.Cal12);
       } else {
         if(parseInt(status.NPS_resul) == 255) {
           sitios_sin_calif++;
@@ -297,18 +277,18 @@ $(function() {
           status.sitio,
           '<a href="javascript:void(0);" id="ver-'+status.hotel_id+'-'+status.sitio+'" class="ver_antenas_sitio">'+status.aps+'</a>',
           (status.facturacion == null ? 0 : parseInt(status.facturacion)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-          status.NPS1,
-          status.NPS2,
-          status.NPS3,
-          status.NPS4,
-          status.NPS5,
-          status.NPS6,
-          status.NPS7,
-          status.NPS8,
-          status.NPS9,
-          status.NPS10,
-          status.NPS11,
-          status.NPS12,
+          status.Cal1,
+          status.Cal2,
+          status.Cal3,
+          status.Cal4,
+          status.Cal5,
+          status.Cal6,
+          status.Cal7,
+          status.Cal8,
+          status.Cal9,
+          status.Cal10,
+          status.Cal11,
+          status.Cal12,
           status.NPS_resul
           //status.aps + ' <button id="ver-'+status.id+'-'+status.sitio+'" class="btn btn-default btn-sm ver_antenas_sitio"><span class="fa fa-eye"></span></button>',
         ]);
@@ -443,35 +423,15 @@ $(function() {
     });
   });
 
-  function get_nps_comment(idcadena){
+  function get_nps_comment(itc){
     var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
+    var id= itc;
     //console.log(id);
     $.ajax({
       type: "POST",
-      url: "/get_nps_comment_hotel",
-      data: { _token : _token, id: id },
+      url: "/get_nps_comment_itc",
+      data: { _token : _token, itc: id },
       success: function (data){
-        //console.log(data);
-        table_comments_hotel(data,$('#nps_comments'));
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
-
-  }
-
-  function get_nps_comment_cadena(idcadena){
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var id= idcadena;
-    //console.log(id);
-    $.ajax({
-      type: "POST",
-      url: "/get_nps_comment_cadena",
-      data: { _token : _token, id: id },
-      success: function (data){
-        //console.log(data);
         table_comments_hotel(data,$('#nps_comments'));
       },
       error: function (data) {
@@ -510,7 +470,7 @@ $(function() {
         span_calificacion,
         status.cliente,
         status.comentario,
-        status.fecha
+        status.fecha.split(" ")[0]
 
       ]);
     });

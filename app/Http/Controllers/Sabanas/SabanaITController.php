@@ -66,15 +66,14 @@ class SabanaITController extends Controller
     $result= DB::Select('CALL px_equipmentsxcadena(?)',array($cadena));
     return datatables()->of($result)->make(true);
   }
-  public function get_nps_hotel(Request $request){
-    $id_hotel=$request->id;
+  public function get_nps_itc(Request $request){
+    $itc=$request->itc;
     $anio=$request->anio;
 
     if($anio == "") {
       $anio = date('Y');
     }
-
-    $result = DB::select('CALL px_NPS_sitio (?, ?)', array($id_hotel, $anio));
+    $result = DB::select('CALL px_NPS_itc (?, ?)', array($itc, $anio));
     return $result;
   }
   public function get_nps_cadena(Request $request){
@@ -89,9 +88,9 @@ class SabanaITController extends Controller
     return $result;
   }
 
-  public function get_nps_comment_hotel(Request $request){
-    $id_hotel=$request->id;
-    $result = DB::select('CALL px_get_results_nps_sitio (?)', array($id_hotel));
+  public function get_nps_comment_itc(Request $request){
+    $itc=$request->itc;
+    $result = DB::select('CALL px_get_results_nps_itc (?)', array($itc));
     return $result;
   }
 
@@ -185,10 +184,10 @@ class SabanaITController extends Controller
   }
 
 
-  public function sabana_modal_encuestas(Request $request ){
+  public function sabana_itc_modal_encuestas(Request $request ){
     $date= $request->anio;
     $encuestas= $request->encuestas;
-    $hotel= $request->hotel;
+    $itc= $request->itc;
 
     if ($date == '') {
       $date = date('Y-m-d');
@@ -204,30 +203,7 @@ class SabanaITController extends Controller
       $encuestas = 6;
     }
 
-    $result = DB::select('CALL status_nps_anio (?, ?, ?)', array($date, $encuestas, $hotel));
-    return json_encode($result);
-  }
-
-  public function sabana_modal_encuestas_cadena(Request $request ){
-    $date= $request->anio;
-    $encuestas= $request->encuestas;
-    $cadena= $request->cadena;
-
-    if ($date == '') {
-      $date = date('Y-m-d');
-    } else {
-      $date = $date."-01-01";
-    }
-
-    if($encuestas == "box_promo") {
-      $encuestas = 4;
-    } else if($encuestas == "box_pas") {
-      $encuestas = 5;
-    } else {
-      $encuestas = 6;
-    }
-info($date."-".$encuestas."-".$cadena);
-    $result = DB::select('CALL px_status_nps_cadena_anio (?, ?, ?)', array($date, $encuestas, $cadena));
+    $result = DB::select('CALL status_nps_anio_itc (?, ?, ?)', array($date, $encuestas, $itc));
     return json_encode($result);
   }
 
