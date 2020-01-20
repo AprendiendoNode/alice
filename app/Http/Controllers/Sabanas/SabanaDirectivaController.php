@@ -41,6 +41,11 @@ class SabanaDirectivaController extends Controller
 
   }
 
+  public function getAllDocM_Ejer(Request $request){
+    $anio=$request->anio;
+    $result = DB::Select('CALL px_documentoM_entregados(?)',array($anio));
+    return $result;
+  }
 
 
 }

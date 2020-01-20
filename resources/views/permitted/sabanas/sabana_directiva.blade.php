@@ -75,17 +75,17 @@
                 </div>
                 <div class="info_head_dash">
                     <p class="text-default">Facturación mensual USD</p>
-                    <h4><strong>$<span id="total_fact"></span></strong></h4>
+                    <h4 style="color:green;"><strong>$<span id="total_fact"></span></strong></h4>
                 </div>
             </div>
 
-            <div class="container-box col-md-2">
+            <div class="container-box col-md-3">
                 <div class="icon_head_dash">
                     <i class="text-success" aria-hidden="true"></i>
                 </div>
                 <div class="info_head_dash">
                     <p class="text-default">Presupuesto Anual de mantenimiento USD</p>
-                    <h4><strong>$<span id="total_pres"></span></strong></h4>
+                    <h4 style="color:blue;"><strong>$<span id="total_pres"></span></strong></h4>
                 </div>
             </div>
 
@@ -95,7 +95,7 @@
                 </div>
                 <div class="info_head_dash">
                     <p class="text-default">Ejercido anual USD</p>
-                    <h4><strong>$<span id="total_ejercido"></span></strong></h4>
+                    <h4 style="color:orange;"><strong>$<span id="total_ejercido"></span></strong></h4>
                 </div>
             </div>
 
@@ -109,34 +109,44 @@
                 </div>
             </div>
 
-            <div class="container-box col-md-2">
+            <div class="container-box col-md-3">
                 <div class="icon_head_dash">
                     <i class="text-success" aria-hidden="true"></i>
                 </div>
                 <div class="info_head_dash">
-                    <p class="text-default">Objetivo</p>
-                    <h4><strong><span id="total_percent">100</span>%</strong></h4>
+                    <p class="text-default">Presupuesto disponible</p>
+                    <h4 style="color:green;"><strong><span id="total_percent" >100</span>%</strong></h4>
                 </div>
             </div>
 
         </div>
   </div>
-  <div class="p-5 bg-white rounded shadow mb-5">
+  <div class="p-3 bg-white rounded shadow mb-5">
     <div class="row pt-2 pb-2">
-      <div class="d-block mr-auto">
+      <div class="d-block mx-auto">
         <h3><i class="fas fa-file-contract"></i> Vigencia de contratos</h3>
       </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4"></div>
       <div class="col-md-4 col-xs-12 mb-3">
-        <div class="input-group  flex-nowrap">
+        <!--Input Form2-->
+        <div class="input-group customSpinner">
           <div class="input-group-prepend">
-            <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
+            <button class="btn btn-sm btn-primary  spinnerMinus">
+                <span class = "fas fa-arrow-left"></span>
+              </button>
           </div>
-          <input id="date_select" type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+          <input type="text" id="date_select"  readonly value="0" class="form-control text-center" />
           <div class="input-group-append">
-            <button class="btn btn-outline-info filtrarDashboard" type="button" id="boton-aplica-filtro">Filtrar</button>
+            <button class="btn btn-sm btn-primary spinnerPlus">
+                <span class = "fas fa-arrow-right"></span>
+              </button>
           </div>
         </div>
-    </div>
+
+      </div>
+      <div class="col-md-4 "></div>
     </div>
 
     <div class="row pb-3">
@@ -146,7 +156,7 @@
       </div>
     </div>
 
-
+<!--
     <div class="table-responsive">
       <table id="table_budget_cadena" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
         <thead class="bg-primary">
@@ -169,7 +179,7 @@
         </tfoot>
       </table>
     </div>
-
+-->
 
 
 
@@ -225,9 +235,32 @@
     }
 
     .year{ background: #414141!important; color:white !important;}
-    .danger{  color:red !important;}
-    .warning{  color:orange !important;}
-    .excelent{  color:green !important;}
+
+    /*gantt colors */
+    .high{
+        border-color: #d96c49 !important;
+        color: #d96c49 !important;
+        background-color: #d96c49 !important;
+    }
+    .high .gantt_task_progress{
+        background-color: #db2536 !important;
+    }
+    .medium{
+        border-color: #ff7a00 !important;
+        color:#ff7a00 !important;
+        background-color: #e6740b !important;
+    }
+    .medium .gantt_task_progress{
+        background-color: #f77d0c !important;
+    }
+    .low{
+    border-color: #08cb4f !important;
+    color:#08cb4f !important;
+    background-color: #0aad46 !important;
+    }
+    .low .gantt_task_progress{
+        background-color: #03aa3f !important;
+    }
     </style>
 
   @else

@@ -902,6 +902,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('dash_sabana_directiva', 'Sabanas\SabanaDirectivaController@index');
     Route::post('getAllCadena','Sabanas\SabanaDirectivaController@getAllCadena');
     Route::post('getAllSites','Sabanas\SabanaDirectivaController@getAllSites');
+    Route::post('getAllDocM_Ejer', 'Sabanas\SabanaDirectivaController@getAllDocM_Ejer');
 
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');
