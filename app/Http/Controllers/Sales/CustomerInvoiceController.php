@@ -2982,4 +2982,19 @@ class CustomerInvoiceController extends Controller
 
     }
 
+    //Cambiar estatus de facturas a polizas
+    public function send_invoice_to_poliza(Request $request)
+    {
+        $customer_invoice = CustomerInvoice::findOrFail($request->id_invoice);
+        $customer_invoice->poliza = 1;
+        $customer_invoice->save();
+
+        return response()->json([
+            'message' => " La factura $customer_invoice->name se ha convertido en póliza",
+            'code' => 200
+        ]);
+
+    }
+
+
 }

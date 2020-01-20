@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View customers invoices show') )
-    {{ trans('invoicing.customers_invoices_show') }}
+  Historial de polizas
   @else
   {{ trans('message.denied') }}
   @endif
@@ -10,7 +10,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View customers invoices show') )
-    {{ trans('invoicing.customers_invoices_show') }}
+    Historial de polizas
   @else
   {{ trans('message.denied') }}
   @endif
@@ -445,27 +445,13 @@
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
-
-  {{-- <script src="{{ asset('plugins/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js')}}"></script>
-  <script src="{{ asset('plugins/jquery.hotkeys/jquery.hotkeys.js') }}"></script>
-
-  <link rel="stylesheet" href="{{ asset('plugins/google-code-prettify/src/prettify.css') }}" type="text/css" />
-  <script src="{{ asset('plugins/google-code-prettify/src/prettify.js') }}"></script> --}}
-
-  {{-- <link rel="stylesheet" href="{{ asset('plugins/summernote-develop/dist/summernote-bs4.css') }}" type="text/css" />
-  <script src="{{ asset('plugins/summernote-develop/dist/summernote.js') }}"></script> --}}
-
   <!-- Main Quill library -->
   <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
   {{-- <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script> --}}
 
   <!-- Theme included stylesheets -->
   <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-  {{-- <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet"> --}}
 
-  <!-- Core build with no theme, formatting, non-essential modules -->
-  {{-- <link href="//cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
-  <script src="//cdn.quilljs.com/1.3.6/quill.core.js"></script> --}}
   <style media="screen">
     .white {background-color: #ffffff;}
     .select2-selection__rendered {
@@ -537,7 +523,7 @@
               var formData = new FormData(form);
               $.ajax({
                 type: "POST",
-                url: "/sales/customer-invoices-search",
+                url: "/sales/customer-polizas-search",
                 data: formData,
                 contentType: false,
                 processData: false,
@@ -644,7 +630,7 @@
             a12 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
           }
           if ( information.uuid != "" ) {
-            a19 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_poliza(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="fas fa-file-alt"></i> Enviar a póliza</a>';
+            a19 = '<a class="dropdown-item" href="javascript:void(0);" onclick="cancel_poliza(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="fas fa-file-alt"></i> Cancelar póliza</a>';
           }
           if ( parseInt(status) != CANCEL || parseInt(status) != CANCEL_PER_AUTHORIZED || information.balance >= information.amount_total ) {
             a13 = '<div class="dropdown-divider"></div>';
@@ -1138,72 +1124,6 @@
              }
         })
       }
-      //Cancelacion de CFDi
-      function link_cancel(e){
-        var valor= e.getAttribute('value');
-        var folio= e.getAttribute('datas');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        $.ajax({
-             type: "POST",
-             url: '/sales/customer-invoices/modal-cancel',
-             data: {token_b : valor, _token : _token},
-             success: function (data) {
-               var cancelable = data.data_status_sat['cancelable'];
-               var cancel_state = data.data_status_sat['pac_is_cancelable'];
-               var pac_status = data.data_status_sat['pac_status'];
-
-               Swal.fire({
-               title: '¿Estás seguro de cancelar la Factura '+folio+'?',
-               html: "Esta acción no se podrá deshacer una vez confirmada la cancelación"+'<br>'+
-                     '<strong>@lang('general.text_is_cancelable_cfdi') = </strong>' + cancel_state +'<br>'+
-                     '<strong>@lang('general.text_status_cfdi') = </strong>' + pac_status +'<br>',
-               type: 'warning',
-               showCancelButton: true,
-               confirmButtonColor: '#3085d6',
-               cancelButtonColor: '#d33',
-               confirmButtonText: 'Confirmar',
-               cancelButtonText: 'Cancelar'
-               }).then((result) => {
-                 if (result.value) {
-                   $.ajax({
-                        type: "POST",
-                        url: '/sales/customer-invoices/destroy',
-                        data: {token_b : valor, cancelable : cancelable, cancel_state: cancel_state,_token : _token},
-                        success: function (data) {
-                          if(data.status == 200){
-                            Swal.fire('Operación completada!', '', 'success')
-                            .then(()=> {
-                              location.href ="/sales/customer-invoices-show";
-                            });
-                          }
-                          if(data.error == 304){
-                            Swal.fire({
-                               type: 'error',
-                               title: 'Oops...',
-                               text:  'La Factura '+folio+', se encuentra cancelada',
-                             });
-                          }
-                        },
-                        error: function (err) {
-                          Swal.fire({
-                             type: 'error',
-                             title: 'Oops...',
-                             text: err.statusText,
-                           });
-                        }
-                   })
-                 }
-               });
-             },
-             error: function (err) {
-               Swal.fire({
-                  type: 'error',
-                  title: 'Oops...',
-                  text: err.statusText,
-                });
-             }
-        })
-      }
 
       //Modal para envio de correo
       function link_send_mail(e){
@@ -1267,16 +1187,7 @@
                $("#cliente_name").val(data.customer_invoice.customer.name);
                //Asunto
                $("#subject").val(data.customer_invoice.name);
-               //PARA
-               // $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").select2({data: data.to_selected});
-               //
-
-               // $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").select2({data: data.files});
-               // $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").val(data.files).trigger("change");
-               //
-               // $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").val(data.to_selected);
-               // $("#to").select2("val", $("#to").select2("val").concat(data.to_selected));
-
+              
              },
              error: function (err) {
                Swal.fire({
@@ -1323,19 +1234,19 @@
         })
     })
 
-    function link_send_poliza(e){
+    function cancel_poliza(e){
       let id_invoice = e.getAttribute('value');
       console.log(id_invoice);
       let _token = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
           type: "POST",
-          url: '/sales/customer-invoices/send_invoice_to_poliza',
+          url: '/sales/customer-polizas-cancel',
           data: {id_invoice : id_invoice, _token : _token},
           success: function (data) {
             if(data.code == 200){
               Swal.fire('Operación completada!', data.message, 'success')
               .then(()=> {
-                location.href ="/sales/customer-invoices-show";
+                location.href ="/sales/customer-polizas-show";
               });
             }
             
