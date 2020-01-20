@@ -1,30 +1,94 @@
 $(function () {
+  $('#date_to_search').datepicker({
+    language: 'es',
+    format: "yyyy-mm",
+    viewMode: "months",
+    minViewMode: "months",
+    endDate: '1m',
+    autoclose: true,
+    clearBtn: true
+  });
+  get_billing_report();
+});
 
+$("#search_info").validate({
+  ignore: "input[type=hidden]",
+  errorClass: "text-danger",
+  successClass: "text-success",
+  rules: {
+  },
+  messages: {
+  },
+  submitHandler: function(e){
+    var form = $('#search_info')[0];
+    var formData = new FormData(form);
+    $.ajax({
+      type: "POST",
+      url: "/sales/get_billing_report",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (data){
+        // console.log(data);
+        table_billing(data, $("#table_billing"));
+      },
+      error: function (err) {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: err.statusText,
+          });
+      }
+    });
+  }
 });
 
 function get_billing_report(){
-    var _token = $('meta[name="csrf-token"]').attr('content');
+    var form = $('#search_info')[0];
+    var formData = new FormData(form);
     $.ajax({
-        type: "POST",
-        url: "/sales/get_billing_report",
-        data: { _token : _token },
-        success: function (data){
-          table_billing(data, $("#table_billing"));
-        },
-        error: function (data) {
-          console.log('Error:', data.statusText);
-        }
+      type: "POST",
+      url: "/sales/get_billing_report",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (data){
+        // console.log(data);
+        table_billing(data, $("#table_billing"));
+      },
+      error: function (err) {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: err.statusText,
+          });
+      }
     });
 }
 
-function table_customers(datajson, table){
+function table_billing(datajson, table){
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table_responsive_customers);
     vartable.fnClearTable();
-    $.each(JSON.parse(datajson), function(index, data){
+    $.each(datajson, function(index, data){
       vartable.fnAddData([
-        data.id,
-       
+        data.code,
+        data.serie,
+        data.folio,
+        data.date,
+        data.control_id,
+        data.name,
+        data.status,
+        data.N,
+        data.amount_untaxed,
+        data.amount_discount,
+        data.amount_tax,
+        data.amount_tax_ret,
+        data.amount_total,
+        data.currency_value,
+        data.uuid,
+        data.key_master,
+        data.reference
       ]);
     });
   }
@@ -34,29 +98,10 @@ var Configuration_table_responsive_customers = {
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-5'i><'col-sm-7'p>>",
       buttons: [
-        {
-          text: '<i class="fas fa-plus-circle fastable mt-2"></i> Crear nuevo',
-          titleAttr: 'Crear nuevo',
-          className: 'btn btn-danger btn-sm',
-          init: function(api, node, config) {
-             $(node).removeClass('btn-secondary')
-          },
-          action: function ( e, dt, node, config ) {
-            $('#modal-CreatNew').modal('show');
-            if (document.getElementById("creatcustomers")) {
-              $('#creatcustomers')[0].reset();
-              $('#creatcustomers').data('formValidation').resetForm($('#creatcustomers'));
-              $('#inputCreatOrden').val(0);
-              $('#select_one').val(5);
-              $('#select_two').val(3);
-              $('#select_three').val(1);
-              $('#select_five').val(1);
-            }
-          }
-        },
+
         {
           extend: 'excelHtml5',
-          title: 'Clientes',
+          title: 'Reporte facturación',
           init: function(api, node, config) {
              $(node).removeClass('btn-secondary')
           },
@@ -64,12 +109,12 @@ var Configuration_table_responsive_customers = {
           titleAttr: 'Excel',
           className: 'btn btn-success btn-sm',
           exportOptions: {
-              columns: [ 0, 1, 2, 3]
+              columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
           },
         },
         {
           extend: 'csvHtml5',
-          title: 'Clientes',
+          title: 'Reporte facturación',
           init: function(api, node, config) {
              $(node).removeClass('btn-secondary')
           },
@@ -77,7 +122,7 @@ var Configuration_table_responsive_customers = {
           titleAttr: 'CSV',
           className: 'btn btn-primary btn-sm',
           exportOptions: {
-              columns: [ 0, 1, 2, 3]
+              columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
           },
         }
     ],

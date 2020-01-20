@@ -160,7 +160,18 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-12 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+              <div class="form-group">
+                <label for="description">Tipo factura:</label>
+                <select class="form-control" required name="document_type" id="document_type">
+                  <option value="">Elije...</option>
+                  @foreach ($document_type as $data)
+                    <option value="{{$data->code}}">{{$data->prefix}}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="col-md-8 col-xs-12">
               <div class="form-group">
                 <label for="reference">Referencia:</label>
                 <input type="text" class="form-control" id="reference" name="reference" value="">

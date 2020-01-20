@@ -323,7 +323,7 @@ var Configuration_table_responsive_simple_classification= {
           'selector': 'td:first-child'
 
         },
-        "fnDrawCallback": function() {
+        /*"fnDrawCallback": function() {
           var _token = $('input[name="_token"]').val();
           var source_clientes;
           $.ajax({
@@ -353,7 +353,7 @@ var Configuration_table_responsive_simple_classification= {
               // setCliente(id, newValue);
             }
           });
-        },
+        },*/
         dom: "<'row'<'col-sm-3'l><'col-sm-9'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -525,7 +525,7 @@ var Configuration_table_responsive_simple_classification= {
           else {
             Swal.fire({
               type: 'error',
-              title: 'Oopss...',
+              title: 'Oops, no se encontro el ultimo tipo de cambio, favor de llenar el campo TC*',
               text: 'Intente de nuevo...',
             });
           }

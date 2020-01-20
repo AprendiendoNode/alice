@@ -1188,6 +1188,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
 
   //REPORTES FACTURACION Y CONTABILIDAD
   Route::get('/billing_report', 'Sales\BillingReportController@index');
+  Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){

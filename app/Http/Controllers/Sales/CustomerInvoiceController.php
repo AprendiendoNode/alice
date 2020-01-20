@@ -299,6 +299,8 @@ class CustomerInvoiceController extends Controller
       $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array());
       $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
       $impuestos =  DB::select('CALL GetAllTaxesActivev2 ()', array());
+      $document_type = DocumentType::where('cfdi_type_id', 1)->get();// Solo documentos de ingresos
+
 
       $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
 
@@ -306,7 +308,7 @@ class CustomerInvoiceController extends Controller
         'customer','sucursal','currency',
         'salespersons','payment_way','payment_term',
         'payment_methods', 'cfdi_uses', 'cfdi_relations',
-        'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications'
+        'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications', 'document_type'
       ));
     }
     public function view_contracts()
@@ -821,9 +823,8 @@ class CustomerInvoiceController extends Controller
               $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
           }
           $request->merge(['date_due' => Helper::dateToSql($date_due)]);
-
           //Obtiene folio
-          $document_type = Helper::getNextDocumentTypeByCode($this->document_type_code);
+          $document_type = Helper::getNextDocumentTypeByCode($request->document_type);
           $request->merge(['document_type_id' => $document_type['id']]);
           $request->merge(['name' => $document_type['name']]);
           $request->merge(['serie' => $document_type['serie']]);
