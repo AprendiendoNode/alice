@@ -1157,9 +1157,6 @@
               console.log('Error:', data);
             }
         });
-        
-
-
       }
       function getDataContractAnnexes(){
         var token = $('input[name="_token"]').val();

@@ -1123,7 +1123,7 @@ class CustomerInvoiceController extends Controller
          if (!empty($request->date_due)) {
              $date_due = Helper::createDate($request->date_due);
          } else {
-             $payment_term = PaymentTerm::findOrFail($request->payment_term_id);
+             $payment_term = PaymentTerm::findOrFail($payment_term_id);
              $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
          }
          $request->merge(['date_due' => Helper::dateToSql($date_due)]);
