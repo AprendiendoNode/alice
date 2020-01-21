@@ -105,7 +105,7 @@
                 </div>
                 <div class="info_head_dash">
                     <p class="text-default">Por ejercer anual USD</p>
-                    <h4><strong>$<span id="total_xejercier"></span></strong></h4>
+                    <h4><strong>$<span id="total_xejercer"></span></strong></h4>
                 </div>
             </div>
 
@@ -150,36 +150,36 @@
     </div>
 
     <div class="row pb-3">
+      <div class="table-responsive">
+        <table id="table_budget_cadena" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
+          <thead class="bg-primary">
+            <tr class="bg-aqua text-center">
+              <th> <small>Cadena</small> </th>
+              <th > <small>Mensualidad USD</small> </th>
+              <th > <small>Presupuesto anual de mantenimiento USD</small> </th>
+              <th> <small>Opciones</small> </th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+          </tbody>
+          <tfoot >
+            <tr >
+              <th></th>
+              <th></th>
+              <th></th>
+              <th ></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
       <div class="col-md-12">
         <!--<button id="hide">Ocultar</button>-->
       <div id="gantt_cadenas" class="w-100" style="height:500px;" ></div>
       </div>
     </div>
 
-<!--
-    <div class="table-responsive">
-      <table id="table_budget_cadena" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
-        <thead class="bg-primary">
-          <tr class="bg-aqua text-center">
-            <th> <small>Cadena</small> </th>
-            <th > <small>Mensualidad USD</small> </th>
-            <th > <small>Presupuesto anual de mantenimiento USD</small> </th>
-            <th> <small>Opciones</small> </th>
-          </tr>
-        </thead>
-        <tbody class="text-center">
-        </tbody>
-        <tfoot >
-          <tr >
-            <th></th>
-            <th></th>
-            <th></th>
-            <th ></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
--->
+
+
 
 
 
@@ -259,8 +259,14 @@
     background-color: #0aad46 !important;
     }
     .low .gantt_task_progress{
-        background-color: #03aa3f !important;
+        background-color: #08913a !important;
     }
+
+    #gantt_cadenas{
+    background:white;
+    width:600px;
+    height:600px;
+      }
     </style>
 
   @else
