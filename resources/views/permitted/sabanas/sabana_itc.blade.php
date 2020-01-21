@@ -353,20 +353,20 @@
           </ul>
           <div class="content_wrapper">
               <div class="tab_content active">
-                  <div class="mb-1">
-                    <div class="d-inline mr-3">
-                      <img id="imagenCliente" style="max-height: 100px; max-width: 90px;" alt="Sin foto">
+                  <div class="row">
+                    <div class="d-inline text-center col-xl-1 mb-1">
+                      <img id="imagenCliente" style="width: 70px; height: 100px; border: 1px solid black;" alt="Sin foto">
                     </div>
-                    <div class="d-inline">
+                    <div class="d-inline text-center table-responsive col-xl-8 my-auto">
                       <table border="1" cellpadding="3" style="text-align: center; display: inline;">
                         <thead class="bg-dark text-white">
                           <tr>
                             <th>Nombre</th>
                             <th>Correo</th>
                             <th>Sitios</th>
-                            <th>NPS Promedio</th>
                             <th>AP's</th>
                             <th>Facturación</th>
+                            <th>NPS Promedio</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -374,12 +374,22 @@
                             <th><span id="nombreITC">XXX</span></th>
                             <th><span id="correoITC">XXX</span></th>
                             <th><span id="total_sitios">0</span></th>
-                            <th><span id="npsPromedio">0</span></th>
                             <th><a href="javascript:void(0);" id="total_antenas">0</a></th>
                             <th><span id="total_faturacion">0</span></th>
+                            <th><span id="npsPromedio">0</span></th>
                           </tr>
                         </tbody>
                       </table>
+                    </div>
+                    <div class="d-inline text-center col-xl-3 w-100 my-auto">
+                      <select class="form-control w-100" style="color: black; font-weight: bold; border: 1px solid lightgray;">
+                        <option value="12">Últimos 12 meses</option>
+                        <option value="6">Últimos 6 meses</option>
+                        <option value="3">Últimos 3 meses</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                      </select>
                     </div>
                   </div>
                   <div id="gral_sitios" class="row">
@@ -387,7 +397,7 @@
                       <table id="info_sitios" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%;">
                         <thead>
                           <tr class="bg-secondary text-center">
-                            <th>Sitio</th>
+                            <th>Sitios</th>
                             <th>Antenas</th>
                             <th>Facturación</th>
                             <th id="NPS1">1</th>
@@ -407,26 +417,26 @@
                         </thead>
                         <tbody class="text-center" style="font-weight: bold;">
                         </tbody>
-                        <!--<tfoot>
+                        <tfoot class="text-center">
                           <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td><span id="footer_total_sitios">0</span></td>
+                            <td><a href="javascript:void(0);" id="footer_total_antenas">0</a></td>
+                            <td><span id="footer_total_facturacion">0</span></td>
+                            <td id="MES1"></td>
+                            <td id="MES2"></td>
+                            <td id="MES3"></td>
+                            <td id="MES4"></td>
+                            <td id="MES5"></td>
+                            <td id="MES6"></td>
+                            <td id="MES7"></td>
+                            <td id="MES8"></td>
+                            <td id="MES9"></td>
+                            <td id="MES10"></td>
+                            <td id="MES11"></td>
+                            <td id="MES12"></td>
+                            <td><span id="footer_npsPromedio">0</span></td>
                           </tr>
-                        </tfoot>-->
+                        </tfoot>
                       </table>
                     </div>
                   </div>
