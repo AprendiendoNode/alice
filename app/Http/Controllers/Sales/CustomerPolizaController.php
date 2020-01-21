@@ -68,13 +68,13 @@ class CustomerPolizaController extends Controller
         ];
     }
 
-     /**
-      * Muestra el apartado de todas las facturas
-      *
-      * @return \Illuminate\Http\Response
-      */
-      public function show()
-      {
+	/**
+	 * Muestra el apartado de todas las facturas
+	*
+	* @return \Illuminate\Http\Response
+	*/
+    public function show()
+    {
 
         $customer = DB::select('CALL px_only_customer_data ()', array());
         $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
@@ -87,10 +87,18 @@ class CustomerPolizaController extends Controller
         return view('permitted.sales.polizas_show',compact(
           'customer', 'sucursal', 'list_status', 'bancos'
         ));
-	  }
+	}
+
+	public function get_data_poliza(Request $request)
+	{
+		$id_invoice = $request->id_invoice;
+		$result = DB::select('CALL px_poliza_xfactura(?)', array($id_invoice));
+
+		return $result;
+	}
 	  
-	  public function search(Request $request)
-	  {
+	public function search(Request $request)
+	{
 		$folio = !empty($request->filter_name) ? $request->filter_name : '';
 		$date_from  = $request->filter_date_from;
 		$date_to  = $request->filter_date_to;
@@ -103,24 +111,23 @@ class CustomerPolizaController extends Controller
 		$resultados = DB::select('CALL px_customer_polizas_filters_type (?,?,?,?,?,?,?)',array($date_a, $date_b, $folio, $sucursal, $cliente, $estatus, '1'));
 
 		return json_encode($resultados);
-	  }
+	}
 
      //Cancela las polizas y las regresa en su historial de facturas
-     public function cancel_poliza(Request $request)
-     {
-         $customer_invoice = CustomerInvoice::findOrFail($request->id_invoice);
-         $customer_invoice->poliza = 0;
-		 $customer_invoice->save();
+    public function cancel_poliza(Request $request)
+    {
+        $customer_invoice = CustomerInvoice::findOrFail($request->id_invoice);
+        $customer_invoice->poliza = 0;
+		$customer_invoice->save();
 		 
-		 //Pendiente Cancelar movimientos
+		//Pendiente Cancelar movimientos
  
-         return response()->json([
-             'message' => " La poliza $customer_invoice->name se ha cancelado",
-             'code' => 200
-         ]);
+        return response()->json([
+            'message' => " La poliza $customer_invoice->name se ha cancelado",
+            'code' => 200
+        ]);
  
-     }
+    }
 
     
-
 }

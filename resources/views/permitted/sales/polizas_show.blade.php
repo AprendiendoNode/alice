@@ -341,7 +341,7 @@
 
   <!----------------------MODAL POLIZA MOVIMIENTOS--------------------------->
   <div id="modal_view_poliza" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Póliza</h5>
@@ -373,7 +373,7 @@
                 </div>
                 <div class="form-group col-md-2">
                   <label class="" for="mes_poliza">Mes:</label>
-                  <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza" placeholder="">
+                  <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
                 </div>
                 <div class="form-group col-md-4">
                   <label class="" for="descripcion_poliza">Descripción:</label>
@@ -385,7 +385,7 @@
           <!------TABLA DE PARTIDAS / ASIENTO CONTABLE------>
           <div class="row mt-2 mb-3">
             <div class="col-12 table-responsive">
-              <table class="table table-sm">
+              <table id="tabla_asiento_contable" class="table table-sm">
                 <thead class="bg-secondary text-white">
                   <tr>
                     <th>Mov.</th>
@@ -426,14 +426,14 @@
           </div>
           <!--------------TOTALES----------->
           <div class="row mt-5">
-            <div class="form-group col-md-8">
+            <div class="form-inline col-md-8">
               <label class="" for="">Sitio:</label>
               <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" placeholder="">
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-inline col-md-4">
               <label class="" for="">Totales:</label>
-              <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" placeholder="">
-              <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" placeholder="">
+              <input style="width:130px;" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" >
+              <input style="width:130px;" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" >
             </div>
           </div>
         </div>
@@ -486,6 +486,8 @@
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
   <script src="{{ asset('plugins/momentupdate/moment.js')}}"></script>
+  <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
+
   <link href="{{ asset('plugins/daterangepicker-master/daterangepicker.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('plugins/daterangepicker-master/daterangepicker.js')}}"></script>
 
@@ -521,6 +523,7 @@
 
       $(function() {
         //-----------------------------------------------------------
+        moment.locale('es');
         if ($("#message").length) {
             quill = new Quill('#message', {
             modules: {
@@ -886,10 +889,65 @@
     function contabilizar_poliza(e){
       let id_invoice = e.getAttribute('value');
       let _token = $('meta[name="csrf-token"]').attr('content');
+      let today = new Date();
+      let dd = String(today.getDate()).padStart(2, '0');
+      let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      let mes = moment().format('MMMM');
+      let dia =moment().format('dddd');
+  
+      $('#day_poliza').val(dd);
+      $('#mes_poliza').val(mes);
+      $("#tabla_asiento_contable tbody").empty();
+
+      $.ajax({
+          type: "POST",
+          url: '/sales/customer-polizas-getdata',
+          data: {id_invoice : id_invoice, _token : _token},
+          success: function (data) {
+            console.log(data);
+            data.forEach(function(key){
+              let abono = format_number(parseFloat(key.abono));
+              let cargo = format_number(parseFloat(key.cargo));
+              $('#tabla_asiento_contable > tbody:last-child').append(
+              `<tr>
+                <td>${key.mov}</td>
+                <td><input class="form-control form-control-sm" type="text" value="${key.cuenta}" ></td>
+                <td>${dd}</td>
+                <td>${key.currency_id}</td>
+                <td>${key.name}</td>
+                <td><input style="width:130px;text-align:right" disabled class="form-control form-control-sm" type="text" value="${cargo}" ></td>
+                <td><input style="width:130px;text-align:right" disabled class="form-control form-control-sm" type="text" value="${abono}" ></td>
+                <td></td>
+                </tr>
+                `
+              );
+            });
+            
+          },
+          error: function (err) {
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: err.statusText,
+              });
+          }
+      })
 
       $("#modal_view_poliza").modal("show");
 
     }
+
+    //Formato numerico: 00,000.00
+    function format_number(number){
+      return number.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function remove_commas(number){
+      return number.replace(/,/g, "");
+    }
+
+
+    
 
   </script>
   @else
