@@ -339,65 +339,112 @@
     </div>
   </div>
 
-  <!-- modal about -->
-  <div id="modal_customer_invoice_send_mail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalmail" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-      <!--Content-->
+  <!----------------------MODAL POLIZA MOVIMIENTOS--------------------------->
+  <div id="modal_view_poliza" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <!--Header-->
         <div class="modal-header">
-          <h4 class="modal-title" id="modalmail"> {{ __('customer_invoice.text_modal_send_mail')}} </h4>
+          <h5 class="modal-title">Póliza</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true" class="white-text">&times;</span>
+            <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <!--Body-->
         <div class="modal-body">
-          <form id="form_email_fact">
+          <div class="row">
+            <form class="">
               <div class="row">
-                  <input id="customer_invoice_id" name="customer_invoice_id" type="hidden" value="">
-                  <input id="fact_name" name="fact_name" type="hidden" value="">
-                  <input id="cliente_name" name="cliente_name" type="hidden" value="">
-                  <div class="col-md-12 col-xs-12">
-                    <div class="form-group form-group-sm">
-                      <label for="subject" class="control-label">Subject <span class="required text-danger">*</span></label>
-                      <input class="form-control" placeholder="Asunto" required="" name="subject" type="text" value="" id="subject">
-                    </div>
-                  </div>
-                  <div class="col-md-12 col-xs-12">
-                      <div class="form-group form-group-sm">
-                        <label for="to" class="control-label">Para <span class="required text-danger">*</span></label>
-                        <select style="height:180px !important;" id='to' name='to[]' class="form-control" multiple="multiple">
-                        </select>
-                      </div>
-                  </div>
-                  <div class="col-md-12 col-xs-12">
-                    <div class="form-group form-group-sm">
-                      <label for="attach" class="control-label">{{__('general.entry_mail_attach')}} <span class="required text-danger">*</span></label>
-                      <select id='attach' name='attach[]' class="form-control" multiple="multiple">
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-12 col-xs-12 editor_quill">
-                      <div class="form-group form-group-sm">
-                        <label for="attach" class="control-label">{{__('general.entry_mail_message')}} <span class="required text-danger">*</span></label>
-                      </div>
-                      <div name="message" id="message" class="mb-4"></div>
-                  </div>
+                <div class="form-group col-md-2">
+                  <label class="" for="type_poliza">Tipo:</label>
+                  <select class="form-control form-control-sm mb-2 mr-sm-2" id="type_poliza" placeholder="">
+                    <option value="1">Diario</option>
+                    <option value="2">Ingreso</option>
+                    <option value="3">Egreso</option>
+                  </select>
+                </div>
+              
+                <div class="form-group col-md-2">
+                  <label class="" for="">Número:</label>
+                  <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" id="" placeholder="">
+                </div>
+
+                <div class="form-group col-md-2">
+                  <label class="" for="day_poliza">Día:</label>
+                  <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza" placeholder="">
+                </div>
+                <div class="form-group col-md-2">
+                  <label class="" for="mes_poliza">Mes:</label>
+                  <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza" placeholder="">
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="" for="descripcion_poliza">Descripción:</label>
+                  <input type="text" class="form-control form-control-sm mb-2 mr-sm-2"name="descripcion_poliza" id="descripcion_poliza" placeholder="">
+                </div>
               </div>
-          </form>
+            </form>
+          </div>
+          <!------TABLA DE PARTIDAS / ASIENTO CONTABLE------>
+          <div class="row mt-2 mb-3">
+            <div class="col-12 table-responsive">
+              <table class="table table-sm">
+                <thead class="bg-secondary text-white">
+                  <tr>
+                    <th>Mov.</th>
+                    <th>Cuenta</th>
+                    <th>Dia</th>
+                    <th>T.C. Especial</th>
+                    <th>Nombre</th>
+                    <th>Cargo</th>
+                    <th>Abono</th>
+                    <th>Referencia</th>
+                  </tr>
+                </thead>
+                <tbody>       
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!------------RESUMEN FACTURA--------->
+          <div class="row mt-5">
+            <div class="col-12 table-responsive">
+              <table class="table table-sm">
+                <thead class="bg-secondary text-white">
+                  <tr>
+                    <th>Org.</th>
+                    <th>Partida</th>
+                    <th>Dia</th>
+                    <th>No.</th>
+                    <th>Tipo</th>
+                    <th>UUID / Folio</th>
+                    <th>Beneficiario</th>
+                    <th>Importe</th>
+                  </tr>
+                </thead>
+                <tbody>       
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!--------------TOTALES----------->
+          <div class="row mt-5">
+            <div class="form-group col-md-8">
+              <label class="" for="">Sitio:</label>
+              <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" placeholder="">
+            </div>
+            <div class="form-group col-md-4">
+              <label class="" for="">Totales:</label>
+              <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" placeholder="">
+              <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" placeholder="">
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
-          <div class="pull-right">
-            <button type="button" id="send_mail_button" class="btn btn-xs btn-info "> <i class="fas fa-paper-plane"> Enviar </i></button>
-            <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"> <i class="fa fas fa-times"> {{ __('general.button_close') }} </i></button>
-          </div>
+          <button id="save_poliza_partida" type="button" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
   </div>
-  <!-- /modal about -->
-
+ <!----------------------------- FIN MODAL POLIZA MOVIMIENTOS--------------------------------->
   @else
     @include('default.denied')
   @endif
@@ -612,23 +659,9 @@
           var a05 = '', a06 ='', a07 ='', a08 ='', a09 ='', a10 ='', a11 ='', a12 ='', a13 ='', a14 ='', a15 ='', a16='', a17='', a19='';
           if ( parseInt(status) == OPEN || parseInt(status) == PAID || parseInt(status) == CANCEL && information.uuid != ""  ) {
             a05 = '<a class="dropdown-item" href="/sales/customer-invoices/download-xml/'+information.id+'"><i class="far fa-file-code"></i> @lang('general.button_download_xml')</a>';
-            a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-envelope"></i> @lang('general.button_send_mail')</a>';
+            
           }
-          if (parseInt(mail) == 0) {
-            a08 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_invoice.text_mark_sent')</a>';
-          }
-          if (parseInt(status) == PAID) {
-            a09 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_open(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_invoice.text_mark_open')</a>';
-          }
-          if (parseInt(status) == OPEN) {
-            a10 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_paid(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> @lang('customer_invoice.text_mark_paid')</a>';
-          }
-          if ( information.balance < information.amount_total ) {
-            a11 = '<a class="dropdown-item" href="javascript:void(0);" onclick="payment_history(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fa fa-history"></i> @lang('customer_invoice.text_payment_history')</a>';
-          }
-          if ( information.uuid != "" ) {
-            a12 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
-          }
+            a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="contabilizar_poliza(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-wallet"></i> Contabilizar</a>';
           if ( information.uuid != "" ) {
             a19 = '<a class="dropdown-item" href="javascript:void(0);" onclick="cancel_poliza(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="fas fa-file-alt"></i> Cancelar póliza</a>';
           }
@@ -668,6 +701,61 @@
       $('.table-responsive').on('hide.bs.dropdown', function () {
            $('.table-responsive').css( "overflow", "auto" );
       })
+
+      
+        $(".swal-wide").scrollTop(0);
+        var $options = $("#aux > option").clone();
+        $('#banco').append($options);
+        // $('#factura').val(name_fact);
+        $('.datepicker').datepicker({
+          language: 'es',
+          format: "yyyy-mm-dd",
+          viewMode: "days",
+          minViewMode: "days",
+          //endDate: '1m',
+          autoclose: true,
+          clearBtn: true
+        });
+      
+     
+      var Configuration_table_responsive_history={
+        dom: "<'row'<'col-sm-3'l><'col-sm-9'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+        "order": [[ 0, "asc" ]],
+        paging: true,
+        //"pagingType": "simple",
+        Filter: true,
+        searching: false,
+        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "Todos"]],
+        //ordering: false,
+        //"pageLength": 5,
+        bInfo: false,
+            language:{
+                    "sProcessing":     "Procesando...",
+                    "sLengthMenu":     "Mostrar _MENU_ registros",
+                    "sZeroRecords":    "No se encontraron resultados",
+                    "sEmptyTable":     "Ningún dato disponible",
+                    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix":    "",
+                    "sSearch":         "Buscar:",
+                    "sUrl":            "",
+                    "sInfoThousands":  ",",
+                  "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                      "sFirst":    "Primero",
+                      "sLast":     "Último",
+                      "sNext":     "Siguiente",
+                      "sPrevious": "Anterior"
+                  },
+                  "oAria": {
+                        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+            }
+      }
 
       var Configuration_table_responsive_doctypes = {
         "columnDefs": [
@@ -740,363 +828,6 @@
         }
       };
 
-      //Marcar como enviada
-      function mark_sent(e){
-        var valor= e.getAttribute('value');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        var folio = e.getAttribute('datas');
-          Swal.fire({
-          title: '¿Estás seguro?',
-          text: "Se marcara como enviada, la factura con folio: "+folio,
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Aceptar',
-          cancelButtonText: 'Cancelar'
-          }).then((result) => {
-            if (result.value) {
-              $.ajax({
-                   type: "POST",
-                   url: '/sales/customer-invoices/mark-sent',
-                   data: {token_b : valor, _token : _token},
-                   success: function (data) {
-                    if(data.status == 200){
-                      Swal.fire('Operación completada!', '', 'success')
-                      .then(()=> {
-                        location.href ="/sales/customer-invoices-show";
-                      });
-                    }
-                    else {
-                      Swal.fire({
-                         type: 'error',
-                         title: 'Oops... Error: '+data.status,
-                         text: 'El recurso no se ha modificado, por el motivo que ya esta marcada como enviada',
-                      });
-                    }
-                   },
-                   error: function (err) {
-                     Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: err.statusText,
-                      });
-                   }
-               })
-            }
-          })
-      }
-      //Marcar como pagada
-      function mark_paid(e){
-        var valor= e.getAttribute('value');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        var folio = e.getAttribute('datas');
-          Swal.fire({
-          title: '¿Estás seguro?',
-          // text: "Se marcara como pagada, la factura con folio: "+folio,
-          html: "Se marcara como pagada, la factura con folio: "+folio +
-            "<br><br><div><label>Fecha de cobro: </label><input style='display: block;' class='datepicker form-control' type='text' placeholder='Fecha del cobro' id='fecha_cobro'></div>"+
-            "<div><label>Banco: </label><select class='form-control' style='display: block;' id='banco'></select></div>",
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Aceptar',
-          cancelButtonText: 'Cancelar'
-          }).then((result) => {
-            if (result.value) {
-              var fecha_cobro = $('#fecha_cobro').val();
-              var banco = $('#banco').val();
-              $('.cancel').prop('disabled', 'disabled');
-              $('.confirm').prop('disabled', 'disabled');
-              if(fecha_cobro === ''){
-                Swal.fire("Operación abortada", "Debe seleccionar la fecha del cobro.", "error")
-              }else if(banco === ''){
-                Swal.fire("Operación abortada", "Debe elegir un banco.", "error")
-              }else{
-                $.ajax({
-                     type: "POST",
-                     url: '/sales/customer-invoices/mark-paid',
-                     data: {token_b : valor, banco : banco , fecha_cobro : fecha_cobro , _token : _token},
-                     success: function (data) {
-                      if(data.status == 200){
-                        Swal.fire('Pago registrado!', '', 'success')
-                        .then(()=> {
-                          location.href ="/sales/customer-invoices-show";
-                        });
-                      }
-                      else {
-                        Swal.fire({
-                           type: 'error',
-                           title: 'Oops... Error: '+data.status,
-                           text: 'El recurso no se ha modificado, por el motivo que ya esta marcada como pagada',
-                        });
-                      }
-                     },
-                     error: function (err) {
-                       Swal.fire({
-                          type: 'error',
-                          title: 'Oops...',
-                          text: err.statusText,
-                        });
-                     }
-                })
-              }
-            }
-          })
-        $(".swal-wide").scrollTop(0);
-        var $options = $("#aux > option").clone();
-        $('#banco').append($options);
-        // $('#factura').val(name_fact);
-        $('.datepicker').datepicker({
-          language: 'es',
-          format: "yyyy-mm-dd",
-          viewMode: "days",
-          minViewMode: "days",
-          //endDate: '1m',
-          autoclose: true,
-          clearBtn: true
-        });
-      }
-      //Marcar como abierta
-      function mark_open(e){
-        var valor= e.getAttribute('value');
-        var folio= e.getAttribute('datas');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        Swal.fire({
-        title: '¿Estás seguro?',
-        text: "Se marcara como abierta, la factura con folio: "+folio,
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar'
-        }).then((result) => {
-          if (result.value) {
-            $.ajax({
-                 type: "POST",
-                 url: '/sales/customer-invoices/mark-open',
-                 data: {token_b : valor, _token : _token},
-                 success: function (data) {
-                  if(data.status == 200){
-                    Swal.fire('Operación completada!', '', 'success')
-                    .then(()=> {
-                      location.href ="/sales/customer-invoices-show";
-                    });
-                  }
-                  else {
-                    Swal.fire({
-                       type: 'error',
-                       title: 'Oops... Error: '+data.status,
-                       text: 'El recurso no se ha modificado',
-                    });
-                  }
-                 },
-                 error: function (err) {
-                   Swal.fire({
-                      type: 'error',
-                      title: 'Oops...',
-                      text: err.statusText,
-                    });
-                 }
-             })
-          }
-        });
-      }
-      //Cancelación autorizada
-      function cancel_authorized(e){
-        var valor= e.getAttribute('value');
-        var folio= e.getAttribute('datas');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        Swal.fire({
-        title: '¿Estás seguro?',
-        text: "Se marcara como cancelación autorizada, la factura con folio: "+folio,
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar'
-        }).then((result) => {
-          if (result.value) {
-            $.ajax({
-                 type: "POST",
-                 url: '/sales/customer-invoices/cancel-authorized',
-                 data: {token_b : valor, _token : _token},
-                 success: function (data) {
-                  if(data.status == 200){
-                    Swal.fire('Operación completada!', '', 'success')
-                    .then(()=> {
-                      location.href ="/sales/customer-invoices-show";
-                    });
-                  }
-                  else {
-                    Swal.fire({
-                       type: 'error',
-                       title: 'Oops... Error: '+data.status,
-                       text: 'El recurso no se ha modificado',
-                    });
-                  }
-                 },
-                 error: function (err) {
-                   Swal.fire({
-                      type: 'error',
-                      title: 'Oops...',
-                      text: err.statusText,
-                    });
-                 }
-             })
-          }
-        });
-      }
-      //Cancelación rechazada
-      function cancel_rejected(e){
-        var valor= e.getAttribute('value');
-        var folio= e.getAttribute('datas');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        Swal.fire({
-        title: '¿Estás seguro?',
-        text: "Se marcara como cancelación rechazada, la factura con folio: "+folio,
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar'
-        }).then((result) => {
-          if (result.value) {
-            $.ajax({
-                 type: "POST",
-                 url: '/sales/customer-invoices/cancel-rejected',
-                 data: {token_b : valor, _token : _token},
-                 success: function (data) {
-                  if(data.status == 200){
-                    Swal.fire('Operación completada!', '', 'success')
-                    .then(()=> {
-                      location.href ="/sales/customer-invoices-show";
-                    });
-                  }
-                  else {
-                    Swal.fire({
-                       type: 'error',
-                       title: 'Oops... Error: '+data.status,
-                       text: 'El recurso no se ha modificado',
-                    });
-                  }
-                 },
-                 error: function (err) {
-                   Swal.fire({
-                      type: 'error',
-                      title: 'Oops...',
-                      text: err.statusText,
-                    });
-                 }
-             })
-          }
-        });
-      }
-      //Historial de pagos
-      function payment_history(e){
-        var valor= e.getAttribute('value');
-        var folio= e.getAttribute('datas');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        // $('#modal-history').modal('show');
-        $.ajax({
-             type: "POST",
-             url: '/sales/customer-invoices/modal-payment-history-head',
-             data: {token_b : valor, _token : _token},
-             success: function (data) {
-               if ($.trim(data)){
-                 $('#modal-history').modal('show');
-                 datax = JSON.parse(data);
-                 $("#name").val(datax[0].name);
-                 $("#customer").val(datax[0].customer);
-                 $("#branch_office").val(datax[0].branch_office);
-                 $("#currency").val(datax[0].currency);
-                 $("#currency_value").val(datax[0].currency_value);
-                 $("#amount_total").val(datax[0].amount_total);
-                 $("#balance").val(datax[0].balance);
-                 $("#reconciled").val(datax[0].amount_total-datax[0].balance);
-                 $.ajax({
-                      type: "POST",
-                      url: '/sales/customer-invoices/modal-payment-history',
-                      data: {token_b : valor, _token : _token},
-                      success: function (data) {
-                        table_payments(data, $("#payment_history_all"));
-                      },
-                      error: function (err) {
-                        Swal.fire({
-                           type: 'error',
-                           title: 'Oops...',
-                           text: err.statusText,
-                         });
-                      }
-                 })
-               }
-             },
-             error: function (err) {
-               Swal.fire({
-                  type: 'error',
-                  title: 'Oops...',
-                  text: err.statusText,
-                });
-             }
-        })
-      }
-      function table_payments(datajson, table){
-        table.DataTable().destroy();
-        var vartable = table.dataTable(Configuration_table_responsive_history);
-        vartable.fnClearTable();
-        $.each(JSON.parse(datajson), function(index, status){
-          vartable.fnAddData([
-            status.name,
-            status.currency,
-            status.date,
-            status.payment_way,
-            status.amount_reconciled,
-            status.amount,
-          ]);
-        });
-      }
-      var Configuration_table_responsive_history={
-        dom: "<'row'<'col-sm-3'l><'col-sm-9'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-        "order": [[ 0, "asc" ]],
-        paging: true,
-        //"pagingType": "simple",
-        Filter: true,
-        searching: false,
-        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "Todos"]],
-        //ordering: false,
-        //"pageLength": 5,
-        bInfo: false,
-            language:{
-                    "sProcessing":     "Procesando...",
-                    "sLengthMenu":     "Mostrar _MENU_ registros",
-                    "sZeroRecords":    "No se encontraron resultados",
-                    "sEmptyTable":     "Ningún dato disponible",
-                    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-                    "sInfoPostFix":    "",
-                    "sSearch":         "Buscar:",
-                    "sUrl":            "",
-                    "sInfoThousands":  ",",
-                  "sLoadingRecords": "Cargando...",
-                    "oPaginate": {
-                      "sFirst":    "Primero",
-                      "sLast":     "Último",
-                      "sNext":     "Siguiente",
-                      "sPrevious": "Anterior"
-                  },
-                  "oAria": {
-                        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                    }
-            }
-      }
       //Modal para estatus de CFDI
       function link_status_sat(e){
         var valor= e.getAttribute('value');
@@ -1125,119 +856,10 @@
         })
       }
 
-      //Modal para envio de correo
-      function link_send_mail(e){
-        var valor= e.getAttribute('value');
-        var folio= e.getAttribute('datas');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        $.ajax({
-             type: "POST",
-             url: '/sales/customer-invoices/modal-send-mail',
-             data: {token_b : valor, _token : _token},
-             success: function (data) {
-               console.log(data);
-               $("#modal_customer_invoice_send_mail").modal("show");
-               /*Quill editor*/
-                  var inicio = 'Le remitimos adjunta la siguiente factura:';
-                  var factura = 'Factura= '+data.customer_invoice.name;
-                  var cliente = 'Cliente= '+data.customer_invoice.customer.name;
-                  var fecha = 'Fecha = '+data.customer_invoice.date;
-                  $("#to").html('');
-
-                  quill.setContents([
-                      { insert: inicio, attributes: { bold: true } },
-                      { insert: '\n' },
-                      { insert: factura, attributes: { bold: false } },
-                      { insert: '\n' },
-                      { insert: cliente, attributes: { bold: false } },
-                      { insert: '\n' },
-                      { insert: fecha, attributes: { bold: false } },
-                      { insert: '\n' }
-                    ]);
-
-               //Correos para
-               $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").select2({
-                   placeholder: "@lang('general.text_select')",
-                   theme: "bootstrap",
-                   width: "auto",
-                   dropdownAutoWidth: true,
-                   language: "{{ str_replace('_', '-', app()->getLocale()) }}",
-                   tags: true,
-                   tokenSeparators: [',', ' '],
-                   data: data.to_selected[0],
-               });
-               $("#modal_customer_invoice_send_mail .modal-body select[name='to\[\]']").val(data.to_selected[0]).trigger("change");
-               $('#to option').each(function(){
-                    $(this).prop('selected', true);
-                });
-               //Archivos
-               $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").select2({
-                   placeholder: "@lang('general.text_select')",
-                   theme: "bootstrap",
-                   width: "auto",
-                   dropdownAutoWidth: true,
-                   language: "{{ str_replace('_', '-', app()->getLocale()) }}",
-                   disabled: true,
-                   data: data.files_selected
-               });
-               $("#modal_customer_invoice_send_mail .modal-body select[name='attach\[\]']").val(data.files_selected).trigger("change");
-
-               $("#customer_invoice_id").val(data.customer_invoice.id);
-               $("#fact_name").val(data.customer_invoice.name);
-               $("#cliente_name").val(data.customer_invoice.customer.name);
-               //Asunto
-               $("#subject").val(data.customer_invoice.name);
-              
-             },
-             error: function (err) {
-               Swal.fire({
-                  type: 'error',
-                  title: 'Oops...',
-                  text: err.statusText,
-                });
-             }
-        })
-      }
-
-
-    $('#send_mail_button').on('click', function(){
-      let _token = $('meta[name="csrf-token"]').attr('content');
-      let form = $('#form_email_fact')[0];
-      let formData = new FormData(form);
-      const headers = new Headers({
-               "Accept": "application/json",
-               "X-Requested-With": "XMLHttpRequest",
-               "X-CSRF-TOKEN": _token
-             })
-
-      let miInit = { method: 'post',
-                        headers: headers,
-                        body: formData,
-                        credentials: "same-origin",
-                        cache: 'default' };
-
-      fetch('customer-invoices-sendmail-fact', miInit)
-        .then(res => {
-          return res.json();
-        })
-        .then(data => {
-          if(data.code == 200){
-            Swal.fire(data.message,'','success');
-          }else{
-            Swal.fire('Ocurrio un error inesperado',
-            'Revise que los correos sean validos.',
-            'error');
-          }
-        })
-        .catch(error => {
-          Swal.fire('Ocurrio un error inesperado','','error');
-        })
-    })
-
     function cancel_poliza(e){
       let id_invoice = e.getAttribute('value');
-      console.log(id_invoice);
       let _token = $('meta[name="csrf-token"]').attr('content');
+
         $.ajax({
           type: "POST",
           url: '/sales/customer-polizas-cancel',
@@ -1260,6 +882,15 @@
           }
       })
     }
+
+    function contabilizar_poliza(e){
+      let id_invoice = e.getAttribute('value');
+      let _token = $('meta[name="csrf-token"]').attr('content');
+
+      $("#modal_view_poliza").modal("show");
+
+    }
+
   </script>
   @else
   @endif

@@ -1362,10 +1362,6 @@ class CustomerInvoiceController extends Controller
              throw new \Exception(__('general.error_cfdi_class_exists'));
          }
 
-         if($request->group_sites == 1){
-            $this->insert_sites_annexes_lines($request, $customer_invoice);
-         }
-
          //Valida Empresa y PAC para timbrado
          PacHelper::validateSatActions();
 
