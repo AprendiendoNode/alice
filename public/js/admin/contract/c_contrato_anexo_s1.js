@@ -182,7 +182,7 @@ $(".validation-wizard-anexo").on('change','#sel_master_to_anexo',function(){
       data: { valor : group , _token : _token },
       success: function (data){
         datax = JSON.parse(data);
-        if (datax != '[]') {
+        if (datax != '[]' && datax.length != 0) {
           $("#datainfo_name_cont").text(datax[0].contacto);
           $("#datainfo_email_cont").text(datax[0].email_contacto);
           $("#datainfo_resg_cont").text(datax[0].resguardo);

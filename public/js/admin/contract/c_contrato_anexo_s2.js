@@ -30,6 +30,7 @@ $(function() {
   createEvent_tc(0);
   createEvent_iva(0);
   createEvent_checkiva(0);
+  createEvent_descuento(0);
 
   $('#date_start_cont').change(function(){
       var dateStart = $(this).val();
@@ -98,12 +99,14 @@ function createEvent_Mensualidad (id) {
       tranformar_iva = 0,
       mensualidad_civa = 0,
       total_vtc_d = 0,
-      tranformar_vtcdinamic_iva = 0;
+      tranformar_vtcdinamic_iva = 0,
+      descuento = 0;
 
       var dateNow = moment().format('YYYY-MM-DD');
       var dateEnd= $('#date_end_cont_sist').val();
       var mesesVTCdinac = moment(dateEnd, 'YYYY-MM-DD').diff(dateNow, 'months');
 
+      descuento = $('[name="c_descuento['+id+'].descuento"]').val();
       tipo_moneda = $('select[name="c_coin[' + id + '].coin"]').val();
       tipo_forma_cambio = $('select[name="c_tcambopt[' + id + '].tcambopt"]').val();
       tipo_cambio = $('[name="c_tcamb['+id+'].tcamb"]').val();
@@ -161,6 +164,16 @@ function createEvent_Mensualidad (id) {
           tranformar_vtcdinamic_iva = 0;
         }
       }
+
+      if (descuento != '' || descuento != 0) {
+        descuento_mensualidad_civa = (mensualidad_civa * descuento )/100;
+        descuento_total = (total * descuento )/100;
+        descuento_tranformar_vtcdinamic_iva = (tranformar_vtcdinamic_iva * descuento )/100;
+
+        mensualidad_civa = mensualidad_civa - descuento_mensualidad_civa;
+        total = total - descuento_total;
+        tranformar_vtcdinamic_iva = tranformar_vtcdinamic_iva - descuento_tranformar_vtcdinamic_iva;
+      }
       // console.log(mesesVTCdinac);
       $('[name="c_tcamb['+id+'].tcamb"]').val(tipo_cambio);
 
@@ -192,7 +205,10 @@ function createEvent_Moneda(id){
         tranformar_iva = 0,
         mensualidad_civa = 0,
         total_vtc_d = 0,
-        tranformar_vtcdinamic_iva = 0;
+        tranformar_vtcdinamic_iva = 0,
+        descuento = 0;
+
+        descuento = $('[name="c_descuento['+id+'].descuento"]').val();
 
         if (tipo_moneda != '') {
           for (var i = 0; i < contar_select; i++) {
@@ -288,6 +304,16 @@ function createEvent_Moneda(id){
                   }
                 }
 
+                if (descuento != '' || descuento != 0) {
+                  descuento_mensualidad_civa = (mensualidad_civa * descuento )/100;
+                  descuento_total = (total * descuento )/100;
+                  descuento_tranformar_vtcdinamic_iva = (tranformar_vtcdinamic_iva * descuento )/100;
+
+                  mensualidad_civa = mensualidad_civa - descuento_mensualidad_civa;
+                  total = total - descuento_total;
+                  tranformar_vtcdinamic_iva = tranformar_vtcdinamic_iva - descuento_tranformar_vtcdinamic_iva;
+                }
+
                 $('[name="c_tcamb['+id+'].tcamb"]').val(tipo_cambio);
                 $('[name="c_montoiva['+id+'].montoiva"]').val(parseFloat(mensualidad_civa).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                 $('[name="c_vtcreal['+id+'].vtcreal"]').val(total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
@@ -316,7 +342,10 @@ function createEvent_Moneda2(id){
         unir_iva= 0;
         tranformar_iva = 0,
         total_vtc_d = 0,
-        tranformar_vtcdinamic_iva = 0;
+        tranformar_vtcdinamic_iva = 0,
+        descuento = 0;
+
+        descuento = $('[name="c_descuento['+id+'].descuento"]').val();
 
         var dateNow = moment().format('YYYY-MM-DD');
         var dateEnd= $('#date_end_cont_sist').val();
@@ -391,7 +420,18 @@ function createEvent_Moneda2(id){
           }
         }
 
+        if (descuento != '' || descuento != 0) {
+          descuento_total = (total * descuento )/100;
+          descuento_tranformar_vtcdinamic_iva = (tranformar_vtcdinamic_iva * descuento )/100;
+          descuento_tranformar_iva = (tranformar_iva * descuento)/100;
+
+          tranformar_iva = tranformar_iva - descuento_tranformar_iva;
+          total = total - descuento_total;
+          tranformar_vtcdinamic_iva = tranformar_vtcdinamic_iva - descuento_tranformar_vtcdinamic_iva;
+        }
+
         $('[name="c_tcamb['+id+'].tcamb"]').val(tipo_cambio);
+
         $('[name="c_montoiva['+id+'].montoiva"]').val(tranformar_iva.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         $('[name="c_vtcreal['+id+'].vtcreal"]').val(total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         $('[name="c_vtcdinamic['+id+'].vtcdinamic"]').val(tranformar_vtcdinamic_iva.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
@@ -417,7 +457,10 @@ function createEvent_Optc(id){
         tranformar_iva = 0,
         mensualidad_civa= 0,
         total_vtc_d = 0,
-        tranformar_vtcdinamic_iva = 0;
+        tranformar_vtcdinamic_iva = 0,
+        descuento = 0;
+
+        descuento = $('[name="c_descuento['+id+'].descuento"]').val();
 
         var dateNow = moment().format('YYYY-MM-DD');
         var dateEnd= $('#date_end_cont_sist').val();
@@ -492,6 +535,17 @@ function createEvent_Optc(id){
             tranformar_vtcdinamic_iva = 0;
           }
         }
+
+        if (descuento != '' || descuento != 0) {
+          descuento_mensualidad_civa = (mensualidad_civa * descuento )/100;
+          descuento_total = (total * descuento )/100;
+          descuento_tranformar_vtcdinamic_iva = (tranformar_vtcdinamic_iva * descuento )/100;
+
+          mensualidad_civa = mensualidad_civa - descuento_mensualidad_civa;
+          total = total - descuento_total;
+          tranformar_vtcdinamic_iva = tranformar_vtcdinamic_iva - descuento_tranformar_vtcdinamic_iva;
+        }
+
         $('[name="c_tcamb['+id+'].tcamb"]').val(tipo_cambio);
         $('[name="c_montoiva['+id+'].montoiva"]').val(parseFloat(mensualidad_civa).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         $('[name="c_vtcreal['+id+'].vtcreal"]').val(total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
@@ -516,7 +570,10 @@ function createEvent_tc(id){
         tranformar_iva = 0,
         mensualidad_civa = 0,
         total_vtc_d = 0,
-        tranformar_vtcdinamic_iva = 0;
+        tranformar_vtcdinamic_iva = 0,
+        descuento = 0;
+
+        descuento = $('[name="c_descuento['+id+'].descuento"]').val();
 
         var dateNow = moment().format('YYYY-MM-DD');
         var dateEnd= $('#date_end_cont_sist').val();
@@ -561,6 +618,17 @@ function createEvent_tc(id){
             tranformar_vtcdinamic_iva = 0;
           }
         }
+
+        if (descuento != '' || descuento != 0) {
+          descuento_mensualidad_civa = (mensualidad_civa * descuento )/100;
+          descuento_total = (total * descuento )/100;
+          descuento_tranformar_vtcdinamic_iva = (tranformar_vtcdinamic_iva * descuento )/100;
+
+          mensualidad_civa = mensualidad_civa - descuento_mensualidad_civa;
+          total = total - descuento_total;
+          tranformar_vtcdinamic_iva = tranformar_vtcdinamic_iva - descuento_tranformar_vtcdinamic_iva;
+        }
+
         $('[name="c_tcamb['+id+'].tcamb"]').val(tipo_cambio);
         $('[name="c_montoiva['+id+'].montoiva"]').val(parseFloat(mensualidad_civa).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         $('[name="c_vtcreal['+id+'].vtcreal"]').val(total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
@@ -586,7 +654,10 @@ function createEvent_iva(id){
         tranformar_iva = 0,
         mensualidad_civa = 0,
         total_vtc_d = 0,
-        tranformar_vtcdinamic_iva = 0;
+        tranformar_vtcdinamic_iva = 0,
+        descuento = 0;
+
+        descuento = $('[name="c_descuento['+id+'].descuento"]').val();
 
         var dateNow = moment().format('YYYY-MM-DD');
         var dateEnd= $('#date_end_cont_sist').val();
@@ -648,6 +719,18 @@ function createEvent_iva(id){
         tranformar_vtcdinamic_iva = 0;
       }
     }
+
+    if (descuento != '' || descuento != 0) {
+      descuento_mensualidad_civa = (mensualidad_civa * descuento )/100;
+      descuento_total = (total * descuento )/100;
+      descuento_tranformar_vtcdinamic_iva = (tranformar_vtcdinamic_iva * descuento )/100;
+
+      mensualidad_civa = mensualidad_civa - descuento_mensualidad_civa;
+      total = total - descuento_total;
+      tranformar_vtcdinamic_iva = tranformar_vtcdinamic_iva - descuento_tranformar_vtcdinamic_iva;
+    }
+
+
     $('[name="c_tcamb['+id+'].tcamb"]').val(tipo_cambio);
     $('[name="c_montoiva['+id+'].montoiva"]').val(parseFloat(mensualidad_civa).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
     $('[name="c_vtcreal['+id+'].vtcreal"]').val(total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
@@ -752,6 +835,102 @@ function createEvent_checkiva(id){
   });
 }
 
+function createEvent_descuento(id){
+  const element = document.querySelector('[name="c_descuento['+id+'].descuento"]')
+  element.addEventListener('keyup', function() {
+    var vtc_real = 0,
+        vtc_dinamico = 0,
+        iva = 0,
+        iva_info = 0,
+        tipo_forma_cambio = 0,
+        tipo_cambio = 0,
+        tipo_moneda = 0,
+        mensualidad = 0,
+        total_meses = 0,
+        tranformar_tc = 0,
+        unir_iva= 0;
+        tranformar_iva = 0,
+        mensualidad_civa = 0,
+        total_vtc_d = 0,
+        tranformar_vtcdinamic_iva = 0,
+        descuento = this.value;
+
+        var dateNow = moment().format('YYYY-MM-DD');
+        var dateEnd= $('#date_end_cont_sist').val();
+        var mesesVTCdinac = moment(dateEnd, 'YYYY-MM-DD').diff(dateNow, 'months');
+
+        tipo_forma_cambio = $('select[name="c_tcambopt[' + id + '].tcambopt"]').val();
+        tipo_cambio = $('[name="c_tcamb['+id+'].tcamb"]').val();
+        tipo_moneda = $('select[name="c_coin[' + id + '].coin"]').val();
+        mensualidad = $('input[name="c_price[' + id + '].price"]').val().replace(/,/g, '');
+        total_meses = $( "#sel_no_month" ).val();
+        iva = $('select[name="c_valiva[' + id + '].valiva"]').val();
+        unir_iva = '1.'+iva;
+        console.log(mensualidad);
+        tipo_cambio = (tipo_cambio == null || tipo_cambio == undefined || tipo_cambio == "") ? 0 : tipo_cambio;
+        if(tipo_forma_cambio == ''){
+          tipo_cambio = 0;
+          tranformar_tc = mensualidad * tipo_cambio;
+          total = tranformar_tc * total_meses;
+          total_vtc_d = tranformar_tc * mesesVTCdinac;
+          $('input[name="c_tcamb[' + id + '].tcamb"]').prop("readonly", true);
+        }
+        if(tipo_forma_cambio == '1'){
+          if (tipo_moneda == '1'){
+            tipo_cambio = 0;
+            total = mensualidad * total_meses;
+            total_vtc_d = mensualidad * mesesVTCdinac;
+            $('[name="c_tcambopt['+id+'].tcambopt"]').val('2').trigger('change');
+            $('input[name="c_tcamb[' + id + '].tcamb"]').prop("readonly", true);
+          }
+          else {
+            tranformar_tc = mensualidad * tipo_cambio;
+            total = tranformar_tc * total_meses;
+            total_vtc_d = tranformar_tc * mesesVTCdinac;
+          }
+        }
+        if(tipo_forma_cambio == '2'){
+          tipo_cambio = 0;
+          total = mensualidad * total_meses;
+          total_vtc_d = mensualidad * mesesVTCdinac;
+          $('input[name="c_tcamb[' + id + '].tcamb"]').prop("readonly", true);
+        }
+        if(  $('[name="c_checkiva['+id+'].checkiva"]').is(':checked') ) {
+          // console.log('checked');
+          $('[name="c_valiva['+id+'].valiva"]').val('0').trigger('change');
+          tranformar_iva = total;
+          mensualidad_civa = mensualidad;
+          tranformar_vtcdinamic_iva = total_vtc_d;
+          if (tranformar_vtcdinamic_iva < 0) {
+            tranformar_vtcdinamic_iva = 0;
+          }
+        }
+        else {
+          // console.log('unchecked');
+          mensualidad_civa = mensualidad*unir_iva;
+          tranformar_iva = total*unir_iva;
+          tranformar_vtcdinamic_iva = total_vtc_d;
+          if (tranformar_vtcdinamic_iva < 0) {
+            tranformar_vtcdinamic_iva = 0;
+          }
+        }
+        if (descuento != '' || descuento != 0) {
+          descuento_mensualidad_civa = (mensualidad_civa * descuento )/100;
+          descuento_total = (total * descuento )/100;
+          descuento_tranformar_vtcdinamic_iva = (tranformar_vtcdinamic_iva * descuento )/100;
+          //
+          mensualidad_civa = mensualidad_civa - descuento_mensualidad_civa;
+          total = total - descuento_total;
+          tranformar_vtcdinamic_iva = tranformar_vtcdinamic_iva - descuento_tranformar_vtcdinamic_iva;
+        }
+        // console.log(mesesVTCdinac);
+        $('[name="c_tcamb['+id+'].tcamb"]').val(tipo_cambio);
+        $('[name="c_montoiva['+id+'].montoiva"]').val(parseFloat(mensualidad_civa).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('[name="c_vtcreal['+id+'].vtcreal"]').val(total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $('[name="c_vtcdinamic['+id+'].vtcdinamic"]').val(tranformar_vtcdinamic_iva.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    });
+}
+
 var conceptIndex = 0,
     constante_eliminar = [],
     constante_a = 0,
@@ -775,6 +954,7 @@ $(".validation-wizard-anexo").on('click','.addButton',function(){
         .find('[name="tcambopt"]').attr('name', 'c_tcambopt[' + conceptIndex + '].tcambopt').end()
         .find('[name="tcamb"]').attr('name', 'c_tcamb[' + conceptIndex + '].tcamb').end()
         .find('[name="valiva"]').attr('name', 'c_valiva[' + conceptIndex + '].valiva').end()
+        .find('[name="descuento"]').attr('name', 'c_descuento[' + conceptIndex + '].descuento').end()
         .find('[name="montoiva"]').attr('name', 'c_montoiva[' + conceptIndex + '].montoiva').end()
         .find('[name="vtcreal"]').attr('name', 'c_vtcreal[' + conceptIndex + '].vtcreal').end()
         .find('[name="vtcdinamic"]').attr('name', 'c_vtcdinamic[' + conceptIndex + '].vtcdinamic').end()
@@ -800,6 +980,7 @@ $(".validation-wizard-anexo").on('click','.addButton',function(){
         createEvent_tc(conceptIndex);
         createEvent_iva(conceptIndex);
         createEvent_checkiva(conceptIndex);
+        createEvent_descuento(conceptIndex);
     }
     else{
       Swal.fire("Operación abortada", "Excediste el limite de campos permitidos  :(", "error");
@@ -824,6 +1005,7 @@ $(".validation-wizard-anexo").on('click','.addButton',function(){
           .find('[name="tcambopt"]').attr('name', 'c_tcambopt[' + index_reutilizado + '].tcambopt').end()
           .find('[name="tcamb"]').attr('name', 'c_tcamb[' + index_reutilizado + '].tcamb').end()
           .find('[name="valiva"]').attr('name', 'c_valiva[' + index_reutilizado + '].valiva').end()
+          .find('[name="descuento"]').attr('name', 'c_descuento[' + conceptIndex + '].descuento').end()
           .find('[name="montoiva"]').attr('name', 'c_montoiva[' + conceptIndex + '].montoiva').end()
           .find('[name="vtcreal"]').attr('name', 'c_vtcreal[' + index_reutilizado + '].vtcreal').end()
           .find('[name="vtcdinamic"]').attr('name', 'c_vtcdinamic[' + index_reutilizado + '].vtcdinamic').end()
@@ -851,7 +1033,7 @@ $(".validation-wizard-anexo").on('click','.addButton',function(){
           createEvent_tc(index_reutilizado);
           createEvent_iva(index_reutilizado);
           createEvent_checkiva(index_reutilizado);
-
+          createEvent_descuento(index_reutilizado);
     //Elimino el primero elemento del array
       ordenando_array.shift();
 

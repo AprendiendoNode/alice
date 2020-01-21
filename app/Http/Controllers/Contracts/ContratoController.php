@@ -181,12 +181,17 @@ class ContratoController extends Controller
     $cities = DB::select('CALL GetAllCitiesv2 ()', array());
     $payment = DB::select('CALL GetAllCitiesv2 ()', array());
 
+    $kickoff_vendedores = DB::select(' CALL px_usersXdepto(?)', array(5));
+    $kickoff_inside_sales = DB::select(' CALL px_usersXdepto(?)', array(6));
+    $kickoff_colaboradores = DB::select(' CALL px_colaboradores()', array());
+    $politica_comision = DB::select(' CALL px_politicas_de_comision()', array());
 
     return view('permitted.contract.cont_create_cont', compact(
       'unitmeasures','satproduct','classifications','verticals',
       'cadenas', 'sitio','currency', 'hotels', 'country', 'rz_type',
       'rz_nationality', 'rz_concept_invoice', 'contract_status', 'rz_customer',
       'iva', 'resguardo','vendedores','itconcierge',
+      'kickoff_vendedores','kickoff_inside_sales','kickoff_colaboradores', 'politica_comision',
       'payment_term','payment_way','payment_methods','cfdi_uses','countries','states','cities', 'payment_term_act'
     ));
   }
@@ -388,6 +393,7 @@ class ContratoController extends Controller
       $array_data_dinamic_3 = $request->c_tcambopt;
       $array_data_dinamic_4 = $request->c_tcamb;
       $array_data_dinamic_5 = $request->c_valiva;
+      $array_data_dinamic_6 = $request->c_descuento;
 
     //sitios
       $site_num_max_posiciones = $request->site_contador_max;
@@ -476,6 +482,7 @@ class ContratoController extends Controller
                 'exchange_range_id' => $array_data_dinamic_3[$k],
                 'exchange_range_value' => $array_data_dinamic_4[$k],
                 'iva_id' =>   $id_iva_x,
+                'descuento' => $array_data_dinamic_6[$k],
                 'contract_annex_id' => $newAnnexeContMaster,
                 'created_at' => \Carbon\Carbon::now()
               ]
@@ -497,6 +504,7 @@ class ContratoController extends Controller
               'exchange_range_id' => $array_data_dinamic_3[$z],
               'exchange_range_value' => $array_data_dinamic_4[$z],
               'iva_id' =>   $id_iva_y,
+              'descuento' => $array_data_dinamic_6[$z],
               'contract_annex_id' => $newAnnexeContMaster,
               'created_at' => \Carbon\Carbon::now()
             ]
@@ -538,12 +546,75 @@ class ContratoController extends Controller
           );
         }
       }
-
-      //
+      //--------------------------------------------------------------
+      $comision_exist= $request->comision;
+      $comision_type= $request->sel_type_comision;
+      if ($comision_exist == 1) {
+        //Insertar la tabla de comision general.
+        $comision_gral_new = DB::table('comision_gral')
+        ->insertGetId([
+           'itconcierge' => $request->sel_itconcierge_comision,
+          'inside_sales' => $request->sel_inside_sales,
+           'id_contract' => $newAnnexeContMaster,
+           'politica_id' => $comision_type,
+            'created_at' => \Carbon\Carbon::now()
+        ]);
+        if (!empty($request->item)) {
+          foreach ($request->item as $key => $result) {
+                      $id_user = $result['contactInt'];
+                      $contact = !empty($result['contact']) ? $result['contact'] : '';
+                   $porcentaje = $result['porcentaje'];
+            $comision_contacto = DB::table('comisiones_contacto')
+             ->insertGetId([
+                    'user_id' => $id_user,
+                     'nombre' => $contact,
+           'comision_gral_id' => $comision_gral_new,
+            'valor_comision'  => $porcentaje,
+                 'created_at' => \Carbon\Carbon::now()
+             ]);
+          }
+        }
+        if (!empty($request->item_cierre)) {
+          foreach ($request->item_cierre as $key => $result) {
+                     $id_user = $result['contactInt'];
+                     $contact = $result['contact'];
+                  $porcentaje = $result['porcentaje'];
+             $comision_cierre = DB::table('comisiones_cierre')
+             ->insertGetId([
+                    'user_id' => $id_user,
+                     'nombre' => $contact,
+           'comision_gral_id' => $comision_gral_new,
+            'valor_comision'  => $porcentaje,
+                 'created_at' => \Carbon\Carbon::now()
+             ]);
+          }
+        }
+        if (!empty($request->item_vendedor)) {
+          foreach ($request->item_vendedor as $key => $result) {
+                      $id_user = $result['contact'];
+            $comision_vendedor = DB::table('comisiones_vendedores')
+              ->insertGetId([
+                     'user_id' => $result['contact'],
+            'comision_gral_id' => $comision_gral_new,
+                  'created_at' => \Carbon\Carbon::now()
+              ]);
+          }
+        }
+        if (!empty($request->item_colaborador)) {
+          foreach ($request->item_colaborador as $key => $result) {
+                        $id_user =  $result['contact'];
+           $comision_colaborador = DB::table('comisiones_colaborador')
+              ->insertGetId([
+                       'user_id' => $id_user,
+              'comision_gral_id' => $comision_gral_new,
+                    'created_at' => \Carbon\Carbon::now()
+              ]);
+          }
+        }
+      }
+      //--------------------------------------------------------------
       return $newAnnexeContMaster; // returns 1
-
     }
-
   }
 
   public function count_hotel_by_cadena (Request $request) {
@@ -946,7 +1017,7 @@ class ContratoController extends Controller
 
       $monto_descuento = str_replace(',', '', $request->monto_descuento_add);
       $monto_descuento = (float)$monto_descuento;
-  
+
       $monto_con_descuento = str_replace(',', '', $request->monto_con_descuento_add);
       $monto_con_descuento = (float)$monto_con_descuento;
 
@@ -997,10 +1068,10 @@ class ContratoController extends Controller
 
       $monto_descuento = str_replace(',', '', $request->monto_descuento_edit);
       $monto_descuento = (float)$monto_descuento;
-  
+
       $monto_con_descuento = str_replace(',', '', $request->monto_con_descuento_edit);
       $monto_con_descuento = (float)$monto_con_descuento;
-      
+
       $validacion= 0;
       $existe = DB::table('contract_payments')
                 ->where('contract_annex_id', $idubicacion)
@@ -1013,7 +1084,7 @@ class ContratoController extends Controller
       /*if ($existe > 0) {
         return $validacion;
       }*/
-    
+
       $result = DB::table('contract_payments')
         ->where('id', $request->contract_payment_id)
         ->update([
@@ -1028,7 +1099,7 @@ class ContratoController extends Controller
           'created_at' => \Carbon\Carbon::now() ]);
 
          return $result;
-      
+
  }
  public function delete_coin_anexo(Request $request)
  {
@@ -1143,6 +1214,99 @@ class ContratoController extends Controller
 
     return $result;
  }
-
+ //Politica de Comision
+ public function search_politica (Request $request) {
+   $id = $request->text;
+   $result = DB::select('CALL px_politica_de_comision_xid (?)', array($id));
+   return json_encode($result);
+ }
+ public function totalLinesContact(Request $request)
+ {
+   //Variables
+   $json = new \stdClass;
+   $input_items = $request->item;
+   $total_contacto = $request->politica_contacto;
+   $suma = 0;
+   $faltante = 0;
+   $resp = false;
+   $duda = '';
+   if ($request->ajax()) {
+     if (!empty($input_items)) {
+       foreach ($input_items as $key => $item) {
+         $item_porcentaje = (double)$item['porcentaje'];
+         if ($faltante == 0) {
+            $suma = $suma + $item_porcentaje;
+            $faltante = $total_contacto - $suma;
+            $resp = true;
+         }
+         else {
+           if ($suma < $total_contacto &&  $item_porcentaje <= $faltante) {
+             $suma = $suma + $item_porcentaje;
+             $faltante = $total_contacto - $suma;
+             $duda = 'if';
+           }
+           else {
+             $resp = false;
+             $duda = 'else';
+           }
+         }
+       }
+     }
+     $json->total = $total_contacto;
+     $json->falta =$faltante;
+     $json->suma =$suma;
+     $json->respuesta = $resp;
+     $json->duda =$duda;
+     return response()->json($json);
+   }
+   return response()->json(['error' => __('general.error_general')], 422);
+ }
+ public function totalLinesCierre(Request $request)
+ {
+   //Variables
+   $json = new \stdClass;
+   $input_items = $request->item_cierre;
+   $total_contacto = $request->politica_cierre;
+   $suma = 0;
+   $faltante = 0;
+   $resp = false;
+   $duda = '';
+   if ($request->ajax()) {
+     if (!empty($input_items)) {
+       foreach ($input_items as $key => $item) {
+         $item_porcentaje = (double)$item['porcentaje'];
+         if ($faltante == 0) {
+            $suma = $suma + $item_porcentaje;
+            $faltante = $total_contacto - $suma;
+            $resp = true;
+         }
+         else {
+           if ($suma < $total_contacto &&  $item_porcentaje <= $faltante) {
+             $suma = $suma + $item_porcentaje;
+             $faltante = $total_contacto - $suma;
+             $duda = 'if';
+           }
+           else {
+             $resp = false;
+             $duda = 'else';
+           }
+         }
+       }
+     }
+     $json->total = $total_contacto;
+     $json->falta =$faltante;
+     $json->suma =$suma;
+     $json->respuesta = $resp;
+     $json->duda =$duda;
+     return response()->json($json);
+   }
+   return response()->json(['error' => __('general.error_general')], 422);
+ }
+ public function totalLinesVendedor(Request $request)
+ {
+ }
+ public function totalLinesColaborador(Request $request)
+ {
+ }
 
 }

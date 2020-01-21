@@ -274,7 +274,7 @@ class CustomerInvoiceController extends Controller
             "xml" => $xml,
         );
 
-        return $files;   
+        return $files;
     }
     /**
      * Display a listing of the resource.
@@ -1103,15 +1103,15 @@ class CustomerInvoiceController extends Controller
        // Open a try/catch block
        try {
          //Logica
-         
+
          $cont_maestro_id = $request->cont_maestro_id;
          $result = DB::select('CALL px_data_fact_sat(?)', array($cont_maestro_id));
-         
+
          $payment_way_id = $result[0]->payment_way_id;
          $payment_term_id = $result[0]->payment_term_id;
          $payment_method_id = $result[0]->payment_method_id;
          $cfdi_uses = $result[0]->cfdi_user_id;
-         
+
          $request->merge(['created_uid' => \Auth::user()->id]);
          $request->merge(['updated_uid' => \Auth::user()->id]);
          $request->merge(['status' => CustomerInvoice::OPEN]);
@@ -2990,6 +2990,11 @@ class CustomerInvoiceController extends Controller
             'code' => 200
         ]);
 
+    }
+    public function getDataContractRz(Request $request) {
+      $customer_id = $request->id_search;
+      $resultados = DB::select('CALL px_customer_xcontract_master (?)', array($customer_id));
+      return json_encode($resultados); 
     }
 
 

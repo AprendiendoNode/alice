@@ -917,7 +917,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/reset_rza_by_contract', 'Contracts\ContratoController@reset_rza_by_contract');
     Route::post('/search_client_contract', 'Contracts\ContratoController@search_client_contract');
     Route::get('/qualification_itc', 'QualificationItcController@index');
-
+    //Comisiones
+    Route::post('/search_politica', 'Contracts\ContratoController@search_politica');
+    Route::post('/totalLinesContact', 'Contracts\ContratoController@totalLinesContact');
+    Route::post('/totalLinesCierre', 'Contracts\ContratoController@totalLinesCierre');
+    Route::post('/totalLinesVendedor', 'Contracts\ContratoController@totalLinesVendedor');
+    Route::post('/totalLinesColaborador', 'Contracts\ContratoController@totalLinesColaborador');
 });
 
 
@@ -1185,7 +1190,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('customer-payments/destroy', 'Sales\CustomerPaymentController@destroy');
     Route::get('/customer-payments/download-xml/{id}', 'Sales\CustomerPaymentController@downloadXml');
     Route::get('/customer-payments-pdf/{id}', 'Sales\CustomerPaymentController@generatePdf');
-    Route::post('/customer-invoices/send_invoice_to_poliza', 'Sales\CustomerInvoiceController@send_invoice_to_poliza');  
+    Route::post('/customer-invoices/send_invoice_to_poliza', 'Sales\CustomerInvoiceController@send_invoice_to_poliza');
     //POLIZAS
     Route::get('/customer-polizas-show', 'Sales\CustomerPolizaController@show');
     Route::post('/customer-polizas-search', 'Sales\CustomerPolizaController@search');
@@ -1193,6 +1198,8 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
   //REPORTES FACTURACION Y CONTABILIDAD
   Route::get('/billing_report', 'Sales\BillingReportController@index');
   Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
+  Route::post('/customer-invoices-cont-rz', 'Sales\CustomerInvoiceController@getDataContractRz');
+
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
