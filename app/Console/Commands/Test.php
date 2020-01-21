@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use App\Mail\Sentsurveynpsmail;
 use Illuminate\Support\Facades\Crypt;
 use Carbon\Carbon;
+use stdClass;
 use ldap;
 
 class Test extends Command
@@ -52,7 +53,8 @@ XML;
      *
      * @return mixed
      */
-    public function handlexxxx() // insercion de sites_budgets y annual_budgets en base a hotels.
+    // Llenado de presupuestos de todos los sitios.
+    public function handle() // insercion de sites_budgets y annual_budgets en base a hotels.
     {
         $user = 2; //??
         $moneda = 2;
@@ -60,8 +62,11 @@ XML;
         $status = 1;
 
         // $res = DB::table('sites_budgets')->get();
-        $hotels = DB::connection('alice_cloud')->table('hotels')->select('id','Nombre_hotel','id_ubicacion')->get();
+        $hotels = DB::table('hotels')->select('id','Nombre_hotel','id_ubicacion')->get();
         $hotel_count = count($hotels);
+        // $hotels = DB::connection('alice_cloud')->table('hotels')->select('id','Nombre_hotel','id_ubicacion')->get();
+        
+        
         // dd('Alice',$hotels, $hotel_count);
         // sites_budgets
         // hotel_id, contract_annex_id, annual_budget_id, user_id
@@ -70,22 +75,40 @@ XML;
         // $contract_site = DB::table('contract_sites')->where('hotel_id', $hotels[0]->id)->get();
         // dd($contract_site);
 
+        // $test1 = DB::table('contract_sites')->where('hotel_id', 3)->get();
+        // $test2 = DB::table('contract_annexes')->where('id', 1)->get();
+        // $test3 = DB::table('contract_payments')->where('contract_annex_id', 1)->first();
+
+        // if ($test3->currency_id == 1) {
+        //     $monto_adolar = (float) ($test3->quantity / 19.5); // multiplicado por dolares
+        //     $monto_presupuesto = ($monto_adolar * 0.70);
+        //     $monto_presupuesto = (float)number_format($monto_presupuesto, 2, '.','');
+        //     $equipo_activo = ($monto_presupuesto * 0.70);
+        //     $equipo_no_activo = ($monto_presupuesto * 0.20);
+        //     $mano_obra = ($monto_presupuesto * .10);
+        // }
+
+        // $date_expiration = Carbon::create($test2[0]->date_real)->addMonths($test2[0]->number_expiration);
+        
+        // dd($monto_adolar, $monto_presupuesto, $equipo_activo, $equipo_no_activo, $mano_obra);
+        // dd($test1, $test2 , $test3, $monto_presupuesto);
+        // date_real + 36 meses.
+
         for ($i=0; $i < $hotel_count; $i++) {
             $this->info('Current iteration: ' . $i);
-            $contract_site = DB::connection('alice_cloud')->table('contract_sites')->where('hotel_id', $hotels[$i]->id)->get();
+            $contract_site = DB::table('contract_sites')->where('hotel_id', $hotels[$i]->id)->get();
             $count_c = count($contract_site);
-
             if ($contract_site->isEmpty()) {
                 $this->info('No tiene contrato: ' . $i);
-                $id_annual = DB::connection('alice_cloud')->table('annual_budgets')->insertGetId([
+                $id_annual = DB::table('annual_budgets')->insertGetId([
                     'user_id' => $user,
-                    'fecha_budget' => '2019-01-01',
+                    'fecha_budget' => '2020-01-01',
                     'estatus' => $status,
                     'moneda_id' => $moneda,
                     'exchange_rate' => $exchange_rate,
                     'id_ubicacion' => $hotels[$i]->id_ubicacion
                 ]);
-                DB::connection('alice_cloud')->table('sites_budgets')->insert([
+                DB::table('sites_budgets')->insert([
                     'hotel_id' => $hotels[$i]->id,
                     // 'contract_annex_id' => '',
                     'annual_budget_id' => $id_annual,
@@ -93,48 +116,105 @@ XML;
                 ]);
                 $this->line('Presupuesto insertado');
             }else{
-                // $contract_site = DB::table('contract_sites')->where('hotel_id', $hotels[$i]->id)->get();
-                // $count_c = count($contract_site);
                 if ($count_c > 1) {
                     $this->info('Tiene mas de 1 contrato anexo: ' . $count_c);
-                    for ($j=0; $j < $count_c; $j++) { 
-                        $id_annual = DB::connection('alice_cloud')->table('annual_budgets')->insertGetId([
+                    for ($j=0; $j < $count_c; $j++) {
+                        // $contract_site[$j]->contract_annex_id
+                        $annexes = DB::table('contract_annexes')->where('id', $contract_site[$j]->contract_annex_id)->first();
+                        $date_expiration = Carbon::create($annexes->date_real)->addMonths($annexes->number_expiration);
+                        if ($date_expiration->greaterThan(Carbon::now())) {
+                            // contrato activo
+                            // get montos
+                            $montos = DB::table('contract_payments')->where('contract_annex_id', $contract_site[$j]->contract_annex_id)->first();
+                            $collection = $this->get_budget_annex($montos->quantity, $montos->currency_id);
+                            $id_annual = DB::table('annual_budgets')->insertGetId([
+                                'user_id' => $user,
+                                'monto' => $collection->monto,
+                                'equipo_activo_monto' => $collection->equipo_activo,
+                                'equipo_no_activo_monto' => $collection->equipo_no_activo,
+                                'mano_obra_monto' => $collection->mano_obra,
+                                'fecha_budget' => '2020-01-01',
+                                'estatus' => $status,
+                                'moneda_id' => $moneda,
+                                'exchange_rate' => $exchange_rate,
+                                'id_ubicacion' => $hotels[$i]->id_ubicacion
+                            ]);
+                            DB::table('sites_budgets')->insert([
+                                'hotel_id' => $hotels[$i]->id,
+                                'contract_annex_id' => $contract_site[$j]->contract_annex_id,
+                                'annual_budget_id' => $id_annual,
+                                'user_id' => 2
+                            ]);
+                            $this->line('Presupuesto insertado');
+                        }else{
+                            // no insertar nada
+                            $this->line('Contrato vencido, no se inserto.');
+                        }
+                    }
+                }else{
+                    $this->info('Tiene solo un contrato: ');
+                    $annexes = DB::table('contract_annexes')->where('id', $contract_site[0]->contract_annex_id)->first();
+                    $date_expiration = Carbon::create($annexes->date_real)->addMonths($annexes->number_expiration);
+                    if ($date_expiration->greaterThan(Carbon::now())) {
+                        $montos = DB::table('contract_payments')->where('contract_annex_id', $contract_site[0]->contract_annex_id)->first();
+                        $collection = $this->get_budget_annex($montos->quantity, $montos->currency_id);
+
+                        $id_annual = DB::table('annual_budgets')->insertGetId([
                             'user_id' => $user,
-                            'fecha_budget' => '2019-01-01',
+                            'monto' => $collection->monto,
+                            'equipo_activo_monto' => $collection->equipo_activo,
+                            'equipo_no_activo_monto' => $collection->equipo_no_activo,
+                            'mano_obra_monto' => $collection->mano_obra,
+                            'fecha_budget' => '2020-01-01',
                             'estatus' => $status,
                             'moneda_id' => $moneda,
                             'exchange_rate' => $exchange_rate,
                             'id_ubicacion' => $hotels[$i]->id_ubicacion
                         ]);
-                        DB::connection('alice_cloud')->table('sites_budgets')->insert([
+                        DB::table('sites_budgets')->insert([
                             'hotel_id' => $hotels[$i]->id,
-                            'contract_annex_id' => $contract_site[$j]->contract_annex_id,
+                            'contract_annex_id' => $contract_site[0]->contract_annex_id,
                             'annual_budget_id' => $id_annual,
                             'user_id' => 2
                         ]);
                         $this->line('Presupuesto insertado');
+                    }else{
+                        // no insertar nada.
+                        $this->line('Contrato vencido, no se inserto.');
                     }
-                }else{
-                    $this->info('Tiene solo un contrato: ');
-                    $id_annual = DB::connection('alice_cloud')->table('annual_budgets')->insertGetId([
-                        'user_id' => $user,
-                        'fecha_budget' => '2019-01-01',
-                        'estatus' => $status,
-                        'moneda_id' => $moneda,
-                        'exchange_rate' => $exchange_rate,
-                        'id_ubicacion' => $hotels[$i]->id_ubicacion
-                    ]);
-                    DB::connection('alice_cloud')->table('sites_budgets')->insert([
-                        'hotel_id' => $hotels[$i]->id,
-                        'contract_annex_id' => $contract_site[0]->contract_annex_id,
-                        'annual_budget_id' => $id_annual,
-                        'user_id' => 2
-                    ]);
-                    $this->line('Presupuesto insertado');
                 }
             }
         }
         $this->info('Command ended successfuly. iterations: ' . $i);
+    }
+    public function get_budget_annex($montos, $currency)
+    {
+        $monto_presupuesto = 0;
+        $equipo_activo = 0;
+        $equipo_no_activo = 0;
+        $mano_obra = 0;
+        $object = new stdClass;
+
+        if ($currency == 1) {
+            $monto_adolar = (float) ($montos / 19.5); // multiplicado por dolares
+            $monto_presupuesto = ($monto_adolar * 0.70);
+            $monto_presupuesto = (float)number_format($monto_presupuesto, 2, '.','');
+            $equipo_activo = ($monto_presupuesto * 0.70);
+            $equipo_no_activo = ($monto_presupuesto * 0.20);
+            $mano_obra = ($monto_presupuesto * .10);
+        }else{
+            $monto_presupuesto = ($montos * 0.70);
+            $monto_presupuesto = (float)number_format($monto_presupuesto, 2, '.','');
+            $equipo_activo = ($monto_presupuesto * 0.70);
+            $equipo_no_activo = ($monto_presupuesto * 0.20);
+            $mano_obra = ($monto_presupuesto * .10);
+        }
+        $object->monto = $monto_presupuesto;
+        $object->equipo_activo = $equipo_activo;
+        $object->equipo_no_activo = $equipo_no_activo;
+        $object->mano_obra = $mano_obra;
+
+        return $object;
     }
 
     public function handlex() // insercion de annual budgets en base a hotels.
@@ -154,7 +234,7 @@ XML;
             $id_annual = DB::table('annual_budgets')->insertGetId(
                 [
                     'user_id' => $user,
-                    'fecha_budget' => '2019-01-01',
+                    'fecha_budget' => '2020-01-01',
                     'estatus' => $status,
                     'moneda_id' => $moneda,
                     'exchange_rate' => $exchange_rate
@@ -246,7 +326,7 @@ XML;
         $decoded = json_decode($output);
         dd($decoded);
     }
-    public function handle() // prueba de envio de encuestas en pedazos...
+    public function handle_correo() // prueba de envio de encuestas en pedazos...
     {
         // Codigo para sentsurvey.
         $data_emails = [];
