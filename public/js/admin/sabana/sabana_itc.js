@@ -72,6 +72,7 @@ $(function() {
           success: function (data){
             //console.log(data);
             $("#total_antenas").text(data[0].cantidad);
+            $("#footer_total_antenas").text(data[0].cantidad);
           },
           error: function (data) {
             console.log('Error:', data);
@@ -296,8 +297,7 @@ $(function() {
 
     });
 
-    $("#npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
-    $("#total_faturacion").text(sumaFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    $("#footer_total_sitios").text(parseInt($("#total_sitios").text()));
 
     var promotores = [], pasivos = [], detractores = [];
 
@@ -305,7 +305,18 @@ $(function() {
       promotores[i] = $(".mes"+(i+1)+".promotor").length;
       pasivos[i] = $(".mes"+(i+1)+".pasivo").length;
       detractores[i] = $(".mes"+(i+1)+".detractor").length;
+      var total_icons = promotores[i] + pasivos[i] + detractores[i];
+      if(total_icons != 0) {
+        $("#MES"+(i+1)).text(""+parseInt(((promotores[i] / total_icons) * 100 ) - ((detractores[i] / total_icons) * 100 )));
+      } else {
+        $("#MES"+(i+1)).text("-");
+      }
     }
+
+    $("#total_faturacion").text(sumaFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    $("#footer_total_facturacion").text(sumaFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    $("#npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
+    $("#footer_npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
 
     graph_calificaciones_x_mes('graph_calificaciones_x_mes', meses, promotores, pasivos, detractores);
   }
@@ -332,7 +343,7 @@ $(function() {
     });
   });
 
-  $('#total_antenas').on('click', function(){
+  $('#total_antenas, #footer_total_antenas').on('click', function(){
     $("#modal-antenas-sitioLabel").text("Antenas:");
     var _token = $('meta[name="csrf-token"]').attr('content');
     var itc = $('#select_itc').val();
@@ -1102,16 +1113,30 @@ function graph_calificaciones_x_mes(title, meses, promotores, pasivos, detractor
   //$('#'+title).height($('#'+title).height());
 
  var chart = document.getElementById(title);
-  var resizeMainContainer = function () {
-    chart.style.width = '40vw';
-    chart.style.height = 300+'px';
- };
-    resizeMainContainer();
+
     var myChart = echarts.init(chart);
     var group=[];
     var titles=[];
     var i=0;
+    var rotar = 45;
+    var tamanio = 12;
 
+    if($(window).width() <= 575) {
+      rotar = 90;
+      tamanio = 8;
+    }
+
+    var resizeMainContainer = function () {
+      if($(window).width() <= 575) {
+        chart.style.width = '100vw';
+        chart.style.height = 300+'px';
+      } else {
+        chart.style.width = '40vw';
+        chart.style.height = 300+'px';
+      }
+      myChart.resize();
+   };
+resizeMainContainer();
     /*data.forEach(function(element){
     element.type=="" ?  element.type="other": element.type;
     group[i] ={name: element.type,type: 'bar',label: {normal: {show: true,position: 'inside'}},data: [element.cantidad]};
@@ -1124,7 +1149,7 @@ function graph_calificaciones_x_mes(title, meses, promotores, pasivos, detractor
 
     option = {
       title: {
-          text: 'Calificaciones x mes (NPS)'
+          text: 'Calificaciones (NPS)'
       },
       tooltip: {
           trigger: 'axis'
@@ -1146,7 +1171,8 @@ function graph_calificaciones_x_mes(title, meses, promotores, pasivos, detractor
           axisLabel : {
              show: true,
              interval: '0',
-             rotate: 45
+             rotate: rotar,
+             fontSize: tamanio
           }
       },
       yAxis: {
@@ -1176,30 +1202,41 @@ function graph_calificaciones_x_mes(title, meses, promotores, pasivos, detractor
   myChart.setOption(option);
 
   $(window).on('resize', function(){
-      if(myChart != null && myChart != undefined){
-        //chart.style.width = 100+'%';
-        //chart.style.height = 100+'%';
-        chart.style.width = "40vw";
-        chart.style.height = $(window).width()*0.5;
-         myChart.resize();
-
-      }
+    resizeMainContainer();
   });
 }
 
 function graph_viaticos_x_mes(title, meses, gastos) {
- var chart = document.getElementById(title);
-  var resizeMainContainer = function () {
-    chart.style.width = '40vw';
-    chart.style.height = 300+'px';
- };
-    resizeMainContainer();
-    var myChart = echarts.init(chart);
+  var chart = document.getElementById(title);
+
+     var myChart = echarts.init(chart);
+     var group=[];
+     var titles=[];
+     var i=0;
+     var rotar = 45;
+     var tamanio = 12;
+
+     if($(window).width() <= 575) {
+       rotar = 90;
+       tamanio = 8;
+     }
+
+     var resizeMainContainer = function () {
+       if($(window).width() <= 575) {
+         chart.style.width = '100vw';
+         chart.style.height = 300+'px';
+       } else {
+         chart.style.width = '40vw';
+         chart.style.height = 300+'px';
+       }
+       myChart.resize();
+    };
+ resizeMainContainer();
 
 
     option = {
       title: {
-          text: 'Viáticos x mes (Pagados)'
+          text: 'Viáticos (MXN Pagados)'
       },
       tooltip: {
           trigger: 'axis'
@@ -1221,7 +1258,8 @@ function graph_viaticos_x_mes(title, meses, gastos) {
           axisLabel : {
              show: true,
              interval: '0',
-             rotate: 45
+             rotate: rotar,
+             fontSize: tamanio
           }
       },
       yAxis: {
@@ -1243,9 +1281,7 @@ function graph_viaticos_x_mes(title, meses, gastos) {
   myChart.setOption(option);
 
   $(window).on('resize', function(){
-      if(myChart != null && myChart != undefined){
-         myChart.resize();
-      }
+    resizeMainContainer();
   });
 }
 
@@ -1590,7 +1626,7 @@ function getProjects(itc){
         success: function (data){
           console.log(data);
           //Gráfica DOC P
-          graph_document('graph_doc_p', 'Documento P (Entregados)', data);
+          graph_document('graph_doc_p', 'Doc. P (USD Entregados)', data);
         },
         error: function (data) {
           console.log('Error:', data);
@@ -1604,7 +1640,7 @@ function getProjects(itc){
         success: function (data){
           console.log(data);
           //Gráfica DOC P
-          graph_document('graph_doc_m', 'Documento M (Entregados)', data);
+          graph_document('graph_doc_m', 'Doc. M (USD Entregados)', data);
         },
         error: function (data) {
           console.log('Error:', data);
@@ -1647,12 +1683,30 @@ Swal.fire({
 
 function graph_document(title, name, data) {
   var chart = document.getElementById(title);
-   var resizeMainContainer = function () {
-     chart.style.width = '40vw';
-     chart.style.height = 300+'px';
-  };
-     resizeMainContainer();
+
      var myChart = echarts.init(chart);
+     var group=[];
+     var titles=[];
+     var i=0;
+     var rotar = 45;
+     var tamanio = 12;
+
+     if($(window).width() <= 575) {
+       rotar = 90;
+       tamanio = 8;
+     }
+
+     var resizeMainContainer = function () {
+       if($(window).width() <= 575) {
+         chart.style.width = '90vw';
+         chart.style.height = 300+'px';
+       } else {
+         chart.style.width = '40vw';
+         chart.style.height = 300+'px';
+       }
+       myChart.resize();
+    };
+ resizeMainContainer();
 
      var max_monto = Object.values(data[1]), max_cantidad = Object.values(data[2]);
 
@@ -1679,6 +1733,9 @@ function graph_document(title, name, data) {
                  }
              }
          },
+         grid: {
+             containLabel: true
+         },
          legend: {
              top: '10%',
              data:['Cantidad', 'Monto']
@@ -1699,7 +1756,8 @@ function graph_document(title, name, data) {
                  axisLabel : {
                     show: true,
                     interval: '0',
-                    rotate: 45
+                    rotate: rotar,
+                    fontSize: tamanio
                  }
              },
              {
@@ -1715,7 +1773,11 @@ function graph_document(title, name, data) {
                  name: '',
                  max: max_monto,
                  min: 0,
-                 boundaryGap: [0.2, 0.2]
+                 boundaryGap: [0.2, 0.2],
+                 axisLabel: {
+                   //fontSize: 9,
+                   //show: false
+                 }
              },
              {
                  type: 'value',
@@ -1723,7 +1785,11 @@ function graph_document(title, name, data) {
                  name: '',
                  max: max_cantidad,
                  min: 0,
-                 boundaryGap: [0.2, 0.2]
+                 boundaryGap: [0.2, 0.2],
+                 axisLabel: {
+                   //fontSize: 9,
+                   //show: false
+                 }
              }
          ],
          series: [
@@ -1745,14 +1811,13 @@ function graph_document(title, name, data) {
                    show: true
                  }
              }
-         ]
+         ],
+         color: ['darkblue', 'lightgray']
      };
 
    myChart.setOption(option);
 
    $(window).on('resize', function(){
-       if(myChart != null && myChart != undefined){
-          myChart.resize();
-       }
+     resizeMainContainer();
    });
 }
