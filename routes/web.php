@@ -1211,10 +1211,20 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   Route::post('/get_balance_data','Accounting\BalanceController@get_balance');
 });
 
-Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){ 
-  // Compras 
-  Route::get('/purchases_view', 'Purchases\PurchasesController@index'); 
-}); 
+Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
+  // Compras
+  Route::get('/purchases_view', 'Purchases\PurchasesController@index');
+
+  //Historial de compras
+  Route::get('/purchases_history', 'Purchases\HistoryPurchasesController@index');
+
+  //Cuentas bancarias de proveedor
+  Route::get('/cb_provider', 'Purchases\CbProviderController@index');
+
+  //Cuentas por pagar
+  Route::get('/account_pay', 'Purchases\AccountPayController@index');
+
+});
 
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
 {
