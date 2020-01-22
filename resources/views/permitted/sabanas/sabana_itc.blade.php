@@ -412,7 +412,7 @@
                             <th id="NPS10">10</th>
                             <th id="NPS11">11</th>
                             <th id="NPS12">12</th>
-                            <th>Prom.</th>
+                            <th>NPS Prom.</th>
                           </tr>
                         </thead>
                         <tbody class="text-center" style="font-weight: bold;">

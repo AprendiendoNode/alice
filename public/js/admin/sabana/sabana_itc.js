@@ -187,7 +187,12 @@ $(function() {
           url: "/viaticos_x_mes",
           data: { itc : itc, filtro: filtro, _token : _token },
           success: function (data){
-            graph_viaticos_x_mes('graph_viaticos_x_mes', Object.values(data[0]), Object.values(data[1]));
+            var meses = Object.values(data[0]), gastos = Object.values(data[1]);
+            if(filtro <= 6) {
+              meses.splice(0, 12 - filtro);
+              gastos.splice(0, 12 - filtro);
+            }
+            graph_viaticos_x_mes('graph_viaticos_x_mes', meses, gastos);
           },
           error: function (data) {
             console.log('Error:', data);
@@ -198,8 +203,13 @@ $(function() {
           url: "/get_graph_docx",
           data: { itc_id : itc, filtro: filtro, tipo_doc : 1, _token : _token },
           success: function (data){
-            //console.log(data);
-            graph_document('graph_doc_p', 'Doc. P (USD Entregados)', data);
+            var meses = Object.values(data[0]), montos = Object.values(data[1]), cantidades = Object.values(data[2]);
+            if(filtro <= 6) {
+              meses.splice(0, 12 - filtro);
+              montos.splice(0, 12 - filtro);
+              cantidades.splice(0, 12 - filtro);
+            }
+            graph_document('graph_doc_p', 'Doc. P (USD Entregados)', meses, montos, cantidades);
           },
           error: function (data) {
             console.log('Error:', data);
@@ -210,8 +220,13 @@ $(function() {
           url: "/get_graph_docx",
           data: { itc_id : itc, filtro: filtro, tipo_doc : 2, _token : _token },
           success: function (data){
-            //console.log(data);
-            graph_document('graph_doc_m', 'Doc. M (USD Entregados)', data);
+            var meses = Object.values(data[0]), montos = Object.values(data[1]), cantidades = Object.values(data[2]);
+            if(filtro <= 6) {
+              meses.splice(0, 12 - filtro);
+              montos.splice(0, 12 - filtro);
+              cantidades.splice(0, 12 - filtro);
+            }
+            graph_document('graph_doc_m', 'Doc. M (USD Entregados)', meses, montos, cantidades);
           },
           error: function (data) {
             console.log('Error:', data);
@@ -1743,7 +1758,7 @@ Swal.fire({
 }
 
 
-function graph_document(title, name, data) {
+function graph_document(title, name, meses, montos, cantidades) {
   var chart = document.getElementById(title);
 
      var myChart = echarts.init(chart);
@@ -1770,12 +1785,13 @@ function graph_document(title, name, data) {
     };
  resizeMainContainer();
 
-     var max_monto = Object.values(data[1]), max_cantidad = Object.values(data[2]);
+     var max_monto = montos, max_cantidad = cantidades, vacios = [];
 
-     for(var i = 0; i < 12 ; i++) {
+     for(var i = 0; i < montos.length ; i++) {
 
        max_monto[i] = parseInt(max_monto[i]);
        max_cantidad[i] = parseInt(max_cantidad[i]);
+       vacios.push("");
 
      }
      max_monto = parseInt(Math.max.apply(Math, max_monto) * 1.2);
@@ -1811,7 +1827,7 @@ function graph_document(title, name, data) {
              {
                  type: 'category',
                  boundaryGap: true,
-                 data: Object.values(data[0]),
+                 data: meses,
                  axisTick: {
                      alignWithLabel: true
                  },
@@ -1825,7 +1841,7 @@ function graph_document(title, name, data) {
              {
                  type: 'category',
                  boundaryGap: true,
-                 data: ['','','','','','','','','','','','']
+                 data: vacios
              }
          ],
          yAxis: [
@@ -1858,7 +1874,7 @@ function graph_document(title, name, data) {
              {
                  name: 'Monto',
                  type: 'line',
-                 data: Object.values(data[1]),
+                 data: montos,
                  label: {
                    show: true
                  }
@@ -1868,7 +1884,7 @@ function graph_document(title, name, data) {
                  type: 'bar',
                  xAxisIndex: 1,
                  yAxisIndex: 1,
-                 data: Object.values(data[2]),
+                 data: cantidades,
                  label: {
                    show: true
                  }
