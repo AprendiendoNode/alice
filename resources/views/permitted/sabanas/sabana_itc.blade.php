@@ -382,7 +382,7 @@
                       </table>
                     </div>
                     <div class="d-inline text-center col-xl-3 w-100 my-auto">
-                      <select class="form-control w-100" style="color: black; font-weight: bold; border: 1px solid lightgray;">
+                      <select id="filtroGeneral" class="form-control w-100" style="color: black; font-weight: bold; border: 1px solid lightgray;">
                         <option value="12">Últimos 12 meses</option>
                         <option value="6">Últimos 6 meses</option>
                         <option value="3">Últimos 3 meses</option>

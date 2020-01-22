@@ -41,7 +41,6 @@ $(function() {
 
   //Por sitio
   $("#select_itc").on('change', function(e) {
-    var _token = $('input[name="_token"]').val();
     var itc = $('#select_itc').val();
     var itc_email=$('#select_itc').find(':selected').data("email");
     $(".first_tab").addClass("d-none");
@@ -53,47 +52,7 @@ $(function() {
     $("#terminado_presupuesto_cadena").removeClass("d-none");
     $("#construyendo_presupuesto_cadena").addClass("d-none");
 
-    $.ajax({
-      type: "POST",
-      url: "/informacionITC",
-      data: { itc : itc, _token : _token },
-      success: function (data){
-        //console.log(data);
-        $("#imagenCliente").attr("src", $('#select_itc').find(':selected').data("avatar"));
-        $("#nombreITC").text($('#select_itc').find(':selected').data("name"));
-        $("#correoITC").text($('#select_itc').find(':selected').data("email"));
-        $("#localizacionITC").text($('#select_itc').find(':selected').data("city"));
-        $("#total_sitios").text(data.length-1);
-        generate_table_info_sitios(data, $('#info_sitios'));
-        $.ajax({
-          type: "POST",
-          url: "/antenasITC",
-          data: { itc : itc, _token : _token },
-          success: function (data){
-            //console.log(data);
-            $("#total_antenas").text(data[0].cantidad);
-            $("#footer_total_antenas").text(data[0].cantidad);
-          },
-          error: function (data) {
-            console.log('Error:', data);
-          }
-        });
-        $.ajax({
-          type: "POST",
-          url: "/viaticos_x_mes",
-          data: { itc : itc, _token : _token },
-          success: function (data){
-            graph_viaticos_x_mes('graph_viaticos_x_mes', Object.values(data[0]), Object.values(data[1]));
-          },
-          error: function (data) {
-            console.log('Error:', data);
-          }
-        });
-      },
-      error: function (data) {
-        console.log('Error:', data);
-      }
-    });
+    generalITC(itc);
     get_nps_itc(itc);
     get_nps_comment(itc);
     //get_graph_equipments(itc);
@@ -104,6 +63,12 @@ $(function() {
     //getFoliosByHotel(itc);
     getViaticsByHotel(itc);
     getProjects(itc);
+  });
+
+  $('#filtroGeneral').on('change', function(e) {
+    var itc = $('#select_itc').val();
+    var filtro = $('#filtroGeneral').val();
+    generalITC(itc);
   });
 
   $('#graph_calificaciones_x_mes').on('click', function(){
@@ -189,6 +154,76 @@ $(function() {
     });
   }
 
+  function generalITC(itc) {
+    var filtro = $('#filtroGeneral').val();
+    var _token = $('input[name="_token"]').val();
+    $.ajax({
+      type: "POST",
+      url: "/informacionITC",
+      data: { itc : itc, filtro: filtro,  _token : _token },
+      success: function (data){
+        //console.log(data);
+        $("#imagenCliente").attr("src", $('#select_itc').find(':selected').data("avatar"));
+        $("#nombreITC").text($('#select_itc').find(':selected').data("name"));
+        $("#correoITC").text($('#select_itc').find(':selected').data("email"));
+        $("#localizacionITC").text($('#select_itc').find(':selected').data("city"));
+        $("#total_sitios").text(data.length-1);
+        generate_table_info_sitios(data, $('#info_sitios'));
+        $.ajax({
+          type: "POST",
+          url: "/antenasITC",
+          data: { itc : itc, _token : _token },
+          success: function (data){
+            //console.log(data);
+            $("#total_antenas").text(data[0].cantidad);
+            $("#footer_total_antenas").text(data[0].cantidad);
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+        });
+        $.ajax({
+          type: "POST",
+          url: "/viaticos_x_mes",
+          data: { itc : itc, filtro: filtro, _token : _token },
+          success: function (data){
+            graph_viaticos_x_mes('graph_viaticos_x_mes', Object.values(data[0]), Object.values(data[1]));
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+        });
+        $.ajax({
+          type: "POST",
+          url: "/get_graph_docx",
+          data: { itc_id : itc, filtro: filtro, tipo_doc : 1, _token : _token },
+          success: function (data){
+            //console.log(data);
+            graph_document('graph_doc_p', 'Doc. P (USD Entregados)', data);
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+        });
+        $.ajax({
+          type: "POST",
+          url: "/get_graph_docx",
+          data: { itc_id : itc, filtro: filtro, tipo_doc : 2, _token : _token },
+          success: function (data){
+            //console.log(data);
+            graph_document('graph_doc_m', 'Doc. M (USD Entregados)', data);
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+        });
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+  }
+
   function get_nps_itc(itc){
     var _token = $('meta[name="csrf-token"]').attr('content');
     var anio = $('#date_to_search').val();
@@ -250,7 +285,9 @@ $(function() {
     var sumaNPS = 0;
     var sumaFact = 0;
     var meses = [];
+    var celdasNPS = [];
     var sitios_sin_calif = 0;
+    var filtro = $('#filtroGeneral').val();
     $.each(datajson, function(index, status){
 
       if(index == 0) {
@@ -290,21 +327,44 @@ $(function() {
           status.Cal10,
           status.Cal11,
           status.Cal12,
-          status.NPS_resul
+          '<span id="prom'+index+'">'+status.NPS_resul+'</span>',
           //status.aps + ' <button id="ver-'+status.id+'-'+status.sitio+'" class="btn btn-default btn-sm ver_antenas_sitio"><span class="fa fa-eye"></span></button>',
         ]);
+        if(filtro == 6) {
+          celdasNPS.push(status.Cal7,status.Cal8,status.Cal9,status.Cal10,status.Cal11,status.Cal12);
+        } else if(filtro == 3) {
+          celdasNPS.push(status.Cal10,status.Cal11,status.Cal12);
+        }
       }
 
     });
 
     $("#footer_total_sitios").text(parseInt($("#total_sitios").text()));
+    $("#total_faturacion").text(sumaFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    $("#footer_total_facturacion").text(sumaFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    $("#npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
+    $("#footer_npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
+
+    var extra = 0;
+
+    if(filtro <= 6) { //Mostras meses seleccionados y ajustar parámetros para la gráfica de calificaciones NPS
+      for(var i = 3 ; i < (15 - filtro) ; i++) {
+        var column = vartable.api().columns(i);
+        column.visible(!column.visible());
+      }
+      meses.splice(0, 12 - filtro);
+      extra = 12 - filtro;
+      recalcularPromediosNPS(celdasNPS, filtro);
+    } else {
+      filtro = 12;
+    }
 
     var promotores = [], pasivos = [], detractores = [];
 
-    for(var i = 0; i < 12 ; i++) { //Las clases mes y promotor, pasivo o detractor se añaden directamente desde la base de datos.
-      promotores[i] = $(".mes"+(i+1)+".promotor").length;
-      pasivos[i] = $(".mes"+(i+1)+".pasivo").length;
-      detractores[i] = $(".mes"+(i+1)+".detractor").length;
+    for(var i = 0 ; i < filtro ; i++) { //Las clases mes y promotor, pasivo o detractor se añaden directamente desde la base de datos.
+      promotores[i] = $(".mes"+(i+1+extra)+".promotor").length;
+      pasivos[i] = $(".mes"+(i+1+extra)+".pasivo").length;
+      detractores[i] = $(".mes"+(i+1+extra)+".detractor").length;
       var total_icons = promotores[i] + pasivos[i] + detractores[i];
       if(total_icons != 0) {
         $("#MES"+(i+1)).text(""+parseInt(((promotores[i] / total_icons) * 100 ) - ((detractores[i] / total_icons) * 100 )));
@@ -313,12 +373,45 @@ $(function() {
       }
     }
 
-    $("#total_faturacion").text(sumaFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-    $("#footer_total_facturacion").text(sumaFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    graph_calificaciones_x_mes('graph_calificaciones_x_mes', meses, promotores, pasivos, detractores);
+  }
+
+  function recalcularPromediosNPS(celdasNPS, filtro) {
+
+    var sumaNPS = 0, sitios_sin_calif = 0;
+
+    for(var i = 0; i < parseInt($("#total_sitios").text()) ; i++) {
+
+      var promotores = 0, detractores = 0, calis = 0;
+
+      for(var j = i * filtro ; j < (i * filtro + parseInt(filtro)) ; j++ ) {
+
+        if(celdasNPS[j].indexOf("promotor") >= 0) {
+          promotores += 1;
+          calis++;
+        } else if(celdasNPS[j].indexOf("pasivo") >= 0) {
+          calis++;
+        } else if(celdasNPS[j].indexOf("detractor") >= 0) {
+          detractores += 1;
+          calis++;
+        }
+
+      }
+
+      if(calis > 0) {
+        var aux = parseInt(((promotores / calis) * 100 ) - ((detractores / calis) * 100 ));
+        $("#prom"+(i+1)).text(aux+"");
+        sumaNPS += aux;
+      } else {
+        sitios_sin_calif++;
+        $("#prom"+(i+1)).text("-");
+      }
+
+    }
+
     $("#npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
     $("#footer_npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
 
-    graph_calificaciones_x_mes('graph_calificaciones_x_mes', meses, promotores, pasivos, detractores);
   }
 
   $(document).on("click", ".ver_antenas_sitio", function() {
@@ -376,7 +469,7 @@ $(function() {
         status.modelo,
         status.MAC,
         status.Serie,
-        '<span class="badge badge-pill text-white bg-success">Activo en sitio</span>',
+        (status.estado == '1') ? '<span class="badge badge-pill text-white bg-success">Activo en sitio</span>' : '<span class="badge badge-pill text-white" style="background-color:#0DCAD6;">Propiedad del Cliente</span>',
         status.Fecha_Registro
       ]);
     });
@@ -1618,37 +1711,6 @@ function getProjects(itc){
         console.log('Error:', data);
       }
   });
-
-      $.ajax({
-        type: "POST",
-        url: "/get_graph_docx",
-        data: { itc_id : itc, tipo_doc : 1, _token : _token },
-        success: function (data){
-          console.log(data);
-          //Gráfica DOC P
-          graph_document('graph_doc_p', 'Doc. P (USD Entregados)', data);
-        },
-        error: function (data) {
-          console.log('Error:', data);
-        }
-      });
-
-      $.ajax({
-        type: "POST",
-        url: "/get_graph_docx",
-        data: { itc_id : itc, tipo_doc : 2, _token : _token },
-        success: function (data){
-          console.log(data);
-          //Gráfica DOC P
-          graph_document('graph_doc_m', 'Doc. M (USD Entregados)', data);
-        },
-        error: function (data) {
-          console.log('Error:', data);
-        }
-      });
-
-
-
 
 }
 

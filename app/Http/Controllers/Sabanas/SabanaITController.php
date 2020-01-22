@@ -28,7 +28,14 @@ class SabanaITController extends Controller
   public function informacionITC(Request $request)
   {
     $itc = $request->itc;
-    $result = DB::select('CALL px_sitios_by_itc_12meses(?, ?)', array($itc, date('Y-m-d')));
+    $filtro = $request->filtro;
+    $fecha = '';
+    if($filtro <= 12) {
+      $fecha = date('Y-m-d');
+    } else {
+      $fecha = $filtro.'-12-01';
+    }
+    $result = DB::select('CALL px_sitios_by_itc_12meses(?, ?)', array($itc, $fecha));
     return $result;
   }
   public function antenasITC(Request $request)
@@ -46,7 +53,14 @@ class SabanaITController extends Controller
   public function viaticos_x_mes(Request $request)
   {
     $itc = $request->itc;
-    $result = DB::select('CALL px_viaticos_x_mes(?, ?)', array($itc, date('Y-m-d')));
+    $filtro = $request->filtro;
+    $fecha = '';
+    if($filtro <= 12) {
+      $fecha = date('Y-m-d');
+    } else {
+      $fecha = $filtro.'-12-01';
+    }
+    $result = DB::select('CALL px_viaticos_x_mes(?, ?)', array($itc, $fecha));
     return $result;
   }
   public function tabla_antenas_sitio(Request $request)
@@ -216,7 +230,14 @@ class SabanaITController extends Controller
   public function docs_x(Request $request){
     $itc_id = $request->itc_id;
     $tipo_doc = $request->tipo_doc;
-    $result=DB::Select('CALL px_documentxtype_itc_v2(?,?,?)',array($itc_id, date('Y-m-d'), $tipo_doc));
+    $filtro = $request->filtro;
+    $fecha = '';
+    if($filtro <= 12) {
+      $fecha = date('Y-m-d');
+    } else {
+      $fecha = $filtro.'-12-01';
+    }
+    $result=DB::Select('CALL px_documentxtype_itc_v2(?,?,?)',array($itc_id, $fecha, $tipo_doc));
     return $result;
   }
 

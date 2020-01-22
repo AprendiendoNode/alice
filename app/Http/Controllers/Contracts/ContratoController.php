@@ -483,6 +483,8 @@ class ContratoController extends Controller
                 'exchange_range_value' => $array_data_dinamic_4[$k],
                 'iva_id' =>   $id_iva_x,
                 'descuento' => $array_data_dinamic_6[$k],
+                'monto_descuento' => $amount_sincomas * ($array_data_dinamic_6[$k] / 100),
+                'monto_con_descuento' => $amount_sincomas - ($amount_sincomas * ($array_data_dinamic_6[$k] / 100)),
                 'contract_annex_id' => $newAnnexeContMaster,
                 'created_at' => \Carbon\Carbon::now()
               ]
@@ -505,6 +507,8 @@ class ContratoController extends Controller
               'exchange_range_value' => $array_data_dinamic_4[$z],
               'iva_id' =>   $id_iva_y,
               'descuento' => $array_data_dinamic_6[$z],
+              'monto_descuento' => $amount_sincomas * ($array_data_dinamic_6[$k] / 100),
+              'monto_con_descuento' => $amount_sincomas - ($amount_sincomas * ($array_data_dinamic_6[$k] / 100)),
               'contract_annex_id' => $newAnnexeContMaster,
               'created_at' => \Carbon\Carbon::now()
             ]
