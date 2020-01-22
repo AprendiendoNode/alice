@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View projects docp') )
+  @if( auth()->user()->can('View annual budget') )
     Presupuesto Anual
   @else
     {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-   @if( auth()->user()->can('View projects docp') )
+   @if( auth()->user()->can('View annual budget') )
     Presupuesto Anual
     @else
       {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View projects docp') )
+  @if( auth()->user()->can('View annual budget') )
   <!-- Modal -->
   <div class="modal fade" id="modal-view-algo">
     <div class="modal-dialog modal-xl">
@@ -149,7 +149,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View projects docp') )
+  @if( auth()->user()->can('View annual budget') )
 
   <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
   <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
