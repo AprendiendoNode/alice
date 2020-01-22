@@ -2088,70 +2088,77 @@ class CustomerInvoiceController extends Controller
        * @param  \App\Models\Sales\CustomerInvoice $customer_invoice
        * @return \Illuminate\Http\Response
       */
-      public function destroy(Request $request, CustomerInvoice $customer_invoice)
-      {
-          \DB::beginTransaction();
-          try {
-              $id = $request->token_b;
-              $customer_invoice = CustomerInvoice::findOrFail($id);
-              //Logica
-              if ((int)$customer_invoice->status != CustomerInvoice::CANCEL && $customer_invoice->balance >= $customer_invoice->amount_total) {
-                  //Actualiza status
-                  $customer_invoice->updated_uid = \Auth::user()->id;
-                  $customer_invoice->status = CustomerInvoice::CANCEL;
-                  //Por autorizar cuando se manda la autorizacion al buzon tributario del SAT
-                  if($request->cancelable == 2){
-                      $customer_invoice->status = CustomerInvoice::CANCEL_PER_AUTHORIZED;
-                  }
-                  $customer_invoice->save();
+      public function destroy(Request $request)
+     {
+         \DB::beginTransaction();
+         $id = $request->token_b;
+         $customer_invoice = CustomerInvoice::findOrFail($id);
+         try {
+             //Logica
+             if ((int)$customer_invoice->status != CustomerInvoice::CANCEL && $customer_invoice->balance >= $customer_invoice->amount_total) {
+                 //Actualiza status
+                 $customer_invoice->updated_uid = \Auth::user()->id;
+                 $customer_invoice->status = CustomerInvoice::CANCEL;
+                 //Por autorizar cuando se manda la autorizacion al buzon tributario del SAT
+                 if($request->cancelable == 2){
+                     $customer_invoice->status = CustomerInvoice::CANCEL_PER_AUTHORIZED;
+                 }
+                 $customer_invoice->save();
 
-                  //Actualiza status CFDI
-                  $customer_invoice->customerInvoiceCfdi->status = 0;
-                  $customer_invoice->customerInvoiceCfdi->save();
+                 //Actualiza status CFDI
+                 $customer_invoice->customerInvoiceCfdi->status = 0;
+                 $customer_invoice->customerInvoiceCfdi->save();
 
-                  //Cancelacion del timbre fiscal
-                  if (!empty($customer_invoice->customerInvoiceCfdi->cfdi_version) && !empty($customer_invoice->customerInvoiceCfdi->uuid)) {
-                      //Valida Empresa y PAC para cancelar timbrado
-                      PacHelper::validateSatCancelActions($customer_invoice->customerInvoiceCfdi->pac);
+                 //Cancelacion del timbre fiscal
+                 if (!empty($customer_invoice->customerInvoiceCfdi->cfdi_version) && !empty($customer_invoice->customerInvoiceCfdi->uuid)) {
+                     //Valida Empresa y PAC para cancelar timbrado
+                     PacHelper::validateSatCancelActions($customer_invoice->customerInvoiceCfdi->pac);
 
-                      //Arreglo temporal para actualizar Customer Invoice CFDI
-                      $tmp = [
-                          'cancel_date' => Helper::dateTimeToSql(\Date::now()),
-                          'cancel_response' => '',
-                          'cancel_state' => $request->cancel_state,
-                          'rfcR' => $customer_invoice->customer->taxid,
-                          'uuid' => $customer_invoice->customerInvoiceCfdi->uuid,
-                          'total' => Helper::numberFormat($customer_invoice->amount_total,
-                              $customer_invoice->currency->decimal_place, false),
-                      ];
+                     //Arreglo temporal para actualizar Customer Invoice CFDI
+                     $tmp = [
+                         'cancel_date' => Helper::dateTimeToSql(\Date::now()),
+                         'cancel_response' => '',
+                         'cancel_state' => $request->cancel_state,
+                         'rfcR' => $customer_invoice->customer->taxid,
+                         'uuid' => $customer_invoice->customerInvoiceCfdi->uuid,
+                         'total' => Helper::numberFormat($customer_invoice->amount_total,
+                             $customer_invoice->currency->decimal_place, false),
+                     ];
 
-                      //Cancelar Timbrado de XML
-                      $class_pac = $customer_invoice->customerInvoiceCfdi->pac->code . 'Cancel';
-                      $tmp = PacHelper::$class_pac($tmp,$customer_invoice->customerInvoiceCfdi->pac);
+                     //Cancelar Timbrado de XML
+                     $class_pac = $customer_invoice->customerInvoiceCfdi->pac->code . 'Cancel';
+                     $tmp = PacHelper::$class_pac($tmp,$customer_invoice->customerInvoiceCfdi->pac);
 
-                      //Guardar registros de CFDI
-                      $customer_invoice->customerInvoiceCfdi->fill(array_only($tmp,[
-                          'cancel_date',
-                          'cancel_response',
-                          'cancel_state',
-                      ]));
-                      $customer_invoice->customerInvoiceCfdi->save();
+                     //Guardar registros de CFDI
+                     $customer_invoice->customerInvoiceCfdi->fill(array_only($tmp,[
+                         'cancel_date',
+                         'cancel_response',
+                         'cancel_state',
+                     ]));
+                     $customer_invoice->customerInvoiceCfdi->save();
 
-                  }
-                  return response()->json(['status' => 200]);
-              }
-              else {
-                return response()->json(['error' => 304]);
-              }
-              \DB::commit();
+                 }
+                 $resultado = 200;
+             }
+             else {
+               $resultado = 304;
+             }
+             \DB::commit();
 
-              //Mensaje
-
-          } catch (\Exception $e) {
-              \DB::rollback();
-              return response()->json(['error' => $e]);
-          }
-      }
+             if ($resultado = 200) {
+               //Mensaje
+               return response()->json(['status' => 200]);
+             }
+             if ($resultado = 304) {
+               //Mensaje
+               return response()->json(['error' => 304]);
+             }
+         } catch (\Exception $e) {
+             \DB::rollback();
+             //flash($e->getMessage())->error();
+            return response()->json(['error' => $e]);
+         }
+     }
 
       /**
        * Descarga de archivo XML
@@ -2994,7 +3001,7 @@ class CustomerInvoiceController extends Controller
     public function getDataContractRz(Request $request) {
       $customer_id = $request->id_search;
       $resultados = DB::select('CALL px_customer_xcontract_master (?)', array($customer_id));
-      return json_encode($resultados); 
+      return json_encode($resultados);
     }
 
 

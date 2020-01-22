@@ -605,7 +605,7 @@
           } else if (parseInt(status) == PAID) {
               html = '<span class="badge badge-primary">{{__("customer_invoice.text_status_paid")}}</span>';
           } else if (parseInt(status) == CANCEL) {
-              html = '<span class="badge badge-default">{{__("customer_invoice.text_status_cancel")}}</span>';
+              html = '<span class="badge badge-secondary">{{__("customer_invoice.text_status_cancel")}}</span>';
           } else if (parseInt(status) == CANCEL_PER_AUTHORIZED) {
               html = '<span class="badge badge-dark">{{__("customer_invoice.text_status_cancel_per_authorized")}}</span>';
           } else if (parseInt(status) == RECONCILED) {
@@ -1338,7 +1338,7 @@
                 location.href ="/sales/customer-invoices-show";
               });
             }
-            
+
           },
           error: function (err) {
             Swal.fire({
