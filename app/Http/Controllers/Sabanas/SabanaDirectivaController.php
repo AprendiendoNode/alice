@@ -41,11 +41,17 @@ class SabanaDirectivaController extends Controller
 
   }
 
-  public function getAllDocM_Ejer(Request $request){
+  public function getAllCadenaBudget(Request $request){
     $anio=$request->anio;
-    $result = DB::Select('CALL px_documentoM_entregados(?)',array($anio));
+    $result=DB::Select('CALL px_presupuesto_xcadena_desglozado(?)',array($anio));
     return $result;
   }
 
+  public function getBudgetSiteMonth(Request $request){
+    $idcadena=$request->idcadena;
+    $anio=$request->anio;
+    $result=DB::Select('CALL px_presupuesto_xsitio_desglozado(?,?)',array($anio,$idcadena));
+    return $result;
+  }
 
 }

@@ -906,6 +906,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('getAllCadena','Sabanas\SabanaDirectivaController@getAllCadena');
     Route::post('getAllSites','Sabanas\SabanaDirectivaController@getAllSites');
     Route::post('getAllDocM_Ejer', 'Sabanas\SabanaDirectivaController@getAllDocM_Ejer');
+    Route::post('getAllCadenaBudget', 'Sabanas\SabanaDirectivaController@getAllCadenaBudget');
+    Route::post('getBudgetSiteMonth', 'Sabanas\SabanaDirectivaController@getBudgetSiteMonth');
 
     //- Viaticos Dashboard General
     Route::get('/dashboard_viaticos_gen', 'Viatics\DashboardViaticController@index_gen');

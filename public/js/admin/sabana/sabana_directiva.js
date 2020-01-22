@@ -53,6 +53,24 @@ function llenar_tablas() {
       console.log('Error:', data);
     }
   });
+
+
+//ajax pruebas
+
+
+
+$.ajax({
+type:"POST",
+url:"getAllCadenaBudget",
+data:{ anio:anio,_token:_token },
+success:function(data){
+table_budget(data,$('#table_budget_months'));
+},
+error:function(data){
+console.log(data);
+}
+})
+
 }
 /*$('#boton-aplica-filtro').on('click',function(){
   anio = parseInt($('#date_select').val());
@@ -60,25 +78,25 @@ function llenar_tablas() {
 });*/
 
 function table_general(data,data_sites, table) {
-  table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table_responsive_cadena);
+  /*table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_responsive_cadena);*/
   var totalFacturado=0;
   var date_gantt=0;
   var date_gantt_end=0;
   var cadenas= new Array();
-  vartable.fnClearTable();
+  //vartable.fnClearTable();
   var first_elem={id: "SIT1", "text":"SITWIFI", "start_date":new Date(anio,00,01),"end_date":"01-04-2029",progress: 1,open: true};
   cadenas.push(first_elem);
   var i=2;
   var ejercido=0;
   //CADENAS
   $.each(data, function(index, status){
-    vartable.fnAddData([
+  /*  vartable.fnAddData([
     status.cadena.charAt(0).toUpperCase()+status.cadena.toLowerCase().slice(1),
     '$'+parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '$'+parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '<a href="javascript:void(0);" onclick="enviar_cadena(this)" value="'+status.cadena_id+'" class="btn btn-sm btn-outline-primary" role="button" data-toggle="tooltip" data-placement="right" title="Más información"><span class="fas fa-info-circle"></span></a>',
-  ]);
+  ]);*/
 
     totalFacturado+=parseFloat(status.USD);
     ejercido+=parseFloat(status.mantto);
@@ -91,7 +109,7 @@ function table_general(data,data_sites, table) {
     }
 
     //console.log("cadena: "+status.cadena + " año: "+ status.date_real.toString().split("-")[0]);
-    var aux_cad={id:"C"+status.cadena_id, "text":status.cadena.toString().trim(), "start_date":new Date(date_gantt,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"presupuesto_anual_USD":parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"ejercido":parseFloat(status.mantto).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"xejercer":(parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),progress: (parseFloat(status.mantto)/parseFloat(status.presupuesto_anual_USD)).toFixed(1), open: false,parent:"SIT1"};
+    var aux_cad={id:"C"+status.cadena_id, "text":status.cadena.toString().trim(), "start_date":new Date(date_gantt,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"presupuesto_anual_USD":parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"ejercido":parseFloat(status.mantto).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"xejercer":(parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),progress: (parseFloat(status.mantto)/parseFloat(status.presupuesto_anual_USD)).toFixed(2), open: false,parent:"SIT1"};
     cadenas.push(aux_cad);
     i++;
     date_gantt=0;
@@ -102,7 +120,7 @@ function table_general(data,data_sites, table) {
     //console.log((parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
     date_real= parseInt(status.date_real.toString().split("-")[0]);
     date_gantt= date_real>anio? date_real:anio;
-    var aux_sitios={id: status.hotel_id, "text":status.Nombre_hotel.toString().trim(), "start_date":new Date(date_gantt,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"presupuesto_anual_USD": parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"ejercido":parseFloat(status.mantto).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"xejercer":(parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),progress: (parseFloat(status.mantto)/parseFloat(status.presupuesto_anual_USD)).toFixed(1),color:"gray",open: true,parent:"C"+status.cadena_id};
+    var aux_sitios={id: status.hotel_id, "text":status.Nombre_hotel.toString().trim(), "start_date":new Date(date_gantt,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"presupuesto_anual_USD": parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"ejercido":parseFloat(status.mantto).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"xejercer":(parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),progress: (parseFloat(status.mantto)/parseFloat(status.presupuesto_anual_USD)).toFixed(2),color:"gray",open: true,parent:"C"+status.cadena_id};
     cadenas.push(aux_sitios);
     date_gantt=0;
   });
@@ -400,7 +418,7 @@ function enviar_cadena(e){
 
   $.ajax({
     type:"POST",
-    url:"/getAllSites",
+    url:"/getBudgetSiteMonth",
     data:{ anio:anio,idcadena:idcadena, _token:_token },
     success:function(data)
     {
@@ -421,17 +439,72 @@ function table_sites(data,table){
   vartable.fnClearTable();
   $.each(data, function(index, status){
     vartable.fnAddData([
-    status.hotel_id,
     status.Nombre_hotel.charAt(0).toUpperCase()+status.Nombre_hotel.toLowerCase().slice(1),
-    status.key,
-    status.date_real,
-    status.fecha_vence,
-    status.meses_restantes,
     '$'+parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '$'+parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    '$'+status.enero,
+    '$'+status.febrero,
+    '$'+status.marzo,
+    '$'+status.abril,
+    '$'+status.mayo,
+    '$'+status.junio,
+    '$'+status.julio,
+    '$'+status.agosto,
+    '$'+status.septiembre,
+    '$'+status.octubre,
+    '$'+status.noviembre,
+    '$'+status.diciembre,
+    '0%'
     ]);
   });
 
+}
+
+function table_budget(data,table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_resp1);
+  vartable.fnClearTable();
+  var mensual = 0;
+  var suma=0;
+  var numrow=1;
+  $.each(data, function(index, status){
+
+    suma =(parseFloat(status.enero) +parseFloat(status.febrero) + parseFloat(status.marzo) + parseFloat(status.abril) + parseFloat(status.mayo) +parseFloat(status.junio)
+    + parseFloat(status.julio) + parseFloat(status.agosto) +parseFloat(status.septiembre) + parseFloat(status.octubre) + parseFloat(status.noviembre) + parseFloat(status.diciembre));
+
+    mensual = parseInt((suma*100)/status.presupuesto_anual_USD);
+    isNaN(mensual)==true? mensual=0:mensual;
+    //console.log(mensual);
+    vartable.fnAddData([
+      status.cadena,
+      '$'+parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.enero).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.febrero).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.marzo).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.abril).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.mayo).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.junio).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.julio).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.septiembre).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.agosto).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.octubre).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.noviembre).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      '$'+parseFloat(status.diciembre).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      morethan100(mensual),
+      '<a href="javascript:void(0);" onclick="enviar_cadena(this)" value="'+status.cadena_id+'" class="btn btn-sm btn-outline-primary" role="button" data-toggle="tooltip" data-placement="right" title="Más información"><span class="fas fa-info-circle"></span></a>',
+    ]);
+
+    /*mensual>100?overflow(numrow): '';
+    suma>status.presupuesto_anual_USD?overflow(numrow):'';
+    numrow++;*/
+  });
+}
+
+function morethan100(number){
+var val=''
+number>100? val='<span style="color:red; font-weight:bold;">'+number+'%'+'</span>': val='<span style="font-weight:bold;">'+number+'%'+'</span>';
+return val;
 }
 
 
@@ -475,6 +548,113 @@ var Configuration_table_responsive_sites={
           },
           {
               "targets": 7,
+              "className": "text-right",
+          },
+
+      ],
+      bInfo: false,
+      language:{
+              "sProcessing":     "Procesando...",
+              "sLengthMenu":     "Mostrar _MENU_ registros",
+              "sZeroRecords":    "No se encontraron resultados",
+              "sEmptyTable":     "Ningún dato disponible",
+              "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+              "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+              "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+              "sInfoPostFix":    "",
+              "sSearch":         "<i class='fa fa-search'></i> Buscar:",
+              "sUrl":            "",
+              "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+              "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":     "Último",
+                "sNext":     "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                  "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                  "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+              }
+      }
+}
+
+var Configuration_table_resp1={
+      "order": [[ 0, "asc" ]],
+      paging: true,
+      //"pagingType": "simple",
+      Filter: true,
+      searching: true,
+      "aLengthMenu": [[10, 15, 25, -1], [10, 15, 25, "All"]],
+      //ordering: false,
+      //"pageLength": 5,
+      "columnDefs": [
+          {
+              "targets": 0,
+              "className": "text-left",//String a la izquierda
+          },
+          {
+              "targets": 1,
+              "className": "text-left",//String a la izquierda
+          },
+          {
+              "targets": 2,
+              "className": "text-right", //Numeros a la derecha
+          },
+          {
+              "targets": 3,
+              "className": "text-right",
+          },
+          {
+              "targets": 4,
+              "className": "text-right",
+          },
+          {
+              "targets": 5,
+              "className": "text-right",
+          },
+          {
+              "targets": 6,
+              "className": "text-right",
+          },
+          {
+              "targets": 7,
+              "className": "text-right",
+          },
+          {
+              "targets": 8,
+              "className": "text-right",
+          },
+          {
+              "targets": 9,
+              "className": "text-right",
+          },
+          {
+              "targets": 10,
+              "className": "text-right",
+          },
+          {
+              "targets": 11,
+              "className": "text-right",
+          },
+          {
+              "targets": 12,
+              "className": "text-right",
+          },
+          {
+              "targets": 13,
+              "className": "text-right",
+          },
+          {
+              "targets": 14,
+              "className": "text-right",
+          },
+          {
+              "targets": 15,
+              "className": "text-right",
+          },
+          {
+              "targets": 16,
               "className": "text-right",
           },
 

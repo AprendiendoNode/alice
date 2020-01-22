@@ -37,14 +37,22 @@
             <table id="table_sites" align="center"class="table table-striped table-bordered compact-tab table-hover" style="width:97% !important;">
               <thead class="bg-primary">
                 <tr>
-                  <th></th>
                   <th>Hotel</th>
-                  <th>Key</th>
-                  <th>Fecha inicio</th>
-                  <th>Fecha final</th>
-                  <th>Meses restantes</th>
-                  <th>Mensualidad USD</th>
-                  <th>Presupuesto anual</th>
+                  <th><small>Facturado Mensual</small> </th>
+                  <th><small>Presupuesto</small> </th>
+                  <th><small>Ene.</small> </th>
+                  <th><small>Feb.</small> </th>
+                  <th><small>Mar.</small> </th>
+                  <th><small>Abr.</small> </th>
+                  <th><small>May.</small> </th>
+                  <th><small>Jun.</small> </th>
+                  <th><small>Jul.</small> </th>
+                  <th><small>Ago.</small> </th>
+                  <th><small>Sep.</small> </th>
+                  <th><small>Oct.</small> </th>
+                  <th><small>Nov.</small> </th>
+                  <th><small>Dic.</small> </th>
+                  <th><small>% Ejercido</small> </th>
                 </tr>
               </thead>
               <tbody class="text-center"style="font-size: 11px;">
@@ -149,8 +157,60 @@
       <div class="col-md-4 "></div>
     </div>
 
-    <div class="row pb-3">
-      <div class="table-responsive">
+
+        <div class="table-responsive">
+          <h4>Presupuesto(USD)</h4>
+          <table id="table_budget_months" name='table_budget' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
+            <thead>
+              <tr class="bg-primary text-center">
+                <th><small>Cadena</small> </th>
+                <th class="sum_col"><small>Facturado Mensual</small> </th>
+                <th class="sum_col"><small>Presupuesto</small> </th>
+                <th class="sum_col"><small>Ene.</small> </th>
+                <th class="sum_col"><small>Feb.</small> </th>
+                <th class="sum_col"><small>Mar.</small> </th>
+                <th class="sum_col"><small>Abr.</small> </th>
+                <th class="sum_col"><small>May.</small> </th>
+                <th class="sum_col"><small>Jun.</small> </th>
+                <th class="sum_col"><small>Jul.</small> </th>
+                <th class="sum_col"><small>Ago.</small> </th>
+                <th class="sum_col"><small>Sep.</small> </th>
+                <th class="sum_col"><small>Oct.</small> </th>
+                <th class="sum_col"><small>Nov.</small> </th>
+                <th class="sum_col"><small>Dic.</small> </th>
+                <th class="sum_ejer"><small>% Ejercido</small> </th>
+                <th><small></small> </th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+
+            </tbody>
+            <!--<tfoot id='tfoot_average' class="bg-dark text-center text-white">
+              <tr>
+                <th class="text-center">TOTAL</th>
+                <th id="facturado_mensual"></th>
+                <th id="total_presupuesto"></th>
+                <th id="total_ene"></th>
+                <th id="total_feb"></th>
+                <th id="total_mar"></th>
+                <th id="total_abr"></th>
+                <th id="total_may"></th>
+                <th id="total_jun"></th>
+                <th id="total_jul"></th>
+                <th id="total_ago"></th>
+                <th id="total_sep"></th>
+                <th id="total_oct"></th>
+                <th id="total_nov"></th>
+                <th id="total_dic"></th>
+                <th id="total_ejercido"></th>
+                <th id="total_ejercido"></th>
+              </tr>
+            </tfoot>-->
+          </table>
+        </div>
+
+    <div class="row pt-5">
+      <!--<div class="table-responsive">
         <table id="table_budget_cadena" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
           <thead class="bg-primary">
             <tr class="bg-aqua text-center">
@@ -171,14 +231,12 @@
             </tr>
           </tfoot>
         </table>
-      </div>
+      </div>-->
       <div class="col-md-12">
         <!--<button id="hide">Ocultar</button>-->
       <div id="gantt_cadenas" class="w-100" style="height:500px;" ></div>
       </div>
     </div>
-
-
 
 
 
