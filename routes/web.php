@@ -1216,13 +1216,13 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::get('/purchases_view', 'Purchases\PurchasesController@index');
 
   //Historial de compras
-  Route::get('/purchases_history', 'Purchases\HistoryPurchasesController@index');
+  Route::get('/view_purchases_show', 'Purchases\HistoryPurchasesController@index');
 
   //Cuentas bancarias de proveedor
-  Route::get('/cb_provider', 'Purchases\CbProviderController@index');
+  Route::get('/view_cb_provider', 'Purchases\CbProviderController@index');
 
   //Cuentas por pagar
-  Route::get('/account_pay', 'Purchases\AccountPayController@index');
+  Route::get('/view_account_to_pay', 'Purchases\AccountPayController@index');
 
 });
 
