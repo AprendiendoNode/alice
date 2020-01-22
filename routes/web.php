@@ -1211,6 +1211,11 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   Route::post('/get_balance_data','Accounting\BalanceController@get_balance');
 });
 
+Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){ 
+  // Compras 
+  Route::get('/purchases_view', 'Purchases\PurchasesController@index'); 
+}); 
+
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
 {
       Route::get('/settings_pac', 'Base\PacController@index');
