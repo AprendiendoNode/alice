@@ -483,7 +483,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/update_kickoff', 'Projects\KickoffController@update');
   Route::post('/update_kickoff_comision', 'Projects\KickoffController@update_kickoff_comision');
   Route::post('/update_kickoff_comisionByDefault', 'Projects\KickoffController@setComision');
-  Route::post('/update_kickoff_contract', 'Projects\KickoffController@update_kickoff_contract');
+  Route::post('/update_kickoff_contract_comision', 'Projects\KickoffController@update_kickoff_contract_comision');
   Route::get('/approval_administracion/id_doc/{id}', 'Projects\KickoffController@approval_administracion');
   Route::get('/approval_comercial/id_doc/{id}', 'Projects\KickoffController@approval_comercial');
   Route::get('/approval_proyectos/id_doc/{id}', 'Projects\KickoffController@approval_proyectos');
@@ -1199,6 +1199,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-polizas-search', 'Sales\CustomerPolizaController@search');
     Route::post('/customer-polizas-cancel', 'Sales\CustomerPolizaController@cancel_poliza');
     Route::post('/customer-polizas-getdata', 'Sales\CustomerPolizaController@get_data_poliza');
+    Route::post('/customer-polizas-report', 'Sales\CustomerPolizaController@get_report_poliza');
   //REPORTES FACTURACION Y CONTABILIDAD
   Route::get('/billing_report', 'Sales\BillingReportController@index');
   Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');

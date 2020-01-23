@@ -38,6 +38,41 @@
           <form id="form_validation" class="">
             {{ csrf_field() }}
           <div class="row" id="div_comisiones" name="div_comisiones">
+            <div class="col-12">
+              <div class="card">
+                <div style="background: #3E3E42;" class="card-header text-white p-1">
+                  <a class="btn btn-sm btn-default p-1" rol="button" data-toggle="collapse" href="#collapseContract" aria-expanded="false" aria-controls="collapseContract">
+                    <i class="fas fa-angle-down text-white"></i>
+                  </a>
+                  Vincular comisiones de contrato a KICKOFF
+                </div>
+                <div class="collapse" id="collapseContract">
+                  <div class="card-body">
+                    <div class="form-inline d-flex justify-content-space-between align-items-center">
+                      <label class="mr-sm-2">Cadena</label>
+                      <select style="width:150px;" type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="cadena" name="cadena">
+                        <option value="">Elegir</option>
+                        @foreach ($cadenas as $cadena)
+                          <option value="{{$cadena->id}}">{{ $cadena->name }}</option>
+                        @endforeach
+                      </select>
+                      <label class="mr-sm-2" for="">C. Maestro</label>
+                      <select style="width:150px" type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="sel_master_to_anexo" name="sel_master_to_anexo">
+                        <option value="">Elegir</option>
+                      </select>
+                      <label class="mr-sm-2" for="">C. Anexo</label>
+                      <select style="width:150px" type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="sel_anexo" name="sel_anexo" value="">
+                        <option value="">Elegir</option>
+                      </select>
+                      <input class="form-control form-control-sm" readonly type="text" name="id_ubicacion" id="id_ubicacion" value="">
+                      <input class="form-control form-control-sm" readonly type="text" name="nombre_sitio" id="nombre_sitio" value="">
+                      <input class="form-control form-control-sm" readonly type="hidden" name="id_hotel" id="id_hotel" value="">
+                      <button type="button" id="match_contract_button"  class="btn btn-info btn-danger text-white ml-2"><span class="fas fa-exchange-alt"></span> Relacionar datos </button type="button">
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
               <div class="col-md-12 col-xs-12 mb-3">
                 <div class="table-responsive">
                   <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table table-sm" id="item_politica" style="min-width: 80px;">
@@ -219,82 +254,7 @@
                   </table>
                 </div>
               </div>
-
-              <div class="col-md-12 col-xs-12">
-                <div class="table-responsive">
-                  <table class="table table-items table-condensed table-hover table-bordered table-striped table-sm jambo_table mt-4" id="item_vendedor" style="min-width: 80px;">
-                    <thead>
-                      <tr class="bg-dark text-white">
-                        <th class="text-center" colspan="4" style="font-size: 1rem;">Vendedor</th>
-                      </tr>
-                      <tr>
-                        <th class="text-center">@lang('general.column_actions')</th>
-                        <th class="text-center">Contácto<span class="required text-danger">*</span></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @php
-                        $item_vendedor_row= 0;
-                        $item_vendedor=old('item_vendedor',[]);
-                      @endphp
-                      <tr id="add_item_vendedor">
-                        <td class="text-center">
-                          <button type="button" onclick="addItemVendedor();"
-                          class="btn btn-xs btn-primary"
-                          style="margin-bottom: 0; padding: 1px 3px;">
-                          <i class="fa fa-plus" style="font-size: 1rem;"></i>
-                        </button>
-                        </td>
-                        <td class="text-right" colspan="1"></td>
-                      </tr>
-                      <tr>
-                        <td class="text-left" colspan="1"></td>
-                        <td class="text-center">
-                          <span id="item_vendedor_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div class="col-md-12 col-xs-12">
-                <div class="table-responsive">
-                  <table class="table table-items table-condensed table-hover table-bordered table-striped table-sm jambo_table mt-4" id="item_colaborador" style="min-width: 80px;">
-                    <thead>
-                      <tr class="bg-dark text-white">
-                        <th class="text-center" colspan="4" style="font-size: 1rem;">Colaborador</th>
-                      </tr>
-                      <tr>
-                        <th class="text-center">@lang('general.column_actions')</th>
-                        <th class="text-center">Contácto<span class="required text-danger">*</span></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @php
-                        $item_colaborador_row= 0;
-                        $item_colaborador=old('item_colaborador',[]);
-                      @endphp
-                      <tr id="add_item_colaborador">
-                        <td class="text-center">
-                          <button type="button" onclick="addItemColaborador();"
-                          class="btn btn-xs btn-primary"
-                          style="margin-bottom: 0; padding: 1px 3px;">
-                          <i class="fa fa-plus" style="font-size: 1rem;"></i>
-                        </button>
-                        </td>
-                        <td class="text-right" colspan="1"></td>
-                      </tr>
-                      <tr>
-                        <td class="text-left" colspan="1"></td>
-                        <td class="text-center">
-                          <span id="item_colaborador_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              
           </div>
          </form>
         </section>
@@ -455,41 +415,7 @@
                 <form id="form_kickoff" method="post">
                   <input type="hidden" name="id" id="id" value="{{$document[0]->id}}">
                   <div class="row">
-                    {{-- <div class="col-12">
-                      <div class="card">
-                        <div style="background: #3E3E42;" class="card-header text-white p-1">
-                          <a class="btn btn-sm btn-default p-1" rol="button" data-toggle="collapse" href="#collapseContract" aria-expanded="false" aria-controls="collapseContract">
-                            <i class="fas fa-angle-down text-white"></i>
-                          </a>
-                          Vincular contrato a documento A
-                        </div>
-                        <div class="collapse" id="collapseContract">
-                          <div class="card-body">
-                            <div class="form-inline d-flex justify-content-space-between align-items-center">
-                              <label class="mr-sm-2">Cadena</label>
-                              <select style="width:150px;" type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="cadena" name="cadena">
-                                <option value="">Elegir</option>
-                                @foreach ($cadenas as $cadena)
-                                  <option value="{{$cadena->id}}">{{ $cadena->name }}</option>
-                                @endforeach
-                              </select>
-                              <label class="mr-sm-2" for="">C. Maestro</label>
-                              <select style="width:150px" type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="sel_master_to_anexo" name="sel_master_to_anexo">
-                                <option value="">Elegir</option>
-                              </select>
-                              <label class="mr-sm-2" for="">C. Anexo</label>
-                              <select style="width:150px" type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="sel_anexo" name="sel_anexo" value="">
-                                <option value="">Elegir</option>
-                              </select>
-                              <input class="form-control form-control-sm" readonly type="text" name="id_ubicacion" id="id_ubicacion" value="">
-                              <input class="form-control form-control-sm" readonly type="text" name="nombre_sitio" id="nombre_sitio" value="">
-                              <input class="form-control form-control-sm" readonly type="hidden" name="id_hotel" id="id_hotel" value="">
-                              <button type="button" id="match_contract_button"  class="btn btn-info btn-danger text-white ml-2"><span class="fas fa-exchange-alt"></span> Relacionar datos </button type="button">
-                            </div>
-                          </div>
-                        </div>
-                        </div>
-                      </div> --}}
+                      
                     <br>
                   <!--INFO-->
                   <div class="col-12 mt-4">
@@ -1474,8 +1400,6 @@
   <script type="text/javascript">
     var item_relation_contact_row = "{{ $item_contact_row }}";
     var item_relation_cierre_row = "{{ $item_cierre_row }}";
-    var item_relation_vendedor_row = "{{ $item_vendedor_row }}";
-    var item_relation_colaborador_row = "{{ $item_colaborador_row }}";
     
     $(function() {
       
@@ -1633,87 +1557,8 @@
       }
     }
   
-    function addItemVendedor() {
-      let politica = $("select[name='sel_type_comision']").val();
-      if (politica != '') {
-        var html = '';
-        html += '<tr id="item_vendedor_row_' + item_relation_vendedor_row + '">';
+
   
-        html += '<td class="text-center" style="vertical-align: middle;">';
-        html += '<button type="button" onclick="$(\'#item_vendedor_row_' + item_relation_vendedor_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
-        html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
-        html += '</button>';
-        html += '<input type="hidden" name="item_vendedor[' + item_relation_vendedor_row + '][id]" id="item_vendedor_id_' + item_relation_vendedor_row + '" /> ';
-        html += '</td>';
-  
-        html += '<td>';
-        html += '<div class="form-group form-group-sm">';
-        html += '<select class="form-control form-control-sm input-sm col-vendedor-contact" name="item_vendedor[' + item_relation_vendedor_row + '][contact]" id="item_vendedor_contact_' + item_relation_vendedor_row + '" data-row="' + item_relation_vendedor_row + '" required>'
-        html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-        @forelse ($kickoff_vendedores as $kickoff_vendedores_data)
-        html += '<option value="{{ $kickoff_vendedores_data->user_id  }}">{{ $kickoff_vendedores_data->user }}</option>';
-        @empty
-        @endforelse
-        html += '</select>';
-        html += '</div>';
-        html += '</td>';
-  
-        html += '</tr>';
-  
-        $("#item_vendedor tbody #add_item_vendedor").before(html);
-        item_relation_vendedor_row++;
-      }
-      else {
-        $('#sel_inside_sales').val('').trigger('change');
-        $('#sel_itconcierge_comision').val('').trigger('change');
-        Swal.fire({
-           type: 'error',
-           title: 'Oops...',
-           text: 'Selecciona la politica de comisión',
-         });
-      }
-    }
-  
-    function addItemColaborador() {
-      let politica = $("select[name='sel_type_comision']").val();
-      if (politica != '') {
-        var html = '';
-        html += '<tr id="item_colaborador_row_' + item_relation_colaborador_row + '">';
-  
-        html += '<td class="text-center" style="vertical-align: middle;">';
-        html += '<button type="button" onclick="$(\'#item_colaborador_row_' + item_relation_colaborador_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
-        html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
-        html += '</button>';
-        html += '<input type="hidden" name="item_colaborador[' + item_relation_colaborador_row + '][id]" id="item_colaborador_id_' + item_relation_colaborador_row + '" /> ';
-        html += '</td>';
-  
-        html += '<td>';
-        html += '<div class="form-group form-group-sm">';
-        html += '<select class="form-control form-control-sm input-sm col-colaborador-contact" name="item_colaborador[' + item_relation_colaborador_row + '][contact]" id="item_colaborador_contact_' + item_relation_colaborador_row + '" data-row="' + item_relation_colaborador_row + '" required>'
-        html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-        @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
-        html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
-        @empty
-        @endforelse
-        html += '</select>';
-        html += '</div>';
-        html += '</td>';
-  
-        html += '</tr>';
-  
-        $("#item_colaborador tbody #add_item_colaborador").before(html);
-        item_relation_colaborador_row++;
-      }
-      else {
-        $('#sel_inside_sales').val('').trigger('change');
-        $('#sel_itconcierge_comision').val('').trigger('change');
-        Swal.fire({
-           type: 'error',
-           title: 'Oops...',
-           text: 'Selecciona la politica de comisión',
-         });
-      }
-    }
   
     function data_comision(identX){
       var id = identX;

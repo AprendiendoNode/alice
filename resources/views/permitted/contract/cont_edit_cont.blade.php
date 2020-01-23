@@ -885,8 +885,8 @@
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
 
 
-    <script src="{{ asset('js/admin/contract/contract_master_edit.js?v1.0')}}"></script>
-    <script src="{{ asset('js/admin/contract/contract_anexo_edit.js?v1.0')}}"></script>
+    <script src="{{ asset('js/admin/contract/contract_master_edit.js?v=2.0')}}"></script>
+    <script src="{{ asset('js/admin/contract/contract_anexo_edit.js?v=2.0')}}"></script>
 
     <link href="{{ asset('bower_components/switchery-master/dist/switchery.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/switchery-master/dist/switchery.js')}}" charset="utf-8"></script>

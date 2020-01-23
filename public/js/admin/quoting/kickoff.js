@@ -1148,14 +1148,7 @@ $('#match_contract_button').on('click', function(){
   let id = document.getElementById('id').value;
   let hotel_id = document.getElementById('id_hotel').value;
   let cadena = document.getElementById('cadena').value;
-  let rfc = document.getElementById('rfc').value;
-  let razon_social = document.getElementById('razon_social').value;
-  let contacto = document.getElementById('contacto').value;
-  let telefono = document.getElementById('telefono').value;
-  let email = document.getElementById('email').value;
-  let direccion = document.getElementById('direccion').value;
-  let fecha_inicio = document.getElementById('fecha_inicio').value;
-  let fecha_termino = document.getElementById('fecha_termino').value;
+  let anexo = document.getElementById('sel_anexo').value;
 
   const headers2 = new Headers({
       "Accept": "application/json",
@@ -1166,15 +1159,10 @@ $('#match_contract_button').on('click', function(){
   var data = {
     id: id,
     cadena: cadena,
+    contract_anexo: anexo, 
     hotel_id: hotel_id,
     rfc: rfc,
-    razon_social: razon_social,
-    contacto: contacto,
-    telefono: telefono,
-    email: email,
-    direccion: direccion,
-    fecha_inicio: fecha_inicio,
-    fecha_termino: fecha_termino
+  
   }
   var miInit = {
     method: 'post',
@@ -1185,16 +1173,12 @@ $('#match_contract_button').on('click', function(){
 
 
   if(cadena != '' && hotel_id != ''){
-    fetch('/update_kickoff_contract',miInit)
+    fetch('/update_kickoff_contract_comision',miInit)
       .then(function(response){
-        return response.text();
+        return response.json();
       })
       .then(function(data){
-        if(data == "true"){
-          Swal.fire('Datos guardados','', 'success');
-        }else{
-          Swal.fire('Ocurrio un error al guardar','', 'errr');
-        }
+          Swal.fire(data.message,'', data.info);
       })
       .catch(function(error){
         console.log(error);

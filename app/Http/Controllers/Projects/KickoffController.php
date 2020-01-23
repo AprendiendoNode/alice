@@ -843,49 +843,58 @@ class KickoffController extends Controller
       $lineaBase->save();
     }
 
-    public function update_kickoff_contract(Request $request)
+    public function update_kickoff_contract_comision(Request $request)
     {
-      $flag  = "false";
+      
 
       $id = $request->id;
-
+      $message = "";
+      $info = "";
+      
       DB::beginTransaction();
       try {
         //DOCUMENTO P
         $documentp = Documentp::find($id);
-        $documentp->grupo_id = $request->cadena;
-        $documentp->anexo_id = $request->hotel_id;
-        $documentp->save();
-
         $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
-        //PERFIL CLIENTE
-        DB::table('kickoff_perfil_cliente')->where('kickoff_id', $kickoff->id)->update([
-           'rfc' => $request->rfc,
-           'razon_social' => $request->razon_social,
-           'contacto' => $request->contacto,
-           'telefono' => $request->telefono,
-           'email' => $request->email,
-           'direccion' => $request->direccion,
-           'updated_at' => \Carbon\Carbon::now()
-        ]);
-        //CONTRATO
-        DB::table('kickoff_contrato')->where('kickoff_id', $kickoff->id)->update([
-           'fecha_inicio' => $request->fecha_inicio,
-           'fecha_termino' => $request->fecha_termino,
-           'updated_at' => \Carbon\Carbon::now()
-        ]);
+        //verifico si ya hay un registro del kickoff en la tabla de comisiones
+        $result= DB::table('comision_gral')->where('kickoff_id', '=', $kickoff)->get();
+        // Si ya hay un registro de comision relacionado con el kickoff se elimina el registro para evitar duplicidad de datos
+        if(count($result) == 1){
+          //Logica para borrar el registro
+        }else{
+          
+          $result = DB::table('comision_gral')->where('id_contract', '=', $request->contract_anexo)
+                                    ->update(['kickoff_id' => $kickoff->id]);
+
+          if($result == 0){
+              $message = "Este contrato no tiene una comisión registrada.";
+              $info = "warning";
+            
+          }else{         
+              $message = "Kickoff vinculado con el contrato";
+              $info = "success"; 
+          } 
+
+        }
 
         DB::commit();
-        $flag  = "true";
+
+        return response()->json([
+          "message" => $message,
+          "info" => $info
+        ]);
+        
 
       } catch(\Exception $e){
         $e->getMessage();
         DB::rollback();
-        //dd($e);
-        return $e;
+        return response()->json([
+          "message" => "Ocurrio un error inesperado",
+          "code" => 500
+        ]);
       }
 
-      return $flag;
+      
     }
 
     public function update_kickoff_comision(Request $request)
