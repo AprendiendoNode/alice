@@ -1,265 +1,294 @@
-<!--  MODAL COMISIONES -->
-<div id="modal_comision" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Cálculo de comisión</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-row">
-          <div class="col-4">
-            <h6>Proyecto: {{ $document[0]->nombre_proyecto }}</h6>
-          </div>
-          <div class="col-4">
-            <h6>Tipo servicio: {{ $document[0]->tipo_servicio }}</h6>
-          </div>
-          <div class="col-4">
-            <h6 class="text-danger">Monto de comisión: $ <span id="total_comision">{{ number_format($comision, 2,'.', ',') }} USD</span> </h6>
-          </div>
-        </div>
-        <div class=" mb-2">
-          <div class="col-12 text-center bg-dark text-white p-1 mb-2">
-            <label class="mb-0" for="">Comisión</label>
-          </div>
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <label  for="">Contácto</label>
-            </div>
-            <div class="col-7 col-md-4">
-              <input id="contacto_comercial" name="contacto_comercial" value="{{ $kickoff_comisiones->contacto }}" type="text" class="form-control form-control-sm">
-            </div>
-            <div class="col-8 col-md-3 input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">$</div>
-              </div>
-              <input id="amount_contacto" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->amount_contacto }}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">USD</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2 input-group">
-              <input id="percent_contacto" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->percent_contacto }}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">%</div>
-              </div>
-            </div>
-          </div><!------------------------------------------------------->
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <label  for="">Cierre</label>
-            </div>
-            <div class="col-7 col-md-4">
-              <input id="cierre" name="cierre" value="{{ $kickoff_comisiones->cierre }}" type="text" class="form-control form-control-sm">
-            </div>
-            <div class="col-8 col-md-3 input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">$</div>
-              </div>
-              <input id="amount_cierre" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->amount_cierre }}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">USD</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2 input-group">
-              <input id="percent_cierre" type="number" onblur="calcularComision(this);" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{ $kickoff_comisiones->percent_cierre }}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">%</div>
-              </div>
-            </div>
-          </div><!------------------------------------------------------->
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <label  for="">Inside Sales</label>
-            </div>
-            <div class="col-7 col-md-4">
-              <select id="inside_sales" name="inside_sales" type="text" class="form-control form-control-sm">
-                @if($kickoff_comisiones->inside_sales == 4)
-                  <option selected value="4">Sin asignar</option>
-                @else
-                  <option value="4">Sin asignar</option>
-                @endif
-                @foreach ($inside_sales as $inside_sales_data)
-                  @if($inside_sales_data->user_id == $kickoff_comisiones->inside_sales)
-                    <option selected value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
-                  @else
-                    <option value="{{$inside_sales_data->user_id}}">{{$inside_sales_data->user}}</option>
-                  @endif
-                @endforeach
-              </select>
-            </div>
-            <div class="col-8 col-md-3 input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">$</div>
-              </div>
-              <input id="amount_inside_sales" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{$kickoff_comisiones->amount_inside_sales}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">USD</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2 input-group">
-              <input id="percent_inside_sales" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_inside_sales}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">%</div>
-              </div>
-            </div>
-          </div><!------------------------------------------------------->
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <label for="">IT Concierge</label>
-            </div>
-            <div class="col-7 col-md-4">
-              <select id="itconciergecomision" name="itconciergecomision" disabled type="text" class="form-control form-control-sm">
-                <option value="{{$document[0]->itc_id}}">{{$document[0]->ITC}}</option>
-              <select>
-            </div>
-            <div class="col-8 col-md-3 input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">$</div>
-              </div>
-              <input id="amount_comission_itc" readonly type="text" class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup"  value="{{$kickoff_comisiones->amount_itc}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">USD</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2 input-group">
-              <input id="percent_comission_itc" value="{{$kickoff_comisiones->percent_itc}}" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">%</div>
-              </div>
-            </div>
-          </div><!------------------------------------------------------->
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <label  for="">Vendedor</label>
-            </div>
-            <div class="col-7 col-md-4">
-              <select id="vendedor" name="vendedor" type="text" class="form-control form-control-sm">
-                @if($kickoff_comisiones->vendedor == 4)
-                  <option selected value="4">Sin asignar</option>
-                @else
-                  <option value="4">Sin asignar</option>
-                @endif
-                @foreach ($vendedores as $vendedor)
-                  @if($vendedor->user_id == $kickoff_comisiones->vendedor)
-                    <option selected value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
-                  @else
-                    <option value="{{$vendedor->user_id}}">{{$vendedor->user}}</option>
-                  @endif
-                @endforeach
-              </select>
-            </div>
-            <div class="col-8 col-md-3 input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">$</div>
-              </div>
-              <input id="amount_comision_vendedor" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{$kickoff_comisiones->amount_vendedor}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">USD</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2 input-group">
-              <input id="percent_comision_vendedor" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_vendedor}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">%</div>
-              </div>
-            </div>
-          </div><!------------------------------------------------------->
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <label  for="">Colaborador</label>
-            </div>
-            <div class="col-7 col-md-4">
-              <select id="colaborador" name="colaborador" type="text" class="form-control form-control-sm">
-                @if($kickoff_comisiones->colaborador == 4)
-                  <option selected value="4">Sin asignar</option>
-                @else
-                  <option value="4">Sin asignar</option>
-                @endif
-                @foreach ($colaboradores as $colaborador)
-                  @if($colaborador->id == $kickoff_comisiones->colaborador)
-                    <option selected value="{{$colaborador->id}}">{{$colaborador->name}}</option>
-                  @else
-                    <option value="{{$colaborador->id}}">{{$colaborador->name}}</option>
-                  @endif
-                @endforeach
-              </select>
-            </div>
-            <div class="col-8 col-md-3 input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">$</div>
-              </div>
-              <input id="amount_colaborador" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{$kickoff_comisiones->amount_colaborador}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">USD</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2 input-group">
-              <input id="percent_colaborador" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_colaborador}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">%</div>
-              </div>
-            </div>
-          </div><!------------------------------------------------------->   
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <label  for="">Externo</label>
-            </div>
-            <div class="col-7 col-md-4">
-              <input id="comision_externo" name="comision_externo" value="{{ $kickoff_comisiones->externo1 }}" type="text" class="form-control form-control-sm">
-            </div>
-            <div class="col-8 col-md-3 input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">$</div>
-              </div>
-              <input id="amount_externo1" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{$kickoff_comisiones->amount_externo1}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">USD</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2 input-group">
-              <input id="percent_externo1" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_externo1}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">%</div>
-              </div>
-            </div>
-          </div><!------------------------------------------------------->
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <label  for="">Externo 2</label>
-            </div>
-            <div class="col-7 col-md-4">
-              <input id="comision_externo_2" name="comision_externo_2" value="{{ $kickoff_comisiones->externo2}}" type="text" class="form-control form-control-sm">
-            </div>
-            <div class="col-8 col-md-3 input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">$</div>
-              </div>
-              <input id="amount_externo2" readonly type="text"  class="form-control form-control-sm text-dark text-right" id="inlineFormInputGroup" value="{{$kickoff_comisiones->amount_externo2}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">USD</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2 input-group">
-              <input id="percent_externo2" onblur="calcularComision(this);" type="number" class="form-control form-control-sm text-right" min="0" max="100" id="inlineFormInputGroup" value="{{$kickoff_comisiones->percent_externo2}}">
-              <div class="input-group-prepend">
-                <div class="input-group-text form-control-sm text-dark">%</div>
-              </div>
-            </div>
-          </div>
-          <div class="form-row d-flex align-items-center mb-2">
-            <div class="col-5 col-md-3">
-              <button class="btn btn-dark btn-block"  onclick="comisionByDefault();" type="button" name="button">Calcular politica de comisión</button>
-            </div>
-          </div>
-       </div>
-      </div>
-      <div class="modal-footer">
-          <button id="button_comision" type="button" onclick="save_comision();" class="btn btn-primary">Guardar</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-      </div>
-  </div>
-</div>
-</div>
+
+
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  var item_relation_contact_row = "{{ $item_contact_row }}";
+  var item_relation_cierre_row = "{{ $item_cierre_row }}";
+  var item_relation_vendedor_row = "{{ $item_vendedor_row }}";
+  var item_relation_colaborador_row = "{{ $item_colaborador_row }}";
+  
+  $(function() {
+    
+    item_relation_contact_row = 0;
+    item_relation_cierre_row = 0;
+    item_relation_vendedor_row = 0;
+    item_relation_colaborador_row = 0;
+
+    $('#cont_vtc').change(function() {
+      if ($(this).prop('checked') == true) {  $('#cont_vtc').val(1);  }
+      else {  $('#cont_vtc').val(0);  }
+    });
+    $('#cont_venue').change(function() {
+      if ($(this).prop('checked') == true) {  $('#cont_venue').val(1);  }
+      else {  $('#cont_venue').val(0);  }
+    });
+    $('#comp_ingreso').change(function() {
+      if ($(this).prop('checked') == true) {  $('#comp_ingreso').val(1);  }
+      else {  $('#comp_ingreso').val(0);  }
+    });
+
+    $('#comision').change(function() {
+      if ($(this).prop('checked') == true) {
+        cont_vtc = 1;
+        $('#div_comisiones').show();
+        $("#sel_inside_sales").prop('required',true);
+        $("#sel_itconcierge_comision").prop('required',true);
+        $('#comision').val(cont_vtc);
+      }
+      else {
+        cont_vtc = 0;
+        $('#comision').val(cont_vtc);
+        $('#div_comisiones').hide();
+        $("#sel_inside_sales").prop('required',false);
+        $("#sel_itconcierge_comision").prop('required',false);
+      }
+
+      $('#sel_type_comision').val('').trigger('change');
+      $('#sel_inside_sales').val('').trigger('change');
+      $('#sel_itconcierge_comision').val('').trigger('change');
+      $("#item_politica input[type=text]").val('');
+      delete_row_table_a();
+      delete_row_table_b();
+      delete_row_table_c();
+      delete_row_table_d();
+    });
+    $('#sel_type_comision').on('change', function(e){
+      var group = $(this).val();
+      data_comision(group);
+    });
+  });
+
+  function addItemCont() {
+    let politica = $("select[name='sel_type_comision']").val();
+    if (politica != '') {
+      var html = '';
+      html += '<tr id="item_row_' + item_relation_contact_row + '">';
+
+      html += '<td class="text-center" style="vertical-align: middle;">';
+      html += '<button type="button" onclick="$(\'#item_row_' + item_relation_contact_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+      html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+      html += '</button>';
+      html += '<input type="hidden" name="item[' + item_relation_contact_row + '][id]" id="item_id_' + item_relation_contact_row + '" /> ';
+      html += '</td>';
+
+      html += '<td>';
+      html += '<div class="form-group form-group-sm">';
+      html += '<select class="form-control input-sm col-contact-int" name="item[' + item_relation_contact_row + '][contactInt]" id="item_contactInt_' + item_relation_contact_row + '" data-row="' + item_relation_contact_row + '">'
+      html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+      @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+      html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
+      @empty
+      @endforelse
+      html += '</select>';
+      html += '</div>';
+      html += '</td>';
+
+      html += '<td>';
+      html += '<div class="form-group form-group-sm">';
+      html += '<input type="text" class="form-control input-sm text-right col-contact" name="item[' + item_relation_contact_row + '][contact]" id="item_contact_' + item_relation_contact_row + '" step="any"/>';
+      html += '</div>';
+      html += '</td>';
+
+      html += '<td>';
+      html += '<div class="form-group form-group-sm">';
+      html += '<input type="text" class="form-control input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" required step="any" maxlength="10" />';
+      html += '</div>';
+      html += '</td>';
+
+      html += '</tr>';
+
+      $("#validation_anexo #item_contact tbody #add_item_contact").before(html);
+      item_relation_contact_row++;
+    }
+    else {
+      $('#sel_inside_sales').val('').trigger('change');
+      $('#sel_itconcierge_comision').val('').trigger('change');
+      Swal.fire({
+         type: 'error',
+         title: 'Oops...',
+         text: 'Selecciona la politica de comisión',
+       });
+    }
+  }
+
+  function addItemCierre() {
+    let politica = $("select[name='sel_type_comision']").val();
+    if (politica != '') {
+      var html = '';
+      html += '<tr id="item_cierre_row_' + item_relation_cierre_row + '">';
+
+      html += '<td class="text-center" style="vertical-align: middle;">';
+      html += '<button type="button" onclick="$(\'#item_cierre_row_' + item_relation_cierre_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+      html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+      html += '</button>';
+      html += '<input type="hidden" name="item_cierre[' + item_relation_cierre_row + '][id]" id="item_cierre_id_' + item_relation_cierre_row + '" /> ';
+      html += '</td>';
+
+      html += '<td>';
+      html += '<div class="form-group form-group-sm">';
+      html += '<select class="form-control input-sm col-cierre-contact-int" name="item_cierre[' + item_relation_cierre_row + '][contactInt]" id="item_cierre_contactInt_' + item_relation_cierre_row + '" data-row="' + item_relation_cierre_row + '">'
+      html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+      @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+      html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
+      @empty
+      @endforelse
+      html += '</select>';
+      html += '</div>';
+      html += '</td>';
+
+      html += '<td>';
+      html += '<div class="form-group form-group-sm">';
+      html += '<input type="text" class="form-control input-sm text-right col-cierre-contact" name="item_cierre[' + item_relation_cierre_row + '][contact]" id="item_cierre_contact_' + item_relation_cierre_row + '" step="any" />';
+      html += '</div>';
+      html += '</td>';
+
+      html += '<td>';
+      html += '<div class="form-group form-group-sm">';
+      html += '<input type="text" class="form-control input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" required step="any" maxlength="10" />';
+      html += '</div>';
+      html += '</td>';
+
+      html += '</tr>';
+      $("#validation_anexo #item_cierre tbody #add_item_cierre").before(html);
+      item_relation_cierre_row++;
+    }
+    else {
+      $('#sel_inside_sales').val('').trigger('change');
+      $('#sel_itconcierge_comision').val('').trigger('change');
+      Swal.fire({
+         type: 'error',
+         title: 'Oops...',
+         text: 'Selecciona la politica de comisión',
+       });
+    }
+  }
+
+  function addItemVendedor() {
+    let politica = $("select[name='sel_type_comision']").val();
+    if (politica != '') {
+      var html = '';
+      html += '<tr id="item_vendedor_row_' + item_relation_vendedor_row + '">';
+
+      html += '<td class="text-center" style="vertical-align: middle;">';
+      html += '<button type="button" onclick="$(\'#item_vendedor_row_' + item_relation_vendedor_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+      html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+      html += '</button>';
+      html += '<input type="hidden" name="item_vendedor[' + item_relation_vendedor_row + '][id]" id="item_vendedor_id_' + item_relation_vendedor_row + '" /> ';
+      html += '</td>';
+
+      html += '<td>';
+      html += '<div class="form-group form-group-sm">';
+      html += '<select class="form-control input-sm col-vendedor-contact" name="item_vendedor[' + item_relation_vendedor_row + '][contact]" id="item_vendedor_contact_' + item_relation_vendedor_row + '" data-row="' + item_relation_vendedor_row + '" required>'
+      html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+      @forelse ($kickoff_vendedores as $kickoff_vendedores_data)
+      html += '<option value="{{ $kickoff_vendedores_data->user_id  }}">{{ $kickoff_vendedores_data->user }}</option>';
+      @empty
+      @endforelse
+      html += '</select>';
+      html += '</div>';
+      html += '</td>';
+
+      html += '</tr>';
+
+      $("#validation_anexo #item_vendedor tbody #add_item_vendedor").before(html);
+      item_relation_vendedor_row++;
+    }
+    else {
+      $('#sel_inside_sales').val('').trigger('change');
+      $('#sel_itconcierge_comision').val('').trigger('change');
+      Swal.fire({
+         type: 'error',
+         title: 'Oops...',
+         text: 'Selecciona la politica de comisión',
+       });
+    }
+  }
+
+  function addItemColaborador() {
+    let politica = $("select[name='sel_type_comision']").val();
+    if (politica != '') {
+      var html = '';
+      html += '<tr id="item_colaborador_row_' + item_relation_colaborador_row + '">';
+
+      html += '<td class="text-center" style="vertical-align: middle;">';
+      html += '<button type="button" onclick="$(\'#item_colaborador_row_' + item_relation_colaborador_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+      html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+      html += '</button>';
+      html += '<input type="hidden" name="item_colaborador[' + item_relation_colaborador_row + '][id]" id="item_colaborador_id_' + item_relation_colaborador_row + '" /> ';
+      html += '</td>';
+
+      html += '<td>';
+      html += '<div class="form-group form-group-sm">';
+      html += '<select class="form-control input-sm col-colaborador-contact" name="item_colaborador[' + item_relation_colaborador_row + '][contact]" id="item_colaborador_contact_' + item_relation_colaborador_row + '" data-row="' + item_relation_colaborador_row + '" required>'
+      html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+      @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+      html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
+      @empty
+      @endforelse
+      html += '</select>';
+      html += '</div>';
+      html += '</td>';
+
+      html += '</tr>';
+
+      $("#validation_anexo #item_colaborador tbody #add_item_colaborador").before(html);
+      item_relation_colaborador_row++;
+    }
+    else {
+      $('#sel_inside_sales').val('').trigger('change');
+      $('#sel_itconcierge_comision').val('').trigger('change');
+      Swal.fire({
+         type: 'error',
+         title: 'Oops...',
+         text: 'Selecciona la politica de comisión',
+       });
+    }
+  }
+
+  function data_comision(identX){
+    var id = identX;
+    var _token = $('input[name="_token"]').val();
+    $.ajax({
+      type: "POST",
+      url: "/search_politica",
+      data: { _token : _token,  text: id},
+      success: function (data){
+        count_data = data.length;
+        if (count_data > 2) {
+          datax = JSON.parse(data);
+          $('input[name="politica_name"]').val(datax[0].politica.toUpperCase());
+          $('input[name="politica_retencion"]').val(datax[0].retenciones);
+          $('input[name="politica_asignado"]').val(datax[0].monto_asignado);
+          $('input[name="politica_contacto"]').val(datax[0].contacto);
+          $('input[name="politica_cierre"]').val(datax[0].cierre);
+          $('input[name="politica_itc"]').val(datax[0].itc);
+          $('input[name="politica_insidesales"]').val(datax[0].inside_sales);
+        }
+        else {
+          $('input[name="politica_name"]').val('');
+          $('input[name="politica_retencion"]').val('0');
+          $('input[name="politica_asignado"]').val('0');
+          $('input[name="politica_contacto"]').val('0');
+          $('input[name="politica_cierre"]').val('0');
+          $('input[name="politica_itc"]').val('0');
+          $('input[name="politica_insidesales"]').val('0');
+        }
+      },
+      error: function (error, textStatus, errorThrown) {
+          if (error.status == 422) {
+              var message = error.responseJSON.error;
+              // $("#general_messages").html(alertMessage("danger", message));
+              Swal.fire("Operación abortada", message, "error");
+          }
+          else {
+              alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+          }
+      }
+    });
+  }
+</script>
+

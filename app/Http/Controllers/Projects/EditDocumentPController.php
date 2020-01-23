@@ -141,8 +141,8 @@ class EditDocumentPController extends Controller
     if($document->status_id == 1){
       return true;
     }else{
-      //return false; quitando candado de edicion documentos entregados temporalmente
-      return true;
+      return false; //Poner en true para  quitar candado de edicion de documentos 
+      
     }
   }
 
