@@ -90,6 +90,20 @@ class SabanaITController extends Controller
     $result = DB::select('CALL px_NPS_itc (?, ?)', array($itc, $anio));
     return $result;
   }
+  public function get_nps_itc_mensual(Request $request){
+    $itc=$request->itc;
+    $anio=$request->anio;
+    $mes=$request->mes;
+    $fecha = "";
+
+    if($anio == "") {
+      $fecha = date('Y-m-d');
+    } else {
+      $fecha = $anio."-".$mes."-01";
+    }info($mes);
+    $result = DB::select('CALL px_NPS_itc_mensual (?, ?)', array($itc, $fecha));
+    return $result;
+  }
   public function get_nps_cadena(Request $request){
     $id_cadena=$request->id;
     $anio=$request->anio;

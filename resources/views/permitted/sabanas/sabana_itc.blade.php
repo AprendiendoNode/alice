@@ -40,7 +40,7 @@
 
       <div class="modal modal-default fade" id="modal-view-ppd" data-backdrop="static">
           <div class="modal-dialog" >
-            <div class="modal-content" style="width: 70vw; margin-left: -15vw;">
+            <div class="modal-content">
               <div class="modal-header">
                 <h4 class="modal-title"><i class="far fa-address-card" style="margin-right: 4px;"></i>Calificaciones.</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -462,23 +462,37 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="w-100 text-center">
-                      <h3 style="font-weight: bold;">NPS Anual</h3>
+                      <h3 style="font-weight: bold;">NPS Anual / Mensual</h3>
                     </div>
                   </div>
                 </div>
 
                   <div class="row">
-                    <div class="col-md-4 col-xs-12"></div>
+                    <div class="col-md-3 col-xs-12"></div>
                   <div class="col-md-4 col-xs-12 mb-3">
                     <div class="input-group  flex-nowrap">
                       <div class="input-group-prepend">
                         <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
                       </div>
                       <input id="date_to_search" type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
-                      <div class="input-group-append">
-                        <button class="btn btn-outline-info filtrarDashboard" type="button" id="boton-aplica-filtro">Filtrar</button>
-                      </div>
+                      <select id="date_to_search_nps_mes" class="form-control" style="color: black; width: 40% !important">
+                        <option value="01">Enero</option>
+                        <option value="02">Febrero</option>
+                        <option value="03">Marzo</option>
+                        <option value="04">Abril</option>
+                        <option value="05">Mayo</option>
+                        <option value="06">Junio</option>
+                        <option value="07">Julio</option>
+                        <option value="08">Agosto</option>
+                        <option value="09">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                      </select>
                     </div>
+                </div>
+                <div class="col-md-2 col-xs-12 mb-3">
+                  <button class="btn btn-outline-info filtrarDashboard w-100" type="button" id="boton-aplica-filtro">Filtrar</button>
                 </div>
                 </div>
                   <div class="row">
@@ -507,23 +521,27 @@
                       </div>
                     </div>-->
 
-                    <div class="col-md-8 grid-margin stretch-card">
-                      <div class="card">
-                        <div class="card-body .npscontainer container-fluid"  style="width: 100%;">
-                          <h4 class="card-title">NPS chart</h4>
-                          <div class="d-flex justify-content-center  border-bottom w-100">
-                            <div id="main_nps_hotel" style="width: 100%; min-height: 320px; "></div>
+                    <div class="col-md-6">
+                          <div class="d-flex justify-content-center w-100">
+                            <div id="main_nps_anio" style="width: 100%;"></div>
                           </div>
-                        </div>
-                      </div>
                     </div>
 
-                    <div class="col-md-4">
-                      <div class="row">
-                        <div class="col-md-12 mb-3">
+                    <div class="col-md-6">
+                          <div class="d-flex justify-content-center w-100">
+                            <div id="main_nps_mes" style="width: 100%;"></div>
+                          </div>
+                    </div>
+
+                </div>
+
+                <div class="row text-center"><h3 class="mx-auto">Calificaciones del año</h3></div>
+
+                      <div class="row mb-3">
+                        <div class="col-md-3 mb-2">
                           <div class="card" id="box_promotores" style="cursor: pointer;">
                             <div class="card-body">
-                              <div class="d-xl-flex  align-items-center justify-content-center p-0 item">
+                              <div class="d-xl-flex text-center align-items-center justify-content-center p-0 item">
                                 <i class="mdi mdi-emoticon icon-lg mr-3 color-green"></i>
                                 <div class="d-flex flex-column justify-content-around">
                                   <small class="mb-1 text-muted font-weight-bold">Promotores</small>
@@ -533,10 +551,10 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-3 mb-2">
                           <div class="card" id="box_pasivos" style="cursor: pointer;">
                             <div class="card-body">
-                              <div class="d-xl-flex  align-items-center justify-content-center p-0 item">
+                              <div class="d-xl-flex text-center align-items-center justify-content-center p-0 item">
                                 <i class="mdi mdi-emoticon-neutral icon-lg mr-3 color-yellow"></i>
                                 <div class="d-flex flex-column justify-content-around">
                                   <small class="mb-1 text-muted font-weight-bold">Pasivos</small>
@@ -546,10 +564,10 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-3 mb-2">
                           <div class="card" id="box_detractores" style="cursor: pointer;">
                             <div class="card-body">
-                              <div class="d-xl-flex align-items-center justify-content-center p-0 item">
+                              <div class="d-xl-flex text-center align-items-center justify-content-center p-0 item">
                                 <i class="mdi mdi-emoticon-sad icon-lg mr-3 color-red"></i>
                                 <div class="d-flex flex-column justify-content-around">
                                   <small class="mb-1 text-muted font-weight-bold">Detractores</small>
@@ -559,7 +577,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-3 mb-2">
                           <div class="card" id="box_sin_response" style="cursor: pointer;">
                             <div class="card-body">
                               <div class="ml-sm-3 ml-md-0 ml-xl-0 mt-2 mt-sm-0 mt-md-2 mt-xl-0 text-center">
@@ -570,13 +588,12 @@
                           </div>
                         </div>
                       </div>
-                    </div>
 
 
-                  </div>
+
                   <div class="row">
-                    <div class="col-md-12">
-                      <h3>Última encuesta</h3>
+                    <div class="col-md-12 text-center">
+                      <h3 class="mx-auto">Última encuesta</h3>
                       <div class="table-responsive">
                       <table id="nps_comments" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
                         <thead>

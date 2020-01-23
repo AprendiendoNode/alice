@@ -242,16 +242,17 @@ $(function() {
   function get_nps_itc(itc){
     var _token = $('meta[name="csrf-token"]').attr('content');
     var anio = $('#date_to_search').val();
+    var mes = $('#date_to_search_nps_mes').val();
     var id= itc;
     $.ajax({
       type: "POST",
       url: "/get_nps_itc",
       data: { _token : _token, itc: id, anio: anio },
       success: function (data){
-        console.log(data);
+        //console.log(data);
         //console.log(data[0]['nps']);
         //graph_nps_hotel('main_nps',data[0]['nps']);
-        graph_gauge_hotel('main_nps_hotel', 'NPS', '100', '100', data[0]['nps']);
+        graph_gauge_nps('main_nps_anio', anio, '100', '100', data[0]['nps']);
         $('#total_promotores').text(data[0]['pr']);
         $('#total_pasivos').text(data[0]['ps']);
         $('#total_detractores').text(data[0]['d']);
@@ -264,28 +265,15 @@ $(function() {
         console.log('Error:', data);
       }
     });
-
-  }
-
-  function get_nps_cadena(idcadena){
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    var anio = $('#date_to_search').val();
-    var id= idcadena;
     $.ajax({
       type: "POST",
-      url: "/get_nps_cadena",
-      data: { _token : _token, id: id, anio: anio },
+      url: "/get_nps_itc_mensual",
+      data: { _token : _token, itc: id, anio: anio, mes: mes },
       success: function (data){
         //console.log(data);
         //console.log(data[0]['nps']);
         //graph_nps_hotel('main_nps',data[0]['nps']);
-        graph_gauge_hotel('main_nps_hotel', 'NPS', '100', '100', data[0]['nps']);
-        $('#total_promotores').text(data[0]['pr']);
-        $('#total_pasivos').text(data[0]['ps']);
-        $('#total_detractores').text(data[0]['d']);
-        //$('#total_survey').text(data[0]['enviadas']);
-        //$('#answered').text(data[0]['respondieron']);
-        //$('#unanswered').text(data[0]['abstenidos']);
+        graph_gauge_nps('main_nps_mes', $( "#date_to_search_nps_mes option:selected" ).text(), '100', '100', data[0]['nps']);
       },
       error: function (data) {
         console.log('Error:', data);
@@ -293,6 +281,7 @@ $(function() {
     });
 
   }
+
   function generate_table_info_sitios(datajson, table){
     table.DataTable().destroy();
     var vartable = table.dataTable(Configuration_table);
@@ -357,8 +346,8 @@ $(function() {
     $("#footer_total_sitios").text(parseInt($("#total_sitios").text()));
     $("#total_faturacion").text(sumaFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
     $("#footer_total_facturacion").text(sumaFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-    $("#npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
-    $("#footer_npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
+    $("#npsPromedio").text(Math.round(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
+    $("#footer_npsPromedio").text(Math.round(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
 
     var extra = 0;
 
@@ -382,7 +371,7 @@ $(function() {
       detractores[i] = $(".mes"+(i+1+extra)+".detractor").length;
       var total_icons = promotores[i] + pasivos[i] + detractores[i];
       if(total_icons != 0) {
-        $("#MES"+(i+1)).text(""+parseInt(((promotores[i] / total_icons) * 100 ) - ((detractores[i] / total_icons) * 100 )));
+        $("#MES"+(i+1)).text(""+Math.round(((promotores[i] / total_icons) * 100 ) - ((detractores[i] / total_icons) * 100 )));
       } else {
         $("#MES"+(i+1)).text("-");
       }
@@ -424,8 +413,8 @@ $(function() {
 
     }
 
-    $("#npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
-    $("#footer_npsPromedio").text(parseInt(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
+    $("#npsPromedio").text(Math.round(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
+    $("#footer_npsPromedio").text(Math.round(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
 
   }
 
@@ -1008,7 +997,7 @@ function viatics_table(datajson, table){
     }
   }
 
-  function graph_gauge_hotel(title, grapname, valuemin, valuemax, valor) {
+  function graph_gauge_nps(title, grapname, valuemin, valuemax, valor) {
     //$('#'+title).width($('#'+title).width());
     //$('#'+title).height($('#'+title).height());
 
