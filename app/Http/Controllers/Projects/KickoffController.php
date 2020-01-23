@@ -36,9 +36,11 @@ class KickoffController extends Controller
       $installation = DB::table('documentp_installation')->select('id', 'name')->get();
       $adquisition = DB::table('documentp_adquisition')->select('id', 'name')->get();
       $payments = DB::table('payment_ways')->whereIn('id', [1, 3, 22])->get();
-      $vendedores = DB::select(' CALL px_usersXdepto(?)', array(5));
-      $inside_sales = DB::select(' CALL px_usersXdepto(?)', array(6));
-      $colaboradores = DB::select(' CALL px_colaboradores()', array());
+      $kickoff_vendedores = DB::select(' CALL px_usersXdepto(?)', array(5));
+      $kickoff_inside_sales = DB::select(' CALL px_usersXdepto(?)', array(6));
+      $kickoff_colaboradores = DB::select(' CALL px_colaboradores()', array());
+      $politica_comision = DB::select(' CALL px_politicas_de_comision()', array());
+      $itconcierge= DB::select('CALL px_ITC_todos ()', array());
 
       $vtc = "Proyecto sin cotizador";
       $gasto_mtto_percent = 0;
@@ -68,13 +70,12 @@ class KickoffController extends Controller
       $kickoff_lineabase = Kickoff_lineabase::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $kickoff_perfil_cliente = Kickoff_perfil_cliente::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $kickoff_soporte = Kickoff_soporte::firstOrCreate(['kickoff_id' => $kickoff->id]);
-      $kickoff_comisiones = Kickoff_comisiones::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $approval_dir = DB::select('CALL px_valida_aprobado_direccion(?)', array($kickoff_approvals->id));
 
       $cadenas = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
 
-      return view('permitted.planning.kick_off_edit', compact('document', 'cadenas','installation','approval_dir' ,'adquisition','inside_sales' ,'vendedores', 'colaboradores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals',
-                  'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte', 'kickoff_comisiones', 'gasto_mtto', 'comision','gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido' ));
+      return view('permitted.planning.kick_off_edit', compact('document', 'cadenas','installation','approval_dir' ,'adquisition', 'colaboradores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals', 'kickoff_vendedores', 'kickoff_inside_sales', 'kickoff_colaboradores',
+      'itconcierge','politica_comision' ,'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte', 'gasto_mtto', 'comision','gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido'));
     }
 
     public function get_num_aps($cart_id)
@@ -110,6 +111,73 @@ class KickoffController extends Controller
       $kickoff_comisiones->save_comision_default($request, $comision);
 
       return $comision;
+    }
+
+    public function save_comision_kickkoff(Request $request)
+    {
+      $documentp = Documentp::find($request->id_doc);
+      $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+      //Insertar la tabla de comision general.
+      $comision_gral_new = DB::table('comision_gral')
+      ->insertGetId([
+         'itconcierge' => $request->sel_itconcierge_comision,
+        'inside_sales' => $request->sel_inside_sales,
+         'politica_id' => $request->sel_type_comision,
+         'kickoff_id' => $kickoff->id,
+          'created_at' => \Carbon\Carbon::now()
+      ]);
+      if (!empty($request->item)) {
+        foreach ($request->item as $key => $result) {
+                    $id_user = $result['contactInt'];
+                    $contact = !empty($result['contact']) ? $result['contact'] : '';
+                 $porcentaje = $result['porcentaje'];
+          $comision_contacto = DB::table('comisiones_contacto')
+           ->insertGetId([
+                  'user_id' => $id_user,
+                   'nombre' => $contact,
+         'comision_gral_id' => $comision_gral_new,
+          'valor_comision'  => $porcentaje,
+               'created_at' => \Carbon\Carbon::now()
+           ]);
+        }
+      }
+      if (!empty($request->item_cierre)) {
+        foreach ($request->item_cierre as $key => $result) {
+                   $id_user = $result['contactInt'];
+                   $contact = $result['contact'];
+                $porcentaje = $result['porcentaje'];
+           $comision_cierre = DB::table('comisiones_cierre')
+           ->insertGetId([
+                  'user_id' => $id_user,
+                   'nombre' => $contact,
+         'comision_gral_id' => $comision_gral_new,
+          'valor_comision'  => $porcentaje,
+               'created_at' => \Carbon\Carbon::now()
+           ]);
+        }
+      }
+      if (!empty($request->item_vendedor)) {
+        foreach ($request->item_vendedor as $key => $result) {
+                    $id_user = $result['contact'];
+          $comision_vendedor = DB::table('comisiones_vendedores')
+            ->insertGetId([
+                   'user_id' => $result['contact'],
+          'comision_gral_id' => $comision_gral_new,
+                'created_at' => \Carbon\Carbon::now()
+            ]);
+        }
+      }
+      if (!empty($request->item_colaborador)) {
+        foreach ($request->item_colaborador as $key => $result) {
+                      $id_user =  $result['contact'];
+         $comision_colaborador = DB::table('comisiones_colaborador')
+            ->insertGetId([
+                     'user_id' => $id_user,
+            'comision_gral_id' => $comision_gral_new,
+                  'created_at' => \Carbon\Carbon::now()
+            ]);
+        }
+      }
     }
 
     public function get_presupuesto_ejercido($id_doc)

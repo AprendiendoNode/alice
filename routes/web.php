@@ -500,7 +500,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/notificaciones_read_doc/{id}', 'Auth\NotificationController@read_docp');
   Route::get('/view_pdf_propuesta_comercial/{id_doc}', 'Projects\KickoffController@generate_pdf_propuesta');
   Route::post('/send_pdf_propuesta_comercial/', 'Projects\KickoffController@send_mail_pdf_propuesta');
-
+  Route::post('/save_comision_kickoff', 'Projects\KickoffController@save_comision_kickkoff');
   //Notificaciones viaticos
   Route::get('/notificaciones', 'Auth\NotificationController@vue_index')->name('notification.vue_index');
   Route::get('/notificaciones_read/{id}', 'Auth\NotificationController@read');

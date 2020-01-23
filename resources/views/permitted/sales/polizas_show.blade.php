@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View polizas') )
   Historial de polizas
   @else
   {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View polizas') )
     Historial de polizas
   @else
   {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View polizas') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -156,9 +156,7 @@
                     <th class="text-center">
                         {{__('customer_invoice.column_mail_sent')}}
                     </th>
-                    <th class="text-center">
-                        {{__('customer_invoice.column_status')}}
-                    </th>
+                    
                 </tr>
               </thead>
             </table>
@@ -431,9 +429,9 @@
               <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" placeholder="">
             </div>
             <div class="form-inline col-md-4">
-              <label class="" for="">Totales:</label>
-              <input style="width:130px;" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" >
-              <input style="width:130px;" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" >
+              <label class="" for="">Totales: </label>
+              <input style="width:130px;" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 text-right font-weight-bold" name="total_cargos" id="total_cargos" >
+              <input style="width:130px;" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 text-right font-weight-bold" name="total_abonos" id="total_abonos" >
             </div>
           </div>
         </div>
@@ -451,7 +449,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View customers invoices show') )
+  @if( auth()->user()->can('View polizas') )
   <style media="screen">
     .editor-wrapper {
       min-height: 250px;

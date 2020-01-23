@@ -141,15 +141,7 @@ $(function() {
       if ( information.uuid != "" ) {
         a19 = '<a class="dropdown-item" href="javascript:void(0);" onclick="cancel_poliza(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="fas fa-file-alt"></i> Cancelar póliza</a>';
       }
-      if ( parseInt(status) != CANCEL || parseInt(status) != CANCEL_PER_AUTHORIZED || information.balance >= information.amount_total ) {
-        a13 = '<div class="dropdown-divider"></div>';
-        a14 = '<a class="dropdown-item" href="javascript:void(0);"  onclick="link_cancel(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-trash-alt"></i> Cancelar poliza</a>';
-        a15 = '</div>';
-      }
-      if ( parseInt(status) == CANCEL_PER_AUTHORIZED ) {
-        a16 = '<a class="dropdown-item" href="javascript:void(0);" onclick="cancel_authorized(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> </a>';
-        a17 = '<a class="dropdown-item" href="javascript:void(0);" onclick="cancel_rejected(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> </a>';
-      }
+      
       var a18 = '</div>';
       var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a09+a10+a11+a12+a19+a13+a14+a15+a16+a17+a18;
 
@@ -164,7 +156,6 @@ $(function() {
         information.currency,
         information.amount_total,
         information.balance,
-        mail_status,
         html,
       ]);
     });
@@ -236,11 +227,11 @@ $(function() {
   var Configuration_table_responsive_doctypes = {
     "columnDefs": [
         {
-            "targets": 10,
+            "targets": 9,
             "className": "text-center",
         },
         {
-            "targets": 11,
+            "targets": 10,
             "className": "text-center",
         }
     ],
@@ -260,7 +251,7 @@ $(function() {
           titleAttr: 'Excel',
           className: 'btn btn-success btn-sm',
           exportOptions: {
-              columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+              columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
           },
         },
         {
@@ -273,7 +264,7 @@ $(function() {
           titleAttr: 'CSV',
           className: 'btn btn-primary btn-sm',
           exportOptions: {
-            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
           },
         }
     ],
@@ -303,34 +294,6 @@ $(function() {
       }
     }
   };
-
-  //Modal para estatus de CFDI
-  function link_status_sat(e){
-    var valor= e.getAttribute('value');
-    var folio= e.getAttribute('datas');
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    $.ajax({
-         type: "POST",
-         url: '/sales/customer-invoices/modal-status-sat',
-         data: {token_b : valor, _token : _token},
-         success: function (data) {
-           $('#text_a').text(data.uuid);
-           $('#text_b').text(data.rfcE);
-           $('#text_c').text(data.rfcR);
-           $('#text_d').text(data.amount_total);
-           $('#text_e').text(data.text_is_cancelable_cfdi);
-           $('#text_f').text(data.text_status_cfdi);
-           $('#modal_customer_invoice_status_sat').modal('show');
-         },
-         error: function (err) {
-           Swal.fire({
-              type: 'error',
-              title: 'Oops...',
-              text: err.statusText,
-            });
-         }
-    })
-  }
 
 function cancel_poliza(e){
   let id_invoice = e.getAttribute('value');
@@ -364,9 +327,7 @@ function contabilizar_poliza(e){
   let _token = $('meta[name="csrf-token"]').attr('content');
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, '0');
-  let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   let mes = moment().format('MMMM');
-  let dia =moment().format('dddd');
 
   $('#day_poliza').val(dd);
   $('#mes_poliza').val(mes);
@@ -377,10 +338,16 @@ function contabilizar_poliza(e){
       url: '/sales/customer-polizas-getdata',
       data: {id_invoice : id_invoice, _token : _token},
       success: function (data) {
-        console.log(data);
+        
+        let suma_cargos = 0.0;
+        let suma_abonos = 0.0;
         data.forEach(function(key){
+
           let abono = format_number(parseFloat(key.abono));
           let cargo = format_number(parseFloat(key.cargo));
+          suma_abonos+= parseFloat(key.abono);
+          suma_cargos+= parseFloat(key.cargo);
+
           $('#tabla_asiento_contable > tbody:last-child').append(
           `<tr>
             <td>${key.mov}</td>
@@ -388,14 +355,17 @@ function contabilizar_poliza(e){
             <td>${dd}</td>
             <td>${key.currency_id}</td>
             <td>${key.name}</td>
-            <td><input style="width:130px;text-align:right" disabled class="form-control form-control-sm" type="text" value="${cargo}" ></td>
-            <td><input style="width:130px;text-align:right" disabled class="form-control form-control-sm" type="text" value="${abono}" ></td>
+            <td><input style="width:130px;text-align:right" disabled class="form-control form-control-sm cargos" type="text" value="${cargo}" ></td>
+            <td><input style="width:130px;text-align:right" disabled class="form-control form-control-sm" abonos" type="text" value="${abono}" ></td>
             <td></td>
             </tr>
             `
           );
+          
         });
-        
+
+        $('#total_cargos').val(format_number(suma_cargos));
+        $('#total_abonos').val(format_number(suma_abonos));
       },
       error: function (err) {
         Swal.fire({
@@ -409,6 +379,7 @@ function contabilizar_poliza(e){
   $("#modal_view_poliza").modal("show");
 
 }
+
 
 //Formato numerico: 00,000.00
 function format_number(number){
