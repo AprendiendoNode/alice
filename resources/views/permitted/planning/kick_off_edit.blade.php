@@ -84,11 +84,22 @@
                         <th class="text-center" style="padding: 1.25rem 0.9375rem !important;">Tipo de comisión</th>
                         <th class="text-center" colspan="8">
                           <select id="sel_type_comision" name="sel_type_comision" class="form-control form-control-sm required" style="width:100%;">
-                            <option value="" selected>{{ trans('pay.select_op') }}</option>
-                            @forelse ($politica_comision as $politica_comision_data)
-                              <option value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
-                            @empty
-                            @endforelse
+                            <option value="">{{ trans('pay.select_op') }}</option>
+                            @if(count($comision_politica) > 0)
+                              @forelse ($politica_comision as $politica_comision_data)
+                                @if($politica_comision_data->id == $comision_politica[0]->politica_id)
+                                  <option selected value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
+                                @else
+                                  <option value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
+                                @endif                            
+                                @empty
+                              @endforelse
+                            @else
+                              @foreach ($politica_comision as $politica_comision_data)
+                                <option value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
+                              @endforeach
+                            @endif
+                            
                           </select>
                         </th>
                       </tr>
@@ -152,10 +163,20 @@
                   </label>
                   <select id="sel_inside_sales" name="sel_inside_sales" class="form-control form-control-sm" name="location" style="width:100%;">
                     <option value="" selected>{{ trans('pay.select_op') }}</option>
-                    @forelse ($kickoff_inside_sales as $kickoff_inside_sales_data)
-                      <option value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
-                    @empty
-                    @endforelse
+                    @if(count($comision_politica) > 0)
+                      @foreach ($kickoff_inside_sales as $kickoff_inside_sales_data)
+                        @if($comision_politica[0]->inside_sales != [] && $kickoff_inside_sales_data->user_id == $comision_politica[0]->inside_sales)
+                          <option selected value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
+                        @else
+                          <option value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
+                        @endif  
+                      @endforeach
+                    @else
+                      @foreach ($kickoff_inside_sales as $kickoff_inside_sales_data)
+                        <option value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
+                      @endforeach 
+                    @endif
+                    
                   </select>
                 </div>
               </div>
@@ -167,10 +188,20 @@
                   </label>
                   <select id="sel_itconcierge_comision" name="sel_itconcierge_comision" class="form-control form-control-sm" name="location" style="width:100%;">
                     <option value="" selected>{{ trans('pay.select_op') }}</option>
-                    @forelse ($itconcierge as $itconcierge_data)
-                      <option value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
-                    @empty
-                    @endforelse
+                    @if(count($comision_politica) > 0)
+                      @foreach ($itconcierge as $itconcierge_data)
+                        @if($itconcierge_data->id == $comision_politica[0]->itconcierge)
+                          <option selected value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
+                        @else
+                          <option value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
+                        @endif  
+                      @endforeach
+                    @else 
+                      @foreach ($itconcierge as $itconcierge_data)     
+                        <option value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
+                      @endforeach  
+                    @endif
+                    
                   </select>
                 </div>
               </div>
@@ -193,7 +224,54 @@
                         @php
                           $item_contact_row= 0;
                           $item_contact=old('item_contact',[]);
+                          $item_relation_contact_row = $item_contact_row;
                         @endphp
+                        
+                        @if(count($comision_contacto) > 0)
+                          @foreach ($comision_contacto as $comision_contact_data)
+                          <tr id="item_row_{{$item_contact_row}}">
+
+                            <td class="text-center" style="vertical-align: middle;">
+                            <button type="button" onclick="$('#item_row_{{$item_relation_contact_row}}').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">
+                            <i class="fa fa-trash" style="font-size: 1rem;"></i>
+                            </button>
+                            <input type="hidden" name="item[{{$item_relation_contact_row}}][id]" id="item_id_{{$item_relation_contact_row}}" />
+                            </td>
+            
+                            <td>
+                            <div class="form-group form-group-sm">
+                            <select class="form-control form-control-sm input-sm col-contact-int" name="item[{{$item_relation_contact_row}}][contactInt]" id="item_contactInt_{{$item_relation_contact_row}}" data-row="{{$item_relation_contact_row}}">
+                            <option selected="selected" value="">@lang('message.selectopt')</option>
+                              @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+                                @if($kickoff_colaboradores_data->id == $comision_contact_data->user_id)
+                                  <option selected value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>
+                                @else 
+                                  <option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>
+                                @endif
+                              @empty
+                              @endforelse
+                            </select>
+                            </div>
+                            </td>
+                      
+                            <td>
+                            <div class="form-group form-group-sm">
+                            <input type="text" class="form-control form-control-sm input-sm text-right col-contact" name="item[{{$item_relation_contact_row}}][contact]" id="item_contact_{{$item_relation_contact_row}}" step="any"/>
+                            </div>
+                            </td>
+                      
+                            <td>
+                            <div class="form-group form-group-sm">
+                            <input type="text" class="form-control form-control-sm input-sm text-right col-porcentaje" name="item[{{$item_relation_contact_row}}][porcentaje]" id="item_porcentaje_{{$item_relation_contact_row}}" required step="any" maxlength="10" />
+                            </div>
+                            </td>
+                      
+                            </tr>
+                            @php
+                              $item_relation_contact_row++
+                            @endphp
+                          @endforeach
+                        @endif
                         <tr id="add_item_contact">
                           <td class="text-center">
                             <button type="button" onclick="addItemCont();"
@@ -1405,8 +1483,6 @@
       
       item_relation_contact_row = 0;
       item_relation_cierre_row = 0;
-      item_relation_vendedor_row = 0;
-      item_relation_colaborador_row = 0;
   
       $('#cont_vtc').change(function() {
         if ($(this).prop('checked') == true) {  $('#cont_vtc').val(1);  }
@@ -1437,7 +1513,7 @@
           $("#sel_itconcierge_comision").prop('required',false);
         }
   
-        $('#sel_type_comision').val('').trigger('change');
+        $('#sel_type_comision').trigger('change');
         $('#sel_inside_sales').val('').trigger('change');
         $('#sel_itconcierge_comision').val('').trigger('change');
         $("#item_politica input[type=text]").val('');
@@ -1446,7 +1522,7 @@
         delete_row_table_c();
         delete_row_table_d();
       });
-      $('#sel_type_comision').on('change', function(e){
+      $('#sel_type_comision').change(function(){
         var group = $(this).val();
         data_comision(group);
       });

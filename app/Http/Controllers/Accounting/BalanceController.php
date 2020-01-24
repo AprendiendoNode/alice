@@ -43,5 +43,23 @@ class BalanceController extends Controller
 	    }
 
 		return $request;
-    }
+	}
+	
+	public function view_balance_general_mayor()
+	{
+		return view('permitted.accounting.balance_general_mayor');
+	}
+
+	public function view_balance_general_mayor_filter()
+	{
+		return view('permitted.accounting.balance_general_filter');
+	}
+
+	public function get_balance_general_mayor()
+	{
+		$result = DB::select('CALL px_balance_general_nivel1()', array());
+
+		return $result;
+	}
+
 }

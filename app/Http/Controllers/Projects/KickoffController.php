@@ -39,9 +39,10 @@ class KickoffController extends Controller
       $kickoff_vendedores = DB::select(' CALL px_usersXdepto(?)', array(5));
       $kickoff_inside_sales = DB::select(' CALL px_usersXdepto(?)', array(6));
       $kickoff_colaboradores = DB::select(' CALL px_colaboradores()', array());
+
       $politica_comision = DB::select(' CALL px_politicas_de_comision()', array());
       $itconcierge= DB::select('CALL px_ITC_todos ()', array());
-
+      //dd($itconcierge);
       $vtc = "Proyecto sin cotizador";
       $gasto_mtto_percent = 0;
       $gasto_mtto = 0;
@@ -71,11 +72,17 @@ class KickoffController extends Controller
       $kickoff_perfil_cliente = Kickoff_perfil_cliente::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $kickoff_soporte = Kickoff_soporte::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $approval_dir = DB::select('CALL px_valida_aprobado_direccion(?)', array($kickoff_approvals->id));
-
+      //COMISIONES
+      $comision_politica = DB::select('CALL px_kickoff_xcomision(?)', array($kickoff->id));
+      $comision_contacto = DB::select('CALL px_kickoff_xcomision_contacto(?)', array($kickoff->id));
+      //dd($comision_politica);
       $cadenas = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
-
-      return view('permitted.planning.kick_off_edit', compact('document', 'cadenas','installation','approval_dir' ,'adquisition', 'colaboradores','payments','tipo_cambio', 'vtc', 'num_aps' ,'kickoff_approvals', 'kickoff_vendedores', 'kickoff_inside_sales', 'kickoff_colaboradores',
-      'itconcierge','politica_comision' ,'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras' ,'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte', 'gasto_mtto', 'comision','gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido'));
+      
+      
+      return view('permitted.planning.kick_off_edit', compact('document', 'cadenas','installation','approval_dir' ,'adquisition', 'colaboradores','payments','tipo_cambio', 'vtc', 'num_aps' ,
+      'kickoff_approvals', 'kickoff_vendedores', 'kickoff_inside_sales', 'kickoff_colaboradores', 'comision_politica',
+      'itconcierge','politica_comision' ,'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras', 'comision_contacto',
+      'kickoff_lineabase', 'kickoff_perfil_cliente', 'kickoff_soporte', 'gasto_mtto', 'comision','gasto_mtto_percent','credito_mensual_percent' ,'real_ejercido'));
     }
 
     public function get_num_aps($cart_id)
@@ -845,8 +852,6 @@ class KickoffController extends Controller
 
     public function update_kickoff_contract_comision(Request $request)
     {
-      
-
       $id = $request->id;
       $message = "";
       $info = "";
@@ -893,7 +898,6 @@ class KickoffController extends Controller
           "code" => 500
         ]);
       }
-
       
     }
 

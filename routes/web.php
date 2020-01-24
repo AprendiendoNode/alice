@@ -1213,9 +1213,12 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
-  // Contabilidad
-  Route::get('/view_balance_accounting','Accounting\BalanceController@index');
-  Route::post('/get_balance_data','Accounting\BalanceController@get_balance');
+   // Contabilidad
+   Route::get('/view_balance_accounting','Accounting\BalanceController@index');
+   Route::post('/get_balance_data','Accounting\BalanceController@get_balance');
+   Route::get('/view_balance_general_mayor','Accounting\BalanceController@view_balance_general_mayor');
+   Route::get('/view_balance_general_filter','Accounting\BalanceController@view_balance_general_mayor_filter');
+   Route::post('/get_balance_general_mayor_data','Accounting\BalanceController@get_balance_general_mayor');
 });
 
 Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
