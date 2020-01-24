@@ -11,7 +11,8 @@ $(function() {
     startDate: '2018',
     endDate: '-0y',
     autoclose: true,
-    clearBtn: true
+    clearBtn: true,
+    orientation: 'bottom'
   }).datepicker("setDate",'now');
 
 
@@ -23,7 +24,8 @@ $(function() {
       startDate: '2019',
       endDate: '-0y',
       autoclose: true,
-      clearBtn: true
+      clearBtn: true,
+      orientation: 'bottom'
     }).datepicker("setDate",'now');
 
     var date = (new Date()).toString().split(" ");
@@ -35,20 +37,24 @@ $(function() {
       minViewMode: "months",
       endDate: '1m',
       autoclose: true,
-      clearBtn: true
+      clearBtn: true,
+      orientation: 'bottom'
     }).datepicker("setDate",'now');
 
-    $('.filtro_viaticos').datepicker({
+    $('.filtro_viaticos, .filtro_tickets').datepicker({
       language: 'es',
       format: "yyyy-mm-dd",
       viewMode: "days",
       minViewMode: "days",
       autoclose: true,
-      clearBtn: true
+      clearBtn: true,
+      orientation: 'bottom'
     });
 
     $("#filtro1_viaticos").val("2018-01-01");
-    $("#filtro2_viaticos").val("2028-01-01");
+    $("#filtro2_viaticos").val("2038-01-01");
+    $("#filtro1_tickets").val("2012-01-01");
+    $("#filtro2_tickets").val("2032-01-01");
 
 
   //Por sitio
@@ -69,7 +75,7 @@ $(function() {
     get_nps_comment(itc);
     //get_graph_equipments(itc);
     //get_graph_equipments_status(itc);
-    //get_table_tickets(itc_email);
+    get_table_tickets(itc_email);
     get_graph_tickets_type(itc_email);
     get_graph_tickets_status(itc_email);
     //getFoliosByHotel(itc);
@@ -119,6 +125,13 @@ $(function() {
 
   $('#filtrarViaticos').on('click', function(){
     getViaticsByITC($('#select_itc').val());
+  });
+
+  $('#filtrarTickets').on('click', function(){
+    var itc_email=$('#select_itc').find(':selected').data("email");
+    get_table_tickets(itc_email);
+    get_graph_tickets_type(itc_email);
+    get_graph_tickets_status(itc_email);
   });
 
   $('#box_promotores').on('click', function(){
@@ -601,15 +614,18 @@ $(function() {
   }
 
   function get_table_tickets(itc_email){
+    var fecha1 = $('#filtro1_tickets').val();
+    var fecha2 = $('#filtro2_tickets').val();
     var _token = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
         type: "POST",
         url: "/get_tickets_by_itc",
-        data: { itc_email: itc_email, _token : _token },
+        data: { itc_email: itc_email, fecha1: fecha1, fecha2: fecha2, _token : _token },
         success: function (data){
           //console.log(data);
           generate_table_tickets(data, $('#table_tickets_itc'));
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+          $('#total_tickets').text(data.length);
         },
         error: function (data) {
           console.log('Error:', data);
@@ -618,11 +634,13 @@ $(function() {
   }
 
   function get_graph_tickets_type(itc_email){
+    var fecha1 = $('#filtro1_tickets').val();
+    var fecha2 = $('#filtro2_tickets').val();
     var _token = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
         type: "POST",
         url: "/get_ticketsxtipo_itc",
-        data: { itc_email: itc_email, _token : _token },
+        data: { itc_email: itc_email, fecha1: fecha1, fecha2: fecha2, _token : _token },
         success: function (data){
           //console.log(data);
           if(data==''){
@@ -640,13 +658,15 @@ $(function() {
 
 
   function get_graph_tickets_status(itc_email){
+    var fecha1 = $('#filtro1_tickets').val();
+    var fecha2 = $('#filtro2_tickets').val();
     var _token = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
         type: "POST",
         url: "/get_ticketsxstatus_itc",
-        data: { itc_email: itc_email, _token : _token },
+        data: { itc_email: itc_email, fecha1: fecha1, fecha2: fecha2, _token : _token },
         success: function (data){
-          //console.log(data);
+          console.log(data);
           graph_tickets_status('graph_status_tickets',data);
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
         },
@@ -1176,19 +1196,39 @@ function graph_tickets_type(title,data) {
   //$('#'+title).height($('#'+title).height());
 
  var chart = document.getElementById(title);
+ var myChart = echarts.init(chart);
+ myChart.clear();
   var resizeMainContainer = function () {
-   chart.style.width = 420+'px';
-   chart.style.height = 320+'px';
+    if($(window).width() <= 575) {
+      chart.style.width = '90vw';
+      chart.style.height = 300+'px';
+    } else {
+      chart.style.width = '40vw';
+      chart.style.height = 300+'px';
+    }
+    myChart.resize();
  };
   resizeMainContainer();
-    var myChart = echarts.init(chart);
+
     var group=[];
     var titles=[];
     var i=0;
 
     data.forEach(function(element){
     element.type=="" ?  element.type="other": element.type;
-    group[i] ={name: element.type,type: 'bar',label: {normal: {show: true,position: 'inside'}},data: [element.cantidad]};
+    group[i] ={
+      name: element.type,
+      type: 'bar',
+      label: {
+        normal: {
+          show: true,
+          position: 'inside',
+          fontSize: '20',
+          fontWeight: 'bold'
+        }
+      },
+      data: [element.cantidad]
+    };
     titles[i] = element.type;
     i++;
     });
@@ -1203,18 +1243,18 @@ function graph_tickets_type(title,data) {
         },
         legend: {
             data: titles,
-            orient: 'vertical',
-            right: -10,
-            top: 40,
+            orient: 'horizontal',
+            left: 'center',
+            top: 30,
             bottom: 20,
 
         },
         //color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#4dd60d','#096dc9','#f90000'],
-        color: ['#474B4F','#ff5400','#e92e29','#FFDE40','#4dd60d','#00BFF3','#096dc9','#f90000'],
+        color: ['#474B4F','#ff5400','#e92e29','purple','#4dd60d','#00BFF3','#096dc9','#f90000'],
         toolbox: {},
         tooltip: {},
         xAxis: {type: 'category'},
-        yAxis: {},
+        yAxis: {show: false},
         series:group,
     };
 
@@ -1222,14 +1262,7 @@ function graph_tickets_type(title,data) {
   myChart.setOption(option);
 
   $(window).on('resize', function(){
-      if(myChart != null && myChart != undefined){
-         //chart.style.width = 100+'%';
-         //chart.style.height = 100+'%';
-         chart.style.width = $(window).width()*0.5;
-         chart.style.height = $(window).width()*0.5;
-          myChart.resize();
-
-      }
+    resizeMainContainer();
   });
 }
 
@@ -1415,12 +1448,19 @@ function graph_tickets_status(title,data) {
   //$('#'+title).height($('#'+title).height());
 
  var chart = document.getElementById(title);
+ var myChart = echarts.init(chart);
   var resizeMainContainer = function () {
-   chart.style.width = 420+'px';
-   chart.style.height = 320+'px';
+    if($(window).width() <= 575) {
+      chart.style.width = '90vw';
+      chart.style.height = 300+'px';
+    } else {
+      chart.style.width = '40vw';
+      chart.style.height = 300+'px';
+    }
+    myChart.resize();
  };
   resizeMainContainer();
-    var myChart = echarts.init(chart);
+
     var group=[];
     var i=0;
 
@@ -1470,15 +1510,17 @@ function graph_tickets_status(title,data) {
           x:'center'
       },
         tooltip: {
+            show: false,
             trigger: 'item',
             formatter: "{a} <br/>{b}: {c} ({d}%)"
         },
         legend: {
             orient: 'vertical',
             x: 'right',
+            top: 30
             //data:['1','2','3','4','5']
         },
-        color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#4dd60d','#096dc9','#f90000'],
+        color: ['#00BFF3','#EF5BA1','brown','#474B4F','#ff5400','olive','#096dc9','#f90000'],
         series: [
             {
                 name:'Estado',
@@ -1488,12 +1530,14 @@ function graph_tickets_status(title,data) {
                 label: {
                     normal: {
                         show: false,
-                        position: 'center'
+                        position: 'center',
+                        fontSize: '22',
+                        fontWeight: 'bold'
                     },
                     emphasis: {
                         show: true,
                         textStyle: {
-                            fontSize: '25',
+                            fontSize: '22',
                             fontWeight: 'bold'
                         }
                     }
@@ -1512,14 +1556,7 @@ function graph_tickets_status(title,data) {
   myChart.setOption(option);
 
   $(window).on('resize', function(){
-      if(myChart != null && myChart != undefined){
-         //chart.style.width = 100+'%';
-         //chart.style.height = 100+'%';
-         chart.style.width = $(window).width()*0.5;
-         chart.style.height = $(window).width()*0.5;
-          myChart.resize();
-
-      }
+    resizeMainContainer();
   });
 }
 

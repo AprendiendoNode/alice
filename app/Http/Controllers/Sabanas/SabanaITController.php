@@ -100,7 +100,7 @@ class SabanaITController extends Controller
       $fecha = date('Y-m-d');
     } else {
       $fecha = $anio."-".$mes."-01";
-    }info($mes);
+    }
     $result = DB::select('CALL px_NPS_itc_mensual (?, ?)', array($itc, $fecha));
     return $result;
   }
@@ -197,19 +197,25 @@ class SabanaITController extends Controller
 
   public function get_tickets_by_itc(Request $request){
     $itc_email=$request->itc_email;
-    $result = DB::connection('zendesk')->select('CALL px_ticketsxitc(?)', array($itc_email));
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+    $result = DB::connection('zendesk')->select('CALL px_ticketsxitc(?, ?, ?)', array($itc_email, $fecha1, $fecha2));
     return $result;
   }
 
   public function get_ticketsxtype_itc(Request $request ){
     $itc_email=$request->itc_email;
-    $result = DB::connection('zendesk')->select('CALL px_ticketsxtype_itc(?)', array($itc_email));
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+    $result = DB::connection('zendesk')->select('CALL px_ticketsxtype_itc(?, ?, ?)', array($itc_email, $fecha1, $fecha2));
     return $result;
   }
 
   public function get_ticketsxstatus_itc(Request $request ){
     $itc_email=$request->itc_email;
-    $result = DB::connection('zendesk')->select('CALL px_ticketsxstatus_itc(?)', array($itc_email));
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+    $result = DB::connection('zendesk')->select('CALL px_ticketsxstatus_itc(?, ?, ?)', array($itc_email, $fecha1, $fecha2));
     return $result;
   }
 

@@ -630,11 +630,40 @@
                   <h3 style="font-weight:bold;" >Todos los tickets </h3>
                 </div>
                 <div class="row">
+                  <div class="col-md-12 text-center">
+                    <div class="badge rounded badge-dark text-white font-weight-bold w-80" style="font-size: 1.2em;">
+                      Total: <span id="total_tickets" class="badge rounded badge-light font-weight-bolder" style="font-size: 0.9em;">0</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row text-center my-3">
+                  <div class="col-md-2"></div>
+                    <div class="col-md-3">
+                      <div class="input-group  flex-nowrap">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
+                        </div>
+                        <input id="filtro1_tickets" type="text" class="form-control text-left filtro_tickets">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <button id="filtrarTickets" class="btn btn-outline-info w-100"><i class="fas fa-filter"></i> Periodo</button>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="input-group  flex-nowrap">
+                        <input id="filtro2_tickets" type="text" class="form-control text-right filtro_tickets">
+                        <div class="input-group-append">
+                          <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
                   <div class="col-sm-1 col-md-1"></div>
-                <div class="d-flex justify-content-center border-bottom w-100 col-sm-5 col-md-5">
+                <div class="d-flex justify-content-center w-100 col-sm-5 col-md-5">
                   <div  id="graph_type_tickets" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                 </div>
-                <div class="d-flex justify-content-center border-bottom w-40 col-sm-5 col-md-5">
+                <div class="d-flex justify-content-center w-100 col-sm-5 col-md-5">
                   <div id="graph_status_tickets"class=""></div>
                 </div>
                 <div class="col-sm-1 col-md-1"></div>
@@ -719,11 +748,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="d-flex justify-content-center w-100">
-                  <div id="graph_viatics" style="min-height: 300px;left: 0px;right: 0px;"> </div>
-                </div>
-                <div class="row text-center">
-                    <div class="col-md-5">
+                <div class="row text-center my-3">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-3">
                       <div class="input-group  flex-nowrap">
                         <div class="input-group-prepend">
                           <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
@@ -732,9 +759,9 @@
                       </div>
                     </div>
                     <div class="col-md-2">
-                      <button id="filtrarViaticos" class="btn btn-outline-info w-100"><i class="fas fa-filter"></i> Filtrar</button>
+                      <button id="filtrarViaticos" class="btn btn-outline-info w-100"><i class="fas fa-filter"></i> Periodo</button>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                       <div class="input-group  flex-nowrap">
                         <input id="filtro2_viaticos" type="text" class="form-control text-right filtro_viaticos">
                         <div class="input-group-append">
@@ -742,6 +769,9 @@
                         </div>
                       </div>
                     </div>
+                </div>
+                <div class="d-flex justify-content-center w-100">
+                  <div id="graph_viatics" style="min-height: 300px;left: 0px;right: 0px;"> </div>
                 </div>
                 <div class="table-responsive">
                   <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100">
