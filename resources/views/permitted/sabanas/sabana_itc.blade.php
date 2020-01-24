@@ -39,7 +39,7 @@
       </div>
 
       <div class="modal modal-default fade" id="modal-view-ppd" data-backdrop="static">
-          <div class="modal-dialog" >
+          <div class="modal-dialog modal-xl" >
             <div class="modal-content">
               <div class="modal-header">
                 <h4 class="modal-title"><i class="far fa-address-card" style="margin-right: 4px;"></i>Calificaciones.</h4>
@@ -84,7 +84,7 @@
       </div>
 
       <div class="modal modal-default fade" id="modal-view-viatics" data-backdrop="static"  tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" style="width:50%" >
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
 
@@ -492,7 +492,7 @@
                     </div>
                 </div>
                 <div class="col-md-2 col-xs-12 mb-3">
-                  <button class="btn btn-outline-info filtrarDashboard w-100" type="button" id="boton-aplica-filtro">Filtrar</button>
+                  <button class="btn btn-outline-info filtrarDashboard w-100" type="button" id="boton-aplica-filtro"><i class="fas fa-filter"></i> Filtrar</button>
                 </div>
                 </div>
                   <div class="row">
@@ -710,20 +710,38 @@
                 </div>
                 <br>-->
                 <div class="text-center">
-                  <h3 style="font-weight:bold;" >Todos los viáticos </h3>
+                  <h3 style="font-weight:bold;">Viáticos pagados</h3>
                 </div>
                 <div class="row">
-                  <div class="col-md-3">
+                  <div class="col-md-12 text-center">
                     <div class="badge rounded badge-dark text-white font-weight-bold w-80" style="font-size: 1.2em;">
                       Total: <span id="total_viatic" class="badge rounded badge-light font-weight-bolder" style="font-size: 0.9em;">0</span>
                     </div>
                   </div>
-                  <div class="col-md-9">
-
-                  </div>
                 </div>
-                <div class="d-flex justify-content-center border-bottom w-100">
+                <div class="d-flex justify-content-center w-100">
                   <div id="graph_viatics" style="min-height: 300px;left: 0px;right: 0px;"> </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-5">
+                      <div class="input-group  flex-nowrap">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
+                        </div>
+                        <input id="filtro1_viaticos" type="text" class="form-control text-left filtro_viaticos">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <button id="filtrarViaticos" class="btn btn-outline-info w-100"><i class="fas fa-filter"></i> Filtrar</button>
+                    </div>
+                    <div class="col-md-5">
+                      <div class="input-group  flex-nowrap">
+                        <input id="filtro2_viaticos" type="text" class="form-control text-right filtro_viaticos">
+                        <div class="input-group-append">
+                          <span class="input-group-text fa fa-calendar" id="addon-wrapping"></span>
+                        </div>
+                      </div>
+                    </div>
                 </div>
                 <div class="table-responsive">
                   <table id="table_viatics" class="table table-striped table-bordered table-hover compact-tab w-100">

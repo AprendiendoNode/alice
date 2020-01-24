@@ -189,7 +189,9 @@ class SabanaITController extends Controller
   public function get_viatics_gastos_itc(Request $request)
   {
     $id = $request->id;
-    $res =  DB::select('CALL px_history_viatics_itc(?)', array($id));
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+    $res =  DB::select('CALL px_history_viatics_itc(?, ?, ?)', array($id, $fecha1, $fecha2));
     return $res;
   }
 

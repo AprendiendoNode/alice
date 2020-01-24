@@ -38,6 +38,18 @@ $(function() {
       clearBtn: true
     }).datepicker("setDate",'now');
 
+    $('.filtro_viaticos').datepicker({
+      language: 'es',
+      format: "yyyy-mm-dd",
+      viewMode: "days",
+      minViewMode: "days",
+      autoclose: true,
+      clearBtn: true
+    });
+
+    $("#filtro1_viaticos").val("2018-01-01");
+    $("#filtro2_viaticos").val("2028-01-01");
+
 
   //Por sitio
   $("#select_itc").on('change', function(e) {
@@ -57,11 +69,11 @@ $(function() {
     get_nps_comment(itc);
     //get_graph_equipments(itc);
     //get_graph_equipments_status(itc);
-    get_table_tickets(itc_email);
+    //get_table_tickets(itc_email);
     get_graph_tickets_type(itc_email);
     get_graph_tickets_status(itc_email);
     //getFoliosByHotel(itc);
-    getViaticsByHotel(itc);
+    getViaticsByITC(itc);
     getProjects(itc);
   });
 
@@ -103,6 +115,10 @@ $(function() {
 
   $('.filtrarDashboard').on('click', function(){
     get_nps_itc($('#select_itc').val());
+  });
+
+  $('#filtrarViaticos').on('click', function(){
+    getViaticsByITC($('#select_itc').val());
   });
 
   $('#box_promotores').on('click', function(){
@@ -723,13 +739,15 @@ function generate_table_tickets(datajson, table){
   });
 }
 
-function getViaticsByHotel(itc){
+function getViaticsByITC(itc){
   var id = itc;
+  var fecha1 = $('#filtro1_viaticos').val();
+  var fecha2 = $('#filtro2_viaticos').val();
   var _token = $('input[name="_token"]').val();
   $.ajax({
     type: "POST",
     url: "/get_viatics_gastos_itc",
-    data: { id : id, _token : _token },
+    data: { id : id, fecha1: fecha1, fecha2: fecha2,_token : _token },
     success: function (data){
       //console.log(data);
 
@@ -1077,12 +1095,22 @@ function viatics_table(datajson, table){
     //$('#'+title).height($('#'+title).height());
 
    var chart = document.getElementById(title);
+   var myChart = echarts.init(chart);
+   var mostrar = true, hoverSize = 12;
     var resizeMainContainer = function () {
-     chart.style.width = 720+'px';
-     chart.style.height = 320+'px';
+      if($(window).width() <= 1058) {
+        mostrar = false;
+        hoverSize = 8;
+      } else {
+        mostrar = true;
+        hoverSize = 12;
+      }
+        chart.style.width = '80vw';
+        chart.style.height = 320+'px';
+      myChart.resize();
    };
     resizeMainContainer();
-      var myChart = echarts.init(chart);
+
       var group=[];
       var i=0;
 
@@ -1096,14 +1124,18 @@ function viatics_table(datajson, table){
       option = {
           title : {
               text: text,
-              subtext: subtext,
+              subtext: "",
               x:'center'
           },
            //color: ['#AD50D0','#00EEB1','#00CAE5','#DB3841','#D87DAF','#2B4078','#AD50D0','#AD50D0'],
-           color: ['#00BFF3','#EF5BA1','#FFDE40','#474B4F','#ff5400','#4dd60d','#096dc9','#f90000'],
+           color: ['red','green','blue','brown','olive','fuchsia'],
           tooltip : {
               trigger: 'item',
-              formatter: "{a} <br/>{b} : {c} ({d}%)"
+              formatter: "{a} <br/>{b} : ({d}%)",
+              position: ['5%', '50%'],
+              textStyle: {
+                  fontSize: hoverSize
+              }
           },
           legend: {
               orient: 'vertical',
@@ -1117,6 +1149,9 @@ function viatics_table(datajson, table){
                   radius : '55%',
                   center: ['50%', '60%'],
                   data:group,
+                  label: {
+                    show: mostrar
+                  },
                   itemStyle: {
                       emphasis: {
                           shadowBlur: 10,
@@ -1132,14 +1167,7 @@ function viatics_table(datajson, table){
     myChart.setOption(option);
 
     $(window).on('resize', function(){
-        if(myChart != null && myChart != undefined){
-           //chart.style.width = 100+'%';
-           //chart.style.height = 100+'%';
-           chart.style.width = $(window).width()*0.5;
-           chart.style.height = $(window).width()*0.5;
-            myChart.resize();
-
-        }
+      resizeMainContainer();
     });
   }
 

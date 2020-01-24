@@ -84,7 +84,7 @@
     } else {
       url = urlarray.pop();
     }
-    if(url != "profile" && url != "Classification" && url != "Configuration" && url != "dash_sabana") {
+    if(url != "profile" && url != "Classification" && url != "Configuration" && url != "dash_sabana" && $(window).width() > 1058) {
       $('.bubble').show();
       new WOW().init();
       $(".message1").delay(1300).fadeOut(500);
