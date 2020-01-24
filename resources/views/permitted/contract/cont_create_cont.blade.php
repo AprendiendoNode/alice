@@ -475,6 +475,234 @@
                   </div>
                   <form id="validation_anexo" name="validation_anexo" enctype="multipart/form-data" class="validation-wizard-anexo wizard-circle m-t-40">
                     {{ csrf_field() }}
+                    <!-- Step 4 -->
+                    <h6>Paso 4 - Comisiones</h6>
+                    <section>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group row">
+                            <label for="kick_off_exit" class="col-sm-3 control-label">¿Tiene Kick Off?</label>
+                            <div class="col-sm-9">
+                              <input id="kick_off_exit" name="kick_off_exit" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1"
+                              data-on="Si" data-off="No">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div id="kickoff_info_div" name="kickoff_info_div" class="row my-4">
+                        <div class="col-md-4">
+                          <div class="form-group row">
+                            <label class="label-control col-sm-12" for="select_kick_off">Elija el Kick Off:</label>
+                            <div class="col-sm-12">
+                              <select class="form-control form-control-sm" id="select_kick_off" name="select_kick_off" style="width: 100%;">
+                                <option value="" selected>Elija</option>
+                                @forelse ($kickoff_info as $data_kickoff_info)
+                                <option value="{{ $data_kickoff_info->id }}"> {{ $data_kickoff_info->folio }}  </option>
+                                @empty
+                                @endforelse
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <input type="hidden" class="form-control" id="kick_off_id" name="kick_off_id" maxlength="100" readonly>
+                            <label>Nombre del proyecto</label>
+                            <input type="text" class="form-control" id="kick_off_proyecto" name="kick_off_proyecto" maxlength="100" readonly>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Nombre del sitio</label>
+                            <input type="text" class="form-control" id="kick_off_sitio" name="kick_off_sitio" maxlength="100" readonly>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row my-2" id="div_comisiones" name="div_comisiones">
+                        <div class="col-md-12 col-xs-12 mb-3">
+                          <div class="table-responsive">
+                            <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table" id="item_politica" style="min-width: 80px;">
+                              <thead>
+                                <tr class="bg-danger text-white">
+                                  <th class="text-center" colspan="7" style="font-size: 1rem;">Politica de comisión</th>
+                                </tr>
+                                <tr class="bg-secondary text-white">
+                                  <th class="text-center" style="padding: 1.25rem 0.9375rem !important;">Tipo de comisión</th>
+                                  <th class="text-center" colspan="8">
+                                    <select id="sel_type_comision" name="sel_type_comision" class="form-control required" style="width:100%;">
+                                      <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                      @forelse ($politica_comision as $politica_comision_data)
+                                        <option value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
+                                      @empty
+                                      @endforelse
+                                    </select>
+                                  </th>
+                                </tr>
+                                <tr class="bg-danger text-white">
+                                  <th class="text-center">Politica</th>
+                                  <th class="text-center">Retención</th>
+                                  <th class="text-center">Total comisión %</th>
+                                  <th class="text-center">Contacto %</th>
+                                  <th class="text-center">Cierre %</th>
+                                  <th class="text-center">ITC %</th>
+                                  <th class="text-center">Venta Internas %</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr class="bg-secondary">
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-politica sinpadding" id="politica_name" name="politica_name" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-retencion" id="politica_retencion" name="politica_retencion" value="0" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-total" id="politica_asignado" name="politica_asignado" value="0" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-contacto" id="politica_contacto" name="politica_contacto" value="0" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-cierre" id="politica_cierre" name="politica_cierre" value="0" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-itc" id="politica_itc" name="politica_itc" value="0" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-insidesales" id="politica_insidesales" name="politica_insidesales" value="0" readonly />
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="sel_inside_sales"> Inside Sales:
+                              <span class="text-danger">*</span>
+                            </label>
+                            <select id="sel_inside_sales" name="sel_inside_sales" class="form-control" name="location" style="width:100%;">
+                              <option value="" selected>{{ trans('pay.select_op') }}</option>
+                              @forelse ($kickoff_inside_sales as $kickoff_inside_sales_data)
+                                <option value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="sel_itconcierge_comision"> IT Concierge:
+                              <span class="text-danger">*</span>
+                            </label>
+                            <select id="sel_itconcierge_comision" name="sel_itconcierge_comision" class="form-control" name="location" style="width:100%;">
+                              <option value="" selected>{{ trans('pay.select_op') }}</option>
+                              @forelse ($itconcierge as $itconcierge_data)
+                                <option value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12">
+                          <div class="table-responsive">
+                            <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_contact" style="min-width: 80px;">
+                              <thead>
+                                <tr class="bg-dark text-white">
+                                  <th class="text-center" colspan="4" style="font-size: 1rem;">Contácto</th>
+                                </tr>
+                                <tr>
+                                  <th class="text-center">@lang('general.column_actions')</th>
+                                  <th class="text-center">Contácto (Interno)</th>
+                                  <th class="text-center">Contácto (Externo)</th>
+                                  <th class="text-center">Porcentaje %<span class="required text-danger">*</span></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                @php
+                                  $item_contact_row= 0;
+                                  $item_contact=old('item_contact',[]);
+                                @endphp
+                                <tr id="add_item_contact">
+                                  <td class="text-center">
+                                    <button type="button" onclick="addItemCont();"
+                                    class="btn btn-xs btn-primary"
+                                    style="margin-bottom: 0; padding: 1px 3px;">
+                                    <i class="fa fa-plus" style="font-size: 1rem;"></i>
+                                    </button>
+                                  </td>
+                                  <td class="text-right" colspan="3"></td>
+                                </tr>
+                                <tr>
+                                  <td class="text-left" colspan="3"></td>
+                                  <td class="text-center">
+                                    <span id="item_contact_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12">
+                          <div class="table-responsive">
+                            <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_cierre" style="min-width: 80px;">
+                              <thead>
+                                <tr class="bg-dark text-white">
+                                  <th class="text-center" colspan="4" style="font-size: 1rem;">Cierre</th>
+                                </tr>
+                                <tr>
+                                  <th class="text-center">@lang('general.column_actions')</th>
+                                  <th class="text-center">Contácto (Interno)</th>
+                                  <th class="text-center">Contácto (Externo)</th>
+                                  <th class="text-center">Porcentaje %<span class="required text-danger">*</span></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                @php
+                                  $item_cierre_row= 0;
+                                  $item_cierre=old('item_cierre',[]);
+                                @endphp
+                                <tr id="add_item_cierre">
+                                  <td class="text-center">
+                                    <button type="button" onclick="addItemCierre();"
+                                    class="btn btn-xs btn-primary"
+                                    style="margin-bottom: 0; padding: 1px 3px;">
+                                    <i class="fa fa-plus" style="font-size: 1rem;"></i>
+                                    </button>
+                                  </td>
+                                  <td class="text-right" colspan="3"></td>
+                                </tr>
+                                <tr>
+                                  <td class="text-left" colspan="3"></td>
+                                  <td class="text-center">
+                                    <span id="item_cierre_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
                     <!-- Step 1 -->
                     <h6>Paso 1 - Destino</h6>
                     <section>
@@ -940,280 +1168,6 @@
                         </div>
                       </div>
                     </section>
-                    <!-- Step 4 -->
-                    <h6>Paso 4 - Comisiones</h6>
-                    <section>
-                      <div class="row">
-                        <div class="col-md-12 my-4">
-                          <div class="form-group row">
-                            <label for="comision" class="col-sm-3 control-label">Contemplar en comisiones</label>
-                            <div class="col-md-9 mb-3">
-                              <input id="comision" name="comision" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="0">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="row" id="div_comisiones" name="div_comisiones">
-                          <div class="col-md-12 col-xs-12 mb-3">
-                            <div class="table-responsive">
-                              <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table" id="item_politica" style="min-width: 80px;">
-                                <thead>
-                                  <tr class="bg-danger text-white">
-                                    <th class="text-center" colspan="7" style="font-size: 1rem;">Politica de comisión</th>
-                                  </tr>
-                                  <tr class="bg-secondary text-white">
-                                    <th class="text-center" style="padding: 1.25rem 0.9375rem !important;">Tipo de comisión</th>
-                                    <th class="text-center" colspan="8">
-                                      <select id="sel_type_comision" name="sel_type_comision" class="form-control required" style="width:100%;">
-                                        <option value="" selected>{{ trans('pay.select_op') }}</option>
-                                        @forelse ($politica_comision as $politica_comision_data)
-                                          <option value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
-                                        @empty
-                                        @endforelse
-                                      </select>
-                                    </th>
-                                  </tr>
-                                  <tr class="bg-danger text-white">
-                                    <th class="text-center">Politica</th>
-                                    <th class="text-center">Retención</th>
-                                    <th class="text-center">Total comisión %</th>
-                                    <th class="text-center">Contacto %</th>
-                                    <th class="text-center">Cierre %</th>
-                                    <th class="text-center">ITC %</th>
-                                    <th class="text-center">Venta Internas %</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr class="bg-secondary">
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-right col-politica sinpadding" id="politica_name" name="politica_name" readonly />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-right col-retencion" id="politica_retencion" name="politica_retencion" value="0" readonly />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-right col-total" id="politica_asignado" name="politica_asignado" value="0" readonly />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-right col-contacto" id="politica_contacto" name="politica_contacto" value="0" readonly />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-right col-cierre" id="politica_cierre" name="politica_cierre" value="0" readonly />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-right col-itc" id="politica_itc" name="politica_itc" value="0" readonly />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-right col-insidesales" id="politica_insidesales" name="politica_insidesales" value="0" readonly />
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label for="sel_inside_sales"> Inside Sales:
-                                <span class="text-danger">*</span>
-                              </label>
-                              <select id="sel_inside_sales" name="sel_inside_sales" class="form-control" name="location" style="width:100%;">
-                                <option value="" selected>{{ trans('pay.select_op') }}</option>
-                                @forelse ($kickoff_inside_sales as $kickoff_inside_sales_data)
-                                  <option value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
-                                @empty
-                                @endforelse
-                              </select>
-                            </div>
-                          </div>
-
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label for="sel_itconcierge_comision"> IT Concierge:
-                                <span class="text-danger">*</span>
-                              </label>
-                              <select id="sel_itconcierge_comision" name="sel_itconcierge_comision" class="form-control" name="location" style="width:100%;">
-                                <option value="" selected>{{ trans('pay.select_op') }}</option>
-                                @forelse ($itconcierge as $itconcierge_data)
-                                  <option value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
-                                @empty
-                                @endforelse
-                              </select>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12 col-xs-12">
-                            <div class="table-responsive">
-                              <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_contact" style="min-width: 80px;">
-                                <thead>
-                                  <tr class="bg-dark text-white">
-                                    <th class="text-center" colspan="4" style="font-size: 1rem;">Contácto</th>
-                                  </tr>
-                                  <tr>
-                                    <th class="text-center">@lang('general.column_actions')</th>
-                                    <th class="text-center">Contácto (Interno)</th>
-                                    <th class="text-center">Contácto (Externo)</th>
-                                    <th class="text-center">Porcentaje %<span class="required text-danger">*</span></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                      $item_contact_row= 0;
-                                      $item_contact=old('item_contact',[]);
-                                    @endphp
-                                    <tr id="add_item_contact">
-                                      <td class="text-center">
-                                        <button type="button" onclick="addItemCont();"
-                                        class="btn btn-xs btn-primary"
-                                        style="margin-bottom: 0; padding: 1px 3px;">
-                                        <i class="fa fa-plus" style="font-size: 1rem;"></i>
-                                      </button>
-                                      </td>
-                                      <td class="text-right" colspan="3"></td>
-                                    </tr>
-                                    <tr>
-                                      <td class="text-left" colspan="3"></td>
-                                      <td class="text-center">
-                                        <span id="item_contact_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
-                                      </td>
-                                    </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12 col-xs-12">
-                            <div class="table-responsive">
-                              <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_cierre" style="min-width: 80px;">
-                                  <thead>
-                                    <tr class="bg-dark text-white">
-                                      <th class="text-center" colspan="4" style="font-size: 1rem;">Cierre</th>
-                                    </tr>
-                                    <tr>
-                                      <th class="text-center">@lang('general.column_actions')</th>
-                                      <th class="text-center">Contácto (Interno)</th>
-                                      <th class="text-center">Contácto (Externo)</th>
-                                      <th class="text-center">Porcentaje %<span class="required text-danger">*</span></th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    @php
-                                    $item_cierre_row= 0;
-                                    $item_cierre=old('item_cierre',[]);
-                                    @endphp
-                                    <tr id="add_item_cierre">
-                                      <td class="text-center">
-                                        <button type="button" onclick="addItemCierre();"
-                                        class="btn btn-xs btn-primary"
-                                        style="margin-bottom: 0; padding: 1px 3px;">
-                                        <i class="fa fa-plus" style="font-size: 1rem;"></i>
-                                        </button>
-                                      </td>
-                                      <td class="text-right" colspan="3"></td>
-                                    </tr>
-                                    <tr>
-                                      <td class="text-left" colspan="3"></td>
-                                      <td class="text-center">
-                                        <span id="item_cierre_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                              </table>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12 col-xs-12">
-                            <div class="table-responsive">
-                              <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_vendedor" style="min-width: 80px;">
-                                <thead>
-                                  <tr class="bg-dark text-white">
-                                    <th class="text-center" colspan="4" style="font-size: 1rem;">Vendedor</th>
-                                  </tr>
-                                  <tr>
-                                    <th class="text-center">@lang('general.column_actions')</th>
-                                    <th class="text-center">Contácto<span class="required text-danger">*</span></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  @php
-                                    $item_vendedor_row= 0;
-                                    $item_vendedor=old('item_vendedor',[]);
-                                  @endphp
-                                  <tr id="add_item_vendedor">
-                                    <td class="text-center">
-                                      <button type="button" onclick="addItemVendedor();"
-                                      class="btn btn-xs btn-primary"
-                                      style="margin-bottom: 0; padding: 1px 3px;">
-                                      <i class="fa fa-plus" style="font-size: 1rem;"></i>
-                                    </button>
-                                    </td>
-                                    <td class="text-right" colspan="1"></td>
-                                  </tr>
-                                  <tr>
-                                    <td class="text-left" colspan="1"></td>
-                                    <td class="text-center">
-                                      <span id="item_vendedor_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12 col-xs-12">
-                            <div class="table-responsive">
-                              <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_colaborador" style="min-width: 80px;">
-                                <thead>
-                                  <tr class="bg-dark text-white">
-                                    <th class="text-center" colspan="4" style="font-size: 1rem;">Colaborador</th>
-                                  </tr>
-                                  <tr>
-                                    <th class="text-center">@lang('general.column_actions')</th>
-                                    <th class="text-center">Contácto<span class="required text-danger">*</span></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  @php
-                                    $item_colaborador_row= 0;
-                                    $item_colaborador=old('item_colaborador',[]);
-                                  @endphp
-                                  <tr id="add_item_colaborador">
-                                    <td class="text-center">
-                                      <button type="button" onclick="addItemColaborador();"
-                                      class="btn btn-xs btn-primary"
-                                      style="margin-bottom: 0; padding: 1px 3px;">
-                                      <i class="fa fa-plus" style="font-size: 1rem;"></i>
-                                    </button>
-                                    </td>
-                                    <td class="text-right" colspan="1"></td>
-                                  </tr>
-                                  <tr>
-                                    <td class="text-left" colspan="1"></td>
-                                    <td class="text-center">
-                                      <span id="item_colaborador_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                      </div>
-                    </section>
                   </form>
                 </div>
               </div>
@@ -1327,6 +1281,16 @@
       .wizard-content .wizard>.actions{
         margin-top: 10px
       }
+      .select2-selection__rendered {
+        line-height: 44px !important;
+        padding-left: 20px !important;
+      }
+      .select2-selection {
+        height: 42px !important;
+      }
+      .select2-selection__arrow {
+        height: 36px !important;
+      }
     </style>
     <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
@@ -1356,23 +1320,26 @@
     <!-- FormValidation plugin and the class supports validating Bootstrap form -->
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
+
+    <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
+    <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('plugins/select2/dist/js/i18n/es-MX.js') }}" type="text/javascript"></script>
+
     <script type="text/javascript">
       var item_relation_contact_row = "{{ $item_contact_row }}";
       var item_relation_cierre_row = "{{ $item_cierre_row }}";
-      var item_relation_vendedor_row = "{{ $item_vendedor_row }}";
-      var item_relation_colaborador_row = "{{ $item_colaborador_row }}";
       $(function() {
-        $('#comision').bootstrapToggle('off');
-
+        $("#select_kick_off").select2();
+        $("#sel_anexo_service2").select2();
         $('#cont_vtc').bootstrapToggle('off');
         $('#cont_venue').bootstrapToggle('off');
         $('#comp_ingreso').bootstrapToggle('off');
 
+        $('#kickoff_info_div').show();
         $('#div_comisiones').hide();
         item_relation_contact_row = 0;
         item_relation_cierre_row = 0;
-        item_relation_vendedor_row = 0;
-        item_relation_colaborador_row = 0;
 
         $('#cont_vtc').change(function() {
           if ($(this).prop('checked') == true) {  $('#cont_vtc').val(1);  }
@@ -1386,8 +1353,17 @@
           if ($(this).prop('checked') == true) {  $('#comp_ingreso').val(1);  }
           else {  $('#comp_ingreso').val(0);  }
         });
-
-        $('#comision').change(function() {
+        function reset_comision(){
+          $('#sel_type_comision').val('').trigger('change');
+          $('#sel_inside_sales').val('').trigger('change');
+          $('#sel_itconcierge_comision').val('').trigger('change');
+          $("#item_politica input[type=text]").val('');
+          delete_row_table_a();
+          delete_row_table_b();
+          delete_row_table_c();
+          delete_row_table_d();
+        }
+        $('#comision22').change(function() {
           if ($(this).prop('checked') == true) {
             cont_vtc = 1;
             $('#div_comisiones').show();
@@ -1402,19 +1378,90 @@
             $("#sel_inside_sales").prop('required',false);
             $("#sel_itconcierge_comision").prop('required',false);
           }
-
-          $('#sel_type_comision').val('').trigger('change');
-          $('#sel_inside_sales').val('').trigger('change');
-          $('#sel_itconcierge_comision').val('').trigger('change');
-          $("#item_politica input[type=text]").val('');
-          delete_row_table_a();
-          delete_row_table_b();
-          delete_row_table_c();
-          delete_row_table_d();
+          reset_comision();
         });
         $('#sel_type_comision').on('change', function(e){
           var group = $(this).val();
           data_comision(group);
+        });
+
+        $('#kick_off_exit').bootstrapToggle('on');
+        $('#kick_off_exit').change(function() {
+          if ($(this).prop('checked') == true) {
+            $('#kick_off_exit').val(1);
+            $('#kickoff_info_div').show();
+            $('#div_comisiones').hide();
+            $("#sel_inside_sales").prop('required',true);
+            $("#sel_itconcierge_comision").prop('required',true);
+            //Reset
+            $('#select_kick_off').val('').trigger('change');
+            $('#kick_off_id').val('');
+            $('#kick_off_proyecto').val('');
+            $('#kick_off_sitio').val('');
+          }
+          else {
+            $('#kick_off_exit').val(0);
+            $('#kickoff_info_div').hide();
+            $('#div_comisiones').show();
+            $("#sel_inside_sales").prop('required',false);
+            $("#sel_itconcierge_comision").prop('required',false);
+            //Reset
+            $('#select_kick_off').val('').trigger('change');
+            $('#kick_off_id').val('');
+            $('#kick_off_proyecto').val('');
+            $('#kick_off_sitio').val('');
+          }
+          reset_comision();
+        });
+
+        $('#select_kick_off').on("change", function(){
+          var id = $(this).val();
+          var token = $('input[name="_token"]').val();
+          if (id) {
+            $.ajax({
+                url: "/info_kickoff",
+                type: "POST",
+                data: { _token : token, ident: id },
+                success: function (data) {
+                  $('#div_comisiones').show();
+                  reset_comision();
+
+                  if (typeof data !== 'undefined' && data.length > 0) {
+                    datos = JSON.parse(data);
+                    $('#kick_off_id').val(datos[0].id);
+                    $('#kick_off_proyecto').val(datos[0].nombre_proyecto);
+                    $('#kick_off_sitio').val(datos[0].Sitio);
+                    kickoff_comision(datos[0].id, token);
+                    kickoff_contact(datos[0].id, token);
+                    kickoff_cierre(datos[0].id, token);
+                  }
+                  else{
+                    $('#div_comisiones').hide();
+                    $('#kick_off_id').val('');
+                    $('#kick_off_proyecto').val('');
+                    $('#kick_off_sitio').val('');
+                  }
+                },
+                error: function (error, textStatus, errorThrown) {
+                    if (error.status == 422) {
+                        var message = error.responseJSON.error;
+                        Swal.fire({
+                           type: 'error',
+                           title: 'Oops...',
+                           text: message,
+                        });
+                    } else {
+                        alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                    }
+                }
+            });
+          }
+          else {
+            $('#kick_off_id').val('');
+            $('#kick_off_proyecto').val('');
+            $('#kick_off_sitio').val('');
+            reset_comision();
+          }
         });
       });
 
@@ -1470,7 +1517,6 @@
            });
         }
       }
-
       function addItemCierre() {
         let politica = $("select[name='sel_type_comision']").val();
         if (politica != '') {
@@ -1511,88 +1557,6 @@
           html += '</tr>';
           $("#validation_anexo #item_cierre tbody #add_item_cierre").before(html);
           item_relation_cierre_row++;
-        }
-        else {
-          $('#sel_inside_sales').val('').trigger('change');
-          $('#sel_itconcierge_comision').val('').trigger('change');
-          Swal.fire({
-             type: 'error',
-             title: 'Oops...',
-             text: 'Selecciona la politica de comisión',
-           });
-        }
-      }
-
-      function addItemVendedor() {
-        let politica = $("select[name='sel_type_comision']").val();
-        if (politica != '') {
-          var html = '';
-          html += '<tr id="item_vendedor_row_' + item_relation_vendedor_row + '">';
-
-          html += '<td class="text-center" style="vertical-align: middle;">';
-          html += '<button type="button" onclick="$(\'#item_vendedor_row_' + item_relation_vendedor_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
-          html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
-          html += '</button>';
-          html += '<input type="hidden" name="item_vendedor[' + item_relation_vendedor_row + '][id]" id="item_vendedor_id_' + item_relation_vendedor_row + '" /> ';
-          html += '</td>';
-
-          html += '<td>';
-          html += '<div class="form-group form-group-sm">';
-          html += '<select class="form-control input-sm col-vendedor-contact" name="item_vendedor[' + item_relation_vendedor_row + '][contact]" id="item_vendedor_contact_' + item_relation_vendedor_row + '" data-row="' + item_relation_vendedor_row + '" required>'
-          html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-          @forelse ($kickoff_vendedores as $kickoff_vendedores_data)
-          html += '<option value="{{ $kickoff_vendedores_data->user_id  }}">{{ $kickoff_vendedores_data->user }}</option>';
-          @empty
-          @endforelse
-          html += '</select>';
-          html += '</div>';
-          html += '</td>';
-
-          html += '</tr>';
-
-          $("#validation_anexo #item_vendedor tbody #add_item_vendedor").before(html);
-          item_relation_vendedor_row++;
-        }
-        else {
-          $('#sel_inside_sales').val('').trigger('change');
-          $('#sel_itconcierge_comision').val('').trigger('change');
-          Swal.fire({
-             type: 'error',
-             title: 'Oops...',
-             text: 'Selecciona la politica de comisión',
-           });
-        }
-      }
-
-      function addItemColaborador() {
-        let politica = $("select[name='sel_type_comision']").val();
-        if (politica != '') {
-          var html = '';
-          html += '<tr id="item_colaborador_row_' + item_relation_colaborador_row + '">';
-
-          html += '<td class="text-center" style="vertical-align: middle;">';
-          html += '<button type="button" onclick="$(\'#item_colaborador_row_' + item_relation_colaborador_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
-          html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
-          html += '</button>';
-          html += '<input type="hidden" name="item_colaborador[' + item_relation_colaborador_row + '][id]" id="item_colaborador_id_' + item_relation_colaborador_row + '" /> ';
-          html += '</td>';
-
-          html += '<td>';
-          html += '<div class="form-group form-group-sm">';
-          html += '<select class="form-control input-sm col-colaborador-contact" name="item_colaborador[' + item_relation_colaborador_row + '][contact]" id="item_colaborador_contact_' + item_relation_colaborador_row + '" data-row="' + item_relation_colaborador_row + '" required>'
-          html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-          @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
-          html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
-          @empty
-          @endforelse
-          html += '</select>';
-          html += '</div>';
-          html += '</td>';
-
-          html += '</tr>';
-
-          $("#validation_anexo #item_colaborador tbody #add_item_colaborador").before(html);
-          item_relation_colaborador_row++;
         }
         else {
           $('#sel_inside_sales').val('').trigger('change');
@@ -1645,6 +1609,181 @@
           }
         });
       }
+      function kickoff_comision(ix, token) {
+        $.ajax({
+            url: "/info_kickoff_comision",
+            type: "POST",
+            data: { _token : token, ident: ix },
+            success: function (data) {
+              if (JSON.stringify(data) != '"[]"') {
+                datos = JSON.parse(data);
+                $('#sel_type_comision').val(datos[0].politica_id).trigger('change');
+                $('#sel_inside_sales').val(datos[0].inside_sales).trigger('change');
+                $('#sel_itconcierge_comision').val(datos[0].itconcierge).trigger('change');
+              }
+              else{
+                $('#sel_type_comision').val('').trigger('change');
+                $('#sel_inside_sales').val('').trigger('change');
+                $('#sel_itconcierge_comision').val('').trigger('change');
+                $("#item_politica input[type=text]").val('');
+              }
+            },
+            error: function (error, textStatus, errorThrown) {
+                if (error.status == 422) {
+                    var message = error.responseJSON.error;
+                    Swal.fire({
+                       type: 'error',
+                       title: 'Oops...',
+                       text: message,
+                    });
+                } else {
+                    alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                }
+            }
+        });
+      }
+      function kickoff_contact(ix, token) {
+        $.ajax({
+            url: "/info_kickoff_contact",
+            type: "POST",
+            data: { _token : token, ident: ix },
+            success: function (data) {
+              data.forEach(function(key,i) {
+                var html = '';
+                html += '<tr id="item_row_' + item_relation_contact_row + '">';
+
+                html += '<td class="text-center" style="vertical-align: middle;">';
+                html += '<button type="button" onclick="$(\'#item_row_' + item_relation_contact_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+                html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+                html += '</button>';
+                html += '<input type="hidden" name="item[' + item_relation_contact_row + '][id]" id="item_id_' + item_relation_contact_row + '" /> ';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<select class="form-control input-sm col-contact-int" name="item[' + item_relation_contact_row + '][contactInt]" id="item_contactInt_' + item_relation_contact_row + '" data-row="' + item_relation_contact_row + '">'
+                html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+                  if ( key.user_id == {{ $kickoff_colaboradores_data->id  }} ) {
+                    html += '<option value="{{ $kickoff_colaboradores_data->id  }}" selected>{{ $kickoff_colaboradores_data->name }}</option>';
+                  }
+                  else {
+                    html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
+                  }
+                @empty
+                @endforelse
+                html += '</select>';
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                if ( key.nombre == null ||  key.nombre == '' ) {
+                  html += '<input type="text" class="form-control input-sm text-right col-contact" name="item[' + item_relation_contact_row + '][contact]" id="item_contact_' + item_relation_contact_row + '" value="" step="any"/>';
+                }
+                else {
+                  html += '<input type="text" class="form-control input-sm text-right col-contact" name="item[' + item_relation_contact_row + '][contact]" id="item_contact_' + item_relation_contact_row + '" value="' + key.nombre + '" step="any"/>';
+                }
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<input type="text" class="form-control input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" value="' + key.valor_comision + '" required step="any" maxlength="10" />';
+                html += '</div>';
+                html += '</td>';
+
+                html += '</tr>';
+
+                $("#validation_anexo #item_contact tbody #add_item_contact").before(html);
+                item_relation_contact_row++;
+              });
+            },
+            error: function (error, textStatus, errorThrown) {
+                if (error.status == 422) {
+                    var message = error.responseJSON.error;
+                    Swal.fire({
+                       type: 'error',
+                       title: 'Oops...',
+                       text: message,
+                    });
+                } else {
+                    alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                }
+            }
+        });
+      }
+      function kickoff_cierre(ix, token) {
+        $.ajax({
+            url: "/info_kickoff_cierre",
+            type: "POST",
+            data: { _token : token, ident: ix },
+            success: function (data) {
+              data.forEach(function(key,i) {
+                var html = '';
+                html += '<tr id="item_cierre_row_' + item_relation_cierre_row + '">';
+
+                html += '<td class="text-center" style="vertical-align: middle;">';
+                html += '<button type="button" onclick="$(\'#item_cierre_row_' + item_relation_cierre_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+                html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+                html += '</button>';
+                html += '<input type="hidden" name="item_cierre[' + item_relation_cierre_row + '][id]" id="item_cierre_id_' + item_relation_cierre_row + '" /> ';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<select class="form-control input-sm col-cierre-contact-int" name="item_cierre[' + item_relation_cierre_row + '][contactInt]" id="item_cierre_contactInt_' + item_relation_cierre_row + '" data-row="' + item_relation_cierre_row + '">'
+                html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+                if ( key.user_id == {{ $kickoff_colaboradores_data->id  }} ) {
+                  html += '<option value="{{ $kickoff_colaboradores_data->id  }}" selected>{{ $kickoff_colaboradores_data->name }}</option>';
+                }
+                else {
+                  html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
+                }
+                @empty
+                @endforelse
+                html += '</select>';
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                if ( key.nombre == null ||  key.nombre == '' ) {
+                  html += '<input type="text" class="form-control input-sm text-right col-cierre-contact" name="item_cierre[' + item_relation_cierre_row + '][contact]" id="item_cierre_contact_' + item_relation_cierre_row + '" step="any" />';
+                }
+                else {
+                  html += '<input type="text" class="form-control input-sm text-right col-cierre-contact" name="item_cierre[' + item_relation_cierre_row + '][contact]" id="item_cierre_contact_' + item_relation_cierre_row + '" value="' + key.nombre + '" step="any" />';
+                }
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<input type="text" class="form-control input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" value="' + key.valor_comision + '" required step="any" maxlength="10" />';
+                html += '</div>';
+                html += '</td>';
+
+                html += '</tr>';
+                $("#validation_anexo #item_cierre tbody #add_item_cierre").before(html);
+                item_relation_cierre_row++;
+              });
+            },
+            error: function (error, textStatus, errorThrown) {
+                if (error.status == 422) {
+                    var message = error.responseJSON.error;
+                    Swal.fire({
+                       type: 'error',
+                       title: 'Oops...',
+                       text: message,
+                    });
+                } else {
+                    alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                }
+            }
+        });
+      }
+
     </script>
     <script>
       $(function() {

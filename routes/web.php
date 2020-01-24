@@ -926,6 +926,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/totalLinesCierre', 'Contracts\ContratoController@totalLinesCierre');
     Route::post('/totalLinesVendedor', 'Contracts\ContratoController@totalLinesVendedor');
     Route::post('/totalLinesColaborador', 'Contracts\ContratoController@totalLinesColaborador');
+
+    Route::post('/info_kickoff', 'Contracts\ContratoController@info_kickoff');
+    Route::post('/info_kickoff_comision', 'Contracts\ContratoController@info_kickoff_comision');
+    Route::post('/info_kickoff_cierre', 'Contracts\ContratoController@info_kickoff_cierre');
+    Route::post('/info_kickoff_contact', 'Contracts\ContratoController@info_kickoff_contact');
 });
 
 
@@ -1219,6 +1224,7 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
 
   //Historial de compras
   Route::get('/view_purchases_show', 'Purchases\HistoryPurchasesController@index');
+  Route::post('/view_purchases_search', 'Purchases\HistoryPurchasesController@search');
 
   //Cuentas bancarias de proveedor
   Route::get('/view_cb_provider', 'Purchases\CbProviderController@index');

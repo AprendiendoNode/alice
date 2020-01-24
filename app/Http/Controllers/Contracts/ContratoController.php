@@ -186,12 +186,14 @@ class ContratoController extends Controller
     $kickoff_colaboradores = DB::select(' CALL px_colaboradores()', array());
     $politica_comision = DB::select(' CALL px_politicas_de_comision()', array());
 
+    $kickoff_info= DB::select(' CALL px_kickoff_doctop_proyecto()', array());
+
     return view('permitted.contract.cont_create_cont', compact(
       'unitmeasures','satproduct','classifications','verticals',
       'cadenas', 'sitio','currency', 'hotels', 'country', 'rz_type',
       'rz_nationality', 'rz_concept_invoice', 'contract_status', 'rz_customer',
       'iva', 'resguardo','vendedores','itconcierge',
-      'kickoff_vendedores','kickoff_inside_sales','kickoff_colaboradores', 'politica_comision',
+      'kickoff_vendedores','kickoff_inside_sales','kickoff_colaboradores', 'politica_comision', 'kickoff_info',
       'payment_term','payment_way','payment_methods','cfdi_uses','countries','states','cities', 'payment_term_act'
     ));
   }
@@ -1312,5 +1314,24 @@ class ContratoController extends Controller
  public function totalLinesColaborador(Request $request)
  {
  }
-
+ public function info_kickoff (Request $request) {
+   $id = $request->ident;
+   $resultados = DB::select('CALL px_kickoff_doctop_proyecto_xid (?)',array($id));
+   return json_encode($resultados);
+ }
+ public function info_kickoff_comision (Request $request) {
+   $id = $request->ident;
+   $resultados = DB::select('CALL px_kickoff_xcomision (?)',array($id));
+   return json_encode($resultados);
+ }
+ public function info_kickoff_cierre (Request $request) {
+   $id = $request->ident;
+   $resultados = DB::select('CALL px_kickoff_xcomision_cierre (?)',array($id));
+   return $resultados;
+ }
+ public function info_kickoff_contact (Request $request) {
+   $id = $request->ident;
+   $resultados = DB::select('CALL px_kickoff_xcomision_contacto (?)',array($id));
+   return $resultados;
+ }
 }
