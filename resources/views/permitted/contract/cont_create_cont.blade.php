@@ -475,234 +475,6 @@
                   </div>
                   <form id="validation_anexo" name="validation_anexo" enctype="multipart/form-data" class="validation-wizard-anexo wizard-circle m-t-40">
                     {{ csrf_field() }}
-                    <!-- Step 4 -->
-                    <h6>Paso 4 - Comisiones</h6>
-                    <section>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group row">
-                            <label for="kick_off_exit" class="col-sm-3 control-label">¿Tiene Kick Off?</label>
-                            <div class="col-sm-9">
-                              <input id="kick_off_exit" name="kick_off_exit" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1"
-                              data-on="Si" data-off="No">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div id="kickoff_info_div" name="kickoff_info_div" class="row my-4">
-                        <div class="col-md-4">
-                          <div class="form-group row">
-                            <label class="label-control col-sm-12" for="select_kick_off">Elija el Kick Off:</label>
-                            <div class="col-sm-12">
-                              <select class="form-control form-control-sm" id="select_kick_off" name="select_kick_off" style="width: 100%;">
-                                <option value="" selected>Elija</option>
-                                @forelse ($kickoff_info as $data_kickoff_info)
-                                <option value="{{ $data_kickoff_info->id }}"> {{ $data_kickoff_info->folio }}  </option>
-                                @empty
-                                @endforelse
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <input type="hidden" class="form-control" id="kick_off_id" name="kick_off_id" maxlength="100" readonly>
-                            <label>Nombre del proyecto</label>
-                            <input type="text" class="form-control" id="kick_off_proyecto" name="kick_off_proyecto" maxlength="100" readonly>
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label>Nombre del sitio</label>
-                            <input type="text" class="form-control" id="kick_off_sitio" name="kick_off_sitio" maxlength="100" readonly>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="row my-2" id="div_comisiones" name="div_comisiones">
-                        <div class="col-md-12 col-xs-12 mb-3">
-                          <div class="table-responsive">
-                            <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table" id="item_politica" style="min-width: 80px;">
-                              <thead>
-                                <tr class="bg-danger text-white">
-                                  <th class="text-center" colspan="7" style="font-size: 1rem;">Politica de comisión</th>
-                                </tr>
-                                <tr class="bg-secondary text-white">
-                                  <th class="text-center" style="padding: 1.25rem 0.9375rem !important;">Tipo de comisión</th>
-                                  <th class="text-center" colspan="8">
-                                    <select id="sel_type_comision" name="sel_type_comision" class="form-control required" style="width:100%;">
-                                      <option value="" selected>{{ trans('pay.select_op') }}</option>
-                                      @forelse ($politica_comision as $politica_comision_data)
-                                        <option value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
-                                      @empty
-                                      @endforelse
-                                    </select>
-                                  </th>
-                                </tr>
-                                <tr class="bg-danger text-white">
-                                  <th class="text-center">Politica</th>
-                                  <th class="text-center">Retención</th>
-                                  <th class="text-center">Total comisión %</th>
-                                  <th class="text-center">Contacto %</th>
-                                  <th class="text-center">Cierre %</th>
-                                  <th class="text-center">ITC %</th>
-                                  <th class="text-center">Venta Internas %</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr class="bg-secondary">
-                                  <td>
-                                    <div class="form-group form-group-sm">
-                                      <input type="text" class="form-control input-sm text-right col-politica sinpadding" id="politica_name" name="politica_name" readonly />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div class="form-group form-group-sm">
-                                      <input type="text" class="form-control input-sm text-right col-retencion" id="politica_retencion" name="politica_retencion" value="0" readonly />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div class="form-group form-group-sm">
-                                      <input type="text" class="form-control input-sm text-right col-total" id="politica_asignado" name="politica_asignado" value="0" readonly />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div class="form-group form-group-sm">
-                                      <input type="text" class="form-control input-sm text-right col-contacto" id="politica_contacto" name="politica_contacto" value="0" readonly />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div class="form-group form-group-sm">
-                                      <input type="text" class="form-control input-sm text-right col-cierre" id="politica_cierre" name="politica_cierre" value="0" readonly />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div class="form-group form-group-sm">
-                                      <input type="text" class="form-control input-sm text-right col-itc" id="politica_itc" name="politica_itc" value="0" readonly />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div class="form-group form-group-sm">
-                                      <input type="text" class="form-control input-sm text-right col-insidesales" id="politica_insidesales" name="politica_insidesales" value="0" readonly />
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="sel_inside_sales"> Inside Sales:
-                              <span class="text-danger">*</span>
-                            </label>
-                            <select id="sel_inside_sales" name="sel_inside_sales" class="form-control" name="location" style="width:100%;">
-                              <option value="" selected>{{ trans('pay.select_op') }}</option>
-                              @forelse ($kickoff_inside_sales as $kickoff_inside_sales_data)
-                                <option value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
-                              @empty
-                              @endforelse
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="sel_itconcierge_comision"> IT Concierge:
-                              <span class="text-danger">*</span>
-                            </label>
-                            <select id="sel_itconcierge_comision" name="sel_itconcierge_comision" class="form-control" name="location" style="width:100%;">
-                              <option value="" selected>{{ trans('pay.select_op') }}</option>
-                              @forelse ($itconcierge as $itconcierge_data)
-                                <option value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
-                              @empty
-                              @endforelse
-                            </select>
-                          </div>
-                        </div>
-
-                        <div class="col-md-12 col-xs-12">
-                          <div class="table-responsive">
-                            <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_contact" style="min-width: 80px;">
-                              <thead>
-                                <tr class="bg-dark text-white">
-                                  <th class="text-center" colspan="4" style="font-size: 1rem;">Contácto</th>
-                                </tr>
-                                <tr>
-                                  <th class="text-center">@lang('general.column_actions')</th>
-                                  <th class="text-center">Contácto (Interno)</th>
-                                  <th class="text-center">Contácto (Externo)</th>
-                                  <th class="text-center">Porcentaje %<span class="required text-danger">*</span></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                @php
-                                  $item_contact_row= 0;
-                                  $item_contact=old('item_contact',[]);
-                                @endphp
-                                <tr id="add_item_contact">
-                                  <td class="text-center">
-                                    <button type="button" onclick="addItemCont();"
-                                    class="btn btn-xs btn-primary"
-                                    style="margin-bottom: 0; padding: 1px 3px;">
-                                    <i class="fa fa-plus" style="font-size: 1rem;"></i>
-                                    </button>
-                                  </td>
-                                  <td class="text-right" colspan="3"></td>
-                                </tr>
-                                <tr>
-                                  <td class="text-left" colspan="3"></td>
-                                  <td class="text-center">
-                                    <span id="item_contact_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-
-                        <div class="col-md-12 col-xs-12">
-                          <div class="table-responsive">
-                            <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_cierre" style="min-width: 80px;">
-                              <thead>
-                                <tr class="bg-dark text-white">
-                                  <th class="text-center" colspan="4" style="font-size: 1rem;">Cierre</th>
-                                </tr>
-                                <tr>
-                                  <th class="text-center">@lang('general.column_actions')</th>
-                                  <th class="text-center">Contácto (Interno)</th>
-                                  <th class="text-center">Contácto (Externo)</th>
-                                  <th class="text-center">Porcentaje %<span class="required text-danger">*</span></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                @php
-                                  $item_cierre_row= 0;
-                                  $item_cierre=old('item_cierre',[]);
-                                @endphp
-                                <tr id="add_item_cierre">
-                                  <td class="text-center">
-                                    <button type="button" onclick="addItemCierre();"
-                                    class="btn btn-xs btn-primary"
-                                    style="margin-bottom: 0; padding: 1px 3px;">
-                                    <i class="fa fa-plus" style="font-size: 1rem;"></i>
-                                    </button>
-                                  </td>
-                                  <td class="text-right" colspan="3"></td>
-                                </tr>
-                                <tr>
-                                  <td class="text-left" colspan="3"></td>
-                                  <td class="text-center">
-                                    <span id="item_cierre_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
                     <!-- Step 1 -->
                     <h6>Paso 1 - Destino</h6>
                     <section>
@@ -1094,7 +866,8 @@
                           <div class="form-group row">
                             <label for="cont_vtc" class="col-sm-12 control-label">Contemplar para VTC</label>
                             <div class="col-md-9 mb-3">
-                              <input id="cont_vtc" name="cont_vtc" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="0">
+                              <input id="cont_vtc" name="cont_vtc" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="0"
+                              data-on="Si" data-off="No">
                             </div>
                           </div>
                         </div>
@@ -1102,7 +875,8 @@
                           <div class="form-group row">
                             <label for="cont_venue" class="col-sm-12 control-label">Contemplar para venue</label>
                             <div class="col-md-9 mb-3">
-                              <input id="cont_venue" name="cont_venue" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="0">
+                              <input id="cont_venue" name="cont_venue" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="0"
+                              data-on="Si" data-off="No">
                             </div>
                           </div>
                         </div>
@@ -1110,7 +884,8 @@
                           <div class="form-group row">
                             <label for="comp_ingreso" class="col-sm-12 control-label">Compartir ingreso</label>
                             <div class="col-md-9 mb-3">
-                              <input id="comp_ingreso" name="comp_ingreso" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="0">
+                              <input id="comp_ingreso" name="comp_ingreso" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="0"
+                              data-on="Si" data-off="No">
                             </div>
                           </div>
                         </div>
@@ -1167,6 +942,234 @@
                           <button type="button" class="btn btn-default removeButtonsitiobeta"><i class="fa fa-minus"></i></button>
                         </div>
                       </div>
+                    </section>
+                    <!-- Step 4 -->
+                    <h6>Paso 4 - Comisiones</h6>
+                    <section>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group row">
+                            <label for="kick_off_exit" class="col-sm-3 control-label">¿Tiene Kick Off?</label>
+                            <div class="col-sm-9">
+                              <input id="kick_off_exit" name="kick_off_exit" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1"
+                              data-on="Si" data-off="No">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div id="kickoff_info_div" name="kickoff_info_div" class="row my-4">
+                        <div class="col-md-4">
+                          <div class="form-group row">
+                            <label class="label-control col-sm-12" for="select_kick_off">Elija el Kick Off:</label>
+                            <div class="col-sm-12">
+                              <select class="form-control form-control-sm" id="select_kick_off" name="select_kick_off" style="width: 100%;">
+                                <option value="" selected>Elija</option>
+                                @forelse ($kickoff_info as $data_kickoff_info)
+                                  <option value="{{ $data_kickoff_info->id }}"> {{ $data_kickoff_info->folio }}  </option>
+                                @empty
+                                @endforelse
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <input type="hidden" class="form-control" id="kick_off_id" name="kick_off_id" maxlength="100" readonly>
+                            <label>Nombre del proyecto</label>
+                            <input type="text" class="form-control" id="kick_off_proyecto" name="kick_off_proyecto" maxlength="100" readonly>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Nombre del sitio</label>
+                            <input type="text" class="form-control" id="kick_off_sitio" name="kick_off_sitio" maxlength="100" readonly>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row my-2" id="div_comisiones" name="div_comisiones">
+                        <div class="col-md-12 col-xs-12 mb-3">
+                          <div class="table-responsive">
+                            <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table" id="item_politica" style="min-width: 80px;">
+                              <thead>
+                                <tr class="bg-danger text-white">
+                                  <th class="text-center" colspan="7" style="font-size: 1rem;">Politica de comisión</th>
+                                </tr>
+                                <tr class="bg-secondary text-white">
+                                  <th class="text-center" style="padding: 1.25rem 0.9375rem !important;">Tipo de comisión</th>
+                                  <th class="text-center" colspan="8">
+                                    <select id="sel_type_comision" name="sel_type_comision" class="form-control required" style="width:100%;">
+                                      <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                      @forelse ($politica_comision as $politica_comision_data)
+                                        <option value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
+                                      @empty
+                                      @endforelse
+                                    </select>
+                                  </th>
+                                </tr>
+                                <tr class="bg-danger text-white">
+                                  <th class="text-center">Politica</th>
+                                  <th class="text-center">Retención</th>
+                                  <th class="text-center">Total comisión %</th>
+                                  <th class="text-center">Contacto %</th>
+                                  <th class="text-center">Cierre %</th>
+                                  <th class="text-center">ITC %</th>
+                                  <th class="text-center">Venta Internas %</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr class="bg-secondary">
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-politica sinpadding" id="politica_name" name="politica_name" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-retencion" id="politica_retencion" name="politica_retencion" value="0" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-total" id="politica_asignado" name="politica_asignado" value="0" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-contacto" id="politica_contacto" name="politica_contacto" value="0" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-cierre" id="politica_cierre" name="politica_cierre" value="0" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-itc" id="politica_itc" name="politica_itc" value="0" readonly />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group form-group-sm">
+                                      <input type="text" class="form-control input-sm text-right col-insidesales" id="politica_insidesales" name="politica_insidesales" value="0" readonly />
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="sel_inside_sales"> Inside Sales:
+                              <span class="text-danger">*</span>
+                            </label>
+                            <select id="sel_inside_sales" name="sel_inside_sales" class="form-control" name="location" style="width:100%;">
+                              <option value="" selected>{{ trans('pay.select_op') }}</option>
+                              @forelse ($kickoff_inside_sales as $kickoff_inside_sales_data)
+                                <option value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="sel_itconcierge_comision"> IT Concierge:
+                              <span class="text-danger">*</span>
+                            </label>
+                            <select id="sel_itconcierge_comision" name="sel_itconcierge_comision" class="form-control" name="location" style="width:100%;">
+                              <option value="" selected>{{ trans('pay.select_op') }}</option>
+                              @forelse ($itconcierge as $itconcierge_data)
+                                <option value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12">
+                          <div class="table-responsive">
+                            <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_contact" style="min-width: 80px;">
+                              <thead>
+                                <tr class="bg-dark text-white">
+                                  <th class="text-center" colspan="4" style="font-size: 1rem;">Contácto</th>
+                                </tr>
+                                <tr>
+                                  <th class="text-center">@lang('general.column_actions')</th>
+                                  <th class="text-center">Contácto (Interno)</th>
+                                  <th class="text-center">Contácto (Externo)</th>
+                                  <th class="text-center">Porcentaje %<span class="required text-danger">*</span></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                @php
+                                  $item_contact_row= 0;
+                                  $item_contact=old('item_contact',[]);
+                                @endphp
+                                <tr id="add_item_contact">
+                                  <td class="text-center">
+                                    <button type="button" onclick="addItemCont();"
+                                    class="btn btn-xs btn-primary"
+                                    style="margin-bottom: 0; padding: 1px 3px;">
+                                    <i class="fa fa-plus" style="font-size: 1rem;"></i>
+                                  </button>
+                                </td>
+                                <td class="text-right" colspan="3"></td>
+                              </tr>
+                              <tr>
+                                <td class="text-left" colspan="3"></td>
+                                <td class="text-center">
+                                  <span id="item_contact_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12 col-xs-12">
+                        <div class="table-responsive">
+                          <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_cierre" style="min-width: 80px;">
+                            <thead>
+                              <tr class="bg-dark text-white">
+                                <th class="text-center" colspan="4" style="font-size: 1rem;">Cierre</th>
+                              </tr>
+                              <tr>
+                                <th class="text-center">@lang('general.column_actions')</th>
+                                <th class="text-center">Contácto (Interno)</th>
+                                <th class="text-center">Contácto (Externo)</th>
+                                <th class="text-center">Porcentaje %<span class="required text-danger">*</span></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @php
+                                $item_cierre_row= 0;
+                                $item_cierre=old('item_cierre',[]);
+                              @endphp
+                              <tr id="add_item_cierre">
+                                <td class="text-center">
+                                  <button type="button" onclick="addItemCierre();"
+                                  class="btn btn-xs btn-primary"
+                                  style="margin-bottom: 0; padding: 1px 3px;">
+                                  <i class="fa fa-plus" style="font-size: 1rem;"></i>
+                                </button>
+                              </td>
+                              <td class="text-right" colspan="3"></td>
+                            </tr>
+                            <tr>
+                              <td class="text-left" colspan="3"></td>
+                              <td class="text-center">
+                                <span id="item_cierre_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
                     </section>
                   </form>
                 </div>
@@ -2001,6 +2004,7 @@
                   contentType: false,
                   processData: false,
                   success: function (data){
+                    
                     datax = data;
                     if (datax != '0') {
                       Swal.fire("Operación Completada!", ":)", "success");
@@ -2032,6 +2036,8 @@
                     $('#cont_venue').val(0);
                     $('#comp_ingreso').val(0);
                     $('#div_comisiones').hide();
+
+
                   },
                   error: function (data) {
                     console.log('Error:', data);
