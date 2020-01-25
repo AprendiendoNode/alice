@@ -132,7 +132,7 @@
   <div class="p-3 bg-white rounded shadow mb-5">
     <div class="row pt-2 pb-2">
       <div class="d-block mx-auto">
-        <h3><i class="fas fa-file-contract"></i> Vigencia de contratos</h3>
+        <!--<h3><i class="fas fa-file-contract"></i>Seleccione</h3>-->
       </div>
     </div>
     <div class="row">
@@ -158,7 +158,37 @@
     </div>
 
 
-        <div class="table-responsive">
+    <div class="row pt-5">
+      <!--<div class="table-responsive">
+        <table id="table_budget_cadena" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
+          <thead class="bg-primary">
+            <tr class="bg-aqua text-center">
+              <th> <small>Cadena</small> </th>
+              <th > <small>Mensualidad USD</small> </th>
+              <th > <small>Presupuesto anual de mantenimiento USD</small> </th>
+              <th> <small>Opciones</small> </th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+          </tbody>
+          <tfoot >
+            <tr >
+              <th></th>
+              <th></th>
+              <th></th>
+              <th ></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>-->
+      <div class="col-md-12">
+        <!--<button id="hide">Ocultar</button>-->
+      <div id="gantt_cadenas" class="w-100" style="height:500px;" ></div>
+      </div>
+    </div>
+
+
+        <div class="table-responsive pt-5">
           <h4>Presupuesto(USD)</h4>
           <table id="table_budget_months" name='table_budget' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
             <thead>
@@ -209,34 +239,7 @@
           </table>
         </div>
 
-    <div class="row pt-5">
-      <!--<div class="table-responsive">
-        <table id="table_budget_cadena" class="table table-bordered  table-striped table-hover display compact-tab" style="width: 100%">
-          <thead class="bg-primary">
-            <tr class="bg-aqua text-center">
-              <th> <small>Cadena</small> </th>
-              <th > <small>Mensualidad USD</small> </th>
-              <th > <small>Presupuesto anual de mantenimiento USD</small> </th>
-              <th> <small>Opciones</small> </th>
-            </tr>
-          </thead>
-          <tbody class="text-center">
-          </tbody>
-          <tfoot >
-            <tr >
-              <th></th>
-              <th></th>
-              <th></th>
-              <th ></th>
-            </tr>
-          </tfoot>
-        </table>
-      </div>-->
-      <div class="col-md-12">
-        <!--<button id="hide">Ocultar</button>-->
-      <div id="gantt_cadenas" class="w-100" style="height:500px;" ></div>
-      </div>
-    </div>
+
 
 
 

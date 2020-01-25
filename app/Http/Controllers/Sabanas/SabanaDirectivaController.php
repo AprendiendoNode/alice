@@ -20,7 +20,12 @@ class SabanaDirectivaController extends Controller
 
   public function index()
   {
+    if(Auth::user()->id==16 || Auth::user()->id==432 || Auth::user()->id==440){
     return view('permitted.sabanas.sabana_directiva');
+    }
+    else{
+      return view('home');
+    }
   }
 
   public function getAllCadena(Request $request)

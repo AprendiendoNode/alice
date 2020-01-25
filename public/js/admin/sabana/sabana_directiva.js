@@ -437,7 +437,14 @@ function table_sites(data,table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_sites);
   vartable.fnClearTable();
+  var mensual = 0;
+  var suma=0;
   $.each(data, function(index, status){
+    suma =(parseFloat(status.enero) +parseFloat(status.febrero) + parseFloat(status.marzo) + parseFloat(status.abril) + parseFloat(status.mayo) +parseFloat(status.junio)
+    + parseFloat(status.julio) + parseFloat(status.agosto) +parseFloat(status.septiembre) + parseFloat(status.octubre) + parseFloat(status.noviembre) + parseFloat(status.diciembre));
+
+    mensual = parseInt((suma*100)/status.presupuesto_anual_USD);
+    isNaN(mensual)==true? mensual=0:mensual;
     vartable.fnAddData([
     status.Nombre_hotel.charAt(0).toUpperCase()+status.Nombre_hotel.toLowerCase().slice(1),
     '$'+parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
@@ -454,7 +461,7 @@ function table_sites(data,table){
     '$'+status.octubre,
     '$'+status.noviembre,
     '$'+status.diciembre,
-    '0%'
+    morethan100(mensual)
     ]);
   });
 
