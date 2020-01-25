@@ -85,7 +85,7 @@ function table_general(data,data_sites, table) {
   var date_gantt_end=0;
   var cadenas= new Array();
   //vartable.fnClearTable();
-  var first_elem={id: "SIT1", "text":"SITWIFI", "start_date":new Date(anio,00,01),"end_date":"01-04-2029",progress: 1,open: true};
+  var first_elem={id: "SIT1", "text":"SITWIFI", "start_date":new Date(anio,00,01),"end_date":new Date(anio,11,31),progress: 1,open: true};
   cadenas.push(first_elem);
   var i=2;
   var ejercido=0;
@@ -109,6 +109,9 @@ function table_general(data,data_sites, table) {
     }
 
     //console.log("cadena: "+status.cadena + " año: "+ status.date_real.toString().split("-")[0]);
+    if(status.fecha_vence.split("-")[0] > anio) {
+      status.fecha_vence = anio+"-12-31";
+    }
     var aux_cad={id:"C"+status.cadena_id, "text":status.cadena.toString().trim(), "start_date":new Date(date_gantt,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"presupuesto_anual_USD":parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"ejercido":parseFloat(status.mantto).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"xejercer":(parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),progress: (parseFloat(status.mantto)/parseFloat(status.presupuesto_anual_USD)).toFixed(2), open: false,parent:"SIT1"};
     cadenas.push(aux_cad);
     i++;
@@ -118,6 +121,9 @@ function table_general(data,data_sites, table) {
   $.each(data_sites, function(index, status){
     //console.log('sitio'+status.Nombre_hotel+' Ejercido:'+status.mantto);
     //console.log((parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    if(status.fecha_vence.split("-")[0] > anio) {
+      status.fecha_vence = anio+"-12-31";
+    }
     date_real= parseInt(status.date_real.toString().split("-")[0]);
     date_gantt= date_real>anio? date_real:anio;
     var aux_sitios={id: status.hotel_id, "text":status.Nombre_hotel.toString().trim(), "start_date":new Date(date_gantt,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"presupuesto_anual_USD": parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"ejercido":parseFloat(status.mantto).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"xejercer":(parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),progress: (parseFloat(status.mantto)/parseFloat(status.presupuesto_anual_USD)).toFixed(2),color:"gray",open: true,parent:"C"+status.cadena_id};
