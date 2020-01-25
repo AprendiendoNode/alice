@@ -136,6 +136,11 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-md-12 text-center">
+        <h4>Presupuesto(USD)</h4>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-md-4"></div>
       <div class="col-md-4 col-xs-12 mb-3">
         <!--Input Form2-->
@@ -189,7 +194,6 @@
 
 
         <div class="table-responsive pt-5">
-          <h4>Presupuesto(USD)</h4>
           <table id="table_budget_months" name='table_budget' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
             <thead>
               <tr class="bg-primary text-center">

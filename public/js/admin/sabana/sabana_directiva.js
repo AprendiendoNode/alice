@@ -1,7 +1,7 @@
 $(function(){
 var _token = $('input[name="_token"]').val();
 
-$('#date_select').datepicker({
+/*$('#date_select').datepicker({
   language: 'es',
   format: "yyyy",
   viewMode: "years",
@@ -10,7 +10,9 @@ $('#date_select').datepicker({
   endDate: '-0y',
   autoclose: true,
   clearBtn: true
-}).datepicker("setDate",'now');
+}).datepicker("setDate",'now')*/;
+
+$('#date_select').val((new Date).getFullYear());
 
 var anio = parseInt($('#date_select').val());
 
@@ -293,7 +295,7 @@ function load_gantt(data,title){
     //gantt.config.scale_unit = "month";//Escala a meses
     //gantt.config.date_scale = "%Y-%M"; //AÑO-MES
     gantt.config.columns = [ //Re-definición de las columnas
-    {name:"text", label:"<div class='searchEl'>Proyecto <input id='search' type='text'"+
+    {name:"text", label:"<div class='searchEl'>Proyecto <input id='search' type='hidden'"+
       "placeholder='Buscar...'></div>", width:145, tree:true},
     /*{name:"date_real", label:"Fecha de inicio", width:85,align:"center" },
     {name:"end_date", label:"Fecha de Fin", width:85,align:"center" },*/
