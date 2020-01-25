@@ -614,7 +614,7 @@ $(function() {
   }
 
   function get_table_tickets(itc_email){
-    var fecha1 = $('#filtro1_tickets').val();
+    /*var fecha1 = $('#filtro1_tickets').val();
     var fecha2 = $('#filtro2_tickets').val();
     var _token = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
@@ -622,15 +622,15 @@ $(function() {
         url: "/get_tickets_by_itc",
         data: { itc_email: itc_email, fecha1: fecha1, fecha2: fecha2, _token : _token },
         success: function (data){
-          //console.log(data);
-          generate_table_tickets(data, $('#table_tickets_itc'));
-          //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+          //console.log(data);*/
+          generate_table_tickets(itc_email);
+          /*//document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
           $('#total_tickets').text(data.length);
         },
         error: function (data) {
           console.log('Error:', data);
         }
-    });
+    });*/
   }
 
   function get_graph_tickets_type(itc_email){
@@ -688,74 +688,93 @@ number>100? val='<span style="color:red; font-weight:bold;">'+number+'%'+'</span
 return val;
 }
 
-function generate_table_tickets(datajson, table){
-  table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table);
-  vartable.fnClearTable();
-  //color: ['#474B4F','#ff5400','#e92e29','#FFDE40','#4dd60d','#00BFF3','#096dc9','#f90000'],
-  var type='';
-  var status='';
-  var priority='';
-  $.each(datajson, function(index, data){
-    switch (data.type) {
-      case 'incident':
-      type='<span class="badge badge-pill text-white" style="background-color:#ff5400">incident</span>';
-        break;
-      case 'problem':
-      type='<span class="badge badge-pill text-white" style="background-color:#e92e29">problem</span>';
-        break;
-      case 'question':
-      type='<span class="badge badge-pill text-white" style="background-color:#FFDE40">question</span>';
-        break;
-      case 'task':
-      type='<span class="badge badge-pill text-white" style="background-color:#4dd60d">task</span>';
-        break;
-      case '':
-      type='<span class="badge badge-pill text-white" style="background-color:#474B4F">other</span>';
-        break;
-    }
-      switch (data.status) {
-        case 'solved':
-        status='<span class="badge badge-pill text-white bg-primary" >solved</span>';
-          break;
-        case 'open':
-        status='<span class="badge badge-pill text-white" style="background-color:#4dd60d">open</span>';
-          break;
-        case 'closed':
-        status='<span class="badge badge-pill text-white" style="background-color:#474B4F">closed</span>';
-          break;
-      }
+function generate_table_tickets(itc_email){
+  var _token = $('meta[name="csrf-token"]').attr('content');
+  var fecha1 = $('#filtro1_tickets').val();
+  var fecha2 = $('#filtro2_tickets').val();
+  $("#table_tickets_itc").DataTable().destroy();
+  $("#table_tickets_itc").DataTable({
+    processing:true,
+    serverSide:true,
+    ajax:{
+      "type": "POST",
+      url:"/get_tickets_by_itc",
+      "data":function(d){ //Lo que se envia al servidor
+        d._token = _token;
+        d.itc_email = itc_email;
+        d.fecha1 = fecha1;
+        d.fecha2 = fecha2;
+      },
+      dataFilter:function(inData){ //Lo que regresa el servidor
+        var array=JSON.parse(inData);
+        $('#total_tickets').text(array.recordsTotal);
+        //console.log(array);
+        //console.log(array.data[0]['tipo']);
+        $.each(array.data, function(index, status){
+          //console.log(status);
+          switch (status.type) {
+            case 'incident':
+            status.type='<span class="badge badge-pill text-white" style="background-color:#ff5400">incident</span>';
+              break;
+            case 'problem':
+            status.type='<span class="badge badge-pill text-white" style="background-color:#e92e29">problem</span>';
+              break;
+            case 'question':
+            status.type='<span class="badge badge-pill text-white" style="background-color:#FFDE40">question</span>';
+              break;
+            case 'task':
+            status.type='<span class="badge badge-pill text-white" style="background-color:#4dd60d">task</span>';
+              break;
+            case '':
+            status.type='<span class="badge badge-pill text-white" style="background-color:#474B4F">other</span>';
+              break;
+          }
+            switch (status.status) {
+              case 'solved':
+              status.status='<span class="badge badge-pill text-white bg-primary" >solved</span>';
+                break;
+              case 'open':
+              status.status='<span class="badge badge-pill text-white" style="background-color:#4dd60d">open</span>';
+                break;
+              case 'closed':
+              status.status='<span class="badge badge-pill text-white" style="background-color:#474B4F">closed</span>';
+                break;
+            }
 
-      switch (data.priority) {
-        case 'high':
-        priority='<span class="badge badge-pill text-white" style="background-color:#ff5400">high</span>';
-          break;
-        case 'urgent':
-        priority='<span class="badge badge-pill text-white" style="background-color:#e92e29">urgent</span>';
-          break;
-        case 'low':
-        priority='<span class="badge badge-pill bg-secondary text-white" >low</span>';
-          break;
-        case 'normal':
-        priority='<span class="badge badge-pill text-white bg-primary" >normal</span>';
-          break;
-        case '':
-        priority='<span class="badge badge-pill text-white" style="background-color:#474B4F">not assigned</span>';
-          break;
+            switch (status.priority) {
+              case 'high':
+              status.priority='<span class="badge badge-pill text-white" style="background-color:#ff5400">high</span>';
+                break;
+              case 'urgent':
+              status.priority='<span class="badge badge-pill text-white" style="background-color:#e92e29">urgent</span>';
+                break;
+              case 'low':
+              status.priority='<span class="badge badge-pill bg-secondary text-white" >low</span>';
+                break;
+              case 'normal':
+              status.priority='<span class="badge badge-pill text-white bg-primary" >normal</span>';
+                break;
+              case '':
+              status.priority='<span class="badge badge-pill text-white" style="background-color:#474B4F">not assigned</span>';
+                break;
+            }
+        });
+        var data = JSON.stringify(array);
+        return data;
       }
-
-    vartable.fnAddData([
-      '<small>'+data.id_ticket+'</small>',
-      type,
-      '<small>'+data.subject+'</small>',
-      status,
-      priority,
-      '<small>'+data.via_channel+'</small>',
-      '<small>'+data.satisfaction_rating+'</small>',
-	    '<small>'+ data.via_from_name+'</small>',
-      '<small>'+data.created_at+'</small>',
-      '<small>'+data.itc+'</small>'
-    ]);
+    },
+    columns:[
+            {data:'id_ticket',name:'id_ticket'},
+            {data:'type',name:'type'},
+            {data:'subject',name:'subject'},
+            {data:'status',name:'status'},
+            {data:'priority',name:'priority'},
+            {data:'via_channel',name:'via_channel'},
+            {data:'satisfaction_rating',name:'satisfaction_rating'},
+            {data:'via_from_name',name:'via_from_name'},
+            {data:'created_at',name:'created_at'},
+            {data:'itc',name:'itc'}
+          ],
   });
 }
 

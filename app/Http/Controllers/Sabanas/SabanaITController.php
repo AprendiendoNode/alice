@@ -200,7 +200,7 @@ class SabanaITController extends Controller
     $fecha1 = $request->fecha1;
     $fecha2 = $request->fecha2;
     $result = DB::connection('zendesk')->select('CALL px_ticketsxitc(?, ?, ?)', array($itc_email, $fecha1, $fecha2));
-    return $result;
+    return datatables()->of($result)->make(true);;
   }
 
   public function get_ticketsxtype_itc(Request $request ){
