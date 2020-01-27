@@ -1224,7 +1224,7 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
 Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   // Compras
   Route::get('/purchases_view', 'Purchases\PurchasesController@index');
-  Route::post('/get_exchangeratebydate', 'Purchases\PurchasesController@get_currency');  
+  Route::post('/get_exchangeratebydate', 'Purchases\PurchasesController@get_currency');
   Route::post('/purchase-store', 'Purchases\PurchasesController@store');
   //Historial de compras
   Route::get('/view_purchases_show', 'Purchases\HistoryPurchasesController@index');
@@ -1237,7 +1237,12 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::get('/view_account_to_pay', 'Purchases\AccountPayController@index');
 
 });
-
+Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){
+  //Integracion contable
+  Route::get('/accounting_account', 'Integration\AccountingAccountController@index');
+  Route::get('/rubros', 'Integration\RubrosController@index');
+  Route::get('/grouping_code', 'Integration\GroupingCodeController@index');
+});
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
 {
       Route::get('/settings_pac', 'Base\PacController@index');
