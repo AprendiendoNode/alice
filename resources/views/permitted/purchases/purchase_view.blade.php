@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View customers invoices') )
-    {{ trans('invoicing.customers_invoices') }}
+    Compras
   @else
   {{ trans('message.denied') }}
   @endif
@@ -10,7 +10,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View customers invoices') )
-    {{ trans('invoicing.customers_invoices') }}
+    Compras
   @else
   {{ trans('message.denied') }}
   @endif
@@ -24,517 +24,556 @@
         <div class="card-body">
           <form id="form" name="form" enctype="multipart/form-data">
             {{ csrf_field() }}
-          {{-- <p class="mt-2 card-title">Nuevo.</p> --}}
-          {{-- <div class="d-flex justify-content-center pt-3"></div> --}}
-          <input type="hidden"
-              id="amount_total_tmp"
-              name="amount_total_tmp"
-              value="{{ old('amount_total_tmp',0) }}">
-
-
-          <div class="row">
-            <div class="col-md-6 col-xs-12">
-              <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
-              <div class="input-group">
-                <select class="custom-select" id="customer_id" name="customer_id">
-                  <option value="" selected>Selecciona...</option>
-                  @forelse ($customer as $customer_data)
-                    {{-- <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option> --}}
-                    <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
-                  @empty
-                  @endforelse
-                </select>
-                <div class="input-group-append">
-                  {{-- <button class="btn btn btn-outline-primary btn-xs" type="button"><i class="fas fa-search"></i></button> --}}
-                  <button class="btn btn-outline-info btn-xs" type="button"><i class="fas fa-plus-square"></i></button>
+            <input type="hidden"
+                id="amount_total_tmp"
+                name="amount_total_tmp"
+                value="{{ old('amount_total_tmp',0) }}">
+            <div class="row">
+              <div class="col-md-6 col-xs-12">
+                <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
+                <div class="input-group">
+                  <select class="custom-select required" id="customer_id" name="customer_id">
+                    <option value="" selected>Selecciona...</option>
+                    @forelse ($providers as $provider_data)
+                      <option value="{{ $provider_data->id  }}">{{ $provider_data->name }}</option>
+                    @empty
+                    @endforelse
+                  </select>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-info btn-xs" type="button"><i class="fas fa-plus-square"></i></button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="branch_office_id" class="control-label">Sucursal:<span style="color: red;">*</span></label>
-                <select id="branch_office_id" name="branch_office_id" class="form-control required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($sucursal as $sucursal_data)
-                    <option value="{{ $sucursal_data->id  }}">{{ $sucursal_data->name }}</option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-            </div>
-
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
-                <select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($currency as $currency_data)
-                    <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="currency_value">TC:<span style="color: red;">*</span></label>
-                <input type="text" class="form-control" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;">
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="date">Fecha actual:<span style="color: red;">*</span></label>
-                <input type="text" class="form-control" id="date" name="date">
-
-                {{-- <input type="text" class="form-control" id="date" name="date" value="@php $date = new DateTime("now", new DateTimeZone('America/Mexico_City'));echo $date->format('Y-m-d H:i:s');@endphp"> --}}
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="payment_term_id" class="control-label">Termino de pago:<span style="color: red;">*</span></label>
-                <select id="payment_term_id" name="payment_term_id" class="form-control required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($payment_term as $payment_term_data)
-                  <option value="{{ $payment_term_data->id }}"> {{ $payment_term_data->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="date_due">Fecha Vencimiento:</label>
-                <input type="text" class="form-control" id="date_due" name="date_due" value="">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="salesperson_id" class="control-label">Vendedor:<span style="color: red;">*</span></label>
-                <select id="salesperson_id" name="salesperson_id" class="form-control required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($salespersons as $salespersons_data)
-                    <option value="{{ $salespersons_data->id  }}">{{ $salespersons_data->name }}</option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="payment_way_id" class="control-label">Forma de pago:<span style="color: red;">*</span></label>
-                <select id="payment_way_id" name="payment_way_id" class="form-control required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($payment_way as $payment_way_data)
-                  <option value="{{ $payment_way_data->id }}"> {{ $payment_way_data->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="payment_method_id" class="control-label">Metodo de pago:<span style="color: red;">*</span></label>
-                <select id="payment_method_id" name="payment_method_id" class="form-control required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($payment_methods as $payment_methods_data)
-                  <option value="{{ $payment_methods_data->id }}"> {{ $payment_methods_data->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="cfdi_use_id" class="control-label">Uso de cfdi:<span style="color: red;">*</span></label>
-                <select id="cfdi_use_id" name="cfdi_use_id" class="form-control required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($cfdi_uses as $cfdi_uses_data)
-                  <option value="{{ $cfdi_uses_data->id }}"> {{ $cfdi_uses_data->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-            </div>
-            <div class="col-md-4 col-xs-12">
-              <div class="form-group">
-                <label for="description">Tipo factura:</label>
-                <select class="form-control" required name="document_type" id="document_type">
-                  <option value="">Elije...</option>
-                  @foreach ($document_type as $data)
-                    <option value="{{$data->code}}">{{$data->prefix}}</option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-            <div class="col-md-8 col-xs-12">
-              <div class="form-group">
-                <label for="reference">Referencia:</label>
-                <input type="text" class="form-control" id="reference" name="reference" value="">
-              </div>
-            </div>
-          </div>
-
-          <!-- Seccion de cuentas contables de pagos. -->
-          <!-- <div class="row">
-            <div class="col-md-6 col-xs-6">
-
-              <div class="col-md-12 col-xs-12">
-                <label for="classif_id" class="control-label">Servicio:<span style="color: red;">*</span></label>
-                <select class="custom-select" id="classif_id" name="classif_id" required>
-                  <option value="" selected>Selecciona...</option>
-                  @forelse ($cxclassifications as $data_service)
-                    <option value="{{ $data_service->id }}"> {{ $data_service->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
+                  <select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
+                    <option value="">{{ trans('message.selectopt') }}</option>
+                    @forelse ($currency as $currency_data)
+                      <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
+                    @empty
+                    @endforelse
+                  </select>
+                </div>
               </div>
 
-              <div class="col-md-12 col-xs-12">
-                <label  class="control-label">Nivel 1:<span style="color: red;">*</span></label>
-                <select name="dyn_field[0]" class="form-control select2 changeField0" required>
-                  <option value="">Elija...</option>
-                </select>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <!-- <label for="branch_office_id" class="control-label">Sucursal:<span style="color: red;">*</span></label>
+                  <select id="branch_office_id" name="branch_office_id" class="form-control required" style="width:100%;">
+                    <option value="">{{ trans('message.selectopt') }}</option>
+                    @forelse ($sucursal as $sucursal_data)
+                      <option value="{{ $sucursal_data->id  }}">{{ $sucursal_data->name }}</option>
+                    @empty
+                    @endforelse
+                  </select> -->
+                </div>
               </div>
-
-              <div class="hide" id="template_cc">
-                <div class="col-md-12 col-xs-12">
-                  <label class="col-xs-2 change_label">xxxx_1.</label>
-                  <select name="dyn_field" class="form-control select2">
-                    <option value="">Elija...</option>
+              
+            </div>
+            <div class="row">
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="currency_value">TC:<span style="color: red;">*</span></label>
+                  <input type="text" class="form-control required" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;">
+                </div>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="date">Fecha actual:<span style="color: red;">*</span></label>
+                  <input type="text" class="form-control required" id="date" name="date">
+                </div>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="date_fact">Fecha facturación:<span style="color: red;">*</span></label>
+                  <input type="text" class="form-control required" id="date_fact" name="date_fact" value="">
+                </div>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="payment_term_id" class="control-label">Termino de pago:<span style="color: red;">*</span></label>
+                  <select id="payment_term_id" name="payment_term_id" class="form-control required" style="width:100%;">
+                    <option value="">{{ trans('message.selectopt') }}</option>
+                    @forelse ($payment_term as $payment_term_data)
+                    <option value="{{ $payment_term_data->id }}"> {{ $payment_term_data->name }} </option>
+                    @empty
+                    @endforelse
                   </select>
                 </div>
               </div>
             </div>
-
-            <div class="col-md-6 col-xs-6">
+            <div class="row">
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="date_due">Fecha Vencimiento:<span style="color: red;">*</span></label>
+                  <input type="text" class="form-control required" id="date_due" name="date_due" value="">
+                </div>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="payment_way_id" class="control-label">Forma de pago:<span style="color: red;">*</span></label>
+                  <select id="payment_way_id" name="payment_way_id" class="form-control required" style="width:100%;">
+                    <option value="">{{ trans('message.selectopt') }}</option>
+                    @forelse ($payment_way as $payment_way_data)
+                    <option value="{{ $payment_way_data->id }}"> {{ $payment_way_data->name }} </option>
+                    @empty
+                    @endforelse
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="payment_method_id" class="control-label">Metodo de pago:<span style="color: red;">*</span></label>
+                  <select id="payment_method_id" name="payment_method_id" class="form-control required" style="width:100%;">
+                    <option value="">{{ trans('message.selectopt') }}</option>
+                    @forelse ($payment_methods as $payment_methods_data)
+                    <option value="{{ $payment_methods_data->id }}"> {{ $payment_methods_data->name }} </option>
+                    @empty
+                    @endforelse
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="cfdi_use_id" class="control-label">Uso de cfdi:<span style="color: red;">*</span></label>
+                  <select id="cfdi_use_id" name="cfdi_use_id" class="form-control required" style="width:100%;">
+                    <option value="">{{ trans('message.selectopt') }}</option>
+                    @forelse ($cfdi_uses as $cfdi_uses_data)
+                    <option value="{{ $cfdi_uses_data->id }}"> {{ $cfdi_uses_data->name }} </option>
+                    @empty
+                    @endforelse
+                  </select>
+                </div>
+              </div>
             </div>
-          </div> -->
-
-          <!---------------------------------------------------------------------------------->
-          <div class="row mt-5">
-            <div class="col-md-12">
-              <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Productos</a>
-                  <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">CFDI</a>
+            <div class="row">
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="description">Tipo factura:<span style="color: red;">*</span></label>
+                  <select class="form-control" required name="document_type" id="document_type">
+                    <option value="">Elije...</option>
+                    @foreach ($document_type as $data)
+                      <option value="{{$data->code}}">{{$data->prefix}}</option>
+                    @endforeach
+                  </select>
                 </div>
-              </nav>
-              <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                  <!-------------------------------------------------------------------------------->
-                  <div class="row">
-                    <div class="col-md-12 col-xs-12">
-                        <div class="table-responsive" style="fontsize: 8px;">
-                            <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-5"
-                                   id="items" style="min-width: 1800px;">
-                                <thead>
-                                <tr>
-                                    <th width="5%" class="text-center"> Opciones </th>
-                                    <th width="12%" class="text-center"> Producto </th>
-                                    <th width="12%" class="text-left"> Descripción <span class="required text-danger">*</span> </th>
-                                    <th width="10%" class="text-center"> Unidad de medida <span class="required text-danger">*</span> </th>
-                                    <th width="12%" class="text-center"> Prod/Serv SAT <span class="required text-danger">*</span> </th>
-                                    <th width="8%" class="text-center"> Cantidad<span class="required text-danger">*</span> </th>
-                                    <th width="8%" class="text-center"> Precio <span class="required text-danger">*</span> </th>
-                                    <th width="8%" class="text-center text-nowrap"> Desc. % </th>
-                                    <th width="8%" class="text-center"> Moneda<span class="required text-danger">*</span> </th>
-                                    <th width="11%" class="text-center">Impuestos </th>
-                                    <th width="9%" class="text-right"> Total </th>
-                                    <th width="3%" class="text-right">TC Usado</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="iva_general">IVA:<span style="color: red;">*</span></label>
+                  <input type="text" class="form-control required" id="iva_general" name="iva_general" value="">
+                </div>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="iva_retencion">IVA Retención:</label>
+                  <input type="text" class="form-control" id="iva_retencion" name="iva_retencion" value="">
+                </div>
+              </div>
+            </div>
 
-                                <!-- Items -->
-                                @php
-                                    $item_row = 0;
-                                    $items = (empty(old('item')) ? [] : old('item'));
-                                @endphp
-                                @foreach ($items as $item_row => $item)
-                                  @php
-                                    $tmp_products = [];
-                                  @endphp
-                                  <tr id="item_row_{{ $item_row }}">
-                                    <td class="text-center" style="vertical-align: middle;">
-                                        <button type="button"
-                                                onclick="$('#item_row_{{ $item_row }}').remove(); totalItem();"
-                                                class="btn btn-xs btn-danger"
-                                                style="margin-bottom: 0;">
-                                                <i class="fa fa-trash-o"></i>
-                                        </button>
-                                        <!-- input hidden -->
-                                        <input type="hidden" id="item_id_{{ $item_row }}"
-                                               name="item[{{ $item_row }}][id]"
-                                                value="{{ old('item.' . $item_row . '.id') }}">
-                                        <!-- /.input hidden -->
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <select class="form-control input-sm"  id="item{{ $item_row.'[product_id]'}}" name="item[{{ $item_row }}][product_id]" required>
-                                          <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                          @forelse ($product as $product_data)
-                                            <option value="{{ $product_data->id  }}">{{ $product_data->name }}</option>
-                                          @empty
-                                          @endforelse
-                                        </select>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-center"
-                                        id="item{{ $item_row.'['.$item.']'}}"
-                                        name="item[{{ $item_row }}][name]"
-                                        value="{{old('item.' . $item_row . '.name')}}"
-                                        required />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <select class="form-control input-sm"  id="item{{ $item_row.'[unit_measure_id]'}}" name="item[{{ $item_row }}][unit_measure_id]" required>
-                                          <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                          @forelse ($unitmeasures as $unitmeasures_data)
-                                            <option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>
-                                          @empty
-                                          @endforelse
-                                        </select>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <select class="form-control input-sm"  id="item{{ $item_row.'[sat_product_id]'}}" name="item[{{ $item_row }}][sat_product_id]" required>
-                                          <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                          @forelse ($satproduct as $satproduct_data)
-                                            <option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}] {{ $satproduct_data->name }}</option>
-                                          @empty
-                                          @endforelse
-                                        </select>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-center"
-                                        id="item{{ $item_row.'['.$item.']'}}"
-                                        name="item[{{ $item_row }}][quantity]"
-                                        value="{{old('item.' . $item_row . '.quantity')}}"
-                                        required />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-center"
-                                        id="item{{ $item_row.'['.$item.']'}}"
-                                        name="item[{{ $item_row }}][price_unit]"
-                                        value="{{old('item.' . $item_row . '.price_unit')}}"
-                                        required />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-center"
-                                        id="item{{ $item_row.'['.$item.']'}}"
-                                        name="item[{{ $item_row }}][discount]"
-                                        value="{{old('item.' . $item_row . '.discount')}}"
-                                        required />
-                                      </div>
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control input-sm text-center"
-                                        id="item{{ $item_row.'['.$item.']'}}"
-                                        name="item[{{ $item_row }}][current]"
-                                        value="{{old('item.' . $item_row . '.current')}}"
-                                        required />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <select class="form-control input-sm"  id="item{{ $item_row.'[taxes]'}}" name="item[{{ $item_row }}][taxes]" required>
-                                          <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                          @forelse ($impuestos as $impuestos_data)
-                                            <option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>
-                                          @empty
-                                          @endforelse
-                                        </select>
-                                      </div>
-                                    </td>
-                                    <td class="text-right" style="padding-top: 11px;">
-                                      <span id="item_txt_amount_untaxed_{{ $item_row }}">0</span>
-                                    </td>
-                                  </tr>
-                                @endforeach
-                                @php
-                                  $item_row++;
-                                @endphp
-                                <!-- Agregar nuevo item -->
-                                <tr id="add_item">
-                                    <td class="text-center">
-                                        <button type="button" onclick="addItem();"
-                                                class="btn btn-xs btn-primary"
-                                                style="margin-bottom: 0;">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </td>
-                                    <td class="text-right" colspan="11"></td>
-                                </tr>
-                                <!-- Totales -->
-                                <tr>
-                                    <td></td>
-                                    <td class="text-right" colspan="8" rowspan="4"
-                                        style="vertical-align: middle">
-                                        <textarea class="form-control input-sm col-name-id" name="comment" id="comment" placeholder="@lang('customer_credit_note.entry_comment')" required rows="4" autocomplete="off" /></textarea>
-                                    </td>
-                                    <td class="text-right"><strong>Subtotal</strong></td>
-                                    <td class="text-right"><span id="txt_amount_untaxed">0</span></td>
-                                    <td class="text-right"></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="text-right"><strong>Descuento</strong></td>
-                                    <td class="text-right"><span id="txt_amount_discount">0</span></td>
-                                    <td class="text-right"></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="text-right"><strong>Impuesto</strong></td>
-                                    <td class="text-right"><span id="txt_amount_tax">0</span></td>
-                                    <td class="text-right"></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="text-right"><strong>Total</strong></td>
-                                    <td class="text-right"><span id="txt_amount_total">0</span></td>
-                                    <td class="text-right"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-
-                        <!--------------------------------------------------------------------------------->
-
-                        <!--------------------------------------------------------------------------------->
+            <div class="row">
+              <div class="col-md-6 col-xs-12">
+                <div id="cont_file">
+                  <div class="form-group">
+                    <label for="file_pdf" class="control-label">PDF</label>
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">
+                                <i class="far fa-file-pdf" aria-hidden="true"></i> PDF <input id="file_pdf" name="file_pdf" type="file" class="required" style="display: none;">
+                            </span>
+                        </label>
+                        <input style="font-size:7px;" type="text" class="form-control" readonly>
                     </div>
                   </div>
-                  <!-------------------------------------------------------------------------------->
-                </div>
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                  <!-------------------------------------------------------------------------------->
-                  <div class="row">
-                    <div class="col-md-4 col-xs-12">
-                      <div class="form-group row">
-                        <label for="cfdi_relation_id" class="col-md-12 col-form-label ml-0">Tipo de relación<span style="color: red;">*</span></label>
-                        <div class="col-md-12 ml-0">
-                          <select  id="cfdi_relation_id" name="cfdi_relation_id" class="form-control form-control-sm"  style="width: 100%;">
-                            <option value="">{{ trans('message.selectopt') }}</option>
-                            @forelse ($cfdi_relations as $cfdi_relations_data)
-                            <option value="{{ $cfdi_relations_data->id }}"> [{{ $cfdi_relations_data->code}}]{{ $cfdi_relations_data->name }} </option>
-                            @empty
-                            @endforelse
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12 col-xs-12">
-                      <div class="table-responsive">
-                        <table class="table table-items table-condensed table-hover table-bordered table-striped mt-5"
-                                id="items_relation">
-                            <thead>
-                            <tr>
-                                <th width="5%"
-                                    class="text-center">Opciones</th>
-                                <th width="25%"
-                                    class="text-center">
-                                  CFDI
-                                </th>
-                                <th width="65%"
-                                    class="text-center">
-                                      UUID
-                                    </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <!-- Items -->
-                            @php
-                                $item_relation_row = 0;
-                                $items_relation = old('item_relation',[]);
-                            @endphp
-                            @foreach ($items_relation as $item_relation_row => $item)
-                                @php
-                                    $tmp_uuid = '';
-                                    $tmp_customer_invoice_relations = [];
-                                @endphp
-                                <tr id="item_relation_row_{{ $item_relation_row }}">
-                                    <td class="text-center"
-                                        style="vertical-align: middle;">
-                                        <button type="button"
-                                                onclick="$('#item_relation_row_{{ $item_relation_row }}').remove();"
-                                                class="btn btn-xs btn-danger"
-                                                style="margin-bottom: 0;">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                        <!-- input hidden -->
-                                        <input type="text"
-                                                id="item_relation_id_{{ $item_relation_row }}"
-                                                name="item_relation[{{ $item_relation_row }}][id]"
-                                                value="{{ old('item_relation.' . $item_relation_row . '.id') }}">
-                                        <!-- /.input hidden -->
-                                    </td>
-                                    <td class="text-center align-middle">
-
-                                      <select class="form-control input-sm"  id="'item_relation_relation_id_' . $item_relation_row" name="old('item_relation.' . $item_relation_row . '.relation_id')" required>
-                                        <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-
-                                      </select>
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        <span id="item_relation_uuid_{{ $item_relation_row }}">{{$tmp_uuid}}</span>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            @php
-                                $item_relation_row++;
-                            @endphp
-                            <!-- /Items -->
-                            <!-- Agregar nuevo item -->
-                            <tr id="add_item_relation">
-                                <td class="text-center">
-                                    <button type="button"
-                                            onclick="addItemCfdiRelation();"
-                                            class="btn btn-xs btn-primary"
-                                            style="margin-bottom: 0;">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </td>
-                                <td class="text-right" colspan="2"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    </div>
-                  </div>
-                  <!-------------------------------------------------------------------------------->
                 </div>
 
               </div>
-            </div>
-          </div>
 
-          <!---------------------------------------------------------------------------------->
-          <!-- Footer form -->
-          <div class="ln_solid mt-5"></div>
-          <div class="row">
-            <div class="col-md-12 col-xs-12 text-right footer-form">
-              <button type="submit" class="btn btn-outline-primary">@lang('general.button_save')</button>
-              &nbsp;&nbsp;&nbsp;
-              <button type="button" class="btn btn-outline-danger">@lang('general.button_discard')</button>
+              <div class="col-md-6 col-xs-12">
+                <div id="cont_xml">
+                  <div class="form-group">
+                    <label for="file_xml" class="control-label">XML</label>
+                    <div class="input-group">
+                      <label class="input-group-btn">
+                          <span class="btn btn-primary">
+                              <i class="fas fa-file-code" aria-hidden="true"></i> XML
+                              <input id="file_xml" name="file_xml" type="file" class="required" style="display: none;">
+                          </span>
+                        </label>
+                      <input style="font-size:7px;" type="text" class="form-control" readonly>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
             </div>
-          </div>
+            <div class="row">
+              <div class="col-md-8 col-xs-12">
+                <div class="form-group">
+                  <label for="reference">Referencia:</label>
+                  <input type="text" class="form-control" id="reference" name="reference" value="">
+                </div>
+              </div>
+            </div>
+
+            <!-- Seccion de cuentas contables de pagos. -->
+            <!-- <div class="row">
+              <div class="col-md-6 col-xs-6">
+
+                <div class="col-md-12 col-xs-12">
+                  <label for="classif_id" class="control-label">Servicio:<span style="color: red;">*</span></label>
+                  <select class="custom-select" id="classif_id" name="classif_id" required>
+                    <option value="" selected>Selecciona...</option>
+                    @forelse ($cxclassifications as $data_service)
+                      <option value="{{ $data_service->id }}"> {{ $data_service->name }} </option>
+                    @empty
+                    @endforelse
+                  </select>
+                </div>
+
+                <div class="col-md-12 col-xs-12">
+                  <label  class="control-label">Nivel 1:<span style="color: red;">*</span></label>
+                  <select name="dyn_field[0]" class="form-control select2 changeField0" required>
+                    <option value="">Elija...</option>
+                  </select>
+                </div>
+
+                <div class="hide" id="template_cc">
+                  <div class="col-md-12 col-xs-12">
+                    <label class="col-xs-2 change_label">xxxx_1.</label>
+                    <select name="dyn_field" class="form-control select2">
+                      <option value="">Elija...</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-xs-6">
+              </div>
+            </div> -->
+
+            <!---------------------------------------------------------------------------------->
+            <div class="row mt-5">
+              <div class="col-md-12">
+                <nav>
+                  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Productos</a>
+                    <!-- <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">CFDI</a> -->
+                  </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <!-------------------------------------------------------------------------------->
+                    <div class="row">
+                      <div class="col-md-12 col-xs-12">
+                          <div class="table-responsive" style="fontsize: 8px;">
+                              <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-5"
+                                     id="items" style="min-width: 1800px;">
+                                  <thead>
+                                  <tr>
+                                      <th width="5%" class="text-center"> Opciones </th>
+                                      <th width="12%" class="text-center"> Producto </th>
+                                      <th width="12%" class="text-left"> Descripción <span class="required text-danger">*</span> </th>
+                                      <th width="10%" class="text-center"> Unidad de medida <span class="required text-danger">*</span> </th>
+                                      <th width="12%" class="text-center"> Prod/Serv SAT <span class="required text-danger">*</span> </th>
+                                      <th width="8%" class="text-center"> Cantidad<span class="required text-danger">*</span> </th>
+                                      <th width="8%" class="text-center"> Precio <span class="required text-danger">*</span> </th>
+                                      <th width="8%" class="text-center text-nowrap"> Desc. % </th>
+                                      <th width="8%" class="text-center"> Moneda<span class="required text-danger">*</span> </th>
+                                      <th width="11%" class="text-center">Impuestos </th>
+                                      <th width="9%" class="text-right"> Total </th>
+                                      <th width="3%" class="text-right">TC Usado</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+
+                                  <!-- Items -->
+                                  @php
+                                      $item_row = 0;
+                                      $items = (empty(old('item')) ? [] : old('item'));
+                                  @endphp
+                                  @foreach ($items as $item_row => $item)
+                                    @php
+                                      $tmp_products = [];
+                                    @endphp
+                                    <tr id="item_row_{{ $item_row }}">
+                                      <td class="text-center" style="vertical-align: middle;">
+                                          <button type="button"
+                                                  onclick="$('#item_row_{{ $item_row }}').remove(); totalItem();"
+                                                  class="btn btn-xs btn-danger"
+                                                  style="margin-bottom: 0;">
+                                                  <i class="fa fa-trash-o"></i>
+                                          </button>
+                                          <!-- input hidden -->
+                                          <input type="hidden" id="item_id_{{ $item_row }}"
+                                                 name="item[{{ $item_row }}][id]"
+                                                  value="{{ old('item.' . $item_row . '.id') }}">
+                                          <!-- /.input hidden -->
+                                      </td>
+                                      <td>
+                                        <div class="form-group form-group-sm">
+                                          <select class="form-control input-sm"  id="item{{ $item_row.'[product_id]'}}" name="item[{{ $item_row }}][product_id]" required>
+                                            <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                            @forelse ($product as $product_data)
+                                              <option value="{{ $product_data->id  }}">{{ $product_data->name }}</option>
+                                            @empty
+                                            @endforelse
+                                          </select>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div class="form-group form-group-sm">
+                                          <input type="text" class="form-control input-sm text-center"
+                                          id="item{{ $item_row.'['.$item.']'}}"
+                                          name="item[{{ $item_row }}][name]"
+                                          value="{{old('item.' . $item_row . '.name')}}"
+                                          required />
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div class="form-group form-group-sm">
+                                          <select class="form-control input-sm"  id="item{{ $item_row.'[unit_measure_id]'}}" name="item[{{ $item_row }}][unit_measure_id]" required>
+                                            <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                            @forelse ($unitmeasures as $unitmeasures_data)
+                                              <option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>
+                                            @empty
+                                            @endforelse
+                                          </select>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div class="form-group form-group-sm">
+                                          <select class="form-control input-sm"  id="item{{ $item_row.'[sat_product_id]'}}" name="item[{{ $item_row }}][sat_product_id]" required>
+                                            <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                            @forelse ($satproduct as $satproduct_data)
+                                              <option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}] {{ $satproduct_data->name }}</option>
+                                            @empty
+                                            @endforelse
+                                          </select>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div class="form-group form-group-sm">
+                                          <input type="text" class="form-control input-sm text-center"
+                                          id="item{{ $item_row.'['.$item.']'}}"
+                                          name="item[{{ $item_row }}][quantity]"
+                                          value="{{old('item.' . $item_row . '.quantity')}}"
+                                          required />
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div class="form-group form-group-sm">
+                                          <input type="text" class="form-control input-sm text-center"
+                                          id="item{{ $item_row.'['.$item.']'}}"
+                                          name="item[{{ $item_row }}][price_unit]"
+                                          value="{{old('item.' . $item_row . '.price_unit')}}"
+                                          required />
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div class="form-group form-group-sm">
+                                          <input type="text" class="form-control input-sm text-center"
+                                          id="item{{ $item_row.'['.$item.']'}}"
+                                          name="item[{{ $item_row }}][discount]"
+                                          value="{{old('item.' . $item_row . '.discount')}}"
+                                          required />
+                                        </div>
+                                      </td>
+                                      <td></td>
+                                      <td>
+                                        <div class="form-group form-group-sm">
+                                          <input type="text" class="form-control input-sm text-center"
+                                          id="item{{ $item_row.'['.$item.']'}}"
+                                          name="item[{{ $item_row }}][current]"
+                                          value="{{old('item.' . $item_row . '.current')}}"
+                                          required />
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div class="form-group form-group-sm">
+                                          <select class="form-control input-sm"  id="item{{ $item_row.'[taxes]'}}" name="item[{{ $item_row }}][taxes]" required>
+                                            <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                            @forelse ($impuestos as $impuestos_data)
+                                              <option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>
+                                            @empty
+                                            @endforelse
+                                          </select>
+                                        </div>
+                                      </td>
+                                      <td class="text-right" style="padding-top: 11px;">
+                                        <span id="item_txt_amount_untaxed_{{ $item_row }}">0</span>
+                                      </td>
+                                    </tr>
+                                  @endforeach
+                                  @php
+                                    $item_row++;
+                                  @endphp
+                                  <!-- Agregar nuevo item -->
+                                  <tr id="add_item">
+                                      <td class="text-center">
+                                          <button type="button" onclick="addItem();"
+                                                  class="btn btn-xs btn-primary"
+                                                  style="margin-bottom: 0;">
+                                              <i class="fa fa-plus"></i>
+                                          </button>
+                                      </td>
+                                      <td class="text-right" colspan="11"></td>
+                                  </tr>
+                                  <!-- Totales -->
+                                  <tr>
+                                      <td></td>
+                                      <td class="text-right" colspan="8" rowspan="4"
+                                          style="vertical-align: middle">
+                                          <textarea class="form-control input-sm col-name-id" name="comment" id="comment" placeholder="@lang('customer_credit_note.entry_comment')" required rows="4" autocomplete="off" /></textarea>
+                                      </td>
+                                      <td class="text-right"><strong>Subtotal</strong></td>
+                                      <td class="text-right"><span id="txt_amount_untaxed">0</span></td>
+                                      <td class="text-right"></td>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td class="text-right"><strong>Descuento</strong></td>
+                                      <td class="text-right"><span id="txt_amount_discount">0</span></td>
+                                      <td class="text-right"></td>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td class="text-right"><strong>Impuesto</strong></td>
+                                      <td class="text-right"><span id="txt_amount_tax">0</span></td>
+                                      <td class="text-right"></td>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td class="text-right"><strong>Total</strong></td>
+                                      <td class="text-right"><span id="txt_amount_total">0</span></td>
+                                      <td class="text-right"></td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+
+
+                          <!--------------------------------------------------------------------------------->
+
+                          <!--------------------------------------------------------------------------------->
+                      </div>
+                    </div>
+                    <!-------------------------------------------------------------------------------->
+                  </div>
+                  <!-- <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="row">
+                      <div class="col-md-4 col-xs-12">
+                        <div class="form-group row">
+                          <label for="cfdi_relation_id" class="col-md-12 col-form-label ml-0">Tipo de relación<span style="color: red;">*</span></label>
+                          <div class="col-md-12 ml-0">
+                            <select  id="cfdi_relation_id" name="cfdi_relation_id" class="form-control form-control-sm"  style="width: 100%;">
+                              <option value="">{{ trans('message.selectopt') }}</option>
+                              @forelse ($cfdi_relations as $cfdi_relations_data)
+                              <option value="{{ $cfdi_relations_data->id }}"> [{{ $cfdi_relations_data->code}}]{{ $cfdi_relations_data->name }} </option>
+                              @empty
+                              @endforelse
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12 col-xs-12">
+                        <div class="table-responsive">
+                          <table class="table table-items table-condensed table-hover table-bordered table-striped mt-5"
+                                  id="items_relation">
+                              <thead>
+                              <tr>
+                                  <th width="5%"
+                                      class="text-center">Opciones</th>
+                                  <th width="25%"
+                                      class="text-center">
+                                    CFDI
+                                  </th>
+                                  <th width="65%"
+                                      class="text-center">
+                                        UUID
+                                      </th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              
+                              @php
+                                  $item_relation_row = 0;
+                                  $items_relation = old('item_relation',[]);
+                              @endphp
+                              @foreach ($items_relation as $item_relation_row => $item)
+                                  @php
+                                      $tmp_uuid = '';
+                                      $tmp_customer_invoice_relations = [];
+                                  @endphp
+                                  <tr id="item_relation_row_{{ $item_relation_row }}">
+                                      <td class="text-center"
+                                          style="vertical-align: middle;">
+                                          <button type="button"
+                                                  onclick="$('#item_relation_row_{{ $item_relation_row }}').remove();"
+                                                  class="btn btn-xs btn-danger"
+                                                  style="margin-bottom: 0;">
+                                              <i class="fa fa-trash-o"></i>
+                                          </button>
+                                          
+                                          <input type="text"
+                                                  id="item_relation_id_{{ $item_relation_row }}"
+                                                  name="item_relation[{{ $item_relation_row }}][id]"
+                                                  value="{{ old('item_relation.' . $item_relation_row . '.id') }}">
+                                          
+                                      </td>
+                                      <td class="text-center align-middle">
+
+                                        <select class="form-control input-sm"  id="'item_relation_relation_id_' . $item_relation_row" name="old('item_relation.' . $item_relation_row . '.relation_id')" required>
+                                          <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+
+                                        </select>
+                                      </td>
+                                      <td class="text-center align-middle">
+                                          <span id="item_relation_uuid_{{ $item_relation_row }}">{{$tmp_uuid}}</span>
+                                      </td>
+                                  </tr>
+                              @endforeach
+                              @php
+                                  $item_relation_row++;
+                              @endphp
+                             
+                              <tr id="add_item_relation">
+                                  <td class="text-center">
+                                      <button type="button"
+                                              onclick="addItemCfdiRelation();"
+                                              class="btn btn-xs btn-primary"
+                                              style="margin-bottom: 0;">
+                                          <i class="fa fa-plus"></i>
+                                      </button>
+                                  </td>
+                                  <td class="text-right" colspan="2"></td>
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                      </div>
+                    </div>
+                  </div> -->
+
+                </div>
+              </div>
+            </div>
+
+            <!---------------------------------------------------------------------------------->
+            <!-- Footer form -->
+            <div class="ln_solid mt-5"></div>
+            <div class="row">
+              <div class="col-md-12 col-xs-12 text-right footer-form">
+                <button type="submit" class="btn btn-outline-primary">@lang('general.button_save')</button>
+                &nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-outline-danger">@lang('general.button_discard')</button>
+              </div>
+              <button type="button" id="button_testing" class="btn btn-outline-primary">@lang('general.button_save')</button>
+            </div>
           <!-- /Footer form -->
           </form>
         </div>
@@ -571,7 +610,7 @@
 
   {{-- <link href="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet" type="text/css"> --}}
   {{-- <script src="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script> --}}
-  {{-- <script src="{{ asset('js/admin/sales/customers_invoices.js')}}"></script> --}}
+  
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
@@ -584,104 +623,198 @@
           errorClass: "text-danger",
           successClass: "text-success",
           errorPlacement: function (error, element) {
-              var attr = $('[name="'+element[0].name+'"]').attr('datas');
+              // console.log(element);
+              // var attr = $('[name="'+element[0].name+'"]').attr('datas');
               // console.log(element[0].name);
               // console.log(attr);
               // console.log($('[name="'+element[0].name+'"]'));
-              if (element[0].id === 'fileInput') {
+              if (element[0].id === 'file_pdf') {
                 error.insertAfter($('#cont_file'));
               }
               else {
-                if(attr == 'sel_estatus'){
-                  error.insertAfter($('#cont_estatus'));
-                }
-                else {
-                  error.insertAfter(element);
-                }
+                error.insertAfter(element);
               }
-            },
-            rules: {
-              cfdi_relation_id: {
-                required: function(element) {
-                  // console.log($(".verCfdiRelation").toArray().length);
-                    if ($(".verCfdiRelation").toArray().length === 0) {
-                      if ( $("#form select[name='cfdi_relation_id']").hasClass('required')){
-                        $("#form select[name='cfdi_relation_id']").removeClass("required");
-                        $("#form select[name='cfdi_relation_id']").removeClass("text-danger");
-                        // console.log('false');
-                        return false;
-                      }
-                    }
-                    else {
-                      $("#form select[name='cfdi_relation_id']").addClass("required");
-                      // console.log('true');
-                      return true;
-                    }
-                },
+
+              if (element[0].id === 'file_xml') {
+                error.insertAfter($('#cont_xml'));
+              }else {
+                error.insertAfter(element);
               }
+          },
+          rules: {
+            file_pdf: {
+              extension: 'pdf',
+              filesize: 20000000
             },
-            messages: {
+            file_xml: {
+              extension: 'xml',
+              filesize: 20000000
             },
-            // debug: true,
-            // errorElement: "label",
-            submitHandler: function(e){
-              var form = $('#form')[0];
-              var formData = new FormData(form);
-              $.ajax({
-                type: "POST",
-                url: "/sales/customer-invoices-store",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (data){
-                  if (data == 'success') {
-                    let timerInterval;
-                    Swal.fire({
-                      type: 'success',
-                      title: 'La factura se ha generado con éxito!',
-                      html: 'Se estan aplicando los cambios.',
-                      timer: 2500,
-                      onBeforeOpen: () => {
-                        Swal.showLoading()
-                        timerInterval = setInterval(() => {
-                          Swal.getContent().querySelector('strong')
-                        }, 100)
-                      },
-                      onClose: () => {
-                        clearInterval(timerInterval)
-                      }
-                    }).then((result) => {
-                      if (
-                        // Read more about handling dismissals
-                        result.dismiss === Swal.DismissReason.timer
-                      ) {
-                        window.location.href = "/sales/customer-invoices";
-                      }
-                    });
-                  }
-                  if (data == 'false') {
-                    Swal.fire({
-                       type: 'error',
-                       title: 'Error encontrado..',
-                       text: 'Error al crear el  CFDI!',
-                     });
-                  }
-                  // console.log(data);
-                },
-                error: function (err) {
+          },
+          messages: {
+            file_pdf: {
+                filesize:" file size must be less than 20 MB.",
+                accept:"Please upload .pdf file of notice.",
+                required:"Please upload file."
+            },
+            file_xml: {
+                filesize:" file size must be less than 20 MB.",
+                accept:"Please upload .xml file of notice.",
+                required:"Please upload file."
+            }
+          },
+          // debug: true,
+          // errorElement: "label",
+          submitHandler: function(e){
+            var form = $('#form')[0];
+            var formData = new FormData(form);
+            $.ajax({
+              type: "POST",
+              url: "/purchases/purchase-store",
+              data: formData,
+              contentType: false,
+              processData: false,
+              success: function (data){
+                console.log(data);
+                /*if (data == 'success') {
+                  let timerInterval;
+                  Swal.fire({
+                    type: 'success',
+                    title: 'La factura se ha generado con éxito!',
+                    html: 'Se estan aplicando los cambios.',
+                    timer: 2500,
+                    onBeforeOpen: () => {
+                      Swal.showLoading()
+                      timerInterval = setInterval(() => {
+                        Swal.getContent().querySelector('strong')
+                      }, 100)
+                    },
+                    onClose: () => {
+                      clearInterval(timerInterval)
+                    }
+                  }).then((result) => {
+                    if (
+                      // Read more about handling dismissals
+                      result.dismiss === Swal.DismissReason.timer
+                    ) {
+                      window.location.href = "/sales/customer-invoices";
+                    }
+                  });
+                }
+                if (data == 'false') {
                   Swal.fire({
                      type: 'error',
-                     title: 'Oops...',
-                     text: err.statusText,
+                     title: 'Error encontrado..',
+                     text: 'Error al crear el  CFDI!',
                    });
-                }
-              });
-              // form.submit();
-            }
+                }*/
+              },
+              error: function (err) {
+                Swal.fire({
+                   type: 'error',
+                   title: 'Oops...',
+                   text: err.statusText,
+                 });
+              }
+            });
+            // form.submit();
+          }
         });
       //-----------------------------------------------------------
+      createEventListener_file();
+      createEventListener_fileXml();
     });
+      function createEventListener_file() {
+          const element = document.querySelector('[name="file_pdf"]')
+          element.addEventListener('change', function() {
+              var input = $(this),
+                  numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                  label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
 
+              input.trigger('fileselect', [numFiles, label]);
+              var input = $(this).parents('.input-group').find(':text'),
+                  log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+              if (input.length) {
+                  input.val(log);
+              } else {
+                  if (log) alert(log);
+              }
+          });
+      }
+
+      function createEventListener_fileXml() {
+          const element = document.querySelector('[name="file_xml"')
+          element.addEventListener('change', function() {
+              var input = $(this),
+                  numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                  label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+
+              input.trigger('fileselect', [numFiles, label]);
+              var input = $(this).parents('.input-group').find(':text'),
+                  log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+              if (input.length) {
+                  input.val(log);
+              } else {
+                  if (log) alert(log);
+              }
+          });
+      }
+    
+      $('#button_testing').on('click', function(){
+        var form = $('#form')[0];
+        var formData = new FormData(form);
+        $.ajax({
+          type: "POST",
+          url: "/purchases/purchase-store",
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (data){
+            console.log(data);
+            /*if (data == 'success') {
+              let timerInterval;
+              Swal.fire({
+                type: 'success',
+                title: 'La factura se ha generado con éxito!',
+                html: 'Se estan aplicando los cambios.',
+                timer: 2500,
+                onBeforeOpen: () => {
+                  Swal.showLoading()
+                  timerInterval = setInterval(() => {
+                    Swal.getContent().querySelector('strong')
+                  }, 100)
+                },
+                onClose: () => {
+                  clearInterval(timerInterval)
+                }
+              }).then((result) => {
+                if (
+                  // Read more about handling dismissals
+                  result.dismiss === Swal.DismissReason.timer
+                ) {
+                  window.location.href = "/sales/customer-invoices";
+                }
+              });
+            }
+            if (data == 'false') {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Error encontrado..',
+                 text: 'Error al crear el  CFDI!',
+               });
+            }*/
+          },
+          error: function (err) {
+            Swal.fire({
+               type: 'error',
+               title: 'Oops...',
+               text: err.statusText,
+             });
+          }
+        });
+      });
       // var currency = {!! json_encode($currency) !!};
       // console.log(currency);
       var item_row = "{{ $item_row }}";
@@ -831,7 +964,6 @@
           let row = $(this).attr('data-row');
           console.log(row);
           totalItem();
-
       });
       function initItem() {
         /*Para impuestos*/
@@ -883,27 +1015,43 @@
       $('#currency_id').on("change", function(){
         var valor = $(this).val();
         var token = $('input[name="_token"]').val();
+        var date = $('#date').val();
+
         if (valor === '1') {
           $('#currency_value').val('1');
         }else{
           $.ajax({
-              url: "/sales/customer-invoices/currency_now",
+              url: "/purchases/get_exchangeratebydate",
               type: "POST",
               // dataType: "JSON",
-              data: { _token : token, id_currency: valor },
+              data: { _token : token, id_currency: valor, date: date},
               success: function (data) {
                 console.log(data);
                 $('#currency_value').val(data);
               },
-              error: function (error, textStatus, errorThrown) {
-                  if (error.status == 422) {
-                      var message = error.responseJSON.error;
-                      $("#general_messages").html(alertMessage("danger", message));
-                  } else {
-                      alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
-                  }
+              error: function (data) {
+                console.log('Error:', data);
               }
           });
+        }
+      });
+      $('#date').on('change', function(){
+        var valor = $(this).val();
+        var token = $('input[name="_token"]').val();
+        var currency = $('#currency_id').val();
+        if (currency != '') {
+          $.ajax({
+            type: "POST",
+            url: "/purchases/get_exchangeratebydate",
+            data: { _token : token, date : valor, id_currency : currency },
+            success: function (data){
+              console.log(data);
+              $('#currency_value').val(data);
+            },
+            error: function (data) {
+              console.log('Error:', data);
+            }
+          });  
         }
       });
 
@@ -954,9 +1102,23 @@
                 format: "DD-MM-YYYY HH:mm:ss"
             },
             autoUpdateInput: true
-        }, function (chosen_date) {
+        }, /*function (chosen_date) {
             $("#form input[name='date']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
-        });
+        }*/);
+        $("#form input[name='date_fact']").daterangepicker({
+            singleDatePicker: true,
+            timePicker: true,
+            timePicker24Hour: true,
+            showDropdowns: true,
+            minDate: moment().subtract(4, 'months'),
+            maxDate : moment().add(3, 'days'),
+            locale: {
+                format: "DD-MM-YYYY HH:mm:ss"
+            },
+            autoUpdateInput: true
+        }, /*function (chosen_date) {
+            $("#form input[name='date']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
+        }*/);
         /*Configura datepicker*/
         $("#form input[name='date_due']").daterangepicker({
             singleDatePicker: true,

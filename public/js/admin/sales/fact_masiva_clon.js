@@ -100,6 +100,7 @@ $(function(){
       submitHandler: function(e){
         var form = $('#search_info')[0];
         var formData = new FormData(form);
+        $('#total').val(0);
         $.ajax({
           type: "POST",
           url: "/sales/search_view_contracts",

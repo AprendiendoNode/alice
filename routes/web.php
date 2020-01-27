@@ -1224,7 +1224,8 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
 Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   // Compras
   Route::get('/purchases_view', 'Purchases\PurchasesController@index');
-
+  Route::post('/get_exchangeratebydate', 'Purchases\PurchasesController@get_currency');  
+  Route::post('/purchase-store', 'Purchases\PurchasesController@store');
   //Historial de compras
   Route::get('/view_purchases_show', 'Purchases\HistoryPurchasesController@index');
   Route::post('/view_purchases_search', 'Purchases\HistoryPurchasesController@search');

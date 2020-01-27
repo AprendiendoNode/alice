@@ -271,7 +271,7 @@
                 <div class="form-group row">
                   <label for="inputEditEmail" class="col-sm-3 col-form-label">Correo electrónico <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputEditEmail" name="inputEditEmail" placeholder="{{ trans('auth.nombre') }}" maxlength="60">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditEmail" name="inputEditEmail" placeholder="{{ trans('auth.nombre') }}">
                     <small id="passwordHelpBlock" class="form-text text-muted">
                       Para agregar mas de un email favor de separar por un <strong class="text-danger">;</strong> 
                       al final de cada email sin agregar espacios.

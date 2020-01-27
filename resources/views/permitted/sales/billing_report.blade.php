@@ -1,15 +1,23 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
- Reporte de facturacion
+    @if( auth()->user()->can('View billing report') )
+        Reporte de facturación
+    @else
+        {{ trans('message.denied') }}
+    @endif
 @endsection
 
 @section('breadcrumb_title')
-  
+    @if( auth()->user()->can('View billing report') )
+        Facturación
+    @else
+        {{ trans('message.denied') }}
+    @endif
 @endsection
 
 @section('content')
-
+  @if( auth()->user()->can('View billing report') )
     <div class="container">
      <div class="card">
        <div class="card-body">
@@ -98,29 +106,31 @@
        </div>
      </div>
     </div>
-
+  @else
+    @include('default.denied')
+  @endif
 @endsection
 
 @push('scripts')
-    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
-    <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
-    <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
-    <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-    <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
-    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
-    <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
-    <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
-    <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
+    @if( auth()->user()->can('View billing report') )
+        <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
+        <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+        <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
+        <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
+        <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
+        <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
+        <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
+        <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
+        <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
 
-    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
-    <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
-    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
-    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
+        <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
+        <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
+        <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
+        <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
 
-
-
-    <script src="{{ asset('js/admin/sales/billing_report.js')}}"></script>
-
+        <script src="{{ asset('js/admin/sales/billing_report.js')}}"></script>
+    @else
+    @endif
 @endpush
