@@ -77,8 +77,8 @@ class KickoffController extends Controller
       $comision_contacto = DB::select('CALL px_kickoff_xcomision_contacto(?)', array($kickoff->id));
       //dd($comision_politica);
       $cadenas = DB::table('cadenas')->select('id', 'name')->orderBy('name')->get();
-      
-      
+
+
       return view('permitted.planning.kick_off_edit', compact('document', 'cadenas','installation','approval_dir' ,'adquisition', 'colaboradores','payments','tipo_cambio', 'vtc', 'num_aps' ,
       'kickoff_approvals', 'kickoff_vendedores', 'kickoff_inside_sales', 'kickoff_colaboradores', 'comision_politica',
       'itconcierge','politica_comision' ,'kickoff_contrato', 'kickoff_instalaciones','kickoff_compras', 'comision_contacto',
@@ -124,46 +124,122 @@ class KickoffController extends Controller
     {
       $documentp = Documentp::find($request->id_doc);
       $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
+
       //Insertar la tabla de comision general.
-      $comision_gral_new = DB::table('comision_gral')
-      ->insertGetId([
-         'itconcierge' => $request->sel_itconcierge_comision,
-        'inside_sales' => $request->sel_inside_sales,
-         'politica_id' => $request->sel_type_comision,
-         'kickoff_id' => $kickoff->id,
-          'created_at' => \Carbon\Carbon::now()
-      ]);
-      if (!empty($request->item)) {
-        foreach ($request->item as $key => $result) {
-                    $id_user = $result['contactInt'];
-                    $contact = !empty($result['contact']) ? $result['contact'] : '';
-                 $porcentaje = $result['porcentaje'];
-          $comision_contacto = DB::table('comisiones_contacto')
-           ->insertGetId([
-                  'user_id' => $id_user,
-                   'nombre' => $contact,
-         'comision_gral_id' => $comision_gral_new,
-          'valor_comision'  => $porcentaje,
-               'created_at' => \Carbon\Carbon::now()
-           ]);
+      //info($request);
+
+      $general = DB::table('comision_gral')->where('kickoff_id', '=', $kickoff->id)->get();
+
+      if(count($general) > 0) {
+        $comision_gral_updated = DB::table('comision_gral')->where('kickoff_id', '=', $kickoff->id)->update([
+          'kickoff_id' => $kickoff->id,
+          'itconcierge' => $request->sel_itconcierge_comision,
+         'inside_sales' => $request->sel_inside_sales,
+          'politica_id' => $request->sel_type_comision,
+        ]);
+        $updated_contacto = [];
+        $old_contacto = DB::table('comisiones_contacto')->where('comision_gral_id', '=', $general[0]->id)->pluck('id')->toArray();
+        $updated_cierre = [];
+        $old_cierre = DB::table('comisiones_cierre')->where('comision_gral_id', '=', $general[0]->id)->pluck('id')->toArray();
+        if (!empty($request->item)) {
+          foreach ($request->item as $key => $result) {
+                      $id_user = $result['contactInt'];
+                      $contact = !empty($result['contact']) ? $result['contact'] : '';
+                   $porcentaje = $result['porcentaje'];
+            $comision_contacto = DB::table('comisiones_contacto')->where('id', '=', $result['id'])->update([
+                    'user_id' => $id_user,
+                     'nombre' => $contact,
+            'valor_comision'  => $porcentaje
+             ]);
+             if($comision_contacto == 1) array_push($updated_contacto, $result['id']);
+             else {
+               DB::table('comisiones_contacto')->insert([
+                       'user_id' => $id_user,
+                        'nombre' => $contact,
+              'comision_gral_id' => $general[0]->id,
+               'valor_comision'  => $porcentaje,
+                    'created_at' => \Carbon\Carbon::now()
+                ]);
+             }
+          }
+        }
+        $difference = array_diff($old_contacto, $updated_contacto);
+        if(!empty($difference)){
+          foreach($difference as $id){
+            DB::table('comisiones_contacto')->where('id',$id)->delete();
+          }
+        }
+        if (!empty($request->item_cierre)) {
+          foreach ($request->item_cierre as $key => $result) {
+                     $id_user = $result['contactInt'];
+                     $contact = $result['contact'];
+                  $porcentaje = $result['porcentaje'];
+             $comision_cierre = DB::table('comisiones_cierre')->where('id', '=', $result['id'])->update([
+                    'user_id' => $id_user,
+                     'nombre' => $contact,
+            'valor_comision'  => $porcentaje
+             ]);
+             if($updated_cierre == 1) array_push($updated_cierre, $result['id']);
+             else {
+               DB::table('comisiones_cierre')->insert([
+                       'user_id' => $id_user,
+                        'nombre' => $contact,
+              'comision_gral_id' => $general[0]->id,
+               'valor_comision'  => $porcentaje,
+                    'created_at' => \Carbon\Carbon::now()
+                ]);
+             }
+          }
+        }
+        $difference = array_diff($old_cierre, $updated_cierre);
+        if(!empty($difference)){
+          foreach($difference as $id){
+            DB::table('comisiones_cierre')->where('id',$id)->delete();
+          }
+        }
+      } else {
+        $comision_gral_new = DB::table('comision_gral')
+        ->insertGetId([
+           'itconcierge' => $request->sel_itconcierge_comision,
+          'inside_sales' => $request->sel_inside_sales,
+           'politica_id' => $request->sel_type_comision,
+           'kickoff_id' => $kickoff->id,
+            'created_at' => \Carbon\Carbon::now()
+        ]);
+        if (!empty($request->item)) {
+          foreach ($request->item as $key => $result) {
+                      $id_user = $result['contactInt'];
+                      $contact = !empty($result['contact']) ? $result['contact'] : '';
+                   $porcentaje = $result['porcentaje'];
+            $comision_contacto = DB::table('comisiones_contacto')
+             ->insertGetId([
+                    'user_id' => $id_user,
+                     'nombre' => $contact,
+           'comision_gral_id' => $comision_gral_new,
+            'valor_comision'  => $porcentaje,
+                 'created_at' => \Carbon\Carbon::now()
+             ]);
+          }
+        }
+        if (!empty($request->item_cierre)) {
+          foreach ($request->item_cierre as $key => $result) {
+                     $id_user = $result['contactInt'];
+                     $contact = $result['contact'];
+                  $porcentaje = $result['porcentaje'];
+             $comision_cierre = DB::table('comisiones_cierre')
+             ->insertGetId([
+                    'user_id' => $id_user,
+                     'nombre' => $contact,
+           'comision_gral_id' => $comision_gral_new,
+            'valor_comision'  => $porcentaje,
+                 'created_at' => \Carbon\Carbon::now()
+             ]);
+          }
         }
       }
-      if (!empty($request->item_cierre)) {
-        foreach ($request->item_cierre as $key => $result) {
-                   $id_user = $result['contactInt'];
-                   $contact = $result['contact'];
-                $porcentaje = $result['porcentaje'];
-           $comision_cierre = DB::table('comisiones_cierre')
-           ->insertGetId([
-                  'user_id' => $id_user,
-                   'nombre' => $contact,
-         'comision_gral_id' => $comision_gral_new,
-          'valor_comision'  => $porcentaje,
-               'created_at' => \Carbon\Carbon::now()
-           ]);
-        }
-      }
-      if (!empty($request->item_vendedor)) {
+
+      //Sin uso...
+      /*if (!empty($request->item_vendedor)) {
         foreach ($request->item_vendedor as $key => $result) {
                     $id_user = $result['contact'];
           $comision_vendedor = DB::table('comisiones_vendedores')
@@ -184,7 +260,7 @@ class KickoffController extends Controller
                   'created_at' => \Carbon\Carbon::now()
             ]);
         }
-      }
+      }*/
     }
 
     public function get_presupuesto_ejercido($id_doc)
@@ -804,7 +880,7 @@ class KickoffController extends Controller
       } catch(\Exception $e){
         $e->getMessage();
         DB::rollback();
-        
+
         return $e;
       }
 
@@ -855,40 +931,40 @@ class KickoffController extends Controller
       $id = $request->id;
       $message = "";
       $info = "";
-      
+
       DB::beginTransaction();
       try {
         //DOCUMENTO P
         $documentp = Documentp::find($id);
         $kickoff = Kickoff_project::where('id_doc', $documentp->id)->first();
         //verifico si ya hay un registro del kickoff en la tabla de comisiones
-        $result= DB::table('comision_gral')->where('kickoff_id', '=', $kickoff)->get();
+        $result= DB::table('comision_gral')->where('kickoff_id', '=', $kickoff->id)->get();
         // Si ya hay un registro de comision relacionado con el kickoff se elimina el registro para evitar duplicidad de datos
-        if(count($result) == 1){
+        if(count($result) > 0){
           //Logica para borrar el registro
-        }else{
-          
-          $result = DB::table('comision_gral')->where('id_contract', '=', $request->contract_anexo)
-                                    ->update(['kickoff_id' => $kickoff->id]);
-
-          if($result == 0){
-              $message = "Este contrato no tiene una comisión registrada.";
-              $info = "warning";
-            
-          }else{         
-              $message = "Kickoff vinculado con el contrato";
-              $info = "success"; 
-          } 
-
+          DB::table('comision_gral')->where('kickoff_id', '=', $kickoff->id)
+                                      ->update(['kickoff_id' => null]);
         }
 
-        DB::commit();
+        $result = DB::table('comision_gral')->where('id_contract', '=', $request->contract_anexo)
+                                    ->update(['kickoff_id' => $kickoff->id]);
+
+        if($result == 0){
+            $message = "Este contrato no tiene una comisión registrada.";
+            $info = "warning";
+            DB::rollback();
+
+        }else{
+            $message = "Kickoff vinculado con el contrato";
+            $info = "success";
+            DB::commit();
+        }
 
         return response()->json([
           "message" => $message,
           "info" => $info
         ]);
-        
+
 
       } catch(\Exception $e){
         $e->getMessage();
@@ -898,7 +974,7 @@ class KickoffController extends Controller
           "code" => 500
         ]);
       }
-      
+
     }
 
     public function update_kickoff_comision(Request $request)
@@ -968,12 +1044,12 @@ class KickoffController extends Controller
           'date' => \Carbon\Carbon::now(),
           'link' => route('view_history_documentp')
         ]);
-        
+
         $recipient = User::find($recipient_id);
         $recipient->notify(new MessageDocumentp($message));
-     
+
       }
-      //Enviar correo de aprobacion de compra 
+      //Enviar correo de aprobacion de compra
       $this->send_mail_aproved($id_doc);
 
     }
@@ -1025,13 +1101,13 @@ class KickoffController extends Controller
       $condiciones = DB::table('condiciones_comerciales')->get();
       $user_email = Auth::user()->email;
       $data_cart = DB::select('CALL px_docupentop_materialesXcarrito(?)' , array($documentp->documentp_cart_id));
-        
+
       $collection = collect($data_cart);
       // Filtrando equipo activo
       $equipo_activo = $collection->whereIn('categoria_id', [4, 6, 14]);
       // Enviando datos a la vista de la factura
       $pdf = PDF::loadView('permitted.planning.propuesta_comercial_pdf', compact('documentp', 'equipo_activo', 'servicios', 'condiciones'));
-      
+
       return $pdf->stream();
     }
 
@@ -1042,16 +1118,16 @@ class KickoffController extends Controller
       $condiciones = DB::table('condiciones_comerciales')->get();
       $user_email = Auth::user()->email;
       $data_cart = DB::select('CALL px_docupentop_materialesXcarrito(?)' , array($documentp->documentp_cart_id));
-      
+
       $collection = collect($data_cart);
       // Filtrando equipo activo
       $equipo_activo = $collection->whereIn('categoria_id', [4, 6, 14]);
-      
+
       $pdf = PDF::loadView('permitted.planning.propuesta_comercial_pdf', compact('documentp', 'equipo_activo', 'servicios', 'condiciones'));
 
       $data = [
         'fecha_aprobacion' => 'test',
-        'folio' => '0000', 
+        'folio' => '0000',
       ];
 
       Mail::send('mail.propuestaComercial', $data,function ($message) use ($pdf, $documentp, $user_email){

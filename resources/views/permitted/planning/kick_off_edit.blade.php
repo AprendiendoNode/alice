@@ -91,7 +91,7 @@
                                   <option selected value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
                                 @else
                                   <option value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
-                                @endif                            
+                                @endif
                                 @empty
                               @endforelse
                             @else
@@ -99,7 +99,7 @@
                                 <option value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
                               @endforeach
                             @endif
-                            
+
                           </select>
                         </th>
                       </tr>
@@ -169,14 +169,14 @@
                           <option selected value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
                         @else
                           <option value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
-                        @endif  
+                        @endif
                       @endforeach
                     @else
                       @foreach ($kickoff_inside_sales as $kickoff_inside_sales_data)
                         <option value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
-                      @endforeach 
+                      @endforeach
                     @endif
-                    
+
                   </select>
                 </div>
               </div>
@@ -194,14 +194,14 @@
                           <option selected value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
                         @else
                           <option value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
-                        @endif  
+                        @endif
                       @endforeach
-                    @else 
-                      @foreach ($itconcierge as $itconcierge_data)     
+                    @else
+                      @foreach ($itconcierge as $itconcierge_data)
                         <option value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
-                      @endforeach  
+                      @endforeach
                     @endif
-                    
+
                   </select>
                 </div>
               </div>
@@ -226,18 +226,18 @@
                           $item_contact=old('item_contact',[]);
                           $item_relation_contact_row = $item_contact_row;
                         @endphp
-                        
+
                         @if(count($comision_contacto) > 0)
                           @foreach ($comision_contacto as $comision_contact_data)
-                          <tr id="item_row_{{$item_contact_row}}">
+                          <tr id="item_row_{{$item_relation_contact_row}}">
 
                             <td class="text-center" style="vertical-align: middle;">
                             <button type="button" onclick="$('#item_row_{{$item_relation_contact_row}}').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">
                             <i class="fa fa-trash" style="font-size: 1rem;"></i>
                             </button>
-                            <input type="hidden" name="item[{{$item_relation_contact_row}}][id]" id="item_id_{{$item_relation_contact_row}}" />
+                            <input type="hidden" name="item[{{$item_relation_contact_row}}][id]" id="item_id_{{$item_relation_contact_row}}" value="{{$comision_contact_data->id}}" />
                             </td>
-            
+
                             <td>
                             <div class="form-group form-group-sm">
                             <select class="form-control form-control-sm input-sm col-contact-int" name="item[{{$item_relation_contact_row}}][contactInt]" id="item_contactInt_{{$item_relation_contact_row}}" data-row="{{$item_relation_contact_row}}">
@@ -245,7 +245,7 @@
                               @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
                                 @if($kickoff_colaboradores_data->id == $comision_contact_data->user_id)
                                   <option selected value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>
-                                @else 
+                                @else
                                   <option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>
                                 @endif
                               @empty
@@ -253,22 +253,22 @@
                             </select>
                             </div>
                             </td>
-                      
+
                             <td>
                             <div class="form-group form-group-sm">
-                            <input type="text" class="form-control form-control-sm input-sm text-right col-contact" name="item[{{$item_relation_contact_row}}][contact]" id="item_contact_{{$item_relation_contact_row}}" step="any"/>
+                            <input type="text" class="form-control form-control-sm input-sm text-right col-contact" name="item[{{$item_relation_contact_row}}][contact]" id="item_contact_{{$item_relation_contact_row}}" value="{{$comision_contact_data->nombre}}" step="any"/>
                             </div>
                             </td>
-                      
+
                             <td>
                             <div class="form-group form-group-sm">
-                            <input type="text" class="form-control form-control-sm input-sm text-right col-porcentaje" name="item[{{$item_relation_contact_row}}][porcentaje]" id="item_porcentaje_{{$item_relation_contact_row}}" required step="any" maxlength="10" />
+                            <input type="text" class="form-control form-control-sm input-sm text-right col-porcentaje" name="item[{{$item_relation_contact_row}}][porcentaje]" id="item_porcentaje_{{$item_relation_contact_row}}" required value="{{$comision_contact_data->valor_comision}}" step="any" maxlength="10" />
                             </div>
                             </td>
-                      
+
                             </tr>
                             @php
-                              $item_relation_contact_row++
+                              $item_relation_contact_row++;
                             @endphp
                           @endforeach
                         @endif
@@ -332,7 +332,7 @@
                   </table>
                 </div>
               </div>
-              
+
           </div>
          </form>
         </section>
@@ -493,7 +493,7 @@
                 <form id="form_kickoff" method="post">
                   <input type="hidden" name="id" id="id" value="{{$document[0]->id}}">
                   <div class="row">
-                      
+
                     <br>
                   <!--INFO-->
                   <div class="col-12 mt-4">
@@ -1476,14 +1476,14 @@
     }
   </style>
   <script type="text/javascript">
-    var item_relation_contact_row = "{{ $item_contact_row }}";
+    var item_relation_contact_row = "{{ $item_contact_row }}"; //Valor incorrecto
     var item_relation_cierre_row = "{{ $item_cierre_row }}";
-    
+
     $(function() {
-      
-      item_relation_contact_row = 0;
+
+      item_relation_contact_row = {{$item_relation_contact_row}}; //Valor correcto
       item_relation_cierre_row = 0;
-  
+
       $('#cont_vtc').change(function() {
         if ($(this).prop('checked') == true) {  $('#cont_vtc').val(1);  }
         else {  $('#cont_vtc').val(0);  }
@@ -1496,7 +1496,7 @@
         if ($(this).prop('checked') == true) {  $('#comp_ingreso').val(1);  }
         else {  $('#comp_ingreso').val(0);  }
       });
-  
+
       $('#comision').change(function() {
         if ($(this).prop('checked') == true) {
           cont_vtc = 1;
@@ -1512,7 +1512,7 @@
           $("#sel_inside_sales").prop('required',false);
           $("#sel_itconcierge_comision").prop('required',false);
         }
-  
+
         $('#sel_type_comision').trigger('change');
         $('#sel_inside_sales').val('').trigger('change');
         $('#sel_itconcierge_comision').val('').trigger('change');
@@ -1526,21 +1526,25 @@
         var group = $(this).val();
         data_comision(group);
       });
+      data_comision(1);
+      var kickoff_id = '{{$kickoff_approvals->kickoff_id}}';
+      var token = $('input[name="_token"]').val();
+      kickoff_cierre(kickoff_id, token);
     });
-  
+
     function addItemCont() {
       let politica = $("select[name='sel_type_comision']").val();
       if (politica != '') {
         var html = '';
         html += '<tr id="item_row_' + item_relation_contact_row + '">';
-  
+
         html += '<td class="text-center" style="vertical-align: middle;">';
         html += '<button type="button" onclick="$(\'#item_row_' + item_relation_contact_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
         html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
         html += '</button>';
         html += '<input type="hidden" name="item[' + item_relation_contact_row + '][id]" id="item_id_' + item_relation_contact_row + '" /> ';
         html += '</td>';
-  
+
         html += '<td>';
         html += '<div class="form-group form-group-sm">';
         html += '<select class="form-control form-control-sm input-sm col-contact-int" name="item[' + item_relation_contact_row + '][contactInt]" id="item_contactInt_' + item_relation_contact_row + '" data-row="' + item_relation_contact_row + '">'
@@ -1552,21 +1556,21 @@
         html += '</select>';
         html += '</div>';
         html += '</td>';
-  
+
         html += '<td>';
         html += '<div class="form-group form-group-sm">';
         html += '<input type="text" class="form-control form-control-sm input-sm text-right col-contact" name="item[' + item_relation_contact_row + '][contact]" id="item_contact_' + item_relation_contact_row + '" step="any"/>';
         html += '</div>';
         html += '</td>';
-  
+
         html += '<td>';
         html += '<div class="form-group form-group-sm">';
         html += '<input type="text" class="form-control form-control-sm input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" required step="any" maxlength="10" />';
         html += '</div>';
         html += '</td>';
-  
+
         html += '</tr>';
-  
+
         $("#item_contact tbody #add_item_contact").before(html);
         item_relation_contact_row++;
       }
@@ -1580,20 +1584,20 @@
          });
       }
     }
-  
+
     function addItemCierre() {
       let politica = $("select[name='sel_type_comision']").val();
       if (politica != '') {
         var html = '';
         html += '<tr id="item_cierre_row_' + item_relation_cierre_row + '">';
-  
+
         html += '<td class="text-center" style="vertical-align: middle;">';
         html += '<button type="button" onclick="$(\'#item_cierre_row_' + item_relation_cierre_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
         html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
         html += '</button>';
         html += '<input type="hidden" name="item_cierre[' + item_relation_cierre_row + '][id]" id="item_cierre_id_' + item_relation_cierre_row + '" /> ';
         html += '</td>';
-  
+
         html += '<td>';
         html += '<div class="form-group form-group-sm">';
         html += '<select class="form-control form-control-sm input-sm col-cierre-contact-int" name="item_cierre[' + item_relation_cierre_row + '][contactInt]" id="item_cierre_contactInt_' + item_relation_cierre_row + '" data-row="' + item_relation_cierre_row + '">'
@@ -1605,19 +1609,19 @@
         html += '</select>';
         html += '</div>';
         html += '</td>';
-  
+
         html += '<td>';
         html += '<div class="form-group form-group-sm">';
         html += '<input type="text" class="form-control form-control-sm input-sm text-right col-cierre-contact" name="item_cierre[' + item_relation_cierre_row + '][contact]" id="item_cierre_contact_' + item_relation_cierre_row + '" step="any" />';
         html += '</div>';
         html += '</td>';
-  
+
         html += '<td>';
         html += '<div class="form-group form-group-sm">';
         html += '<input type="text" class="form-control form-control-sm input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" required step="any" maxlength="10" />';
         html += '</div>';
         html += '</td>';
-  
+
         html += '</tr>';
         $("#item_cierre tbody #add_item_cierre").before(html);
         item_relation_cierre_row++;
@@ -1632,10 +1636,10 @@
          });
       }
     }
-  
 
-  
-  
+
+
+
     function data_comision(identX){
       var id = identX;
       var _token = $('input[name="_token"]').val();
@@ -1677,6 +1681,78 @@
         }
       });
     }
+
+    function kickoff_cierre(ix, token) {
+      $.ajax({
+          url: "/info_kickoff_cierre",
+          type: "POST",
+          data: { _token : token, ident: ix },
+          success: function (data) {
+            data.forEach(function(key,i) {
+              var html = '';
+              html += '<tr id="item_cierre_row_' + item_relation_cierre_row + '">';
+
+              html += '<td class="text-center" style="vertical-align: middle;">';
+              html += '<button type="button" onclick="$(\'#item_cierre_row_' + item_relation_cierre_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+              html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+              html += '</button>';
+              html += '<input type="hidden" name="item_cierre[' + item_relation_cierre_row + '][id]" id="item_cierre_id_' + item_relation_cierre_row + '" value="' + key.id + '" /> ';
+              html += '</td>';
+
+              html += '<td>';
+              html += '<div class="form-group form-group-sm">';
+              html += '<select class="form-control form-control-sm input-sm col-cierre-contact-int" name="item_cierre[' + item_relation_cierre_row + '][contactInt]" id="item_cierre_contactInt_' + item_relation_cierre_row + '" data-row="' + item_relation_cierre_row + '">'
+              html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+              @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+              if ( key.user_id == {{ $kickoff_colaboradores_data->id  }} ) {
+                html += '<option value="{{ $kickoff_colaboradores_data->id  }}" selected>{{ $kickoff_colaboradores_data->name }}</option>';
+              }
+              else {
+                html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
+              }
+              @empty
+              @endforelse
+              html += '</select>';
+              html += '</div>';
+              html += '</td>';
+
+              html += '<td>';
+              html += '<div class="form-group form-group-sm">';
+              if ( key.nombre == null ||  key.nombre == '' ) {
+                html += '<input type="text" class="form-control form-control-sm input-sm text-right col-cierre-contact" name="item_cierre[' + item_relation_cierre_row + '][contact]" id="item_cierre_contact_' + item_relation_cierre_row + '" step="any" />';
+              }
+              else {
+                html += '<input type="text" class="form-control form-control-sm input-sm text-right col-cierre-contact" name="item_cierre[' + item_relation_cierre_row + '][contact]" id="item_cierre_contact_' + item_relation_cierre_row + '" value="' + key.nombre + '" step="any" />';
+              }
+              html += '</div>';
+              html += '</td>';
+
+              html += '<td>';
+              html += '<div class="form-group form-group-sm">';
+              html += '<input type="text" class="form-control form-control-sm input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" value="' + (key.valor_comision == null ? "" : key.valor_comision) + '" required step="any" maxlength="10" />';
+              html += '</div>';
+              html += '</td>';
+
+              html += '</tr>';
+              $("#item_cierre tbody #add_item_cierre").before(html);
+              item_relation_cierre_row++;
+            });
+          },
+          error: function (error, textStatus, errorThrown) {
+              if (error.status == 422) {
+                  var message = error.responseJSON.error;
+                  Swal.fire({
+                     type: 'error',
+                     title: 'Oops...',
+                     text: message,
+                  });
+              } else {
+                  alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+              }
+          }
+      });
+    }
+
   </script>
-  
+
 @endpush
