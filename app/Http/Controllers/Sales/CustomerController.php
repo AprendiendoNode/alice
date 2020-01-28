@@ -25,10 +25,11 @@ class CustomerController extends Controller
       $countries = DB::select('CALL GetAllCountryActivev2 ()', array());
       $states = DB::select('CALL GetAllStateActivev2 ()', array());
       $cities = DB::select('CALL GetAllCitiesv2 ()', array());
-
+      $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+      
       return view('permitted.sales.customers',compact(
       'payment_term', 'payment_way', 'payment_methods',
-      'cfdi_uses', 'salespersons', 'countries', 'states', 'cities'
+      'cfdi_uses', 'salespersons', 'countries', 'states', 'cities', 'cuentas_contables'
       ));
     }
 
@@ -248,6 +249,33 @@ class CustomerController extends Controller
               return response()->json($customer, 200);
           }
           return response()->json(['error' => __('general.error_general')], 422);
+      }
+
+      public function get_all_catalogo_cuentas()
+      {
+        $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+
+        return $cuentas_contables;
+      }
+
+      public function save_integration_cc_customer_provider(Request $request)
+      {
+
+        $sql = DB::table('integracion_contable')->updateOrInsert(
+            ['id_cliente_prov' => $request->id_customer_cc],
+            ['id_cuenta_contable' => $request->cuenta_contable,
+             'id_cuenta_compl' => $request->cuenta_complementaria,
+             'id_cuenta_anticipo' => $request->cuenta_anticipo,
+             'provider' => $request->provider
+        ]);     
+        
+      }
+    
+      public function get_integration_cc_customer_provider(Request $request)
+      {
+        $result = DB::select('CALL px_integracion_contable_data(?)', array($request->id_cliente_prov));
+
+        return $result;
       }
 
     /**

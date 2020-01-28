@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View provider') )
-    {{ trans('invoicing.customers') }}
+    Proveedores
   @else
   {{ trans('message.denied') }}
   @endif
@@ -10,7 +10,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View provider') )
-    {{ trans('invoicing.customers') }}
+    Proveedores
   @else
   {{ trans('message.denied') }}
   @endif
@@ -349,12 +349,12 @@
                 <table id="table_customers" name='table_customers' class="table table-striped border display nowrap compact-tab" style="width:100%; font-size: 10px;">
                   <thead class="bg-primary">
                     <tr>
+                      <th>Opciones</th>
                       <th>Nombre</th>
                       <th>RFC</th>
                       <th>Correo electrónico</th>
                       <th>Teléfono</th>
                       <th>Estatus</th>
-                      <th>Opciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -364,6 +364,71 @@
             </div>
           </div>
 
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-------------MODAL INTEGRACIÓN CONTABLE------------>
+  <div id="modal-integracion-contable" class="modal fade" role="dialog" aria-labelledby="modal-integracion-contable" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modaledit">Integración contable</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="form_integration_cc" name="integration_cc" class="forms-sample">
+                {{ csrf_field() }}
+                <input type="hidden" id="id_customer_cc" name="id_customer_cc">
+                <input type="hidden" id="provider" name="provider" value="1">
+                <div class="form-group row">
+                  <label for="customer_name" class="col-sm-4 col-form-label">Cliente: <span style="color: red;">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" readonly style="min-width: 100px;" class="form-control form-control-sm required select2" id="customer_name" name="customer_name">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="cuenta_contable" class="col-sm-4 col-form-label">Cuenta contable:<span style="color: red;">*</span></label>
+                  <div class="col-sm-8">
+                    <select  class="form-control form-control-sm required select2" id="cuenta_contable" name="cuenta_contable">
+                      <option value="">Elegir</option>
+                      @foreach ($cuentas_contables as $cuenta_data)
+                        <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
+                      @endforeach
+                    </select> 
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="cuenta_complementaria" class="col-sm-4 col-form-label">Cuenta complementaria:<span style="color: red;">*</span></label>
+                  <div class="col-sm-8">
+                    <select class="form-control form-control-sm required select2" id="cuenta_complementaria" name="cuenta_complementaria">
+                      <option value="">Elegir</option>
+                      @foreach ($cuentas_contables as $cuenta_data)
+                        <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
+                      @endforeach
+                    </select> 
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="cuenta_anticipo" class="col-sm-4 col-form-label">Cuenta anticipo:<span style="color: red;">*</span></label>
+                  <div class="col-sm-8">
+                    <select class="form-control form-control-sm required select2" id="cuenta_anticipo" name="cuenta_anticipo">
+                      <option value="">Elegir</option>
+                      @foreach ($cuentas_contables as $cuenta_data)
+                        <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
+                      @endforeach
+                    </select> 
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="fas fa-check" style="margin-right: 4px;"></i> Aceptar</button>
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
         </div>
       </div>
     </div>
@@ -400,6 +465,14 @@
     }
     .select2-selection__arrow {
       height: 36px !important;
+    }
+
+    .dropdown-menu {
+      font-size: 0.8rem !important;
+    }
+
+    #cuenta_contable, #cuenta_complementaria, #cuenta_anticipo{
+      width: 400px;
     }
   </style>
   @else

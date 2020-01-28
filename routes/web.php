@@ -1219,7 +1219,9 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
    Route::get('/view_balance_general_mayor','Accounting\BalanceController@view_balance_general_mayor');
    Route::get('/view_balance_general_filter','Accounting\BalanceController@view_balance_general_mayor_filter');
    Route::post('/get_balance_general_mayor_data','Accounting\BalanceController@get_balance_general_mayor');
-});
+   Route::post('/save_integration_cc_customer_provider','Sales\CustomerController@save_integration_cc_customer_provider');
+   Route::post('/get_integration_cc_customer_provider','Sales\CustomerController@get_integration_cc_customer_provider');
+  });
 
 Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   // Compras

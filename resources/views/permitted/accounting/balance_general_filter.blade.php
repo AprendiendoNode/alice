@@ -41,10 +41,10 @@
 
            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
              <div class="table-responsive">
-               <table id="table_balance" class="table table-striped table-bordered table-hover compact-tab w-100">
+               <table id="table_balance" class="table table-striped table-bordered table-hover table-sm compact-tab w-100">
                  <thead>
                    <tr class="bg-dark font-weight-bold" style="background: #088A68;">
-                     <th colspan="2"> <small>miles de Pesos (MxN)</small> </th>
+                     <th colspan="2"> <small>MILES DE PESOS (MxN)</small> </th>
                      <th style="background-color:#34BFCC !important"> <small>Ene</small> </th>
                      <th style="background-color:#34BFCC !important"> <small>Feb</small> </th>
                      <th style="background-color:#34BFCC !important"> <small>Mar</small> </th>
@@ -60,12 +60,21 @@
                    </tr>
                    <tr>
                     <th class="bg-secondary" colspan="14">ACTIVO</th>
-                   </tr>
-                   <tr>
-                    <th class="bg-warning" colspan="14">Circulante</th>
-                   </tr>
+                   </tr> 
                  </thead>
                  <tbody>
+                  
+                   <tr>
+                    <th class="bg-warning" colspan="14">CIRCULANTE</th>
+                   </tr>
+                   <!---foreach-->
+                  <tr>
+                    <th class="bg-secondary text-white" colspan="2">TOTAL ACTIVO CIRCULANTE</th>
+                   </tr>
+                   <!---foreach-->
+                   <tr>
+                    <th class="bg-warning" colspan="14">FIJO</th>
+                   </tr>
                  </tbody>
                  <tfoot id='tfoot_average'>
                    <tr>
