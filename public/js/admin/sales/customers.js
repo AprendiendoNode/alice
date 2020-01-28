@@ -451,7 +451,7 @@ function edit_customers(e){
              text: 'Realice la operacion nuevamente!',
            });
          }
-           //$('#modal-Edit').modal('show');
+           
        },
        error: function (data) {
          alert('Error:', data);
@@ -467,7 +467,7 @@ function edit_cc_modal(e){
   $('#cuenta_contable').val(null).trigger('change');
   $('#cuenta_complementaria').val(null).trigger('change');
   $('#cuenta_anticipo').val(null).trigger('change');
-    console.log(id_cliente_prov);
+    
     $.ajax({
       type: "POST",
       url: '/sales/customers-edit',
@@ -536,6 +536,7 @@ $("#form_integration_cc").on("submit", function(e){
       success: function (data, textStatus, xhr){
         
         let timerInterval;
+        
         Swal.fire({
           type: 'success',
           title: 'Operación Completada!',

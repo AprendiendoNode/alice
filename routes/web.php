@@ -1043,6 +1043,9 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
     Route::post('/products-status-create', 'Catalogs\ProductController@createStatus');
     Route::post('/products-store', 'Catalogs\ProductController@store');
     Route::post('/products-edit', 'Catalogs\ProductController@edit');
+    Route::post('/save_integration_cc_products', 'Catalogs\ProductController@save_integration_cc_products');
+    Route::post('/get_cc_products', 'Catalogs\ProductController@get_cc_by_product');
+    Route::post('/delete_cc_product', 'Catalogs\ProductController@delete_cc_product');
 
     //Catalogo - Category
     Route::get('/categories', 'Catalogs\CategoryController@index');

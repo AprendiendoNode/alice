@@ -1,3 +1,7 @@
+$(function() {
+  $('.cuenta_contable').select2();
+});
+
 var _token = $('input[name="_token"]').val();
 
 const headers = new Headers({
@@ -515,6 +519,16 @@ function table_product(datajson, table){
       badge= '<span class="badge badge-danger badge-pill text-uppercase text-white">NO</span>';
     }
     vartable.fnAddData([
+      `<div class="btn-group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <a class="dropdown-item" href="javascript:void(0);" onclick="edit_product(this)" class="btn btn-primary  btn-sm" value="${information.id}"><i class="fas fa-pencil-alt"></i> Editar</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="edit_cc_modal(this)" class="btn btn-dark  btn-sm" value="${information.id}"><i class="fas fa-plus"></i> Agregar cuenta contable</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="view_cc_modal(this)" class="btn btn-dark  btn-sm" value="${information.id}"><i class="fas fa-eye"></i> Ver cuentas asignadas</a>
+          </div>
+      </div>`,
       information.name,
       information.code,
       information.model,
@@ -523,8 +537,7 @@ function table_product(datajson, table){
       information.sat_product,
       information.sort_order,
       '<span class="badge badge-secondary badge-pill text-uppercase text-white">'+information.status_name+'</span>',
-      badge,
-      '<a href="javascript:void(0);" onclick="edit_product(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
+      badge
     ]);
   });
 }
@@ -733,3 +746,159 @@ $('#edit_sel_categoria').on('change', function(){
   
 })
 
+function edit_cc_modal(e){
+  var valor= e.getAttribute('value');
+  var _token = $('input[name="_token"]').val();
+  
+    $('.cuenta_contable').val(null).trigger('change');
+    //$('#cuenta_complementaria').val(null).trigger('change');
+    //$('#cuenta_anticipo').val(null).trigger('change');
+    
+    $.ajax({
+      type: "POST",
+      url: '/catalogs/products-edit',
+      data: {value : valor, _token : _token},
+      success: function (data) {
+
+        if (data != []) {        
+          $("#id_product_cc").val(valor);
+          $('#customer_name').val(data[0].name);    
+          //get_data_integracion_contable(id_cliente_prov);
+          $('#modal-integracion-contable').modal('show');
+        }
+        else {
+          Swal.fire({
+            type: 'error',
+            title: 'Error encontrado..',
+            text: 'Realice la operacion nuevamente!',
+          });
+        }
+      
+      },
+      error: function (data) {
+        alert('Error:', data);
+      }
+  })
+}
+
+function view_cc_modal(e){
+  var valor = e.getAttribute('value');
+  var _token = $('input[name="_token"]').val();
+  $("#tabla_productos_cc tbody tr").remove();
+    
+    $.ajax({
+      type: "POST",
+      url: '/catalogs/get_cc_products',
+      data: {id_product : valor, _token : _token},
+      success: function (data) {
+
+        if (data != []) {        
+          $.each(data, function( i, key ) {
+           
+            $('#tabla_productos_cc tbody').append('<tr id="' + key.id + '"><td>'
+              + key.products + '</td><td>'    
+              + key.cuenta + '</td><td>'
+              + key.nombre + '</td><td>'
+              + '<button type="button" onclick="delete_cc_product('+key.id+');;deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td>'
+              + '</td></tr>');
+           });
+
+          $('#modal-cc-products').modal('show');
+        }
+        else {
+          Swal.fire({
+            type: 'error',
+            title: 'Error encontrado..',
+            text: 'Realice la operacion nuevamente!',
+          });
+        }
+      
+      },
+      error: function (data) {
+        alert('Error:', data);
+      }
+  })
+}
+
+function delete_cc_product(id_cc_product){
+    $.ajax({
+      type: "POST",
+      url: '/catalogs/delete_cc_product',
+      data: {id_cc : id_cc_product, _token : _token},
+      success: function (data, textStatus, xhr) {
+
+        if (xhr.status == 200) {        
+          Swal.fire({
+            type: 'success',
+            title: 'Operacion realizada',
+            text: 'Se elimino la cuenta contable del producto!',
+          });
+        }
+        else {
+          Swal.fire({
+            type: 'error',
+            title: 'Error encontrado..',
+            text: 'No se elimino la cuenta contable del producto!',
+          });
+        }
+      
+      },
+      error: function (data) {
+        alert('Error:', data);
+      }
+  })
+}
+
+//Elimino la columna  seleccionada de la tabla de cuentas contables 
+
+function deleteRow(fila) {
+  var row = fila.parentNode.parentNode;
+  row.parentNode.removeChild(row);
+}
+
+$("#form_integration_cc").on("submit", function(e){
+  e.preventDefault();
+
+  var form = $('#form_integration_cc')[0];
+  var formData = new FormData(form);
+
+    $.ajax({
+      type: "POST",
+      url: "/catalogs/save_integration_cc_products",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (data, textStatus, xhr){
+        
+        let timerInterval;
+        Swal.fire({
+          type: 'success',
+          title: 'Operación Completada!',
+          html: 'Aplicando los cambios.',
+          timer: 2500,
+          onBeforeOpen: () => {
+            Swal.showLoading()
+            timerInterval = setInterval(() => {
+              Swal.getContent().querySelector('strong')
+            }, 100)
+          },
+          onClose: () => {
+            clearInterval(timerInterval)
+          }
+        }).then((result) => {
+          console.log(result);
+          if (xhr.status == 200) {
+            //window.location.href = "/catalogs/products";
+          }
+        });
+        
+      },
+      error: function (err) {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: err.statusText,
+          });
+      }
+    });
+})

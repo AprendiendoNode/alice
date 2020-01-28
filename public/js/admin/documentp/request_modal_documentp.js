@@ -360,7 +360,7 @@ function data_header(miInit, id_documentp){
           $('#densidad').text('');
           $('#sitios').text('');
           $('#num_oportunidad').text('');
-          $('#comentario_compras').html('');
+          $('#comentario_compras').text('');
         }else{
           let type_doc = data[0].doc_type;
           type_doc == 1 ? $('#tipo_doc').text('Documento P') : $('#tipo_doc').text('Documento M');
@@ -368,7 +368,7 @@ function data_header(miInit, id_documentp){
           nombre_proyecto == null ?   $('#proyecto').text(data[0].anexo) :  $('#proyecto').text(data[0].nombre_proyecto);
           //Formatear la fecha
           var fechainvertida=invertirFecha(data[0].fecha);
-          //$('#fecha').text(data[0].fecha);
+          $('#comentario_compras').text(data[0].comentario_compras);
           $('#fecha').text(fechainvertida);
           $('#id_doc').val(data[0].id);
           $('#folio').text(data[0].folio);
@@ -380,7 +380,7 @@ function data_header(miInit, id_documentp){
           $('#densidad').text(data[0].densidad);
           $('#sitios').text(data[0].sitios);
           $('#num_oportunidad').text(data[0].num_oportunidad);
-          $('#comentario_compras').html(data[0].comentario_compras);
+          
            let id_documentp = data[0].id;
            document.getElementById('button_history').dataset.id = id_documentp;
         }

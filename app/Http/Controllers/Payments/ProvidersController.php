@@ -214,13 +214,13 @@ class ProvidersController extends Controller
     public function save_integration_cc_customer_provider(Request $request)
     {
 
-    $sql = DB::table('integracion_contable')->updateOrInsert(
-        ['id_cliente_prov' => $request->id_customer_cc],
-        ['id_cuenta_contable' => $request->cuenta_contable,
-        'id_cuenta_compl' => $request->cuenta_complementaria,
-        'id_cuenta_anticipo' => $request->cuenta_anticipo,
-        'provider' => 1
-    ]);     
+        $sql = DB::table('integracion_contable')->updateOrInsert(
+            ['id_cliente_prov' => $request->id_customer_cc],
+            ['id_cuenta_contable' => $request->cuenta_contable,
+            'id_cuenta_compl' => $request->cuenta_complementaria,
+            'id_cuenta_anticipo' => $request->cuenta_anticipo,
+            'provider' => 1
+        ]);     
     
     }
 

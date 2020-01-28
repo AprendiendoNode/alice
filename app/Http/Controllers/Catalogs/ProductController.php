@@ -33,8 +33,9 @@ class ProductController extends Controller
       $list_marca = DB::table('marcas')->select('Nombre_marca')->pluck('Nombre_marca')->all();
       $list_espec = DB::table('especificacions')->select('name')->where([['status', '=', 1],])->pluck('name')->all();
       $especificacion = DB::select('CALL GetAllEspecificacionActivev2 ()', array());
+      $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
 
-      return view('permitted.catalogs.products',compact('currency','unitmeasures','satproduct', 'customer', 'category','brands','models',
+      return view('permitted.catalogs.products',compact('currency','unitmeasures','satproduct', 'customer', 'category','brands','models', 'cuentas_contables',
       'estatus', 'marcas', 'especificacion', 'marcas', 'list_moneda', 'list_marca', 'list_espec', 'country', 'materiales', 'unidades', 'material_type'));
     }
 
@@ -288,26 +289,37 @@ class ProductController extends Controller
       return $resultados;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function save_integration_cc_products(Request $request)
     {
-        //
+      
+        $sql = DB::table('products_cuenta_contable')->insert(
+            ['product_id' => $request->id_product_cc,
+             'id_cuenta_contable' => $request->cuenta_contable     
+        ]);
+        
+        return response()->json([
+          "message" => "Cuenta contable guardada",
+          "code" => 200
+        ]);
+    
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function get_cc_by_product(Request $request)
     {
-        //
+      $result = DB::select('CALL px_cuenta_contable_xproducto(?)', array($request->id_product));
+
+      return $result;
     }
+
+    public function delete_cc_product(Request $request)
+    {
+      $sql = DB::table('products_cuenta_contable')->where('id', '=', $request->id_cc)->delete();
+
+      return response()->json([
+        "message" => "La cuenta contable se eliminó del producto",
+        "code" => 200
+      ]);
+
+    }
+
 }

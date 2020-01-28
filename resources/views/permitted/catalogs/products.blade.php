@@ -807,6 +807,79 @@
       </div>
     </div>
   </div>
+  <!--------MODAL TABLA CUENTAS CONTABLES PRODUCTOS----------->
+  <div id="modal-cc-products" class="modal fade" role="dialog" aria-labelledby="modal-integracion-contable" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modaledit">Cuentas asignadas a producto:</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <table id="tabla_productos_cc" class="table table-condensed table-sm">
+                <thead>
+                  <tr style="background: #496E7D;color:white;font-size:10px;">
+                    <th>Producto</th>
+                    <th>Cuenta contable</th>
+                    <th>Nombre</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-------------MODAL INTEGRACIÓN CONTABLE------------>
+  <div id="modal-integracion-contable" class="modal fade" role="dialog" aria-labelledby="modal-integracion-contable" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modaledit">Integración contable de productos</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form id="form_integration_cc" name="form_integration_cc" class="forms-sample">
+                {{ csrf_field() }}
+                <input type="hidden" id="id_product_cc" name="id_product_cc">
+                <div class="form-group row">
+                  <label for="customer_name" class="col-sm-4 col-form-label">Producto: <span style="color: red;">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" readonly style="min-width: 100px;" class="form-control form-control-sm required select2" id="customer_name" name="customer_name">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="cuenta_contable" class="col-sm-4 col-form-label">Cuenta contable:<span style="color: red;">*</span></label>
+                  <div class="col-sm-8">
+                    <select  class="form-control form-control-sm cuenta_contable select2" id="cuenta_contable" name="cuenta_contable">
+                      <option value="">Elegir</option>
+                      @foreach ($cuentas_contables as $cuenta_data)
+                        <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
+                      @endforeach
+                    </select> 
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy"><i class="fas fa-check" style="margin-right: 4px;"></i> Aceptar</button>
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
   @else
     @include('default.denied')
   @endif
@@ -898,6 +971,14 @@
     }
     .toggle.btn {
       min-width: 5rem !important;
+    }
+
+    .dropdown-menu {
+      font-size: 0.8rem !important;
+    }
+
+    #cuenta_contable{
+      width: 400px;
     }
   </style>
   @else
