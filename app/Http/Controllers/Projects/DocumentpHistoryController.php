@@ -311,6 +311,15 @@ class DocumentpHistoryController extends Controller
       return "true";
     }
 
+    public function set_comment_compras_documentp(Request $request)
+    {
+      $documentp = Documentp::findOrFail($request->id_doc);
+      $documentp->comentario_compras = $request->comentario_compras;
+      $documentp->save();
+
+      return "true";
+    }
+
     public function check_document_type($id_doc)
     {
       $doc = Documentp::find($id_doc);

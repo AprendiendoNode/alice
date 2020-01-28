@@ -16,8 +16,9 @@ function enviar(e){
   let id_documentp = element.dataset.id;
   let id_cart = element.dataset.cart;
 
-  data_header(miInit, id_documentp);
+  
   data_table_products(miInit, id_documentp, id_cart);
+  data_header(miInit, id_documentp);
   data_table_project_advance(miInit, id_documentp);
   data_status_users(miInit, id_documentp);
   data_deny(miInit, id_documentp);
@@ -346,6 +347,7 @@ function data_header(miInit, id_documentp){
       })
       .then(data => {
         if(data == null || data == '[]'){
+          $('#id_doc').val('');
           $('#tipo_doc').text('');
           $('#fecha').text('');
           $('#folio').text('');
@@ -358,6 +360,7 @@ function data_header(miInit, id_documentp){
           $('#densidad').text('');
           $('#sitios').text('');
           $('#num_oportunidad').text('');
+          $('#comentario_compras').html('');
         }else{
           let type_doc = data[0].doc_type;
           type_doc == 1 ? $('#tipo_doc').text('Documento P') : $('#tipo_doc').text('Documento M');
@@ -377,6 +380,7 @@ function data_header(miInit, id_documentp){
           $('#densidad').text(data[0].densidad);
           $('#sitios').text(data[0].sitios);
           $('#num_oportunidad').text(data[0].num_oportunidad);
+          $('#comentario_compras').html(data[0].comentario_compras);
            let id_documentp = data[0].id;
            document.getElementById('button_history').dataset.id = id_documentp;
         }
@@ -489,6 +493,21 @@ function data_table_project_advance(miInit, id_documentp){
 
 }
 
+function save_comentario_compras(){
+
+  fetch(`/documentp_table_project_advance/id_doc/${id_documentp}`,  miInit)
+      .then(response => {
+        return response.text();
+      })
+      .then(html => {
+        $('#data_installation').html(html);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+
+}
+
 function show_logs(e){
   var element = e;
   var _token = $('input[name="_token"]').val();
@@ -581,6 +600,8 @@ function data_table_logs_advance_projects(miInit, id_documentp){
         console.log(error);
       })
 }
+
+
 
 
 var Configuration_table_responsive_logs= {

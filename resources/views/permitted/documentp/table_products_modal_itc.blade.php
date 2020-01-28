@@ -204,47 +204,39 @@ table tfoot td, table tfoot th {
 
     <tfoot>
       <tr>
-          <td></td>
-          <td colspan="3"></td>
-          <td align="right"></td>
-          <td align="right">-</td>
+        <td rowspan="6" colspan="2">
+          <form id="form_add_comment_compras" name="form_add_comment_compras">
+            <textarea disabled id="comentario_compras" name="comentario_compras" placeholder="Observaciones compras..." class="form-control" cols="30" rows="8"></textarea>       
+          </form>
+        </td>    
+            
+          <td colspan="9" align="right">Total Equipo Activo USD</td>
+          <td colspan="2" class="text-danger" align="right">$ {{ number_format($total_ea, 2, '.', ',') }}</td>
       </tr>
-        <tr>
-            <td></td>
-            <td id="" rowspan="4" colspan="4"> </td>
-            <td colspan="6" align="right">Total Equipo Activo USD</td>
-            <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_ea, 2, '.', ',') }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td colspan="5" align="right">Total Material USD</td>
-            <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_materiales, 2, '.', ',') }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td colspan="5" align="right">Total Mano de obra USD</td>
-            <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td colspan="5" align="right">Total Viaticos USD</td>
-          <td colspan="3" class="text-danger" align="right">$ {{ number_format($total_viatico, 2, '.', ',') }}</td>
+      <tr>
+          <td colspan="9" align="right">Total Material USD</td>
+          <td colspan="2" class="text-danger" align="right">$ {{ number_format($total_materiales, 2, '.', ',') }}</td>
       </tr>
-        <tr>
-          @php
-            $total = 0.0;
-            $total = $total_ea + $total_materiales + $total_mano_obra + $total_viatico;
-          @endphp
-            <td></td>
-            <td></td>
-            <td colspan="9" align="right">Total USD</td>
-            <td colspan="2" class="text-danger" align="right" class="">$ {{ number_format($total, 2, '.', ',') }}</td>
-        </tr>
-    </tfoot>
-  </table>
+      <tr>  
+          <td colspan="9" align="right">Total Mano de obra USD</td>
+          <td colspan="2" class="text-danger" align="right">$ {{ number_format($total_mano_obra, 2, '.', ',') }}</td>
+      </tr>
+      <tr>
+        <td colspan="9" align="right">Total Viaticos USD</td>
+        <td colspan="2" class="text-danger" align="right">$ {{ number_format($total_viatico, 2, '.', ',') }}</td>
+    </tr>
+      <tr>
+        @php
+          $total = 0.0;
+          $total = $total_ea + $total_materiales + $total_mano_obra + $total_viatico;
+        @endphp
+          
+          <td colspan="9" align="right">Total USD</td>
+          <td colspan="2" class="text-danger" align="right" class="">$ {{ number_format($total, 2, '.', ',') }}</td>
+      </tr>
+
+  </tfoot>
+</table>
 </div>
 <style media="screen">
 .progress-bar{
