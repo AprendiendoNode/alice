@@ -1242,8 +1242,16 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
 Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){
   //Integracion contable
   Route::get('/accounting_account', 'Integration\AccountingAccountController@index');
+  Route::post('/accounting_account_show', 'Integration\AccountingAccountController@show');
+  Route::post('/accounting_account_open', 'Integration\AccountingAccountController@open');
+  Route::post('/accounting_account_closed', 'Integration\AccountingAccountController@closed');
+
   Route::get('/rubros', 'Integration\RubrosController@index');
+  Route::post('/rubros_show', 'Integration\RubrosController@show');
+
   Route::get('/grouping_code', 'Integration\GroupingCodeController@index');
+  Route::post('/grouping_code_show', 'Integration\GroupingCodeController@show');
+
 });
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
 {

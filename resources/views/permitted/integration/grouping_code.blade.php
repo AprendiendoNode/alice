@@ -18,6 +18,35 @@
 
 @section('content')
   @if( auth()->user()->can('View grouping code') )
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form id="form" name="form" enctype="multipart/form-data">
+              {{ csrf_field() }}
+            </form>
+            <div class="table-responsive table-data table-dropdown">
+              <table id="table_filter" name='table_filter' class="table table-striped table-hover table-condensed">
+                <thead>
+                  <tr class="mini">
+                      <th class="text-center" width="5%">@lang('general.column_actions')</th>
+                      <th class="text-center">
+                          Nivel
+                      </th>
+                      <th class="text-center">
+                          Código agrupador
+                      </th>
+                      <th class="text-left">
+                          Nombre
+                      </th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   @else
     @include('default.denied')
   @endif
