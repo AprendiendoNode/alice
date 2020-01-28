@@ -9,6 +9,11 @@ use File;
 use Storage;
 use App\Models\Base\DocumentType;
 use App\Helpers\Helper;
+use App\Models\Catalogs\PaymentTerm;
+use App\Models\Purchases\Purchase;
+use App\Models\Purchases\PurchaseLine;
+use App\Models\Purchases\PurchaseTax;
+use App\Models\Catalogs\Tax;
 
 use Carbon\Carbon;
 
@@ -37,7 +42,7 @@ class PurchasesController extends Controller
         $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
         $impuestos =  DB::select('CALL GetAllTaxesActivev2 ()', array());
 
-        $document_type = DocumentType::where('cfdi_type_id', 1)->get();// Solo documentos de ingresos
+        $document_type = DocumentType::where('cfdi_type_id', 2)->get();// Solo documentos de ingresos
 
         $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
 
@@ -86,52 +91,283 @@ class PurchasesController extends Controller
      */
     public function store(Request $request)
     {
-
-        $provider = $request->customer_id;
-        $currency = $request->currency_id;
-        $currency_value = $request->currency_value;
-        $date_actual = $request->date;
-        $date_fact = $request->date_fact;
-        $payment_term = $request->payment_term_id;
-        $date_end = $request->date_due;
-        $payment_way = $request->payment_way_id;
-        $payment_method = $request->payment_method_id;
-        $cfdi_use = $request->cfdi_use_id;
-        $document_type = $request->document_type;
-        $iva = $request->iva_general;
-        $iva_ret = $request->iva_retencion;
-        $pdf_fact = $request->file('file_pdf');
-        $xml_fact = $request->file('file_xml');
+        // Variables del controller
+            /*$provider = $request->customer_id;
+            $currency = $request->currency_id;
+            $currency_value = $request->currency_value;
+            $date_actual = $request->date;
+            $date_fact = $request->date_fact;
+            $payment_term = $request->payment_term_id;
+            $date_end = $request->date_due;
+            $payment_way = $request->payment_way_id;
+            $payment_method = $request->payment_method_id;
+            $cfdi_use = $request->cfdi_use_id;
+            $document_type = $request->document_type;
+            $iva = $request->iva_general;
+            $iva_ret = $request->iva_retencion;
+            $pdf_fact = $request->file('file_pdf');
+            $xml_fact = $request->file('file_xml');*/
+        //
+        // return (string)filesize($request->file('file_pdf'));
         
-        
-        return (string)filesize($request->file('file_pdf'));
+        // Begin a transaction
+        // \DB::beginTransaction();
 
-        //Factura PDF y XML
-        /*if($pdf_fact != null )
-        {
-            $file_extension = $file_pdf->getClientOriginalExtension(); //** get filename extension
-            $fileName = $factura.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
-            $pdf= $request->file('fileInput')->storeAs('filestore/storage/factura/'.date('Y-m'), $fileName);
-            DB::table('pay_facturas')->insert([
-                'name' => $pdf,
-                'payment_id' => $id_payment
+        // Open a try/catch block
+        try {
+            //Logica            
+            $request->merge(['created_uid' => \Auth::user()->id]);
+            $request->merge(['updated_uid' => \Auth::user()->id]);
+            $request->merge(['status' => 1]);
+            //Ajusta fecha y genera fecha de vencimiento
+            $date = Helper::createDateTime($request->date);
+            $request->merge(['date' => Helper::dateTimeToSql($date)]);
+            $date_due = $date; //La fecha de vencimiento por default
+            $date_due_fix = $request->date_due;//Fix valida si la fecha de vencimiento esta vacia en caso de error
+            
+            if (!empty($request->date_due)) {
+              $date_due = Helper::createDate($request->date_due);
+            } else {
+              $payment_term = PaymentTerm::findOrFail($request->payment_term_id);
+              $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
+            }
+            $request->merge(['date_due' => Helper::dateToSql($date_due)]);
+            $date_fact = Helper::createDateTime($request->date_fact);
+            $request->merge(['date_fact' => Helper::dateToSql($date_fact)]);
+
+            // $request->merge(['date_fact' => Helper::dateToSql()]);
+            //Obtiene folio
+            $document_type = Helper::getNextDocumentTypeByCode($request->document_type);
+            $request->merge(['document_type_id' => $document_type['id']]);
+            $request->merge(['name' => $document_type['name']]);
+            $request->merge(['serie' => $document_type['serie']]);
+            $request->merge(['folio' => $document_type['folio']]);
+            // 
+            $request->merge(['payment_term_id' => $request->payment_term_id]);
+            $request->merge(['payment_way_id' => $request->payment_way_id]);
+            $request->merge(['payment_method_id' => $request->payment_method_id]);
+            $request->merge(['cfdi_use_id' => $request->cfdi_use_id]);
+
+            $file_pdf = $request->file('file_pdf');
+            $file_xml = $request->file('file_xml');
+
+            // return $request;
+            // Factura PDF y XML
+            
+            /*if($file_pdf != null )
+            {
+                $file_extension = $file_pdf->getClientOriginalExtension(); //** get filename extension
+                $fileName = $request->name_fact.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
+                $pdf= $file_pdf->storeAs('filestore/storage/compras/'.date('Y-m'), $fileName);
+                // DB::table('pay_facturas')->insert([
+                //     'name' => $pdf,
+                //     'payment_id' => $id_payment
+                // ]);
+            }
+            if($file_xml != null )
+            {
+                $file_extension = $file_xml->getClientOriginalExtension(); //** get filename extension
+                $fileName = $request->name_fact.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
+                $pdf= $file_xml->storeAs('filestore/storage/compras/'.date('Y-m'), $fileName);
+                // DB::table('pay_facturas')->insert([
+                //     'name' => $pdf,
+                //     'payment_id' => $id_payment
+                // ]);
+            }*/
+
+            return 'success';
+            
+            // Factura END
+
+            $purchase_store = Purchase::create($request->input());
+
+
+            // END 
+            // DB::commit();
+            return 'success';
+        }catch (\Exception $e) {
+            $request->merge([
+                'date' => Helper::convertSqlToDateTime($request->date),
             ]);
+            if (!empty($date_due_fix)) {
+                $request->merge([
+                    'date_due' => Helper::convertSqlToDate($request->date_due),
+                ]);
+            }else{
+                $request->merge([
+                    'date_due' => '',
+                ]);
+            }
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            // throw $e;
+            return $e;
+            // return __('general.error_cfdi_pac');
         }
-        if($xml_fact != null )
-        {
-            $file_extension = $xml_fact->getClientOriginalExtension(); //** get filename extension
-            $fileName = $factura.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
-            $pdf= $request->file('fileInput')->storeAs('filestore/storage/factura/'.date('Y-m'), $fileName);
-            DB::table('pay_facturas')->insert([
-                'name' => $pdf,
-                'payment_id' => $id_payment
-            ]);
-        }*/
-
-
-
     }
 
+
+    public function totalLines(Request $request)
+    {
+       //Variables
+       $json = new \stdClass;
+       $input_items = $request->item;
+       $currency_id = $request->currency_id; //Guardo la moneda seleccionada
+       $currency_value = $request->currency_value;
+       $resp_currency_value = $request->currency_value;
+       $iva = explode(',', $request->iva);
+
+       // $texto = "";
+       if (empty($currency_id)) {
+         $currency_id = 1;
+       }
+       if ($currency_id === 1) {
+         $currency_value = 1;
+       }
+       if (empty($currency_value)) {
+         $current_select_rate = DB::table('currencies')->select('rate')->where('id', $currency_id)->first();
+         $currency_value = $current_rate->rate;
+       }
+
+       $currency_code = 'MXN'; //En caso que no haya moneda le digo por defecto es pesos mexicanos
+
+       if ($request->ajax()) {
+           //Variables de totales
+           $amount_subtotal = 0;
+           $amount_discount = 0;
+           $amount_untaxed = 0;
+           $amount_tax = 0;
+           $amount_tax_ret = 0;
+           $amount_total = 0;
+           $balance = 0;
+           $items = [];
+           $items_tc = [];
+
+           if (!empty($input_items)) {
+             foreach ($input_items as $key => $item) {
+               //Logica
+               $item_quantity = (double)$item['quantity'];
+               $item_price_unit = (double)$item['price_unit'];
+               $item_discount = (double)$item['discount'];
+               if(isset($item['exchange'])){
+                 $input_currency_value=(double)$item['exchange'];
+               }
+
+               $item_subtotal_quantity = round($item_price_unit * $item_quantity, 2);
+
+               $item_price_reduce = ($item_price_unit * (100 - $item_discount) / 100); //precio del artículo reducido
+               $item_amount_untaxed = round($item_quantity * $item_price_reduce, 2); //cantidad del artículo sin impuestos
+               $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed; //descuento del importe del artículo
+               $item_amount_tax = 0; //cantidad de impuestos
+               $item_amount_tax_ret = 0; //importe del artículo reducción de impuestos
+                
+                if ($iva[0] != 0) {
+                    foreach ($iva as $tax_id) {
+                        
+                        $tax = Tax::findOrFail($tax_id);
+                        $tmp = 0;
+                        if ($tax->factor == 'Tasa') {
+                           $tmp = $item_amount_untaxed * $tax->rate / 100;
+                        } elseif ($tax->factor == 'Cuota') {
+                           $tmp = $tax->rate;
+                        }
+                        $tmp = round($tmp, 2);
+                        if ($tmp < 0) { //Retenciones
+                           $item_amount_tax_ret += $tmp;
+                        } else { //Traslados
+                           $item_amount_tax += $tmp;
+                        }
+                    }
+                }
+
+               $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;
+               $item_subtotal_clean = $item_subtotal_quantity;
+               $item_discount_clean = $item_amount_discount;
+               $item_subtotal = $item_amount_untaxed ;
+               //Tipo cambio
+               if ($item['current'] === $currency_id) {
+                   // $item_amount_total = $item_amount_total * $currency_value;
+                   $items_tc [$key] =$resp_currency_value;//ALMACENO TIPO CAMBIO
+               }
+               elseif ( $item['current'] != $currency_id) {
+                 if ( $item['current'] === '2') { //ES DOLAR
+                   if(empty($input_currency_value) || $input_currency_value==1 ){
+                   $current_select_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+                   $currency_value = $current_select_rate->current_rate;}
+                   else{
+                     $currency_value=$input_currency_value;
+                   }
+                   $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $currency_id)->value('code_banxico');
+                   $item_amount_tax = $item_amount_tax * $currency_value;
+                   $item_amount_tax_ret = $item_amount_tax_ret * $currency_value;
+                   $item_amount_total = $item_amount_total * $currency_value;
+                   $item_subtotal = $item_subtotal * $currency_value;
+
+                   $item_subtotal_clean = $item_subtotal_clean * $currency_value;
+                   $item_discount_clean = $item_discount_clean * $currency_value;
+
+                   $items_tc [$key] =$currency_value;//ALMACENO TIPO CAMBIO
+                 }
+                 else { //moneda distinta
+                   if(empty($input_currency_value)){
+                  $currency_value = DB::table('currencies')->select('rate')->where('id', $item['current'])->value('rate');
+                  }else{
+                  $currency_value=$input_currency_value;
+                  }
+                   $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item['current'])->value('code_banxico');
+                   if ($currency_id === '2') { //SI LA MONEDA SELECCIONADA ES DOLAR
+                      $item_amount_total = $item_amount_total/$resp_currency_value;
+                      $item_amount_tax = $item_amount_tax / $resp_currency_value;
+                      $item_amount_tax_ret = $item_amount_tax_ret / $resp_currency_value;
+                      $item_subtotal = $item_subtotal / $resp_currency_value;
+
+                      $item_subtotal_clean = $item_subtotal_clean / $resp_currency_value;
+                      $item_discount_clean = $item_discount_clean / $resp_currency_value;
+
+
+                      $items_tc [$key] =$resp_currency_value;//ALMACENO TIPO CAMBIO
+                   }
+                   else {
+                     $item_amount_total = $item_amount_total*$currency_value;
+                     $items_tc [$key] =$currency_value;//ALMACENO TIPO CAMBIO
+                   }
+                 }
+               }
+
+               $item_amount_untaxed = round($item_quantity * $item_amount_total, 2); //cantidad del artículo sin impuestos
+
+               //Sumatoria totales
+               $amount_subtotal += $item_subtotal_clean;
+
+               $amount_discount += $item_discount_clean;
+               $amount_untaxed += $item_subtotal;
+               $amount_tax += $item_amount_tax;
+               $amount_tax_ret += $item_amount_tax_ret;
+               $amount_total += $item_amount_total;
+
+               //Subtotales por cada item
+               // $items[$key] = $currency_id;
+               // $items[$key] = $item_amount_total;
+               // $items[$key] = moneyFormat($item_amount_total, $currency_code);
+               $items[$key] = $item_amount_total;
+             }
+           }
+           //Respuesta
+           $json->text = $currency_value;
+           $json->items = $items;
+           $json->amount_subtotal = $amount_subtotal;
+           $json->amount_discount = $amount_discount;
+           $json->amount_untaxed = $amount_untaxed;
+           $json->amount_tax = $amount_tax + $amount_tax_ret;
+           $json->amount_total = $amount_total;
+           $json->amount_total_tmp = $amount_total;
+           $json->tc_used = $items_tc;
+           return response()->json($json);
+       }
+       return response()->json(['error' => __('general.error_general')], 422);
+    }
     /**
      * Display the specified resource.
      *

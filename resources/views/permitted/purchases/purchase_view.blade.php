@@ -160,16 +160,22 @@
                   </select>
                 </div>
               </div>
-              <div class="col-md-3 col-xs-12">
+              <!-- <div class="col-md-3 col-xs-12">
                 <div class="form-group">
                   <label for="iva_general">IVA:<span style="color: red;">*</span></label>
                   <input type="text" class="form-control required" id="iva_general" name="iva_general" value="">
                 </div>
-              </div>
+              </div> -->
               <div class="col-md-3 col-xs-12">
                 <div class="form-group">
-                  <label for="iva_retencion">IVA Retención:</label>
-                  <input type="text" class="form-control" id="iva_retencion" name="iva_retencion" value="">
+                  <label for="iva">IVAs:<span style="color: red;">*</span></label>
+                  <select class="form-control input-sm col-taxes required" name="iva" id="iva" multiple>
+                    @forelse ($impuestos as $impuestos_data)
+                      <option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>
+                    @empty
+                    @endforelse
+                  </select>
+                  <!-- <input type="text" class="form-control" id="iva_retencion" name="iva_retencion" value=""> -->
                 </div>
               </div>
             </div>
@@ -182,7 +188,7 @@
                     <div class="input-group">
                         <label class="input-group-btn">
                             <span class="btn btn-primary">
-                                <i class="far fa-file-pdf" aria-hidden="true"></i> PDF <input id="file_pdf" name="file_pdf" type="file" class="required" style="display: none;">
+                                <i class="far fa-file-pdf" aria-hidden="true"></i> PDF <input id="file_pdf" name="file_pdf" type="file" class="" style="display: none;">
                             </span>
                         </label>
                         <input style="font-size:7px;" type="text" class="form-control" readonly>
@@ -200,7 +206,7 @@
                       <label class="input-group-btn">
                           <span class="btn btn-primary">
                               <i class="fas fa-file-code" aria-hidden="true"></i> XML
-                              <input id="file_xml" name="file_xml" type="file" class="required" style="display: none;">
+                              <input id="file_xml" name="file_xml" type="file" class="" style="display: none;">
                           </span>
                         </label>
                       <input style="font-size:7px;" type="text" class="form-control" readonly>
@@ -209,9 +215,16 @@
                 </div>
 
               </div>
+              
 
             </div>
             <div class="row">
+              <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                  <label for="name_fact">Nombre Factura:<span style="color: red;">*</span></label>
+                  <input type="text" class="form-control required" id="name_fact" name="name_fact" value="">
+                </div>
+              </div>
               <div class="col-md-8 col-xs-12">
                 <div class="form-group">
                   <label for="reference">Referencia:</label>
@@ -284,7 +297,7 @@
                                       <th width="8%" class="text-center"> Precio <span class="required text-danger">*</span> </th>
                                       <th width="8%" class="text-center text-nowrap"> Desc. % </th>
                                       <th width="8%" class="text-center"> Moneda<span class="required text-danger">*</span> </th>
-                                      <th width="11%" class="text-center">Impuestos </th>
+                                      <!-- <th width="11%" class="text-center">Impuestos </th> -->
                                       <th width="9%" class="text-right"> Total </th>
                                       <th width="3%" class="text-right">TC Usado</th>
                                   </tr>
@@ -393,7 +406,7 @@
                                           required />
                                         </div>
                                       </td>
-                                      <td>
+                                      <!-- <td>
                                         <div class="form-group form-group-sm">
                                           <select class="form-control input-sm"  id="item{{ $item_row.'[taxes]'}}" name="item[{{ $item_row }}][taxes]" required>
                                             <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
@@ -403,7 +416,7 @@
                                             @endforelse
                                           </select>
                                         </div>
-                                      </td>
+                                      </td> -->
                                       <td class="text-right" style="padding-top: 11px;">
                                         <span id="item_txt_amount_untaxed_{{ $item_row }}">0</span>
                                       </td>
@@ -724,6 +737,12 @@
       createEventListener_file();
       createEventListener_fileXml();
     });
+      $("#iva").select2({
+        theme: 'bootstrap',
+        placeholder: 'Elije...',
+        dropdownAutoWidth : true,
+        width: 'auto'
+      });
       function createEventListener_file() {
           const element = document.querySelector('[name="file_pdf"]')
           element.addEventListener('change', function() {
@@ -742,7 +761,6 @@
               }
           });
       }
-
       function createEventListener_fileXml() {
           const element = document.querySelector('[name="file_xml"')
           element.addEventListener('change', function() {
@@ -761,7 +779,6 @@
               }
           });
       }
-    
       $('#button_testing').on('click', function(){
         var form = $('#form')[0];
         var formData = new FormData(form);
@@ -930,7 +947,7 @@
 
             //
 
-            html += '<td>';
+            /*html += '<td>';
             html += '<div class="form-group form-group-sm">';
             html += '<select class="form-control input-sm my-select2 col-taxes" name="item[' + item_row + '][taxes][]" id="item_taxes_' + item_row + '" multiple>';
             @forelse ($impuestos as $impuestos_data)
@@ -939,7 +956,7 @@
             @endforelse
               html += '</select>';
             html += '</div>';
-            html += '</td>';
+            html += '</td>';*/
 
             html += '<td class="text-right" style="padding-top: 11px;">';
             html += '<span id="item_txt_amount_untaxed_' + item_row + '">0</span>';
@@ -1006,7 +1023,7 @@
               });
           }
       });
-      $(document).on("change", "#form #items tbody .col-taxes", function () {
+      $(document).on("change", "#form #iva", function () {
           totalItem();
       });
       $(document).on("keyup", "#form #items tbody .col-quantity,#form #items tbody .col-price-unit,#form #items tbody .col-discount", function () {
@@ -1056,28 +1073,32 @@
       });
 
       function totalItem() {
+        var iva = $("#iva").val();
+
+        // console.log(typeof(iva));
         $.ajax({
-            url: "/sales/customer-invoices/total-lines",
+            url: "/purchases/total-lines-purchase",
             type: "POST",
             dataType: "JSON",
-            data: $("#form").serialize(),
+            data: $("#form").serialize() + '&iva=' + iva,
             success: function (data) {
-                if (data) {
                     console.log(data);
-                    $.each(data.items, function (key, value) {
-                        $("#item_txt_amount_untaxed_" + key).html(value);
-                    });
-                    $.each(data.tc_used, function (key, value) {
-                        $("#exchange_rate_applied" + key).html(value);
-                    });
+                // if (data) {
 
-                    // $("#form #txt_amount_untaxed").html(data.amount_untaxed);
-                    $("#form #txt_amount_untaxed").html(data.amount_subtotal);
-                    $("#form #txt_amount_discount").html(data.amount_discount);
-                    $("#form #txt_amount_tax").html(data.amount_tax);
-                    $("#form #txt_amount_total").html(data.amount_total);
-                    $("#form input[name='amount_total_tmp']").val(data.amount_total_tmp)
-                }
+                //     $.each(data.items, function (key, value) {
+                //         $("#item_txt_amount_untaxed_" + key).html(value);
+                //     });
+                //     $.each(data.tc_used, function (key, value) {
+                //         $("#exchange_rate_applied" + key).html(value);
+                //     });
+
+                //     // $("#form #txt_amount_untaxed").html(data.amount_untaxed);
+                //     $("#form #txt_amount_untaxed").html(data.amount_subtotal);
+                //     $("#form #txt_amount_discount").html(data.amount_discount);
+                //     $("#form #txt_amount_tax").html(data.amount_tax);
+                //     $("#form #txt_amount_total").html(data.amount_total);
+                //     $("#form input[name='amount_total_tmp']").val(data.amount_total_tmp)
+                // }
             },
             error: function (error, textStatus, errorThrown) {
                 if (error.status == 422) {

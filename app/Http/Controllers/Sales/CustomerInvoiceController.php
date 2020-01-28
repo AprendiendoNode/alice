@@ -995,6 +995,7 @@ class CustomerInvoiceController extends Controller
           //Resumen de impuestos
           if (!empty($taxes)) {
               $i = 0;
+              $amount_tax_formula = $amount_tax - $amount_tax_ret;
               foreach ($taxes as $tax_id => $result) {
                   $tax = Tax::findOrFail($tax_id);
                   $customer_invoice_tax = CustomerInvoiceTax::create([
@@ -1003,8 +1004,8 @@ class CustomerInvoiceController extends Controller
                       'customer_invoice_id' => $customer_invoice->id,
                       'name' => $tax->name,
                       'tax_id' => $tax_id,
-                      'amount_base' => $result['amount_base'],
-                      'amount_tax' => $result['amount_tax'],
+                      'amount_base' => $amount_subtotal,
+                      'amount_tax' => $amount_tax_formula,
                       'sort_order' => $i,
                       'status' => 1,
                   ]);
@@ -1303,6 +1304,7 @@ class CustomerInvoiceController extends Controller
          //Resumen de impuestos
          if (!empty($taxes)) {
              $i = 0;
+             $amount_tax_formula = $amount_tax - $amount_tax_ret;
              foreach ($taxes as $tax_id => $result) {
                  $tax = Tax::findOrFail($tax_id);
                  $customer_invoice_tax = CustomerInvoiceTax::create([
@@ -1311,8 +1313,8 @@ class CustomerInvoiceController extends Controller
                      'customer_invoice_id' => $customer_invoice->id,
                      'name' => $tax->name,
                      'tax_id' => $tax_id,
-                     'amount_base' => $result['amount_base'],
-                     'amount_tax' => $result['amount_tax'],
+                     'amount_base' => $amount_subtotal,
+                     'amount_tax' => $amount_tax_formula,
                      'sort_order' => $i,
                      'status' => 1,
                  ]);
@@ -2541,6 +2543,7 @@ class CustomerInvoiceController extends Controller
 
             //Resumen de impuestos
             if (!empty($taxtype)) {
+                  $amount_tax_formula = $amount_tax - $amount_tax_ret;
                     $tax = Tax::findOrFail($taxtype);//Tipo de impuesto
                     $customer_invoice_tax = CustomerInvoiceTax::create([
                         'created_uid' => \Auth::user()->id,
@@ -2548,8 +2551,8 @@ class CustomerInvoiceController extends Controller
                         'customer_invoice_id' => $customer_invoice->id,
                         'name' => $tax->name,
                         'tax_id' => $taxtype,
-                        'amount_base' => $taxes[0]['amount_base'],
-                        'amount_tax' => $taxes[0]['amount_tax'],
+                        'amount_base' => $amount_subtotal,
+                        'amount_tax' => $amount_tax_formulas,
                         'sort_order' => 1, //Iteracion .. en este caso aplica 1 vez ..
                         'status' => 1,
                     ]);
