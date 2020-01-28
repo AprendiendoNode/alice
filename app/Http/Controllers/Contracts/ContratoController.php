@@ -888,7 +888,14 @@ class ContratoController extends Controller
       $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
       $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()', array());
 
-      return view('permitted.contract.cont_edit_cont', compact('unitmeasures', 'satproduct', 'iva','currency','hotels', 'classifications','verticals','cadenas', 'contract_status', 'resguardo', 'rz_customer' , 'sitio', 'itconcierge', 'vendedores', 'payment_way', 'payment_methods', 'cfdi_uses', 'payment_term'));
+      $kickoff_vendedores = DB::select(' CALL px_usersXdepto(?)', array(5));
+      $kickoff_inside_sales = DB::select(' CALL px_usersXdepto(?)', array(6));
+      $kickoff_colaboradores = DB::select(' CALL px_colaboradores()', array());
+      $politica_comision = DB::select(' CALL px_politicas_de_comision()', array());
+      $kickoff_info= DB::select(' CALL px_kickoff_doctop_proyecto()', array());
+
+      return view('permitted.contract.cont_edit_cont', compact('unitmeasures', 'satproduct', 'iva','currency','hotels', 'classifications','verticals','cadenas', 'contract_status', 'resguardo', 'rz_customer' ,
+      'sitio', 'itconcierge', 'vendedores', 'payment_way', 'payment_methods', 'cfdi_uses', 'payment_term','kickoff_vendedores','kickoff_inside_sales','kickoff_colaboradores','politica_comision','kickoff_info'));
   }
 
   public function get_digit_contract_master(Request $request)
@@ -1100,6 +1107,141 @@ class ContratoController extends Controller
         $sql2 = DB::table('contract_annexes')->where('id', $id_contrat_anexo)->update(['file' => $pdf ]);
       }
 
+      //--------------------------------------------------------------
+
+      $kickoff_exit = $request->kick_off_exit;
+      $kickoff_r = $request->select_kick_off;
+      $kickoff_itc_gral = $request->sel_itconcierge_comision;
+      $kickoff_ventaint = $request->sel_inside_sales;
+
+      $kickoff_politica= $request->sel_type_comision;
+
+      if ($kickoff_exit == 0) {//comisiones manuales
+        //Insertar la tabla de comision general.
+         $commision_gral_query=DB::table('comision_gral')->updateOrInsert(
+         ['id_contract' => $id_contrat_anexo],
+         ['itconcierge' => $kickoff_itc_gral,
+          'inside_sales' => $kickoff_ventaint,
+          'id_contract' => $id_contrat_anexo,
+          'politica_id' => $kickoff_politica,
+          'created_at' => \Carbon\Carbon::now()]
+        );
+        $commision_gral=DB::Table('comision_gral')->select('id')->where('id_contract',$id_contrat_anexo)->get();
+        $comision_gral_new = $commision_gral[0]->id;
+
+        if (!empty($request->item)) {
+          //info($request->item);
+          foreach ($request->item as $key => $result) {
+                      $id_user = $result['contactInt'];
+                      $contact = !empty($result['contact']) ? $result['contact'] : '';
+                   $porcentaje = $result['porcentaje'];
+
+            $comision_contacto = DB::table('comisiones_contacto')->updateOrInsert(
+            ['comision_gral_id' => $comision_gral_new,'user_id' => $id_user],
+            ['user_id' => $id_user,
+             'nombre' => $contact,
+             'comision_gral_id' => $comision_gral_new,
+             'valor_comision'  => $porcentaje,
+             'created_at' => \Carbon\Carbon::now()]
+           );
+          }
+        }
+        if (!empty($request->item_cierre)) {
+          //info($request->item);
+          foreach ($request->item_cierre as $key => $result) {
+                     $id_user = $result['contactInt'];
+                     $contact = $result['contact'];
+                  $porcentaje = $result['porcentaje'];
+             $comision_cierre = DB::table('comisiones_cierre')->updateOrInsert(
+              ['comision_gral_id' => $comision_gral_new,'user_id' => $id_user],
+              ['user_id' => $id_user,
+               'nombre' => $contact,
+               'comision_gral_id' => $comision_gral_new,
+               'valor_comision'  => $porcentaje,
+               'created_at' => \Carbon\Carbon::now()]
+                );
+                }
+        }
+
+      }
+      if ($kickoff_exit == 1) {
+        $existe_comision_gral = DB::table('comision_gral')->select('id')->where('kickoff_id', $kickoff_r)->get();
+        // SI tiene datos el kick off
+        if(count($existe_comision_gral) != 0){
+           DB::table('comision_gral')->where('kickoff_id', $kickoff_r)->update(['kickoff_id'=>null]);
+          }
+
+          $commision_gral_query=DB::table('comision_gral')->updateOrInsert(
+          ['id_contract' => $id_contrat_anexo],
+          ['itconcierge' => $kickoff_itc_gral,
+           'inside_sales' => $kickoff_ventaint,
+           'id_contract' => $id_contrat_anexo,
+           'politica_id' => $kickoff_politica,
+           'kickoff_id'=>$kickoff_r,
+           'created_at' => \Carbon\Carbon::now()]
+         );
+         $commision_gral=DB::Table('comision_gral')->select('id')->where('id_contract',$id_contrat_anexo)->get();
+         $comision_gral_new = $commision_gral[0]->id;
+
+         if (!empty($request->item)) {
+           //info($request->item);
+          $elems=[];
+          $originalrows= DB::table('comisiones_contacto')->where('comision_gral_id',$comision_gral_new)->pluck('id')->toArray();
+           foreach ($request->item as $key => $result) {
+                       $id_user = $result['contactInt'];
+                       $contact = !empty($result['contact']) ? $result['contact'] : '';
+                    $porcentaje = $result['porcentaje'];
+
+             $comision_contacto = DB::table('comisiones_contacto')->updateOrInsert(
+             ['comision_gral_id' => $comision_gral_new,'user_id' => $id_user],
+             ['user_id' => $id_user,
+              'nombre' => $contact,
+              'comision_gral_id' => $comision_gral_new,
+              'valor_comision'  => $porcentaje,
+              'created_at' => \Carbon\Carbon::now()]
+            );
+            $updatedrow = DB::table('comisiones_contacto')->where('comision_gral_id',$comision_gral_new)->where('user_id',$id_user)->first()->id;
+            array_push($elems,$updatedrow);
+           }
+           $difference=array_diff($originalrows,$elems);
+           if(!empty($difference)){
+             foreach($difference as $id){
+               DB::table('comisiones_contacto')->where('comision_gral_id',$comision_gral_new)->where('id',$id)->delete();
+             }
+           }
+
+         }
+         if (!empty($request->item_cierre)) {
+           //info($request->item);
+            $elems=[];
+            $originalrows= DB::table('comisiones_cierre')->where('comision_gral_id',$comision_gral_new)->pluck('id')->toArray();
+           foreach ($request->item_cierre as $key => $result) {
+                      $id_user = $result['contactInt'];
+                      $contact = $result['contact'];
+                   $porcentaje = $result['porcentaje'];
+              $comision_cierre = DB::table('comisiones_cierre')->updateOrInsert(
+               ['comision_gral_id' => $comision_gral_new,'user_id' => $id_user],
+               ['user_id' => $id_user,
+                'nombre' => $contact,
+                'comision_gral_id' => $comision_gral_new,
+                'valor_comision'  => $porcentaje,
+                'created_at' => \Carbon\Carbon::now()]
+                 );
+             $updatedrow = DB::table('comisiones_cierre')->where('comision_gral_id',$comision_gral_new)->where('user_id',$id_user)->first()->id;
+             array_push($elems,$updatedrow);
+                 }
+
+             $difference=array_diff($originalrows,$elems);
+             if(!empty($difference)){
+               foreach($difference as $id){
+                 DB::table('comisiones_cierre')->where('comision_gral_id',$comision_gral_new)->where('id',$id)->delete();
+               }
+             }
+         }
+
+      }
+
+
     $flag = "true";
 
     return $flag;
@@ -1183,6 +1325,45 @@ class ContratoController extends Controller
       //info($result);
       return json_encode($result);
  }
+ public function get_commission_anexo(Request $request){
+      $id = $request->id_contract;
+      $result= DB::Table('comision_gral')->where('id_contract',$id)->get();
+      return $result;
+ }
+
+ public function get_contact_anexo(Request $request){
+   $id = $request->id_contract;
+   $id_commission= DB::Table('comision_gral')->select('id')->where('id_contract',$id)->get();
+   if($id_commission->isNotEmpty()){
+     $result=DB::Table('comisiones_contacto')->where('comision_gral_id',$id_commission[0]->id)->get();
+     return $result;
+   }
+   else
+   {
+      return 0;
+   }
+ }
+
+  public function get_cierre_anexo(Request $request){
+    $id = $request->id_contract;
+    $id_commission= DB::Table('comision_gral')->select('id')->where('id_contract',$id)->get();
+    $result=DB::Table('comisiones_cierre')->where('comision_gral_id',$id_commission[0]->id)->get();
+    return $result;
+  }
+
+  public function get_vendedores_anexo(Request $request){
+    $id = $request->id_contract;
+    $id_commission= DB::Table('comision_gral')->select('id')->where('id_contract',$id)->get();
+    $result=DB::Table('comisiones_vendedores')->where('comision_gral_id',$id_commission[0]->id)->get();
+    return $result;
+  }
+  public function get_colaborador_anexo(Request $request){
+    $id = $request->id_contract;
+    $id_commission= DB::Table('comision_gral')->select('id')->where('id_contract',$id)->get();
+    $result=DB::Table('comisiones_colaborador')->where('comision_gral_id',$id_commission[0]->id)->get();
+    return $result;
+  }
+
  public function edit_site_anexo(Request $request)
  {
       $id = $request->id;

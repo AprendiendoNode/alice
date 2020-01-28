@@ -932,6 +932,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/info_kickoff_comision', 'Contracts\ContratoController@info_kickoff_comision');
     Route::post('/info_kickoff_cierre', 'Contracts\ContratoController@info_kickoff_cierre');
     Route::post('/info_kickoff_contact', 'Contracts\ContratoController@info_kickoff_contact');
+    
+    Route::post('get_commission_anexo', 'Contracts\ContratoController@get_commission_anexo');
+    Route::post('get_contact_commission_anexo', 'Contracts\ContratoController@get_contact_anexo');
+    Route::post('get_cierre_commission_anexo', 'Contracts\ContratoController@get_cierre_anexo');
 });
 
 

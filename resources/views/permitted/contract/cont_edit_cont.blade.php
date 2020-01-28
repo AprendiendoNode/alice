@@ -310,7 +310,7 @@
 							<p><strong>RFC: <span id="rfc_annexo"></span></strong></p>
 							<p><strong>Sitios: </strong></p>
 							<ul id="sitios_anexos">
-								
+
 							</ul>
 						  </div>
                         </div>
@@ -569,7 +569,233 @@
                           </div>
                         </div>
                       </section>
+                      <!-- Step 4 -->
+                      <h6>Paso 4 - Comisiones</h6>
+                      <section>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group row">
+                              <label for="kick_off_exit" class="col-sm-3 control-label">¿Tiene Kick Off?</label>
+                              <div class="col-sm-9">
+                                <input id="kick_off_exit" name="kick_off_exit" type="checkbox" checked data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="1"
+                                data-on="Si" data-off="No">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
+                        <div id="kickoff_info_div" name="kickoff_info_div" class="row my-4">
+                          <div class="col-md-4">
+                            <div class="form-group row">
+                              <label class="label-control col-sm-12" for="select_kick_off">Elija el Kick Off:</label>
+                              <div class="col-sm-12">
+                                <select class="form-control form-control-sm" id="select_kick_off" name="select_kick_off" style="width: 100%;">
+                                  <option value="" selected>Elija</option>
+                                  @forelse ($kickoff_info as $data_kickoff_info)
+                                    <option value="{{ $data_kickoff_info->id }}"> {{ $data_kickoff_info->folio }}  </option>
+                                  @empty
+                                  @endforelse
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <input type="hidden" class="form-control" id="kick_off_id" name="kick_off_id" maxlength="100" readonly>
+                              <label>Nombre del proyecto</label>
+                              <input type="text" class="form-control" id="kick_off_proyecto" name="kick_off_proyecto" maxlength="100" readonly>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Nombre del sitio</label>
+                              <input type="text" class="form-control" id="kick_off_sitio" name="kick_off_sitio" maxlength="100" readonly>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row my-2" id="div_comisiones" name="div_comisiones">
+                          <div class="col-md-12 col-xs-12 mb-3">
+                            <div class="table-responsive">
+                              <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table" id="item_politica" style="min-width: 80px;">
+                                <thead>
+                                  <tr class="bg-danger text-white">
+                                    <th class="text-center" colspan="7" style="font-size: 1rem;">Politica de comisión</th>
+                                  </tr>
+                                  <tr class="bg-secondary text-white">
+                                    <th class="text-center" style="padding: 1.25rem 0.9375rem !important;">Tipo de comisión</th>
+                                    <th class="text-center" colspan="8">
+                                      <select id="sel_type_comision" name="sel_type_comision" class="form-control required" style="width:100%;">
+                                        <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                        @forelse ($politica_comision as $politica_comision_data)
+                                          <option value="{{ $politica_comision_data->id }}"> {{ $politica_comision_data->politica }} </option>
+                                        @empty
+                                        @endforelse
+                                      </select>
+                                    </th>
+                                  </tr>
+                                  <tr class="bg-danger text-white">
+                                    <th class="text-center">Politica</th>
+                                    <th class="text-center">Retención</th>
+                                    <th class="text-center">Total comisión %</th>
+                                    <th class="text-center">Contacto %</th>
+                                    <th class="text-center">Cierre %</th>
+                                    <th class="text-center">ITC %</th>
+                                    <th class="text-center">Venta Internas %</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr class="bg-secondary">
+                                    <td>
+                                      <div class="form-group form-group-sm">
+                                        <input type="text" class="form-control input-sm text-right col-politica sinpadding" id="politica_name" name="politica_name" readonly />
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group form-group-sm">
+                                        <input type="text" class="form-control input-sm text-right col-retencion" id="politica_retencion" name="politica_retencion" value="0" readonly />
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group form-group-sm">
+                                        <input type="text" class="form-control input-sm text-right col-total" id="politica_asignado" name="politica_asignado" value="0" readonly />
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group form-group-sm">
+                                        <input type="text" class="form-control input-sm text-right col-contacto" id="politica_contacto" name="politica_contacto" value="0" readonly />
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group form-group-sm">
+                                        <input type="text" class="form-control input-sm text-right col-cierre" id="politica_cierre" name="politica_cierre" value="0" readonly />
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group form-group-sm">
+                                        <input type="text" class="form-control input-sm text-right col-itc" id="politica_itc" name="politica_itc" value="0" readonly />
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group form-group-sm">
+                                        <input type="text" class="form-control input-sm text-right col-insidesales" id="politica_insidesales" name="politica_insidesales" value="0" readonly />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="sel_inside_sales"> Inside Sales:
+                                <span class="text-danger">*</span>
+                              </label>
+                              <select id="sel_inside_sales" name="sel_inside_sales" class="form-control" name="location" style="width:100%;">
+                                <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                @forelse ($kickoff_inside_sales as $kickoff_inside_sales_data)
+                                  <option value="{{ $kickoff_inside_sales_data->user_id }}"> {{ $kickoff_inside_sales_data->user }} </option>
+                                @empty
+                                @endforelse
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="sel_itconcierge_comision"> IT Concierge:
+                                <span class="text-danger">*</span>
+                              </label>
+                              <select id="sel_itconcierge_comision" name="sel_itconcierge_comision" class="form-control" name="location" style="width:100%;">
+                                <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                @forelse ($itconcierge as $itconcierge_data)
+                                  <option value="{{ $itconcierge_data->id }}"> {{ $itconcierge_data->nombre }} </option>
+                                @empty
+                                @endforelse
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="col-md-12 col-xs-12">
+                            <div class="table-responsive">
+                              <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_contact" style="min-width: 80px;">
+                                <thead>
+                                  <tr class="bg-dark text-white">
+                                    <th class="text-center" colspan="4" style="font-size: 1rem;">Contácto</th>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-center">@lang('general.column_actions')</th>
+                                    <th class="text-center">Contácto (Interno)</th>
+                                    <th class="text-center">Contácto (Externo)</th>
+                                    <th class="text-center">Porcentaje %<span class="required text-danger">*</span></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  @php
+                                    $item_contact_row= 0;
+                                    $item_contact=old('item_contact',[]);
+                                  @endphp
+                                  <tr id="add_item_contact">
+                                    <td class="text-center">
+                                      <button type="button" onclick="addItemCont();"
+                                      class="btn btn-xs btn-primary"
+                                      style="margin-bottom: 0; padding: 1px 3px;">
+                                      <i class="fa fa-plus" style="font-size: 1rem;"></i>
+                                    </button>
+                                  </td>
+                                  <td class="text-right" colspan="3"></td>
+                                </tr>
+                                <tr>
+                                  <td class="text-left" colspan="3"></td>
+                                  <td class="text-center">
+                                    <span id="item_contact_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12">
+                          <div class="table-responsive">
+                            <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-4" id="item_cierre" style="min-width: 80px;">
+                              <thead>
+                                <tr class="bg-dark text-white">
+                                  <th class="text-center" colspan="4" style="font-size: 1rem;">Cierre</th>
+                                </tr>
+                                <tr>
+                                  <th class="text-center">@lang('general.column_actions')</th>
+                                  <th class="text-center">Contácto (Interno)</th>
+                                  <th class="text-center">Contácto (Externo)</th>
+                                  <th class="text-center">Porcentaje %<span class="required text-danger">*</span></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                @php
+                                  $item_cierre_row= 0;
+                                  $item_cierre=old('item_cierre',[]);
+                                @endphp
+                                <tr id="add_item_cierre">
+                                  <td class="text-center">
+                                    <button type="button" onclick="addItemCierre();"
+                                    class="btn btn-xs btn-primary"
+                                    style="margin-bottom: 0; padding: 1px 3px;">
+                                    <i class="fa fa-plus" style="font-size: 1rem;"></i>
+                                  </button>
+                                </td>
+                                <td class="text-right" colspan="3"></td>
+                              </tr>
+                              <tr>
+                                <td class="text-left" colspan="3"></td>
+                                <td class="text-center">
+                                  <span id="item_cierre_note" style="color: red; font-weight: bold; font-size: 0.8rem;"></span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </section>
                     </form>
                   </div>
                 </div>
@@ -705,7 +931,7 @@
                           <label for="mensconiva_add" class="col-md-4 control-label">Mensualidad c/iva:</label>
                           <div class="col-md-8">
                             <input class="form-control" type="text" name="mensconiva_add" id="mensconiva_add" readonly>
-                          </div> 
+                          </div>
                         </div>
                         <div class="form-group">
                           <label for="descuento_add" class="col-md-4 control-label">Descuento %:</label>
@@ -730,7 +956,7 @@
                             <br><p><strong>Nota:</strong> Solo se puede dar de alta una moneda de cada tipo.</p>
                           </div>
                         </div>
-                        
+
                         <button type="submit" class="btn bg-navy"><i class="fa fa-plus-square-o" style="margin-right: 4px;"></i>Actualizar</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.cancelar') }} & {{ trans('message.ccmodal') }}</button>
                       </form>
@@ -818,7 +1044,7 @@
                           <label for="mensconiva_edit" class="col-md-4 control-label">Mensualidad c/iva:</label>
                           <div class="col-md-8">
                             <input class="form-control" type="text" name="mensconiva_edit" id="mensconiva_edit" readonly>
-                          </div> 
+                          </div>
                         </div>
                         <div class="form-group">
                           <label for="descuento_edit" class="col-md-4 control-label">Descuento %:</label>
@@ -843,7 +1069,7 @@
                             <br><p><strong>Nota:</strong> Solo se puede dar de alta una moneda de cada tipo.</p>
                           </div>
                         </div>
-                        
+
                         <button type="submit" class="btn bg-navy"><i class="fa fa-plus-square-o" style="margin-right: 4px;"></i>Actualizar</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.cancelar') }} & {{ trans('message.ccmodal') }}</button>
                       </form>
@@ -875,7 +1101,11 @@
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.steps.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-
+    <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
+    <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>
 
     <!-- FormValidation -->
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
@@ -887,10 +1117,13 @@
 
     <script src="{{ asset('js/admin/contract/contract_master_edit.js?v=2.0')}}"></script>
     <script src="{{ asset('js/admin/contract/contract_anexo_edit.js?v=2.0')}}"></script>
-
+    <script src="{{ asset('js/admin/contract/c_table_porcentaje.js?v1.0')}}"></script>
     <link href="{{ asset('bower_components/switchery-master/dist/switchery.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/switchery-master/dist/switchery.js')}}" charset="utf-8"></script>
     <style media="screen">
+    .toggle.btn {
+      min-width: 5rem !important;
+    }
       .contrato_a{
          display:none;
       }
@@ -968,6 +1201,8 @@
       }
     </style>
     <script type="text/javascript">
+    var item_relation_contact_row = "{{ $item_contact_row }}";
+    var item_relation_cierre_row = "{{ $item_cierre_row }}";
     /*switch contemplar vtc*/
 
     function setSwitchery(switchElement, checkedBool) {
@@ -1023,6 +1258,622 @@
         }else{
           comp_ingreso = 0;
         }
+      });
+
+
+      $("#select_kick_off").select2();
+            function addItemCont() {
+              console.log(item_relation_contact_row);
+              let politica = $("select[name='sel_type_comision']").val();
+              if (politica != '') {
+                var html = '';
+                html += '<tr id="item_row_' + item_relation_contact_row + '" >';
+
+                html += '<td class="text-center" style="vertical-align: middle;">';
+                html += '<button type="button" onclick="$(\'#item_row_' + item_relation_contact_row + '\').remove(); " class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+                html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+                html += '</button>';
+                html += '<input type="hidden" name="item[' + item_relation_contact_row + '][id]" id="item_id_' + item_relation_contact_row + '" /> ';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<select class="form-control input-sm col-contact-int" name="item[' + item_relation_contact_row + '][contactInt]" id="item_contactInt_' + item_relation_contact_row + '" data-row="' + item_relation_contact_row + '">'
+                html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+                html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
+                @empty
+                @endforelse
+                html += '</select>';
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<input type="text" class="form-control input-sm text-right col-contact" name="item[' + item_relation_contact_row + '][contact]" id="item_contact_' + item_relation_contact_row + '" step="any"/>';
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<input type="text" class="form-control input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" required step="any" maxlength="10" />';
+                html += '</div>';
+                html += '</td>';
+
+                html += '</tr>';
+
+                $("#validation_anexo #item_contact tbody #add_item_contact").before(html);
+                item_relation_contact_row++;
+              }
+              else {
+                $('#sel_inside_sales').val('').trigger('change');
+                $('#sel_itconcierge_comision').val('').trigger('change');
+                Swal.fire({
+                   type: 'error',
+                   title: 'Oops...',
+                   text: 'Selecciona la politica de comisión',
+                 });
+              }
+            }
+            function addItemCierre() {
+              console.log(item_relation_cierre_row);
+              let politica = $("select[name='sel_type_comision']").val();
+              if (politica != '') {
+                var html = '';
+                html += '<tr id="item_cierre_row_' + item_relation_cierre_row + '">';
+
+                html += '<td class="text-center" style="vertical-align: middle;">';
+                html += '<button type="button" onclick="$(\'#item_cierre_row_' + item_relation_cierre_row + '\').remove(); " class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+                html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+                html += '</button>';
+                html += '<input type="hidden" name="item_cierre[' + item_relation_cierre_row + '][id]" id="item_cierre_id_' + item_relation_cierre_row + '" /> ';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<select class="form-control input-sm col-cierre-contact-int" name="item_cierre[' + item_relation_cierre_row + '][contactInt]" id="item_cierre_contactInt_' + item_relation_cierre_row + '" data-row="' + item_relation_cierre_row + '">'
+                html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+                html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
+                @empty
+                @endforelse
+                html += '</select>';
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<input type="text" class="form-control input-sm text-right col-cierre-contact" name="item_cierre[' + item_relation_cierre_row + '][contact]" id="item_cierre_contact_' + item_relation_cierre_row + '" step="any" />';
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<input type="text" class="form-control input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" required step="any" maxlength="10" />';
+                html += '</div>';
+                html += '</td>';
+
+                html += '</tr>';
+                $("#validation_anexo #item_cierre tbody #add_item_cierre").before(html);
+                item_relation_cierre_row++;
+              }
+              else {
+                $('#sel_inside_sales').val('').trigger('change');
+                $('#sel_itconcierge_comision').val('').trigger('change');
+                Swal.fire({
+                   type: 'error',
+                   title: 'Oops...',
+                   text: 'Selecciona la politica de comisión',
+                 });
+              }
+            }
+
+      function data_comision(identX){
+        var id = identX;
+        var _token = $('input[name="_token"]').val();
+        $.ajax({
+          type: "POST",
+          url: "/search_politica",
+          data: { _token : _token,  text: id},
+          success: function (data){
+            count_data = data.length;
+            if (count_data > 2) {
+              datax = JSON.parse(data);
+              $('input[name="politica_name"]').val(datax[0].politica.toUpperCase());
+              $('input[name="politica_retencion"]').val(datax[0].retenciones);
+              $('input[name="politica_asignado"]').val(datax[0].monto_asignado);
+              $('input[name="politica_contacto"]').val(datax[0].contacto);
+              $('input[name="politica_cierre"]').val(datax[0].cierre);
+              $('input[name="politica_itc"]').val(datax[0].itc);
+              $('input[name="politica_insidesales"]').val(datax[0].inside_sales);
+            }
+            else {
+              $('input[name="politica_name"]').val('');
+              $('input[name="politica_retencion"]').val('0');
+              $('input[name="politica_asignado"]').val('0');
+              $('input[name="politica_contacto"]').val('0');
+              $('input[name="politica_cierre"]').val('0');
+              $('input[name="politica_itc"]').val('0');
+              $('input[name="politica_insidesales"]').val('0');
+            }
+          },
+          error: function (error, textStatus, errorThrown) {
+              if (error.status == 422) {
+                  var message = error.responseJSON.error;
+                  // $("#general_messages").html(alertMessage("danger", message));
+                  Swal.fire("Operación abortada", message, "error");
+              }
+              else {
+                  alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+              }
+          }
+        });
+      }
+
+      //Carga los datos si existe alguna comision
+      function getCommission(id_contract){
+        //console.log(id_contract);
+      //Obtener comision
+      $.ajax({
+      type:"POST",
+      url:"get_commission_anexo",
+      data: { id_contract : id_contract , _token : _token},
+      success:function(data){
+        $('#kick_off_exit').bootstrapToggle('off');
+        //console.log(data[0]['kickoff_id']);
+        if(Array.isArray(data) && data.length)
+        {
+
+          if(data[0]['kickoff_id'])
+          {
+            $('#kick_off_exit').prop('checked',true).trigger('change');
+            $('#kick_off_exit').val(1);
+            $("#select_kick_off").val(data[0]['kickoff_id']).trigger('change');
+
+          }else{
+            $('#kick_off_exit').prop('checked',false).trigger('change');
+            $('#kick_off_exit').val(0);
+
+            item_relation_contact_row = 0;
+            item_relation_cierre_row = 0;
+
+            var comision_select = document.getElementById("sel_type_comision");
+            var option_comision_select;
+
+            var insidesales_select = document.getElementById("sel_inside_sales");
+            var option_insidesales_select;
+
+            var itconcierge_comision_select = document.getElementById("sel_itconcierge_comision");
+            var option_itconcierge_comision_select;
+
+            // Setting commission
+            for (var i=0; i < comision_select.options.length; i++) {
+                option_comision_select = comision_select.options[i];
+                if (option_comision_select.value == data[0]['politica_id']) {
+                    option_comision_select.setAttribute('selected', true);
+                    data_comision(option_comision_select.value);
+                }else{
+                    option_comision_select.removeAttribute('selected');
+                }
+            }
+
+            // Setting inside sales
+            for (var i=0; i < insidesales_select.options.length; i++) {
+                option_insidesales_select = insidesales_select.options[i];
+                if (option_insidesales_select.value == data[0]['inside_sales']) {
+                    option_insidesales_select.setAttribute('selected', true);
+                }else{
+                    option_insidesales_select.removeAttribute('selected');
+                }
+            }
+
+            // Setting itconcierge
+            for (var i=0; i < itconcierge_comision_select.options.length; i++) {
+                option_itconcierge_comision_select = itconcierge_comision_select.options[i];
+                if (option_itconcierge_comision_select.value == data[0]['itconcierge']) {
+                    option_itconcierge_comision_select.setAttribute('selected', true);
+                }else{
+                    option_itconcierge_comision_select.removeAttribute('selected');
+                }
+            }
+
+
+        //Obtener contacto anexo
+        $.ajax({
+        type:"POST",
+        url:"get_contact_commission_anexo",
+        data:{id_contract:id_contract, _token : _token},
+        success:function(data){
+        //console.log('contacto: '+data[0]['nombre']);
+        data.forEach(contacto => {
+
+          var html = '';
+          html += '<tr id="item_row_' + item_relation_contact_row + '">';
+
+          html += '<td class="text-center" style="vertical-align: middle;">';
+          html += '<button type="button" onclick="$(\'#item_row_' + item_relation_contact_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+          html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+          html += '</button>';
+          html += '<input type="hidden" name="item[' + item_relation_contact_row + '][id]" id="item_id_' + item_relation_contact_row + '" /> ';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<select class="form-control input-sm col-contact-int" name="item[' + item_relation_contact_row + '][contactInt]" id="item_contactInt_' + item_relation_contact_row + '" data-row="' + item_relation_contact_row + '">'
+          html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+          @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+
+          if(contacto.user_id=={{ $kickoff_colaboradores_data->id  }}){
+          html+='<option value="{{ $kickoff_colaboradores_data->id }}" selected> {{ $kickoff_colaboradores_data->name }} </option>';
+          }else{
+          html+='<option value="{{ $kickoff_colaboradores_data->id }}"> {{ $kickoff_colaboradores_data->name }} </option>';
+          }
+          @empty
+          @endforelse
+          html += '</select>';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<input type="text" value="'+contacto.nombre+'" class="form-control input-sm text-right col-contact" name="item[' + item_relation_contact_row + '][contact]" id="item_contact_' + item_relation_contact_row + '" step="any"/>';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<input type="text" value="'+contacto.valor_comision+'" class="form-control input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" required step="any" maxlength="10" />';
+          html += '</div>';
+          html += '</td>';
+
+          html += '</tr>';
+
+          $("#validation_anexo #item_contact tbody #add_item_contact").before(html);
+          item_relation_contact_row++;
+
+          });
+
+
+        },
+        error:function(data){
+        console.log(data);
+        }
+        });
+
+        //Obtener cierre anexo
+        $.ajax({
+        type:"POST" ,
+        url:"get_cierre_commission_anexo",
+        data:{id_contract:id_contract, _token : _token},
+        success:function(data){
+
+        data.forEach(cierre=>{
+          var html = '';
+          html += '<tr id="item_cierre_row_' + item_relation_cierre_row + '">';
+
+          html += '<td class="text-center" style="vertical-align: middle;">';
+          html += '<button type="button" onclick="$(\'#item_cierre_row_' + item_relation_cierre_row + '\').remove(); del_Cie(this); " class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+          html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+          html += '</button>';
+          html += '<input type="hidden" name="item_cierre[' + item_relation_cierre_row + '][id]" id="item_cierre_id_' + item_relation_cierre_row + '" /> ';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<select class="form-control input-sm col-cierre-contact-int" name="item_cierre[' + item_relation_cierre_row + '][contactInt]" id="item_cierre_contactInt_' + item_relation_cierre_row + '" data-row="' + item_relation_cierre_row + '">'
+          html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+          @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+            if(cierre.user_id=={{ $kickoff_colaboradores_data->id  }}){
+            html+='<option value="{{ $kickoff_colaboradores_data->id }}" selected> {{ $kickoff_colaboradores_data->name }} </option>';
+            }else{
+            html+='<option value="{{ $kickoff_colaboradores_data->id }}"> {{ $kickoff_colaboradores_data->name }} </option>';
+            }
+          @empty
+          @endforelse
+          html += '</select>';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<input type="text"  value="'+cierre.nombre+'"  class="form-control input-sm text-right col-cierre-contact" name="item_cierre[' + item_relation_cierre_row + '][contact]" id="item_cierre_contact_' + item_relation_cierre_row + '" step="any" />';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<input type="text"  value="'+cierre.valor_comision+'"  class="form-control input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" required step="any" maxlength="10" />';
+          html += '</div>';
+          html += '</td>';
+
+          html += '</tr>';
+          $("#validation_anexo #item_cierre tbody #add_item_cierre").before(html);
+          item_relation_cierre_row++;
+
+
+        });
+
+        },
+        error:function(data){
+        console.log(data);
+        }
+        });
+
+          }//End else comision
+
+
+      }//end if data>0
+      //else {}
+    },
+      error:function(data){
+        console.log(data);
+      }
+      });
+}
+
+function kickoff_comision(ix, token) {
+  $.ajax({
+      url: "/info_kickoff_comision",
+      type: "POST",
+      data: { _token : token, ident: ix },
+      success: function (data) {
+        if (JSON.stringify(data) != '"[]"') {
+          datos = JSON.parse(data);
+          $('#sel_type_comision').val(datos[0].politica_id).trigger('change');
+          $('#sel_inside_sales').val(datos[0].inside_sales).trigger('change');
+          $('#sel_itconcierge_comision').val(datos[0].itconcierge).trigger('change');
+          data_comision(datos[0].politica_id);
+        }
+        else{
+          $('#sel_type_comision').val('').trigger('change');
+          $('#sel_inside_sales').val('').trigger('change');
+          $('#sel_itconcierge_comision').val('').trigger('change');
+          $("#item_politica input[type=text]").val('');
+        }
+      },
+      error: function (error, textStatus, errorThrown) {
+          if (error.status == 422) {
+              var message = error.responseJSON.error;
+              Swal.fire({
+                 type: 'error',
+                 title: 'Oops...',
+                 text: message,
+              });
+          } else {
+              alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+          }
+      }
+  });
+}
+function kickoff_contact(ix, token) {
+  $.ajax({
+      url: "/info_kickoff_contact",
+      type: "POST",
+      data: { _token : token, ident: ix },
+      success: function (data) {
+        data.forEach(function(key,i) {
+          var html = '';
+          html += '<tr id="item_row_' + item_relation_contact_row + '">';
+
+          html += '<td class="text-center" style="vertical-align: middle;">';
+          html += '<button type="button" onclick="$(\'#item_row_' + item_relation_contact_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+          html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+          html += '</button>';
+          html += '<input type="hidden" name="item[' + item_relation_contact_row + '][id]" id="item_id_' + item_relation_contact_row + '" /> ';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<select class="form-control input-sm col-contact-int" name="item[' + item_relation_contact_row + '][contactInt]" id="item_contactInt_' + item_relation_contact_row + '" data-row="' + item_relation_contact_row + '">'
+          html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+          @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+            if ( key.user_id == {{ $kickoff_colaboradores_data->id  }} ) {
+              html += '<option value="{{ $kickoff_colaboradores_data->id  }}" selected>{{ $kickoff_colaboradores_data->name }}</option>';
+            }
+            else {
+              html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
+            }
+          @empty
+          @endforelse
+          html += '</select>';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          if ( key.nombre == null ||  key.nombre == '' ) {
+            html += '<input type="text" class="form-control input-sm text-right col-contact" name="item[' + item_relation_contact_row + '][contact]" id="item_contact_' + item_relation_contact_row + '" value="" step="any"/>';
+          }
+          else {
+            html += '<input type="text" class="form-control input-sm text-right col-contact" name="item[' + item_relation_contact_row + '][contact]" id="item_contact_' + item_relation_contact_row + '" value="' + key.nombre + '" step="any"/>';
+          }
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<input type="text" class="form-control input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" value="' + key.valor_comision + '" required step="any" maxlength="10" />';
+          html += '</div>';
+          html += '</td>';
+
+          html += '</tr>';
+
+          $("#validation_anexo #item_contact tbody #add_item_contact").before(html);
+          item_relation_contact_row++;
+        });
+      },
+      error: function (error, textStatus, errorThrown) {
+          if (error.status == 422) {
+              var message = error.responseJSON.error;
+              Swal.fire({
+                 type: 'error',
+                 title: 'Oops...',
+                 text: message,
+              });
+          } else {
+              alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+          }
+      }
+  });
+}
+function kickoff_cierre(ix, token) {
+  $.ajax({
+      url: "/info_kickoff_cierre",
+      type: "POST",
+      data: { _token : token, ident: ix },
+      success: function (data) {
+        data.forEach(function(key,i) {
+          var html = '';
+          html += '<tr id="item_cierre_row_' + item_relation_cierre_row + '">';
+
+          html += '<td class="text-center" style="vertical-align: middle;">';
+          html += '<button type="button" onclick="$(\'#item_cierre_row_' + item_relation_cierre_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+          html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+          html += '</button>';
+          html += '<input type="hidden" name="item_cierre[' + item_relation_cierre_row + '][id]" id="item_cierre_id_' + item_relation_cierre_row + '" /> ';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<select class="form-control input-sm col-cierre-contact-int" name="item_cierre[' + item_relation_cierre_row + '][contactInt]" id="item_cierre_contactInt_' + item_relation_cierre_row + '" data-row="' + item_relation_cierre_row + '">'
+          html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+          @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
+          if ( key.user_id == {{ $kickoff_colaboradores_data->id  }} ) {
+            html += '<option value="{{ $kickoff_colaboradores_data->id  }}" selected>{{ $kickoff_colaboradores_data->name }}</option>';
+          }
+          else {
+            html += '<option value="{{ $kickoff_colaboradores_data->id  }}">{{ $kickoff_colaboradores_data->name }}</option>';
+          }
+          @empty
+          @endforelse
+          html += '</select>';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          if ( key.nombre == null ||  key.nombre == '' ) {
+            html += '<input type="text" class="form-control input-sm text-right col-cierre-contact" name="item_cierre[' + item_relation_cierre_row + '][contact]" id="item_cierre_contact_' + item_relation_cierre_row + '" step="any" />';
+          }
+          else {
+            html += '<input type="text" class="form-control input-sm text-right col-cierre-contact" name="item_cierre[' + item_relation_cierre_row + '][contact]" id="item_cierre_contact_' + item_relation_cierre_row + '" value="' + key.nombre + '" step="any" />';
+          }
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<input type="text" class="form-control input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" value="' + key.valor_comision + '" required step="any" maxlength="10" />';
+          html += '</div>';
+          html += '</td>';
+
+          html += '</tr>';
+          $("#validation_anexo #item_cierre tbody #add_item_cierre").before(html);
+          item_relation_cierre_row++;
+        });
+      },
+      error: function (error, textStatus, errorThrown) {
+          if (error.status == 422) {
+              var message = error.responseJSON.error;
+              Swal.fire({
+                 type: 'error',
+                 title: 'Oops...',
+                 text: message,
+              });
+          } else {
+              alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+          }
+      }
+  });
+}
+
+      $('#select_kick_off').on("change", function(){
+        var id = $(this).val();
+        var token = $('input[name="_token"]').val();
+        if (id) {
+          $.ajax({
+              url: "/info_kickoff",
+              type: "POST",
+              data: { _token : token, ident: id },
+              success: function (data) {
+                $('#div_comisiones').show();
+                reset_comision();
+
+                if (typeof data !== 'undefined' && data.length > 0) {
+                  datos = JSON.parse(data);
+                  $('#kick_off_id').val(datos[0].id);
+                  $('#kick_off_proyecto').val(datos[0].nombre_proyecto);
+                  $('#kick_off_sitio').val(datos[0].Sitio);
+                  kickoff_comision(datos[0].id, token);
+                  kickoff_contact(datos[0].id, token);
+                  kickoff_cierre(datos[0].id, token);
+                }
+                else{
+                  $('#div_comisiones').hide();
+                  $('#kick_off_id').val('');
+                  $('#kick_off_proyecto').val('');
+                  $('#kick_off_sitio').val('');
+                }
+              },
+              error: function (error, textStatus, errorThrown) {
+                  if (error.status == 422) {
+                      var message = error.responseJSON.error;
+                      Swal.fire({
+                         type: 'error',
+                         title: 'Oops...',
+                         text: message,
+                      });
+                  } else {
+                      alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                  }
+              }
+          });
+        }
+        else {
+          $('#kick_off_id').val('');
+          $('#kick_off_proyecto').val('');
+          $('#kick_off_sitio').val('');
+          reset_comision();
+        }
+      });
+
+      function reset_comision(){
+        $('#sel_type_comision').val('').trigger('change');
+        $('#sel_inside_sales').val('').trigger('change');
+        $('#sel_itconcierge_comision').val('').trigger('change');
+        $("#item_politica input[type=text]").val('');
+        delete_row_table_a();
+        delete_row_table_b();
+        delete_row_table_c();
+        delete_row_table_d();
+      }
+
+      $('#kick_off_exit').change(function() {
+        if ($(this).prop('checked') == true) {
+          $('#kick_off_exit').val(1);
+          $('#kickoff_info_div').show();
+          $('#div_comisiones').hide();
+          $("#sel_inside_sales").prop('required',true);
+          $("#sel_itconcierge_comision").prop('required',true);
+          //Reset
+          $('#select_kick_off').val('').trigger('change');
+          $('#kick_off_id').val('');
+          $('#kick_off_proyecto').val('');
+          $('#kick_off_sitio').val('');
+        }
+        else {
+          $('#kick_off_exit').val(0);
+          $('#kickoff_info_div').hide();
+          $('#div_comisiones').show();
+          $("#sel_inside_sales").prop('required',false);
+          $("#sel_itconcierge_comision").prop('required',false);
+          //Reset
+          $('#select_kick_off').val('').trigger('change');
+          $('#kick_off_id').val('');
+          $('#kick_off_proyecto').val('');
+          $('#kick_off_sitio').val('');
+        }
+        //reset_comision();
       });
 
     $(function() {

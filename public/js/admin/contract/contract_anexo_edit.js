@@ -301,7 +301,7 @@ $(".validation-wizard-anexo").on('change','#sel_anexo',function(){
   // alert(id_contrat);
   genTablesite(id_contrat);
   get_data_anexos(id_contrat);
-
+  getCommission(id_contrat);
   genTablecoin(id_contrat);
   getRfcSitesAnnexes(id_contrat);
 });
@@ -355,7 +355,7 @@ function getRfcSitesAnnexes(id_anexo){
 				console.log(data);
 				$('#rz_annexo').text(data[0].customers);
 				$('#rfc_annexo').text(data[0].taxid);
-				
+
 				data.forEach(sitio => {
 					$('#sitios_anexos').append(`<li>${sitio.Nombre_hotel}</li>`);
 				  });
@@ -642,7 +642,7 @@ function get_data_anexos(id_contract){
       $("#date_start_cont").val(data[0].date_scheduled_start);
       $("#date_end_cont_sist").val(data[0].date_scheduled_end);
       $("#contract_real_date").val(data[0].date_real);
-      
+
       // $("#edit_num_vto").val(data[0].number_expiration);
 
       // Setting unitMeasure
@@ -1127,7 +1127,7 @@ function replaceCommas(yourNumber) {
 
 /*
   **** EVENTOS ADD COIN  *****
-*/ 
+*/
 
 $("#mensualidad_add").on("keyup", function(event) {
   //Convertir formato pesos
@@ -1191,7 +1191,7 @@ $("#descuento_add").on('keyup',function(event){
 
 /*
   **** EVENTOS EDIT COIN  *****
-*/ 
+*/
 
 $("#mensualidad_edit").on("keyup", function(event) {
   //Convertir formato pesos
@@ -1329,7 +1329,7 @@ $("#Creatnewcoin").validate({
     }
 });
 
-/**************************************************************************/ 
+/**************************************************************************/
 $("#Editnewcoin").validate({
   ignore: "input[type=hidden]",
   errorClass: "text-danger",
@@ -1372,7 +1372,7 @@ $("#Editnewcoin").validate({
             //console.log(data);
             datax = data;
             if (datax != '0') {
-             
+
               var id_contrat = $('#sel_anexo option:selected').val();
               genTablecoin(id_contrat);
               Swal.fire("Operación Completada!", ":)", "success");
@@ -1469,5 +1469,5 @@ function modal_edit_coin(e){
       console.log('Error:', data);
     }
   });
-  
+
 }
