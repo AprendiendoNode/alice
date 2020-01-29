@@ -18,7 +18,7 @@
 
 @section('content')
   <!-- Crear -->
-  <div id="modal-CreatNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalaccount" aria-hidden="true" style="display: none;">
+  <div id="modal-CreatNew" class="modal fade" role="dialog" aria-labelledby="modalaccount" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -46,7 +46,7 @@
                 <div class="form-group row">
                   <label for="select_one" class="col-sm-3 col-form-label">Codigo agrupador</label>
                   <div class="col-sm-9">
-                    <select  id="select_one" name="select_one" class="form-control form-control-sm"  style="width: 100%;">
+                    <select  id="select_one" name="select_one" class="form-control form-control-sm select2"  style="width: 100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($list_code_agrup as $list_code_agrup_data)
                         <option value="{{ $list_code_agrup_data->id }}"> {{ $list_code_agrup_data->Codigo_agrupador }} - {{ $list_code_agrup_data->Nombre }} </option>
@@ -58,7 +58,7 @@
                 <div class="form-group row">
                   <label for="select_two" class="col-sm-3 col-form-label">Naturaleza<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="select_two" name="select_two" class="form-control form-control-sm required"  style="width: 100%;">
+                    <select  id="select_two" name="select_two" class="form-control form-control-sm select2 required"  style="width: 100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($list_nature as $list_nature_data)
                         <option value="{{ $list_nature_data->id }}"> {{ $list_nature_data->NA }} - {{ $list_nature_data->naturaleza }} </option>
@@ -70,7 +70,7 @@
                 <div class="form-group row">
                   <label for="select_three" class="col-sm-3 col-form-label">Rubro<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="select_three" name="select_three" class="form-control form-control-sm required"  style="width: 100%;">
+                    <select  id="select_three" name="select_three" class="form-control form-control-sm select2 required"  style="width: 100%;">
                       <option value="" selected>{{ trans('message.selectopt') }}</option>
                       @forelse ($list_rubro as $list_rubro_data)
                         <option value="{{ $list_rubro_data->id }}"> {{ $list_rubro_data->clave }} - {{ $list_rubro_data->descripcion }} </option>
@@ -103,7 +103,7 @@
     </div>
   </div>
   <!-- Editar -->
-  <div id="modal-Edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaledit" aria-hidden="true" style="display: none;">
+  <div id="modal-Edit" class="modal fade" role="dialog" aria-labelledby="modaledit" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -132,7 +132,7 @@
                 <div class="form-group row">
                   <label for="edit_select_one" class="col-sm-3 col-form-label">Codigo agrupador</label>
                   <div class="col-sm-9">
-                    <select  id="edit_select_one" name="edit_select_one" class="form-control form-control-sm"  style="width: 100%;">
+                    <select  id="edit_select_one" name="edit_select_one" class="form-control form-control-sm select2"  style="width: 100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($list_code_agrup as $list_code_agrup_data)
                         <option value="{{ $list_code_agrup_data->id }}"> {{ $list_code_agrup_data->Codigo_agrupador }} - {{ $list_code_agrup_data->Nombre }} </option>
@@ -144,7 +144,7 @@
                 <div class="form-group row">
                   <label for="edit_select_two" class="col-sm-3 col-form-label">Naturaleza<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="edit_select_two" name="edit_select_two" class="form-control form-control-sm required"  style="width: 100%;">
+                    <select  id="edit_select_two" name="edit_select_two" class="form-control form-control-sm select2 required"  style="width: 100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($list_nature as $list_nature_data)
                         <option value="{{ $list_nature_data->id }}"> {{ $list_nature_data->NA }} - {{ $list_nature_data->naturaleza }} </option>
@@ -156,7 +156,7 @@
                 <div class="form-group row">
                   <label for="edit_select_three" class="col-sm-3 col-form-label">Rubro<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="edit_select_three" name="edit_select_three" class="form-control form-control-sm required"  style="width: 100%;">
+                    <select  id="edit_select_three" name="edit_select_three" class="form-control form-control-sm select2 required"  style="width: 100%;">
                       <option value="" selected>{{ trans('message.selectopt') }}</option>
                       @forelse ($list_rubro as $list_rubro_data)
                         <option value="{{ $list_rubro_data->id }}"> {{ $list_rubro_data->clave }} - {{ $list_rubro_data->descripcion }} </option>
@@ -236,8 +236,9 @@
 
 @push('scripts')
   @if( auth()->user()->can('View accounting account') )
-    <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
+    {{-- <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" /> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" /> --}}
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/select2/dist/js/i18n/es-MX.js') }}" type="text/javascript"></script>
 
@@ -264,6 +265,16 @@
     <style media="screen">
       .toggle.btn {
         min-width: 7.5rem !important;
+      }
+      .select2-selection__rendered {
+        line-height: 44px !important;
+        padding-left: 20px !important;
+      }
+      .select2-selection {
+        height: 42px !important;
+      }
+      .select2-selection__arrow {
+        height: 36px !important;
       }
     </style>
   @else

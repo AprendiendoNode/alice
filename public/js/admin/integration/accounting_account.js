@@ -1,4 +1,12 @@
 $(function() {
+  $("#select_one").select2();
+  $("#select_two").select2();
+  $("#select_three").select2();
+
+  $("#edit_select_one").select2();
+  $("#edit_select_two").select2();
+  $("#edit_select_three").select2();
+
   generate_table();
   $('#last_level').bootstrapToggle('off');
   $('#status').bootstrapToggle('on');

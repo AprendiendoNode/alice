@@ -1,4 +1,10 @@
 $(function() {
+  $("#inputCreatRubro").select2();
+  $("#inputCreatGrup").select2();
+
+  $("#inputEditRubro").select2();
+  $("#inputEditGrup").select2();
+
   generate_table();
 
   $('#creatrecord').formValidation({
