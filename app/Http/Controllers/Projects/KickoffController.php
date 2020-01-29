@@ -144,23 +144,25 @@ class KickoffController extends Controller
         if (!empty($request->item)) {
           foreach ($request->item as $key => $result) {
                       $id_user = $result['contactInt'];
-                      $contact = !empty($result['contact']) ? $result['contact'] : '';
+                      $contact = $result['contact'];
                    $porcentaje = $result['porcentaje'];
-            $comision_contacto = DB::table('comisiones_contacto')->where('id', '=', $result['id'])->update([
-                    'user_id' => $id_user,
-                     'nombre' => $contact,
-            'valor_comision'  => $porcentaje
-             ]);
-             if($comision_contacto == 1) array_push($updated_contacto, $result['id']);
-             else {
-               DB::table('comisiones_contacto')->insert([
-                       'user_id' => $id_user,
-                        'nombre' => $contact,
-              'comision_gral_id' => $general[0]->id,
-               'valor_comision'  => $porcentaje,
-                    'created_at' => \Carbon\Carbon::now()
-                ]);
-             }
+                   if(!empty($result['contact'])) {
+                     $comision_contacto = DB::table('comisiones_contacto')->where('id', '=', $result['id'])->update([
+                             'user_id' => $id_user,
+                              'nombre' => $contact,
+                     'valor_comision'  => $porcentaje
+                      ]);
+                      if($comision_contacto == 1) array_push($updated_contacto, $result['id']);
+                      else {
+                        DB::table('comisiones_contacto')->insert([
+                                'user_id' => $id_user,
+                                 'nombre' => $contact,
+                       'comision_gral_id' => $general[0]->id,
+                        'valor_comision'  => $porcentaje,
+                             'created_at' => \Carbon\Carbon::now()
+                         ]);
+                      }
+                   }
           }
         }
         $difference = array_diff($old_contacto, $updated_contacto);
@@ -174,21 +176,23 @@ class KickoffController extends Controller
                      $id_user = $result['contactInt'];
                      $contact = $result['contact'];
                   $porcentaje = $result['porcentaje'];
-             $comision_cierre = DB::table('comisiones_cierre')->where('id', '=', $result['id'])->update([
-                    'user_id' => $id_user,
-                     'nombre' => $contact,
-            'valor_comision'  => $porcentaje
-             ]);
-             if($updated_cierre == 1) array_push($updated_cierre, $result['id']);
-             else {
-               DB::table('comisiones_cierre')->insert([
-                       'user_id' => $id_user,
-                        'nombre' => $contact,
-              'comision_gral_id' => $general[0]->id,
-               'valor_comision'  => $porcentaje,
-                    'created_at' => \Carbon\Carbon::now()
-                ]);
-             }
+                  if(!empty($result['contact'])) {
+                    $comision_cierre = DB::table('comisiones_cierre')->where('id', '=', $result['id'])->update([
+                           'user_id' => $id_user,
+                            'nombre' => $contact,
+                   'valor_comision'  => $porcentaje
+                    ]);
+                    if($updated_cierre == 1) array_push($updated_cierre, $result['id']);
+                    else {
+                      DB::table('comisiones_cierre')->insert([
+                              'user_id' => $id_user,
+                               'nombre' => $contact,
+                     'comision_gral_id' => $general[0]->id,
+                      'valor_comision'  => $porcentaje,
+                           'created_at' => \Carbon\Carbon::now()
+                       ]);
+                    }
+                  }
           }
         }
         $difference = array_diff($old_cierre, $updated_cierre);
@@ -209,16 +213,18 @@ class KickoffController extends Controller
         if (!empty($request->item)) {
           foreach ($request->item as $key => $result) {
                       $id_user = $result['contactInt'];
-                      $contact = !empty($result['contact']) ? $result['contact'] : '';
+                      $contact = $result['contact'];
                    $porcentaje = $result['porcentaje'];
-            $comision_contacto = DB::table('comisiones_contacto')
-             ->insertGetId([
-                    'user_id' => $id_user,
-                     'nombre' => $contact,
-           'comision_gral_id' => $comision_gral_new,
-            'valor_comision'  => $porcentaje,
-                 'created_at' => \Carbon\Carbon::now()
-             ]);
+                   if(!empty($result['contact'])) {
+                     $comision_contacto = DB::table('comisiones_contacto')
+                      ->insertGetId([
+                             'user_id' => $id_user,
+                              'nombre' => $contact,
+                    'comision_gral_id' => $comision_gral_new,
+                     'valor_comision'  => $porcentaje,
+                          'created_at' => \Carbon\Carbon::now()
+                      ]);
+                   }
           }
         }
         if (!empty($request->item_cierre)) {
@@ -226,14 +232,16 @@ class KickoffController extends Controller
                      $id_user = $result['contactInt'];
                      $contact = $result['contact'];
                   $porcentaje = $result['porcentaje'];
-             $comision_cierre = DB::table('comisiones_cierre')
-             ->insertGetId([
-                    'user_id' => $id_user,
-                     'nombre' => $contact,
-           'comision_gral_id' => $comision_gral_new,
-            'valor_comision'  => $porcentaje,
-                 'created_at' => \Carbon\Carbon::now()
-             ]);
+                  if(!empty($result['contact'])) {
+                    $comision_cierre = DB::table('comisiones_cierre')
+                    ->insertGetId([
+                           'user_id' => $id_user,
+                            'nombre' => $contact,
+                  'comision_gral_id' => $comision_gral_new,
+                   'valor_comision'  => $porcentaje,
+                        'created_at' => \Carbon\Carbon::now()
+                    ]);
+                  }
           }
         }
       }
