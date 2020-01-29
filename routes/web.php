@@ -932,7 +932,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/info_kickoff_comision', 'Contracts\ContratoController@info_kickoff_comision');
     Route::post('/info_kickoff_cierre', 'Contracts\ContratoController@info_kickoff_cierre');
     Route::post('/info_kickoff_contact', 'Contracts\ContratoController@info_kickoff_contact');
-    
+
     Route::post('get_commission_anexo', 'Contracts\ContratoController@get_commission_anexo');
     Route::post('get_contact_commission_anexo', 'Contracts\ContratoController@get_contact_anexo');
     Route::post('get_cierre_commission_anexo', 'Contracts\ContratoController@get_cierre_anexo');
@@ -1238,7 +1238,7 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::get('/purchases_view', 'Purchases\PurchasesController@index');
   Route::post('/get_exchangeratebydate', 'Purchases\PurchasesController@get_currency');
   Route::post('/purchase-store', 'Purchases\PurchasesController@store');
-  Route::post('/total-lines-purchase', 'Purchases\PurchasesController@totallines'); 
+  Route::post('/total-lines-purchase', 'Purchases\PurchasesController@totallines');
 
   //Historial de compras
   Route::get('/view_purchases_show', 'Purchases\HistoryPurchasesController@index');
@@ -1254,16 +1254,24 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
 Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){
   //Integracion contable
   Route::get('/accounting_account', 'Integration\AccountingAccountController@index');
+  Route::post('/accounting_account_create', 'Integration\AccountingAccountController@create');
+  Route::post('/accounting_account_store', 'Integration\AccountingAccountController@store');
   Route::post('/accounting_account_show', 'Integration\AccountingAccountController@show');
+  Route::post('/accounting_account_edit', 'Integration\AccountingAccountController@edit');
   Route::post('/accounting_account_open', 'Integration\AccountingAccountController@open');
   Route::post('/accounting_account_closed', 'Integration\AccountingAccountController@closed');
 
   Route::get('/rubros', 'Integration\RubrosController@index');
+  Route::post('/rubros_create', 'Integration\RubrosController@create');
+  Route::post('/rubros_store', 'Integration\RubrosController@store');
   Route::post('/rubros_show', 'Integration\RubrosController@show');
+  Route::post('/rubros_edit', 'Integration\RubrosController@edit');
 
   Route::get('/grouping_code', 'Integration\GroupingCodeController@index');
+  Route::post('/grouping_code_create', 'Integration\GroupingCodeController@create');
+  Route::post('/grouping_code_store', 'Integration\GroupingCodeController@store');
   Route::post('/grouping_code_show', 'Integration\GroupingCodeController@show');
-
+  Route::post('/grouping_code_edit', 'Integration\GroupingCodeController@edit');
 });
 Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
 {

@@ -28,7 +28,7 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-12">
-              <form id="creataccount" name="creataccount" class="forms-sample" action="">
+              <form id="creatrecord" name="creatrecord" class="forms-sample" action="">
                 {{ csrf_field() }}
                 <div class="form-group row">
                   <label for="inputCreatCode" class="col-sm-3 col-form-label">Clave <span style="color: red;">*</span></label>
@@ -44,12 +44,12 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="select_one" class="col-sm-3 col-form-label">Codigo agrupador<span style="color: red;">*</span></label>
+                  <label for="select_one" class="col-sm-3 col-form-label">Codigo agrupador</label>
                   <div class="col-sm-9">
-                    <select  id="select_one" name="select_one" class="form-control form-control-sm required"  style="width: 100%;">
+                    <select  id="select_one" name="select_one" class="form-control form-control-sm"  style="width: 100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($list_code_agrup as $list_code_agrup_data)
-                        <option value="{{ $list_code_agrup_data->id }}"> {{ $list_code_agrup_data->name }} </option>
+                        <option value="{{ $list_code_agrup_data->id }}"> {{ $list_code_agrup_data->Codigo_agrupador }} - {{ $list_code_agrup_data->Nombre }} </option>
                       @empty
                       @endforelse
                     </select>
@@ -60,20 +60,20 @@
                   <div class="col-sm-9">
                     <select  id="select_two" name="select_two" class="form-control form-control-sm required"  style="width: 100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
-                      @forelse ($list_nature as $key => $value)
-                        <option value="{{ $key }}"> {{ $value }} </option>
+                      @forelse ($list_nature as $list_nature_data)
+                        <option value="{{ $list_nature_data->id }}"> {{ $list_nature_data->NA }} - {{ $list_nature_data->naturaleza }} </option>
                       @empty
                       @endforelse
                     </select>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="select_three" class="col-sm-3 col-form-label">Rubro</label>
+                  <label for="select_three" class="col-sm-3 col-form-label">Rubro<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="select_three" name="select_three" class="form-control form-control-sm"  style="width: 100%;">
+                    <select  id="select_three" name="select_three" class="form-control form-control-sm required"  style="width: 100%;">
                       <option value="" selected>{{ trans('message.selectopt') }}</option>
                       @forelse ($list_rubro as $list_rubro_data)
-                        <option value="{{ $list_rubro_data->id }}"> {{ $list_rubro_data->name }} </option>
+                        <option value="{{ $list_rubro_data->id }}"> {{ $list_rubro_data->clave }} - {{ $list_rubro_data->descripcion }} </option>
                       @empty
                       @endforelse
                     </select>
@@ -113,28 +113,29 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-12">
-              <form id="editaccount" name="editaccount" class="forms-sample" action="">
+              <form id="editrecord" name="editrecord" class="forms-sample" action="">
                 {{ csrf_field() }}
-                <input class="form-control" type="hidden" placeholder="" id="token_b" name="token_b" value="">
+                <input class="form-control" type="text" placeholder="" id="token_b" name="token_b" value="">
                 <div class="form-group row">
                   <label for="inputEditCode" class="col-sm-3 col-form-label">Clave <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputEditCode" name="inputEditCode" placeholder="Clave" maxlength="24">
+                    <input type="text" class="form-control form-control-sm required" id="inputEditCode" name="inputEditCode" placeholder="Clave" maxlength="24"
+                    data-mask="0000-000-000-000-000-000">
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="inputEditName" class="col-sm-3 col-form-label">Cuenta contable <span style="color: red;">*</span></label>
+                  <label for="inputEditName" class="col-sm-3 col-form-label">Cuenta contable<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm required" id="inputEditName" name="inputEditName" placeholder="Nombre" maxlength="60">
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="edit_select_one" class="col-sm-3 col-form-label">Codigo agrupador<span style="color: red;">*</span></label>
+                  <label for="edit_select_one" class="col-sm-3 col-form-label">Codigo agrupador</label>
                   <div class="col-sm-9">
-                    <select  id="edit_select_one" name="edit_select_one" class="form-control form-control-sm required"  style="width: 100%;">
+                    <select  id="edit_select_one" name="edit_select_one" class="form-control form-control-sm"  style="width: 100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($list_code_agrup as $list_code_agrup_data)
-                        <option value="{{ $list_code_agrup_data->id }}"> {{ $list_code_agrup_data->name }} </option>
+                        <option value="{{ $list_code_agrup_data->id }}"> {{ $list_code_agrup_data->Codigo_agrupador }} - {{ $list_code_agrup_data->Nombre }} </option>
                       @empty
                       @endforelse
                     </select>
@@ -145,20 +146,20 @@
                   <div class="col-sm-9">
                     <select  id="edit_select_two" name="edit_select_two" class="form-control form-control-sm required"  style="width: 100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
-                      @forelse ($list_nature as $key => $value)
-                        <option value="{{ $key }}"> {{ $value }} </option>
+                      @forelse ($list_nature as $list_nature_data)
+                        <option value="{{ $list_nature_data->id }}"> {{ $list_nature_data->NA }} - {{ $list_nature_data->naturaleza }} </option>
                       @empty
                       @endforelse
                     </select>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="edit_select_three" class="col-sm-3 col-form-label">Rubro</label>
+                  <label for="edit_select_three" class="col-sm-3 col-form-label">Rubro<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="edit_select_three" name="edit_select_three" class="form-control form-control-sm"  style="width: 100%;">
+                    <select  id="edit_select_three" name="edit_select_three" class="form-control form-control-sm required"  style="width: 100%;">
                       <option value="" selected>{{ trans('message.selectopt') }}</option>
                       @forelse ($list_rubro as $list_rubro_data)
-                        <option value="{{ $list_rubro_data->id }}"> {{ $list_rubro_data->name }} </option>
+                        <option value="{{ $list_rubro_data->id }}"> {{ $list_rubro_data->clave }} - {{ $list_rubro_data->descripcion }} </option>
                       @empty
                       @endforelse
                     </select>
@@ -239,6 +240,10 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
     <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/select2/dist/js/i18n/es-MX.js') }}" type="text/javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
+    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
+    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
 
     <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>

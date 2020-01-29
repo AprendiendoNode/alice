@@ -3,6 +3,197 @@ $(function() {
   $('#last_level').bootstrapToggle('off');
   $('#status').bootstrapToggle('on');
 
+  $('#creatrecord').formValidation({
+   framework: 'bootstrap',
+   excluded: ':disabled',
+   fields: {
+     inputCreatCode: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+     inputCreatName: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+     select_two: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+     select_three: {
+       validators: {
+         notEmpty: {
+           message: 'The field is required'
+         }
+       }
+     },
+   }
+  })
+  .on('success.form.fv', function(e) {
+        e.preventDefault();
+        var form = $('#creatrecord')[0];
+        var formData = new FormData(form);
+        $.ajax({
+          type: "POST",
+          url: "/integration/accounting_account_create",
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (data){
+            if (data == 'abort') {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Error encontrado..',
+                 text: 'Realice la operacion nuevamente!',
+               });
+            }
+            else if (data == 'false') {
+              Swal.fire({
+                 type: 'error',
+                 title: 'Error encontrado..',
+                 text: 'Ya existe!',
+               });
+            }
+            else {
+                $('#modal-CreatNew').modal('toggle');
+                let timerInterval;
+                Swal.fire({
+                  type: 'success',
+                  title: 'Operación Completada!',
+                  html: 'Aplicando los cambios.',
+                  timer: 2500,
+                  onBeforeOpen: () => {
+                    Swal.showLoading()
+                    timerInterval = setInterval(() => {
+                      Swal.getContent().querySelector('strong')
+                    }, 100)
+                  },
+                  onClose: () => {
+                    clearInterval(timerInterval)
+                  }
+                }).then((result) => {
+                  if (
+                    // Read more about handling dismissals
+                    result.dismiss === Swal.DismissReason.timer
+                  ) {
+                    window.location.href = "/integration/accounting_account";
+                  }
+                });
+            }
+          },
+          error: function (err) {
+            Swal.fire({
+               type: 'error',
+               title: 'Oops...',
+               text: err.statusText,
+             });
+          }
+        });
+  });
+
+  $('#editrecord').formValidation({
+    framework: 'bootstrap',
+    excluded: ':disabled',
+    fields: {
+      inputEditCode: {
+        validators: {
+          notEmpty: {
+            message: 'The field is required'
+          }
+        }
+      },
+      inputEditName: {
+        validators: {
+          notEmpty: {
+            message: 'The field is required'
+          }
+        }
+      },
+      edit_select_two: {
+        validators: {
+          notEmpty: {
+            message: 'The field is required'
+          }
+        }
+      },
+      edit_select_three: {
+        validators: {
+          notEmpty: {
+            message: 'The field is required'
+          }
+        }
+      },
+    }
+   })
+  .on('success.form.fv', function(e) {
+      e.preventDefault();
+      var form = $('#editrecord')[0];
+      var formData = new FormData(form);
+      $.ajax({
+        type: "POST",
+        url: "/integration/accounting_account_store",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (data){
+           if (data == 'false') {
+             Swal.fire({
+                type: 'error',
+                title: 'Error encontrado..',
+                text: 'La clave ya existe!',
+              });
+           }
+          else if (data == 'abort') {
+            Swal.fire({
+               type: 'error',
+               title: 'Error encontrado..',
+               text: 'Realice la operacion nuevamente!',
+             });
+          }
+          else {
+              $('#modal-Edit').modal('toggle');
+              let timerInterval;
+              Swal.fire({
+                type: 'success',
+                title: 'Operación Completada!',
+                html: 'Aplicando los cambios.',
+                timer: 2500,
+                onBeforeOpen: () => {
+                  Swal.showLoading()
+                  timerInterval = setInterval(() => {
+                    Swal.getContent().querySelector('strong')
+                  }, 100)
+                },
+                onClose: () => {
+                  clearInterval(timerInterval)
+                }
+              }).then((result) => {
+                if (
+                  // Read more about handling dismissals
+                  result.dismiss === Swal.DismissReason.timer
+                ) {
+                  window.location.href = "/integration/accounting_account";
+                }
+              });
+          }
+        },
+        error: function (err) {
+          Swal.fire({
+             type: 'error',
+             title: 'Oops...',
+             text: err.statusText,
+           });
+        }
+      });
+  });
 });
 
 function generate_table() {
@@ -34,7 +225,7 @@ function table_filter(datajson, table){
   var vartable = table.dataTable(Configuration_table_responsive);
   vartable.fnClearTable();
   $.each(JSON.parse(datajson), function(index, information){
-    var status = information.estatus;
+    var status = information.status;
     var html = "", estatus = "";
     var a01='', a02='', a03='', a04='',a05='',a06='',a07='',a08='';
     a01 = '<div class="btn-group">';
@@ -52,17 +243,17 @@ function table_filter(datajson, table){
     a08 = '</div>';
     var dropdown = a01+a02+a03+a04+a05+a06+a07+a08;
     if (parseInt(status) == '0'){
-      estatus = '<i class="fas fa-times text-danger"></i> Dehabilitar';
+      estatus = '<i class="fas fa-times text-danger"></i> Deshabilitado';
     }
     else if (parseInt(status) == '1'){
-      estatus = '<i class="fas fa-check text-success"></i> Habilitar';
+      estatus = '<i class="fas fa-check text-success"></i> Activo';
     }
     vartable.fnAddData([
       dropdown,
       information.cuenta,
       information.nombre,
       information.naturaleza,
-      information.rubro,
+      information.rubro_contable,
       information.codigo_agrupador,
       estatus,
     ]);
@@ -74,6 +265,7 @@ var Configuration_table_responsive = {
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
     "ordering": false,
+    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "Todos"]],
     buttons: [
       {
         text: '<i class="fas fa-plus-circle fastable mt-2"></i> Crear nuevo',
@@ -152,11 +344,42 @@ function edit_account(e) {
   var _token = $('meta[name="csrf-token"]').attr('content');
   $.ajax({
       type: "POST",
-      url: '/sales/accounting_account_edit',
+      url: '/integration/accounting_account_edit',
       data: {token_b : valor, _token : _token},
       success: function (data) {
-        $("#modal-Edit").modal("show");
-        
+        $("#editrecord")[0].reset();
+        $('#editrecord').data('formValidation').resetForm($('#editrecord'));
+        if (data != []) {
+          $('#token_b').val(data[0].id);
+          $('#inputEditCode').val(data[0].cuenta);
+          $('#inputEditName').val(data[0].nombre);
+          $('#edit_select_one').val(data[0].codigo_agrupador_id).trigger('change');
+          $('#edit_select_two').val(data[0].naturaleza_id).trigger('change');
+          $('#edit_select_three').val(data[0].rubro_contable_id).trigger('change');
+
+          if (data[0].UN == '0')
+          {
+            $("#edit_last_level").prop('checked', false).change();
+          }
+          else {
+            $('#edit_last_level').prop('checked', true).change();
+          }
+          if (data[0].status == '0')
+          {
+            $("#edit_status").prop('checked', false).change();
+          }
+          else {
+            $('#edit_status').prop('checked', true).change();
+          }
+          $('#modal-Edit').modal('show');
+        }
+        else {
+          Swal.fire({
+            type: 'error',
+            title: 'Error encontrado..',
+            text: 'Realice la operacion nuevamente!',
+          });
+        }
       },
       error: function (err) {
         Swal.fire({
