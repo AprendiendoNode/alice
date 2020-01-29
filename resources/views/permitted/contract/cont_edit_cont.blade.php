@@ -1499,7 +1499,7 @@
 
           html += '<td>';
           html += '<div class="form-group form-group-sm">';
-          html += '<select class="form-control input-sm col-contact-int" name="item[' + item_relation_contact_row + '][contactInt]" id="item_contactInt_' + item_relation_contact_row + '" data-row="' + item_relation_contact_row + '">'
+          html += '<select class="form-control input-sm col-contact-int" name="item[' + item_relation_contact_row + '][contactInt]" id="item_contactInt_' + item_relation_contact_row + '" data-row="' + item_relation_contact_row + '" required >'
           html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
           @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
 
@@ -1560,7 +1560,7 @@
 
           html += '<td>';
           html += '<div class="form-group form-group-sm">';
-          html += '<select class="form-control input-sm col-cierre-contact-int" name="item_cierre[' + item_relation_cierre_row + '][contactInt]" id="item_cierre_contactInt_' + item_relation_cierre_row + '" data-row="' + item_relation_cierre_row + '">'
+          html += '<select class="form-control input-sm col-cierre-contact-int" name="item_cierre[' + item_relation_cierre_row + '][contactInt]" id="item_cierre_contactInt_' + item_relation_cierre_row + '" data-row="' + item_relation_cierre_row + '" required >'
           html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
           @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
             if(cierre.user_id=={{ $kickoff_colaboradores_data->id  }}){
@@ -1610,6 +1610,11 @@
       }
       });
 }
+$('#sel_type_comision').on('change', function(e){
+  var group = $(this).val();
+  data_comision(group);
+});
+
 
 function kickoff_comision(ix, token) {
   $.ajax({
@@ -1664,7 +1669,7 @@ function kickoff_contact(ix, token) {
 
           html += '<td>';
           html += '<div class="form-group form-group-sm">';
-          html += '<select class="form-control input-sm col-contact-int" name="item[' + item_relation_contact_row + '][contactInt]" id="item_contactInt_' + item_relation_contact_row + '" data-row="' + item_relation_contact_row + '">'
+          html += '<select class="form-control input-sm col-contact-int" name="item[' + item_relation_contact_row + '][contactInt]" id="item_contactInt_' + item_relation_contact_row + '" data-row="' + item_relation_contact_row + '" required >'
           html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
           @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
             if ( key.user_id == {{ $kickoff_colaboradores_data->id  }} ) {
@@ -1735,7 +1740,7 @@ function kickoff_cierre(ix, token) {
 
           html += '<td>';
           html += '<div class="form-group form-group-sm">';
-          html += '<select class="form-control input-sm col-cierre-contact-int" name="item_cierre[' + item_relation_cierre_row + '][contactInt]" id="item_cierre_contactInt_' + item_relation_cierre_row + '" data-row="' + item_relation_cierre_row + '">'
+          html += '<select class="form-control input-sm col-cierre-contact-int" name="item_cierre[' + item_relation_cierre_row + '][contactInt]" id="item_cierre_contactInt_' + item_relation_cierre_row + '" data-row="' + item_relation_cierre_row + '" required >'
           html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
           @forelse ($kickoff_colaboradores as $kickoff_colaboradores_data)
           if ( key.user_id == {{ $kickoff_colaboradores_data->id  }} ) {
