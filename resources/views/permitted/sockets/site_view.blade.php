@@ -211,12 +211,12 @@
 
     const socket = io();
 
-    var hotel_id = {{ hotel.id }};
-    var width = {{ hotel.width }};
-    var height = {{ hotel.height }};
-    var left = {{ hotel.left }};
-    var _top = {{ hotel.top }};
-    var hotel_mapa = "{{ hotel.mapa }}";
+    var hotel_id = 20;
+    var width = 20;
+    var height = 20;
+    var left = 20;
+    var _top = 20;
+    var hotel_mapa = "20";
 
     var allAreas = null;
     var cambios = [];

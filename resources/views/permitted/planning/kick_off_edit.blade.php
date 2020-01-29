@@ -262,7 +262,7 @@
 
                             <td>
                             <div class="form-group form-group-sm">
-                            <input type="text" class="form-control form-control-sm input-sm text-right col-porcentaje" name="item[{{$item_relation_contact_row}}][porcentaje]" id="item_porcentaje_{{$item_relation_contact_row}}" required value="{{$comision_contact_data->valor_comision}}" step="any" maxlength="10" />
+                            <input type="text" class="form-control form-control-sm input-sm text-right col-porcentaje porcentajes_contacto" name="item[{{$item_relation_contact_row}}][porcentaje]" id="item_porcentaje_{{$item_relation_contact_row}}" required value="{{$comision_contact_data->valor_comision}}" step="any" maxlength="10" />
                             </div>
                             </td>
 
@@ -1526,7 +1526,7 @@
         var group = $(this).val();
         data_comision(group);
       });
-      data_comision(1);
+      data_comision($('#sel_type_comision').val());
       var kickoff_id = '{{$kickoff_approvals->kickoff_id}}';
       var token = $('input[name="_token"]').val();
       kickoff_cierre(kickoff_id, token);
@@ -1565,7 +1565,7 @@
 
         html += '<td>';
         html += '<div class="form-group form-group-sm">';
-        html += '<input type="text" class="form-control form-control-sm input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" required step="any" maxlength="10" />';
+        html += '<input type="text" class="form-control form-control-sm input-sm text-right col-porcentaje porcentajes_contacto" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" required step="any" maxlength="10" />';
         html += '</div>';
         html += '</td>';
 
@@ -1618,7 +1618,7 @@
 
         html += '<td>';
         html += '<div class="form-group form-group-sm">';
-        html += '<input type="text" class="form-control form-control-sm input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" required step="any" maxlength="10" />';
+        html += '<input type="text" class="form-control form-control-sm input-sm text-right col-cierre-porcentaje porcentajes_cierre" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" required step="any" maxlength="10" />';
         html += '</div>';
         html += '</td>';
 
@@ -1729,7 +1729,7 @@
 
               html += '<td>';
               html += '<div class="form-group form-group-sm">';
-              html += '<input type="text" class="form-control form-control-sm input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" value="' + (key.valor_comision == null ? "" : key.valor_comision) + '" required step="any" maxlength="10" />';
+              html += '<input type="text" class="form-control form-control-sm input-sm text-right col-cierre-porcentaje porcentajes_cierre" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" value="' + (key.valor_comision == null ? "" : key.valor_comision) + '" required step="any" maxlength="10" />';
               html += '</div>';
               html += '</td>';
 

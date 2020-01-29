@@ -128,9 +128,9 @@ function calcularComision(e){
 }
 
 function save_comision(){
-  
+
   var _token = $('input[name="_token"]').val();
-        
+
   Swal.fire({
     title: "Estás seguro?",
     text: "Espere mientras se sube la información. Aparecera una ventana de dialogo al terminar.!",
@@ -144,32 +144,52 @@ function save_comision(){
     showLoaderOnConfirm: true,
   }).then((result) => {
     if (result.value) {
+
+      var total_contacto = parseFloat($("#politica_contacto").val());
+      var suma_contacto = 0;
+      var total_cierre = parseFloat($("#politica_cierre").val());
+      var suma_cierre = 0;
+
+      $(".porcentajes_contacto").each(function() {
+        suma_contacto += parseFloat($(this).val());
+      });
+
+      $(".porcentajes_cierre").each(function() {
+        suma_cierre += parseFloat($(this).val());
+      });
       
-      var form = $('#form_validation')[0];
-      var formData = new FormData(form);
-      formData.append('id_doc', $('#id').val() );
-      $.ajax({
-        type: "POST",
-        url: "/save_comision_kickoff",
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (data){
-          datax = data;
-          if (datax != '0') {
-            Swal.fire("Operación Completada!", ":)", "success");
+      if(suma_contacto > total_contacto) {
+        Swal.fire(``,'La suma de los porcentajes en Contácto excede el '+total_contacto+'%.', 'error');
+      } else if(suma_cierre > total_cierre) {
+        Swal.fire(``,'La suma de los porcentajes en Cierre excede el '+total_cierre+'%.', 'error');
+      } else {
+        var form = $('#form_validation')[0];
+        var formData = new FormData(form);
+        formData.append('id_doc', $('#id').val() );
+        $.ajax({
+          type: "POST",
+          url: "/save_comision_kickoff",
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (data){
+            datax = data;
+            if (datax != '0') {
+              Swal.fire("Operación Completada!", ":)", "success");
+            }
+            else {
+              $('#modal_cadena').modal('toggle');
+              Swal.fire("Operación abortada", "No se guardo la comisión :(", "error");
+            }
+
+          },
+          error: function (data) {
+            console.log('Error:', data);
+            Swal.close();
           }
-          else {
-            $('#modal_cadena').modal('toggle');
-            Swal.fire("Operación abortada", "No se guardo la comisión :(", "error");
-          }
-          
-        },
-        error: function (data) {
-          console.log('Error:', data);
-          Swal.close();
-        }
-      })//Fin ajax
+        })//Fin ajax
+      }
+
     }//Fin if result.value
     else {
       Swal.fire("Operación abortada", "Ningúna operación afectuada :)", "error");
