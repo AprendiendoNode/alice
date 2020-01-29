@@ -936,6 +936,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_commission_anexo', 'Contracts\ContratoController@get_commission_anexo');
     Route::post('get_contact_commission_anexo', 'Contracts\ContratoController@get_contact_anexo');
     Route::post('get_cierre_commission_anexo', 'Contracts\ContratoController@get_cierre_anexo');
+
+    //NodeJS Views
+    Route::get('/site_view', 'Sockets\SiteController@site_view');
+
 });
 
 

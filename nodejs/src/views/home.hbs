@@ -1,0 +1,119 @@
+<div class="" style="height:20vh;">
+<br>
+</div>
+<main role="main" class="cover ">
+<div class="row">
+<div class="text-center cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+<h1 class="cover-heading text-white">Empieza aquí</h1><br>
+<p class="lead text-white">Monitorea los equipos activos de los sitios.</p>
+<div class="lead">
+<div id="Escogersitio"class="ui inverted animated orange button" tabindex="0" >
+<div class="visible content">Escoger sitio</div>
+<div class="hidden content">
+  <i class="fas fa-building"></i>
+</div>
+</div>
+<div id="Añadirsitio"class="ui inverted animated green button" tabindex="0" >
+<div class="visible content">Añadir sitio</div>
+<div class="hidden content">
+ <i class="fas fa-plus-square"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div id="modalañadir"class="modal fade" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="fas fa-map-marked"></i>&nbsp; Añadir un nuevo sitio</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form  enctype="multipart/form-data" method="POST" action="/createsite" >
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+        <span class="input-group-text">Nombre:</span>
+        </div>
+        <input id="nombreSitio" name="nombreSitio"type="text" class="form-control" placeholder="Nombre del sitio" aria-label="Nombre del área" required>
+      </div>
+      <div class="mb-3">
+        <label id="lblogo" for="LogoFile" class="file-upload btn btn-warning btn-block rounded-pill shadow"><span id="txtLogo"><i class="fa fa-upload mr-2"></i>Seleccione el logo..</span>
+            <input id="LogoFile" name="LogoFile" type="file" >
+        </label>
+      </div>
+      <hr class="separator">
+      <div class="input-group mb-3">
+        <label id="lbmap" for="MapFile" class="file-upload btn btn-primary btn-block rounded-pill shadow"> <span id="txtMap"><i class="fa fa-upload mr-2"></i>Seleccionar el mapa...</span>
+            <input id="MapFile" name="MapFile" type="file" >
+        </label>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cancelar</button>
+      <button type="submit" id="guardarsitio" class="btn btn-primary ui submit" data-html="true" data-tooltip="Al hacer clic se guardaran
+       los cambios" data-position="top left">Guardar</button>
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+
+<div id="modalEscoger" class="modal fade" tabindex="-1" role="dialog">
+<div class=" ">
+<div class="modal-dialog"  >
+  <div class="modal-content" style="background:transparent;">
+    <div class="modal-header d-flex mx-auto" style="background:transparent; border:none;">
+      <h3 class="text-white"> Sitios disponibles </h3>
+      <button type="button" class="close" data-dismiss="modal" name="button">
+        <span class="text-white" aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="row">
+    <input id="searchsite" class="form-control mr-sm-2 border-primary" type="search" placeholder="Search" aria-label="Search" style="background:transparent;">
+    </div>
+    <div id="sitesContainer"class="row"></div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<script src="/js/home/home.js" charset="utf-8"></script>
+
+<style media="screen">
+input[type=search] {
+width: 130px;
+-webkit-transition: width 0.4s ease-in-out;
+transition: width 0.4s ease-in-out;
+color: white !important;
+}
+/* Cuando esta seleccionado el input su ancho cambia a 100% */
+input[type=search]:focus {
+  width: 90%;
+}
+</style>
+<script>
+$(function(){
+
+   $('#searchsite').on("change paste keyup",function(){
+    var search=$('#searchsite').val();
+    //console.log(search);
+    if(search==''){
+      $('#sitesContainer > div').fadeIn(450);
+    }else{
+      //if(){}
+      //console.log(txtValue);
+      var select=$('.'+search).fadeIn(450);
+      $('#sitesContainer > div').not(select).hide();
+    }
+  });
+//---------------------------
+
+
+});
+</script>
