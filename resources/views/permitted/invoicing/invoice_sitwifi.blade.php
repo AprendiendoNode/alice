@@ -196,7 +196,7 @@
       <p>R.F.C.: <span>{{ mb_strtoupper($customer_invoice->customer->taxid) }}</span> </p>
       <p style="line-height:.8rem;">Domicilio:
       <span>
-        {{ $customer_invoice->customer->address_1 ?? '' }} {{ $customer_invoice->customer->address_2 ?? '' }} {{ $customer_invoice->customer->address_3 ?? '' }} {{ $customer_invoice->customer->address_4 ?? '' }}, {{ $estado ?? '' }}, {{ $pais ?? '' }}
+        {{ $customer_invoice->customer->address_1 ?? '' }} <!-- {{ $customer_invoice->customer->address_2 ?? '' }} {{ $customer_invoice->customer->address_3 ?? '' }} {{ $customer_invoice->customer->address_4 ?? '' }} ,--> {{ $estado ?? '' }}, {{ $pais ?? '' }}
       </span>
     </p>
     <p>C.P: <span>{{ $customer_invoice->customer->postcode ?? '' }}</span> </p>

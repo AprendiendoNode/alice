@@ -367,9 +367,11 @@ function edit_account(e) {
 
           if (data[0].UN == '0')
           {
+            $("#edit_last_level").val(0);
             $("#edit_last_level").prop('checked', false).change();
           }
           else {
+            $("#edit_last_level").val(1);
             $('#edit_last_level').prop('checked', true).change();
           }
           if (data[0].status == '0')
