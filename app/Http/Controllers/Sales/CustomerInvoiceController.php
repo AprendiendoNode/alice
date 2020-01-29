@@ -2543,7 +2543,7 @@ class CustomerInvoiceController extends Controller
 
             //Resumen de impuestos
             if (!empty($taxtype)) {
-                  $amount_tax_formula = $amount_tax - $amount_tax_ret;
+                  $amount_tax_formulas = $amount_tax - $amount_tax_ret;
                     $tax = Tax::findOrFail($taxtype);//Tipo de impuesto
                     $customer_invoice_tax = CustomerInvoiceTax::create([
                         'created_uid' => \Auth::user()->id,
