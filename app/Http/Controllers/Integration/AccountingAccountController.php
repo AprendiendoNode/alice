@@ -64,7 +64,7 @@ class AccountingAccountController extends Controller
       $agrupador = !empty($request->select_one) ? $request->select_one  : '';
      $naturaleza = $request->select_two;
           $rubro = $request->select_three;
-    $ultimonivel = !empty($request->last_level) ? 1 : 0;
+    $ultimonivel = !empty($request->last_level) ? 0 : 1;
          $status = !empty($request->status) ? 1 : 0;
 
          $result = DB::connection('contabilidad')
@@ -90,6 +90,7 @@ class AccountingAccountController extends Controller
             return 'abort'; // returns 0
         }
         else{
+            DB::select('CALL Contab.px_guarda_cuenta_xnivel (?)', array($newId));
             return $newId; // returns id
         }
       }
@@ -112,7 +113,7 @@ class AccountingAccountController extends Controller
        $agrupador = !empty($request->edit_select_one) ? $request->edit_select_one  : '';
       $naturaleza = $request->edit_select_two;
            $rubro = $request->edit_select_three;
-     $ultimonivel = !empty($request->edit_last_level) ? 1 : 0;
+     $ultimonivel = !empty($request->edit_last_level) ? $request->edit_last_level : 0;
           $status = !empty($request->edit_status) ? 1 : 0;
 
           $update = DB::connection('contabilidad')
@@ -127,6 +128,7 @@ class AccountingAccountController extends Controller
                    'rubro_contable_id' => $rubro,
                               'status' => $status,
                           'updated_at' => \Carbon\Carbon::now()]);
+                          DB::select('CALL Contab.px_guarda_cuenta_xnivel (?)', array($id));
           if($update == '0' ){
             return 'abort'; // returns 0
           }
