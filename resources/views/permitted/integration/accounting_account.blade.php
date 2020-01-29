@@ -115,7 +115,7 @@
             <div class="col-12">
               <form id="editrecord" name="editrecord" class="forms-sample" action="">
                 {{ csrf_field() }}
-                <input class="form-control" type="text" placeholder="" id="token_b" name="token_b" value="">
+                <input class="form-control" type="hidden" placeholder="" id="token_b" name="token_b" value="">
                 <div class="form-group row">
                   <label for="inputEditCode" class="col-sm-3 col-form-label">Clave <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
