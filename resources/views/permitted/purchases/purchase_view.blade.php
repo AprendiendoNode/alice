@@ -1082,23 +1082,21 @@
             dataType: "JSON",
             data: $("#form").serialize() + '&iva=' + iva,
             success: function (data) {
-                    console.log(data);
-                // if (data) {
-
-                //     $.each(data.items, function (key, value) {
-                //         $("#item_txt_amount_untaxed_" + key).html(value);
-                //     });
-                //     $.each(data.tc_used, function (key, value) {
-                //         $("#exchange_rate_applied" + key).html(value);
-                //     });
-
-                //     // $("#form #txt_amount_untaxed").html(data.amount_untaxed);
-                //     $("#form #txt_amount_untaxed").html(data.amount_subtotal);
-                //     $("#form #txt_amount_discount").html(data.amount_discount);
-                //     $("#form #txt_amount_tax").html(data.amount_tax);
-                //     $("#form #txt_amount_total").html(data.amount_total);
-                //     $("#form input[name='amount_total_tmp']").val(data.amount_total_tmp)
-                // }
+              console.log(data);
+              if (data) {
+                $.each(data.items, function (key, value) {
+                    $("#item_txt_amount_untaxed_" + key).html(value);
+                });
+                $.each(data.tc_used, function (key, value) {
+                    $("#exchange_rate_applied" + key).html(value);
+                });
+                // $("#form #txt_amount_untaxed").html(data.amount_untaxed);
+                $("#form #txt_amount_untaxed").html(data.amount_subtotal);
+                $("#form #txt_amount_discount").html(data.amount_discount);
+                $("#form #txt_amount_tax").html(data.amount_tax);
+                $("#form #txt_amount_total").html(data.amount_total);
+                $("#form input[name='amount_total_tmp']").val(data.amount_total_tmp)
+              }
             },
             error: function (error, textStatus, errorThrown) {
                 if (error.status == 422) {

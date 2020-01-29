@@ -111,7 +111,7 @@ class PurchasesController extends Controller
         // return (string)filesize($request->file('file_pdf'));
         
         // Begin a transaction
-        // \DB::beginTransaction();
+        \DB::beginTransaction();
 
         // Open a try/catch block
         try {
@@ -151,7 +151,8 @@ class PurchasesController extends Controller
             $file_pdf = $request->file('file_pdf');
             $file_xml = $request->file('file_xml');
 
-            // return $request;
+            $purchase_store = Purchase::create($request->input());
+
             // Factura PDF y XML
             
             /*if($file_pdf != null )
@@ -175,15 +176,178 @@ class PurchasesController extends Controller
                 // ]);
             }*/
 
-            return 'success';
+            //Registro de lineas
+            $amount_subtotal = 0;
+            $amount_discount = 0;  //Descuento de cantidad
+            $amount_untaxed = 0;   //Cantidad sin impuestos
+            $amount_tax = 0;       //Importe impuesto
+            $amount_tax_ret = 0;   //Importe impuesto ret
+            $amount_total = 0;     //Cantidad total
+            $balance = 0;          //Balance
+            $taxes = array();      //Impuestos
+
+            $currency_pral_id = $request->currency_id;      //Moneda principal
+            $currency_pral_value = $request->currency_value;//Valor o TC de la moneda principal
+
+            //Lineas
+            $iva = explode(',', $request->iva);
+
+            if($request->item){
+                foreach ($request->item as $key => $item) {
+                    //Logica
+                    $item_quantity = (double)$item['quantity'];  //cantidad de artículo
+                    $item_price_unit = (double)$item['price_unit']; //unidad de precio del artículo
+                    $item_discount = (double)$item['discount']; //descuento del artículo
+
+                    $item_subtotal_quantity = round($item_price_unit * $item_quantity, 2);
+
+                    $item_price_reduce = ($item_price_unit * (100 - $item_discount) / 100); //Precio reducido
+                    $item_amount_untaxed = round($item_quantity * $item_price_reduce, 2); //libre de impuestos
+                    $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed;//descuento
+                    $item_amount_tax = 0;//impuesto a la cantidad del artículo
+                    $item_amount_tax_ret = 0;// cantidad de artículo retiro de impuestos
+
+                    //Impuestos por cada producto
+                    if ($iva[0] != 0) {
+                        foreach ($iva as $tax_id) {
+                            
+                            $tax = Tax::findOrFail($tax_id);
+                            $tmp = 0;
+                            if ($tax->factor == 'Tasa') {
+                               $tmp = $item_amount_untaxed * $tax->rate / 100;
+                            } elseif ($tax->factor == 'Cuota') {
+                               $tmp = $tax->rate;
+                            }
+                            $tmp = round($tmp, 2);
+                            if ($tmp < 0) { //Retenciones
+                               $item_amount_tax_ret += $tmp;
+                            } else { //Traslados
+                               $item_amount_tax += $tmp;
+                            }
+                        }
+                    }
+                    $item_subtotal_clean = $item_subtotal_quantity;
+                    $item_discount_clean = $item_amount_discount;
+                    $item_amount_total = $item_amount_untaxed + $item_amount_tax + $item_amount_tax_ret;
+                    $item_subtotal = $item_amount_untaxed; //libre de impuestos
+
+                    //Tipo de cambio
+                    $item_currency_id = $item['current'];
+                    $item_currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item_currency_id)->value('code_banxico');
+                    $item_currency_value = $currency_pral_value;
+
+                     //--------------------------------------------------------------------------------------------------------------------------//
+                      //Moneda principal es dolar
+                      if ($currency_pral_id == '2') {
+                        if ($item_currency_id == '2') {
+                          $item_currency_value = $currency_pral_value; //Tipo de cambio a usar
+                        }
+                        else {
+                          $item_currency_value = $currency_pral_value; //Tipo de cambio a usar
+                          //Tranformamos a dolar
+                          $item_amount_tax = $item_amount_tax / $item_currency_value;
+                          $item_amount_tax_ret = $item_amount_tax_ret / $item_currency_value;
+                          $item_amount_total = $item_amount_total / $item_currency_value;
+                          $item_subtotal = $item_subtotal / $item_currency_value;
+                          $item_subtotal_clean = $item_subtotal_clean / $item_currency_value;
+                          $item_discount_clean = $item_discount_clean / $item_currency_value;
+                        }
+                      }
+                      //Moneda distinta
+                      else {
+                        if ($item_currency_id == '2') { //bien
+                          $exchange_rates = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+                          $item_currency_value = $exchange_rates->current_rate; //Tipo de cambio a usar
+                          //Tranformamos a dolar
+                          $item_amount_tax = $item_amount_tax * $item_currency_value;
+                          $item_amount_tax_ret = $item_amount_tax_ret * $item_currency_value;
+                          $item_amount_total = $item_amount_total * $item_currency_value;
+                          $item_subtotal = $item_subtotal * $item_currency_value;
+                          $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
+                          $item_discount_clean = $item_discount_clean * $item_currency_value;
+                        }
+                        else {
+                          $item_currency_value = DB::table('currencies')->select('rate')->where('id', $item_currency_id)->value('rate');
+                          //Tranformamos al valor de la moneda seleccionada
+                          $item_amount_tax = $item_amount_tax * $item_currency_value;
+                          $item_amount_tax_ret = $item_amount_tax_ret * $item_currency_value;
+                          $item_amount_total = $item_amount_total * $item_currency_value;
+                          $item_subtotal = $item_subtotal * $item_currency_value;
+                          $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
+                          $item_discount_clean = $item_discount_clean * $item_currency_value;
+                        }
+                      }
+                      //--------------------------------------------------------------------------------------------------------------------------//
+                      //Sumatoria totales
+                      $amount_subtotal += $item_subtotal_clean;
+                      $amount_discount += $item_discount_clean;
+                      $amount_untaxed += $item_subtotal; //Original -> $amount_untaxed += $item_amount_untaxed;
+                      $amount_tax += $item_amount_tax;
+                      $amount_tax_ret += $item_amount_tax_ret;
+                      $amount_total += $item_amount_total;
+
+                      //Guardar Linea (Purchases Line)
+                      $purchase_lines = PurchaseLine::create([
+                          'created_uid' => \Auth::user()->id,
+                          'updated_uid' => \Auth::user()->id,
+                          'purchase_id' => $purchase_store->id,
+                          'name' => $item['name'],
+                          'product_id' => $item['product_id'],
+                          'sat_product_id' => $item['sat_product_id'],
+                          'unit_measure_id' => $item['unit_measure_id'],
+                          'quantity' => $item_quantity,
+                          'price_unit' => $item_price_unit,
+                          'discount' => $item_discount,
+                          'price_reduce' => $item_price_reduce,
+                          'amount_discount' => $item_discount_clean,
+                          'amount_untaxed' => $item_subtotal_clean,
+                          'amount_tax' => $item_amount_tax,
+                          'amount_tax_ret' => $item_amount_tax_ret,
+                          'amount_total' => $item_amount_total,
+                          'sort_order' => $key,
+                          'status' => 1,
+                          'currency_id' => $item['current'],
+                          'currency_value' => $item_currency_value,
+                      ]);
+                      //Guardar impuestos por linea (Purchases Line Taxes)
+                      /*if ($iva[0] != 0) {
+                        $purchase_lines->taxes()->sync($iva);
+                      } else {
+                        $purchase_lines->taxes()->sync([]);
+                      }*/
+                }
+            }
+
+            // return $request->item;
+
+            //Guardar resumen de impuestos (Purchases Tax)
+                // if (!empty($taxes)) {
+                //     $i = 0;
+                //     $amount_tax_formula = $amount_tax - $amount_tax_ret;
+                //     foreach ($taxes as $tax_id => $result) {
+                //         $tax = Tax::findOrFail($tax_id);
+                //         $customer_invoice_tax = CustomerInvoiceTax::create([
+                //             'created_uid' => \Auth::user()->id,
+                //             'updated_uid' => \Auth::user()->id,
+                //             'customer_invoice_id' => $customer_invoice->id,
+                //             'name' => $tax->name,
+                //             'tax_id' => $tax_id,
+                //             'amount_base' => $amount_subtotal,
+                //             'amount_tax' => $amount_tax_formula,
+                //             'sort_order' => $i,
+                //             'status' => 1,
+                //         ]);
+                //         $i++;
+                //     }
+                // }
+            //return 'success';
             
             // Factura END
 
-            $purchase_store = Purchase::create($request->input());
 
 
             // END 
-            // DB::commit();
+            DB::commit();
             return 'success';
         }catch (\Exception $e) {
             $request->merge([
