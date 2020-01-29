@@ -1,4 +1,5 @@
 $(function () {
+  $('#cuenta_contable').select2();
   get_info_taxes();
   $("#select_one").select2();
   $("#edit_select_one").select2();
@@ -234,13 +235,21 @@ function table_taxes(datajson, table){
       badge= '<span class="badge badge-danger badge-pill text-uppercase text-white">Inhabilitado</span>';
     }
     vartable.fnAddData([
+      `<div class="btn-group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <a class="dropdown-item" href="javascript:void(0);" onclick="edit_taxes(this)" class="btn btn-primary  btn-sm" value="${information.id}"><i class="fas fa-pencil-alt"></i> Editar</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="edit_cc_modal(this)" class="btn btn-dark  btn-sm" value="${information.id}"><i class="fas fa-plus"></i> Integración contable</a>
+        </div>
+      </div>`,
       information.code,
       information.name,
       information.rate,
       information.factor,
       information.sort_order,
-      badge,
-      '<a href="javascript:void(0);" onclick="edit_taxes(this)" class="btn btn-primary  btn-sm" value="'+information.id+'"><i class="fas fa-pencil-alt btn-icon-prepend fastable"></i></a>'
+      badge
     ]);
   });
 }
@@ -286,6 +295,113 @@ function edit_taxes(e){
        }
    })
 }
+
+function edit_cc_modal(e){
+  var id_tax = e.getAttribute('value');
+  $('#id_tax_cc').val(id_tax);
+  var _token = $('meta[name="csrf-token"]').attr('content');
+
+  $('#cuenta_contable').val(null).trigger('change');
+  $('#cuenta_complementaria').val(null).trigger('change');
+  $('#cuenta_anticipo').val(null).trigger('change');
+    
+    $.ajax({
+      type: "POST",
+      url: '/catalogs/taxes-edit',
+      data: {value : id_tax, _token : _token},
+      success: function (data) {
+
+        if (data != []) {        
+          
+          $('#customer_name').val(data[0].name);    
+          get_data_integracion_contable(id_tax);
+          $('#modal-integracion-contable').modal('show');
+        }
+        else {
+          Swal.fire({
+            type: 'error',
+            title: 'Error encontrado..',
+            text: 'Realice la operacion nuevamente!',
+          });
+        }
+      
+      },
+      error: function (data) {
+        alert('Error:', data);
+      }
+  })
+}
+
+function get_data_integracion_contable(id_tax){
+  var _token = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+      type: "POST",
+      url: '/catalogs/get_integration_cc_tax',
+      data: {id_tax : id_tax, _token : _token},
+      success: function (data) {
+        console.log(data);
+        if (data.length != 0) {
+          // Set selected 
+          $('#cuenta_contable').val(data[0].id_cuenta_contable);
+          $('#cuenta_contable').select2().trigger('change'); 
+            
+        }
+      
+      },
+      error: function (data) {
+        alert('Error:', data);
+      }
+  })
+}
+
+$("#form_integration_cc").on("submit", function(e){
+  e.preventDefault();
+
+  var form = $('#form_integration_cc')[0];
+  var formData = new FormData(form);
+
+    $.ajax({
+      type: "POST",
+      url: "/catalogs/taxes-integration_cc",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (data, textStatus, xhr){
+        
+        let timerInterval;
+
+        Swal.fire({
+          type: 'success',
+          title: 'Operación Completada!',
+          html: 'Aplicando los cambios.',
+          timer: 2500,
+          onBeforeOpen: () => {
+            Swal.showLoading()
+            timerInterval = setInterval(() => {
+              Swal.getContent().querySelector('strong')
+            }, 100)
+          },
+          onClose: () => {
+            clearInterval(timerInterval)
+          }
+        }).then((result) => {
+          console.log(result);
+          if (xhr.status == 200) {
+            window.location.href = "/catalogs/taxes";
+          }
+        });
+        
+      },
+      error: function (err) {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: err.statusText,
+          });
+      }
+    });
+})
 
 var Configuration_table_responsive_taxes = {
   dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +

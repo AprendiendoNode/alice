@@ -992,6 +992,8 @@ Route::group(['prefix' => 'catalogs',  'middleware' => 'auth'], function()
     Route::post('/taxes-create', 'Catalogs\TaxController@create');
     Route::post('/taxes-store', 'Catalogs\TaxController@store');
     Route::post('/taxes-edit', 'Catalogs\TaxController@edit');
+    Route::post('/taxes-integration_cc', 'Catalogs\TaxController@save_integration_cc_tax');
+    Route::post('/get_integration_cc_tax', 'Catalogs\TaxController@get_integration_cc_tax');
     //Catalogo - Bancos
     Route::get('/banks', 'Catalogs\BankController@index');
     Route::post('/banks-show', 'Catalogs\BankController@show');

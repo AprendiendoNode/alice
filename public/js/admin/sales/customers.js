@@ -380,7 +380,7 @@ function table_customers(datajson, table){
           </button>
           <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
             <a class="dropdown-item" href="javascript:void(0);" onclick="edit_customers(this)" class="btn btn-primary  btn-sm" value="${information.id}"><i class="fas fa-pencil-alt"></i> Editar</a>
-            <a class="dropdown-item" href="javascript:void(0);" onclick="edit_cc_modal(this)" class="btn btn-dark  btn-sm" value="${information.id}"><i class="fas fa-calculator"></i> Integración contable</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="edit_cc_modal(this)" class="btn btn-dark  btn-sm" value="${information.id}"><i class="fas fa-plus"></i> Integración contable</a>
         </div>
       </div>`,
       information.name,
@@ -536,7 +536,7 @@ $("#form_integration_cc").on("submit", function(e){
       success: function (data, textStatus, xhr){
         
         let timerInterval;
-        
+
         Swal.fire({
           type: 'success',
           title: 'Operación Completada!',

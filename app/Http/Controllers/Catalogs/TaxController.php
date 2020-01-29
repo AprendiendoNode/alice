@@ -33,7 +33,8 @@ class TaxController extends Controller
     public function index()
     {
       $list_factor = $this->list_factor;
-      return view('permitted.catalogs.taxes',compact('list_factor'));
+      $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+      return view('permitted.catalogs.taxes',compact('list_factor', 'cuentas_contables'));
     }
 
     /**
@@ -155,26 +156,19 @@ class TaxController extends Controller
       return $resultados;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function save_integration_cc_tax(Request $request)
     {
-        //
+        $sql = DB::table('tax_cuenta_contable')->updateOrInsert(
+            ['id_tax' => $request->id_tax_cc],
+            ['id_cuenta_contable' => $request->cuenta_contable,   
+        ]);     
+    
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function get_integration_cc_tax(Request $request)
     {
-        //
+      $result = DB::select('CALL px_tax_cuenta_contable_xid(?)', array($request->id_tax));
+
+      return $result;
     }
 }
