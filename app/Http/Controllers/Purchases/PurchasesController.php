@@ -14,7 +14,6 @@ use App\Models\Purchases\Purchase;
 use App\Models\Purchases\PurchaseLine;
 use App\Models\Purchases\PurchaseTax;
 use App\Models\Catalogs\Tax;
-
 use Carbon\Carbon;
 
 class PurchasesController extends Controller
@@ -122,6 +121,11 @@ class PurchasesController extends Controller
             //Ajusta fecha y genera fecha de vencimiento
             $date = Helper::createDateTime($request->date);
             $request->merge(['date' => Helper::dateTimeToSql($date)]);
+
+            $date_fact = Helper::createDateTime($request->date_fact);
+            $request->merge(['date_fact' => Helper::dateTimeToSql($date_fact)]);
+
+
             $date_due = $date; //La fecha de vencimiento por default
             $date_due_fix = $request->date_due;//Fix valida si la fecha de vencimiento esta vacia en caso de error
             
@@ -132,10 +136,6 @@ class PurchasesController extends Controller
               $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
             }
             $request->merge(['date_due' => Helper::dateToSql($date_due)]);
-            $date_fact = Helper::createDateTime($request->date_fact);
-            $request->merge(['date_fact' => Helper::dateToSql($date_fact)]);
-
-            // $request->merge(['date_fact' => Helper::dateToSql()]);
             //Obtiene folio
             $document_type = Helper::getNextDocumentTypeByCode($request->document_type);
             $request->merge(['document_type_id' => $document_type['id']]);
@@ -152,29 +152,6 @@ class PurchasesController extends Controller
             $file_xml = $request->file('file_xml');
 
             $purchase_store = Purchase::create($request->input());
-
-            // Factura PDF y XML
-            
-            /*if($file_pdf != null )
-            {
-                $file_extension = $file_pdf->getClientOriginalExtension(); //** get filename extension
-                $fileName = $request->name_fact.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
-                $pdf= $file_pdf->storeAs('filestore/storage/compras/'.date('Y-m'), $fileName);
-                // DB::table('pay_facturas')->insert([
-                //     'name' => $pdf,
-                //     'payment_id' => $id_payment
-                // ]);
-            }
-            if($file_xml != null )
-            {
-                $file_extension = $file_xml->getClientOriginalExtension(); //** get filename extension
-                $fileName = $request->name_fact.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
-                $pdf= $file_xml->storeAs('filestore/storage/compras/'.date('Y-m'), $fileName);
-                // DB::table('pay_facturas')->insert([
-                //     'name' => $pdf,
-                //     'payment_id' => $id_payment
-                // ]);
-            }*/
 
             //Registro de lineas
             $amount_subtotal = 0;
@@ -309,44 +286,71 @@ class PurchasesController extends Controller
                           'currency_id' => $item['current'],
                           'currency_value' => $item_currency_value,
                       ]);
-                      //Guardar impuestos por linea (Purchases Line Taxes)
-                      /*if ($iva[0] != 0) {
+                      // Guardar impuestos por linea (Purchases Line Taxes)
+                      if ($iva[0] != 0) {
                         $purchase_lines->taxes()->sync($iva);
                       } else {
                         $purchase_lines->taxes()->sync([]);
-                      }*/
+                      }
                 }
             }
 
             // return $request->item;
-
-            //Guardar resumen de impuestos (Purchases Tax)
-                // if (!empty($taxes)) {
-                //     $i = 0;
-                //     $amount_tax_formula = $amount_tax - $amount_tax_ret;
-                //     foreach ($taxes as $tax_id => $result) {
-                //         $tax = Tax::findOrFail($tax_id);
-                //         $customer_invoice_tax = CustomerInvoiceTax::create([
-                //             'created_uid' => \Auth::user()->id,
-                //             'updated_uid' => \Auth::user()->id,
-                //             'customer_invoice_id' => $customer_invoice->id,
-                //             'name' => $tax->name,
-                //             'tax_id' => $tax_id,
-                //             'amount_base' => $amount_subtotal,
-                //             'amount_tax' => $amount_tax_formula,
-                //             'sort_order' => $i,
-                //             'status' => 1,
-                //         ]);
-                //         $i++;
-                //     }
-                // }
-            //return 'success';
             
+            //Guardar resumen de impuestos (Purchases Tax)
+            if ($iva[0] != 0) {
+                $i = 0;
+                $amount_tax_formula = $amount_tax - $amount_tax_ret;
+                foreach ($iva as $tax_id) {
+                    $tax = Tax::findOrFail($tax_id);
+                    $customer_invoice_tax = PurchaseTax::create([
+                        'created_uid' => \Auth::user()->id,
+                        'updated_uid' => \Auth::user()->id,
+                        'purchase_id' => $purchase_store->id,
+                        'name' => $tax->name,
+                        'tax_id' => $tax_id,
+                        'amount_base' => $amount_subtotal,
+                        'amount_tax' => $amount_tax_formula,
+                        'sort_order' => $i,
+                        'status' => 1,
+                    ]);
+                    $i++;
+                }
+            }
+            // Factura PDF y XML
+            
+            if($file_pdf != null )
+            {
+                $file_extension = $file_pdf->getClientOriginalExtension(); //** get filename extension
+                $fileName = $request->name_fact.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
+                $pdf= $file_pdf->storeAs('filestore/storage/compras/'.date('Y-m'), $fileName);
+                // DB::table('pay_facturas')->insert([
+                //     'name' => $pdf,
+                //     'payment_id' => $id_payment
+                // ]);
+            }
+            if($file_xml != null )
+            {
+                $file_extension = $file_xml->getClientOriginalExtension(); //** get filename extension
+                $fileName = $request->name_fact.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
+                $pdf= $file_xml->storeAs('filestore/storage/compras/'.date('Y-m'), $fileName);
+                // DB::table('pay_facturas')->insert([
+                //     'name' => $pdf,
+                //     'payment_id' => $id_payment
+                // ]);
+            }
+            //Actualiza registro principal con totales
+            $purchase_store->amount_discount = $amount_discount;
+            $purchase_store->amount_untaxed = $amount_subtotal;
+            $purchase_store->amount_tax = $amount_tax;
+            $purchase_store->amount_tax_ret = $amount_tax_ret;
+            $purchase_store->amount_total = $amount_total;
+            $purchase_store->balance = $amount_total;
+            $purchase_store->update();
+
             // Factura END
 
-
-
-            // END 
+            // END with Commit
             DB::commit();
             return 'success';
         }catch (\Exception $e) {
@@ -372,7 +376,24 @@ class PurchasesController extends Controller
         }
     }
 
-
+    public function get_consecutivo(Request $request)
+    {
+        $value = $request->document_type;
+        $increment_number = "";
+        try {
+            $data = [];
+            $document_type = DocumentType::where('code', '=', $value)->first();
+            if (!empty($document_type)) {
+               $document_type->current_number += $document_type->increment_number;
+               $increment_number = $document_type->current_number;
+            } else {
+               throw new \Exception(__('document_type.error_next_document_type'));
+            }
+            return $increment_number;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
     public function totalLines(Request $request)
     {
        //Variables
