@@ -194,6 +194,9 @@ class CustomerInvoiceController extends Controller
       $document_type_id = DB::table('customer_invoices')->select('document_type_id')->where('id', $id)->value('document_type_id');
       // Factura de Ingreso
       $customer_invoice = CustomerInvoice::findOrFail($id);
+      $estado = State::findOrFail($customer_invoice->customer->state_id)->name;
+      $pais = Country::findOrFail($customer_invoice->customer->country_id)->name;
+
       $companies = DB::select('CALL px_companies_data ()', array());
       $data = [];
       //Si tiene CFDI obtiene la informacion de los nodos
@@ -212,7 +215,7 @@ class CustomerInvoiceController extends Controller
       $format = new ConvertNumberToLetters();
       $ammount_letter = $format->convertir($customer_invoice->amount_total);
       // Enviando datos a la vista de la factura
-      $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice', 'data', 'ammount_letter'));
+      $pdf = PDF::loadView('permitted.invoicing.invoice_sitwifi',compact('companies', 'customer_invoice','data', 'ammount_letter','estado', 'pais'));
       return $pdf->stream();
     }
 
