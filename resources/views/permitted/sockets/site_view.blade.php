@@ -11,17 +11,17 @@
 @section('content')
     @if( auth()->user()->can('View dash sabana') )
 
-<div class="row pl-3 pr-3">
-  <div class="mx-auto pb-2">
-    <button type="button" id="agregarHabitacion" class="btn btn-sm btn-outline-success font-weight-bold d-none" data-toggle="modal" data-target="#AgregarArea"><i class="fas fa-plus-square"></i> Nueva habitación</button>
-    <button type="button" id="BtnGeneral" class="btn btn-sm btn-outline-warning font-weight-bold" data-toggle="modal" data-target="#VistaGeneral"><i class="fas fa-th-list"></i> Vista general</button>
-    <button type="button" id="salvarMovimientos" class="btn btn-sm btn-outline-info font-weight-bold d-none"><i class="fas fa-expand-arrows-alt"></i> Sincronizar</button>
-    <button type="button" id="descartarMovimientos" class="btn btn-sm btn-outline-danger font-weight-bold d-none"><i class="fas fa-compress-arrows-alt"></i> Descartar</button>
-    <button type="button" id="leftPiso" class="btn btn-sm btn-outline-light font-weight-bold"><i class="fas fa-caret-square-left"></i></i></button>
-    <button type="button" id="piso" class="btn btn-sm btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ElegirPiso">Cargando...</button>
-    <button type="button" id="rightPiso" class="btn btn-sm btn-outline-light font-weight-bold"><i class="fas fa-caret-square-right"></i></i></button>
+<div class="card row pl-3 pb-1 pr-3">
+  <div class="py-1">
+    <button type="button" id="agregarHabitacion" class="btn btn-sm btn-outline-primary font-weight-bold d-none" data-toggle="modal" data-target="#AgregarArea"><i class="fas fa-plus-square"></i> Nueva habitación</button>
+    <button type="button" id="BtnGeneral" class="btn btn-sm btn-outline-info font-weight-bold" data-toggle="modal" data-target="#VistaGeneral"><i class="fas fa-th-list"></i> Vista general</button>
+    <button type="button" id="leftPiso" class="btn btn-sm btn-outline-link font-weight-bold"><i class="fas fa-caret-square-left"></i></i></button>
+    <button type="button" id="piso" class="btn btn-sm btn-outline-dark font-weight-bold" data-toggle="modal" data-target="#ElegirPiso">Cargando...</button>
+    <button type="button" id="rightPiso" class="btn btn-sm btn-outline-link font-weight-bold"><i class="fas fa-caret-square-right"></i></i></button>
+    <button type="button" id="descartarMovimientos" class="btn btn-sm btn-danger font-weight-bold d-none"><i class="fas fa-compress-arrows-alt"></i> Descartar</button>
+    <button type="button" id="salvarMovimientos" class="btn btn-sm btn-success font-weight-bold text-dark d-none"><i class="fas fa-expand-arrows-alt"></i> Sincronizar</button>
   </div>
-  <div id="containment-wrapper" style="width: 100%; height: 78vh; min-height: 400px;">
+  <div id="containment-wrapper" style="width: 100%; height: 85vh; min-height: 400px;">
     <div id="mapa" style="border-radius: 10px; border: 2px solid #333333;">
 
     </div>
@@ -224,6 +224,7 @@
   <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css" rel="stylesheet">
+  <link href="css/sockets/cover.css" rel="stylesheet">
   <link href="css/sockets/toastr.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
