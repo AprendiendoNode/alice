@@ -63,6 +63,10 @@ class BillingReportController extends Controller
 
         return $result;
     }
-   
+
+    public function get_totales(Request $request)
+    {
+        return 'ok';
+    }
 
 }

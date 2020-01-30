@@ -479,10 +479,10 @@ class PurchasesController extends Controller
                elseif ( $item['current'] != $currency_id) {
                  if ( $item['current'] === '2') { //ES DOLAR
                    if(empty($input_currency_value) || $input_currency_value==1 ){
-                   $current_select_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
-                   $currency_value = $current_select_rate->current_rate;}
+                       $current_select_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+                       $currency_value = $current_select_rate->current_rate;}
                    else{
-                     $currency_value=$input_currency_value;
+                        $currency_value=$input_currency_value;
                    }
                    $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $currency_id)->value('code_banxico');
                    $item_amount_tax = $item_amount_tax * $currency_value;

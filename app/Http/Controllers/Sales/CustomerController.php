@@ -126,7 +126,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
        $user_id= Auth::user()->id;
-   $id_received= Crypt::decryptString($request->token_b);
+        $id_received= Crypt::decryptString($request->token_b);
           $name= $request->inputEditName;
          $taxid= $request->inputEditTaxid;
          $numid= $request->inputEditNumid;
@@ -158,10 +158,10 @@ class CustomerController extends Controller
        $result = DB::table('customers')
                  ->select('id')
                  ->where([
-                     ['taxid', '=', $taxid],
-                     ['id', '!=', $id_received],
+                     // ['taxid', '=', $taxid],
+                     ['id', $id_received],
                    ])->count();
-       if($result == 0)
+       if($result != 0)
        {
          $newId = DB::table('customers')
          ->where('id', '=',$id_received )
