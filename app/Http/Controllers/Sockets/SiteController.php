@@ -20,7 +20,8 @@ class SiteController extends Controller
 
   public function index()
   {
-    return view('permitted.sockets.site_view');
+    $hotels=DB::connection('PruebasRaul')->Table('Hoteles')->get();
+    return view('permitted.sockets.site_view',compact('hotels'));
   }
 
   public function informacionCliente(Request $request)

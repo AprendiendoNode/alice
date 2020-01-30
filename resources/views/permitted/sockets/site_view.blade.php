@@ -11,8 +11,18 @@
 @section('content')
     @if( auth()->user()->can('View dash sabana') )
 
-<div class="card row pl-3 pb-1 pr-3">
-  <div class="py-1">
+<div class="card pl-3 pb-1 pr-3">
+  <div class="py-1 row">
+    <div class="col-md-3">
+      <select id="select_sitios" class="form-control select2 w-100">
+        <option value="" selected> Elija </option>
+        @forelse ($hotels as $data_hotel)
+          <option value="{{ $data_hotel->id }}"> {{ $data_hotel->nombre }} </option>
+        @empty
+        @endforelse
+      </select>
+    </div>
+  <div class="col-md-9">
     <button type="button" id="agregarHabitacion" class="btn btn-sm btn-outline-primary font-weight-bold d-none" data-toggle="modal" data-target="#AgregarArea"><i class="fas fa-plus-square"></i> Nueva habitación</button>
     <button type="button" id="BtnGeneral" class="btn btn-sm btn-outline-info font-weight-bold" data-toggle="modal" data-target="#VistaGeneral"><i class="fas fa-th-list"></i> Vista general</button>
     <button type="button" id="leftPiso" class="btn btn-sm btn-outline-link font-weight-bold"><i class="fas fa-caret-square-left"></i></i></button>
@@ -20,6 +30,7 @@
     <button type="button" id="rightPiso" class="btn btn-sm btn-outline-link font-weight-bold"><i class="fas fa-caret-square-right"></i></i></button>
     <button type="button" id="descartarMovimientos" class="btn btn-sm btn-danger font-weight-bold d-none"><i class="fas fa-compress-arrows-alt"></i> Descartar</button>
     <button type="button" id="salvarMovimientos" class="btn btn-sm btn-success font-weight-bold text-dark d-none"><i class="fas fa-expand-arrows-alt"></i> Sincronizar</button>
+  </div>
   </div>
   <div id="containment-wrapper" style="width: 100%; height: 85vh; min-height: 400px;">
     <div id="mapa" style="border-radius: 10px; border: 2px solid #333333;">
@@ -234,6 +245,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
   <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" charset="utf-8"></script>
   <script src="js/admin/sockets/dashboard/vistageneral.js" charset="utf-8"></script>
+  <script src="js/admin/sockets/dashboard/main_socket.js" charset="utf-8"></script>
   <script src="js/admin/sockets/toastr.js"></script>
   <script src="js/admin/sockets/jquery.ui.touch-punch.min.js"></script>
   <!--<script src="/socket.io/socket.io.js" charset="utf-8"></script>-->
@@ -255,11 +267,7 @@
 
     $(window).on("load", function() {
 
-      socket.emit('init', {
 
-          hotel_id: hotel_id
-
-      });
 
       socket.on('cambiosExternos', function() {
 
