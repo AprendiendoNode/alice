@@ -179,13 +179,6 @@ $(function () {
                 }
             }
         },
-        editCreatAddress_1: {
-          validators: {
-            notEmpty: {
-              message: 'The field is required'
-            }
-          }
-        },
         edit_select_six: {
           validators: {
             notEmpty: {

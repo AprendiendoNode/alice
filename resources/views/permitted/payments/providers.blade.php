@@ -68,78 +68,6 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="inputCreatAddress_1" class="col-sm-3 col-form-label">Direccion<span style="color: red;">*</span></label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputCreatAddress_1" name="inputCreatAddress_1" placeholder="Direccion" maxlength="100">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="inputCreatAddress_2" class="col-sm-3 col-form-label">Num. Ext</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" id="inputCreatAddress_2" name="inputCreatAddress_2" placeholder="" maxlength="50">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="inputCreatAddress_3" class="col-sm-3 col-form-label">Num Int.</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" id="inputCreatAddress_3" name="inputCreatAddress_3" placeholder="" maxlength="50">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="inputCreatAddress_4" class="col-sm-3 col-form-label">Colonia</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" id="inputCreatAddress_4" name="inputCreatAddress_4" placeholder="" maxlength="100">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="inputCreatAddress_5" class="col-sm-3 col-form-label">Localidad</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" id="inputCreatAddress_5" name="inputCreatAddress_5" placeholder="" maxlength="100">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="inputCreatAddress_6" class="col-sm-3 col-form-label">Referencia</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputCreatAddress_6" name="inputCreatAddress_6" placeholder="" maxlength="150">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="select_six" class="col-sm-3 col-form-label">Paises<span style="color: red;">*</span></label>
-                  <div class="col-sm-9">
-                    <select  id="select_six" name="select_six" class="form-control form-control-sm required"  style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
-                      @forelse ($countries as $countries_data)
-                      <option value="{{ $countries_data->id }}"> {{ $countries_data->name }} </option>
-                      @empty
-                      @endforelse
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="select_seven" class="col-sm-3 col-form-label">Estados<span style="color: red;">*</span></label>
-                  <div class="col-sm-9">
-                    <select  id="select_seven" name="select_seven" class="form-control form-control-sm required"  style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
-                      @forelse ($states as $states_data)
-                      <option value="{{ $states_data->id }}"> {{ $states_data->name }} </option>
-                      @empty
-                      @endforelse
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="select_eight" class="col-sm-3 col-form-label">Ciudades<span style="color: red;">*</span></label>
-                  <div class="col-sm-9">
-                    <select  id="select_eight" name="select_eight" class="form-control form-control-sm required"  style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
-                      @forelse ($cities as $cities_data)
-                      <option value="{{ $cities_data->id }}"> {{ $cities_data->name }} </option>
-                      @empty
-                      @endforelse
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
                   <label for="inputCreatPostCode" class="col-sm-3 col-form-label">Codigo Postal<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm onlynumber required" id="inputCreatPostCode" name="inputCreatPostCode" placeholder="" maxlength="10">
@@ -151,7 +79,6 @@
                     <input type="text" class="form-control form-control-sm onlynumber" id="inputCreatComment" name="inputCreatComment" placeholder="" maxlength="100">
                   </div>
                 </div>
-
                 <div class="form-group row" style="display: none;">
                   <label for="inputCreatOrden" class="col-sm-3 col-form-label">Orden<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
@@ -227,79 +154,6 @@
                     <input type="text" class="form-control form-control-sm onlynumber" id="inputEditMobile" name="inputEditMobile" placeholder="" maxlength="12">
                   </div>
                 </div>
-                <div class="form-group row">
-                  <label for="editCreatAddress_1" class="col-sm-3 col-form-label">Direccion<span style="color: red;">*</span></label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="editCreatAddress_1" name="editCreatAddress_1" placeholder="Direccion" maxlength="100">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="editCreatAddress_2" class="col-sm-3 col-form-label">Num. Ext</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" id="editCreatAddress_2" name="editCreatAddress_2" placeholder="" maxlength="50">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="editCreatAddress_3" class="col-sm-3 col-form-label">Num Int.</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" id="editCreatAddress_3" name="editCreatAddress_3" placeholder="" maxlength="50">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="editCreatAddress_4" class="col-sm-3 col-form-label">Colonia</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" id="editCreatAddress_4" name="editCreatAddress_4" placeholder="" maxlength="100">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="editCreatAddress_5" class="col-sm-3 col-form-label">Localidad</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" id="editCreatAddress_5" name="editCreatAddress_5" placeholder="" maxlength="100">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="editCreatAddress_6" class="col-sm-3 col-form-label">Referencia</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="editCreatAddress_6" name="editCreatAddress_6" placeholder="" maxlength="150">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="edit_select_six" class="col-sm-3 col-form-label">Paises<span style="color: red;">*</span></label>
-                  <div class="col-sm-9">
-                    <select  id="edit_select_six" name="edit_select_six" class="form-control form-control-sm required"  style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
-                      @forelse ($countries as $countries_data)
-                      <option value="{{ $countries_data->id }}"> {{ $countries_data->name }} </option>
-                      @empty
-                      @endforelse
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="edit_select_seven" class="col-sm-3 col-form-label">Estados<span style="color: red;">*</span></label>
-                  <div class="col-sm-9">
-                    <select  id="edit_select_seven" name="edit_select_seven" class="form-control form-control-sm required"  style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
-                      @forelse ($states as $states_data)
-                      <option value="{{ $states_data->id }}"> {{ $states_data->name }} </option>
-                      @empty
-                      @endforelse
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="edit_select_eight" class="col-sm-3 col-form-label">Ciudades<span style="color: red;">*</span></label>
-                  <div class="col-sm-9">
-                    <select  id="edit_select_eight" name="edit_select_eight" class="form-control form-control-sm required"  style="width: 100%;">
-                      <option value="">{{ trans('message.selectopt') }}</option>
-                      @forelse ($cities as $cities_data)
-                      <option value="{{ $cities_data->id }}"> {{ $cities_data->name }} </option>
-                      @empty
-                      @endforelse
-                    </select>
-                  </div>
-                </div>
-
                 <div class="form-group row">
                   <label for="editCreatPostCode" class="col-sm-3 col-form-label">Codigo Postal<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
@@ -392,7 +246,7 @@
                 <div class="form-group row">
                   <label for="cuenta_contable" class="col-sm-4 col-form-label">Cuenta contable:<span style="color: red;">*</span></label>
                   <div class="col-sm-8">
-                    <select  class="form-control form-control-sm required select2" id="cuenta_contable" name="cuenta_contable">
+                    <select required  class="form-control form-control-sm required select2" id="cuenta_contable" name="cuenta_contable">
                       <option value="">Elegir</option>
                       @foreach ($cuentas_contables as $cuenta_data)
                         <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
@@ -401,20 +255,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="cuenta_complementaria" class="col-sm-4 col-form-label">Cuenta complementaria:<span style="color: red;">*</span></label>
+                  <label for="cuenta_complementaria" class="col-sm-4 col-form-label">Cuenta complementaria:</label>
                   <div class="col-sm-8">
                     <select class="form-control form-control-sm required select2" id="cuenta_complementaria" name="cuenta_complementaria">
-                      <option value="">Elegir</option>
-                      @foreach ($cuentas_contables as $cuenta_data)
-                        <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
-                      @endforeach
-                    </select> 
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="cuenta_anticipo" class="col-sm-4 col-form-label">Cuenta anticipo:<span style="color: red;">*</span></label>
-                  <div class="col-sm-8">
-                    <select class="form-control form-control-sm required select2" id="cuenta_anticipo" name="cuenta_anticipo">
                       <option value="">Elegir</option>
                       @foreach ($cuentas_contables as $cuenta_data)
                         <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>

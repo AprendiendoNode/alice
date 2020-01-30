@@ -25,21 +25,6 @@
           <form id="form" name="form" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="row">
-              <select id="aux" style="display: none">
-                <option value="" selected> Elija </option>
-                @forelse ($bancos as $banco)
-                  <option value="{{ $banco->id }}"> {{ $banco->name }} </option>
-                @empty
-                @endforelse
-              </select>
-              <div class="col-md-3 col-xs-12">
-                <div class="form-group">
-                  <label class="control-label" for="filter_name">
-                    {{ __('customer_invoice.entry_name') }}
-                  </label>
-                  <input class="form-control" id="filter_name" name="filter_name" type="text"/>
-                </div>
-              </div>
               <div class="col-md-3 col-xs-12">
                 <div class="form-group" id="date_from">
                   <label class="control-label" for="filter_date_from">
@@ -64,42 +49,6 @@
                       <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="col-md-3 col-xs-12">
-                <div class="form-group">
-                  <label for="filter_branch_office_id">{{ __('general.sucursal') }}</label>
-                  <select class="form-control" id="filter_branch_office_id" name="filter_branch_office_id">
-                    <option value="">{{ trans('message.selectopt') }}</option>
-                    @forelse ($sucursal as $sucursal_data)
-                      <option value="{{ $sucursal_data->id  }}">{{ $sucursal_data->name }}</option>
-                    @empty
-                    @endforelse
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-6 col-xs-12">
-                <div class="form-group">
-                  <label for="filter_customer_id">Cliente</label>
-                  <select class="form-control" id="filter_customer_id" id="filter_customer_id">
-                    <option value="" selected>Selecciona...</option>
-                    @forelse ($customer as $customer_data)
-                      <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
-                    @empty
-                    @endforelse
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-3 col-xs-12">
-                <div class="form-group">
-                  <label for="filter_status">Estado</label>
-                  <select class="form-control" id="filter_status" name="filter_status">
-                    <option value="" selected>Selecciona...</option>
-                    @forelse ($list_status as $key => $value)
-                      <option value="{{ $key }}"> {{ $value }} </option>
-                    @empty
-                    @endforelse
-                  </select>
                 </div>
               </div>
               <div class="col-md-3 col-xs-12 pt-4">
@@ -138,9 +87,7 @@
                     <th class="text-left">
                         {{__('customer_invoice.column_customer')}}
                     </th>
-                    <th class="text-left">
-                        {{__('customer_invoice.column_salesperson')}}
-                    </th>
+                    
                     <th class="text-center">
                         {{__('customer_invoice.column_date_due')}}
                     </th>
@@ -152,9 +99,6 @@
                     </th>
                     <th class="text-center">
                         {{__('customer_invoice.column_balance')}}
-                    </th>
-                    <th class="text-center">
-                        {{__('customer_invoice.column_mail_sent')}}
                     </th>
                     
                 </tr>
@@ -338,7 +282,7 @@
   </div>
 
   <!----------------------MODAL POLIZA MOVIMIENTOS--------------------------->
-  <div id="modal_view_poliza" class="modal fade" tabindex="-1" role="dialog">
+  <div id="modal_view_poliza" class="modal fade" role="dialog">
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -351,7 +295,7 @@
           <div class="row">
             <form class="">
               <div class="row">
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                   <label class="" for="type_poliza">Tipo:</label>
                   <select class="form-control form-control-sm mb-2 mr-sm-2" id="type_poliza" placeholder="">
                     <option value="1">Diario</option>
@@ -369,13 +313,9 @@
                   <label class="" for="day_poliza">Día:</label>
                   <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza" placeholder="">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                   <label class="" for="mes_poliza">Mes:</label>
                   <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
-                </div>
-                <div class="form-group col-md-4">
-                  <label class="" for="descripcion_poliza">Descripción:</label>
-                  <input type="text" class="form-control form-control-sm mb-2 mr-sm-2"name="descripcion_poliza" id="descripcion_poliza" placeholder="">
                 </div>
               </div>
             </form>
@@ -389,7 +329,7 @@
                     <th>Mov.</th>
                     <th>Cuenta</th>
                     <th>Dia</th>
-                    <th>T.C. Especial</th>
+                    <th>T.C.</th>
                     <th>Nombre</th>
                     <th>Cargo</th>
                     <th>Abono</th>

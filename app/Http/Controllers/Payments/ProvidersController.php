@@ -155,15 +155,6 @@ class ProvidersController extends Controller
                         'email' => $email,
                         'phone' => $phone,
                 'phone_mobile' => $mobile,
-                    'address_1' => $direccion,
-                    'address_2' => $numExt,
-                    'address_3' => $numInt,
-                    'address_4' => $colonia,
-                    'address_5' => $localidad,
-                    'address_6' => $referencia,
-                    'country_id' => $paises,
-                    'state_id' => $estados,
-                        'city_id' => $ciudades,
                     'postcode' => $postcode,
                         'comment' => $comment,
                     'sort_order' => $orden,
@@ -218,7 +209,6 @@ class ProvidersController extends Controller
             ['id_cliente_prov' => $request->id_customer_cc],
             ['id_cuenta_contable' => $request->cuenta_contable,
             'id_cuenta_compl' => $request->cuenta_complementaria,
-            'id_cuenta_anticipo' => $request->cuenta_anticipo,
             'provider' => 1
         ]);     
     

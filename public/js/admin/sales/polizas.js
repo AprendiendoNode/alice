@@ -1,4 +1,5 @@
 $(function() {
+  $('.cuenta_contable').select2();
     //-----------------------------------------------------------
     moment.locale('es');
     if ($("#message").length) {
@@ -151,12 +152,10 @@ $(function() {
         information.date,
         information.uuid,
         information.customer,
-        information.salesperson,
         information.date_due,
         information.currency,
         information.amount_total,
         information.balance,
-        html,
       ]);
     });
   }
@@ -226,14 +225,7 @@ $(function() {
 
   var Configuration_table_responsive_doctypes = {
     "columnDefs": [
-        {
-            "targets": 9,
-            "className": "text-center",
-        },
-        {
-            "targets": 10,
-            "className": "text-center",
-        }
+        
     ],
     dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
             "<'row'<'col-sm-12'tr>>" +
@@ -251,7 +243,7 @@ $(function() {
           titleAttr: 'Excel',
           className: 'btn btn-success btn-sm',
           exportOptions: {
-              columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+              columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
           },
         },
         {
@@ -264,7 +256,7 @@ $(function() {
           titleAttr: 'CSV',
           className: 'btn btn-primary btn-sm',
           exportOptions: {
-            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
           },
         }
     ],
@@ -328,7 +320,9 @@ function contabilizar_poliza(e){
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, '0');
   let mes = moment().format('MMMM');
-
+  let mes_digit =  moment().format('MM');
+  let year = moment().format('YYYY');
+  
   $('#day_poliza').val(dd);
   $('#mes_poliza').val(mes);
   $("#tabla_asiento_contable tbody").empty();
@@ -351,12 +345,17 @@ function contabilizar_poliza(e){
           $('#tabla_asiento_contable > tbody:last-child').append(
           `<tr>
             <td>${key.mov}</td>
-            <td><input class="form-control form-control-sm" type="text" value="${key.cuenta}" ></td>
+            <td>
+              <select style="width:200px;" class="form-control form-control-sm cuenta_contable select2">
+                <option value=""></option>
+                <option value="">2121</option>
+              </select>
+            </td>
             <td>${dd}</td>
             <td>${key.currency_id}</td>
-            <td>${key.name}</td>
-            <td><input style="width:130px;text-align:right" disabled class="form-control form-control-sm cargos" type="text" value="${cargo}" ></td>
-            <td><input style="width:130px;text-align:right" disabled class="form-control form-control-sm" abonos" type="text" value="${abono}" ></td>
+            <td class=""><input style="width:180px;text-align:right" class="form-control form-control-sm" type="text" value="${key.name} ${dd}/${mes_digit}/${year}"></td>
+            <td><input style="width:120px;text-align:right" class="form-control form-control-sm cargos" type="text" value="${cargo}" ></td>
+            <td><input style="width:120px;text-align:right" class="form-control form-control-sm" abonos" type="text" value="${abono}" ></td> 
             <td></td>
             </tr>
             `

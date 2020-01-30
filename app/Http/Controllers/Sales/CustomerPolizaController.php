@@ -108,7 +108,7 @@ class CustomerPolizaController extends Controller
 
 		$date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
 		$date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
-		$resultados = DB::select('CALL px_customer_polizas_filters_type (?,?,?,?,?,?,?)',array($date_a, $date_b, $folio, $sucursal, $cliente, $estatus, '1'));
+		$resultados = DB::select('CALL px_customer_polizas_filters_type (?,?,?,?)',array($date_a, $date_b, $folio, '1'));
 
 		return json_encode($resultados);
 	}
@@ -129,5 +129,16 @@ class CustomerPolizaController extends Controller
  
     }
 
+    public function save_poliza(Request $request)
+    {
+        $sql = DB::table('polizas')->insert([
+            'tipo_poliza_id' => $request->tipo_poliza_id,
+            'numero' => $request->poliza,
+            'fecha' => $request->poliza,
+            'descripcion' => $request->descripcion,
+            'cargos' => $request->cargos,
+            'abonos' => $request->status
+        ]);
+    }
     
 }

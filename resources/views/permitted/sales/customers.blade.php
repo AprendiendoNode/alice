@@ -402,7 +402,7 @@
                 <div class="form-group row">
                   <label for="cuenta_contable" class="col-sm-4 col-form-label">Cuenta contable:<span style="color: red;">*</span></label>
                   <div class="col-sm-8">
-                    <select  class="form-control form-control-sm required select2" id="cuenta_contable" name="cuenta_contable">
+                    <select required class="form-control form-control-sm required select2" id="cuenta_contable" name="cuenta_contable">
                       <option value="">Elegir</option>
                       @foreach ($cuentas_contables as $cuenta_data)
                         <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
@@ -411,20 +411,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="cuenta_complementaria" class="col-sm-4 col-form-label">Cuenta complementaria:<span style="color: red;">*</span></label>
+                  <label for="cuenta_complementaria" class="col-sm-4 col-form-label">Cuenta complementaria:</label>
                   <div class="col-sm-8">
                     <select class="form-control form-control-sm required select2" id="cuenta_complementaria" name="cuenta_complementaria">
-                      <option value="">Elegir</option>
-                      @foreach ($cuentas_contables as $cuenta_data)
-                        <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
-                      @endforeach
-                    </select> 
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="cuenta_anticipo" class="col-sm-4 col-form-label">Cuenta anticipo:<span style="color: red;">*</span></label>
-                  <div class="col-sm-8">
-                    <select class="form-control form-control-sm required select2" id="cuenta_anticipo" name="cuenta_anticipo">
                       <option value="">Elegir</option>
                       @foreach ($cuentas_contables as $cuenta_data)
                         <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
