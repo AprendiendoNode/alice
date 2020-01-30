@@ -60,14 +60,10 @@
 
               <div class="col-md-3 col-xs-12">
                 <div class="form-group">
-                  <!-- <label for="branch_office_id" class="control-label">Sucursal:<span style="color: red;">*</span></label>
-                  <select id="branch_office_id" name="branch_office_id" class="form-control required" style="width:100%;">
-                    <option value="">{{ trans('message.selectopt') }}</option>
-                    @forelse ($sucursal as $sucursal_data)
-                      <option value="{{ $sucursal_data->id  }}">{{ $sucursal_data->name }}</option>
-                    @empty
-                    @endforelse
-                  </select> -->
+                  <div class="form-group">
+                    <label for="date">Fecha actual:<span style="color: red;">*</span></label>
+                    <input type="text" disabled class="form-control required" id="date" name="date">
+                  </div>
                 </div>
               </div>
               
@@ -81,19 +77,13 @@
               </div>
               <div class="col-md-3 col-xs-12">
                 <div class="form-group">
-                  <label for="date">Fecha actual:<span style="color: red;">*</span></label>
-                  <input type="text" class="form-control required" id="date" name="date">
-                </div>
-              </div>
-              <div class="col-md-3 col-xs-12">
-                <div class="form-group">
                   <label for="date_fact">Fecha facturación:<span style="color: red;">*</span></label>
                   <input type="text" class="form-control required" id="date_fact" name="date_fact" value="">
                 </div>
               </div>
               <div class="col-md-3 col-xs-12">
                 <div class="form-group">
-                  <label for="payment_term_id" class="control-label">Termino de pago:<span style="color: red;">*</span></label>
+                  <label for="payment_term_id" class="control-label">Días de crédito:<span style="color: red;">*</span></label>
                   <select id="payment_term_id" name="payment_term_id" class="form-control required" style="width:100%;">
                     <option value="">{{ trans('message.selectopt') }}</option>
                     @forelse ($payment_term as $payment_term_data)
@@ -102,6 +92,9 @@
                     @endforelse
                   </select>
                 </div>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <!-- espacio -->
               </div>
             </div>
             <div class="row">
@@ -160,12 +153,12 @@
                   </select>
                 </div>
               </div>
-              <!-- <div class="col-md-3 col-xs-12">
+              <div class="col-md-3 col-xs-12">
                 <div class="form-group">
-                  <label for="iva_general">IVA:<span style="color: red;">*</span></label>
-                  <input type="text" class="form-control required" id="iva_general" name="iva_general" value="">
+                  <label for="consecutivo">Consecutivo:</label>
+                  <input type="text" class="form-control required" id="consecutivo" name="consecutivo" value="">
                 </div>
-              </div> -->
+              </div>
               <div class="col-md-3 col-xs-12">
                 <div class="form-group">
                   <label for="iva">IVAs:<span style="color: red;">*</span></label>
@@ -188,7 +181,7 @@
                     <div class="input-group">
                         <label class="input-group-btn">
                             <span class="btn btn-primary">
-                                <i class="far fa-file-pdf" aria-hidden="true"></i> PDF <input id="file_pdf" name="file_pdf" type="file" class="" style="display: none;">
+                                <i class="far fa-file-pdf" aria-hidden="true"></i> PDF <input id="file_pdf" name="file_pdf" type="file" class="required" style="display: none;">
                             </span>
                         </label>
                         <input style="font-size:7px;" type="text" class="form-control" readonly>
@@ -206,18 +199,16 @@
                       <label class="input-group-btn">
                           <span class="btn btn-primary">
                               <i class="fas fa-file-code" aria-hidden="true"></i> XML
-                              <input id="file_xml" name="file_xml" type="file" class="" style="display: none;">
+                              <input id="file_xml" name="file_xml" type="file" class="required" style="display: none;">
                           </span>
                         </label>
                       <input style="font-size:7px;" type="text" class="form-control" readonly>
                     </div>
                   </div>
                 </div>
-
               </div>
-              
-
             </div>
+
             <div class="row">
               <div class="col-md-4 col-xs-12">
                 <div class="form-group">
@@ -225,6 +216,7 @@
                   <input type="text" class="form-control required" id="name_fact" name="name_fact" value="">
                 </div>
               </div>
+
               <div class="col-md-8 col-xs-12">
                 <div class="form-group">
                   <label for="reference">Referencia:</label>
@@ -234,7 +226,7 @@
             </div>
 
             <!-- Seccion de cuentas contables de pagos. -->
-            <!-- <div class="row">
+            <div class="row">
               <div class="col-md-6 col-xs-6">
 
                 <div class="col-md-12 col-xs-12">
@@ -267,7 +259,7 @@
 
               <div class="col-md-6 col-xs-6">
               </div>
-            </div> -->
+            </div>
 
             <!---------------------------------------------------------------------------------->
             <div class="row mt-5">
@@ -677,7 +669,6 @@
             }
           },
           // debug: true,
-          // errorElement: "label",
           submitHandler: function(e){
             var form = $('#form')[0];
             var formData = new FormData(form);
@@ -1032,7 +1023,7 @@
       $('#currency_id').on("change", function(){
         var valor = $(this).val();
         var token = $('input[name="_token"]').val();
-        var date = $('#date').val();
+        var date = $('#date_fact').val();
 
         if (valor === '1') {
           $('#currency_value').val('1');
@@ -1052,7 +1043,7 @@
           });
         }
       });
-      $('#date').on('change', function(){
+      $('#date_fact').on('change', function(){
         var valor = $(this).val();
         var token = $('input[name="_token"]').val();
         var currency = $('#currency_id').val();
@@ -1062,16 +1053,31 @@
             url: "/purchases/get_exchangeratebydate",
             data: { _token : token, date : valor, id_currency : currency },
             success: function (data){
-              console.log(data);
+              // console.log(data);
               $('#currency_value').val(data);
             },
             error: function (data) {
               console.log('Error:', data);
             }
-          });  
+          });
         }
       });
-
+      $('#document_type').on('change', function(){
+        var valor = $(this).val();
+        var token = $('input[name="_token"]').val();
+        $.ajax({
+            type: "POST",
+            url: "/purchases/get_consecutivo",
+            data: { _token : token, document_type : valor },
+            success: function (data){
+              console.log(data);
+              $('#consecutivo').val(data);
+            },
+            error: function (data) {
+              console.log('Error:', data);
+            }
+        });
+      });
       function totalItem() {
         var iva = $("#iva").val();
 
@@ -1293,7 +1299,7 @@
       }
 
       // Funciones para cuentas contables dinamicas.
-        /*var select2_options = {
+        var select2_options = {
               theme: "bootstrap",
               placeholder: "Selecciona",
               dropdownAutoWidth : true,
@@ -1543,8 +1549,8 @@
             var name_key = $("option:selected",this).text();
             // $('#cc_key').val(name_key);
             // $('#cc_key2').val(name_key);
-        });*/
-      //
+        });
+      // End funciones cuenta contable.
   </script>
 
   <style media="screen">
