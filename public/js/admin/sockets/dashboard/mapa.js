@@ -1,4 +1,4 @@
-$(window).load(function() {
+$(window).on("load", function() {
 
   $("#mapa").draggable({
     containment: "#containment-wrapper",

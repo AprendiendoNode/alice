@@ -1,4 +1,4 @@
-$(window).load(function() {
+$(window).on("load", function() {
 $('#BtnGeneral').on('click',function(){
 //console.log(allAreas);
 table(allAreas,$('#lugares'));

@@ -1,3 +1,16 @@
+@extends('layouts.admin')
+
+@section('contentheader_description')
+  @if( auth()->user()->can('View dash sabana') )
+
+  @else
+    {{ trans('message.denied') }}
+  @endif
+@endsection
+
+@section('content')
+    @if( auth()->user()->can('View dash sabana') )
+
 <div class="row pl-3 pr-3">
   <div class="mx-auto pb-2">
     <button type="button" id="agregarHabitacion" class="btn btn-sm btn-outline-success font-weight-bold d-none" data-toggle="modal" data-target="#AgregarArea"><i class="fas fa-plus-square"></i> Nueva habitación</button>
@@ -198,20 +211,37 @@
       </div>
     </div>
   </div>
+</div>
 
+  @else
+    @include('default.denied')
+  @endif
+@endsection
 
+@push('scripts')
+  @if( auth()->user()->can('View dash sabana') )
+
+  <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css" rel="stylesheet">
+  <link href="css/sockets/toastr.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
   <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" charset="utf-8"></script>
-  <script src="/js/dashboard/vistageneral.js" charset="utf-8"></script>
-  <link href="/css/toastr.css" rel="stylesheet">
-  <script src="/js/toastr.js"></script>
-  <script src="/js/jquery.ui.touch-punch.min.js"></script>
+  <script src="js/admin/sockets/dashboard/vistageneral.js" charset="utf-8"></script>
+  <script src="js/admin/sockets/toastr.js"></script>
+  <script src="js/admin/sockets/jquery.ui.touch-punch.min.js"></script>
   <!--<script src="/socket.io/socket.io.js" charset="utf-8"></script>-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
   <script>
 
-    const socket = io();
+    const socket = io.connect('http://localhost:8081');
 
-    var hotel_id = 20;
+    var hotel_id = 16;
     var width = 20;
     var height = 20;
     var left = 20;
@@ -222,7 +252,7 @@
     var cambios = [];
     var pisoActual = "";
 
-    $(window).load(function() {
+    $(window).on("load", function() {
 
       socket.emit('init', {
 
@@ -270,8 +300,12 @@
     });
 
   </script>
-  <script src="/js/dashboard/context-menu.js"></script>
-  <script src="/js/dashboard/mapa.js"></script>
-  <script src="/js/dashboard/areas.js"></script>
-  <script src="/js/dashboard/pisos.js"></script>
-</div>
+  <script src="js/admin/sockets/dashboard/context-menu.js"></script>
+  <script src="js/admin/sockets/dashboard/mapa.js"></script>
+  <script src="js/admin/sockets/dashboard/areas.js"></script>
+  <script src="js/admin/sockets/dashboard/pisos.js"></script>
+
+  @else
+    <!--NO SCRIPTS-->
+  @endif
+@endpush

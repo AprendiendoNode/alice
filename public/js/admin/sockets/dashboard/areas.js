@@ -1,4 +1,4 @@
-$(window).load(function() {
+$(window).on("load",function() {
 
   socket.on('actualizarAreas', function(areas) {
 

@@ -13,7 +13,7 @@
           <!-- partial -->
           <div class="main-panel">
             <div class="content-wrapper">
-              <div class="row">
+              <div class="row content-header-socket d-none">
                 <div class="col-md-12 grid-margin-onerem">
                   <div class="d-flex justify-content-between flex-wrap">
                     <div class="d-flex align-items-end flex-wrap">

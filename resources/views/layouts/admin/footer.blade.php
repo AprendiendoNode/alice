@@ -84,10 +84,13 @@
     } else {
       url = urlarray.pop();
     }
-    if(url != "profile" && url != "Classification" && url != "Configuration" && url != "dash_sabana" && $(window).width() > 1058) {
+    if(url != "profile" && url != "Classification" && url != "Configuration" && url != "dash_sabana" && url != "site_view" && $(window).width() > 1058) {
       $('.bubble').show();
       new WOW().init();
       $(".message1").delay(1300).fadeOut(500);
+    }
+    if(url != "site_view") {
+      $(".content-header-socket").removeClass("d-none");
     }
     $('#globo').on('click',function(){
       if(url == "home" || url == "") {
