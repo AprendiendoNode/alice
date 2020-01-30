@@ -69,9 +69,9 @@
                 </div>
 
                 <div class="form-group row">
-                  <label for="inputCreatLugar" class="col-sm-3 col-form-label">Lugar <span style="color: red;">*</span></label>
+                  <label for="inputCreatLugar" class="col-sm-3 col-form-label">Lugar</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputCreatLugar" name="inputCreatLugar"
+                    <input type="text" class="form-control form-control-sm" id="inputCreatLugar" name="inputCreatLugar"
                     maxlength="3" pattern="^\d{0,10}(\.\d{1,2})?$" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
                   </div>
                 </div>
@@ -143,9 +143,9 @@
                 </div>
 
                 <div class="form-group row">
-                  <label for="inputEditLugar" class="col-sm-3 col-form-label">Lugar <span style="color: red;">*</span></label>
+                  <label for="inputEditLugar" class="col-sm-3 col-form-label">Lugar</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm required" id="inputEditLugar" name="inputEditLugar" maxlength="3">
+                    <input type="text" class="form-control form-control-sm" id="inputEditLugar" name="inputEditLugar" maxlength="3">
                   </div>
                 </div>
 

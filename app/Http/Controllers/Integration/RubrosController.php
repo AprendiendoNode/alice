@@ -51,7 +51,7 @@ class RubrosController extends Controller
       $desc = $request->inputCreatDesc;
      $rubro = $request->inputCreatRubro;
      $grupo = !empty($request->inputCreatGrup) ? $request->inputCreatGrup  : '';
-     $lugar = $request->inputCreatLugar;
+     $lugar = !empty($request->inputCreatLugar) ? $request->inputCreatLugar  : '';
      $result = DB::connection('contabilidad')
                ->table('rubros_contables')
                ->select('clave')
@@ -94,7 +94,7 @@ class RubrosController extends Controller
         $desc = $request->inputEditDesc;
        $rubro = $request->inputEditRubro;
        $grupo = !empty($request->inputEditGrup) ? $request->inputEditGrup  : '';
-       $lugar = $request->inputEditLugar;
+       $lugar = !empty($request->inputEditLugar) ? $request->inputEditLugar  : '';
 
        $update = DB::connection('contabilidad')
                  ->table('rubros_contables')

@@ -32,14 +32,6 @@ $(function() {
          }
        }
      },
-     inputCreatLugar: {
-       validators: {
-         notEmpty: {
-           message: 'The field is required'
-         }
-       }
-     },
-
    }
   })
   .on('success.form.fv', function(e) {
@@ -123,13 +115,6 @@ $(function() {
         }
       },
       inputEditRubro: {
-        validators: {
-          notEmpty: {
-            message: 'The field is required'
-          }
-        }
-      },
-      inputEditLugar: {
         validators: {
           notEmpty: {
             message: 'The field is required'
