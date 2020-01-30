@@ -1263,7 +1263,7 @@
 
       $("#select_kick_off").select2();
             function addItemCont() {
-              console.log(item_relation_contact_row);
+              //console.log(item_relation_contact_row);
               let politica = $("select[name='sel_type_comision']").val();
               if (politica != '') {
                 var html = '';
@@ -1296,7 +1296,7 @@
 
                 html += '<td>';
                 html += '<div class="form-group form-group-sm">';
-                html += '<input type="text" class="form-control input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" required step="any" maxlength="10" />';
+                html += '<input type="text" class="form-control input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" required step="any" maxlength="10" max="'+$('#politica_contacto').val()+'" />';
                 html += '</div>';
                 html += '</td>';
 
@@ -1349,7 +1349,7 @@
 
                 html += '<td>';
                 html += '<div class="form-group form-group-sm">';
-                html += '<input type="text" class="form-control input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" required step="any" maxlength="10" />';
+                html += '<input type="text" class="form-control input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" required step="any" maxlength="10" max="'+$('#politica_cierre').val()+'"/>';
                 html += '</div>';
                 html += '</td>';
 
@@ -1367,7 +1367,7 @@
                  });
               }
             }
-
+      var maxval=0;
       function data_comision(identX){
         var id = identX;
         var _token = $('input[name="_token"]').val();
@@ -1386,6 +1386,7 @@
               $('input[name="politica_cierre"]').val(datax[0].cierre);
               $('input[name="politica_itc"]').val(datax[0].itc);
               $('input[name="politica_insidesales"]').val(datax[0].inside_sales);
+              //maxval=datax[0].contacto;
             }
             else {
               $('input[name="politica_name"]').val('');
@@ -1522,7 +1523,7 @@
 
           html += '<td>';
           html += '<div class="form-group form-group-sm">';
-          html += '<input type="text" value="'+contacto.valor_comision+'" class="form-control input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" required step="any" maxlength="10" />';
+          html += '<input type="text" value="'+contacto.valor_comision+'" class="form-control input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" required step="any" maxlength="10" max="'+$('#politica_contacto').val()+'" />';
           html += '</div>';
           html += '</td>';
 
@@ -1552,7 +1553,7 @@
           html += '<tr id="item_cierre_row_' + item_relation_cierre_row + '">';
 
           html += '<td class="text-center" style="vertical-align: middle;">';
-          html += '<button type="button" onclick="$(\'#item_cierre_row_' + item_relation_cierre_row + '\').remove(); del_Cie(this); " class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+          html += '<button type="button" onclick="$(\'#item_cierre_row_' + item_relation_cierre_row + '\').remove();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
           html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
           html += '</button>';
           html += '<input type="hidden" name="item_cierre[' + item_relation_cierre_row + '][id]" id="item_cierre_id_' + item_relation_cierre_row + '" /> ';
@@ -1582,7 +1583,7 @@
 
           html += '<td>';
           html += '<div class="form-group form-group-sm">';
-          html += '<input type="text"  value="'+cierre.valor_comision+'"  class="form-control input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" required step="any" maxlength="10" />';
+          html += '<input type="text"  value="'+cierre.valor_comision+'"  class="form-control input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" required step="any" maxlength="10" max="'+$('#politica_cierre').val()+'" />';
           html += '</div>';
           html += '</td>';
 
@@ -1697,7 +1698,7 @@ function kickoff_contact(ix, token) {
 
           html += '<td>';
           html += '<div class="form-group form-group-sm">';
-          html += '<input type="text" class="form-control input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" value="' + key.valor_comision + '" required step="any" maxlength="10" />';
+          html += '<input type="text" class="form-control input-sm text-right col-porcentaje" name="item[' + item_relation_contact_row + '][porcentaje]" id="item_porcentaje_' + item_relation_contact_row + '" value="' + key.valor_comision + '" required step="any" maxlength="10" max="'+$('#politica_contacto').val()+'" />';
           html += '</div>';
           html += '</td>';
 
@@ -1768,7 +1769,7 @@ function kickoff_cierre(ix, token) {
 
           html += '<td>';
           html += '<div class="form-group form-group-sm">';
-          html += '<input type="text" class="form-control input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" value="' + key.valor_comision + '" required step="any" maxlength="10" />';
+          html += '<input type="text" class="form-control input-sm text-right col-cierre-porcentaje" name="item_cierre[' + item_relation_cierre_row + '][porcentaje]" id="item_cierre_porcentaje_' + item_relation_cierre_row + '" value="' + key.valor_comision + '" required step="any" maxlength="10" max="'+$('#politica_cierre').val()+'"/>';
           html += '</div>';
           html += '</td>';
 

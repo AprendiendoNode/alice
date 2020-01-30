@@ -788,6 +788,24 @@ $(".validation-wizard-anexo").steps({
           formData.append('cont_venue', cont_venue);
           formData.append('comp_ingreso', comp_ingreso);
 
+          var total_contacto = parseFloat($("#politica_contacto").val());
+          var suma_contacto = 0;
+          var total_cierre = parseFloat($("#politica_cierre").val());
+          var suma_cierre = 0;
+
+          $(".col-porcentaje").each(function() {
+            suma_contacto += parseFloat($(this).val());
+          });
+
+          $(".col-cierre-porcentaje").each(function() {
+            suma_cierre += parseFloat($(this).val());
+          });
+
+          if(suma_contacto > total_contacto) {
+            Swal.fire(``,'La suma de los porcentajes en Contácto excede el '+total_contacto+'%.', 'error');
+          } else if(suma_cierre > total_cierre) {
+            Swal.fire(``,'La suma de los porcentajes en Cierre excede el '+total_cierre+'%.', 'error');
+          } else {
           $.ajax({
             type: "POST",
             url: "/update_contract_anexo",
@@ -835,6 +853,7 @@ $(".validation-wizard-anexo").steps({
             }
 
           })
+        }
 
         }//if result.value
         else {
