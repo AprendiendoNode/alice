@@ -20,6 +20,8 @@ $(window).on("load", function() {
   } else  {
 
     $("#agregarHabitacion").removeClass("d-none");
+    $("#agregarSitio").removeClass("d-none");
+    $("#BtnGeneral").removeClass("mx-auto");
 
   }
 

@@ -51,3 +51,4 @@ const server = app.listen(app.get('port'), () => {
 const io = socketio(server);
 
 require(path.join(__dirname, '.', 'socket'))(io);
+//https://stackoverflow.com/questions/23653617/socket-io-listen-events-in-separate-files-in-node-js
