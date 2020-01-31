@@ -23,6 +23,7 @@
       </select>
     </div>
   <div class="col-md-9">
+    <button type="button" id="agregarSitio" class="btn btn-sm btn-outline-success font-weight-bold" data-toggle="modal" data-target="#modalañadir"><i class="fas fa-plus-square"></i> Nueva habitación</button>
     <button type="button" id="agregarHabitacion" class="btn btn-sm btn-outline-primary font-weight-bold d-none" data-toggle="modal" data-target="#AgregarArea"><i class="fas fa-plus-square"></i> Nueva habitación</button>
     <button type="button" id="BtnGeneral" class="btn btn-sm btn-outline-info font-weight-bold" data-toggle="modal" data-target="#VistaGeneral"><i class="fas fa-th-list"></i> Vista general</button>
     <button type="button" id="leftPiso" class="btn btn-sm btn-outline-link font-weight-bold"><i class="fas fa-caret-square-left"></i></i></button>
@@ -37,6 +38,47 @@
 
     </div>
   </div>
+<!----->
+<div id="modalañadir"class="modal fade" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="fas fa-map-marked"></i>&nbsp; Añadir un nuevo sitio</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="form_site" enctype="multipart/form-data" method="POST" action="" >
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+        <span class="input-group-text">Nombre:</span>
+        </div>
+        <input id="nombreSitio" name="nombreSitio"type="text" class="form-control" placeholder="Nombre del sitio" aria-label="Nombre del área" required>
+      </div>
+      <div class="mb-3">
+        <label id="lblogo" for="LogoFile" class="file-upload btn btn-warning btn-block rounded-pill shadow"><span id="txtLogo"><i class="fa fa-upload mr-2"></i>Seleccione el logo..</span>
+            <input id="LogoFile" name="LogoFile" type="file" >
+        </label>
+      </div>
+      <hr class="separator">
+      <div class="input-group mb-3">
+        <label id="lbmap" for="MapFile" class="file-upload btn btn-primary btn-block rounded-pill shadow"> <span id="txtMap"><i class="fa fa-upload mr-2"></i>Seleccionar el mapa...</span>
+            <input id="MapFile" name="MapFile" type="file" >
+        </label>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cancelar</button>
+      <button type="submit" id="submit_site" class="btn btn-primary" name="button">Guardar</button>
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+
   <!-- AgregarArea -->
   <div class="modal fade" id="AgregarArea" tabindex="-1" role="dialog" aria-labelledby="AgregarAreaLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

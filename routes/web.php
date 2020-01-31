@@ -939,6 +939,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //NodeJS Views
     Route::get('/site_view', 'Sockets\SiteController@index');
+    Route::post('/savesite', 'Sockets\SiteController@savesite');
 
 });
 
@@ -1243,8 +1244,8 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::post('/get_exchangeratebydate', 'Purchases\PurchasesController@get_currency');
   Route::post('/purchase-store', 'Purchases\PurchasesController@store');
   Route::post('/total-lines-purchase', 'Purchases\PurchasesController@totallines');
-  Route::post('/get_consecutivo','Purchases\PurchasesController@get_consecutivo'); 
-  
+  Route::post('/get_consecutivo','Purchases\PurchasesController@get_consecutivo');
+
   //Historial de compras
   Route::get('/view_purchases_show', 'Purchases\HistoryPurchasesController@index');
   Route::post('/view_purchases_search', 'Purchases\HistoryPurchasesController@search');
