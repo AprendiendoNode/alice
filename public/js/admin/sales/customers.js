@@ -476,7 +476,8 @@ function edit_cc_modal(e){
 
         if (data != []) {        
           
-          $('#customer_name').val(data[0].name);    
+          $('#customer_name').val(data[0].name); 
+          validate_cc_by_currency(data[0].currency_id);   
           get_data_integracion_contable(id_cliente_prov);
           $('#modal-integracion-contable').modal('show');
         }
@@ -569,7 +570,12 @@ $("#form_integration_cc").on("submit", function(e){
     });
 })
 
+function validate_cc_by_currency(currency_id){
+  (currency_id == 1) ? $("#cuenta_complementaria").prop('required',false) : $("#cuenta_complementaria").prop('required',true);
+}
+
 var Configuration_table_responsive_customers = {
+  "order": [[ 1, "asc" ]],
   dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -604,7 +610,7 @@ var Configuration_table_responsive_customers = {
         titleAttr: 'Excel',
         className: 'btn btn-success btn-sm',
         exportOptions: {
-            columns: [ 0, 1, 2, 3]
+            columns: [ 1, 2, 3, 4, 5]
         },
       },
       {
@@ -617,7 +623,7 @@ var Configuration_table_responsive_customers = {
         titleAttr: 'CSV',
         className: 'btn btn-primary btn-sm',
         exportOptions: {
-            columns: [ 0, 1, 2, 3]
+          columns: [ 1, 2, 3, 4, 5]
         },
       }
   ],

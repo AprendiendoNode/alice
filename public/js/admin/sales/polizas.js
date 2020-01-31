@@ -1,5 +1,4 @@
 $(function() {
-  $('.cuenta_contable').select2();
     //-----------------------------------------------------------
     moment.locale('es');
     if ($("#message").length) {
@@ -105,9 +104,7 @@ $(function() {
     vartable.fnClearTable();
     $.each(JSON.parse(datajson), function(index, information){
       var status = information.status;
-      var mail = information.mail_sent;
-
-      
+      var mail = information.mail_sent;     
       var html = "";
 
       if (parseInt(status) == OPEN) {
@@ -134,10 +131,7 @@ $(function() {
       var a03 = '<div class="dropdown-menu">';
       var a04 = '<a class="dropdown-item" target="_blank" href="/sales/customer-invoice-pdfs/'+information.id+'"><i class="fa fa-eye"></i> Ver</a>';
       var a05 = '', a06 ='', a07 ='', a08 ='', a09 ='', a10 ='', a11 ='', a12 ='', a13 ='', a14 ='', a15 ='', a16='', a17='', a19='';
-      if ( parseInt(status) == OPEN || parseInt(status) == PAID || parseInt(status) == CANCEL && information.uuid != ""  ) {
-        a05 = '<a class="dropdown-item" href="/sales/customer-invoices/download-xml/'+information.id+'"><i class="far fa-file-code"></i>Descargar XML</a>';
-        
-      }
+      
         a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="contabilizar_poliza(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-wallet"></i> Contabilizar</a>';
       if ( information.uuid != "" ) {
         a19 = '<a class="dropdown-item" href="javascript:void(0);" onclick="cancel_poliza(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="fas fa-file-alt"></i> Cancelar póliza</a>';
@@ -147,6 +141,7 @@ $(function() {
       var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a09+a10+a11+a12+a19+a13+a14+a15+a16+a17+a18;
 
       vartable.fnAddData([
+        information.id,
         dropdown,
         information.name,
         information.date,
@@ -159,20 +154,7 @@ $(function() {
       ]);
     });
   }
-
-  $('.table-responsive').on('show.bs.dropdown', function () {
-       $('.table-responsive').css( "overflow", "inherit" );
-  });
-
-  $('.table-responsive').on('hide.bs.dropdown', function () {
-       $('.table-responsive').css( "overflow", "auto" );
-  })
-
   
-    $(".swal-wide").scrollTop(0);
-    var $options = $("#aux > option").clone();
-    $('#banco').append($options);
-    // $('#factura').val(name_fact);
     $('.datepicker').datepicker({
       language: 'es',
       format: "yyyy-mm-dd",
@@ -182,57 +164,119 @@ $(function() {
       autoclose: true,
       clearBtn: true
     });
-  
  
-  var Configuration_table_responsive_history={
-    dom: "<'row'<'col-sm-3'l><'col-sm-9'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-    "order": [[ 0, "asc" ]],
-    paging: true,
-    //"pagingType": "simple",
-    Filter: true,
-    searching: false,
-    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "Todos"]],
-    //ordering: false,
-    //"pageLength": 5,
-    bInfo: false,
-        language:{
-                "sProcessing":     "Procesando...",
-                "sLengthMenu":     "Mostrar _MENU_ registros",
-                "sZeroRecords":    "No se encontraron resultados",
-                "sEmptyTable":     "Ningún dato disponible",
-                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix":    "",
-                "sSearch":         "Buscar:",
-                "sUrl":            "",
-                "sInfoThousands":  ",",
-              "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                  "sFirst":    "Primero",
-                  "sLast":     "Último",
-                  "sNext":     "Siguiente",
-                  "sPrevious": "Anterior"
-              },
-              "oAria": {
-                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-        }
-  }
-
   var Configuration_table_responsive_doctypes = {
+    "order": [[ 3, "asc" ]],
+    "select": true,
+    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
     "columnDefs": [
-        
+      {
+        "targets": 0,
+        "checkboxes": {
+          'selectRow': true
+        },
+        "width": "0.1%",
+        "createdCell": function (td, cellData, rowData, row, col){
+          
+        },
+        "className": "text-center",
+      }
     ],
     dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-      "order": [[ 7, "asc" ]],
+      
       buttons: [
-
+        {
+          text: '<i class=""></i> Contabilizar',
+          titleAttr: 'Contabilizar',
+          className: 'btn bg-dark',
+          init: function(api, node, config) {
+            $(node).removeClass('btn-default')
+          },
+          action: function ( e, dt, node, config ) {
+              
+            $('.cancel').prop('disabled', 'disabled');
+            $('.confirm').prop('disabled', 'disabled');
+            var rows_selected = $("#table_filter_fact").DataTable().column(0).checkboxes.selected();
+            var _token = $('input[name="_token"]').val();
+            // Iterate over all selected checkboxes
+            var valores= new Array();
+            $.each(rows_selected, function(index, rowId){
+              valores.push(rowId);
+            });
+            if ( valores.length === 0){
+              Swal.fire(
+                'Debe selecionar al menos una factura',
+                '',
+                'warning'
+              )
+            }else{
+              let _token = $('meta[name="csrf-token"]').attr('content');
+              let today = new Date();
+              let dd = String(today.getDate()).padStart(2, '0');
+              let mes = moment().format('MMMM');
+              let mes_digit =  moment().format('MM');
+              let year = moment().format('YYYY');
+              let id_invoice = 22;
+              $('#day_poliza').val(dd);
+              $('#mes_poliza').val(mes);
+              $("#tabla_asiento_contable tbody").empty();
+            
+              $.ajax({
+                  type: "POST",
+                  url: '/sales/customer-polizas-getdata',
+                  data: {id_invoice : id_invoice, _token : _token},
+                  success: function (data) {
+                    
+                    let suma_cargos = 0.0;
+                    let suma_abonos = 0.0;
+                    data.forEach(function(key){
+            
+                      let abono = format_number(parseFloat(key.abono));
+                      let cargo = format_number(parseFloat(key.cargo));
+                      suma_abonos+= parseFloat(key.abono);
+                      suma_cargos+= parseFloat(key.cargo);
+            
+                      $('#tabla_asiento_contable > tbody:last-child').append(
+                      `<tr>
+                        <td>${key.mov}</td>
+                        <td>
+                          <select style="width:250px;" class="form-control form-control-sm cuenta_contable select2">
+                            <option value=""></option>
+                            <option value="">2121</option>
+                          </select>
+                        </td>
+                        <td>${dd}</td>
+                        <td>${key.currency_id}</td>
+                        <td class=""><input style="width:180px;text-align:right" class="form-control form-control-sm" type="text" value="${key.name} ${dd}/${mes_digit}/${year}"></td>
+                        <td><input style="width:120px;text-align:right" class="form-control form-control-sm cargos" type="text" value="${cargo}" ></td>
+                        <td><input style="width:120px;text-align:right" class="form-control form-control-sm" abonos" type="text" value="${abono}" ></td> 
+                        <td></td>
+                        </tr>
+                        `
+                      );
+                      
+                    });
+                    $('.cuenta_contable').select2();
+                    $('#total_cargos').val(format_number(suma_cargos));
+                    $('#total_abonos').val(format_number(suma_abonos));
+                  },
+                  error: function (err) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: err.statusText,
+                      });
+                  }
+              })
+            
+              $("#modal_view_poliza").modal("show");
+            }
+             
+            
+          }
+        },
         {
           extend: 'excelHtml5',
           title: 'Facturas',
@@ -346,7 +390,7 @@ function contabilizar_poliza(e){
           `<tr>
             <td>${key.mov}</td>
             <td>
-              <select style="width:200px;" class="form-control form-control-sm cuenta_contable select2">
+              <select style="width:250px;" class="form-control form-control-sm cuenta_contable select2">
                 <option value=""></option>
                 <option value="">2121</option>
               </select>
@@ -362,7 +406,7 @@ function contabilizar_poliza(e){
           );
           
         });
-
+        $('.cuenta_contable').select2();
         $('#total_cargos').val(format_number(suma_cargos));
         $('#total_abonos').val(format_number(suma_abonos));
       },

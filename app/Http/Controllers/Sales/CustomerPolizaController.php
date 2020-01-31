@@ -140,5 +140,7 @@ class CustomerPolizaController extends Controller
             'abonos' => $request->status
         ]);
     }
+
+    public function get_facts_mov_data()
     
 }

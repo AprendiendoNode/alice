@@ -413,7 +413,7 @@
                 <div class="form-group row">
                   <label for="cuenta_complementaria" class="col-sm-4 col-form-label">Cuenta complementaria:</label>
                   <div class="col-sm-8">
-                    <select class="form-control form-control-sm required select2" id="cuenta_complementaria" name="cuenta_complementaria">
+                    <select class="form-control form-control-sm select2" id="cuenta_complementaria" name="cuenta_complementaria">
                       <option value="">Elegir</option>
                       @foreach ($cuentas_contables as $cuenta_data)
                         <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>

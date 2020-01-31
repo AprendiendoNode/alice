@@ -74,6 +74,7 @@
             <table id="table_filter_fact" name='table_filter_fact' class="table table-striped table-hover table-condensed">
               <thead>
                 <tr class="mini">
+                    <th></th>
                     <th class="text-center" width="5%">@lang('general.column_actions')</th>
                     <th class="text-center">
                       {{  __('customer_invoice.column_name')}}
@@ -107,177 +108,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-
-  <!-- Editar Workstation-->
-  <div id="modal-history" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalhistory" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="modalhistory">Historial de pagos</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-3 col-xs-12">
-                <div class="form-group form-group-sm">
-                  <label class="control-label" for="name">
-                    {{ __('customer_fee.entry_name') }}
-                  </label>
-                  <input class="form-control" id="name" name="name" type="text" readonly/>
-                </div>
-            </div>
-            <div class="col-md-6 col-xs-12">
-                <div class="form-group form-group-sm">
-                  <label class="control-label" for="customer">
-                    {{ __('customer_fee.entry_customer_id') }}
-                  </label>
-                  <input class="form-control" id="customer" name="customer" type="text" readonly/>
-                </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group form-group-sm">
-                <label class="control-label" for="branch_office">
-                  {{ __('customer_fee.entry_branch_office_id') }}
-                </label>
-                <input class="form-control" id="branch_office" name="branch_office" type="text" readonly/>
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group form-group-sm">
-                <label class="control-label" for="currency">
-                  {{ __('customer_fee.entry_currency_id') }}
-                </label>
-                <input class="form-control" id="currency" name="currency" type="text" readonly/>
-              </div>
-            </div>
-            <div class="col-md-2 col-xs-12">
-              <div class="form-group form-group-sm">
-                <label class="control-label" for="currency_value">
-                  {{ __('customer_fee.entry_currency_value') }}
-                </label>
-                <input class="form-control" id="currency_value" name="currency_value" type="text" readonly/>
-              </div>
-            </div>
-            <div class="col-md-2 col-xs-12">
-              <div class="form-group form-group-sm">
-                <label class="control-label" for="amount_total">
-                  {{ __('customer_fee.entry_amount_total') }}
-                </label>
-                <input class="form-control" id="amount_total" name="amount_total" type="text" readonly/>
-              </div>
-            </div>
-            <div class="col-md-2 col-xs-12">
-              <div class="form-group form-group-sm">
-                <label class="control-label" for="balance">
-                  {{ __('customer_fee.entry_balance') }}
-                </label>
-                <input class="form-control" id="balance" name="balance" type="text" readonly/>
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group form-group-sm">
-                <label class="control-label" for="reconciled">
-                  {{ __('customer_fee.entry_reconciled') }}
-                </label>
-                <input class="form-control" id="reconciled" name="reconciled" type="text" readonly/>
-              </div>
-            </div>
-          </div>
-          <div class="row mt-5">
-            <div class="col-md-12">
-              <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">@lang('customer_fee.tab_payments')</a>
-                </div>
-              </nav>
-              <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="table-responsive table-data">
-                        <table id="payment_history_all" name="payment_history_all" class="table table-striped table-hover table-condensed">
-                            <thead>
-                              <tr>
-                                <th class="text-center">{{__('customer_payment.column_name')}}
-                                </th>
-                                <th class="text-center">{{__('customer_payment.column_currency') }}
-                                </th>
-                                <th class="text-center">{{__('customer_payment.column_date') }}
-                                </th>
-                                <th class="text-left">{{__('customer_payment.column_payment_way') }}
-                                </th>
-                                <th class="text-center">{{__('customer_payment.column_reconciled_amount_reconciled2') }}
-                                </th>
-                                <th class="text-center">{{__('customer_payment.column_reconciled_amount_reconciled') }}
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                          </table>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-        </div>
-        <div class="modal-footer">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Estatus sat-->
-  <div id="modal_customer_invoice_status_sat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalhistory" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-      <!--Content-->
-      <div class="modal-content">
-        <!--Header-->
-        <div class="modal-header">
-          <h4 class="modal-title" id="modalhistory"> {{ __('customer_invoice.text_modal_status_sat')}} </h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true" class="white-text">&times;</span>
-          </button>
-        </div>
-        <!--Body-->
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-3">
-              <p></p>
-              <p class="text-center">
-                <i class="fas fa-question-circle fa-8x btn-primary mt-3"></i>
-              </p>
-            </div>
-
-            <div class="col-9">
-              <p><strong>Folio fiscal (UUID) = </strong> <br> <span id='text_a'></span>   </p>
-              <p><strong>RFC Emisor = </strong> <span id='text_b'></span>   </p>
-              <p><strong>RFC Receptor = </strong> <span id='text_c'></span>   </p>
-              <p><strong>Total = </strong> <span id='text_d'></span>   </p>
-              <p>
-                <strong>@lang('general.text_is_cancelable_cfdi') = </strong> <span id='text_e'></span>
-              </p>
-              <p>
-                <strong>@lang('general.text_status_cfdi') = </strong> <span id='text_f'></span>
-              </p>
-            </div>
-          </div>
-        </div>
-        <!--Footer-->
-        <div class="modal-footer flex-center">
-          <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal"><i class="fas fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
-        </div>
-      </div>
-      <!--/.Content-->
     </div>
   </div>
 
@@ -365,8 +195,7 @@
           <!--------------TOTALES----------->
           <div class="row mt-5">
             <div class="form-inline col-md-8">
-              <label class="" for="">Sitio:</label>
-              <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="" placeholder="">
+              
             </div>
             <div class="form-inline col-md-4">
               <label class="" for="">Totales: </label>
@@ -413,16 +242,11 @@
   <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('plugins/select2/dist/js/i18n/es-MX.js') }}" type="text/javascript"></script>
 
-  <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
-  <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
-  <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
 
   <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>
 
-  <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
-  <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-
+  
   <script src="{{ asset('plugins/momentupdate/moment.js')}}"></script>
   <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
 
@@ -431,6 +255,12 @@
 
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
+
+  <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
+  <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
+  <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
+  <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
+  
 
   <!-- Main Quill library -->
   <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -441,16 +271,18 @@
 
   <style media="screen">
     .white {background-color: #ffffff;}
+    
     .select2-selection__rendered {
-      line-height: 44px !important;
-      padding-left: 20px !important;
+      line-height: 36px !important;
+      padding-left: 15px !important;
     }
     .select2-selection {
-      height: 42px !important;
+      height: 34px !important;
     }
     .select2-selection__arrow {
-      height: 36px !important;
+      height: 28px !important;
     }
+    
     th { font-size: 12px !important; }
     td { font-size: 10px !important; }
 
