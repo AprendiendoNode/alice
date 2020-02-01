@@ -71,7 +71,7 @@
       <div class="card">
         <div class="card-body">
           <div class="table-responsive table-data table-dropdown">
-            <table id="table_filter_fact" name='table_filter_fact' class="table table-striped table-hover table-condensed">
+            <table id="table_filter_fact" name='table_filter_fact' class="table table-striped table-hover table-condensed table-sm">
               <thead>
                 <tr class="mini">
                     <th></th>
@@ -100,8 +100,7 @@
                     </th>
                     <th class="text-center">
                         {{__('customer_invoice.column_balance')}}
-                    </th>
-                    
+                    </th>                
                 </tr>
               </thead>
             </table>

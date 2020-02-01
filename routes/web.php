@@ -1220,7 +1220,8 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-polizas-cancel', 'Sales\CustomerPolizaController@cancel_poliza');
     Route::post('/customer-polizas-getdata', 'Sales\CustomerPolizaController@get_data_poliza');
     Route::post('/customer-polizas-report', 'Sales\CustomerPolizaController@get_report_poliza');
-  //REPORTES FACTURACION Y CONTABILIDAD
+    Route::post('/customer-polizas-get-movs', 'Sales\CustomerPolizaController@get_facts_mov_data');
+    //REPORTES FACTURACION Y CONTABILIDAD
   Route::get('/billing_report', 'Sales\BillingReportController@index');
   Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
   Route::post('/customer-invoices-cont-rz', 'Sales\CustomerInvoiceController@getDataContractRz');

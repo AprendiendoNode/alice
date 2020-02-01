@@ -201,11 +201,11 @@ $(function() {
             var rows_selected = $("#table_filter_fact").DataTable().column(0).checkboxes.selected();
             var _token = $('input[name="_token"]').val();
             // Iterate over all selected checkboxes
-            var valores= new Array();
+            var facturas= new Array();
             $.each(rows_selected, function(index, rowId){
-              valores.push(rowId);
+              facturas.push(rowId);
             });
-            if ( valores.length === 0){
+            if ( facturas.length === 0){
               Swal.fire(
                 'Debe selecionar al menos una factura',
                 '',
@@ -225,8 +225,8 @@ $(function() {
             
               $.ajax({
                   type: "POST",
-                  url: '/sales/customer-polizas-getdata',
-                  data: {id_invoice : id_invoice, _token : _token},
+                  url: '/sales/customer-polizas-get-movs',
+                  data: {facturas: JSON.stringify(facturas) , _token : _token},
                   success: function (data) {
                     
                     let suma_cargos = 0.0;

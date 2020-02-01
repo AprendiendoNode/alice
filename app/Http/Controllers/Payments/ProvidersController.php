@@ -26,9 +26,10 @@ class ProvidersController extends Controller
       $states = DB::select('CALL GetAllStateActivev2 ()', array());
       $cities = DB::select('CALL GetAllCitiesv2 ()', array());
       $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+      $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
 
       return view('permitted.payments.providers',compact(
-      'payment_term', 'payment_way', 'payment_methods',
+      'payment_term', 'payment_way', 'payment_methods', 'currency',
       'cfdi_uses', 'salespersons', 'countries', 'states', 'cities', 'cuentas_contables'
       ));
     }
@@ -79,6 +80,7 @@ class ProvidersController extends Controller
                             'email' => $email,
                             'phone' => $phone,
                     'phone_mobile' => $mobile,
+                    'currency_id' => $request->inputCreateCurrency,
                         'address_1' => $direccion,
                         'address_2' => $numExt,
                         'address_3' => $numInt,
@@ -155,6 +157,7 @@ class ProvidersController extends Controller
                         'email' => $email,
                         'phone' => $phone,
                 'phone_mobile' => $mobile,
+                'currency_id' => $request->inputEditCurrency,
                     'postcode' => $postcode,
                         'comment' => $comment,
                     'sort_order' => $orden,

@@ -366,7 +366,7 @@ $(function () {
               $('#editCreatAddress_4').val(data[0].address_4);
               $('#editCreatAddress_5').val(data[0].address_5);
               $('#editCreatAddress_6').val(data[0].address_6);
-  
+              $('#inputEditCurrency').val(data[0].currency_id);
   
               $('#edit_select_six').val(data[0].countries_id).trigger('change');
               $('#edit_select_seven').val(data[0].states_id).trigger('change');

@@ -56,6 +56,17 @@
                   </div>
                 </div>
                 <div class="form-group row">
+                  <label for="inputEditCurrency" class="col-sm-3 col-form-label">Moneda <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="inputCreateCurrency" name="inputCreateCurrency" class="form-control form-control-sm required"  style="width: 100%;">
+                      @forelse ($currency as $currency_data)
+                        <option value="{{ $currency_data->id }}"> {{ $currency_data->code }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
                   <label for="inputCreatPhone" class="col-sm-3 col-form-label">Telefono</label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm onlynumber" id="inputCreatPhone" name="inputCreatPhone" placeholder="" maxlength="12">
@@ -139,6 +150,17 @@
                   <label for="inputEditEmail" class="col-sm-3 col-form-label">Correo electrónico <span style="color: red;">*</span></label>
                   <div class="col-sm-9">
                     <input type="email" class="form-control form-control-sm required" id="inputEditEmail" name="inputEditEmail" placeholder="{{ trans('auth.nombre') }}" maxlength="60">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputEditCurrency" class="col-sm-3 col-form-label">Moneda <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="inputEditCurrency" name="inputEditCurrency" class="form-control form-control-sm required"  style="width: 100%;">
+                      @forelse ($currency as $currency_data)
+                        <option value="{{ $currency_data->id }}"> {{ $currency_data->code }} </option>
+                      @empty
+                      @endforelse
+                    </select>
                   </div>
                 </div>
                 <div class="form-group row">

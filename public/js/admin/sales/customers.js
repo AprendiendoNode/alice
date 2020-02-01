@@ -411,7 +411,7 @@ function edit_customers(e){
             $('#inputEditEmail').val(data[0].email);
             $('#inputEditPhone').val(data[0].phone);
             $('#inputEditMobile').val(data[0].phone_mobile);
-
+            $('#inputEditCurrency').val(data[0].currency_id);
             // $('#edit_select_one').val(data[0].payment_terms_id).trigger('change');
             // $('#edit_select_two').val(data[0].payment_ways_id).trigger('change');
             // $('#edit_select_three').val(data[0].payment_methods_id).trigger('change');

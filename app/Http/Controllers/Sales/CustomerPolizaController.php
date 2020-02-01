@@ -141,6 +141,24 @@ class CustomerPolizaController extends Controller
         ]);
     }
 
-    public function get_facts_mov_data()
+    public function get_facts_mov_data(Request $request)
+    {
+        $facturas = json_decode($request->facturas);
+        $asientos = array();
+        for ($i=0; $i <= (count($facturas)-1); $i++) 
+        {
+            $data = DB::select('CALL px_poliza_xfactura(?)', array($facturas[$i]));
+        
+            if(count($data) > 0)
+            {
+                for($j=0; $j <= (count($data)-1); $j++)
+                {
+                    array_push($asientos, $data[$j]);
+                }  
+            }          
+        }
+
+        return $asientos;		
+    }
     
 }

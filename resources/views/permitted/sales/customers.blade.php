@@ -60,6 +60,17 @@
                   </div>
                 </div>
                 <div class="form-group row">
+                  <label for="inputCreatCurrency" class="col-sm-3 col-form-label">Moneda <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="inputCreatCurrency" name="inputCreatCurrency" class="form-control form-control-sm required"  style="width: 100%;">
+                      @forelse ($currency as $currency_data)
+                        <option value="{{ $currency_data->id }}"> {{ $currency_data->code }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
                   <label for="inputCreatPhone" class="col-sm-3 col-form-label">Telefono</label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm onlynumber" id="inputCreatPhone" name="inputCreatPhone" placeholder="" maxlength="12">
@@ -220,6 +231,17 @@
                       Para agregar mas de un email favor de separar por un <strong class="text-danger">;</strong> 
                       al final de cada email sin agregar espacios.
                     </small>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputEditCurrency" class="col-sm-3 col-form-label">Moneda <span style="color: red;">*</span></label>
+                  <div class="col-sm-9">
+                    <select  id="inputEditCurrency" name="inputEditCurrency" class="form-control form-control-sm required"  style="width: 100%;">
+                      @forelse ($currency as $currency_data)
+                        <option value="{{ $currency_data->id }}"> {{ $currency_data->code }} </option>
+                      @empty
+                      @endforelse
+                    </select>
                   </div>
                 </div>
                 <div class="form-group row">

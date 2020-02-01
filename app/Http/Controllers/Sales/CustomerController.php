@@ -26,9 +26,10 @@ class CustomerController extends Controller
       $states = DB::select('CALL GetAllStateActivev2 ()', array());
       $cities = DB::select('CALL GetAllCitiesv2 ()', array());
       $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+      $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
       
       return view('permitted.sales.customers',compact(
-      'payment_term', 'payment_way', 'payment_methods',
+      'payment_term', 'payment_way', 'payment_methods', 'currency',
       'cfdi_uses', 'salespersons', 'countries', 'states', 'cities', 'cuentas_contables'
       ));
     }
@@ -83,6 +84,7 @@ class CustomerController extends Controller
                          'email' => $email,
                          'phone' => $phone,
                   'phone_mobile' => $mobile,
+                  'currency_id' => $request->inputCreatCurrency,
              //   'payment_term_id' => $term_pago,
              //    'payment_way_id' => $forma_pago,
              // 'payment_method_id' => $met_pago,
@@ -171,6 +173,7 @@ class CustomerController extends Controller
                       'email' => $email,
                       'phone' => $phone,
                'phone_mobile' => $mobile,
+               'currency_id' => $request->inputEditCurrency,
           //   'payment_term_id' => $term_pago,
           //    'payment_way_id' => $forma_pago,
           // 'payment_method_id' => $met_pago,
