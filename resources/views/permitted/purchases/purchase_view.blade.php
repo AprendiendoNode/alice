@@ -282,13 +282,14 @@
                                   <tr>
                                       <th width="5%" class="text-center"> Opciones </th>
                                       <th width="12%" class="text-center"> Producto </th>
+                                      <th width="12%" class="text-center"> Cuenta </th>
                                       <th width="12%" class="text-left"> Descripción <span class="required text-danger">*</span> </th>
                                       <th width="10%" class="text-center"> Unidad de medida <span class="required text-danger">*</span> </th>
                                       <th width="12%" class="text-center"> Prod/Serv SAT <span class="required text-danger">*</span> </th>
                                       <th width="8%" class="text-center"> Cantidad<span class="required text-danger">*</span> </th>
                                       <th width="8%" class="text-center"> Precio <span class="required text-danger">*</span> </th>
                                       <th width="8%" class="text-center text-nowrap"> Desc. % </th>
-                                      <th width="8%" class="text-center"> Moneda<span class="required text-danger">*</span> </th>
+                                      <!-- <th width="8%" class="text-center"> Moneda<span class="required text-danger">*</span> </th> -->
                                       <!-- <th width="11%" class="text-center">Impuestos </th> -->
                                       <th width="9%" class="text-right"> Total </th>
                                       <th width="3%" class="text-right">TC Usado</th>
@@ -297,126 +298,138 @@
                                   <tbody>
 
                                   <!-- Items -->
-                                  @php
-                                      $item_row = 0;
-                                      $items = (empty(old('item')) ? [] : old('item'));
-                                  @endphp
-                                  @foreach ($items as $item_row => $item)
                                     @php
-                                      $tmp_products = [];
+                                        $item_row = 0;
+                                        $items = (empty(old('item')) ? [] : old('item'));
                                     @endphp
-                                    <tr id="item_row_{{ $item_row }}">
-                                      <td class="text-center" style="vertical-align: middle;">
-                                          <button type="button"
-                                                  onclick="$('#item_row_{{ $item_row }}').remove(); totalItem();"
-                                                  class="btn btn-xs btn-danger"
-                                                  style="margin-bottom: 0;">
-                                                  <i class="fa fa-trash-o"></i>
-                                          </button>
-                                          <!-- input hidden -->
-                                          <input type="hidden" id="item_id_{{ $item_row }}"
-                                                 name="item[{{ $item_row }}][id]"
-                                                  value="{{ old('item.' . $item_row . '.id') }}">
-                                          <!-- /.input hidden -->
-                                      </td>
-                                      <td>
-                                        <div class="form-group form-group-sm">
-                                          <select class="form-control input-sm"  id="item{{ $item_row.'[product_id]'}}" name="item[{{ $item_row }}][product_id]" required>
-                                            <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                            @forelse ($product as $product_data)
-                                              <option value="{{ $product_data->id  }}">{{ $product_data->name }}</option>
-                                            @empty
-                                            @endforelse
-                                          </select>
-                                        </div>
-                                      </td>
-                                      <td>
-                                        <div class="form-group form-group-sm">
-                                          <input type="text" class="form-control input-sm text-center"
-                                          id="item{{ $item_row.'['.$item.']'}}"
-                                          name="item[{{ $item_row }}][name]"
-                                          value="{{old('item.' . $item_row . '.name')}}"
-                                          required />
-                                        </div>
-                                      </td>
-                                      <td>
-                                        <div class="form-group form-group-sm">
-                                          <select class="form-control input-sm"  id="item{{ $item_row.'[unit_measure_id]'}}" name="item[{{ $item_row }}][unit_measure_id]" required>
-                                            <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                            @forelse ($unitmeasures as $unitmeasures_data)
-                                              <option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>
-                                            @empty
-                                            @endforelse
-                                          </select>
-                                        </div>
-                                      </td>
-                                      <td>
-                                        <div class="form-group form-group-sm">
-                                          <select class="form-control input-sm"  id="item{{ $item_row.'[sat_product_id]'}}" name="item[{{ $item_row }}][sat_product_id]" required>
-                                            <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                            @forelse ($satproduct as $satproduct_data)
-                                              <option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}] {{ $satproduct_data->name }}</option>
-                                            @empty
-                                            @endforelse
-                                          </select>
-                                        </div>
-                                      </td>
-                                      <td>
-                                        <div class="form-group form-group-sm">
-                                          <input type="text" class="form-control input-sm text-center"
-                                          id="item{{ $item_row.'['.$item.']'}}"
-                                          name="item[{{ $item_row }}][quantity]"
-                                          value="{{old('item.' . $item_row . '.quantity')}}"
-                                          required />
-                                        </div>
-                                      </td>
-                                      <td>
-                                        <div class="form-group form-group-sm">
-                                          <input type="text" class="form-control input-sm text-center"
-                                          id="item{{ $item_row.'['.$item.']'}}"
-                                          name="item[{{ $item_row }}][price_unit]"
-                                          value="{{old('item.' . $item_row . '.price_unit')}}"
-                                          required />
-                                        </div>
-                                      </td>
-                                      <td>
-                                        <div class="form-group form-group-sm">
-                                          <input type="text" class="form-control input-sm text-center"
-                                          id="item{{ $item_row.'['.$item.']'}}"
-                                          name="item[{{ $item_row }}][discount]"
-                                          value="{{old('item.' . $item_row . '.discount')}}"
-                                          required />
-                                        </div>
-                                      </td>
-                                      <td></td>
-                                      <td>
-                                        <div class="form-group form-group-sm">
-                                          <input type="text" class="form-control input-sm text-center"
-                                          id="item{{ $item_row.'['.$item.']'}}"
-                                          name="item[{{ $item_row }}][current]"
-                                          value="{{old('item.' . $item_row . '.current')}}"
-                                          required />
-                                        </div>
-                                      </td>
-                                      <!-- <td>
-                                        <div class="form-group form-group-sm">
-                                          <select class="form-control input-sm"  id="item{{ $item_row.'[taxes]'}}" name="item[{{ $item_row }}][taxes]" required>
-                                            <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                            @forelse ($impuestos as $impuestos_data)
-                                              <option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>
-                                            @empty
-                                            @endforelse
-                                          </select>
-                                        </div>
-                                      </td> -->
-                                      <td class="text-right" style="padding-top: 11px;">
-                                        <span id="item_txt_amount_untaxed_{{ $item_row }}">0</span>
-                                      </td>
-                                    </tr>
-                                  @endforeach
-                                  @php
-                                    $item_row++;
-                                  @endphp
+                                    @foreach ($items as $item_row => $item)
+                                      @php
+                                        $tmp_products = [];
+                                      @endphp
+                                      <tr id="item_row_{{ $item_row }}">
+                                        <td class="text-center" style="vertical-align: middle;">
+                                            <button type="button"
+                                                    onclick="$('#item_row_{{ $item_row }}').remove(); totalItem();"
+                                                    class="btn btn-xs btn-danger"
+                                                    style="margin-bottom: 0;">
+                                                    <i class="fa fa-trash-o"></i>
+                                            </button>
+                                            <!-- input hidden -->
+                                            <input type="hidden" id="item_id_{{ $item_row }}"
+                                                   name="item[{{ $item_row }}][id]"
+                                                    value="{{ old('item.' . $item_row . '.id') }}">
+                                            <!-- /.input hidden -->
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <select class="form-control input-sm"  id="item{{ $item_row.'[product_id]'}}" name="item[{{ $item_row }}][product_id]" required>
+                                              <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                              @forelse ($product as $product_data)
+                                                <option value="{{ $product_data->id  }}">{{ $product_data->name }}</option>
+                                              @empty
+                                              @endforelse
+                                            </select>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <select class="form-control input-sm"  id="item{{ $item_row.'[cuenta_id]'}}" name="item[{{ $item_row }}][cuenta_id]" required>
+                                              <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                              @forelse ($accounting_account as $account)
+                                                <option value="{{ $account->id  }}">{{ $account->cuenta. ' '. $account->nombre }}</option>
+                                              @empty
+                                              @endforelse
+                                            </select>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <input type="text" class="form-control input-sm text-center"
+                                            id="item{{ $item_row.'['.$item.']'}}"
+                                            name="item[{{ $item_row }}][name]"
+                                            value="{{old('item.' . $item_row . '.name')}}"
+                                            required />
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <select class="form-control input-sm"  id="item{{ $item_row.'[unit_measure_id]'}}" name="item[{{ $item_row }}][unit_measure_id]" required>
+                                              <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                              @forelse ($unitmeasures as $unitmeasures_data)
+                                                <option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>
+                                              @empty
+                                              @endforelse
+                                            </select>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <select class="form-control input-sm"  id="item{{ $item_row.'[sat_product_id]'}}" name="item[{{ $item_row }}][sat_product_id]" required>
+                                              <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                              @forelse ($satproduct as $satproduct_data)
+                                                <option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}] {{ $satproduct_data->name }}</option>
+                                              @empty
+                                              @endforelse
+                                            </select>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <input type="text" class="form-control input-sm text-center"
+                                            id="item{{ $item_row.'['.$item.']'}}"
+                                            name="item[{{ $item_row }}][quantity]"
+                                            value="{{old('item.' . $item_row . '.quantity')}}"
+                                            required />
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <input type="text" class="form-control input-sm text-center"
+                                            id="item{{ $item_row.'['.$item.']'}}"
+                                            name="item[{{ $item_row }}][price_unit]"
+                                            value="{{old('item.' . $item_row . '.price_unit')}}"
+                                            required />
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <input type="text" class="form-control input-sm text-center"
+                                            id="item{{ $item_row.'['.$item.']'}}"
+                                            name="item[{{ $item_row }}][discount]"
+                                            value="{{old('item.' . $item_row . '.discount')}}"
+                                            required />
+                                          </div>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <input type="text" class="form-control input-sm text-center"
+                                            id="item{{ $item_row.'['.$item.']'}}"
+                                            name="item[{{ $item_row }}][current]"
+                                            value="{{old('item.' . $item_row . '.current')}}"
+                                            required />
+                                          </div>
+                                        </td>
+                                        <!-- <td>
+                                          <div class="form-group form-group-sm">
+                                            <select class="form-control input-sm"  id="item{{ $item_row.'[taxes]'}}" name="item[{{ $item_row }}][taxes]" required>
+                                              <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                              @forelse ($impuestos as $impuestos_data)
+                                                <option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>
+                                              @empty
+                                              @endforelse
+                                            </select>
+                                          </div>
+                                        </td> -->
+                                        <td class="text-right" style="padding-top: 11px;">
+                                          <span id="item_txt_amount_untaxed_{{ $item_row }}">0</span>
+                                        </td>
+                                      </tr>
+                                    @endforeach
+                                    @php
+                                      $item_row++;
+                                    @endphp
+                                  
                                   <!-- Agregar nuevo item -->
                                   <tr id="add_item">
                                       <td class="text-center">
@@ -426,7 +439,7 @@
                                               <i class="fa fa-plus"></i>
                                           </button>
                                       </td>
-                                      <td class="text-right" colspan="11"></td>
+                                      <td class="text-right" colspan="10"></td>
                                   </tr>
                                   <!-- Totales -->
                                   <tr>
@@ -437,25 +450,25 @@
                                       </td>
                                       <td class="text-right"><strong>Subtotal</strong></td>
                                       <td class="text-right"><span id="txt_amount_untaxed">0</span></td>
-                                      <td class="text-right"></td>
+                                      <!-- <td class="text-right"></td> -->
                                   </tr>
                                   <tr>
                                       <td></td>
                                       <td class="text-right"><strong>Descuento</strong></td>
                                       <td class="text-right"><span id="txt_amount_discount">0</span></td>
-                                      <td class="text-right"></td>
+                                      <!-- <td class="text-right"></td> -->
                                   </tr>
                                   <tr>
                                       <td></td>
                                       <td class="text-right"><strong>Impuesto</strong></td>
                                       <td class="text-right"><span id="txt_amount_tax">0</span></td>
-                                      <td class="text-right"></td>
+                                      <!-- <td class="text-right"></td> -->
                                   </tr>
                                   <tr>
                                       <td></td>
                                       <td class="text-right"><strong>Total</strong></td>
                                       <td class="text-right"><span id="txt_amount_total">0</span></td>
-                                      <td class="text-right"></td>
+                                      <!-- <td class="text-right"></td> -->
                                   </tr>
                                   </tbody>
                               </table>
@@ -569,7 +582,7 @@
             </div>
 
             <!---------------------------------------------------------------------------------->
-            <!-- Footer form -->
+          <!-- Footer form -->
             <div class="ln_solid mt-5"></div>
             <div class="row">
               <div class="col-md-12 col-xs-12 text-right footer-form">
@@ -864,6 +877,22 @@
             html += '</div>';
             html += '</td>';
 
+            /* row de cuenta contable */
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<div class="input-group input-group-sm">';
+            html += '<select class="form-control input-sm col-account-id" name="item[' + item_row + '][cuenta_id]" id="item_cuenta_id_' + item_row + '" data-row="' + item_row + '">';
+            html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+            @forelse ($accounting_account as $account)
+            html += '<option value="{{ $account->id  }}">{{ $account->cuenta . " - " . $account->nombre }}</option>';
+            @empty
+            @endforelse
+            html += '</select>';
+            html += '</div>';
+            html += '</div>';
+            html += '</td>';
+            /* end row de cuenta contable*/
+
             html += '<td>';
             html += '<div class="form-group form-group-sm">';
             html += '<textarea class="form-control input-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="2" autocomplete="off" />';
@@ -921,22 +950,23 @@
               @empty
               @endforelse
             </select>*/
+            
+            // Columna de moneda OUTIE
 
-            html += '<td>';
-            html += '<div class="form-group form-group-sm">';
+              /*html += '<td>';
+              html += '<div class="form-group form-group-sm">';
 
-            html += '<select class="form-control input-sm col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" data-row="' + item_row + '" required>'
-            html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
-            @forelse ($currency as $currency_data)
-              html += '<option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>';
-            @empty
-            @endforelse
-            html += '</select>';
-            // html += '<input type="number" class="form-control input-sm text-center col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" step="any" />';
-            html += '</div>';
-            html += '</td>';
+              html += '<select class="form-control input-sm col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" data-row="' + item_row + '" required>'
+              html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+              @forelse ($currency as $currency_data)
+                html += '<option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>';
+              @empty
+              @endforelse
+              html += '</select>';
+              html += '</div>';
+              html += '</td>';*/
 
-            //
+            // Columna moneda end
 
             /*html += '<td>';
             html += '<div class="form-group form-group-sm">';
@@ -982,6 +1012,7 @@
           width: 'auto'
         });
         $("#form #items tbody .col-product-id").select2();
+        $("#form #items tbody .col-account-id").select2();
       }
       /*Selecciona producto*/
       $(document).on('select2:select', '#form #items tbody .col-product-id', function (e) {
@@ -995,11 +1026,13 @@
                   dataType: "JSON",
                   data: "id=" + id,
                   success: function (data) {
+                    console.log(data);
                       $("#form #item_name_" + row).val(data[0].descripcion);
                       $("#form #item_unit_measure_id_" + row).val(data[0].unit_measure_id);
                       $("#form #item_sat_product_id_" + row).val(data[0].sat_product_id);
                       $("#form #item_price_unit_" + row).val(data[0].price);
                       $("#form #item_current_" + row).val(data[0].currency_id);
+
                       initItem();
                       totalItem();
                   },

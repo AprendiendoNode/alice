@@ -374,9 +374,12 @@ class CustomerInvoiceController extends Controller
         //Variables
         $id = $request->id;
         //Logica
+
         if ($request->ajax() && !empty($id)) {
           $resultados = DB::select('CALL GetInfoProductById (?)', array($id));
-          return response()->json($resultados, 200);
+          $cuentas = DB::select('CALL px_cuenta_contable_xproducto(?)', array($id));
+          $result = array_merge($resultados, $cuentas);
+          return response()->json($result, 200);
         }
         return response()->json(['error' => __('general.error500')], 422);
     }

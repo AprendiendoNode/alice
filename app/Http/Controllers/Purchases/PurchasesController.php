@@ -44,13 +44,14 @@ class PurchasesController extends Controller
         $document_type = DocumentType::where('cfdi_type_id', 2)->get();// Solo documentos de ingresos
 
         $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
+        
+        $accounting_account = DB::select('CALL Contab.px_catalogo_cuentas_contables()', array());
 
-        return view('permitted.purchases.purchase_view', compact('providers','sucursal','currency','payment_way','payment_term', 'payment_methods', 'cfdi_uses', 'cfdi_relations', 'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications', 'document_type'));
+        return view('permitted.purchases.purchase_view', compact('providers','sucursal','currency','payment_way','payment_term', 'payment_methods', 'cfdi_uses', 'cfdi_relations', 'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications', 'document_type', 'accounting_account'));
     }
 
     public function get_currency(Request $request)
     {
-
         $currency = $request->id_currency;
         $date = Carbon::parse($request->date)->format('Y-m-d');
         // $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
@@ -60,7 +61,9 @@ class PurchasesController extends Controller
             $current_rate = DB::table('exchange_rates')->select('current_rate')->where('current_date', $date)->first();
             // $current_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
             if (empty($current_rate)) {
-              return response()->json(['error' => __('general.error_general')], 422);
+                $current_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+              // return response()->json(['error' => __('general.error_general')], 422);
+                return $current_rate->current_rate;
             }
             else{
               return $current_rate->current_rate;
@@ -71,6 +74,12 @@ class PurchasesController extends Controller
             ->where('id', $currency)->value('rate');
             return $item_currency_code;
         }
+    }
+
+    public function get_product_accounting(Request $request)
+    {
+        // px_cuenta_contable_xproducto`(IN idx int)
+
     }
     /**
      * Show the form for creating a new resource.
@@ -114,7 +123,7 @@ class PurchasesController extends Controller
 
         // Open a try/catch block
         try {
-            //Logica            
+            //Logica
             $request->merge(['created_uid' => \Auth::user()->id]);
             $request->merge(['updated_uid' => \Auth::user()->id]);
             $request->merge(['status' => 1]);
@@ -215,45 +224,45 @@ class PurchasesController extends Controller
 
                      //--------------------------------------------------------------------------------------------------------------------------//
                       //Moneda principal es dolar
-                      if ($currency_pral_id == '2') {
-                        if ($item_currency_id == '2') {
-                          $item_currency_value = $currency_pral_value; //Tipo de cambio a usar
-                        }
-                        else {
-                          $item_currency_value = $currency_pral_value; //Tipo de cambio a usar
-                          //Tranformamos a dolar
-                          $item_amount_tax = $item_amount_tax / $item_currency_value;
-                          $item_amount_tax_ret = $item_amount_tax_ret / $item_currency_value;
-                          $item_amount_total = $item_amount_total / $item_currency_value;
-                          $item_subtotal = $item_subtotal / $item_currency_value;
-                          $item_subtotal_clean = $item_subtotal_clean / $item_currency_value;
-                          $item_discount_clean = $item_discount_clean / $item_currency_value;
-                        }
-                      }
-                      //Moneda distinta
-                      else {
-                        if ($item_currency_id == '2') { //bien
-                          $exchange_rates = DB::table('exchange_rates')->select('current_rate')->latest()->first();
-                          $item_currency_value = $exchange_rates->current_rate; //Tipo de cambio a usar
-                          //Tranformamos a dolar
-                          $item_amount_tax = $item_amount_tax * $item_currency_value;
-                          $item_amount_tax_ret = $item_amount_tax_ret * $item_currency_value;
-                          $item_amount_total = $item_amount_total * $item_currency_value;
-                          $item_subtotal = $item_subtotal * $item_currency_value;
-                          $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
-                          $item_discount_clean = $item_discount_clean * $item_currency_value;
-                        }
-                        else {
-                          $item_currency_value = DB::table('currencies')->select('rate')->where('id', $item_currency_id)->value('rate');
-                          //Tranformamos al valor de la moneda seleccionada
-                          $item_amount_tax = $item_amount_tax * $item_currency_value;
-                          $item_amount_tax_ret = $item_amount_tax_ret * $item_currency_value;
-                          $item_amount_total = $item_amount_total * $item_currency_value;
-                          $item_subtotal = $item_subtotal * $item_currency_value;
-                          $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
-                          $item_discount_clean = $item_discount_clean * $item_currency_value;
-                        }
-                      }
+                          /*if ($currency_pral_id == '2') {
+                            if ($item_currency_id == '2') {
+                              $item_currency_value = $currency_pral_value; //Tipo de cambio a usar
+                            }
+                            else {
+                              $item_currency_value = $currency_pral_value; //Tipo de cambio a usar
+                              //Tranformamos a dolar
+                              $item_amount_tax = $item_amount_tax / $item_currency_value;
+                              $item_amount_tax_ret = $item_amount_tax_ret / $item_currency_value;
+                              $item_amount_total = $item_amount_total / $item_currency_value;
+                              $item_subtotal = $item_subtotal / $item_currency_value;
+                              $item_subtotal_clean = $item_subtotal_clean / $item_currency_value;
+                              $item_discount_clean = $item_discount_clean / $item_currency_value;
+                            }
+                          }
+                          //Moneda distinta
+                          else {
+                            if ($item_currency_id == '2') { //bien
+                              $exchange_rates = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+                              $item_currency_value = $exchange_rates->current_rate; //Tipo de cambio a usar
+                              //Tranformamos a dolar
+                              $item_amount_tax = $item_amount_tax * $item_currency_value;
+                              $item_amount_tax_ret = $item_amount_tax_ret * $item_currency_value;
+                              $item_amount_total = $item_amount_total * $item_currency_value;
+                              $item_subtotal = $item_subtotal * $item_currency_value;
+                              $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
+                              $item_discount_clean = $item_discount_clean * $item_currency_value;
+                            }
+                            else {
+                              $item_currency_value = DB::table('currencies')->select('rate')->where('id', $item_currency_id)->value('rate');
+                              //Tranformamos al valor de la moneda seleccionada
+                              $item_amount_tax = $item_amount_tax * $item_currency_value;
+                              $item_amount_tax_ret = $item_amount_tax_ret * $item_currency_value;
+                              $item_amount_total = $item_amount_total * $item_currency_value;
+                              $item_subtotal = $item_subtotal * $item_currency_value;
+                              $item_subtotal_clean = $item_subtotal_clean * $item_currency_value;
+                              $item_discount_clean = $item_discount_clean * $item_currency_value;
+                            }
+                          }*/
                       //--------------------------------------------------------------------------------------------------------------------------//
                       //Sumatoria totales
                       $amount_subtotal += $item_subtotal_clean;
@@ -471,55 +480,57 @@ class PurchasesController extends Controller
                $item_subtotal_clean = $item_subtotal_quantity;
                $item_discount_clean = $item_amount_discount;
                $item_subtotal = $item_amount_untaxed ;
-               //Tipo cambio
-               if ($item['current'] === $currency_id) {
-                   // $item_amount_total = $item_amount_total * $currency_value;
-                   $items_tc [$key] =$resp_currency_value;//ALMACENO TIPO CAMBIO
-               }
-               elseif ( $item['current'] != $currency_id) {
-                 if ( $item['current'] === '2') { //ES DOLAR
-                   if(empty($input_currency_value) || $input_currency_value==1 ){
-                       $current_select_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
-                       $currency_value = $current_select_rate->current_rate;}
-                   else{
-                        $currency_value=$input_currency_value;
+               
+               $items_tc[$key] =$resp_currency_value;
+               //Tipo cambio (antiguo solo se guarda el tipo de cambio usado.)
+                   /*if ($item['current'] === $currency_id) {
+                       // $item_amount_total = $item_amount_total * $currency_value;
+                       $items_tc [$key] =$resp_currency_value;//ALMACENO TIPO CAMBIO
                    }
-                   $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $currency_id)->value('code_banxico');
-                   $item_amount_tax = $item_amount_tax * $currency_value;
-                   $item_amount_tax_ret = $item_amount_tax_ret * $currency_value;
-                   $item_amount_total = $item_amount_total * $currency_value;
-                   $item_subtotal = $item_subtotal * $currency_value;
+                   elseif ( $item['current'] != $currency_id) {
+                     if ( $item['current'] === '2') { //ES DOLAR
+                       if(empty($input_currency_value) || $input_currency_value==1 ){
+                           $current_select_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+                           $currency_value = $current_select_rate->current_rate;}
+                       else{
+                            $currency_value=$input_currency_value;
+                       }
+                       $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $currency_id)->value('code_banxico');
+                       $item_amount_tax = $item_amount_tax * $currency_value;
+                       $item_amount_tax_ret = $item_amount_tax_ret * $currency_value;
+                       $item_amount_total = $item_amount_total * $currency_value;
+                       $item_subtotal = $item_subtotal * $currency_value;
 
-                   $item_subtotal_clean = $item_subtotal_clean * $currency_value;
-                   $item_discount_clean = $item_discount_clean * $currency_value;
+                       $item_subtotal_clean = $item_subtotal_clean * $currency_value;
+                       $item_discount_clean = $item_discount_clean * $currency_value;
 
-                   $items_tc [$key] =$currency_value;//ALMACENO TIPO CAMBIO
-                 }
-                 else { //moneda distinta
-                   if(empty($input_currency_value)){
-                  $currency_value = DB::table('currencies')->select('rate')->where('id', $item['current'])->value('rate');
-                  }else{
-                  $currency_value=$input_currency_value;
-                  }
-                   $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item['current'])->value('code_banxico');
-                   if ($currency_id === '2') { //SI LA MONEDA SELECCIONADA ES DOLAR
-                      $item_amount_total = $item_amount_total/$resp_currency_value;
-                      $item_amount_tax = $item_amount_tax / $resp_currency_value;
-                      $item_amount_tax_ret = $item_amount_tax_ret / $resp_currency_value;
-                      $item_subtotal = $item_subtotal / $resp_currency_value;
+                       $items_tc [$key] =$currency_value;//ALMACENO TIPO CAMBIO
+                     }
+                     else { //moneda distinta
+                        if(empty($input_currency_value)){
+                          $currency_value = DB::table('currencies')->select('rate')->where('id', $item['current'])->value('rate');
+                          }else{
+                          $currency_value=$input_currency_value;
+                        }
+                        $currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item['current'])->value('code_banxico');
+                        if ($currency_id === '2') { //SI LA MONEDA SELECCIONADA ES DOLAR
+                          $item_amount_total = $item_amount_total/$resp_currency_value;
+                          $item_amount_tax = $item_amount_tax / $resp_currency_value;
+                          $item_amount_tax_ret = $item_amount_tax_ret / $resp_currency_value;
+                          $item_subtotal = $item_subtotal / $resp_currency_value;
 
-                      $item_subtotal_clean = $item_subtotal_clean / $resp_currency_value;
-                      $item_discount_clean = $item_discount_clean / $resp_currency_value;
+                          $item_subtotal_clean = $item_subtotal_clean / $resp_currency_value;
+                          $item_discount_clean = $item_discount_clean / $resp_currency_value;
 
 
-                      $items_tc [$key] =$resp_currency_value;//ALMACENO TIPO CAMBIO
-                   }
-                   else {
-                     $item_amount_total = $item_amount_total*$currency_value;
-                     $items_tc [$key] =$currency_value;//ALMACENO TIPO CAMBIO
-                   }
-                 }
-               }
+                          $items_tc [$key] =$resp_currency_value;//ALMACENO TIPO CAMBIO
+                        }
+                        else {
+                         $item_amount_total = $item_amount_total*$currency_value;
+                         $items_tc [$key] =$currency_value;//ALMACENO TIPO CAMBIO
+                        }
+                     }
+                   }*/
 
                $item_amount_untaxed = round($item_quantity * $item_amount_total, 2); //cantidad del artículo sin impuestos
 
