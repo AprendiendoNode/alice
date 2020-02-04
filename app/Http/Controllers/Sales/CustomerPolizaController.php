@@ -143,6 +143,7 @@ class CustomerPolizaController extends Controller
 
     public function get_facts_mov_data(Request $request)
     {
+        $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
         $facturas = json_decode($request->facturas);
         $asientos = array();
         for ($i=0; $i <= (count($facturas)-1); $i++) 
@@ -158,7 +159,8 @@ class CustomerPolizaController extends Controller
             }          
         }
 
-        return $asientos;		
+        //return $asientos;	
+        return view('permitted.sales.table_asientos_contables', compact('asientos', 'cuentas_contables'));	
     }
     
 }

@@ -119,7 +119,7 @@ class QuotingEditController extends Controller
       $documentp->instalaciones = $request->instalaciones;
       $documentp->indirectos = $request->indirectos;
       $documentp->utilidad_venta_ea = $request->utilidad;
-      $documentp->doc_type = $request->doc_type;
+      //$documentp->doc_type = $request->doc_type;
       $documentp->updated_at = \Carbon\Carbon::now();
       $documentp->save();
 

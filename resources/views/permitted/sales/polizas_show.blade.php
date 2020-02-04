@@ -140,19 +140,19 @@
 
                 <div class="form-group col-md-2">
                   <label class="" for="day_poliza">Día:</label>
-                  <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza" placeholder="">
+                  <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza" placeholder="">
                 </div>
                 <div class="form-group col-md-3">
                   <label class="" for="mes_poliza">Mes:</label>
-                  <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
+                  <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
                 </div>
               </div>
             </form>
           </div>
           <!------TABLA DE PARTIDAS / ASIENTO CONTABLE------>
           <div class="row mt-2 mb-3">
-            <div class="col-12 table-responsive">
-              <table id="tabla_asiento_contable" class="table table-sm">
+            <div id="data_asientos" class="col-12 table-responsive">
+              {{-- <table id="tabla_asiento_contable" class="table table-sm">
                 <thead class="bg-secondary text-white">
                   <tr>
                     <th>Mov.</th>
@@ -167,11 +167,11 @@
                 </thead>
                 <tbody>       
                 </tbody>
-              </table>
+              </table> --}}
             </div>
           </div>
           <!------------RESUMEN FACTURA--------->
-          <div class="row mt-5">
+          {{-- <div class="row mt-5">
             <div class="col-12 table-responsive">
               <table class="table table-sm">
                 <thead class="bg-secondary text-white">
@@ -190,18 +190,9 @@
                 </tbody>
               </table>
             </div>
-          </div>
+          </div> --}}
           <!--------------TOTALES----------->
-          <div class="row mt-5">
-            <div class="form-inline col-md-8">
-              
-            </div>
-            <div class="form-inline col-md-4">
-              <label class="" for="">Totales: </label>
-              <input style="width:130px;" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 text-right font-weight-bold" name="total_cargos" id="total_cargos" >
-              <input style="width:130px;" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 text-right font-weight-bold" name="total_abonos" id="total_abonos" >
-            </div>
-          </div>
+          
         </div>
         <div class="modal-footer">
           <button id="save_poliza_partida" type="button" class="btn btn-primary">Guardar</button>

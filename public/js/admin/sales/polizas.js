@@ -231,36 +231,10 @@ $(function() {
                     
                     let suma_cargos = 0.0;
                     let suma_abonos = 0.0;
-                    data.forEach(function(key){
-            
-                      let abono = format_number(parseFloat(key.abono));
-                      let cargo = format_number(parseFloat(key.cargo));
-                      suma_abonos+= parseFloat(key.abono);
-                      suma_cargos+= parseFloat(key.cargo);
-            
-                      $('#tabla_asiento_contable > tbody:last-child').append(
-                      `<tr>
-                        <td>${key.mov}</td>
-                        <td>
-                          <select style="width:250px;" class="form-control form-control-sm cuenta_contable select2">
-                            <option value=""></option>
-                            <option value="">2121</option>
-                          </select>
-                        </td>
-                        <td>${dd}</td>
-                        <td>${key.currency_id}</td>
-                        <td class=""><input style="width:180px;text-align:right" class="form-control form-control-sm" type="text" value="${key.name} ${dd}/${mes_digit}/${year}"></td>
-                        <td><input style="width:120px;text-align:right" class="form-control form-control-sm cargos" type="text" value="${cargo}" ></td>
-                        <td><input style="width:120px;text-align:right" class="form-control form-control-sm" abonos" type="text" value="${abono}" ></td> 
-                        <td></td>
-                        </tr>
-                        `
-                      );
-                      
-                    });
+                    $('#data_asientos').html(data);
                     $('.cuenta_contable').select2();
-                    $('#total_cargos').val(format_number(suma_cargos));
-                    $('#total_abonos').val(format_number(suma_abonos));
+                    //$('#total_cargos').val(format_number(suma_cargos));
+                    //$('#total_abonos').val(format_number(suma_abonos));
                   },
                   error: function (err) {
                     Swal.fire({
@@ -356,6 +330,20 @@ function cancel_poliza(e){
           });
       }
   })
+}
+
+function data_table_asientos(miInit, id_documentp, id_cart){
+
+  fetch(`/documentp_table_products/${id_documentp}/${id_cart}`,  miInit)
+      .then(response => {
+        return response.text();
+      })
+      .then(html => {
+        $('#data_products').html(html);
+      })
+      .catch(error => {
+        console.log(error);
+      })
 }
 
 function contabilizar_poliza(e){
