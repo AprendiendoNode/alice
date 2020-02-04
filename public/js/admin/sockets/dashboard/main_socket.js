@@ -1,4 +1,4 @@
-$(function(){
+$(window).on("load", function() {
   var _token = $('input[name="_token"]').val();
   $(".select2").select2();
 $('#select_sitios').on('change',function(){

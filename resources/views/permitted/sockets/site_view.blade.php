@@ -11,7 +11,7 @@
 @section('content')
     @if( auth()->user()->can('View dash sabana') )
 
-<div class="card pl-3 pt-2 pr-3">
+<div class="card px-3 pt-2">
   <div class="row">
     <select id="select_sitios" class="form-control select2 col-md-12" style="width: 100%;">
       <option value="" selected> Elija un sitio</option>
@@ -34,7 +34,7 @@
     <button type="button" id="salvarMovimientos" class="btn btn-sm btn-success font-weight-bold text-dark d-none"><i class="fas fa-expand-arrows-alt"></i> Sincronizar</button>
   </div>
   <div id="containment-wrapper" style="width: 100%; height: 85vh; min-height: 400px;">
-    <div id="mapa" style="border-radius: 10px; border: 2px solid #333333;">
+    <div id="mapa" style="border-radius: 10px;">
 
     </div>
   </div>
@@ -355,7 +355,7 @@
   <script src="js/admin/sockets/dashboard/context-menu-mapa.js"></script>
   <script src="js/admin/sockets/dashboard/mapa.js?v1.0"></script>
   <script src="js/admin/sockets/dashboard/areas.js"></script>
-  <script src="js/admin/sockets/dashboard/pisos.js"></script>  
+  <script src="js/admin/sockets/dashboard/pisos.js"></script>
   @else
     <!--NO SCRIPTS-->
   @endif

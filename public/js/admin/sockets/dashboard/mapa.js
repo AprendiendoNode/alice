@@ -1,21 +1,44 @@
 $(window).on("load", function() {
 
-  $("#mapa").draggable({
+  /*$("#mapa").draggable({
     containment: "#containment-wrapper",
     stop: function(e, ui) { ajustarMapa(1); }
-  });
+  });*/
 
   $("#mapa").resizable({
     containment: "#containment-wrapper",
     minHeight: 250,
     minWidth: 400,
-    stop: function(e, ui) { ajustarMapa(2); }
+    stop: function(e, ui) {
+      ui.element.css(ui.originalSize);
+      ajustarMapa(2);
+      $("#salvarMovimientos").addClass("d-none");
+      $("#descartarMovimientos").addClass("d-none");
+      $(".descartar").addClass("d-none");
+      toastr.error('', '!Haz Click Derecho -> Orientación para cambiar el tamaño del mapa!', {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      });
+    }
   });
 
   if($(window).width() < 700) {
 
-    $("#mapa").draggable("destroy");
-    $("#mapa").resizable("destroy");
+    //$("#mapa").draggable("destroy");
+   $("#mapa").resizable("destroy");
 
   } else  {
 
@@ -45,18 +68,16 @@ $(window).on("load", function() {
     $("#mapa").css("left", left + "%");
     $("#mapa").css("top", _top + "%");
 
-    $.get(image_url)
-    .done(function() {
+    $.get(image_url).done(function() {
         $("#mapa").css("background-image", "linear-gradient(rgba(0, 0, 0, 0.350), rgba(0, 0,0, 0.350)), url(" + hotel_mapa + ")");
     }).fail(function() {
         $("#mapa").css("background-image", "url('images/storage/sockets/img/mapas/mapa_generico.svg')");
-        $("#mapa").css("border","none")
         $('#mapa').addClass('text-center');
-    })
+    });
     $("#mapa").css("background-position", "center center");
     $("#mapa").css("background-repeat", "no-repeat");
     $("#mapa").css("background-size", "100% 100%");
-    $("#mapa").css("background-color", "white");    
+    $("#mapa").css("background-color", "white");
   }
 
   function ajustarMapa(action) {

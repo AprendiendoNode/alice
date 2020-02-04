@@ -16,7 +16,7 @@ $.contextMenu({
       case "mapa":
         $('#modalañadir').modal("show");
         break;
-      case "test2":
+      case "orientacion":
 
         break;
       default:
@@ -24,8 +24,17 @@ $.contextMenu({
     }
   },
   items:{
-    "mapa":{name:"Cargar mapa",icon:"fas fa-map-marked-alt"},
-    //"test2":{name:"test2",icon:"fas fa-eye"}
+    mapa: { name: "Cargar mapa", icon: "fas fa-map-marked-alt" },
+    fold1a: {
+        name: "Orientación",
+        icon:"fas fa-arrows-alt",
+        items: {
+            fold1a_key1: {name: "Completa", icon: "fas fa-stop"},
+            fold1a_key2: {name: "Centrada", icon: "fas fa-pause"},
+            fold1a_key3: {name: "Izquierda", icon: "fas fa-caret-square-left"},
+            fold1a_key4: {name: "Derecha", icon: "fas fa-caret-square-right"},
+        }
+    }
   }
 
 });
