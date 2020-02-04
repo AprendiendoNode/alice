@@ -38,17 +38,25 @@ $(window).on("load", function() {
   });
 
   function actualizarMapa() {
-
+    var urlarray=(window.location.href).split("/");
+    var image_url=urlarray[0]+'//'+urlarray[2]+'/'+hotel_mapa;
     $("#mapa").css("width", width + "%");
     $("#mapa").css("height", height + "%");
     $("#mapa").css("left", left + "%");
     $("#mapa").css("top", _top + "%");
-    $("#mapa").css("background-image", "linear-gradient(rgba(0, 0, 0, 0.350), rgba(0, 0,0, 0.350)), url(" + hotel_mapa + ")");
+
+    $.get(image_url)
+    .done(function() {
+        $("#mapa").css("background-image", "linear-gradient(rgba(0, 0, 0, 0.350), rgba(0, 0,0, 0.350)), url(" + hotel_mapa + ")");
+    }).fail(function() {
+        $("#mapa").css("background-image", "url('images/storage/sockets/img/mapas/mapa_generico.svg')");
+        $("#mapa").css("border","none")
+        $('#mapa').addClass('text-center');
+    })
     $("#mapa").css("background-position", "center center");
     $("#mapa").css("background-repeat", "no-repeat");
     $("#mapa").css("background-size", "100% 100%");
-    $("#mapa").css("background-color", "black");
-
+    $("#mapa").css("background-color", "white");    
   }
 
   function ajustarMapa(action) {

@@ -3,7 +3,7 @@ $(function(){
   $(".select2").select2();
 $('#select_sitios').on('change',function(){
   hotel_id =$('#select_sitios').val();
-  console.log(hotel_id);
+  //console.log(hotel_id);
 
   socket.emit('init', {
 
@@ -15,20 +15,20 @@ $('#select_sitios').on('change',function(){
 var oklogo,okmapa;
  $('#LogoFile').on('change',function(){
    var fileInput = $('#LogoFile');
-   var filePath = $('#LogoFile').value;
+   //var filePath = $('#LogoFile').value;
     var size=$('#LogoFile')[0].files[0].size;
-   console.log(size);
+   //console.log(size);
    var extension=$('#LogoFile').val().replace(/^.*\./, '');
 
    if(extension != 'jpg'&& extension != 'jpeg' && extension != 'png'){
-     console.log("Archivo incorrecto "+ extension +" No es valido");
+     //console.log("Archivo incorrecto "+ extension +" No es valido");
      $('#lblogo').removeClass('btn-warning');
      $('#lblogo').addClass('btn-danger');
      $('#txtLogo').text('Seleccione otro archivo');
      oklogo=false;
      return false;
    }else{
-     console.log("Correcto");
+     //console.log("Correcto");
      $('#lblogo').removeClass('btn-danger');
      $('#lblogo').removeClass('btn-warning');
      $('#lblogo').addClass('btn-success');
@@ -39,11 +39,11 @@ var oklogo,okmapa;
 
 $('#MapFile').on('change',function(){
   var fileInput = $('#MapFile');
-  var filePath = $('#MapFile').value;
+  //var filePath = $('#MapFile').value;
   var extension=$('#MapFile').val().replace(/^.*\./, '');
 
   if(extension != 'jpg'&& extension != 'jpeg' && extension != 'png'){
-    console.log("Archivo incorrecto "+ extension +" No es valido");
+    //console.log("Archivo incorrecto "+ extension +" No es valido");
     $('#lbmap').removeClass('btn-warning');
     $('#lbmap').addClass('btn-danger');
     $('#txtMap').text('Seleccione otro archivo');
@@ -51,7 +51,7 @@ $('#MapFile').on('change',function(){
 
     return false;
   }else{
-    console.log("Correcto");
+    //console.log("Correcto");
     var size=$('#MapFile')[0].files[0].size;
    //console.log(size);
     $('#lbmap').removeClass('btn-danger');

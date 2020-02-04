@@ -131,43 +131,31 @@ filter: grayscale(0%); /* FF 35+ */
 }
 
 
-/* Media Query for Phones */
- @media (min-height: 11px) {
-   #containment-wrapper{
-
-   }
+/* Media Query for Phones
+ @media screen and (min-height: 11px) {
    .area-font-size{
-     font-size: 3px;
+     font-size: 3px !important;
    }
  }
-/* Media Query for Laptops */
- @media (min-height: 600px) {
-   #containment-wrapper{
-
-   }
+/* Media Query for Laptops
+ @media screen and (min-height: 600px) {
    .area-font-size{
-     font-size: 8px;
+     font-size: 8px !important;
    }
  }
- /* Media Query for Monitors */
-  @media (min-height: 900px) {
-    #containment-wrapper{
-
-    }
+ /* Media Query for Monitors
+  @media screen and (min-height: 900px) {
     .area-font-size{
-      font-size: 11px;
+      font-size: 11px !important;;
     }
   }
- /* Media Query for Tv's */
-  @media (min-height: 1200px) {
-    #containment-wrapper{
-
-    }
+ /* Media Query for Tv's
+  @media screen and (min-height: 1200px) {
     .area-font-size{
-      font-size: 14px;
+      font-size: 14px !important;
     }
   }
-
+*/
 
 
 /* Cover */
@@ -245,4 +233,7 @@ hr.separator{
 
 .ui-icon-gripsmall-diagonal-se {
   z-index: 1 !important;
+}
+.input-group-append .input-group-text, .input-group-prepend .input-group-text {
+    color: #4f4f4f;
 }

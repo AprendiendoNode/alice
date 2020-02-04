@@ -33,8 +33,6 @@ class SiteController extends Controller
    if($fileLogo!=null){
     $saveLogo=Storage::put('/sockets/img/logos/',$fileLogo);
     $nameLogo=basename($saveLogo);
-    }else{
-
     }
 
     if($fileMap!=null){
@@ -42,14 +40,10 @@ class SiteController extends Controller
     $nameMap=basename($saveMap);
     }
 
-    /*DB::connection('PruebasRaul')->
+    DB::connection('PruebasRaul')->
     Table('Hoteles')->insert(
-      ['nombre'=>$sitio,
-      'mapa'=>$saveMap,
-      'logo'=>$saveLogo
-      ]
-    );*/
-
+      ['nombre'=>$sitio,'mapa'=>'images/storage/'.$saveMap,'logo'=>'images/storage/'.$saveLogo]
+    );
 
 
     return "ok";

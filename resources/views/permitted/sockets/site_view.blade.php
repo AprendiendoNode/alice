@@ -72,7 +72,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cancelar</button>
-      <button type="submit" id="submit_site" class="btn btn-primary" name="button">Guardar</button>
+      <button type="submit" id="submit_site" class="btn btn-primary" data-dismiss="modal" name="button">Guardar</button>
     </div>
     </form>
   </div>
@@ -352,10 +352,10 @@
 
   </script>
   <script src="js/admin/sockets/dashboard/context-menu.js"></script>
-  <script src="js/admin/sockets/dashboard/mapa.js"></script>
+  <script src="js/admin/sockets/dashboard/context-menu-mapa.js"></script>
+  <script src="js/admin/sockets/dashboard/mapa.js?v1.0"></script>
   <script src="js/admin/sockets/dashboard/areas.js"></script>
-  <script src="js/admin/sockets/dashboard/pisos.js"></script>
-
+  <script src="js/admin/sockets/dashboard/pisos.js"></script>  
   @else
     <!--NO SCRIPTS-->
   @endif
