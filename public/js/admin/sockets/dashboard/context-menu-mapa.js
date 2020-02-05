@@ -16,23 +16,40 @@ $.contextMenu({
       case "mapa":
         $('#modalañadir').modal("show");
         break;
-      case "orientacion":
-
+      case "Completa":
+        $('#blob-containment-wrapper').addClass("d-none");
+        $('#containment-wrapper').css("width", "100%");
+        $('#containment-wrapper').css("height", "85vh");
         break;
-      default:
-
+      case "Centrada":
+        $('#blob-containment-wrapper').removeClass("d-none");
+        $('#blob-containment-wrapper').css("width", "22%");
+        $('#containment-wrapper').css("width", "56%");
+        $('#containment-wrapper').css("height", "160vh");
+        break;
+      case "Izquierda":
+        $('#blob-containment-wrapper').addClass("d-none");
+        $('#containment-wrapper').css("width", "55%");
+        $('#containment-wrapper').css("height", "160vh");
+        break;
+      case "Derecha":
+        $('#blob-containment-wrapper').removeClass("d-none");
+        $('#blob-containment-wrapper').css("width", "45%");
+        $('#containment-wrapper').css("width", "55%");
+        $('#containment-wrapper').css("height", "160vh");
+        break;
     }
   },
   items:{
     mapa: { name: "Cargar mapa", icon: "fas fa-map-marked-alt" },
-    fold1a: {
+    Orientacion: {
         name: "Orientación",
         icon:"fas fa-arrows-alt",
         items: {
-            fold1a_key1: {name: "Completa", icon: "fas fa-stop"},
-            fold1a_key2: {name: "Centrada", icon: "fas fa-pause"},
-            fold1a_key3: {name: "Izquierda", icon: "fas fa-caret-square-left"},
-            fold1a_key4: {name: "Derecha", icon: "fas fa-caret-square-right"},
+            Completa: {name: "Completa", icon: "fas fa-stop"},
+            Centrada: {name: "Centrada", icon: "fas fa-pause"},
+            Izquierda: {name: "Izquierda", icon: "fas fa-caret-square-left"},
+            Derecha: {name: "Derecha", icon: "fas fa-caret-square-right"},
         }
     }
   }

@@ -11,17 +11,17 @@
 @section('content')
     @if( auth()->user()->can('View dash sabana') )
 
-<div class="card px-3 pt-2">
+<div class="card px-3 py-2">
   <div class="row">
     <select id="select_sitios" class="form-control select2 col-md-12" style="width: 100%;">
-      <option value="" selected> Elija un sitio</option>
+      <option value="" selected> Todos los sitios</option>
       @forelse ($hotels as $data_hotel)
         <option value="{{ $data_hotel->id }}"> {{ $data_hotel->nombre }} </option>
       @empty
       @endforelse
     </select>
   </div>
-  <div class="row py-1">
+  <div class="row row-buttons d-none py-1">
     <button type="button" id="agregarHabitacion" class="mr-1 btn btn-sm btn-outline-primary font-weight-bold d-none" data-toggle="modal" data-target="#AgregarArea"><i class="fas fa-plus-square"></i> Nueva habitación</button>
     <button type="button" id="BtnGeneral" class="mr-1 mx-auto btn btn-sm btn-outline-info font-weight-bold" data-toggle="modal" data-target="#VistaGeneral"><i class="fas fa-th-list"></i> Vista general</button>
     <button type="button" id="agregarSitio" class="btn btn-sm btn-outline-secondary font-weight-bold d-none" data-toggle="modal" data-target="#modalañadir"><i class="fas fa-cogs"></i> Ajustes</button>
@@ -33,9 +33,12 @@
     <button type="button" id="descartarMovimientos" class="mr-1 btn btn-sm btn-danger font-weight-bold d-none"><i class="fas fa-compress-arrows-alt"></i> Descartar</button>
     <button type="button" id="salvarMovimientos" class="btn btn-sm btn-success font-weight-bold text-dark d-none"><i class="fas fa-expand-arrows-alt"></i> Sincronizar</button>
   </div>
-  <div id="containment-wrapper" style="width: 100%; height: 85vh; min-height: 400px;">
-    <div id="mapa" style="border-radius: 10px;">
+  <div class="row">
+    <div id="blob-containment-wrapper" class="d-none"></div>
+    <div id="containment-wrapper" class="d-none" style="width: 100%; height: 85vh; min-height: 400px;">
+      <div id="mapa" style="border-radius: 10px;">
 
+      </div>
     </div>
   </div>
 <!----->
@@ -308,8 +311,6 @@
     var pisoActual = "";
 
     $(window).on("load", function() {
-
-
 
       socket.on('cambiosExternos', function() {
 

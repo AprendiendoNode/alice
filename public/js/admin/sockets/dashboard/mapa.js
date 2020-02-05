@@ -38,7 +38,7 @@ $(window).on("load", function() {
   if($(window).width() < 700) {
 
     //$("#mapa").draggable("destroy");
-   $("#mapa").resizable("destroy");
+   //$("#mapa").resizable("destroy");
 
   } else  {
 

@@ -5,6 +5,14 @@ $('#select_sitios').on('change',function(){
   hotel_id =$('#select_sitios').val();
   //console.log(hotel_id);
 
+  if($('#select_sitios').val() == "") {
+    $('.row-buttons').addClass("d-none");
+    $('#containment-wrapper').addClass("d-none");
+  } else {
+    $('.row-buttons').removeClass("d-none");
+    $('#containment-wrapper').removeClass("d-none");
+  }
+
   socket.emit('init', {
 
       hotel_id: hotel_id

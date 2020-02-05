@@ -7,9 +7,11 @@ $(window).on("load", function() {
       trigger: (($(window).width() < 700) ? 'left' : 'right'),
       events: {
          show : function(options) {
+           $('#mapa').contextMenu(false);
            $("#"+this[0].id).css("opacity", "0.5");
          },
          hide : function(options) {
+           $('#mapa').contextMenu(true);
            $("#"+this[0].id).css("opacity", "1");
          }
       },
