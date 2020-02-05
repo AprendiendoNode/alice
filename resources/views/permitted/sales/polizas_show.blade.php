@@ -263,6 +263,9 @@
     th { font-size: 12px !important; }
     td { font-size: 10px !important; }
 
+    .dataTable .contabilizado{
+      color: green !important;
+    }
 
   </style>
   <script type="text/javascript">

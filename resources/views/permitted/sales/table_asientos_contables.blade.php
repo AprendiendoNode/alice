@@ -28,7 +28,7 @@
               $total_abonos+=$data->abono;
           @endphp
         <tr>
-            <td><input type="hidden" value="{{$data->customer_invoice_id}}"></td>
+            <td><input class="id_factura" type="hidden" value="{{$data->customer_invoice_id}}"></td>
             <td>{{$data->mov}}</td>
             <td>
               <select style="width:300px;" class="form-control form-control-sm cuenta_contable select2">

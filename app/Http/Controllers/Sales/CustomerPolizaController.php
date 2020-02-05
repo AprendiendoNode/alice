@@ -129,16 +129,56 @@ class CustomerPolizaController extends Controller
  
     }
 
-    public function save_poliza(Request $request)
+    public function save_poliza_movs(Request $request)
     {
-        $sql = DB::table('polizas')->insert([
-            'tipo_poliza_id' => $request->tipo_poliza_id,
-            'numero' => $request->poliza,
-            'fecha' => $request->poliza,
-            'descripcion' => $request->descripcion,
-            'cargos' => $request->cargos,
-            'abonos' => $request->status
-        ]);
+        $date = \Carbon\Carbon::now();
+        $date = $date->format('Y-m-d');
+        //Objeto del carrito de compras (Pedido)
+        $asientos = $request->movs_polizas;
+        $asientos_data = json_decode($asientos);
+        
+        $tam_asientos = count($asientos_data);
+
+        DB::beginTransaction();
+
+        try {
+
+            $sql_poliza = DB::table('polizas')->insertGetId([
+                'tipo_poliza_id' => 1,
+                'numero' => 1,
+                'fecha' => $date,
+                'descripcion' => $asientos_data[0]->nombre,
+                'total_cargos' => $request->total_cargos_format,
+                'total_abonos' => $request->total_abonos_format
+            ]);
+                
+            //Insertando movimientos de las polizas
+            for ($i=0; $i < $tam_asientos; $i++)
+            {
+                $sql = DB::table('polizas_movtos')->insert([
+                    'poliza_id' => $sql_poliza,
+                    'fecha' => $date,
+                    'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
+                    'descripcion' => $asientos_data[$i]->nombre,
+                    'cargos' => $asientos_data[$i]->cargo,
+                    'abonos' => $asientos_data[$i]->abono,
+                    'customer_invoice_id' => $asientos_data[$i]->factura_id
+                ]);
+            }
+
+            DB::commit();
+
+            $flag = "true";
+
+
+        } catch(\Exception $e){
+            $error = $e->getMessage();
+            DB::rollback();
+            dd($error);
+        }
+
+        return  $flag;
+
     }
 
     public function get_facts_mov_data(Request $request)
@@ -157,8 +197,7 @@ class CustomerPolizaController extends Controller
                     array_push($asientos, $data[$j]);
                 }  
             }          
-        }
-        
+        }     
         //return $asientos;	
         return view('permitted.sales.table_asientos_contables', compact('asientos', 'cuentas_contables'));	
     }

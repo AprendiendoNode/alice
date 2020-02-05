@@ -181,6 +181,7 @@ $(function() {
           if ( cellData > 0 ) {
             if(rowData[10] == 1){
               this.api().cell(td).checkboxes.disable();
+              $(td).parent().addClass('contabilizado');
             }           
           }
         },  
@@ -350,6 +351,10 @@ function suma_total_asientos(){
 
 }
 
+/*
+*****************************  GUARDANDO PÓLIZAS ***************************
+*/ 
+
 $('#form_save_asientos_contables').on('submit', function(e){
   e.preventDefault();
   let total_cargos = remove_commas($('#total_cargos').val());
@@ -359,14 +364,94 @@ $('#form_save_asientos_contables').on('submit', function(e){
 
   if(check_totales_asientos(total_cargos, total_abonos)){
 
-    $('#tabla_asiento_contable tbody tr').each(function(row, tr){
-      let cargo = $(tr).find('.cargos').val();
-      let abono = $(tr).find('.abonos').val();
-      let dia = $(tr).find('.dia').val();
-      let nombre = $(tr).find('.nombre').val();
-      let cuenta_contable = $(tr).find('.cuenta_contable').val();
-      console.log(nombre);
-    });
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        
+        var _token = $('input[name="_token"]').val();
+        
+        var element = {}
+        var asientos = [];
+
+        $('#tabla_asiento_contable tbody tr').each(function(row, tr){
+          let id_factura = $(tr).find('.id_factura').val();
+          let cargo = $(tr).find('.cargos').val();
+          let abono = $(tr).find('.abonos').val();
+          let dia = $(tr).find('.dia').val();
+          let nombre = $(tr).find('.nombre').val();
+          let cuenta_contable = $(tr).find('.cuenta_contable').val();
+          
+          element = {
+            "factura_id" : id_factura,
+            "cargo" : parseFloat(cargo),
+            "abono" : parseFloat(abono),
+            "dia" : dia,
+            "nombre" : nombre,
+            "cuenta_contable_id" : cuenta_contable,
+          }
+    
+          asientos.push(element);
+    
+        });
+    
+        let form = $('#form_save_asientos_contables')[0];
+        let formData = new FormData(form);
+    
+        formData.append('movs_polizas',JSON.stringify(asientos)); 
+        formData.append('total_cargos_format',total_cargos);
+        formData.append('total_abonos_format',total_abonos);  
+
+        const headers = new Headers({        
+           "Accept": "application/json",
+           "X-Requested-With": "XMLHttpRequest",
+           "X-CSRF-TOKEN": _token
+        })
+
+        var miInit = { method: 'post',
+                           headers: headers,
+                           credentials: "same-origin",
+                           body:formData,
+                           cache: 'default' };
+
+         return fetch('/sales/customer-polizas-save-movs', miInit)
+               .then(function(response){
+                 if (!response.ok) {
+                    throw new Error(response.statusText)
+                  }
+                 return response.text();
+               })
+               .catch(function(error){
+                 Swal.showValidationMessage(
+                   `Request failed: ${error}`
+                 )
+               });
+      }//Preconfirm
+    }).then((result) => {
+      console.log(result.value);
+      if (result.value == "true") {
+        Swal.fire({
+          title: 'Poliza guardada',
+          text: "",
+          type: 'success',
+        }).then(function (result) {
+          if (result.value) {
+            window.location = "/sales/customer-polizas-show";
+          }
+        })
+      }else{
+        Swal.fire(
+          'error al guardar','','error'
+        )
+      }
+    })
 
   }else{
     Swal.fire(
