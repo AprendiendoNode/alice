@@ -116,7 +116,7 @@ class PurchasesController extends Controller
             $pdf_fact = $request->file('file_pdf');
             $xml_fact = $request->file('file_xml');*/
         //
-        // return (string)filesize($request->file('file_pdf'));
+        // 
         
         // Begin a transaction
         \DB::beginTransaction();
@@ -128,9 +128,41 @@ class PurchasesController extends Controller
             $request->merge(['updated_uid' => \Auth::user()->id]);
             $request->merge(['status' => 1]);
             //Ajusta fecha y genera fecha de vencimiento
-            $date = Helper::createDateTime($request->date);
-            $request->merge(['date' => Helper::dateTimeToSql($date)]);
+            $currency_id = $request->currency_id; //Guardo la moneda seleccionada
+            $currency_value = $request->currency_value;
+            $resp_currency_value = $request->currency_value;
+            if (empty($currency_id)) {
+                $currency_id = 1;
+            }
+            if ($currency_id === 1) {
+                $currency_value = 1;
+            }
+            if (empty($currency_value)) {
+                $current_select_rate = DB::table('currencies')->select('rate')->where('id', $currency_id)->first();
+                $currency_value = $current_rate->rate;
+            }
 
+            $currency_code = 'MXN'; //En caso que no haya moneda le digo por defecto es pesos mexicanos
+
+            $cuenta_contable_general = $request->cuenta_contable;
+            $cuenta_ex = explode('|', $cuenta_contable_general);
+            // return $cuenta_ex[0];
+            // $cuenta_ex2 = rtrim($cuenta_ex[0]);
+            // return $cuenta_ex2;
+
+            if (!empty($cuenta_ex[0])) {
+                $cuenta_ex2 = trim($cuenta_ex[0]);
+                $res_cuenta = DB::table('Contab.cuentas_contables')->where('cuenta', $cuenta_ex2)->select('id')->value('id');
+            }else{
+                return '5';
+            }
+
+            // return $res;
+            // return $cuenta_ex;
+
+            $date = Carbon::now();
+            $request->merge(['date' => $date]);
+            
             $date_fact = Helper::createDateTime($request->date_fact);
             $request->merge(['date_fact' => Helper::dateTimeToSql($date_fact)]);
 
@@ -156,6 +188,7 @@ class PurchasesController extends Controller
             $request->merge(['payment_way_id' => $request->payment_way_id]);
             $request->merge(['payment_method_id' => $request->payment_method_id]);
             $request->merge(['cfdi_use_id' => $request->cfdi_use_id]);
+            $request->merge(['cuenta_contable_id' => $res_cuenta]);
 
             $file_pdf = $request->file('file_pdf');
             $file_xml = $request->file('file_xml');
@@ -196,7 +229,6 @@ class PurchasesController extends Controller
                     //Impuestos por cada producto
                     if ($iva[0] != 0) {
                         foreach ($iva as $tax_id) {
-                            
                             $tax = Tax::findOrFail($tax_id);
                             $tmp = 0;
                             if ($tax->factor == 'Tasa') {
@@ -218,7 +250,7 @@ class PurchasesController extends Controller
                     $item_subtotal = $item_amount_untaxed; //libre de impuestos
 
                     //Tipo de cambio
-                    $item_currency_id = $item['current'];
+                    $item_currency_id = $currency_id;
                     $item_currency_code = DB::table('currencies')->select('code_banxico')->where('id', $item_currency_id)->value('code_banxico');
                     $item_currency_value = $currency_pral_value;
 
@@ -292,8 +324,9 @@ class PurchasesController extends Controller
                           'amount_total' => $item_amount_total,
                           'sort_order' => $key,
                           'status' => 1,
-                          'currency_id' => $item['current'],
+                          'currency_id' => $currency_id,
                           'currency_value' => $item_currency_value,
+                          'cuentas_contable_id' => $item['cuenta_id'],
                       ]);
                       // Guardar impuestos por linea (Purchases Line Taxes)
                       if ($iva[0] != 0) {
@@ -328,25 +361,19 @@ class PurchasesController extends Controller
             }
             // Factura PDF y XML
             
-            if($file_pdf != null )
+            if($file_pdf != null)
             {
                 $file_extension = $file_pdf->getClientOriginalExtension(); //** get filename extension
-                $fileName = $request->name_fact.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
-                $pdf= $file_pdf->storeAs('filestore/storage/compras/'.date('Y-m'), $fileName);
-                // DB::table('pay_facturas')->insert([
-                //     'name' => $pdf,
-                //     'payment_id' => $id_payment
-                // ]);
+                $fileNamePdf = $request->name_fact.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
+                $pdf= $file_pdf->storeAs('filestore/storage/compras/'.date('Y-m'), $fileNamePdf);
+                $purchase_store->fact_url = $fileNamePdf;
             }
-            if($file_xml != null )
+            if($file_xml != null)
             {
                 $file_extension = $file_xml->getClientOriginalExtension(); //** get filename extension
-                $fileName = $request->name_fact.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
-                $pdf= $file_xml->storeAs('filestore/storage/compras/'.date('Y-m'), $fileName);
-                // DB::table('pay_facturas')->insert([
-                //     'name' => $pdf,
-                //     'payment_id' => $id_payment
-                // ]);
+                $fileNameXml = $request->name_fact.'_'.date("Y-m-d H:i:s").'.'.$file_extension;
+                $xml= $file_xml->storeAs('filestore/storage/compras/'.date('Y-m'), $fileNameXml);
+                $purchase_store->xml_url = $fileNameXml;
             }
             //Actualiza registro principal con totales
             $purchase_store->amount_discount = $amount_discount;

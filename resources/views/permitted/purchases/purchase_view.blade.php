@@ -258,6 +258,10 @@
               </div>
 
               <div class="col-md-6 col-xs-6">
+                <div class="col-md-12 col-xs-12">
+                  <label for="classif_id" class="control-label">Cuenta contable:</label>
+                  <input type="text" class="form-control" name="cuenta_contable" id="cuenta_contable" readonly>
+                </div>
               </div>
             </div>
 
@@ -605,8 +609,6 @@
 
 @push('scripts')
   @if( auth()->user()->can('View customers invoices') )
-  {{-- <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
-  <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script> --}}
   <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
   <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
   <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
@@ -634,6 +636,12 @@
 
   <script type="text/javascript">
     var conceptIndex = 0;
+    $.validator.addMethod('filesize', function(value, element, param) {
+      // param = size (in bytes)
+      // element = element to validate (<input>)
+      // value = value of the element (file name)
+      return this.optional(element) || (element.files[0].size <= param)
+    });
     $(function() {
       //-----------------------------------------------------------
         $("#form").validate({
@@ -681,7 +689,7 @@
                 required:"Please upload file."
             }
           },
-          // debug: true,
+          debug: true,
           submitHandler: function(e){
             var form = $('#form')[0];
             var formData = new FormData(form);
@@ -693,7 +701,7 @@
               processData: false,
               success: function (data){
                 console.log(data);
-                /*if (data == 'success') {
+                if (data == 'success') {
                   let timerInterval;
                   Swal.fire({
                     type: 'success',
@@ -718,13 +726,13 @@
                     }
                   });
                 }
-                if (data == 'false') {
+                if (data == 'false' || data == '5') {
                   Swal.fire({
                      type: 'error',
                      title: 'Error encontrado..',
                      text: 'Error al crear el  CFDI!',
                    });
-                }*/
+                }
               },
               error: function (err) {
                 Swal.fire({
@@ -841,6 +849,7 @@
       var item_row = "{{ $item_row }}";
       var item_relation_row = "{{ $item_relation_row }}";
       var item_row_cfdi_relation = "{{ $item_relation_row }}";
+      var accounting_account = {!! json_encode($accounting_account) !!};
 
       function addItem() {
           var moneda_val = $('input[name="currency_id"]').val();
@@ -1018,6 +1027,7 @@
       $(document).on('select2:select', '#form #items tbody .col-product-id', function (e) {
           let id = $(this).val();
           let row = $(this).attr('data-row');
+          var datax = [];
           // console.log(id);
           if (id) {
               $.ajax({
@@ -1026,12 +1036,31 @@
                   dataType: "JSON",
                   data: "id=" + id,
                   success: function (data) {
-                    console.log(data);
+                      // console.log(accounting_account);
                       $("#form #item_name_" + row).val(data[0].descripcion);
                       $("#form #item_unit_measure_id_" + row).val(data[0].unit_measure_id);
                       $("#form #item_sat_product_id_" + row).val(data[0].sat_product_id);
                       $("#form #item_price_unit_" + row).val(data[0].price);
                       $("#form #item_current_" + row).val(data[0].currency_id);
+                      // destroy select col-account-id
+                      // .find('[name="'+selects+'"]').select2("destroy");
+                      $("#form #item_cuenta_id_" + row).empty();
+                      $("#form #item_cuenta_id_" + row).select2("destroy");
+
+                      datax.push({id : "", text : "Elija ..."});
+
+                      if (data.length == 1) {
+                        $.each(accounting_account, function(index, datos){
+                          datax.push({id: datos.id, text: datos.cuenta+' | '+datos.nombre});
+                        });
+                      }else{
+                        for (var i = 1; i < data.length; i++) {
+                          datax.push({id: data[i].id, text: data[i].cuenta+' | '+data[i].nombre});
+                        }
+                      }
+                      $("#form #item_cuenta_id_" + row).select2({
+                        data : datax
+                      });
 
                       initItem();
                       totalItem();
@@ -1491,7 +1520,7 @@
         $("#form").on('change', '.changeField0', async function(){
           var id = $(this).val();
           var name_key = $("option:selected",this).text();
-          // $('#cc_key').val(name_key);
+          $('#cuenta_contable').val(name_key);
           // $('#cc_key2').val(name_key);
           var check_data;
           //console.log('cambio: ' + id);
@@ -1540,7 +1569,7 @@
         }).on('change', '.changeField1', async function(){
           var id = $(this).val();
           var name_key = $("option:selected",this).text();
-          // $('#cc_key').val(name_key);
+          $('#cuenta_contable').val(name_key);
           // $('#cc_key2').val(name_key);
           var check_data2;
           //console.log('cambio: ' + id);
@@ -1580,7 +1609,7 @@
           }
         }).on('change', '.changeField2', function(){
             var name_key = $("option:selected",this).text();
-            // $('#cc_key').val(name_key);
+            $('#cuenta_contable').val(name_key);
             // $('#cc_key2').val(name_key);
         });
       // End funciones cuenta contable.
