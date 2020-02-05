@@ -237,17 +237,17 @@
   </div>
   <!--Vista general-->
   <div class="modal fade" id="VistaGeneral" tabindex="-1" role="dialog" aria-labelledby="VistaGeneralLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
-        <div class="modal-header bg-primary">
+        <!--<div class="modal-header bg-primary">
           <h5 class="modal-title text-white" id="VistaGeneralLabel"><i class="far fa-eye"></i> Vista general</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>
+        </div>-->
         <div class="modal-body">
-          <table id="lugares" class="table table-sm  table-borderless  w-100" style="">
-            <thead>
+          <table id="lugares" class="table table-sm  table-borderless compact-tab w-100" style="">
+            <thead class="bg-primary">
               <tr>
                 <th>Nombre</th>
                 <th>Estado</th>

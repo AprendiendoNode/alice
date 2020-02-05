@@ -57,7 +57,7 @@ $(window).on("load",function() {
         stop: function(e, ui) { ajustarArea($(this).attr("id"), 2); }
       });
 
-      $("#area"+area.id).append("<div class='area-font-size' style='font-family: Helvetica; font-weight: bold; text-align: center;'><p>"+area.nombre+"</p></div>");
+      $("#area"+area.id).append("<div class='area-font-size' style='font-family: Helvetica; font-weight: bold; text-align: center;'><p class='test-area' >"+area.nombre+"</p></div>");
 
       $("#area"+area.id).css("width", area.width + "%");
       //$("#area"+area.id).css("font-size", $("#area"+area.id).width() / 6 + "px");
