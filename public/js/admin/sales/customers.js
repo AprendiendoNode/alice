@@ -1,4 +1,32 @@
 $(function () {
+  //Deshabilita ciudad y estado para creación cuando es diferente de México
+  $('#select_six').on('change',function(){
+    if($('#select_six').val()!=3){
+      $('#select_seven').prop('disabled','disabled')
+      $('#select_eight').prop('disabled','disabled')
+      $('#select_seven').val('').trigger('change');
+      $('#select_eight').val('').trigger('change');
+    }else{
+      $('#select_seven').prop('disabled',false)
+      $('#select_eight').prop('disabled',false)
+
+    }
+  });
+
+  //Deshabilita ciudad y estado para edición cuando es diferente de México
+  $('#edit_select_six').on('change',function(){
+    if($('#edit_select_six').val()!=3){
+      $('#edit_select_seven').prop('disabled','disabled')
+      $('#edit_select_eight').prop('disabled','disabled')
+      $('#edit_select_seven').val('').trigger('change');
+      $('#edit_select_eight').val('').trigger('change');
+    }else{
+      $('#edit_select_seven').prop('disabled',false)
+      $('#edit_select_eight').prop('disabled',false)
+
+    }
+  });
+
   $('#cuenta_contable').select2();
   $('#cuenta_complementaria').select2();
   $('#cuenta_anticipo').select2();
@@ -83,7 +111,7 @@ $(function () {
            message: 'The field is required'
          }
        }
-     },
+     },/*
      select_seven: {
        validators: {
          notEmpty: {
@@ -97,7 +125,7 @@ $(function () {
            message: 'The field is required'
          }
        }
-     },
+     },*/
      inputCreatPostCode: {
        validators: {
          notEmpty: {
@@ -257,7 +285,7 @@ $(function () {
           }
         }
       },
-      edit_select_seven: {
+      /*edit_select_seven: {
         validators: {
           notEmpty: {
             message: 'The field is required'
@@ -270,7 +298,7 @@ $(function () {
             message: 'The field is required'
           }
         }
-      },
+      },*/
       editCreatPostCode: {
         validators: {
           notEmpty: {

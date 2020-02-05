@@ -133,7 +133,7 @@
                 <div class="form-group row">
                   <label for="select_seven" class="col-sm-3 col-form-label">Estados<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="select_seven" name="select_seven" class="form-control form-control-sm required"  style="width: 100%;">
+                    <select  id="select_seven" name="select_seven" class="form-control form-control-sm required"  style="width: 100%;" required>
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($states as $states_data)
                       <option value="{{ $states_data->id }}"> {{ $states_data->name }} </option>
@@ -145,7 +145,7 @@
                 <div class="form-group row">
                   <label for="select_eight" class="col-sm-3 col-form-label">Ciudades<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="select_eight" name="select_eight" class="form-control form-control-sm required"  style="width: 100%;">
+                    <select  id="select_eight" name="select_eight" class="form-control form-control-sm required"  style="width: 100%;" required>
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($cities as $cities_data)
                       <option value="{{ $cities_data->id }}"> {{ $cities_data->name }} </option>
@@ -157,7 +157,7 @@
                 <div class="form-group row">
                   <label for="inputCreatPostCode" class="col-sm-3 col-form-label">Codigo Postal<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm onlynumber required" id="inputCreatPostCode" name="inputCreatPostCode" placeholder="" maxlength="10">
+                    <input type="text" class="form-control form-control-sm onlynumber required" id="inputCreatPostCode" name="inputCreatPostCode" placeholder="" minlength="5" maxlength="5">
                   </div>
                 </div>
                 <div class="form-group row">
@@ -309,7 +309,7 @@
                 <div class="form-group row">
                   <label for="edit_select_seven" class="col-sm-3 col-form-label">Estados<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="edit_select_seven" name="edit_select_seven" class="form-control form-control-sm required"  style="width: 100%;">
+                    <select  id="edit_select_seven" name="edit_select_seven" class="form-control form-control-sm required"  style="width: 100%;" required>
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($states as $states_data)
                       <option value="{{ $states_data->id }}"> {{ $states_data->name }} </option>
@@ -321,7 +321,7 @@
                 <div class="form-group row">
                   <label for="edit_select_eight" class="col-sm-3 col-form-label">Ciudades<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="edit_select_eight" name="edit_select_eight" class="form-control form-control-sm required"  style="width: 100%;">
+                    <select  id="edit_select_eight" name="edit_select_eight" class="form-control form-control-sm required"  style="width: 100%;" required>
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($cities as $cities_data)
                       <option value="{{ $cities_data->id }}"> {{ $cities_data->name }} </option>
@@ -334,7 +334,7 @@
                 <div class="form-group row">
                   <label for="editCreatPostCode" class="col-sm-3 col-form-label">Codigo Postal<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm onlynumber required" id="editCreatPostCode" name="editCreatPostCode" placeholder="" maxlength="10">
+                    <input type="text" class="form-control form-control-sm onlynumber required" id="editCreatPostCode" name="editCreatPostCode" placeholder="" minlength="5" maxlength="5">
                   </div>
                 </div>
                 <div class="form-group row">
