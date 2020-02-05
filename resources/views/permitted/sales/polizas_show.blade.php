@@ -100,7 +100,8 @@
                     </th>
                     <th class="text-center">
                         {{__('customer_invoice.column_balance')}}
-                    </th>                
+                    </th>  
+                    <th></th>              
                 </tr>
               </thead>
             </table>
@@ -120,9 +121,10 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <form id="form_save_asientos_contables">
         <div class="modal-body">
-          <div class="row">
-            <form class="">
+          
+            
               <div class="row">
                 <div class="form-group col-md-3">
                   <label class="" for="type_poliza">Tipo:</label>
@@ -147,27 +149,11 @@
                   <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
                 </div>
               </div>
-            </form>
-          </div>
+          
           <!------TABLA DE PARTIDAS / ASIENTO CONTABLE------>
           <div class="row mt-2 mb-3">
             <div id="data_asientos" class="col-12 table-responsive">
-              {{-- <table id="tabla_asiento_contable" class="table table-sm">
-                <thead class="bg-secondary text-white">
-                  <tr>
-                    <th>Mov.</th>
-                    <th>Cuenta</th>
-                    <th>Dia</th>
-                    <th>T.C.</th>
-                    <th>Nombre</th>
-                    <th>Cargo</th>
-                    <th>Abono</th>
-                    <th>Referencia</th>
-                  </tr>
-                </thead>
-                <tbody>       
-                </tbody>
-              </table> --}}
+              
             </div>
           </div>
           <!------------RESUMEN FACTURA--------->
@@ -192,12 +178,13 @@
             </div>
           </div> --}}
           <!--------------TOTALES----------->
-          
+        
         </div>
         <div class="modal-footer">
-          <button id="save_poliza_partida" type="button" class="btn btn-primary">Guardar</button>
+          <button type="submit" id="save_poliza_partida" type="button" class="btn btn-primary">Guardar</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
+      </form> 
       </div>
     </div>
   </div>

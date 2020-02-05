@@ -132,7 +132,7 @@ $(function() {
       var a04 = '<a class="dropdown-item" target="_blank" href="/sales/customer-invoice-pdfs/'+information.id+'"><i class="fa fa-eye"></i> Ver</a>';
       var a05 = '', a06 ='', a07 ='', a08 ='', a09 ='', a10 ='', a11 ='', a12 ='', a13 ='', a14 ='', a15 ='', a16='', a17='', a19='';
       
-        a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="contabilizar_poliza(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-wallet"></i> Contabilizar</a>';
+       
       if ( information.uuid != "" ) {
         a19 = '<a class="dropdown-item" href="javascript:void(0);" onclick="cancel_poliza(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="fas fa-file-alt"></i> Cancelar póliza</a>';
       }
@@ -151,6 +151,7 @@ $(function() {
         information.currency,
         information.amount_total,
         information.balance,
+        information.contabilizado
       ]);
     });
   }
@@ -177,10 +178,19 @@ $(function() {
         },
         "width": "0.1%",
         "createdCell": function (td, cellData, rowData, row, col){
-          
-        },
+          if ( cellData > 0 ) {
+            if(rowData[10] == 1){
+              this.api().cell(td).checkboxes.disable();
+            }           
+          }
+        },  
         "className": "text-center",
-      }
+      },
+      {
+        "targets": 10,
+        "width": "1.0%",
+        "visible": false
+      },
     ],
     dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
             "<'row'<'col-sm-12'tr>>" +
@@ -305,112 +315,68 @@ $(function() {
     }
   };
 
-function cancel_poliza(e){
-  let id_invoice = e.getAttribute('value');
-  let _token = $('meta[name="csrf-token"]').attr('content');
-
-    $.ajax({
-      type: "POST",
-      url: '/sales/customer-polizas-cancel',
-      data: {id_invoice : id_invoice, _token : _token},
-      success: function (data) {
-        if(data.code == 200){
-          Swal.fire('Operación completada!', data.message, 'success')
-          .then(()=> {
-            location.href ="/sales/customer-polizas-show";
-          });
-        }
-        
-      },
-      error: function (err) {
-        Swal.fire({
-            type: 'error',
-            title: 'Oops...',
-            text: err.statusText,
-          });
-      }
-  })
+function check_totales_asientos(total_cargos,total_abonos){
+  if(parseFloat(total_cargos) != parseFloat(total_abonos)){
+    return false;
+  }else{
+    return true
+  }
 }
 
-function data_table_asientos(miInit, id_documentp, id_cart){
-
-  fetch(`/documentp_table_products/${id_documentp}/${id_cart}`,  miInit)
-      .then(response => {
-        return response.text();
-      })
-      .then(html => {
-        $('#data_products').html(html);
-      })
-      .catch(error => {
-        console.log(error);
-      })
-}
-
-function contabilizar_poliza(e){
-  let id_invoice = e.getAttribute('value');
-  let _token = $('meta[name="csrf-token"]').attr('content');
-  let today = new Date();
-  let dd = String(today.getDate()).padStart(2, '0');
-  let mes = moment().format('MMMM');
-  let mes_digit =  moment().format('MM');
-  let year = moment().format('YYYY');
+function suma_total_asientos(){
+  let inputs_cargos = document.querySelectorAll('.cargos');
+  let inputs_abonos = document.querySelectorAll('.abonos');
+  let total_cargos = 0.0;
+  let total_abonos = 0.0;
   
-  $('#day_poliza').val(dd);
-  $('#mes_poliza').val(mes);
-  $("#tabla_asiento_contable tbody").empty();
+  for (i = 0; i < inputs_cargos.length; ++ i){
+    total_cargos+= parseFloat(inputs_cargos[i].value);
+  }
 
-  $.ajax({
-      type: "POST",
-      url: '/sales/customer-polizas-getdata',
-      data: {id_invoice : id_invoice, _token : _token},
-      success: function (data) {
-        
-        let suma_cargos = 0.0;
-        let suma_abonos = 0.0;
-        data.forEach(function(key){
+  for (i = 0; i < inputs_abonos.length; ++ i){
+    total_abonos+= parseFloat(inputs_abonos[i].value);
+  }
 
-          let abono = format_number(parseFloat(key.abono));
-          let cargo = format_number(parseFloat(key.cargo));
-          suma_abonos+= parseFloat(key.abono);
-          suma_cargos+= parseFloat(key.cargo);
+  $('#total_cargos').val(format_number(total_cargos));
+  $('#total_abonos').val(format_number(total_abonos));
 
-          $('#tabla_asiento_contable > tbody:last-child').append(
-          `<tr>
-            <td>${key.mov}</td>
-            <td>
-              <select style="width:250px;" class="form-control form-control-sm cuenta_contable select2">
-                <option value=""></option>
-                <option value="">2121</option>
-              </select>
-            </td>
-            <td>${dd}</td>
-            <td>${key.currency_id}</td>
-            <td class=""><input style="width:180px;text-align:right" class="form-control form-control-sm" type="text" value="${key.name} ${dd}/${mes_digit}/${year}"></td>
-            <td><input style="width:120px;text-align:right" class="form-control form-control-sm cargos" type="text" value="${cargo}" ></td>
-            <td><input style="width:120px;text-align:right" class="form-control form-control-sm" abonos" type="text" value="${abono}" ></td> 
-            <td></td>
-            </tr>
-            `
-          );
-          
-        });
-        $('.cuenta_contable').select2();
-        $('#total_cargos').val(format_number(suma_cargos));
-        $('#total_abonos').val(format_number(suma_abonos));
-      },
-      error: function (err) {
-        Swal.fire({
-            type: 'error',
-            title: 'Oops...',
-            text: err.statusText,
-          });
-      }
-  })
-
-  $("#modal_view_poliza").modal("show");
+  if(check_totales_asientos(total_cargos,total_abonos)){
+    $('#total_cargos').css('border-color', '#28a745');
+    $('#total_abonos').css('border-color', '#28a745');
+  }else{
+    $('#total_cargos').css('border-color', '#dc3545');
+    $('#total_abonos').css('border-color', '#dc3545');
+  }
 
 }
 
+$('#form_save_asientos_contables').on('submit', function(e){
+  e.preventDefault();
+  let total_cargos = remove_commas($('#total_cargos').val());
+  total_cargos = parseFloat(total_cargos);
+  let total_abonos = remove_commas($('#total_abonos').val());
+  total_abonos = parseFloat(total_abonos);
+
+  if(check_totales_asientos(total_cargos, total_abonos)){
+
+    $('#tabla_asiento_contable tbody tr').each(function(row, tr){
+      let cargo = $(tr).find('.cargos').val();
+      let abono = $(tr).find('.abonos').val();
+      let dia = $(tr).find('.dia').val();
+      let nombre = $(tr).find('.nombre').val();
+      let cuenta_contable = $(tr).find('.cuenta_contable').val();
+      console.log(nombre);
+    });
+
+  }else{
+    Swal.fire(
+      'Los totales no coinciden',
+      'Revisar los saldos de los cargos y abonos',
+      'warning'
+    );
+  }
+  
+});
 
 //Formato numerico: 00,000.00
 function format_number(number){

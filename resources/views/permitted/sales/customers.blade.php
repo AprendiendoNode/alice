@@ -474,7 +474,7 @@
   <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
-  <script src="{{ asset('js/admin/sales/customers.js')}}"></script>
+  <script src="{{ asset('js/admin/sales/customers.js?v=2.1')}}"></script>
 
   <style media="screen">
     .select2-selection__rendered {

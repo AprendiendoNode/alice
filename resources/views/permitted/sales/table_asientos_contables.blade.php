@@ -28,20 +28,24 @@
               $total_abonos+=$data->abono;
           @endphp
         <tr>
-            <td><input type="hidden" value="{{$data->id}}"></td>
+            <td><input type="hidden" value="{{$data->customer_invoice_id}}"></td>
             <td>{{$data->mov}}</td>
             <td>
               <select style="width:300px;" class="form-control form-control-sm cuenta_contable select2">
                 @foreach ($cuentas_contables as $cuenta_data)
-                  <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
+                  @if ($cuenta_data->id == $data->cuenta_contable_id)
+                    <option selected value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option> 
+                  @else
+                    <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
+                  @endif   
                 @endforeach
               </select>
             </td>
-            <td>{{$day}}</td>
+            <td><input style="width:60px;text-align:center" class="form-control form-control-sm dia" readonly type="number" value="{{$day}}"></td>
             <td></td>
-            <td class=""><input style="width:180px;text-align:right" class="form-control form-control-sm" type="text" value="{{$data->name}} {{$date}}"></td>
-            <td><input style="width:120px;text-align:right" class="form-control form-control-sm cargos" type="text" value="{{number_format($data->cargo, 2, '.', '')}}" ></td>
-            <td><input style="width:120px;text-align:right" class="form-control form-control-sm" abonos" type="text" value="{{number_format($data->abono, 2, '.', '')}}" ></td> 
+            <td class=""><input style="width:180px;text-align:right" readonly class="form-control form-control-sm nombre" type="text" value="{{$data->name}} {{$date}}"></td>
+            <td><input onblur="suma_total_asientos();" style="width:120px;text-align:right" class="form-control form-control-sm cargos" type="text" value="{{number_format($data->cargo, 2, '.', '')}}" ></td>
+            <td><input onblur="suma_total_asientos();" style="width:120px;text-align:right" class="form-control form-control-sm abonos"  type="text" value="{{number_format($data->abono, 2, '.', '')}}" ></td> 
             <td></td>
         </tr>
         @endforeach    

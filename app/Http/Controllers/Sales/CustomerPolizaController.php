@@ -148,7 +148,7 @@ class CustomerPolizaController extends Controller
         $asientos = array();
         for ($i=0; $i <= (count($facturas)-1); $i++) 
         {
-            $data = DB::select('CALL px_poliza_xfactura(?)', array($facturas[$i]));
+            $data = DB::select('CALL px_poliza_xfactura_cc(?)', array($facturas[$i]));
         
             if(count($data) > 0)
             {
@@ -158,7 +158,7 @@ class CustomerPolizaController extends Controller
                 }  
             }          
         }
-
+        
         //return $asientos;	
         return view('permitted.sales.table_asientos_contables', compact('asientos', 'cuentas_contables'));	
     }

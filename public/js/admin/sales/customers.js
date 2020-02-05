@@ -333,7 +333,7 @@ $(function () {
                   // Read more about handling dismissals
                   result.dismiss === Swal.DismissReason.timer
                 ) {
-                  window.location.href = "/sales/customers";
+                  //window.location.href = "/sales/customers";
                 }
               });
           }
@@ -555,7 +555,7 @@ $("#form_integration_cc").on("submit", function(e){
         }).then((result) => {
           console.log(result);
           if (xhr.status == 200) {
-            window.location.href = "/sales/customers";
+            //window.location.href = "/sales/customers";
           }
         });
         
