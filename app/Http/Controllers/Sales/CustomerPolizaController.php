@@ -61,14 +61,14 @@ class CustomerPolizaController extends Controller
 	{
 		$folio = !empty($request->filter_name) ? $request->filter_name : '';
 		$date_from  = $request->filter_date_from;
-		$date_to  = $request->filter_date_to;
+		//$date_to  = $request->filter_date_to;
 		$sucursal = !empty($request->filter_branch_office_id) ? $request->filter_branch_office_id : '';
 		$cliente = !empty($request->filter_customer_id) ? $request->filter_customer_id : '';
 		$estatus = !empty($request->filter_status) ? $request->filter_status : '';
 
 		$date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
-		$date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
-		$resultados = DB::select('CALL px_customer_polizas_filters_type (?,?,?,?)',array($date_a, $date_b, $folio, '1'));
+		//$date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
+		$resultados = DB::select('CALL px_customer_polizas_filters_type (?,?,?)',array($date_a, $folio, '1'));
 
 		return json_encode($resultados);
 	}
@@ -105,9 +105,9 @@ class CustomerPolizaController extends Controller
 
             $id_poliza = DB::table('polizas')->insertGetId([
                 'tipo_poliza_id' => $request->type_poliza,
-                'numero' => 1,
+                'numero' => $request->num_poliza,
                 'fecha' => $date,
-                'descripcion' => $asientos_data[0]->nombre,
+                'descripcion' => $request->descripcion_poliza,
                 'total_cargos' => $request->total_cargos_format,
                 'total_abonos' => $request->total_abonos_format
             ]);
@@ -126,8 +126,10 @@ class CustomerPolizaController extends Controller
                     'abonos' => $asientos_data[$i]->abono,
                     'referencia' => $asientos_data[$i]->referencia
                 ]);
-
-                // CustomerInvoice;
+                //Marcando facturas a contabilizado
+                customer_invoice = CustomerInvoice::findOrFail($asientos_data[$i]->factura_id);
+                $customer_invoice->contabilizado = 1;
+                $customer_invoice->save();
             }
 
             DB::commit();
@@ -148,6 +150,7 @@ class CustomerPolizaController extends Controller
     public function get_facts_mov_data(Request $request)
     {
         $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
+        $next_id_num = DB::table('polizas')->max('numero') + 1;
         $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
         $facturas = json_decode($request->facturas);
         $asientos = array();
@@ -165,7 +168,7 @@ class CustomerPolizaController extends Controller
         }     
         //return $asientos;	
         return view('permitted.sales.table_asientos_contables', 
-               compact('asientos', 'cuentas_contables', 'tipos_poliza'));	
+               compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num'));	
     }
     
 }

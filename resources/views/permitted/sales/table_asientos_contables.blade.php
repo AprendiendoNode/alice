@@ -18,16 +18,20 @@
 
   <div class="form-group col-md-2">
     <label class="" for="">Número:</label>
-    <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" id="num_poliza" name="num_poliza"  placeholder="">
+  <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" id="num_poliza" name="num_poliza"  value="{{$next_id_num}}">
   </div>
 
   <div class="form-group col-md-2">
     <label class="" for="day_poliza">Día:</label>
     <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza" placeholder="">
   </div>
-  <div class="form-group col-md-3">
+  <div class="form-group col-md-2">
     <label class="" for="mes_poliza">Mes:</label>
     <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
+  </div>
+  <div class="form-group col-md-3">
+    <label class="" for="mes_poliza">Descripción:</label>
+    <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="descripcion_poliza" id="descripcion_poliza">
   </div>
 </div>
 <!--------------Movimientos contables-----------> 
