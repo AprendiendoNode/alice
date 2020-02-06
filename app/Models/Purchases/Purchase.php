@@ -25,6 +25,12 @@ class Purchase extends Model
 {
   protected $table = 'purchases';
 
+  //Por timbrar
+  const ELABORADO = 1; //ELABORADO
+  const REVISADO = 2;  //REVISADO
+  const AUTORIZADO = 3;//AUTORIZADO
+  const CANCELADO = 4; //CANCELADO
+
   protected $fillable = [
     'name',
     'serie',

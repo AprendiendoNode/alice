@@ -1264,6 +1264,9 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   //Cuentas por pagar
   Route::get('/view_account_to_pay', 'Purchases\AccountPayController@index');
 
+  //Notas de credito - COMPRAS
+  Route::get('/customer-credit-notes-cp', 'Purchases\CustomerCreditNoteController@index');
+
 });
 Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){
   //Integracion contable
