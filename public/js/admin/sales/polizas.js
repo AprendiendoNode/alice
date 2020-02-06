@@ -383,19 +383,23 @@ $('#form_save_asientos_contables').on('submit', function(e){
 
         $('#tabla_asiento_contable tbody tr').each(function(row, tr){
           let id_factura = $(tr).find('.id_factura').val();
+          let cuenta_contable = $(tr).find('.cuenta_contable').val();
+          let dia = $(tr).find('.dia').val();
+          let tipo_cambio = $(tr).find('.tipo_cambio').val();
+          let nombre = $(tr).find('.nombre').val();
           let cargo = $(tr).find('.cargos').val();
           let abono = $(tr).find('.abonos').val();
-          let dia = $(tr).find('.dia').val();
-          let nombre = $(tr).find('.nombre').val();
-          let cuenta_contable = $(tr).find('.cuenta_contable').val();
+          let referencia = $(tr).find('.referencia').val();    
           
           element = {
             "factura_id" : id_factura,
+            "cuenta_contable_id" : cuenta_contable,
+            "dia" : dia,
+            "tipo_cambio" : tipo_cambio,
+            "nombre" : nombre,
             "cargo" : parseFloat(cargo),
             "abono" : parseFloat(abono),
-            "dia" : dia,
-            "nombre" : nombre,
-            "cuenta_contable_id" : cuenta_contable,
+            "referencia" : referencia          
           }
     
           asientos.push(element);
@@ -448,7 +452,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
         })
       }else{
         Swal.fire(
-          'error al guardar','','error'
+          'No se guardo la poliza','','warning'
         )
       }
     })
@@ -462,6 +466,35 @@ $('#form_save_asientos_contables').on('submit', function(e){
   }
   
 });
+
+////////////////////////////////////////////////////////////////
+
+function cancel_poliza(e){
+  let id_invoice = e.getAttribute('value');
+  let _token = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+      type: "POST",
+      url: '/sales/customer-polizas-cancel',
+      data: {id_invoice : id_invoice, _token : _token},
+      success: function (data) {
+        if(data.code == 200){
+          Swal.fire('Operación completada!', data.message, 'success')
+          .then(()=> {
+            location.href ="/sales/customer-polizas-show";
+          });
+        }
+        
+      },
+      error: function (err) {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: err.statusText,
+          });
+      }
+  })
+}
 
 //Formato numerico: 00,000.00
 function format_number(number){

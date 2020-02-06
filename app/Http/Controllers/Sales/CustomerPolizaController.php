@@ -9,27 +9,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Gerardojbaez\Money\Money;
 use App\Exports\CustomerInvoicesExport;
-// use App\Helpers\BaseHelper;
-use App\Helpers\Cfdi33Helper;
-use App\Helpers\Helper;
-use App\Helpers\PacHelper;
-// use App\Mail\SendCustomerInvoice;
-use App\Models\Base\BranchOffice;
-use App\Models\Base\Company;
-use App\Models\Base\Pac;
 use App\Models\Base\DocumentType;
 use App\Models\Catalogs\CfdiRelation;
-use App\Models\Catalogs\State;
-use App\Models\Catalogs\country;
 use App\Models\Catalogs\CfdiUse;
-use App\Models\Catalogs\Currency;
-use App\Models\Catalogs\PaymentMethod;
-use App\Models\Catalogs\PaymentTerm;
-use App\Models\Catalogs\PaymentWay;
-use App\Models\Catalogs\Product;
-use App\Models\Catalogs\SatProduct;
-use App\Models\Catalogs\Tax;
-use App\Models\Catalogs\UnitMeasure;
 use App\Models\Sales\Customer;
 use App\Models\Sales\CustomerInvoice;
 use App\Models\Sales\CustomerInvoiceCfdi;
@@ -37,21 +19,8 @@ use App\Models\Sales\CustomerInvoiceLine;
 use App\Models\Sales\CustomerInvoiceRelation;
 use App\Models\Sales\CustomerInvoiceTax;
 use App\Models\Sales\CustomerPayment;
-use App\Models\Sales\Salesperson;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
-use Maatwebsite\Excel\Facades\Excel;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
-use App\Models\Base\Setting;
-use anlutro\LaravelSettings\SettingStore;
-use Jenssegers\Date\Date;
-use Illuminate\Support\Facades\Schema;
-
-use \CfdiUtils\XmlResolver\XmlResolver;
-use \CfdiUtils\CadenaOrigen\DOMBuilder;
 use App\ConvertNumberToLetters;
 use Mail;
 
@@ -75,18 +44,9 @@ class CustomerPolizaController extends Controller
 	*/
     public function show()
     {
-
         $customer = DB::select('CALL px_only_customer_data ()', array());
-        $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
-        $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
-        $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
-        $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
-        $list_status = $this->list_status;
-        $bancos = DB::table('banks')->where('sitwifi', 1)->get();
 
-        return view('permitted.sales.polizas_show',compact(
-          'customer', 'sucursal', 'list_status', 'bancos'
-        ));
+        return view('permitted.sales.polizas_show',compact( 'customer'));
 	}
 
 	public function get_data_poliza(Request $request)
@@ -130,10 +90,10 @@ class CustomerPolizaController extends Controller
     }
 
     public function save_poliza_movs(Request $request)
-    {
+    {   
         $date = \Carbon\Carbon::now();
         $date = $date->format('Y-m-d');
-        //Objeto del carrito de compras (Pedido)
+        //Objeto de polizas
         $asientos = $request->movs_polizas;
         $asientos_data = json_decode($asientos);
         
@@ -143,8 +103,8 @@ class CustomerPolizaController extends Controller
 
         try {
 
-            $sql_poliza = DB::table('polizas')->insertGetId([
-                'tipo_poliza_id' => 1,
+            $id_poliza = DB::table('polizas')->insertGetId([
+                'tipo_poliza_id' => $request->type_poliza,
                 'numero' => 1,
                 'fecha' => $date,
                 'descripcion' => $asientos_data[0]->nombre,
@@ -156,14 +116,18 @@ class CustomerPolizaController extends Controller
             for ($i=0; $i < $tam_asientos; $i++)
             {
                 $sql = DB::table('polizas_movtos')->insert([
-                    'poliza_id' => $sql_poliza,
-                    'fecha' => $date,
+                    'poliza_id' => $id_poliza,
                     'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
+                    'customer_invoice_id' => $asientos_data[$i]->factura_id,
+                    'fecha' => $date, 
+                    'exchange_rate' => $asientos_data[$i]->tipo_cambio,
                     'descripcion' => $asientos_data[$i]->nombre,
                     'cargos' => $asientos_data[$i]->cargo,
                     'abonos' => $asientos_data[$i]->abono,
-                    'customer_invoice_id' => $asientos_data[$i]->factura_id
+                    'referencia' => $asientos_data[$i]->referencia
                 ]);
+
+                // CustomerInvoice;
             }
 
             DB::commit();
@@ -183,6 +147,7 @@ class CustomerPolizaController extends Controller
 
     public function get_facts_mov_data(Request $request)
     {
+        $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
         $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
         $facturas = json_decode($request->facturas);
         $asientos = array();
@@ -199,7 +164,8 @@ class CustomerPolizaController extends Controller
             }          
         }     
         //return $asientos;	
-        return view('permitted.sales.table_asientos_contables', compact('asientos', 'cuentas_contables'));	
+        return view('permitted.sales.table_asientos_contables', 
+               compact('asientos', 'cuentas_contables', 'tipos_poliza'));	
     }
     
 }

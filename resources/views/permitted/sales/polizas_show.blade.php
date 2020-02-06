@@ -123,33 +123,6 @@
         </div>
         <form id="form_save_asientos_contables">
         <div class="modal-body">
-          
-            
-              <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="" for="type_poliza">Tipo:</label>
-                  <select class="form-control form-control-sm mb-2 mr-sm-2" id="type_poliza" placeholder="">
-                    <option value="1">Diario</option>
-                    <option value="2">Ingreso</option>
-                    <option value="3">Egreso</option>
-                  </select>
-                </div>
-              
-                <div class="form-group col-md-2">
-                  <label class="" for="">Número:</label>
-                  <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" id="" placeholder="">
-                </div>
-
-                <div class="form-group col-md-2">
-                  <label class="" for="day_poliza">Día:</label>
-                  <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza" placeholder="">
-                </div>
-                <div class="form-group col-md-3">
-                  <label class="" for="mes_poliza">Mes:</label>
-                  <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
-                </div>
-              </div>
-          
           <!------TABLA DE PARTIDAS / ASIENTO CONTABLE------>
           <div class="row mt-2 mb-3">
             <div id="data_asientos" class="col-12 table-responsive">
@@ -176,9 +149,7 @@
                 </tbody>
               </table>
             </div>
-          </div> --}}
-          <!--------------TOTALES----------->
-        
+          </div> --}}  
         </div>
         <div class="modal-footer">
           <button type="submit" id="save_poliza_partida" type="button" class="btn btn-primary">Guardar</button>
