@@ -14,6 +14,7 @@ use App\Models\Purchases\Purchase;
 use App\Models\Purchases\PurchaseLine;
 use App\Models\Purchases\PurchaseTax;
 use App\Models\Catalogs\Tax;
+use App\Cadena;
 use Carbon\Carbon;
 
 class PurchasesController extends Controller
@@ -26,28 +27,29 @@ class PurchasesController extends Controller
     public function index()
     {
         $providers = DB::table('customers')->select('id', 'name')->where('provider', 1)->get();
-        // $customer = DB::select('CALL px_only_customer_data ()', array());
-        $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
-        $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
-        // $salespersons = DB::select('CALL GetAllSalespersonv2 ()', array());
-        $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
-        $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()', array());
-        $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
-        $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()', array());
-        $cfdi_relations = DB::select('CALL GetAllCfdiRelationsv2 ()', array());
+        // $customer = DB::select('CALL px_only_customer_data ()');
+        $sucursal = DB::select('CALL GetSucursalsActivev2 ()');
+        $currency = DB::select('CALL GetAllCurrencyActivev2 ()');
+        // $salespersons = DB::select('CALL GetAllSalespersonv2 ()');
+        $payment_way = DB::select('CALL GetAllPaymentWayv2 ()');
+        $payment_term = DB::select('CALL GetAllPaymentTermsv2 ()');
+        $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()');
+        $cfdi_uses = DB::select('CALL GetAllCfdiUsev2 ()');
+        $cfdi_relations = DB::select('CALL GetAllCfdiRelationsv2 ()');
 
-        $product =  DB::select('CALL GetAllProductActivev2 ()', array());
-        $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()', array());
-        $satproduct = DB::select('CALL GetSatProductActivev2 ()', array());
-        $impuestos =  DB::select('CALL GetAllTaxesActivev2 ()', array());
-
+        $product =  DB::select('CALL GetAllProductActivev2 ()');
+        $unitmeasures = DB::select('CALL GetUnitMeasuresActivev2 ()');
+        $satproduct = DB::select('CALL GetSatProductActivev2 ()');
+        $impuestos =  DB::select('CALL GetAllTaxesActivev2 ()');
+        $cadenas = Cadena::select('id', 'name')->get()->sortBy('name');
+        
         $document_type = DocumentType::where('cfdi_type_id', 2)->get();// Solo documentos de ingresos
 
         $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
         
         $accounting_account = DB::select('CALL Contab.px_catalogo_cuentas_contables()', array());
 
-        return view('permitted.purchases.purchase_view', compact('providers','sucursal','currency','payment_way','payment_term', 'payment_methods', 'cfdi_uses', 'cfdi_relations', 'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications', 'document_type', 'accounting_account'));
+        return view('permitted.purchases.purchase_view', compact('providers','sucursal','currency','payment_way','payment_term', 'payment_methods', 'cfdi_uses', 'cfdi_relations', 'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications', 'document_type', 'accounting_account', 'cadenas'));
     }
 
     public function get_currency(Request $request)
@@ -58,15 +60,15 @@ class PurchasesController extends Controller
         // Carbon::now()
 
         if ($request->id_currency == 2) {
-            $current_rate = DB::table('exchange_rates')->select('current_rate')->where('current_date', $date)->first();
+            $current_rate = DB::table('exchange_rates')->select('current_rate_dof')->where('current_date', $date)->first();
             // $current_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
             if (empty($current_rate)) {
-                $current_rate = DB::table('exchange_rates')->select('current_rate')->latest()->first();
+                $current_rate = DB::table('exchange_rates')->select('current_rate_dof')->latest()->first();
               // return response()->json(['error' => __('general.error_general')], 422);
-                return $current_rate->current_rate;
+                return $current_rate->current_rate_dof;
             }
             else{
-              return $current_rate->current_rate;
+              return $current_rate->current_rate_dof;
             }
         }
         else {
@@ -189,6 +191,7 @@ class PurchasesController extends Controller
             $request->merge(['payment_method_id' => $request->payment_method_id]);
             $request->merge(['cfdi_use_id' => $request->cfdi_use_id]);
             $request->merge(['cuenta_contable_id' => $res_cuenta]);
+            $request->merge(['hotel_id' => $request->sitio_id]);
 
             $file_pdf = $request->file('file_pdf');
             $file_xml = $request->file('file_xml');

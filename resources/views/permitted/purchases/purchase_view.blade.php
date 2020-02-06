@@ -262,6 +262,29 @@
                   <label for="classif_id" class="control-label">Cuenta contable:</label>
                   <input type="text" class="form-control" name="cuenta_contable" id="cuenta_contable" readonly>
                 </div>
+
+                <div class="col-md-12 col-xs-12">
+                  <label for="cadena_id" class="col-xs-2">Cadena/Grupo:</label>
+                  <div class="col-xs-10 selectContainer">
+                    <select id="cadena_id" name="cadena_id" class="form-control select2" required>
+                      <option value="">Elija...</option>
+                        @forelse ($cadenas as $data_cadenas)
+                          <option value="{{ $data_cadenas->id }}">{{ $data_cadenas->name }}</option>
+                        @empty
+                        @endforelse
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-12 col-xs-12">
+                  <label for="sitio_id" class="col-xs-2">Nombre ubicación:</label>
+                  <div class="col-xs-10 selectContainer">
+                    <select id="sitio_id" name="sitio_id" class="form-control select2" required>
+                      <option value="">Elija...</option>
+                    </select>
+                  </div>
+                </div>
+
               </div>
             </div>
 
@@ -450,7 +473,7 @@
                                       <td></td>
                                       <td class="text-right" colspan="8" rowspan="4"
                                           style="vertical-align: middle">
-                                          <textarea class="form-control input-sm col-name-id" name="comment" id="comment" placeholder="@lang('customer_credit_note.entry_comment')" required rows="4" autocomplete="off" /></textarea>
+                                          <textarea class="form-control input-sm col-name-id" name="comment" id="comment" placeholder="@lang('customer_credit_note.entry_comment')" rows="4" autocomplete="off" /></textarea>
                                       </td>
                                       <td class="text-right"><strong>Subtotal</strong></td>
                                       <td class="text-right"><span id="txt_amount_untaxed">0</span></td>
@@ -627,9 +650,6 @@
   <script src="{{ asset('plugins/momentupdate/moment.js')}}"></script>
   <link href="{{ asset('plugins/daterangepicker-master/daterangepicker.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('plugins/daterangepicker-master/daterangepicker.js')}}"></script>
-
-  {{-- <link href="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet" type="text/css"> --}}
-  {{-- <script src="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script> --}}
   
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
@@ -689,7 +709,7 @@
                 required:"Please upload file."
             }
           },
-          debug: true,
+          // debug: true,
           submitHandler: function(e){
             var form = $('#form')[0];
             var formData = new FormData(form);
@@ -705,8 +725,8 @@
                   let timerInterval;
                   Swal.fire({
                     type: 'success',
-                    title: 'La factura se ha generado con éxito!',
-                    html: 'Se estan aplicando los cambios.',
+                    title: 'Compra generada con éxito!',
+                    html: 'Se están aplicando los cambios.',
                     timer: 2500,
                     onBeforeOpen: () => {
                       Swal.showLoading()
@@ -722,7 +742,7 @@
                       // Read more about handling dismissals
                       result.dismiss === Swal.DismissReason.timer
                     ) {
-                      window.location.href = "/sales/customer-invoices";
+                      window.location.href = "/purchases/purchases_view";
                     }
                   });
                 }
@@ -1082,6 +1102,16 @@
       $(document).on("keyup", "#form #items tbody .col-quantity,#form #items tbody .col-price-unit,#form #items tbody .col-discount", function () {
           totalItem();
       });
+      $('#cadena_id').on('change', function() {
+        var id = $(this).val();
+        //$('#idProject').text('');
+        $('#sitio_id').empty();
+        $('#sitio_id').append('<option value="">Elegir...</option>');
+        // $('#provider').empty();
+        // $('#provider').append('<option value="">Elegir...</option>');
+        // $('#provider').val('').trigger('change');
+        getHotels(id);
+      });
       $('#currency_id').on("change", function(){
         var valor = $(this).val();
         var token = $('input[name="_token"]').val();
@@ -1140,6 +1170,32 @@
             }
         });
       });
+      function getHotels(id_cadena) {
+          var _token = $('input[name="_token"]').val();
+          var datax;
+          $.ajax({
+              type: "POST",
+              url: "/get_hotel_cadena",
+              data: {
+                  data_one: id_cadena,
+                  _token: _token
+              },
+              success: function(data) {
+                  console.log(data);
+                  datax = JSON.parse(data);
+                  if ($.trim(data)) {
+                      $.each(datax, function(i, item) {
+                          $('#sitio_id').append("<option value=" + item.id + ">" + item.Nombre_hotel + "</option>");
+                      });
+                  } else {
+                      $("#sitio_id").text('');
+                  }
+              },
+              error: function(data) {
+                  console.log('Error:', data);
+              }
+          });
+      }
       function totalItem() {
         var iva = $("#iva").val();
 
@@ -1370,6 +1426,8 @@
         };
 
         $("#form select[name='classif_id']").select2(select2_options);
+        $("#form select[name='cadena_id']").select2(select2_options);
+        $("#form select[name='sitio_id']").select2(select2_options);
 
         $('#classif_id').on('change',function(){
           var id = $(this).val();
