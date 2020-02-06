@@ -70,25 +70,50 @@ filter: grayscale(0%); /* FF 35+ */
 
  @media all and (min-height: 11px) {
   .test-area {
-     font-size: 3px !important;
+     font-size: 5px !important;
+     white-space: nowrap !important;
    }
  }
 
  @media all and (min-height: 600px) {
    .test-area {
-     font-size: 9px !important;
+     font-size: 8px !important;
+     white-space: nowrap !important;
    }
  }
 
   @media all and (min-height: 900px) {
     .test-area {
-      font-size: 11px !important;;
+      font-size: 11px !important;
+      white-space: nowrap !important;
     }
   }
 
   @media all and (min-height: 1200px) {
     .test-area {
       font-size: 14px !important;
+      white-space: nowrap !important;
+    }
+  }
+
+  @media all and (min-height: 1500px) {
+    .test-area {
+      font-size: 17px !important;
+      white-space: nowrap !important;
+    }
+  }
+
+  @media all and (min-height: 1800px) {
+    .test-area {
+      font-size: 20px !important;
+      white-space: nowrap !important;
+    }
+  }
+
+  @media all and (min-height: 2100px) {
+    .test-area {
+      font-size: 23px !important;
+      white-space: nowrap !important;
     }
   }
 
