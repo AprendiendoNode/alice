@@ -1146,6 +1146,11 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-credit-notes/mark-reconciled', 'Sales\CustomerCreditNoteController@markReconciled');
     Route::post('/customer-credit-notes/modal-status-sat', 'Sales\CustomerCreditNoteController@modalStatusSat');
     Route::post('/customer-credit-notes/modal-send-mail', 'Sales\CustomerCreditNoteController@modalSendMail');
+ // Route::post('/customer-credit-notes-sendmail-fact', 'Sales\CustomerInvoiceController@sendmail_notecredit_customers');
+    //Notas de credito -cambio
+    Route::post('/customer-credit-notes/destroy', 'Sales\CustomerCreditNoteController@destroy');
+    Route::get('/customer-credit-notes/get-product', 'Sales\CustomerCreditNoteController@getproduct');
+    Route::post('/customer-credit-notes/get-accounting-account-product', 'Sales\CustomerCreditNoteController@getAccountingAccountProduct');
     Route::post('/customer-credit-notes-sendmail-fact', 'Sales\CustomerInvoiceController@sendmail_notecredit_customers');
 
     Route::get('/customer-invoices/autocomplete-cfdi', 'Sales\CustomerInvoiceController@autocompleteCfdi');
@@ -1222,11 +1227,11 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-polizas-report', 'Sales\CustomerPolizaController@get_report_poliza');
     Route::post('/customer-polizas-get-movs', 'Sales\CustomerPolizaController@get_facts_mov_data');
     Route::post('/customer-polizas-save-movs', 'Sales\CustomerPolizaController@save_poliza_movs');
-  
+
     //REPORTES FACTURACION Y CONTABILIDAD
-  Route::get('/billing_report', 'Sales\BillingReportController@index');
-  Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
-  Route::post('/customer-invoices-cont-rz', 'Sales\CustomerInvoiceController@getDataContractRz');
+    Route::get('/billing_report', 'Sales\BillingReportController@index');
+    Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
+    Route::post('/customer-invoices-cont-rz', 'Sales\CustomerInvoiceController@getDataContractRz');
 
 });
 

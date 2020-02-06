@@ -31,6 +31,7 @@ class CustomerInvoiceLine extends Model
       'sort_order',
       'status',
       'contract_annex_id',
+      'cuenta_contable_id',
       'currency_id',
       'currency_value',
       'group_sites',

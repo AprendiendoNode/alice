@@ -7,6 +7,7 @@ return [
 
     // Textos generales
     'text_status_open' => 'Por conciliar',
+    'text_status_paid' => 'Pagada',
     'text_status_reconciled' => 'Conciliada',
     'text_status_cancel' => 'Cancelada',
     'text_mark_open' => 'Marcar como abierta',

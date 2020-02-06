@@ -250,6 +250,8 @@
 
            <span>Moneda:</span>
            <small style="font-weight: normal"> {{ $customer_credit_note->currency->code }} </small>
+           <span>TC:</span>
+           <small style="font-weight: normal"> {{ number_format($customer_credit_note->currency_value,4,'.', ',') }} </small>
            <br>
 
            @if(!empty($cfdi33))
@@ -265,13 +267,23 @@
            <br>
            @endif
         </td>
-        <td align="right" colspan="2">Sub Total</td>
+        <td align="right" colspan="2">Subtotal</td>
         <td align="right" colspan="2">$ <span>{{ number_format($customer_credit_note->amount_untaxed, 2,'.', ','),$customer_credit_note->currency->code }}</span></td>
       </tr>
-      <tr>
-        <td align="right" colspan="2">Descuento</td>
-        <td align="right" colspan="2">$ <span>{{ number_format($customer_credit_note->amount_discount, 2,'.', ','),$customer_credit_note->currency->code }}</span></td>
-      </tr>
+      @if($customer_credit_note->customerInvoiceTaxes->isNotEmpty())
+          @foreach($customer_credit_note->customerInvoiceTaxes as $result)
+            <tr>
+              <td align="right" colspan="2">
+                <span>{{$result->name}}</span>
+              </td>
+              <td align="right" colspan="2">
+                <span>
+                    $ {{ number_format(abs($result->amount_tax), 2,'.', ','),$customer_credit_note->currency->code }}
+                </span>
+              </td>
+            </tr>
+          @endforeach
+      @endif
       <tr>
         <td align="right" colspan="2">Total</td>
         <td align="right" style="border-top:1px solid black;" colspan="2">$<span>{{number_format($customer_credit_note->amount_total, 2,'.', ','),$customer_credit_note->currency->code }}</span></td>

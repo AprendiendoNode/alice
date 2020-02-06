@@ -31,33 +31,6 @@
                 value="{{ old('amount_total_tmp',0) }}">
             <!-- input hidden -->
             <div class="row">
-              <div class="col-md-6 col-xs-12">
-                <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
-                <div class="input-group">
-                  <select class="custom-select" id="customer_id" name="customer_id">
-                    <option value="" selected>Selecciona...</option>
-                    @forelse ($customer as $customer_data)
-                      <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
-                    @empty
-                    @endforelse
-                  </select>
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-info btn-xs" type="button"><i class="fas fa-plus-square"></i></button>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3 col-xs-12">
-                <div class="form-group">
-                  <label for="branch_office_id" class="control-label">Sucursal:<span style="color: red;">*</span></label>
-                  <select id="branch_office_id" name="branch_office_id" class="form-control required" style="width:100%;">
-                    <option value="">{{ trans('message.selectopt') }}</option>
-                    @forelse ($sucursal as $sucursal_data)
-                      <option value="{{ $sucursal_data->id  }}">{{ $sucursal_data->name }}</option>
-                    @empty
-                    @endforelse
-                  </select>
-                </div>
-              </div>
               <div class="col-md-3 col-xs-12">
                 <div class="form-group">
                   <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
@@ -70,14 +43,29 @@
                   </select>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4 col-xs-12">
+              <div class="col-md-2 col-xs-12">
                 <div class="form-group">
                   <label for="currency_value">TC:<span style="color: red;">*</span></label>
                   <input type="text" class="form-control" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;" required>
                 </div>
               </div>
+              <div class="col-md-7 col-xs-12">
+                <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
+                <div class="input-group">
+                  <select class="custom-select" id="customer_id" name="customer_id">
+                    <option value="" selected>Selecciona...</option>
+                    @forelse ($customer as $customer_data)
+                      <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
+                    @empty
+                    @endforelse
+                  </select>
+                  {{-- <div class="input-group-append">
+                    <button class="btn btn-outline-info btn-xs" type="button"><i class="fas fa-plus-square"></i></button>
+                  </div> --}}
+                </div>
+              </div>
+            </div>
+            <div class="row">
               <div class="col-md-4 col-xs-12">
                 <div class="form-group">
                   <label for="date">Fecha:<span style="color: red;">*</span></label>
@@ -96,20 +84,6 @@
                   </select>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4 col-xs-12">
-                <div class="form-group">
-                  <label for="salesperson_id" class="control-label">Vendedor:<span style="color: red;">*</span></label>
-                  <select id="salesperson_id" name="salesperson_id" class="form-control required" style="width:100%;">
-                    <option value="">{{ trans('message.selectopt') }}</option>
-                    @forelse ($salespersons as $salespersons_data)
-                      <option value="{{ $salespersons_data->id  }}">{{ $salespersons_data->name }}</option>
-                    @empty
-                    @endforelse
-                  </select>
-                </div>
-              </div>
               <div class="col-md-4 col-xs-12">
                 <div class="form-group">
                   <label for="payment_way_id" class="control-label">Forma de pago:<span style="color: red;">*</span></label>
@@ -122,6 +96,8 @@
                   </select>
                 </div>
               </div>
+            </div>
+            <div class="row">
               <div class="col-md-4 col-xs-12">
                 <div class="form-group">
                   <label for="payment_method_id" class="control-label">Metodo de pago:<span style="color: red;">*</span></label>
@@ -134,8 +110,6 @@
                   </select>
                 </div>
               </div>
-            </div>
-            <div class="row">
               <div class="col-md-4 col-xs-12">
                 <div class="form-group">
                   <label for="cfdi_use_id" class="control-label">Uso de cfdi:<span style="color: red;">*</span></label>
@@ -148,12 +122,56 @@
                   </select>
                 </div>
               </div>
-              <div class="col-md-8 col-xs-12">
+
+              <div class="col-md-3 col-xs-12">
+                <label for="iva"> IVA:</label>
+                <div id="cont_iva" class="input-group">
+                  <select datas="iva" class= "form-control input-sm col-taxes required" name="iva[]" id="iva" style="width:100%;" multiple>
+                    @forelse ($impuestos as $impuestos_data)
+                      <option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>
+                    @empty
+                    @endforelse
+                  </select>
+                </div>
+              </div>
+
+
+
+
+            </div>
+            <div class="row">
+              <div class="col-md-12 col-xs-12">
                 <div class="form-group">
                   <label for="reference">Referencia:</label>
                   <input type="text" class="form-control" id="reference" name="reference" value="">
                 </div>
               </div>
+              <!--
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                  <label for="branch_office_id" class="control-label">Sucursal:<span style="color: red;">*</span></label>
+                  <select id="branch_office_id" name="branch_office_id" class="form-control" style="width:100%;">
+                    <option value="">{{ trans('message.selectopt') }}</option>
+                    @forelse ($sucursal as $sucursal_data)
+                      <option value="{{ $sucursal_data->id  }}">{{ $sucursal_data->name }}</option>
+                    @empty
+                    @endforelse
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                  <label for="salesperson_id" class="control-label">Vendedor:<span style="color: red;">*</span></label>
+                  <select id="salesperson_id" name="salesperson_id" class="form-control" style="width:100%;">
+                    <option value="">{{ trans('message.selectopt') }}</option>
+                    @forelse ($salespersons as $salespersons_data)
+                      <option value="{{ $salespersons_data->id  }}">{{ $salespersons_data->name }}</option>
+                    @empty
+                    @endforelse
+                  </select>
+                </div>
+              </div>
+              -->
             </div>
             <!-------------------------------------------------------------------------->
             <div class="row mt-5">
@@ -182,7 +200,7 @@
                       </div>
                       <div class="col-md-12 col-xs-12">
                         <div class="table-responsive" style="fontsize: 8px;">
-                          <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-5" id="items" style="min-width: 1800px;">
+                          <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-5" id="items" style="min-width: 1000px;">
                             <thead>
                               <tr>
                                 <th width="5%" class="text-center">@lang('general.column_actions')</th>
@@ -192,10 +210,8 @@
                                 <th width="12%" class="text-center">@lang('customer_credit_note.column_line_sat_product_id')<span class="required text-danger">*</span></th>
                                 <th width="8%" class="text-center">@lang('customer_credit_note.column_line_quantity')<span class="required text-danger">*</span></th>
                                 <th width="10%" class="text-center">@lang('customer_credit_note.column_line_price_unit')<span class="required text-danger">*</span></th>
-                                <th width="12%" class="text-center">Moneda<span class="required text-danger">*</span></th>
-                                <th width="12%" class="text-center">@lang('customer_credit_note.column_line_taxes')</th>
+                                <th width="12%" class="text-center">Cuenta contable</th>
                                 <th width="12%" class="text-right">@lang('customer_credit_note.column_line_amount_untaxed')</th>
-                                <th width="3%" class="text-right">TC Usado</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -210,8 +226,8 @@
                                       <button type="button"
                                               onclick="$('#item_row_{{ $item_row }}').remove(); totalItem();"
                                               class="btn btn-xs btn-danger"
-                                              style="margin-bottom: 0;">
-                                          <i class="fa fa-trash-o"></i>
+                                              style="margin-bottom: 0; padding: 1px 3px;">
+                                          <i class="fa fa-trash-o" style="font-size: 1rem;"></i>
                                       </button>
                                       <!-- input hidden -->
                                       <input type="hidden" id="item_id_{{ $item_row }}"
@@ -288,17 +304,6 @@
                                       required />
                                     </div>
                                   </td>
-                                  <td>
-                                    <div class="form-group form-group-sm">
-                                      <select class="form-control input-sm"  id="item{{ $item_row.'[taxes]'}}" name="item[{{ $item_row }}][taxes]" required>
-                                        <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                        @forelse ($impuestos as $impuestos_data)
-                                          <option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>
-                                        @empty
-                                        @endforelse
-                                      </select>
-                                    </div>
-                                  </td>
                                   <td class="text-right" style="padding-top: 11px;">
                                     <span id="item_txt_amount_untaxed_{{ $item_row }}">0</span>
                                   </td>
@@ -313,18 +318,18 @@
                                   <td class="text-center">
                                       <button type="button" onclick="addItem();"
                                               class="btn btn-xs btn-primary"
-                                              style="margin-bottom: 0;">
-                                          <i class="fa fa-plus"></i>
+                                              style="margin-bottom: 0; padding: 1px 3px;">
+                                          <i class="fa fa-plus" style="font-size: 1rem;"></i>
                                       </button>
                                   </td>
-                                  <td class="text-right" colspan="10"></td>
+                                  <td class="text-right" colspan="8"></td>
                               </tr>
                               <!-- Totales -->
                               <tr>
                                   <td></td>
-                                  <td class="text-right" colspan="7" rowspan="3"
+                                  <td class="text-right" colspan="6" rowspan="3"
                                       style="vertical-align: middle">
-                                      <textarea class="form-control input-sm col-name-id" name="comment" id="comment" placeholder="@lang('customer_credit_note.entry_comment')" required rows="3" autocomplete="off" /></textarea>
+                                      <textarea class="form-control input-sm col-name-id" name="comment" id="comment" placeholder="@lang('customer_credit_note.entry_comment')" rows="3" autocomplete="off" /></textarea>
                                   </td>
                                   <td class="text-right">
                                       <strong>@lang('general.text_amount_untaxed')</strong>
@@ -332,7 +337,6 @@
                                   <td class="text-right">
                                     <span id="txt_amount_untaxed">0</span>
                                   </td>
-                                  <td class="text-right"></td>
                               </tr>
                               <tr>
                                   <td></td>
@@ -340,7 +344,6 @@
                                       <strong>@lang('general.text_amount_tax')</strong></td>
                                   <td class="text-right"><span id="txt_amount_tax">0</span>
                                   </td>
-                                  <td class="text-right"></td>
                               </tr>
                               <tr>
                                   <td></td>
@@ -348,7 +351,6 @@
                                       <strong>@lang('general.text_amount_total')</strong></td>
                                   <td class="text-right"><span id="txt_amount_total">0</span>
                                   </td>
-                                  <td class="text-right"></td>
                               </tr>
                               <!-- Totales -->
                             </tbody>
@@ -540,8 +542,8 @@
                                             <button type="button"
                                                     onclick="$('#item_relation_row_{{ $item_relation_row }}').remove();"
                                                     class="btn btn-xs btn-danger"
-                                                    style="margin-bottom: 0;">
-                                                <i class="fa fa-trash-o"></i>
+                                                    style="margin-bottom: 0; padding: 1px 3px;">
+                                                <i class="fa fa-trash-o" style="font-size: 1rem;"></i>
                                             </button>
                                             <!-- input hidden -->
                                             <input type="text"
@@ -582,7 +584,6 @@
                           </table>
                         </div>
                       </div>
-
                     </div>
                   </div>
                   <!-------------------------------------------------------------------------->
@@ -632,6 +633,8 @@
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
   <style media="screen">
+    th { font-size: 12px !important; }
+    td { font-size: 10px !important; }
     .btn-xs {
       padding: .35rem .4rem .25rem !important;
     }
@@ -643,12 +646,26 @@
         width: 1.5em !important;
         height: 1.5em !important;
     }
+    .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field {
+      height: 48px !important;
+    }
   </style>
   <script type="text/javascript">
     var item_row = "{{ $item_row }}";
     var item_reconciled_row = "{{ $item_reconciled_row }}";
     var item_relation_row = "{{ $item_relation_row }}";
-
+    $(function() {
+      //-----------------------------------------------------------
+      $("#iva").select2({
+        theme: 'bootstrap',
+        placeholder: 'Elije...',
+        dropdownAutoWidth : true,
+        width: 'auto',
+        width: "100%",
+        height: "110%"
+      });
+      //-----------------------------------------------------------
+    });
     function addItem() {
       let customer_id = $("#form select[name='customer_id']").val();
       let currency_id = $("#form select[name='currency_id']").val();
@@ -658,10 +675,10 @@
         html += '<tr id="item_row_' + item_row + '">';
 
         html += '<td class="text-center" style="vertical-align: middle;">';
-        html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
-        html += '<i class="fa fa-trash"></i>';
+        html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+        html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
         html += '</button>';
-        html += '<input type="text" name="item[' + item_row + '][id]" id="item_id_' + item_row + '" /> ';
+        html += '<input type="hidden" name="item[' + item_row + '][id]" id="item_id_' + item_row + '" /> ';
         html += '</td>';
 
         html += '<td>';
@@ -680,7 +697,7 @@
 
         html += '<td>';
         html += '<div class="form-group form-group-sm">';
-        html += '<textarea class="form-control input-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" required rows="1" autocomplete="off" />';
+        html += '<textarea class="form-control input-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" required rows="5" autocomplete="off" />';
         html += '</textarea>';
         html += '</div>';
         html += '</td>';
@@ -723,24 +740,13 @@
 
         html += '<td>';
         html += '<div class="form-group form-group-sm">';
-        html += '<select class="form-control input-sm col-current" name="item[' + item_row + '][current]" id="item_current_' + item_row + '" required>';
+        html += '<select class="form-control input-sm col-cuentac" name="item[' + item_row + '][cuentac]" id="item_cuentac_' + item_row + '" >';
         html += '<option selected="selected" value="">@lang('general.text_select')</option>';
-        @forelse ($currency as $currency_data)
-          html += '<option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>';
+        @forelse ($cuentas_contables as $cuentas_contables_data)
+          html += '<option value="{{ $cuentas_contables_data->id  }}">{{ $cuentas_contables_data->cuenta }} {{ $cuentas_contables_data->nombre }}</option>';
         @empty
         @endforelse
         html += '</select>';
-        html += '</div>';
-        html += '</td>';
-
-        html += '<td>';
-        html += '<div class="form-group form-group-sm">';
-        html += '<select class="form-control input-sm my-select2 col-taxes" name="item[' + item_row + '][taxes][]" id="item_taxes_' + item_row + '" multiple>';
-        @forelse ($impuestos as $impuestos_data)
-          html += '<option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>';
-        @empty
-        @endforelse
-          html += '</select>';
         html += '</div>';
         html += '</td>';
 
@@ -748,9 +754,6 @@
         html += '<span id="item_txt_amount_untaxed_' + item_row + '">0</span>';
         html += '</td>';
 
-        html += '<td class="text-right" style="padding-top: 11px;">';
-        html += '<span id="exchange_rate_applied' + item_row + '">0</span>';
-        html += '</td>';
 
         html += '</tr>';
 
@@ -772,44 +775,92 @@
     }
 
     function initItem() {
-      $("#form #items tbody .my-select2").select2({
-          placeholder: 'Elija',
-          theme: "bootstrap",
-          dropdownAutoWidth: true,
+      $("#form .my-select2").select2({
+        placeholder: 'Elija',
+        theme: "bootstrap",
+        dropdownAutoWidth: true,
       });
-      $("#form #items tbody .col-product-id").select2();
+      $("#form #items tbody .my-select2").select2({
+        placeholder: 'Elija',
+        theme: "bootstrap",
+        dropdownAutoWidth: true,
+      });
+      $("#form #items tbody .col-product-id").select2({
+        theme: "bootstrap",
+        placeholder: "Selecciona",
+        dropdownAutoWidth : true,
+        width: "100%",
+        height: "110%"
+      });
+      $("#form #items tbody .col-cuentac").select2({
+        theme: "bootstrap",
+        placeholder: "Selecciona",
+        dropdownAutoWidth : true,
+        width: "100%",
+        height: "110%"
+      });
       /*Selecciona producto*/
       $(document).on('select2:select', '#form #items tbody .col-product-id', function (e) {
           let id = $(this).val();
           let row = $(this).attr('data-row');
-          // console.log(id);
           if (id) {
-              $.ajax({
-                  url: "/sales/products/get-product",
-                  type: "GET",
-                  dataType: "JSON",
-                  data: "id=" + id,
-                  success: function (data) {
+            $.ajax({
+                url: "/sales/customer-credit-notes/get-product",
+                type: "GET",
+                dataType: "JSON",
+                data: "id=" + id,
+                success: function (data) {
                       $("#form #item_id_" + row).val(data[0].id);
-
                       $("#form #item_name_" + row).val(data[0].descripcion);
                       $("#form #item_unit_measure_id_" + row).val(data[0].unit_measure_id);
                       $("#form #item_sat_product_id_" + row).val(data[0].sat_product_id);
                       $("#form #item_price_unit_" + row).val(data[0].price);
-                      $("#form #item_current_" + row).val(data[0].currency_id);
-                      initItem();
-                      totalItem();
-                  },
-                  error: function (error, textStatus, errorThrown) {
-                      if (error.status == 422) {
-                          var message = error.responseJSON.error;
-                          $("#general_messages").html(alertMessage("danger", message));
-                      } else {
-                          alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
-                      }
-                  }
-              });
+                      addAccountingAccounts(id,row);
+                      // $("#form #item_cuentac_" + row).val(data[0].currency_id);
+                      // initItem();
+                      // totalItem();
+                },
+                error: function (error, textStatus, errorThrown) {
+                    if (error.status == 422) {
+                        var message = error.responseJSON.error;
+                        $("#general_messages").html(alertMessage("danger", message));
+                    } else {
+                        alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                    }
+                }
+            });
           }
+      });
+    }
+    //Añadir cuentas contables
+    function addAccountingAccounts(id, fila){
+      let ident = id;
+      let row = fila;
+      var token = $('input[name="_token"]').val();
+      $.ajax({
+        type: "POST",
+        url: "/sales/customer-credit-notes/get-accounting-account-product",
+        data: { _token : token, ident: ident },
+        success: function (data){
+          $("#form #item_cuentac_"+row+" option[value!='']").remove();
+          $("#form #item_cuentac_"+row).val('').trigger('change');
+          $.each(JSON.parse(data),function(index, objdata){
+            $("#form #item_cuentac_"+row).append('<option value="'+objdata.id+'">'+ objdata.cuenta +' '+ objdata.nombre +'</option>');
+          });
+        },
+        error: function (error, textStatus, errorThrown) {
+          if (error.status == 422) {
+            var message = error.responseJSON.error;
+            Swal.fire({
+             type: 'error',
+             title: 'Oops...',
+             text: message,
+            });
+          }
+          else {
+            alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+          }
+        }
       });
     }
     //Total de lineas
@@ -826,10 +877,6 @@
                     $.each(data.items, function (key, value) {
                         $("#item_txt_amount_untaxed_" + key).html(value);
                     });
-                    $.each(data.tc_used, function (key, value) {
-                        $("#exchange_rate_applied" + key).html(value);
-                    });
-
                     $("#form #txt_amount_untaxed").html(data.amount_untaxed);
                     $("#form #txt_amount_tax").html(data.amount_tax);
                     $("#form #txt_amount_total").html(data.amount_total);
@@ -841,9 +888,18 @@
             error: function (error, textStatus, errorThrown) {
                 if (error.status == 422) {
                     var message = error.responseJSON.error;
-                    $("#general_messages").html(alertMessage("danger", message));
+                    Swal.fire({
+                     type: 'error',
+                     title: 'Oops...',
+                     text: message,
+                    });
                 } else {
-                    alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                  Swal.fire({
+                   type: 'error',
+                   title: 'Oops2...',
+                   text: errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText,
+                  });
+                    // alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
                 }
             }
         });
@@ -855,25 +911,27 @@
       if (valor === '1') {
         $('#currency_value').val('1');
         getCustomerInvoiceBalances(); //AQUI
-
+        totalItem();//Reestructura los totales
       }else{
         $.ajax({
-            url: "/sales/customer-invoices/currency_now",
-            type: "POST",
-            data: { _token : token, id_currency: valor },
-            success: function (data) {
+          url: "/sales/customer-invoices/currency_now",
+          type: "POST",
+          data: { _token : token, id_currency: valor },
+          success: function (data) {
               $('#currency_value').val(data);
               //Obtener facturas con saldos
               getCustomerInvoiceBalances(); //AQUI
-            },
-            error: function (error, textStatus, errorThrown) {
-                if (error.status == 422) {
-                    var message = error.responseJSON.error;
-                    $("#general_messages").html(alertMessage("danger", message));
-                } else {
-                    alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
-                }
-            }
+              //Reestructura los totales
+              totalItem();
+          },
+          error: function (error, textStatus, errorThrown) {
+              if (error.status == 422) {
+                  var message = error.responseJSON.error;
+                  $("#general_messages").html(alertMessage("danger", message));
+              } else {
+                  alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+              }
+          }
         });
       }
     });
@@ -886,15 +944,15 @@
         successClass: "text-success",
         errorPlacement: function (error, element) {
             var attr = $('[name="'+element[0].name+'"]').attr('datas');
-            // console.log(element[0].name);
-            // console.log(attr);
-            // console.log($('[name="'+element[0].name+'"]'));
             if (element[0].id === 'fileInput') {
               error.insertAfter($('#cont_file'));
             }
             else {
               if(attr == 'sel_estatus'){
                 error.insertAfter($('#cont_estatus'));
+              }
+              if(attr == 'iva'){
+                error.insertAfter($('#cont_iva'));
               }
               else {
                 error.insertAfter(element);
@@ -1000,7 +1058,7 @@
           theme: "bootstrap",
           placeholder: "Selecciona",
           dropdownAutoWidth : true,
-          width: "80%",
+          width: "100%",
           height: "110%"
           // allowClear: true,
         }).on("change", function () {
@@ -1041,10 +1099,7 @@
         }
       });
       //Eventos
-      $(document).on("change", "#form #items tbody .col-taxes", function () {
-        totalItem();
-      });
-      $(document).on("change", "#form #items tbody .col-current", function () {
+      $(document).on("change", "#form .col-taxes", function () {
         totalItem();
       });
       $(document).on("keyup", "#form #items tbody .col-quantity,#form #items tbody .col-price-unit", function () {
