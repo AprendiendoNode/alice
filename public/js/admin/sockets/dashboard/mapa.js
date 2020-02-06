@@ -35,10 +35,19 @@ $(window).on("load", function() {
     }
   });
 
+  $( "#mapa" ).selectable({
+    filter: ".blink",
+    tolerance: "fit",
+    stop: function() {
+      console.log($( ".ui-selected"));
+    }
+  });
+
   if($(window).width() < 700) {
 
     //$("#mapa").draggable("destroy");
    //$("#mapa").resizable("destroy");
+   $("#mapa").selectable("destroy");
 
   } else  {
 

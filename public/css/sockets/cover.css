@@ -17,6 +17,17 @@ a:hover {
   border-color: white;
 }
 
+/*SELECTABLE DESIGN*/
+.ui-selecting, .ui-selected { opacity: 0.5 !important; }
+
+.ui-selectable-helper {
+  position: absolute;
+  z-index: 100;
+  background-color: rgba(62, 193, 193, 0.3);
+  border: 1px dashed black;
+}
+
+
 #VistaGeneral{
   background: rgba(0, 0,0,0.465);
 }
