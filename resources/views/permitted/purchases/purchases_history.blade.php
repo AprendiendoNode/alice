@@ -56,8 +56,8 @@
                     <label for="filter_status">Estado</label>
                     <select class="form-control" id="filter_status" name="filter_status">
                       <option value="" selected>Selecciona...</option>
-                      @forelse ($list_status as $key => $value)
-                        <option value="{{ $key }}"> {{ $value }} </option>
+                      @forelse ($statuses as $status)
+                        <option value="{{ $status->id }}"> {{ $status->name }} </option>
                       @empty
                       @endforelse
                     </select>
@@ -79,10 +79,43 @@
     </div>
 
     <div class="row mt-4">
+
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <div class="table-responsive table-data table-dropdown">
+            <div class="table-responsive">
+               <table id="table_pays" class="table table-striped table-bordered table-hover compact-tab w-100">
+                 <thead>
+                   <tr class="bg-primary" style="background: #088A68;">
+                      <th> <small></small> </th>
+                      <th> <small>Folio</small> </th>
+                      <th> <small>Fecha factura</small> </th>
+                      <th> <small>Termino de pago</small> </th>
+                      <th> <small>Forma de pago</small> </th>
+                      <th> <small>Moneda</small> </th>
+                      <th> <small>Total</small> </th>
+                      <th> <small>Estado</small> </th>
+                      <th> <small></small> </th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                 </tbody>
+                 <tfoot id='tfoot_average'>
+                   <tr>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                   </tr>
+                 </tfoot>
+               </table>
+             </div>
+            <!-- <div class="table-responsive table-data table-dropdown">
               <table id="table_filter_fact" name='table_filter_fact' class="table table-striped table-hover table-condensed">
                 <thead>
                   <tr class="mini">
@@ -111,7 +144,7 @@
                   </tr>
                 </thead>
               </table>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -143,156 +176,9 @@
 
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-    <script type="text/javascript">
-      $(function() {
-        $("#form").validate({
-          ignore: "input[type=hidden]",
-          errorClass: "text-danger",
-          successClass: "text-success",
-          errorPlacement: function (error, element) {
-              var attr = $('[name="'+element[0].name+'"]').attr('datas');
-              if (element[0].id === 'fileInput') {
-                error.insertAfter($('#cont_file'));
-              }
-              else {
-                if(attr == 'filter_date_from'){
-                  error.insertAfter($('#date_from'));
-                }
-                else if (attr == 'filter_date_to'){
-                  error.insertAfter($('#date_to'));
-                }
-                else {
-                  error.insertAfter(element);
-                }
-              }
-            },
-            rules: {
 
-            },
-            messages: {
-            },
-            // debug: true,
-            // errorElement: "label",
-            submitHandler: function(e){
-              var form = $('#form')[0];
-              var formData = new FormData(form);
-              $.ajax({
-                type: "POST",
-                url: "/purchases/view_purchases_search",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (data){
-                  // if (typeof data !== 'undefined' && data.length > 0) {console.log(data.length);}else {}
-                  table_filter(data, $("#table_filter_fact"));
-                },
-                error: function (err) {
-                  Swal.fire({
-                     type: 'error',
-                     title: 'Oops...',
-                     text: err.statusText,
-                   });
-                }
-              });
-            }
-        });
-      });
+    <script src="{{ asset('js/admin/purchases/purchase_history_1.js')}}"></script>
 
-
-      function table_filter(datajson, table){
-        table.DataTable().destroy();
-        var vartable = table.dataTable(Configuration_table_responsive_purchases);
-        vartable.fnClearTable();
-        $.each(JSON.parse(datajson), function(index, information){
-          var status = information.status;
-          if (parseInt(status) == 1) {
-              html = '<span class="badge badge-info">Activo</span>';
-          } else if (parseInt(status) == 0) {
-              html = '<span class="badge badge-primary">Cancelado</span>';
-          }
-          vartable.fnAddData([
-            information.id,
-            information.name,
-            information.date,
-            information.payment_terms,
-            information.payment_ways,
-            information.currency,
-            information.amount_total,
-            html
-          ]);
-        });
-      }
-      var Configuration_table_responsive_purchases = {
-        "columnDefs": [
-            {
-                "targets": 10,
-                "className": "text-center",
-            },
-            {
-                "targets": 11,
-                "className": "text-center",
-            }
-        ],
-        dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-          "order": [[ 7, "asc" ]],
-          buttons: [
-
-            {
-              extend: 'excelHtml5',
-              title: 'Facturas',
-              init: function(api, node, config) {
-                 $(node).removeClass('btn-secondary')
-              },
-              text: '<i class="fas fa-file-excel fastable mt-2"></i> Extraer a Excel',
-              titleAttr: 'Excel',
-              className: 'btn btn-success btn-sm',
-              exportOptions: {
-                  columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-              },
-            },
-            {
-              extend: 'csvHtml5',
-              title: 'Facturas',
-              init: function(api, node, config) {
-                 $(node).removeClass('btn-secondary')
-              },
-              text: '<i class="fas fa-file-csv fastable mt-2"></i> Extraer a CSV',
-              titleAttr: 'CSV',
-              className: 'btn btn-primary btn-sm',
-              exportOptions: {
-                columns: [ 0, 1, 2, 3, 4, 5]
-              },
-            }
-        ],
-        "processing": true,
-        language:{
-          "sProcessing":     "Procesando...",
-          "sLengthMenu":     "Mostrar _MENU_ registros",
-          "sZeroRecords":    "No se encontraron resultados",
-          "sEmptyTable":     "Ningún dato disponible",
-          "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-          "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-          "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-          "sInfoPostFix":    "",
-          "sSearch":         "<i class='fa fa-search'></i> Buscar:",
-          "sUrl":            "",
-          "sInfoThousands":  ",",
-          "sLoadingRecords": "Cargando...",
-          "oPaginate": {
-            "sFirst":    "Primero",
-            "sLast":     "Último",
-            "sNext":     "Siguiente",
-            "sPrevious": "Anterior"
-          },
-          "oAria": {
-            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-          }
-        }
-      };
-    </script>
   @else
   @endif
 @endpush

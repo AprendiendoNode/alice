@@ -11,6 +11,13 @@ use App\Helpers\Helper;
 use App\Helpers\PacHelper;
 use Jenssegers\Date\Date;
 
+use App\Models\Base\DocumentType;
+use App\Models\Catalogs\PaymentTerm;
+use App\Models\Purchases\Purchase;
+use App\Models\Purchases\PurchaseLine;
+use App\Models\Purchases\PurchaseTax;
+use App\Models\Catalogs\Tax;
+
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,13 +28,13 @@ use App\Http\Controllers\Controller;
 
 class HistoryPurchasesController extends Controller
 {
-    private $list_status = [];
+    // private $list_status = [];
     public function __construct()
     {
-        $this->list_status = [
+        /*$this->list_status = [
             1 => 'Activo',
-            0 => 'Cancelado'
-        ];
+            4 => 'Cancelado'
+        ];*/
     }
     /**
      * Display a listing of the resource.
@@ -36,16 +43,19 @@ class HistoryPurchasesController extends Controller
      */
     public function index()
     {
-      $list_status = $this->list_status;
-      return view('permitted.purchases.purchases_history',compact('list_status'));
+        $statuses = DB::table('purchases_states')->select('id','name')->get();
+        return view('permitted.purchases.purchases_history',compact('statuses'));
     }
     public function search(Request $request)
     {
-      $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
-      $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
-      $estatus = !empty($request->filter_status) ? $request->filter_status : '';
-      $resultados = DB::select('CALL px_purcharses_xrango (?,?,?)',array($date_a, $date_b, $estatus));
-      return json_encode($resultados);
+        $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+        $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
+        $estatus = $request->filter_status;
+        
+        // $estatus = !empty($request->filter_status) ? $request->filter_status : '';
+
+        $resultados = DB::select('CALL px_purchases_xrango (?,?,?)',array($date_a, $date_b, $estatus));
+        return $resultados;
     }
 
     /**

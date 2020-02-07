@@ -60,6 +60,7 @@ class Purchase extends Model
     'mail_sent',
     'sort_order',
     'status',
+    'customer_id',
     'confirmacion',
     'date_delivery',
     'created_uid',
