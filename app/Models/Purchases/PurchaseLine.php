@@ -33,6 +33,7 @@ class PurchaseLine extends Model
     'currency_id',
     'currency_value',
     'cuentas_contable_id',
+    'sitio_id',
     'created_uid',
     'updated_uid'
   ];

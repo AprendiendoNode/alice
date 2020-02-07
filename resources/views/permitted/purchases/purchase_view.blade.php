@@ -30,7 +30,7 @@
                 value="{{ old('amount_total_tmp',0) }}">
             <div class="row">
               <div class="col-md-6 col-xs-12">
-                <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
+                <label for="customer_id" class="control-label  my-2">Proveedores:<span style="color: red;">*</span></label>
                 <div class="input-group">
                   <select class="custom-select required" id="customer_id" name="customer_id">
                     <option value="" selected>Selecciona...</option>
@@ -219,74 +219,99 @@
 
               <div class="col-md-8 col-xs-12">
                 <div class="form-group">
-                  <label for="reference">Referencia:</label>
+                  <label for="reference">Descripción:</label>
                   <input type="text" class="form-control" id="reference" name="reference" value="">
                 </div>
               </div>
             </div>
 
             <!-- Seccion de cuentas contables de pagos. -->
-            <div class="row">
-              <div class="col-md-6 col-xs-6">
-
-                <div class="col-md-12 col-xs-12">
-                  <label for="classif_id" class="control-label">Servicio:<span style="color: red;">*</span></label>
-                  <select class="custom-select" id="classif_id" name="classif_id" required>
-                    <option value="" selected>Selecciona...</option>
-                    @forelse ($cxclassifications as $data_service)
-                      <option value="{{ $data_service->id }}"> {{ $data_service->name }} </option>
-                    @empty
-                    @endforelse
-                  </select>
-                </div>
-
-                <div class="col-md-12 col-xs-12">
-                  <label  class="control-label">Nivel 1:<span style="color: red;">*</span></label>
-                  <select name="dyn_field[0]" class="form-control select2 changeField0" required>
-                    <option value="">Elija...</option>
-                  </select>
-                </div>
-
-                <div class="hide" id="template_cc">
+              <!-- <div class="row">
+                <div class="col-md-6 col-xs-6">
                   <div class="col-md-12 col-xs-12">
-                    <label class="col-xs-2 change_label">xxxx_1.</label>
-                    <select name="dyn_field" class="form-control select2">
+                    <label for="classif_id" class="control-label">Cuenta contable:</label>
+                    <input type="text" class="form-control" name="cuenta_contable" id="cuenta_contable" readonly>
+                  </div>
+
+                  <div class="col-md-12 col-xs-12">
+                    <label for="cadena_id" class="col-xs-2">Cadena/Grupo:</label>
+                    <div class="col-xs-10 selectContainer">
+                      <select id="cadena_id" name="cadena_id" class="form-control select2" required>
+                        <option value="">Elija...</option>
+                          @forelse ($cadenas as $data_cadenas)
+                            <option value="{{ $data_cadenas->id }}">{{ $data_cadenas->name }}</option>
+                          @empty
+                          @endforelse
+                      </select>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="col-md-12 col-xs-12">
+                    <label for="sitio_id" class="col-xs-2">Nombre ubicación:</label>
+                    <div class="col-xs-10 selectContainer">
+                      <select id="sitio_id" name="sitio_id" class="form-control select2" required>
+                        <option value="">Elija...</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-xs-12">
+                    <label for="classif_id" class="control-label">Servicio:<span style="color: red;">*</span></label>
+                    <select class="custom-select" id="classif_id" name="classif_id" required>
+                      <option value="" selected>Selecciona...</option>
+                      @forelse ($cxclassifications as $data_service)
+                        <option value="{{ $data_service->id }}"> {{ $data_service->name }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+
+                  <div class="col-md-12 col-xs-12">
+                    <label  class="control-label">Nivel 1:<span style="color: red;">*</span></label>
+                    <select name="dyn_field[0]" class="form-control select2 changeField0" required>
                       <option value="">Elija...</option>
                     </select>
                   </div>
-                </div>
-              </div>
 
-              <div class="col-md-6 col-xs-6">
-                <div class="col-md-12 col-xs-12">
-                  <label for="classif_id" class="control-label">Cuenta contable:</label>
-                  <input type="text" class="form-control" name="cuenta_contable" id="cuenta_contable" readonly>
-                </div>
-
-                <div class="col-md-12 col-xs-12">
-                  <label for="cadena_id" class="col-xs-2">Cadena/Grupo:</label>
-                  <div class="col-xs-10 selectContainer">
-                    <select id="cadena_id" name="cadena_id" class="form-control select2" required>
-                      <option value="">Elija...</option>
-                        @forelse ($cadenas as $data_cadenas)
-                          <option value="{{ $data_cadenas->id }}">{{ $data_cadenas->name }}</option>
-                        @empty
-                        @endforelse
-                    </select>
+                  <div class="hide" id="template_cc">
+                    <div class="col-md-12 col-xs-12">
+                      <label class="col-xs-2 change_label">xxxx_1.</label>
+                      <select name="dyn_field" class="form-control select2">
+                        <option value="">Elija...</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
-                <div class="col-md-12 col-xs-12">
-                  <label for="sitio_id" class="col-xs-2">Nombre ubicación:</label>
-                  <div class="col-xs-10 selectContainer">
-                    <select id="sitio_id" name="sitio_id" class="form-control select2" required>
-                      <option value="">Elija...</option>
-                    </select>
+                <div class="col-md-6 col-xs-6">
+                  <div class="col-md-12 col-xs-12">
+                    <label for="classif_id" class="control-label">Cuenta contable:</label>
+                    <input type="text" class="form-control" name="cuenta_contable" id="cuenta_contable" readonly>
                   </div>
-                </div>
 
-              </div>
-            </div>
+                  <div class="col-md-12 col-xs-12">
+                    <label for="cadena_id" class="col-xs-2">Cadena/Grupo:</label>
+                    <div class="col-xs-10 selectContainer">
+                      <select id="cadena_id" name="cadena_id" class="form-control select2" required>
+                        <option value="">Elija...</option>
+                          @forelse ($cadenas as $data_cadenas)
+                            <option value="{{ $data_cadenas->id }}">{{ $data_cadenas->name }}</option>
+                          @empty
+                          @endforelse
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 col-xs-12">
+                    <label for="sitio_id" class="col-xs-2">Nombre ubicación:</label>
+                    <div class="col-xs-10 selectContainer">
+                      <select id="sitio_id" name="sitio_id" class="form-control select2" required>
+                        <option value="">Elija...</option>
+                      </select>
+                    </div>
+                  </div>
+
+                </div>
+              </div> -->
 
             <!---------------------------------------------------------------------------------->
             <div class="row mt-5">
@@ -310,6 +335,8 @@
                                       <th width="5%" class="text-center"> Opciones </th>
                                       <th width="12%" class="text-center"> Producto </th>
                                       <th width="12%" class="text-center"> Cuenta </th>
+                                      <th width="12%" class="text-center"> Cadena </th>
+                                      <th width="12%" class="text-center"> Sitio </th>
                                       <th width="12%" class="text-left"> Descripción <span class="required text-danger">*</span> </th>
                                       <th width="10%" class="text-center"> Unidad de medida <span class="required text-danger">*</span> </th>
                                       <th width="12%" class="text-center"> Prod/Serv SAT <span class="required text-danger">*</span> </th>
@@ -366,6 +393,24 @@
                                                 <option value="{{ $account->id  }}">{{ $account->cuenta. ' '. $account->nombre }}</option>
                                               @empty
                                               @endforelse
+                                            </select>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <select class="form-control input-sm"  id="item{{ $item_row.'[cadena_id]'}}" name="item[{{ $item_row }}][cadena_id]" required>
+                                              <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
+                                              @forelse ($cadenas as $data_cadenas)
+                                                <option value="{{ $data_cadenas->id }}">{{ $data_cadenas->name }}</option>
+                                              @empty
+                                              @endforelse
+                                            </select>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="form-group form-group-sm">
+                                            <select class="form-control input-sm"  id="item{{ $item_row.'[sitio_id]'}}" name="item[{{ $item_row }}][sitio_id]" required>
+                                              <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
                                             </select>
                                           </div>
                                         </td>
@@ -922,6 +967,36 @@
             html += '</td>';
             /* end row de cuenta contable*/
 
+            /* row de cadena id */
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<div class="input-group input-group-sm">';
+            html += '<select class="form-control input-sm col-cadena-id" name="item[' + item_row + '][cadena_id]" id="item_cadena_id_' + item_row + '" data-row="' + item_row + '">';
+            html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+            @forelse ($cadenas as $data_cadenas)
+            html += '<option value="{{ $data_cadenas->id  }}">{{$data_cadenas->name}}</option>';
+            @empty
+            @endforelse
+
+            html += '</select>';
+            html += '</div>';
+            html += '</div>';
+            html += '</td>';
+            /* end row de cadena id*/
+
+            /* row de sitio id */
+            html += '<td>';
+            html += '<div class="form-group form-group-sm">';
+            html += '<div class="input-group input-group-sm">';
+            html += '<select class="form-control input-sm col-sitio-id" name="item[' + item_row + '][sitio_id]" id="item_sitio_id_' + item_row + '" data-row="' + item_row + '">';
+            html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+
+            html += '</select>';
+            html += '</div>';
+            html += '</div>';
+            html += '</td>';
+            /* end row de sitio id*/
+
             html += '<td>';
             html += '<div class="form-group form-group-sm">';
             html += '<textarea class="form-control input-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="2" autocomplete="off" />';
@@ -1042,6 +1117,8 @@
         });
         $("#form #items tbody .col-product-id").select2();
         $("#form #items tbody .col-account-id").select2();
+        $("#form #items tbody .col-cadena-id").select2();
+        $("#form #items tbody .col-sitio-id").select2();
       }
       /*Selecciona producto*/
       $(document).on('select2:select', '#form #items tbody .col-product-id', function (e) {
@@ -1096,22 +1173,56 @@
               });
           }
       });
+      $(document).on('select2:select', '#form #items tbody .col-cadena-id', function (e) {
+          var _token = $('input[name="_token"]').val();
+          let id = $(this).val();
+          let row = $(this).attr('data-row');
+          var datax = [];
+          // console.log(id);
+          $("#form #item_sitio_id_" + row).empty();
+          if (id) {
+              $.ajax({
+                  url: "/get_hotel_cadena",
+                  type: "POST",
+                  data: {
+                    data_one: id,
+                    _token: _token
+                  },
+                  success: function (data) {
+                      // console.log(data);
+                      data2 = JSON.parse(data);
+
+                      datax.push({id : "", text : "Elija ..."});
+
+                      $.each(data2, function(i, item) {
+                          datax.push({id: item.id, text: item.Nombre_hotel});
+                      });
+                      // console.log(datax);
+                      $("#form #item_sitio_id_" + row).select2({
+                        data : datax
+                      });
+
+                      initItem();
+                      totalItem();
+                  },
+                  error: function (error, textStatus, errorThrown) {
+                      if (error.status == 422) {
+                          var message = error.responseJSON.error;
+                          $("#general_messages").html(alertMessage("danger", message));
+                      } else {
+                          alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                      }
+                  }
+              });
+          }
+      });
       $(document).on("change", "#form #iva", function () {
           totalItem();
       });
       $(document).on("keyup", "#form #items tbody .col-quantity,#form #items tbody .col-price-unit,#form #items tbody .col-discount", function () {
           totalItem();
       });
-      $('#cadena_id').on('change', function() {
-        var id = $(this).val();
-        //$('#idProject').text('');
-        $('#sitio_id').empty();
-        $('#sitio_id').append('<option value="">Elegir...</option>');
-        // $('#provider').empty();
-        // $('#provider').append('<option value="">Elegir...</option>');
-        // $('#provider').val('').trigger('change');
-        getHotels(id);
-      });
+      
       $('#currency_id').on("change", function(){
         var valor = $(this).val();
         var token = $('input[name="_token"]').val();
@@ -1170,32 +1281,7 @@
             }
         });
       });
-      function getHotels(id_cadena) {
-          var _token = $('input[name="_token"]').val();
-          var datax;
-          $.ajax({
-              type: "POST",
-              url: "/get_hotel_cadena",
-              data: {
-                  data_one: id_cadena,
-                  _token: _token
-              },
-              success: function(data) {
-                  console.log(data);
-                  datax = JSON.parse(data);
-                  if ($.trim(data)) {
-                      $.each(datax, function(i, item) {
-                          $('#sitio_id').append("<option value=" + item.id + ">" + item.Nombre_hotel + "</option>");
-                      });
-                  } else {
-                      $("#sitio_id").text('');
-                  }
-              },
-              error: function(data) {
-                  console.log('Error:', data);
-              }
-          });
-      }
+      
       function totalItem() {
         var iva = $("#iva").val();
 

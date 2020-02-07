@@ -146,18 +146,18 @@ class PurchasesController extends Controller
 
             $currency_code = 'MXN'; //En caso que no haya moneda le digo por defecto es pesos mexicanos
 
-            $cuenta_contable_general = $request->cuenta_contable;
-            $cuenta_ex = explode('|', $cuenta_contable_general);
-            // return $cuenta_ex[0];
-            // $cuenta_ex2 = rtrim($cuenta_ex[0]);
-            // return $cuenta_ex2;
+            // $cuenta_contable_general = $request->cuenta_contable;
+            // $cuenta_ex = explode('|', $cuenta_contable_general);
+            // // return $cuenta_ex[0];
+            // // $cuenta_ex2 = rtrim($cuenta_ex[0]);
+            // // return $cuenta_ex2;
 
-            if (!empty($cuenta_ex[0])) {
-                $cuenta_ex2 = trim($cuenta_ex[0]);
-                $res_cuenta = DB::table('Contab.cuentas_contables')->where('cuenta', $cuenta_ex2)->select('id')->value('id');
-            }else{
-                return '5';
-            }
+            // if (!empty($cuenta_ex[0])) {
+            //     $cuenta_ex2 = trim($cuenta_ex[0]);
+            //     $res_cuenta = DB::table('Contab.cuentas_contables')->where('cuenta', $cuenta_ex2)->select('id')->value('id');
+            // }else{
+            //     return '5';
+            // }
 
             // return $res;
             // return $cuenta_ex;
@@ -190,8 +190,8 @@ class PurchasesController extends Controller
             $request->merge(['payment_way_id' => $request->payment_way_id]);
             $request->merge(['payment_method_id' => $request->payment_method_id]);
             $request->merge(['cfdi_use_id' => $request->cfdi_use_id]);
-            $request->merge(['cuenta_contable_id' => $res_cuenta]);
-            $request->merge(['hotel_id' => $request->sitio_id]);
+            // $request->merge(['cuenta_contable_id' => $res_cuenta]);
+            // $request->merge(['hotel_id' => $request->sitio_id]);
 
             $file_pdf = $request->file('file_pdf');
             $file_xml = $request->file('file_xml');
@@ -330,6 +330,7 @@ class PurchasesController extends Controller
                           'currency_id' => $currency_id,
                           'currency_value' => $item_currency_value,
                           'cuentas_contable_id' => $item['cuenta_id'],
+                          'sitio_id' => $item['sitio_id'],
                       ]);
                       // Guardar impuestos por linea (Purchases Line Taxes)
                       if ($iva[0] != 0) {
@@ -362,7 +363,15 @@ class PurchasesController extends Controller
                     $i++;
                 }
             }
-            // Factura PDF y XML
+            // Guardar estatus en purchases status user
+            DB::table('purchases_status_users')->insert([
+              'purchase_id'=>$purchase_store->id,
+              'user_id'=> \Auth::user()->id,
+              'status_id'=>'1',
+              'created_at'=> Carbon::now(),
+              'updated_at'=>Carbon::now()
+            ]);
+            // Guardar Factura PDF y XML
             
             if($file_pdf != null)
             {
