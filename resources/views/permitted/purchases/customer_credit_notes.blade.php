@@ -119,7 +119,6 @@
                     </select>
                   </div>
                 </div>
-
                 <div class="col-md-3 col-xs-12">
                   <label for="iva"> IVA:</label>
                   <div id="cont_iva" class="input-group">
@@ -171,6 +170,14 @@
                               </thead>
                               <tbody>
                                 <!-- Items -->
+                                <!-- Items -->
+                                @php
+                                    $item_row = 0;
+                                    $items = (empty(old('item')) ? [] : old('item'));
+                                @endphp
+                                @php
+                                    $item_row++;
+                                @endphp
                                 <!-- /Items -->
                                 <!-- Agregar nuevo item -->
                                 <tr id="add_item">
@@ -266,6 +273,13 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                                  @php
+                                      $item_reconciled_row = 0;
+                                      $items_reconciled = (empty(old('item_reconciled')) ? [] : old('item_reconciled'));
+                                  @endphp
+                                  @php
+                                      $item_reconciled_row++;
+                                  @endphp
                                 </tbody>
                             </table>
                           </div>
@@ -298,6 +312,251 @@
 @endsection
 @push('scripts')
   @if( auth()->user()->can('View customer credit notes purchases') )
+    <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
+    <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('plugins/select2/dist/js/i18n/es-MX.js') }}" type="text/javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
+    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
+    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
+
+    <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>
+
+    <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
+
+    <script src="{{ asset('plugins/momentupdate/moment.js')}}"></script>
+    <link href="{{ asset('plugins/daterangepicker-master/daterangepicker.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{ asset('plugins/daterangepicker-master/daterangepicker.js')}}"></script>
+
+    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
+    <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
+    <style media="screen">
+      th { font-size: 12px !important; }
+      td { font-size: 10px !important; }
+      .btn-xs {
+        padding: .35rem .4rem .25rem !important;
+      }
+      input {
+        padding-left: 0px !important;
+        padding-right: : 0px !important;
+      }
+      .datepicker td, .datepicker th {
+          width: 1.5em !important;
+          height: 1.5em !important;
+      }
+      .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field {
+        height: 48px !important;
+      }
+    </style>
+    <script type="text/javascript">
+      var item_row = "{{ $item_row }}";
+      var item_reconciled_row = "{{ $item_reconciled_row }}";
+      $(function() {
+        //-----------------------------------------------------------
+        $("#iva").select2({
+          theme: 'bootstrap',
+          placeholder: 'Elije...',
+          dropdownAutoWidth : true,
+          width: 'auto',
+          width: "100%",
+          height: "110%"
+        });
+        //-----------------------------------------------------------
+        $("#form").validate({
+          ignore: "input[type=hidden]",
+          errorClass: "text-danger",
+          successClass: "text-success",
+          errorPlacement: function (error, element) {
+              var attr = $('[name="'+element[0].name+'"]').attr('datas');
+              if (element[0].id === 'fileInput') {
+                error.insertAfter($('#cont_file'));
+              }
+              else {
+                if(attr == 'sel_estatus'){
+                  error.insertAfter($('#cont_estatus'));
+                }
+                if(attr == 'iva'){
+                  error.insertAfter($('#cont_iva'));
+                }
+                else {
+                  error.insertAfter(element);
+                }
+              }
+            },
+            rules: {
+              cfdi_relation_id: {
+                required: function(element) {
+                  // console.log($(".verCfdiRelation").toArray().length);
+                    if ($(".verCfdiRelation").toArray().length === 0) {
+                      if ( $("#form select[name='cfdi_relation_id']").hasClass('required')){
+                        $("#form select[name='cfdi_relation_id']").removeClass("required");
+                        $("#form select[name='cfdi_relation_id']").removeClass("text-danger");
+                        // console.log('false');
+                        return false;
+                      }
+                    }
+                    else {
+                      $("#form select[name='cfdi_relation_id']").addClass("required");
+                      // console.log('true');
+                      return true;
+                    }
+                },
+              }
+            },
+            messages: {
+            },
+            // debug: true,
+            // errorElement: "label",
+            submitHandler: function(e){
+              var form = $('#form')[0];
+              var formData = new FormData(form);
+              $.ajax({
+                type: "POST",
+                url: "/purchases/customer-credit-notes-cp-store",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data){
+                  if (data == 'success') {
+                    let timerInterval;
+                    Swal.fire({
+                      type: 'success',
+                      title: 'La compra de egresos se ha generado con éxito!',
+                      html: 'Se estan aplicando los cambios.',
+                      timer: 2500,
+                      onBeforeOpen: () => {
+                        Swal.showLoading()
+                        timerInterval = setInterval(() => {
+                          Swal.getContent().querySelector('strong')
+                        }, 100)
+                      },
+                      onClose: () => {
+                        clearInterval(timerInterval)
+                      }
+                    }).then((result) => {
+                      if (
+                        // Read more about handling dismissals
+                        result.dismiss === Swal.DismissReason.timer
+                      ) {
+                        window.location.href = "/purchases/customer-credit-notes-cp";
+                      }
+                    });
+                  }
+                  if (data == 'false') {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error encontrado..',
+                        text: 'Detalle al generarse!',
+                      });
+                  }
+                  // console.log(data);
+                },
+                error: function (err) {
+                  Swal.fire({
+                      type: 'error',
+                      title: 'Oops...',
+                      text: err.statusText,
+                    });
+                }
+              });
+            }
+        });
+        //-----------------------------------------------------------
+        /*Configurar el formato para la fecha*/
+        $("#form input[name='date']").daterangepicker({
+            singleDatePicker: true,
+            timePicker: true,
+            timePicker24Hour: true,
+            showDropdowns: true,
+            minDate: moment(),
+            maxDate : moment().add(3, 'days'),
+            locale: {
+                format: "DD-MM-YYYY HH:mm:ss"
+            },
+            autoUpdateInput: true
+            }, function (chosen_date) {
+                $("#form input[name='date']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
+        });
+        /* Configura select2 para buscar cliente*/
+        $("#form select[name='customer_id']").select2({
+            theme: "bootstrap",
+            placeholder: "Selecciona",
+            dropdownAutoWidth : true,
+            width: "100%",
+            height: "110%"
+            // allowClear: true,
+          }).on("change", function () {
+          let id = $(this).val();
+          if (id) {
+              $.ajax({
+                  url: "{{ route('customers/get-customer') }}",
+                  type: "GET",
+                  dataType: "JSON",
+                  data: "id=" + id,
+                  success: function (data) {
+                      $("#form select[name='salesperson_id']").val(data.salesperson_id);
+                      $("#form select[name='payment_term_id']").val(data.payment_term_id);
+                      $("#form select[name='payment_way_id']").val(data.payment_way_id);
+                      $("#form select[name='payment_method_id']").val(data.payment_method_id);
+                      $("#form select[name='cfdi_use_id']").val(data.cfdi_use_id);
+
+                      //Obtener compras con saldos
+                      getCustomerInvoiceBalances(); //AQUI
+                  },
+                  error: function (error, textStatus, errorThrown) {
+                      if (error.status == 422) {
+                          var message = error.responseJSON.error;
+                          $("#general_messages").html(alertMessage("danger", message));
+                      } else {
+                          alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                      }
+                  }
+              });
+          }
+        });
+        //Eventos
+        //-----------------------------------------------------------
+      });
+      //------------------------------------------------------------------------
+      function getCustomerInvoiceBalances() {
+          let customer_id = $("#form select[name='customer_id']").val();
+          let currency_id = $("#form select[name='currency_id']").val();
+          let currency_value = $("#form input[name='currency_value']").val();
+          if (customer_id != '' && currency_id != '') {
+              $.ajax({
+                  url: "/purchases/customer-credit-notes/balances",
+                  type: "GET",
+                  dataType: "JSON",
+                  data: "customer_id=" + customer_id + "&currency_id=" + currency_id + "&currency_value=" + currency_value + "",
+                  success: function (data) {
+                    if (data != '[]') {
+
+                    }
+                  },
+                  error: function (error, textStatus, errorThrown) {
+                      if (error.status == 422) {
+                          var message = error.responseJSON.error;
+                          Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: message,
+                          });
+                      }
+                      else {
+                        Swal.fire({
+                          type: 'error',
+                          title: 'Oops...',
+                          text: errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText,
+                        });
+                      }
+                  }
+              });
+          }
+      }
+    </script>
   @else
   @endif
 @endpush

@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', 'HomeController@welcome');
 
 Route::get('/policies', 'PoliceController@index')->name('policies');
@@ -1266,6 +1265,8 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
 
   //Notas de credito - COMPRAS
   Route::get('/customer-credit-notes-cp', 'Purchases\CustomerCreditNoteController@index');
+  //Filtra solo las compras de la misma moneda
+  Route::get('/customer-credit-notes/balances', 'Purchases\CustomerCreditNoteController@balances');
 
 });
 Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){
