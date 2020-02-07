@@ -185,7 +185,7 @@ function table_filter(datajson, table){
           type: 'success',
         }).then(function (result) {
           if (result.value) {
-            window.location = "/accounting/view_diario_detalle";
+            window.location = "/accounting/view_diario_general";
           }
         })
       }else{

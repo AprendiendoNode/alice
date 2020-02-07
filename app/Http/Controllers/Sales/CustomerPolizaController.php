@@ -171,6 +171,17 @@ class CustomerPolizaController extends Controller
                compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num'));	
     }
 
+    public function get_movtos_by_poliza(Request $request)
+    {
+        $id_poliza = $request->id_poliza;
+        $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
+        $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+
+        $data = DB::select('CALL px_polizas_movtos_xpoliza(?)', array($id_poliza));
+
+        return $data;
+    }
+
 
     public function delete_poliza(Request $request)
     {
@@ -181,15 +192,12 @@ class CustomerPolizaController extends Controller
 
             DB::beginTransaction();
 
-            try {
-                //Eliminando partidas dentro de la poliza
-                $id_poliza = $request->id_poliza;
-
+            try {      
+                //Reestableciendo bandera de contabilizando a 0  de las facturas involucradas  
                 $ids_customers = DB::table('polizas_movtos')->select()->where('poliza_id', '=', $id_poliza )->pluck('customer_invoice_id'); 
                 $ids_customers_unique = $ids_customers->unique();
-                
                 $customer_invoice = CustomerInvoice::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
-                
+                //Eliminando partidas dentro de la poliza
                 DB::table('polizas_movtos')->where('poliza_id', '=', $id_poliza )->delete(); 
                 //Eliminando poliza
                 DB::table('polizas')->where('id', '=', $id_poliza)->delete();
