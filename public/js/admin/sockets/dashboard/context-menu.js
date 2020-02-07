@@ -31,6 +31,8 @@ $(window).on("load", function() {
 
               $("#nuevoNombre").val(areaActual[0].nombre);
 
+              $('#selected_area').val(areaActual[0].id);
+
               $("#CambiarNombre").modal("show");
 
               break;
@@ -39,11 +41,15 @@ $(window).on("load", function() {
 
               $("#nuevoEstado").val(areaActual[0].estado);
 
+              $('#selected_area').val(areaActual[0].id);
+
               $("#CambiarEstado").modal("show");
 
               break;
 
             case "eliminar":
+
+              $('#selected_area').val(areaActual[0].id);
 
               $("#EliminarArea").modal("show");
 
@@ -69,7 +75,7 @@ $(window).on("load", function() {
     socket.emit('nuevoNombre', {
 
       nombre: nombre,
-      area: areaActual[0].id,
+      area: $('#selected_area').val(),
       hotel_id: hotel_id
 
     });
@@ -85,7 +91,7 @@ $(window).on("load", function() {
     socket.emit('nuevoEstado', {
 
       estado: estado,
-      area: areaActual[0].id,
+      area: $('#selected_area').val(),
       hotel_id: hotel_id
 
     });
@@ -98,7 +104,7 @@ $(window).on("load", function() {
 
     socket.emit('eliminarArea', {
 
-      area: areaActual[0].id,
+      area: $('#selected_area').val(),
       hotel_id: hotel_id
 
     });

@@ -12,7 +12,11 @@ function table(datajson, table){
       status.nombre,
       status.estado,
       status.piso,
-      '<button id="test" type="button" class="btn btn-primary">Confirmar</button>'
+      '<div class="row">'+
+      '<button id="'+status.id+'" type="button" onclick="changename(this);" class="btn btn-success btn-sm text-white p-0 m-1" ><i class="fas fa-edit"></i></button>'+
+      '<button id="'+status.id+'" type="button" onclick="changestatus(this);" class="btn btn-warning btn-sm text-white p-0 m-1" ><i class="fas fa-sync-alt"></i></button>'+
+      '<button id="'+status.id+'" type="button" onclick="enviar(this);" class="btn btn-danger btn-sm p-0 m-1"><i class="fas fa-trash-alt"></i></button>'+
+      '</div>'
     ]);
   });
 }
@@ -82,3 +86,24 @@ var Configuration_table = {
 
 
 });
+
+function enviar(e){
+  var id = e.getAttribute("id");
+  $('#selected_area').val(id);
+  $('#VistaGeneral').modal('hide');
+  $("#EliminarArea").modal("show");
+}
+
+function changestatus(e){
+var id = e.getAttribute("id");
+$('#selected_area').val(id);
+$('#VistaGeneral').modal('hide');
+$('#CambiarEstado').modal('show');
+}
+
+function changename(e){
+var id = e.getAttribute("id");
+$('#selected_area').val(id);
+$('#VistaGeneral').modal('hide');
+$('#CambiarNombre').modal('show');
+}

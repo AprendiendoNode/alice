@@ -46,7 +46,7 @@ $(window).on("load",function() {
 
       $("#mapa").append( "<div id='area"+area.id+"' class='ui-widget-content resizable blink d-none' style='overflow: hidden;'></div>" );
 
-      $(".resizable").draggable({
+      $(".blink").draggable({
         containment: "#mapa",
         start: function(e, ui) {
           distancias_left = [];
@@ -70,7 +70,7 @@ $(window).on("load",function() {
         }
       });
 
-      $(".resizable").resizable({
+      $(".blink").resizable({
         containment: "#mapa",
         minHeight: 18,
         minWidth: 18,

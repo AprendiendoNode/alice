@@ -39,7 +39,12 @@ $(window).on("load", function() {
     filter: ".blink",
     tolerance: "fit",
     stop: function() {
-      console.log($( ".ui-selected"));
+        $(".ui-selected").each(function (index, element) {
+          $(element).resizable('disable');
+        });
+    },
+    unselected:function(event,ui){
+        $('.blink').resizable('enable');
     }
   });
 
