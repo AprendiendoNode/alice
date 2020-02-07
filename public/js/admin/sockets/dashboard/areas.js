@@ -33,7 +33,7 @@ $(window).on("load",function() {
 
   });
 
-  var base_left, base_top;
+  var distancias_left, distancias_top;
 
   function actualizarAreas(areas) {
 
@@ -49,24 +49,25 @@ $(window).on("load",function() {
       $(".resizable").draggable({
         containment: "#mapa",
         start: function(e, ui) {
-          base_left = ui.offset.left;
-          base_top = ui.offset.top;
+          distancias_left = [];
+          distancias_top = [];
+          $(".ui-selected").each(function (index, element) {
+            distancias_left[index] = parseInt($(this).css('left')) - ui.offset.left;
+            distancias_top[index] = parseInt($(this).css('top')) - ui.offset.top;
+          });
         },
         drag: function(e, ui) {
           $(".ui-selected").each(function (index, element) {
-            var left = parseInt($(this).css('left'));
-            var _top_ = parseInt($(this).css('top'));
-            var distance_left = left + base_left;
-            var distance_top = _top_ + base_top;
-            var new_distance_left =  left + ui.offset.left;
-            var new_distance_top =  _top_ + ui.offset.top;
-            var move_left = Math.sign(new_distance_left - distance_left);
-            var move_top = Math.sign(new_distance_top - distance_top);
-            $(this).css('left', left + move_left);
-            $(this).css('top', _top_ + move_top);
+            $(this).css('left', ui.offset.left + distancias_left[index]);
+            $(this).css('top', ui.offset.top + distancias_top[index]);
           });
         },
-        stop: function(e, ui) { ajustarArea($(this).attr("id"), 1); }
+        stop: function(e, ui) {
+          ajustarArea($(this).attr("id"), 1);
+          $(".ui-selected").each(function (index, element) {
+            ajustarArea($(element).attr("id"), 1);
+          });
+        }
       });
 
       $(".resizable").resizable({

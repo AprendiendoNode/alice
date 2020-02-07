@@ -143,6 +143,8 @@ $(window).on("load", function() {
 
     });
 
+    $(".blink").removeClass("ui-selected");
+
     socket.emit('sincronizacion', {
 
         sitio: hotel_id,
