@@ -89,21 +89,24 @@ var Configuration_table = {
 
 function enviar(e){
   var id = e.getAttribute("id");
-  $('#selected_area').val(id);
+  //$('#selected_area').val(id);
+  elementsarray.push(id);
   $('#VistaGeneral').modal('hide');
   $("#EliminarArea").modal("show");
 }
 
 function changestatus(e){
 var id = e.getAttribute("id");
-$('#selected_area').val(id);
+//$('#selected_area').val(id);
+elementsarray.push(id);
 $('#VistaGeneral').modal('hide');
 $('#CambiarEstado').modal('show');
 }
 
 function changename(e){
 var id = e.getAttribute("id");
-$('#selected_area').val(id);
+//$('#selected_area').val(id);
+elementsarray.push(id);
 $('#VistaGeneral').modal('hide');
 $('#CambiarNombre').modal('show');
 }

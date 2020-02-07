@@ -175,7 +175,7 @@
             <input id="nuevoNombre" type="text" class="form-control" aria-label="Nombre o número de la habitación">
           </div>
           <div class="descartar d-none text-danger text-center">*No has sincronizado tus movimientos en el mapa*</div>
-          <input type="hidden" id="selected_area" name="" value="">
+          <!--<input type="hidden" id="selected_area" name="" value="">-->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -206,7 +206,7 @@
             </select>
           </div>
           <div class="descartar d-none text-danger text-center">*No has sincronizado tus movimientos en el mapa*</div>
-          <input type="hidden" id="selected_area" name="" value="">
+          <!--<input type="hidden" id="selected_area" name="" value="">-->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -229,7 +229,7 @@
           <p style="font-weight: bold;">¿Está seguro?<p>
               <p>!Este cambio es permanente y no podrá ser revertido!</p>
               <div class="descartar d-none text-danger text-center">*No has sincronizado tus movimientos en el mapa*</div>
-              <input type="hidden" id="selected_area" name="" value="">
+              <!--<input type="hidden" id="selected_area" name="" value="">-->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
