@@ -23,19 +23,19 @@ $.contextMenu({
         break;
       case "Centrada":
         $('#blob-containment-wrapper').removeClass("d-none");
-        $('#blob-containment-wrapper').css("width", "22%");
-        $('#containment-wrapper').css("width", "56%");
+        $('#blob-containment-wrapper').css("width", "15%");
+        $('#containment-wrapper').css("width", "70%");
         $('#containment-wrapper').css("height", "160vh");
         break;
       case "Izquierda":
         $('#blob-containment-wrapper').addClass("d-none");
-        $('#containment-wrapper').css("width", "55%");
+        $('#containment-wrapper').css("width", "70%");
         $('#containment-wrapper').css("height", "160vh");
         break;
       case "Derecha":
         $('#blob-containment-wrapper').removeClass("d-none");
-        $('#blob-containment-wrapper').css("width", "45%");
-        $('#containment-wrapper').css("width", "55%");
+        $('#blob-containment-wrapper').css("width", "30%");
+        $('#containment-wrapper').css("width", "70%");
         $('#containment-wrapper').css("height", "160vh");
         break;
     }
