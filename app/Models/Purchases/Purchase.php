@@ -62,8 +62,6 @@ class Purchase extends Model
     'status',
     'confirmacion',
     'date_delivery',
-    'cuenta_contable_id',
-    'hotel_id',
     'created_uid',
     'updated_uid'
 ];
