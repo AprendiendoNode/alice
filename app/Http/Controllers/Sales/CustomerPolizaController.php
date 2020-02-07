@@ -127,7 +127,7 @@ class CustomerPolizaController extends Controller
                     'referencia' => $asientos_data[$i]->referencia
                 ]);
                 //Marcando facturas a contabilizado
-                customer_invoice = CustomerInvoice::findOrFail($asientos_data[$i]->factura_id);
+                $customer_invoice = CustomerInvoice::findOrFail($asientos_data[$i]->factura_id);
                 $customer_invoice->contabilizado = 1;
                 $customer_invoice->save();
             }
@@ -166,9 +166,53 @@ class CustomerPolizaController extends Controller
                 }  
             }          
         }     
-        //return $asientos;	
+        	
         return view('permitted.sales.table_asientos_contables', 
                compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num'));	
+    }
+
+
+    public function delete_poliza(Request $request)
+    {
+        $id_poliza = json_encode($request->id_poliza);
+        $flag = "false";
+        
+        if($id_poliza != null && $id_poliza != ''){
+
+            DB::beginTransaction();
+
+            try {
+                //Eliminando partidas dentro de la poliza
+                $id_poliza = $request->id_poliza;
+
+                $ids_customers = DB::table('polizas_movtos')->select()->where('poliza_id', '=', $id_poliza )->pluck('customer_invoice_id'); 
+                $ids_customers_unique = $ids_customers->unique();
+                
+                $customer_invoice = CustomerInvoice::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
+                
+                DB::table('polizas_movtos')->where('poliza_id', '=', $id_poliza )->delete(); 
+                //Eliminando poliza
+                DB::table('polizas')->where('id', '=', $id_poliza)->delete();
+                DB::commit();
+
+                $flag = "true";
+
+            } catch(\Exception $e){
+                $error = $e->getMessage();
+                DB::rollback();
+                dd($error);
+            }
+        }
+
+        return  $flag;
+        
+
+    }
+
+    public function delete_partida_poliza(Request $request)
+    {
+
+       
     }
     
 }

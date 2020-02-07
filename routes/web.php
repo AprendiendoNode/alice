@@ -1226,7 +1226,8 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-polizas-report', 'Sales\CustomerPolizaController@get_report_poliza');
     Route::post('/customer-polizas-get-movs', 'Sales\CustomerPolizaController@get_facts_mov_data');
     Route::post('/customer-polizas-save-movs', 'Sales\CustomerPolizaController@save_poliza_movs');
-
+    Route::post('/customer-polizas-delete', 'Sales\CustomerPolizaController@delete_poliza');
+    
     //REPORTES FACTURACION Y CONTABILIDAD
     Route::get('/billing_report', 'Sales\BillingReportController@index');
     Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
@@ -1243,6 +1244,13 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
    Route::post('/get_balance_general_mayor_data','Accounting\BalanceController@get_balance_general_mayor');
    Route::post('/save_integration_cc_customer_provider','Sales\CustomerController@save_integration_cc_customer_provider');
    Route::post('/get_integration_cc_customer_provider','Sales\CustomerController@get_integration_cc_customer_provider');
+  
+   Route::get('/view_diario_general', 'Accounting\DiaryPoliceController@view_diary_general');
+   Route::get('/view_diario_detalle', 'Accounting\DiaryPoliceController@view_diary_detail');
+   Route::post('/get_diario_general', 'Accounting\DiaryPoliceController@get_diary_general_data');
+   Route::post('/get_diario_detalle', 'Accounting\DiaryPoliceController@get_diary_detail_data');
+    
+  
   });
 
 Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){

@@ -227,9 +227,7 @@ $(function() {
               let today = new Date();
               let dd = String(today.getDate()).padStart(2, '0');
               let mes = moment().format('MMMM');
-              let mes_digit =  moment().format('MM');
-              let year = moment().format('YYYY');
-              let id_invoice = 22;
+
               $('#day_poliza').val(dd);
               $('#mes_poliza').val(mes);
               $("#tabla_asiento_contable tbody").empty();
@@ -244,8 +242,8 @@ $(function() {
                     let suma_abonos = 0.0;
                     $('#data_asientos').html(data);
                     $('.cuenta_contable').select2();
-                    //$('#total_cargos').val(format_number(suma_cargos));
-                    //$('#total_abonos').val(format_number(suma_abonos));
+                    $('#day_poliza').val(dd);
+                    $('#mes_poliza').val(mes);
                   },
                   error: function (err) {
                     Swal.fire({
