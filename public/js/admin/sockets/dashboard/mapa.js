@@ -35,17 +35,30 @@ $(window).on("load", function() {
     }
   });
 
-  $( "#mapa" ).selectable({
+  $("#mapa").selectable({
     filter: ".blink",
     tolerance: "fit",
     stop: function() {
-        $(".ui-selected").each(function (index, element) {
-          $(element).resizable('disable');
-        });
+        if($(".ui-selected").length > 0) {
+          $(".ui-selected").each(function (index, element) {
+            $(element).resizable('disable');
+          });
+          $(".ui-selected").contextMenu(true);
+          $(".blink:not(.ui-selected)").contextMenu(false);
+        } else {
+          $(".blink").contextMenu(true);
+        }
     },
     unselected:function(event,ui){
         $('.blink').resizable('enable');
     }
+  });
+
+  $(".row-select, .row-buttons").click(function() {
+    $(".blink").removeClass("ui-selected");
+    $('.blink').resizable('enable');
+    $('.blink').contextMenu(true);
+    //ALSO CLEAN DE ARRAY OF SELECTED AREAS
   });
 
   if($(window).width() < 700) {

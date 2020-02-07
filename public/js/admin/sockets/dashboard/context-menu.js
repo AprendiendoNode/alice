@@ -64,7 +64,7 @@ $(window).on("load", function() {
           "estado": {name: "Cambiar estado", icon: "fas fa-sync-alt"},
           "equipos": {name: "Gestionar equipos", icon: "fas fa-broadcast-tower"},
           "split": "---------",
-          "eliminar": {name: "Eliminar habitación", icon: "fas fa-trash-alt"}
+          "eliminar": {name: "Eliminar", icon: "fas fa-trash-alt"}
       }
   });
 

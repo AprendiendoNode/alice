@@ -12,7 +12,7 @@
     @if( auth()->user()->can('View dash sabana') )
 
 <div class="card px-3 py-2">
-  <div class="row">
+  <div class="row row-select">
     <select id="select_sitios" class="form-control select2 col-md-12" style="width: 100%;">
       <option value="" selected> Todos los sitios</option>
       @forelse ($hotels as $data_hotel)
