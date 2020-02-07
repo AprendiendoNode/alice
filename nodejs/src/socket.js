@@ -45,7 +45,7 @@ module.exports = io => {
 
         socket.on('nuevoNombre', async (data) => {
 
-          await pool.query("UPDATE Areas SET nombre = ? WHERE id = ?", [
+          await pool.query("UPDATE Areas SET nombre = ? WHERE id IN (?)", [
             data.nombre, data.area
           ]);
 
@@ -56,9 +56,9 @@ module.exports = io => {
         });
 
         socket.on('nuevoEstado', async (data) => {
-
-          await pool.query("UPDATE Areas SET estado = ?, color = ?, border = ? WHERE id = ?", [
-            data.estado, colores(data.estado)[0], colores(data.estado)[1], data.area
+          //console.log(data);
+          await pool.query("UPDATE Areas SET estado = ?, color = ?, border = ? WHERE id IN (?)", [
+            data.estado, colores(data.estado)[0], colores(data.estado)[1],data.area
           ]);
 
           const areas = await pool.query("SELECT * FROM Areas WHERE hotel_id = ?", data.hotel_id);
@@ -68,8 +68,8 @@ module.exports = io => {
         });
 
         socket.on('eliminarArea', async (data) => {
-
-          await pool.query("DELETE FROM Areas WHERE id = ?", data.area);
+          //console.log(data.area);
+          await pool.query("DELETE FROM Areas WHERE id IN (?)",[data.area]);
 
           const areas = await pool.query("SELECT * FROM Areas WHERE hotel_id = ?", data.hotel_id);
 

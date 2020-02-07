@@ -35,13 +35,15 @@ $(window).on("load", function() {
     }
   });
 
-  $("#mapa").selectable({
+  $( "#mapa" ).selectable({
     filter: ".blink",
     tolerance: "fit",
     stop: function() {
+	elementsarray=[];
         if($(".ui-selected").length > 0) {
           $(".ui-selected").each(function (index, element) {
             $(element).resizable('disable');
+	    elementsarray.push(parseInt(element.getAttribute("id").replace('area','')));    
           });
           $(".ui-selected").contextMenu(true);
           $(".blink:not(.ui-selected)").contextMenu(false);

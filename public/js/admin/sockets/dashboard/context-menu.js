@@ -7,6 +7,7 @@ $(window).on("load", function() {
       trigger: (($(window).width() < 700) ? 'left' : 'right'),
       events: {
          show : function(options) {
+           //console.log('entro');
            $('#mapa').contextMenu(false);
            $("#"+this[0].id).css("opacity", "0.5");
          },
@@ -25,13 +26,17 @@ $(window).on("load", function() {
 
         });
 
+
+
           switch(key) {
 
             case "nombre":
 
               $("#nuevoNombre").val(areaActual[0].nombre);
 
-              $('#selected_area').val(areaActual[0].id);
+              if(elementsarray.length==0){
+              elementsarray.push(parseInt(areaActual[0].id));//$('#selected_area').val(areaActual[0].id);
+              }
 
               $("#CambiarNombre").modal("show");
 
@@ -41,7 +46,9 @@ $(window).on("load", function() {
 
               $("#nuevoEstado").val(areaActual[0].estado);
 
-              $('#selected_area').val(areaActual[0].id);
+              if(elementsarray.length==0){
+              elementsarray.push(parseInt(areaActual[0].id));//$('#selected_area').val(areaActual[0].id);
+              }
 
               $("#CambiarEstado").modal("show");
 
@@ -49,7 +56,9 @@ $(window).on("load", function() {
 
             case "eliminar":
 
-              $('#selected_area').val(areaActual[0].id);
+              if(elementsarray.length==0){
+              elementsarray.push(parseInt(areaActual[0].id));//$('#selected_area').val(areaActual[0].id);
+              }
 
               $("#EliminarArea").modal("show");
 
@@ -75,11 +84,11 @@ $(window).on("load", function() {
     socket.emit('nuevoNombre', {
 
       nombre: nombre,
-      area: $('#selected_area').val(),
+      area: elementsarray,//$('#selected_area').val(),
       hotel_id: hotel_id
 
     });
-
+    elementsarray=[];
     $("#CambiarNombre").modal("hide");
 
   });
@@ -91,11 +100,11 @@ $(window).on("load", function() {
     socket.emit('nuevoEstado', {
 
       estado: estado,
-      area: $('#selected_area').val(),
+      area: elementsarray,//$('#selected_area').val(),
       hotel_id: hotel_id
 
     });
-
+    elementsarray=[];
     $("#CambiarEstado").modal("hide");
 
   });
@@ -104,11 +113,11 @@ $(window).on("load", function() {
 
     socket.emit('eliminarArea', {
 
-      area: $('#selected_area').val(),
+      area: elementsarray,//$('#selected_area').val(),
       hotel_id: hotel_id
 
     });
-
+    elementsarray=[];
     $("#EliminarArea").modal("hide");
 
   });
