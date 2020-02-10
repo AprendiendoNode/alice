@@ -1218,7 +1218,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::get('/customer-payments/download-xml/{id}', 'Sales\CustomerPaymentController@downloadXml');
     Route::get('/customer-payments-pdf/{id}', 'Sales\CustomerPaymentController@generatePdf');
     Route::post('/customer-invoices/send_invoice_to_poliza', 'Sales\CustomerInvoiceController@send_invoice_to_poliza');
-    
+
     Route::post('/customer-invoices-cont-rz', 'Sales\CustomerInvoiceController@getDataContractRz');
 
 });
@@ -1232,12 +1232,12 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
    Route::post('/get_balance_general_mayor_data','Accounting\BalanceController@get_balance_general_mayor');
    Route::post('/save_integration_cc_customer_provider','Sales\CustomerController@save_integration_cc_customer_provider');
    Route::post('/get_integration_cc_customer_provider','Sales\CustomerController@get_integration_cc_customer_provider');
-  
+
    Route::get('/view_diario_general', 'Accounting\DiaryPoliceController@view_diary_general');
    Route::get('/view_diario_detalle', 'Accounting\DiaryPoliceController@view_diary_detail');
    Route::post('/get_diario_general', 'Accounting\DiaryPoliceController@get_diary_general_data');
    Route::post('/get_diario_detalle', 'Accounting\DiaryPoliceController@get_diary_detail_data');
-    
+
   //POLIZAS
   Route::get('/customer-polizas-show', 'Accounting\CustomerPolizaController@show');
   Route::post('/customer-polizas-search', 'Accounting\CustomerPolizaController@search');
@@ -1249,7 +1249,7 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   Route::post('/customer-polizas-delete', 'Accounting\CustomerPolizaController@delete_poliza');
   Route::post('/get-movs-by-poliza', 'Accounting\CustomerPolizaController@get_movtos_by_poliza');
   Route::post('/update-poliza-movs', 'Accounting\CustomerPolizaController@update_poliza_movs');
-  
+
   //REPORTES FACTURACION Y CONTABILIDAD
   Route::get('/billing_report', 'Sales\BillingReportController@index');
   Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
@@ -1268,8 +1268,8 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::get('/view_purchases_show', 'Purchases\HistoryPurchasesController@index');
   Route::post('/view_purchases_search', 'Purchases\HistoryPurchasesController@search');
 
-  Route::post('/send_purchase_one', 'Purchases\HistoryPurchasesController@approval_one'); 
-  Route::post('/send_purchase_two', 'Purchases\HistoryPurchasesController@approval_two'); 
+  Route::post('/send_purchase_one', 'Purchases\HistoryPurchasesController@approval_one');
+  Route::post('/send_purchase_two', 'Purchases\HistoryPurchasesController@approval_two');
 
   //Cuentas bancarias de proveedor
   Route::get('/view_cb_provider', 'Purchases\CbProviderController@index');
@@ -1281,6 +1281,11 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::get('/customer-credit-notes-cp', 'Purchases\CustomerCreditNoteController@index');
   //Filtra solo las compras de la misma moneda
   Route::get('/customer-credit-notes/balances', 'Purchases\CustomerCreditNoteController@balances');
+  Route::post('customer-credit-notes/total-reconciled-lines', 'Purchases\CustomerCreditNoteController@totalReconciledLines');
+  Route::get('customer-credit-notes/get-product', 'Purchases\CustomerCreditNoteController@getproduct');
+  Route::post('/customer-credit-notes/get-accounting-account-product', 'Purchases\CustomerCreditNoteController@getAccountingAccountProduct');
+  Route::post('/customer-credit-notes/total-lines', 'Purchases\CustomerCreditNoteController@totalLines');
+  Route::post('/customer-credit-notes-cp-store', 'Purchases\CustomerCreditNoteController@store');
 
 });
 Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){

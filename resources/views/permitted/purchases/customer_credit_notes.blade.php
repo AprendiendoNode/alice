@@ -50,10 +50,12 @@
                   </div>
                 </div>
                 <div class="col-md-7 col-xs-12">
-                  <label for="customer_id" class="control-label  my-2">Proveedor:<span style="color: red;">*</span></label>
-                  <div class="input-group">
-                    <select class="custom-select" id="customer_id" name="customer_id">
-                      <option value="" selected>Selecciona...</option>
+                  <label for="customer_id"> Proveedor:
+                    <span style="color: red;">*</span>
+                  </label>
+                  <div id="cont_customer" class="input-group mb-3">
+                    <select datas="customer_id" id="customer_id" name="customer_id" class="form-control form-control-sm required">
+                      <option value="" selected>{{ trans('message.selectopt') }}</option>
                       @forelse ($providers as $provider_data)
                         <option value="{{ $provider_data->id  }}">{{ $provider_data->name }}</option>
                       @empty
@@ -375,6 +377,9 @@
                 error.insertAfter($('#cont_file'));
               }
               else {
+                if(attr == 'customer_id'){
+                  error.insertAfter($('#cont_customer'));
+                }
                 if(attr == 'sel_estatus'){
                   error.insertAfter($('#cont_estatus'));
                 }
@@ -389,18 +394,15 @@
             rules: {
               cfdi_relation_id: {
                 required: function(element) {
-                  // console.log($(".verCfdiRelation").toArray().length);
                     if ($(".verCfdiRelation").toArray().length === 0) {
                       if ( $("#form select[name='cfdi_relation_id']").hasClass('required')){
                         $("#form select[name='cfdi_relation_id']").removeClass("required");
                         $("#form select[name='cfdi_relation_id']").removeClass("text-danger");
-                        // console.log('false');
                         return false;
                       }
                     }
                     else {
                       $("#form select[name='cfdi_relation_id']").addClass("required");
-                      // console.log('true');
                       return true;
                     }
                 },
@@ -441,7 +443,7 @@
                         // Read more about handling dismissals
                         result.dismiss === Swal.DismissReason.timer
                       ) {
-                        window.location.href = "/purchases/customer-credit-notes-cp";
+                        // window.location.href = "/purchases/customer-credit-notes-cp";
                       }
                     });
                   }
@@ -452,7 +454,6 @@
                         text: 'Detalle al generarse!',
                       });
                   }
-                  // console.log(data);
                 },
                 error: function (err) {
                   Swal.fire({
@@ -502,9 +503,8 @@
                       $("#form select[name='payment_way_id']").val(data.payment_way_id);
                       $("#form select[name='payment_method_id']").val(data.payment_method_id);
                       $("#form select[name='cfdi_use_id']").val(data.cfdi_use_id);
-
                       //Obtener compras con saldos
-                      getCustomerInvoiceBalances(); //AQUI
+                      getCustomerInvoiceBalances();
                   },
                   error: function (error, textStatus, errorThrown) {
                       if (error.status == 422) {
@@ -518,9 +518,254 @@
           }
         });
         //Eventos
+        $(document).on("change", "#form .col-taxes", function () {
+          totalItem();
+        });
+        $(document).on("keyup", "#form #items tbody .col-quantity,#form #items tbody .col-price-unit", function () {
+          totalItem();
+        });
+        /* Eventos en items_reconciled */
+        $(document).on("keyup", "#form #items_reconciled tbody .col-amount-reconciled", function () {
+          totalItemReconciled();
+        });
         //-----------------------------------------------------------
       });
-      //------------------------------------------------------------------------
+      //Añadir los productos ---------------------------------------------------
+      function addItem() {
+        let customer_id = $("#form select[name='customer_id']").val();
+        let currency_id = $("#form select[name='currency_id']").val();
+        if (customer_id  && currency_id) {
+          var html = '';
+
+          html += '<tr id="item_row_' + item_row + '">';
+
+          html += '<td class="text-center" style="vertical-align: middle;">';
+          html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0; padding: 1px 3px;">';
+          html += '<i class="fa fa-trash" style="font-size: 1rem;"></i>';
+          html += '</button>';
+          html += '<input type="hidden" name="item[' + item_row + '][id]" id="item_id_' + item_row + '" /> ';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<div class="input-group input-group-sm">';
+          html += '<select class="form-control input-sm col-product-id" name="item[' + item_row + '][product_id]" id="item_product_id_' + item_row + '" data-row="' + item_row + '">';
+          html += '<option selected="selected" value="">@lang('general.text_select')</option>';
+          @forelse ($product as $product_data)
+          html += '<option value="{{ $product_data->id  }}">{{ $product_data->name }}</option>';
+          @empty
+          @endforelse
+          html += '</select>';
+          html += '</div>';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<textarea class="form-control input-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" required rows="5" autocomplete="off" />';
+          html += '</textarea>';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<select class="form-control input-sm col-unit-measure-id" name="item[' + item_row + '][unit_measure_id]" id="item_unit_measure_id_' + item_row + '" required>';
+          html += '<option selected="selected" value="">@lang('general.text_select')</option>';
+          @forelse ($unitmeasures as $unitmeasures_data)
+            html += '<option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
+          @empty
+          @endforelse
+          html += '</select>';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<select class="form-control input-sm col-sat-product-id" name="item[' + item_row + '][sat_product_id]" id="item_sat_product_id_' + item_row + '" required>';
+          html += '<option selected="selected" value="">@lang('general.text_select')</option>';
+          @forelse ($satproduct as $satproduct_data)
+            html += '<option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
+          @empty
+          @endforelse
+          html += '</select>';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<input type="number" class="form-control input-sm text-right col-quantity" name="item[' + item_row + '][quantity]" id="item_quantity_' + item_row + '" required step="any" />';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<input type="number" class="form-control input-sm text-right col-price-unit" name="item[' + item_row + '][price_unit]" id="item_price_unit_' + item_row + '" required step="any" />';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td>';
+          html += '<div class="form-group form-group-sm">';
+          html += '<select class="form-control input-sm col-cuentac" name="item[' + item_row + '][cuentac]" id="item_cuentac_' + item_row + '" >';
+          html += '<option selected="selected" value="">@lang('general.text_select')</option>';
+          @forelse ($cuentas_contables as $cuentas_contables_data)
+            html += '<option value="{{ $cuentas_contables_data->id  }}">{{ $cuentas_contables_data->cuenta }} {{ $cuentas_contables_data->nombre }}</option>';
+          @empty
+          @endforelse
+          html += '</select>';
+          html += '</div>';
+          html += '</td>';
+
+          html += '<td class="text-right" style="padding-top: 11px;">';
+          html += '<span id="item_txt_amount_untaxed_' + item_row + '">0</span>';
+          html += '</td>';
+
+          html += '</tr>';
+
+          $("#form #items tbody #add_item").before(html);
+          /* Configura lineas*/
+          initItem();
+          item_row++;
+        }
+        else {
+          Swal.fire({
+             type: 'error',
+             title: 'Oops...',
+             text: 'Selecciona un cliente y moneda',
+           });
+        }
+      }
+      //funcionalidades de los productos
+      function initItem() {
+        $("#form .my-select2").select2({
+          placeholder: 'Elija',
+          theme: "bootstrap",
+          dropdownAutoWidth: true,
+        });
+        $("#form #items tbody .my-select2").select2({
+          placeholder: 'Elija',
+          theme: "bootstrap",
+          dropdownAutoWidth: true,
+        });
+        $("#form #items tbody .col-product-id").select2({
+          theme: "bootstrap",
+          placeholder: "Selecciona",
+          dropdownAutoWidth : true,
+          width: "100%",
+          height: "110%"
+        });
+        $("#form #items tbody .col-cuentac").select2({
+          theme: "bootstrap",
+          placeholder: "Selecciona",
+          dropdownAutoWidth : true,
+          width: "100%",
+          height: "110%"
+        });
+        /*Selecciona producto*/
+        $(document).on('select2:select', '#form #items tbody .col-product-id', function (e) {
+            let id = $(this).val();
+            let row = $(this).attr('data-row');
+            if (id) {
+              $.ajax({
+                  url: "/purchases/customer-credit-notes/get-product",
+                  type: "GET",
+                  dataType: "JSON",
+                  data: "id=" + id,
+                  success: function (data) {
+                        $("#form #item_id_" + row).val(data[0].id);
+                        $("#form #item_name_" + row).val(data[0].descripcion);
+                        $("#form #item_unit_measure_id_" + row).val(data[0].unit_measure_id);
+                        $("#form #item_sat_product_id_" + row).val(data[0].sat_product_id);
+                        $("#form #item_price_unit_" + row).val(data[0].price);
+                        addAccountingAccounts(id,row);
+                  },
+                  error: function (error, textStatus, errorThrown) {
+                      if (error.status == 422) {
+                          var message = error.responseJSON.error;
+                          Swal.fire({
+                           type: 'error',
+                           title: 'Oops...',
+                           text: message,
+                          });
+                      } else {
+                        Swal.fire({
+                         type: 'error',
+                         title: 'Oops...',
+                         text: errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText,
+                        });
+                      }
+                  }
+              });
+            }
+        });
+      }
+      //Añadir cuentas contables
+      function addAccountingAccounts(id, fila){
+        let ident = id;
+        let row = fila;
+        var token = $('input[name="_token"]').val();
+        $.ajax({
+          type: "POST",
+          url: "/purchases/customer-credit-notes/get-accounting-account-product",
+          data: { _token : token, ident: ident },
+          success: function (data){
+            $("#form #item_cuentac_"+row+" option[value!='']").remove();
+            $("#form #item_cuentac_"+row).val('').trigger('change');
+            $.each(JSON.parse(data),function(index, objdata){
+              $("#form #item_cuentac_"+row).append('<option value="'+objdata.id+'">'+ objdata.cuenta +' '+ objdata.nombre +'</option>');
+            });
+          },
+          error: function (error, textStatus, errorThrown) {
+            if (error.status == 422) {
+              var message = error.responseJSON.error;
+              Swal.fire({
+               type: 'error',
+               title: 'Oops...',
+               text: message,
+              });
+            }
+            else {
+              Swal.fire({
+               type: 'error',
+               title: 'Oops...',
+               text: errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText,
+              });
+            }
+          }
+        });
+      }
+      //Seleccionar el tipo de cambio con fix
+      $('#currency_id').on("change", function(){
+        var valor = $(this).val();
+        var token = $('input[name="_token"]').val();
+        if (valor === '1') {
+          $('#currency_value').val('1');
+          getCustomerInvoiceBalances(); //AQUI
+          totalItem();//Reestructura los totales
+        }
+        else {
+          $.ajax({
+            url: "/sales/customer-invoices/currency_now",
+            type: "POST",
+            data: { _token : token, id_currency: valor },
+            success: function (data) {
+                $('#currency_value').val(data);
+                //Obtener facturas con saldos
+                getCustomerInvoiceBalances(); //AQUI
+                //Reestructura los totales
+                // totalItem();
+            },
+            error: function (error, textStatus, errorThrown) {
+                if (error.status == 422) {
+                    var message = error.responseJSON.error;
+                    $("#general_messages").html(alertMessage("danger", message));
+                } else {
+                    alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                }
+            }
+          });
+        }
+      });
+      //OBTENER COMPRAS-----------------------------------------------------------------
       function getCustomerInvoiceBalances() {
           let customer_id = $("#form select[name='customer_id']").val();
           let currency_id = $("#form select[name='currency_id']").val();
@@ -532,8 +777,56 @@
                   dataType: "JSON",
                   data: "customer_id=" + customer_id + "&currency_id=" + currency_id + "&currency_value=" + currency_value + "",
                   success: function (data) {
+                    $("#items_reconciled tbody tr").remove(); //ELiminar filas
                     if (data != '[]') {
+                      item_row = 0;
+                      var html = '';
+                      data.forEach(function(key,i) {
+                          html += '<tr>';
 
+                          html += '<td class="text-right" style="padding-top: 11px;">';
+
+                          html += '<input type="hidden" id="item_reconciled_id_' + item_row + '" name="item_reconciled[' + item_row + '][id]" value="' + key.id + '"/> ';
+                          html += '<input type="hidden" id="item_reconciled_reconciled_id_' + item_row + '" name="item_reconciled[' + item_row + '][reconciled_id]" value="' + key.reconciled_id + '" /> ';
+                          html += '<input type="hidden" id="item_reconciled_name_' + item_row + '" name="item_reconciled[' + item_row + '][name]"  value="' + key.name + '" /> ';
+                          html += '<input type="hidden" id="item_reconciled_balance_' + item_row + '" name="item_reconciled[' + item_row + '][balance]" value="' + key.balance + '" /> ';
+                          html += '<input type="hidden" id="item_reconciled_currency_code_' + item_row + '" name="item_reconciled[' + item_row + '][currency_code]" value="' + key.currencie + '" /> ';
+
+                          html += '<span>' + key.name + '</span>';
+                          html += '</td>';
+
+                          html += '<td class="text-right" style="padding-top: 11px;">';
+                          html += '<span>' + key.date + '</span>';
+                          html += '</td>';
+
+                          html += '<td class="text-right" style="padding-top: 11px;">';
+                          html += '<span>' + key.date_due + '</span>';
+                          html += '</td>';
+
+                          html += '<td class="text-right" style="padding-top: 11px;">';
+                          html += '<span>' + key.currencie + '</span>';
+                          html += '</td>';
+
+                          html += '<td class="text-right" style="padding-top: 11px;">';
+                          html += '<span>' + key.amount_total + '</span>';
+                          html += '</td>';
+
+                          var saldox = parseFloat(key.amount_total.replace(/,/g, '')) - parseFloat(key.amount_reconciled.replace(/,/g, ''));
+
+
+                          html += '<td class="text-right" style="padding-top: 11px;">';
+                          html += '<span id="item_reconciled_txt_balance_' + i + '">' + saldox + '</span>';
+                          html += '</td>';
+
+                          html += '<td class="text-right" style="padding-top: 11px;">';
+                          html += '<input type="number" class="form-control form-control-sm text-right col-amount-reconciled" value="' + 0 + '"  name="item_reconciled[' + item_row + '][amount_reconciled]" id="item_reconciled_amount_reconciled_' + item_row + '" required step="any" />';
+                          html += '</td>';
+
+                          html += '</tr>';
+                          $("#form #items_reconciled tbody").html(html);
+                          item_row++;
+                      })
+                      // totalItemReconciled();
                     }
                   },
                   error: function (error, textStatus, errorThrown) {
@@ -556,6 +849,68 @@
               });
           }
       }
+      //Calcular los datos conciliados--------------------------------------------------
+      function totalItemReconciled() {
+          $.ajax({
+              url: "/purchases/customer-credit-notes/total-reconciled-lines",
+              type: "POST",
+              dataType: "JSON",
+              data: $("#form").serialize(),
+              success: function (data) {
+                  if (data) {
+                      $("#form #reconciled_txt_amount_total").html(data.amount_total);
+                      $("#form #reconciled_txt_amount_reconciled").html(data.amount_reconciled);
+                      $("#form #reconciled_txt_amount_per_reconciled").html(data.amount_per_reconciled);
+                  }
+              },
+              error: function (error, textStatus, errorThrown) {
+                  if (error.status == 422) {
+                      var message = error.responseJSON.error;
+                      $("#general_messages").html(alertMessage("danger", message));
+                  } else {
+                      alert(errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText);
+                  }
+              }
+          });
+      }
+      //Total de lineas-----------------------------------------------------------------
+      function totalItem() {
+          $.ajax({
+              url: "/purchases/customer-credit-notes/total-lines",
+              type: "POST",
+              dataType: "JSON",
+              data: $("#form").serialize(),
+              success: function (data) {
+                  if (data) {
+                      $.each(data.items, function (key, value) {
+                          $("#item_txt_amount_untaxed_" + key).html(value);
+                      });
+                      $("#form #txt_amount_untaxed").html(data.amount_untaxed);
+                      $("#form #txt_amount_tax").html(data.amount_tax);
+                      $("#form #txt_amount_total").html(data.amount_total);
+                      $("#form input[name='amount_total_tmp']").val(data.amount_total_tmp);
+                      totalItemReconciled(); //Calcula los datos conciliados
+                  }
+              },
+              error: function (error, textStatus, errorThrown) {
+                  if (error.status == 422) {
+                      var message = error.responseJSON.error;
+                      Swal.fire({
+                       type: 'error',
+                       title: 'Oops...',
+                       text: message,
+                      });
+                  } else {
+                    Swal.fire({
+                     type: 'error',
+                     title: 'Oops2...',
+                     text: errorThrown + "\r\n" + error.statusText + "\r\n" + error.responseText,
+                    });
+                  }
+              }
+          });
+      }
+
     </script>
   @else
   @endif

@@ -30,6 +30,7 @@ class Purchase extends Model
   const REVISADO = 2;  //REVISADO
   const AUTORIZADO = 3;//AUTORIZADO
   const CANCELADO = 4; //CANCELADO
+  const CONCILIADA = 5; //Conciliada
 
   protected $fillable = [
     'name',
