@@ -26,7 +26,11 @@ $(window).on("load", function() {
 
         });
 
+        elementsarray = [];
 
+        $(".ui-selected").each(function (index, element) {
+    	    elementsarray.push(parseInt(element.getAttribute("id").replace('area','')));
+        });
 
           switch(key) {
 
@@ -34,7 +38,7 @@ $(window).on("load", function() {
 
               $("#nuevoNombre").val(areaActual[0].nombre);
 
-              if(elementsarray.length==0){
+              if($(".ui-selected").length==0){
               elementsarray.push(parseInt(areaActual[0].id));//$('#selected_area').val(areaActual[0].id);
               }
 
@@ -46,7 +50,7 @@ $(window).on("load", function() {
 
               $("#nuevoEstado").val(areaActual[0].estado);
 
-              if(elementsarray.length==0){
+              if($(".ui-selected").length==0){
               elementsarray.push(parseInt(areaActual[0].id));//$('#selected_area').val(areaActual[0].id);
               }
 
@@ -54,9 +58,22 @@ $(window).on("load", function() {
 
               break;
 
+            case "piso":
+
+              $("#nuevoPiso").val(areaActual[0].piso);
+              $("#nuevoPiso").trigger('change');
+
+              if($(".ui-selected").length==0){
+              elementsarray.push(parseInt(areaActual[0].id));//$('#selected_area').val(areaActual[0].id);
+              }
+
+              $("#CambiarPisoMenu").modal("show");
+
+              break;
+
             case "eliminar":
 
-              if(elementsarray.length==0){
+              if($(".ui-selected").length==0){
               elementsarray.push(parseInt(areaActual[0].id));//$('#selected_area').val(areaActual[0].id);
               }
 
@@ -71,6 +88,7 @@ $(window).on("load", function() {
           "ver": {name: "Ver detalles", icon: "fas fa-eye"},
           "nombre": {name: "Cambiar nombre", icon: "fas fa-edit"},
           "estado": {name: "Cambiar estado", icon: "fas fa-sync-alt"},
+          "piso": {name: "Cambiar piso", icon: "fas fa-clone"},
           "equipos": {name: "Gestionar equipos", icon: "fas fa-broadcast-tower"},
           "split": "---------",
           "eliminar": {name: "Eliminar", icon: "fas fa-trash-alt"}
@@ -88,7 +106,7 @@ $(window).on("load", function() {
       hotel_id: hotel_id
 
     });
-    elementsarray=[];
+
     $("#CambiarNombre").modal("hide");
 
   });
@@ -104,8 +122,26 @@ $(window).on("load", function() {
       hotel_id: hotel_id
 
     });
-    elementsarray=[];
+
     $("#CambiarEstado").modal("hide");
+
+  });
+
+  $("#CambiarPisoMenuButton").click(function() {
+
+    var piso = $("#nuevoPiso").val();
+
+    pisoActual = piso;
+
+    socket.emit('nuevoPiso', {
+
+      piso: piso,
+      area: elementsarray,//$('#selected_area').val(),
+      hotel_id: hotel_id
+
+    });
+
+    $("#CambiarPisoMenu").modal("hide");
 
   });
 
@@ -117,7 +153,7 @@ $(window).on("load", function() {
       hotel_id: hotel_id
 
     });
-    elementsarray=[];
+
     $("#EliminarArea").modal("hide");
 
   });
