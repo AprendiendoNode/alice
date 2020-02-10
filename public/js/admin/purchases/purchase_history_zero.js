@@ -30,7 +30,7 @@ $(function() {
 	    submitHandler: function(e){
 	      var form = $('#form')[0];
 	      var formData = new FormData(form);
-	      formData.append('filter_status', '1');
+	      // formData.append('filter_status', '1');
 	      $.ajax({
 	        type: "POST",
 	        url: "/purchases/view_purchases_search",
@@ -39,7 +39,7 @@ $(function() {
 	        processData: false,
 	        success: function (data){
 	          // if (typeof data !== 'undefined' && data.length > 0) {console.log(data.length);}else {}
-	          // console.log(data);
+	          console.log(data);
 	          gen_payments_table(data, $("#table_filter_fact"));
 	        },
 	        error: function (err) {
@@ -62,18 +62,8 @@ var Configuration_table_responsive_purchases_1= {
   "columnDefs": [
 		{ //Subida 1
 		  "targets": 0,
-		  "checkboxes": {
-		    'selectRow': true
-		  },
-		  "width": "0.1%",
-		  "createdCell": function (td, cellData, rowData, row, col){
-		    if ( cellData > 1 ) {
-		      if(rowData[9] != 'Elaboro'){
-		      	// console.log(rowData[9]);
-		        this.api().cell(td).checkboxes.disable();
-		      }
-		    }
-		  }
+		  "visible": false,
+		  "searchable": false,
 		},
 		{
 		  "targets": 1,
@@ -112,79 +102,17 @@ var Configuration_table_responsive_purchases_1= {
 		},
 		{
 		  "targets": 8,
-		  "width": "0.5%",
-		  "className": "text-center",
-		},
-		{
-		  "targets": 9,
-		  "visible": false,
+		  "visible": true,
 		  "searchable": false
 		}
   ],
-  "select": {
+  /*"select": {
     'style': 'multi',
-  },
+  },*/
   dom: "<'row'<'col-sm-6'B><'col-sm-2'l><'col-sm-4'f>>" +
   "<'row'<'col-sm-12'tr>>" +
   "<'row'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
-    {
-      text: '<i class="fa fa-check margin-r5"></i> Revisar Marcados',
-      titleAttr: 'Revisar Marcados',
-      className: 'btn btn-warning',
-      init: function(api, node, config) {
-        $(node).removeClass('btn-default')
-      },
-      action: function ( e, dt, node, config ) {
-        // $('#modal-confirmation').modal('show');
-        Swal.fire({
-          title: "¿Estás seguro?",
-          text: "Se revisarán todos las solicitudes seleccionadas!",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Continuar",
-          cancelButtonText: "Cancelar!"
-        }).then((result) => {
-          if(result.value){
-            $('.cancel').prop('disabled', 'disabled');
-            $('.confirm').prop('disabled', 'disabled');
-            var rows_selected = $("#table_filter_fact").DataTable().column(0).checkboxes.selected();
-            var _token = $('input[name="_token"]').val();
-            // Iterate over all selected checkboxes
-            var valores= new Array();
-            $.each(rows_selected, function(index, rowId){
-              valores.push(rowId);
-            });
-            // console.log(valores);
-            if ( valores.length === 0){
-              Swal.fire("Operación abortada", "Ningúna solicitud de pago seleccionada :(", "error");
-            }
-            else {
-            	// console.log('si hay checkboxes');
-				$.ajax({
-					type: "POST",
-					url: "/purchases/send_purchase_one",
-					data: { idents: JSON.stringify(valores), _token : _token },
-					success: function (data){
-						// console.log(data);
-					  if (data === 'true') {
-					    Swal.fire("Operación Completada!", "Las solicitudes seleccionadas han sido afectadas.", "success");
-					    gen_purchases_auto();
-					  }
-					  if (data === 'false') {
-					    swal("Operación abortada!", "Las solicitudes seleccionadas no han sido afectadas.", "error");
-					  }
-					},
-					error: function (data) {
-					  console.log('Error:', data);
-					}
-				});
-            }
-          }
-        })
-      }
-    },
     {
       extend: 'excelHtml5',
       title: 'Facturas',
@@ -195,7 +123,7 @@ var Configuration_table_responsive_purchases_1= {
       titleAttr: 'Excel',
       className: 'btn btn-success btn-sm',
       exportOptions: {
-          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       },
     },
     {
@@ -208,7 +136,7 @@ var Configuration_table_responsive_purchases_1= {
       titleAttr: 'CSV',
       className: 'btn btn-primary btn-sm',
       exportOptions: {
-        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        columns: [ 0, 1, 2, 3, 4, 5]
       },
     }
   ],
@@ -259,17 +187,15 @@ function gen_payments_table(datajson, table){
         status.payment_methods,
         status.currencies,
         status.amount_total,
+        // status.status,
         '<span class="badge badge-primary badge-pill px-1 text-white">'+status.estatus+'</span>',
-        '<a href="javascript:void(0);" onclick="enviar(this, false)" value="'+status.id+'" class="btn btn-default btn-xs" role="button" data-target="#modal-concept"><span class="fa fa-eye"></span></a><a href="javascript:void(0);" onclick="enviartwo(this)" value="'+status.id+'" class="btn btn-danger btn-xs" role="button" data-target="#modal-deny" title="Denegar pago"><span class="fa fa-ban"></span></a>',
-        status.estatus
+        '<a href="javascript:void(0);" onclick="enviar(this, false)" value="'+status.id+'" class="btn btn-default btn-xs" role="button" data-target="#modal-concept"><span class="fa fa-eye"></span></a>',
       ]);
   });
 }
 function gen_purchases_auto() {
 	var form = $('#form')[0];
 	var formData = new FormData(form);
-	formData.append('filter_status', '1');
-
 	$.ajax({
 		type: "POST",
 		url: "/purchases/view_purchases_search",
@@ -278,7 +204,7 @@ function gen_purchases_auto() {
 		processData: false,
 		success: function (data){
 		  // if (typeof data !== 'undefined' && data.length > 0) {console.log(data.length);}else {}
-		  // console.log(data);
+		  console.log(data);
 		  gen_payments_table(data, $("#table_filter_fact"));
 		},
 		error: function (err) {

@@ -30,7 +30,7 @@ $(function() {
 	    submitHandler: function(e){
 	      var form = $('#form')[0];
 	      var formData = new FormData(form);
-	      formData.append('filter_status', '1');
+	      formData.append('filter_status', '2');
 	      $.ajax({
 	        type: "POST",
 	        url: "/purchases/view_purchases_search",
@@ -68,8 +68,7 @@ var Configuration_table_responsive_purchases_1= {
 		  "width": "0.1%",
 		  "createdCell": function (td, cellData, rowData, row, col){
 		    if ( cellData > 1 ) {
-		      if(rowData[9] != 'Elaboro'){
-		      	// console.log(rowData[9]);
+		      if(rowData[9] != 'Revisado'){
 		        this.api().cell(td).checkboxes.disable();
 		      }
 		    }
@@ -129,8 +128,8 @@ var Configuration_table_responsive_purchases_1= {
   "<'row'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
-      text: '<i class="fa fa-check margin-r5"></i> Revisar Marcados',
-      titleAttr: 'Revisar Marcados',
+      text: '<i class="fa fa-check margin-r5"></i> Autorizar Marcados',
+      titleAttr: 'Autorizar Marcados',
       className: 'btn btn-warning',
       init: function(api, node, config) {
         $(node).removeClass('btn-default')
@@ -139,7 +138,7 @@ var Configuration_table_responsive_purchases_1= {
         // $('#modal-confirmation').modal('show');
         Swal.fire({
           title: "¿Estás seguro?",
-          text: "Se revisarán todos las solicitudes seleccionadas!",
+          text: "Se autorizarán todas las solicitudes seleccionadas!",
           type: "warning",
           showCancelButton: true,
           confirmButtonClass: "btn-danger",
@@ -158,13 +157,13 @@ var Configuration_table_responsive_purchases_1= {
             });
             // console.log(valores);
             if ( valores.length === 0){
-              Swal.fire("Operación abortada", "Ningúna solicitud de pago seleccionada :(", "error");
+              Swal.fire("Operación abortada", "No se seleccionó una compra :(", "error");
             }
             else {
             	// console.log('si hay checkboxes');
 				$.ajax({
 					type: "POST",
-					url: "/purchases/send_purchase_one",
+					url: "/purchases/send_purchase_two",
 					data: { idents: JSON.stringify(valores), _token : _token },
 					success: function (data){
 						// console.log(data);
@@ -195,7 +194,7 @@ var Configuration_table_responsive_purchases_1= {
       titleAttr: 'Excel',
       className: 'btn btn-success btn-sm',
       exportOptions: {
-          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       },
     },
     {
@@ -208,7 +207,7 @@ var Configuration_table_responsive_purchases_1= {
       titleAttr: 'CSV',
       className: 'btn btn-primary btn-sm',
       exportOptions: {
-        columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        columns: [ 0, 1, 2, 3, 4, 5]
       },
     }
   ],
@@ -259,6 +258,7 @@ function gen_payments_table(datajson, table){
         status.payment_methods,
         status.currencies,
         status.amount_total,
+        // status.status,
         '<span class="badge badge-primary badge-pill px-1 text-white">'+status.estatus+'</span>',
         '<a href="javascript:void(0);" onclick="enviar(this, false)" value="'+status.id+'" class="btn btn-default btn-xs" role="button" data-target="#modal-concept"><span class="fa fa-eye"></span></a><a href="javascript:void(0);" onclick="enviartwo(this)" value="'+status.id+'" class="btn btn-danger btn-xs" role="button" data-target="#modal-deny" title="Denegar pago"><span class="fa fa-ban"></span></a>',
         status.estatus
@@ -268,8 +268,7 @@ function gen_payments_table(datajson, table){
 function gen_purchases_auto() {
 	var form = $('#form')[0];
 	var formData = new FormData(form);
-	formData.append('filter_status', '1');
-
+	formData.append('filter_status', '2');
 	$.ajax({
 		type: "POST",
 		url: "/purchases/view_purchases_search",

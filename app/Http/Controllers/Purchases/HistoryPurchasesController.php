@@ -57,6 +57,16 @@ class HistoryPurchasesController extends Controller
         $resultados = DB::select('CALL px_purchases_xrango (?,?,?)',array($date_a, $date_b, $estatus));
         return $resultados;
     }
+    public function search_all(Request $request)
+    {
+        $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+        $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
+        
+        // $estatus = !empty($request->filter_status) ? $request->filter_status : '';
+
+        $resultados = DB::select('CALL px_purchases_xrango (?,?,?)',array($date_a, $date_b, $estatus));
+        return $resultados;
+    }
 
     public function approval_one(Request $request)
     {
@@ -82,4 +92,29 @@ class HistoryPurchasesController extends Controller
         DB::commit();
         return $valor;
     }
+    public function approval_two(Request $request)
+    {
+        // Pasar de 1 = Elaborado a 2 = Revisado.
+        $solicitud_id = json_decode($request->idents);
+        $user = Auth::user()->id;
+        $valor= 'false';
+
+        \DB::beginTransaction();
+
+        for ($i=0; $i <= (count($solicitud_id)-1); $i++) {
+          $sql = DB::table('purchases')->where('id', '=', $solicitud_id[$i])->update(['status' => '3', 'updated_at' => Carbon::now()]);
+          DB::table('purchases_status_users')->insert([
+            'purchase_id'=>$solicitud_id[$i],
+            'user_id'=>$user,
+            'status_id'=>'3',
+            'created_at'=> Carbon::now()
+            // 'updated_at'=>Carbon::now()
+          ]);
+          $valor= 'true';
+        }
+
+        DB::commit();
+        return $valor;
+    }
+
 }
