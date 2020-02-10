@@ -49,15 +49,20 @@ $(window).on("load",function() {
       $(".blink").draggable({
         containment: "#mapa",
         start: function(e, ui) {
-          distancias_left = [];
-          distancias_top = [];
-          $(".ui-selected").each(function (index, element) {
-            distancias_left[index] = parseInt($(this).css('left')) - ui.offset.left;
-            distancias_top[index] = parseInt($(this).css('top')) - ui.offset.top;
-          });
+          if($(this).hasClass("ui-selected")) {
+            $(".ui-selected").addClass("simultaneous-drag");
+            distancias_left = [];
+            distancias_top = [];
+            $(".ui-selected").each(function (index, element) {
+              distancias_left[index] = parseInt($(this).css('left')) - ui.offset.left;
+              distancias_top[index] = parseInt($(this).css('top')) - ui.offset.top;
+            });
+          } else {
+            $(".ui-selected").removeClass("simultaneous-drag");
+          }
         },
         drag: function(e, ui) {
-          $(".ui-selected").each(function (index, element) {
+          $(".ui-selected.simultaneous-drag").each(function (index, element) {
             $(this).css('left', ui.offset.left + distancias_left[index]);
             $(this).css('top', ui.offset.top + distancias_top[index]);
           });

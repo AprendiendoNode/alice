@@ -38,10 +38,6 @@ $(window).on("load", function() {
   $( "#mapa" ).selectable({
     filter: ".blink",
     tolerance: "fit",
-    unselected: function(event,ui){
-      $('.blink').resizable('enable');
-      $('.blink').draggable('enable');
-    },
     stop: function() {
     	elementsarray=[];
       if($(".ui-selected").length > 0) {
@@ -49,19 +45,20 @@ $(window).on("load", function() {
     	    elementsarray.push(parseInt(element.getAttribute("id").replace('area','')));
         });
         $(".blink").resizable('disable');
-        $(".blink:not(.ui-selected)").draggable("disable"); //P
         $(".ui-selected").contextMenu(true);
         $(".blink:not(.ui-selected)").contextMenu(false);
       } else {
         $(".blink").contextMenu(true);
       }
+    },
+    unselected: function(event,ui){
+      $('.blink').resizable('enable');
     }
   });
 
   $(".row-select, .row-buttons").click(function() {
     $(".blink").removeClass("ui-selected");
     $('.blink').resizable('enable');
-    $('.blink').draggable('enable'); //P
     try {
       $('.blink').contextMenu(true);
     } catch(e) {}
