@@ -39,11 +39,7 @@ $(window).on("load", function() {
     filter: ".blink",
     tolerance: "fit",
     stop: function() {
-    	elementsarray=[];
       if($(".ui-selected").length > 0) {
-        $(".ui-selected").each(function (index, element) {
-    	    elementsarray.push(parseInt(element.getAttribute("id").replace('area','')));
-        });
         $(".blink").resizable('disable');
         $(".ui-selected").contextMenu(true);
         $(".blink:not(.ui-selected)").contextMenu(false);

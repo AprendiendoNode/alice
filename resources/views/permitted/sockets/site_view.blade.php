@@ -215,6 +215,33 @@
       </div>
     </div>
   </div>
+  <!-- CambiarPisoMenu -->
+  <div class="modal fade" id="CambiarPisoMenu" tabindex="-1" role="dialog" aria-labelledby="CambiarPisoMenuLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="CambiarPisoMenuLabel"><i class="fas fa-clone"></i> Cambiar piso</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mb-3">
+            <p class="d-inline" style="background-color: #e9ecef; padding-top: 4px; padding-left: 17px; width: 40%; height: 28px;"><span>Nuevo piso:</span></p>
+            <select id="nuevoPiso" class="form-control8" style="width: 60%;">
+
+            </select>
+          </div>
+          <div class="descartar d-none text-danger text-center">*No has sincronizado tus movimientos en el mapa*</div>
+          <!--<input type="hidden" id="selected_area" name="" value="">-->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button id="CambiarPisoMenuButton" type="button" class="btn btn-primary">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- EliminarArea -->
   <div class="modal fade" id="EliminarArea" tabindex="-1" role="dialog" aria-labelledby="EliminarAreaLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -341,6 +368,12 @@
 
       $("#pisoAgregarArea").select2({
         dropdownParent: $('#AgregarArea'),
+        placeholder: 'Piso 1',
+        tags: true
+      });
+
+      $("#nuevoPiso").select2({
+        dropdownParent: $('#CambiarPisoMenu'),
         placeholder: 'Piso 1',
         tags: true
       });

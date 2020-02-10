@@ -67,6 +67,19 @@ module.exports = io => {
 
         });
 
+        socket.on('nuevoPiso', async (data) => {
+
+          await pool.query("UPDATE Areas SET piso = ? WHERE id IN (?)", [
+            data.piso, data.area
+          ]);
+
+          const areas = await pool.query("SELECT * FROM Areas WHERE hotel_id = ?", data.hotel_id);
+
+          io.in(data.hotel_id).emit('actualizarAreas', areas);
+          socket.broadcast.to(data.hotel_id).emit('cambiosExternos');
+
+        });
+
         socket.on('eliminarArea', async (data) => {
           //console.log(data.area);
           await pool.query("DELETE FROM Areas WHERE id IN (?)",[data.area]);

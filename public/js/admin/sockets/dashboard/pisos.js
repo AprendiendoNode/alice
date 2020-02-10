@@ -7,6 +7,7 @@ $(window).on("load", function() {
   socket.on('actualizarPisos', function(pisos) {
 
     $("#pisoAgregarArea").html("");
+    $("#nuevoPiso").html("");
     $("#cambiarPiso").html("");
 
     allPisos = [];
@@ -18,6 +19,7 @@ $(window).on("load", function() {
         allPisos.push(piso.piso);
 
         $("#pisoAgregarArea").append("<option>"+piso.piso+"</option>");
+        $("#nuevoPiso").append("<option>"+piso.piso+"</option>");
         $("#cambiarPiso").append("<option>"+piso.piso+"</option>");
 
       });
@@ -36,6 +38,7 @@ $(window).on("load", function() {
       pisoActual = allPisos[0];
 
       $("#pisoAgregarArea").append("<option>Piso 1</option>");
+      $("#nuevoPiso").append("<option>Piso 1</option>");
       $("#cambiarPiso").append("<option>Piso 1</option>");
 
     }
