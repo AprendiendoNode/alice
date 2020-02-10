@@ -7,9 +7,11 @@
   $total_abonos = 0.0;  
 @endphp
 <div class="row">
+    
   <div class="form-group col-md-3">
+    <input type="hidden" class="form-control form-control-sm mb-2 mr-sm-2" id="poliza_id" name="poliza_id"  value="{{$asientos[0]->poliza_id}}">
     <label class="" for="type_poliza">Tipo:</label>
-    <select class="form-control form-control-sm mb-2 mr-sm-2" id="type_poliza" name="type_poliza" readonly>
+    <select class="form-control form-control-sm mb-2 mr-sm-2" id="type_poliza" name="type_poliza">
       @foreach ($tipos_poliza as $poliza_data)      
         <option value="{{$poliza_data->id}}">{{$poliza_data->clave}} {{$poliza_data->descripcion}}</option>  
       @endforeach
@@ -18,20 +20,20 @@
 
   <div class="form-group col-md-2">
     <label class="" for="">Número:</label>
-  <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" id="num_poliza" name="num_poliza"  value="{{$asientos[0]->numero}}" readonly>
+  <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" id="num_poliza" name="num_poliza"  value="{{$asientos[0]->numero}}">
   </div>
 
   <div class="form-group col-md-2">
     <label class="" for="day_poliza">Día:</label>
-    <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza">
+    <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza">
   </div>
   <div class="form-group col-md-2">
     <label class="" for="mes_poliza">Mes:</label>
-    <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
+    <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
   </div>
   <div class="form-group col-md-3">
-    <label class="" for="mes_poliza">Descripción:</label>
-  <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="descripcion_poliza" id="descripcion_poliza" value="{{$asientos[0]->descripcion_poliza}}">
+    <label class="" for="descripcion_poliza">Descripción:</label>
+  <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="descripcion_poliza" id="descripcion_poliza" value="{{$asientos[0]->descripcion_poliza}}">
   </div>
 </div>
 <!--------------Movimientos contables-----------> 
@@ -39,6 +41,7 @@
     <table id="tabla_asiento_contable" class="table table-sm">
       <thead class="bg-secondary text-white">
         <tr>
+          <th></th>
           <th></th>
           <th>Mov.</th>
           <th>Cuenta</th>
@@ -60,10 +63,11 @@
               $day = date("d", $fecha);
           @endphp
         <tr>
+            <td><input class="id" type="hidden" value="{{$data->id}}"></td>
             <td><input class="id_factura" type="hidden" value="{{$data->customer_invoice_id}}"></td>
             <td></td>
             <td>
-              <select readonly style="width:280px;" class="form-control form-control-sm cuenta_contable select2">
+              <select style="width:280px;" class="form-control form-control-sm cuenta_contable select2">
                 @foreach ($cuentas_contables as $cuenta_data)
                   @if ($cuenta_data->id == $data->cuenta_contable_id)
                     <option selected value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option> 
@@ -73,12 +77,12 @@
                 @endforeach
               </select>
             </td>
-            <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia" readonly type="number" value="{{$day}}"></td>
-            <td><input style="width:94px;text-align:center" class="form-control form-control-sm tipo_cambio" readonly type="number" value="{{$data->exchange_rate}}"></td>
-            <td class=""><input style="width:170px;text-align:left" readonly class="form-control form-control-sm nombre" type="text" value="{{$data->descripcion}}"></td>
-            <td><input  readonly onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos font-weight-bold" type="text" value="{{number_format($data->cargos, 2, '.', '')}}" ></td>
-            <td><input  readonly onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm abonos font-weight-bold"  type="text" value="{{number_format($data->abonos, 2, '.', '')}}" ></td> 
-            <td><input readonly style="width:135px;text-align:left" class="form-control form-control-sm referencia" type="text" value="{{$data->referencia}}"></td>
+            <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia"  type="number" value="{{$day}}"></td>
+            <td><input style="width:94px;text-align:center" class="form-control form-control-sm tipo_cambio"  type="number" value="{{$data->exchange_rate}}"></td>
+            <td class=""><input style="width:170px;text-align:left"  class="form-control form-control-sm nombre" type="text" value="{{$data->descripcion}}"></td>
+            <td><input  onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos font-weight-bold" type="text" value="{{number_format($data->cargos, 2, '.', '')}}" ></td>
+            <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm abonos font-weight-bold"  type="text" value="{{number_format($data->abonos, 2, '.', '')}}" ></td> 
+            <td><input style="width:135px;text-align:left" class="form-control form-control-sm referencia" type="text" value="{{$data->referencia}}"></td>
         </tr>
         @endforeach    
       </tbody>
@@ -96,10 +100,6 @@
     </div>
   </div>
 
-  <script>
-      $('.cuenta_contable').select2({
-        disabled: true
-      });
-
-      $('#update_poliza_partida').css('display', 'none');
-  </script>
+<script>
+    $('.cuenta_contable').select2();
+</script>

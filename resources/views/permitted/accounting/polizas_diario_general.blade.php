@@ -79,6 +79,56 @@
             </table>    
         </div>
     </div>
+
+    <!----------------------MODAL POLIZA MOVIMIENTOS--------------------------->
+  <div id="modal_view_poliza" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Póliza</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="form_update_asientos_contables">
+        <div class="modal-body">
+          <!------TABLA DE PARTIDAS / ASIENTO CONTABLE------>
+          <div class="row mt-2 mb-3">
+            <div id="data_asientos" class="col-12 table-responsive">
+              
+            </div>
+          </div>
+          <!------------RESUMEN FACTURA--------->
+          {{-- <div class="row mt-5">
+            <div class="col-12 table-responsive">
+              <table class="table table-sm">
+                <thead class="bg-secondary text-white">
+                  <tr>
+                    <th>Org.</th>
+                    <th>Partida</th>
+                    <th>Dia</th>
+                    <th>No.</th>
+                    <th>Tipo</th>
+                    <th>UUID / Folio</th>
+                    <th>Beneficiario</th>
+                    <th>Importe</th>
+                  </tr>
+                </thead>
+                <tbody>       
+                </tbody>
+              </table>
+            </div>
+          </div> --}}  
+        </div>
+        <div class="modal-footer">
+          <button type="submit" id="update_poliza_partida" type="button" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </form> 
+      </div>
+    </div>
+  </div>
+ <!----------------------------- FIN MODAL POLIZA MOVIMIENTOS--------------------------------->
   @else
     @include('default.denied')
   @endif

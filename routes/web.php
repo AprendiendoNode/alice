@@ -1248,6 +1248,7 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   Route::post('/customer-polizas-save-movs', 'Accounting\CustomerPolizaController@save_poliza_movs');
   Route::post('/customer-polizas-delete', 'Accounting\CustomerPolizaController@delete_poliza');
   Route::post('/get-movs-by-poliza', 'Accounting\CustomerPolizaController@get_movtos_by_poliza');
+  Route::post('/update-poliza-movs', 'Accounting\CustomerPolizaController@update_poliza_movs');
   
   //REPORTES FACTURACION Y CONTABILIDAD
   Route::get('/billing_report', 'Sales\BillingReportController@index');

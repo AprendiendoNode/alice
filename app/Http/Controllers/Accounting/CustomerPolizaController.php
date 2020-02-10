@@ -147,6 +147,62 @@ class CustomerPolizaController extends Controller
 
     }
 
+    public function update_poliza_movs(Request $request)
+    {   
+        $date = \Carbon\Carbon::now();
+        //Objeto de polizas
+        $asientos = $request->movs_polizas;
+        $asientos_data = json_decode($asientos);
+        
+        $tam_asientos = count($asientos_data);
+
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('polizas')
+                ->where('id' ,$request->poliza_id)
+                ->update([
+                'tipo_poliza_id' => $request->type_poliza,
+                'numero' => $request->num_poliza,
+                'descripcion' => $request->descripcion_poliza,
+                'total_cargos' => $request->total_cargos_format,
+                'total_abonos' => $request->total_abonos_format,
+                'updated_at' => $date
+            ]);
+                
+            //actualizando movimientos de las polizas
+            for ($i=0; $i < $tam_asientos; $i++)
+            {
+                $sql = DB::table('polizas_movtos')
+                    ->where('id' ,$asientos_data[$i]->id)
+                    ->update([
+                    'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
+                    'customer_invoice_id' => $asientos_data[$i]->factura_id,
+                    'fecha' => $date, 
+                    'exchange_rate' => $asientos_data[$i]->tipo_cambio,
+                    'descripcion' => $asientos_data[$i]->nombre,
+                    'cargos' => $asientos_data[$i]->cargo,
+                    'abonos' => $asientos_data[$i]->abono,
+                    'referencia' => $asientos_data[$i]->referencia,
+                    'updated_at' => $date
+                ]);
+            }
+
+            DB::commit();
+
+            $flag = "true";
+
+        } catch(\Exception $e){
+            $error = $e->getMessage();
+            DB::rollback();
+            dd($error);
+        }
+
+        return  $flag;
+
+    }
+
     public function get_facts_mov_data(Request $request)
     {
         $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
@@ -173,13 +229,17 @@ class CustomerPolizaController extends Controller
 
     public function get_movtos_by_poliza(Request $request)
     {
-        $id_poliza = $request->id_poliza;
+        $id_poliza = $request->poliza_id;
         $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
         $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
 
-        $data = DB::select('CALL px_polizas_movtos_xpoliza(?)', array($id_poliza));
+        $asientos = DB::select('CALL px_polizas_movtos_xpoliza(?)', array($id_poliza));
 
-        return $data;
+        //return $asientos;
+        
+        return view('permitted.accounting.table_poliza_movs_edit', 
+               compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num'));
+        
     }
 
 
@@ -218,8 +278,7 @@ class CustomerPolizaController extends Controller
 
     public function delete_partida_poliza(Request $request)
     {
-
-       
+        
     }
     
 }

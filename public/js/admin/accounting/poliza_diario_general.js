@@ -109,7 +109,7 @@ function table_filter(datajson, table){
                           <i class="fas fa-ellipsis-h"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                          <a class="dropdown-item" href="javascript:void(0);" onclick="" data-id="${information.id}"  value="${information.id}"><span class="fa fa-eye"></span> Ver detalle</a>
+                          <a class="dropdown-item" href="javascript:void(0);" onclick="get_movs_by_poliza(${information.id})" data-id="${information.id}"  value="${information.id}"><span class="fa fa-eye"></span> Ver detalle</a>
                           <a class="dropdown-item" href="javascript:void(0);" onclick="delete_poliza(${information.id})" data-id="${information.id}"><span class="fas fa-window-close"></span> Cancelar poliza</a>
                         </div>
                       </div>`;    
@@ -211,8 +211,7 @@ function get_movs_by_poliza(id_poliza){
       success: function (data) {     
        
         $('#data_asientos').html(data);
-        $('.cuenta_contable').select2();
-        
+        $("#modal_view_poliza").modal("show");
       },
       error: function (err) {
         Swal.fire({
@@ -224,7 +223,125 @@ function get_movs_by_poliza(id_poliza){
   })
 }
 
+/*
+*****************************  ACTUALIZANDO PÓLIZAS ***************************
+*/ 
 
+$('#form_update_asientos_contables').on('submit', function(e){
+  e.preventDefault();
+  let total_cargos = remove_commas($('#total_cargos').val());
+  total_cargos = parseFloat(total_cargos);
+  let total_abonos = remove_commas($('#total_abonos').val());
+  total_abonos = parseFloat(total_abonos);
+
+  if(check_totales_asientos(total_cargos, total_abonos)){
+
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        
+        var _token = $('input[name="_token"]').val();
+        
+        var element = {}
+        var asientos = [];
+
+        $('#tabla_asiento_contable tbody tr').each(function(row, tr){
+          let id = $(tr).find('.id').val();
+          let id_factura = $(tr).find('.id_factura').val();       
+          let cuenta_contable = $(tr).find('.cuenta_contable').val();
+          let dia = $(tr).find('.dia').val();
+          let tipo_cambio = $(tr).find('.tipo_cambio').val();
+          let nombre = $(tr).find('.nombre').val();
+          let cargo = $(tr).find('.cargos').val();
+          let abono = $(tr).find('.abonos').val();
+          let referencia = $(tr).find('.referencia').val();    
+          
+          element = {
+            "id" : id,
+            "factura_id" : id_factura,
+            "cuenta_contable_id" : cuenta_contable,
+            "dia" : dia,
+            "tipo_cambio" : tipo_cambio,
+            "nombre" : nombre,
+            "cargo" : parseFloat(cargo),
+            "abono" : parseFloat(abono),
+            "referencia" : referencia          
+          }
+    
+          asientos.push(element);
+    
+        });
+    
+        let form = $('#form_update_asientos_contables')[0];
+        let formData = new FormData(form);
+    
+        formData.append('movs_polizas',JSON.stringify(asientos)); 
+        formData.append('total_cargos_format',total_cargos);
+        formData.append('total_abonos_format',total_abonos);  
+
+        const headers = new Headers({        
+           "Accept": "application/json",
+           "X-Requested-With": "XMLHttpRequest",
+           "X-CSRF-TOKEN": _token
+        })
+
+        var miInit = { method: 'post',
+                           headers: headers,
+                           credentials: "same-origin",
+                           body:formData,
+                           cache: 'default' };
+
+         return fetch('/accounting/update-poliza-movs', miInit)
+               .then(function(response){
+                 if (!response.ok) {
+                    throw new Error(response.statusText)
+                  }
+                 return response.text();
+               })
+               .catch(function(error){
+                 Swal.showValidationMessage(
+                   `Request failed: ${error}`
+                 )
+               });
+      }//Preconfirm
+    }).then((result) => {
+      console.log(result.value);
+      if (result.value == "true") {
+        Swal.fire({
+          title: 'Poliza actualizada',
+          text: "",
+          type: 'success',
+        }).then(function (result) {
+          if (result.value) {
+            window.location = "/accounting/view_diario_general";
+          }
+        })
+      }else{
+        Swal.fire(
+          'No se guardo la poliza','','warning'
+        )
+      }
+    })
+
+  }else{
+    Swal.fire(
+      'Los totales no coinciden',
+      'Revisar los saldos de los cargos y abonos',
+      'warning'
+    );
+  }
+  
+});
+
+////////////////////////////////////////////////////////////////
 
 
   var Configuration_table_diario_polizas = {
@@ -353,6 +470,41 @@ function get_movs_by_poliza(id_poliza){
       }
     }
   };
+
+  function check_totales_asientos(total_cargos,total_abonos){
+    if(parseFloat(total_cargos) != parseFloat(total_abonos)){
+      return false;
+    }else{
+      return true
+    }
+  }
+
+  function suma_total_asientos(){
+    let inputs_cargos = document.querySelectorAll('.cargos');
+    let inputs_abonos = document.querySelectorAll('.abonos');
+    let total_cargos = 0.0;
+    let total_abonos = 0.0;
+    
+    for (i = 0; i < inputs_cargos.length; ++ i){
+      total_cargos+= parseFloat(inputs_cargos[i].value);
+    }
+  
+    for (i = 0; i < inputs_abonos.length; ++ i){
+      total_abonos+= parseFloat(inputs_abonos[i].value);
+    }
+  
+    $('#total_cargos').val(format_number(total_cargos));
+    $('#total_abonos').val(format_number(total_abonos));
+  
+    if(check_totales_asientos(total_cargos,total_abonos)){
+      $('#total_cargos').css('border-color', '#28a745');
+      $('#total_abonos').css('border-color', '#28a745');
+    }else{
+      $('#total_cargos').css('border-color', '#dc3545');
+      $('#total_abonos').css('border-color', '#dc3545');
+    }
+  
+  }
 
   //Formato numerico: 00,000.00
 function format_number(number){
