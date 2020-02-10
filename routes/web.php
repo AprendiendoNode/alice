@@ -1267,6 +1267,9 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::get('/view_purchases_show', 'Purchases\HistoryPurchasesController@index');
   Route::post('/view_purchases_search', 'Purchases\HistoryPurchasesController@search');
 
+  Route::post('/send_purchase_one', 'Purchases\HistoryPurchasesController@approval_one'); 
+  Route::post('/send_purchase_two', 'Purchases\HistoryPurchasesController@approval_two'); 
+
   //Cuentas bancarias de proveedor
   Route::get('/view_cb_provider', 'Purchases\CbProviderController@index');
 

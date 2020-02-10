@@ -18,12 +18,19 @@
 
 @section('content')
   @if( auth()->user()->can('View purchases show') )
+    @if( auth()->user()->can('View level zero purchase') )
+    @endif
+    @if( auth()->user()->can('View level one purchase') )
+    @endif
+    @if( auth()->user()->can('View level two purchase') )
+    @endif
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
             <form id="form" name="form" enctype="multipart/form-data">
               {{ csrf_field() }}
+
               <div class="row">
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group" id="date_from">
@@ -72,6 +79,7 @@
                   </button>
                 </div>
               </div>
+
             </form>
           </div>
         </div>
@@ -79,12 +87,11 @@
     </div>
 
     <div class="row mt-4">
-
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
             <div class="table-responsive">
-               <table id="table_pays" class="table table-striped table-bordered table-hover compact-tab w-100">
+               <table id="table_filter_fact" class="table table-striped table-bordered table-hover compact-tab w-100">
                  <thead>
                    <tr class="bg-primary" style="background: #088A68;">
                       <th> <small></small> </th>
@@ -95,7 +102,7 @@
                       <th> <small>Moneda</small> </th>
                       <th> <small>Total</small> </th>
                       <th> <small>Estado</small> </th>
-                      <th> <small></small> </th>
+                      <th> <small>Acciones</small> </th>
                    </tr>
                  </thead>
                  <tbody>
@@ -169,7 +176,7 @@
 
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-
+    <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
     <script src="{{ asset('plugins/momentupdate/moment.js')}}"></script>
     <link href="{{ asset('plugins/daterangepicker-master/daterangepicker.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('plugins/daterangepicker-master/daterangepicker.js')}}"></script>
@@ -178,6 +185,12 @@
     <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
     <script src="{{ asset('js/admin/purchases/purchase_history_1.js')}}"></script>
+
+    @if( auth()->user()->can('View level zero payment notification') )
+    @elseif( auth()->user()->can('View level one payment notification') )
+    @elseif( auth()->user()->can('View level two payment notification') )
+      <script src="{{ asset('js/admin/purchases/purchase_history_2.js')}}"></script>
+    @endif
 
   @else
   @endif

@@ -58,69 +58,28 @@ class HistoryPurchasesController extends Controller
         return $resultados;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function approval_one(Request $request)
     {
-        //
-    }
+        // Pasar de 1 = Elaborado a 2 = Revisado.
+        $solicitud_id = json_decode($request->idents);
+        $user = Auth::user()->id;
+        $valor= 'false';
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        \DB::beginTransaction();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request)
-    {
-        //
-    }
+        for ($i=0; $i <= (count($solicitud_id)-1); $i++) {
+          $sql = DB::table('purchases')->where('id', '=', $solicitud_id[$i])->update(['status' => '2', 'updated_at' => Carbon::now()]);
+          DB::table('purchases_status_users')->insert([
+            'purchase_id'=>$solicitud_id[$i],
+            'user_id'=>$user,
+            'status_id'=>'2',
+            'created_at'=> Carbon::now()
+            // 'updated_at'=>Carbon::now()
+          ]);
+          $valor= 'true';
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        DB::commit();
+        return $valor;
     }
 }
