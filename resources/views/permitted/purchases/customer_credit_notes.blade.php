@@ -124,7 +124,7 @@
                 <div class="col-md-3 col-xs-12">
                   <label for="iva"> IVA:</label>
                   <div id="cont_iva" class="input-group">
-                    <select datas="iva" class= "form-control input-sm col-taxes required" name="iva[]" id="iva" style="width:100%;" multiple>
+                    <select datas="iva" class= "form-control input-sm col-taxes" name="iva[]" id="iva" style="width:100%;" multiple>
                       @forelse ($impuestos as $impuestos_data)
                         <option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>
                       @empty
@@ -443,7 +443,7 @@
                         // Read more about handling dismissals
                         result.dismiss === Swal.DismissReason.timer
                       ) {
-                        // window.location.href = "/purchases/customer-credit-notes-cp";
+                        window.location.href = "/purchases/customer-credit-notes-cp";
                       }
                     });
                   }
@@ -811,11 +811,8 @@
                           html += '<span>' + key.amount_total + '</span>';
                           html += '</td>';
 
-                          var saldox = parseFloat(key.amount_total.replace(/,/g, '')) - parseFloat(key.amount_reconciled.replace(/,/g, ''));
-
-
                           html += '<td class="text-right" style="padding-top: 11px;">';
-                          html += '<span id="item_reconciled_txt_balance_' + i + '">' + saldox + '</span>';
+                          html += '<span id="item_reconciled_txt_balance_' + i + '">' + key.balance + '</span>';
                           html += '</td>';
 
                           html += '<td class="text-right" style="padding-top: 11px;">';

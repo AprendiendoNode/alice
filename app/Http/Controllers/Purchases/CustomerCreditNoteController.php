@@ -107,6 +107,10 @@ class CustomerCreditNoteController extends Controller
       //Logica
       if ($request->ajax() && !empty($customer_id)) {
         $resultados = DB::select('CALL px_purchase_authorized_data (?, ?)', array($customer_id, $filter_currency_id));
+        foreach ($resultados as $key) {
+          $valor = $key->balance;
+          $key->balance = round($valor, 2);
+        }
         return response()->json($resultados, 200);
       }
       return response()->json(['error' => __('general.error500')], 422);

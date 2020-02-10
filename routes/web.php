@@ -1286,7 +1286,6 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::post('/customer-credit-notes/get-accounting-account-product', 'Purchases\CustomerCreditNoteController@getAccountingAccountProduct');
   Route::post('/customer-credit-notes/total-lines', 'Purchases\CustomerCreditNoteController@totalLines');
   Route::post('/customer-credit-notes-cp-store', 'Purchases\CustomerCreditNoteController@store');
-
 });
 Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){
   //Integracion contable
