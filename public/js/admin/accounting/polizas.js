@@ -50,7 +50,7 @@ $(function() {
           var formData = new FormData(form);
           $.ajax({
             type: "POST",
-            url: "/sales/customer-polizas-search",
+            url: "/accounting/customer-polizas-search",
             data: formData,
             contentType: false,
             processData: false,
@@ -234,7 +234,7 @@ $(function() {
             
               $.ajax({
                   type: "POST",
-                  url: '/sales/customer-polizas-get-movs',
+                  url: '/accounting/customer-polizas-get-movs',
                   data: {facturas: JSON.stringify(facturas) , _token : _token},
                   success: function (data) {
                     
@@ -423,7 +423,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
                            body:formData,
                            cache: 'default' };
 
-         return fetch('/sales/customer-polizas-save-movs', miInit)
+         return fetch('/accounting/customer-polizas-save-movs', miInit)
                .then(function(response){
                  if (!response.ok) {
                     throw new Error(response.statusText)
@@ -445,7 +445,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
           type: 'success',
         }).then(function (result) {
           if (result.value) {
-            window.location = "/sales/customer-polizas-show";
+            window.location = "/accounting/customer-polizas-show";
           }
         })
       }else{
@@ -473,13 +473,13 @@ function cancel_poliza(e){
 
     $.ajax({
       type: "POST",
-      url: '/sales/customer-polizas-cancel',
+      url: '/accounting/customer-polizas-cancel',
       data: {id_invoice : id_invoice, _token : _token},
       success: function (data) {
         if(data.code == 200){
           Swal.fire('Operación completada!', data.message, 'success')
           .then(()=> {
-            location.href ="/sales/customer-polizas-show";
+            location.href ="/accounting/customer-polizas-show";
           });
         }
         

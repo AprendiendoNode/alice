@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Sales;
+namespace App\Http\Controllers\Accounting;
 use Auth;
 use DB;
 use PDF;
@@ -46,7 +46,7 @@ class CustomerPolizaController extends Controller
     {
         $customer = DB::select('CALL px_only_customer_data ()', array());
 
-        return view('permitted.sales.polizas_show',compact( 'customer'));
+        return view('permitted.accounting.polizas_show',compact( 'customer'));
 	}
 
 	public function get_data_poliza(Request $request)
@@ -167,7 +167,7 @@ class CustomerPolizaController extends Controller
             }          
         }     
         	
-        return view('permitted.sales.table_asientos_contables', 
+        return view('permitted.accounting.table_asientos_contables', 
                compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num'));	
     }
 
@@ -214,7 +214,6 @@ class CustomerPolizaController extends Controller
 
         return  $flag;
         
-
     }
 
     public function delete_partida_poliza(Request $request)

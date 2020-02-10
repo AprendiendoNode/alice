@@ -163,7 +163,7 @@ function table_filter(datajson, table){
                            body: JSON.stringify(data),
                            cache: 'default' };
 
-         return fetch('/sales/customer-polizas-delete', miInit)
+         return fetch('/accounting/customer-polizas-delete', miInit)
                .then(function(response){
                  if (!response.ok) {
                     throw new Error(response.statusText)
@@ -198,6 +198,34 @@ function table_filter(datajson, table){
   }
 
 /**********************************************************************************/
+
+function get_movs_by_poliza(id_poliza){
+  let _token = $('meta[name="csrf-token"]').attr('content');
+  
+  $("#tabla_asiento_contable tbody").empty();
+
+  $.ajax({
+      type: "POST",
+      url: '/accounting/get-movs-by-poliza',
+      data: {poliza_id: id_poliza , _token : _token},
+      success: function (data) {     
+       
+        $('#data_asientos').html(data);
+        $('.cuenta_contable').select2();
+        
+      },
+      error: function (err) {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: err.statusText,
+          });
+      }
+  })
+}
+
+
+
 
   var Configuration_table_diario_polizas = {
     "order": [[ 3, "asc" ]],

@@ -1218,19 +1218,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::get('/customer-payments/download-xml/{id}', 'Sales\CustomerPaymentController@downloadXml');
     Route::get('/customer-payments-pdf/{id}', 'Sales\CustomerPaymentController@generatePdf');
     Route::post('/customer-invoices/send_invoice_to_poliza', 'Sales\CustomerInvoiceController@send_invoice_to_poliza');
-    //POLIZAS
-    Route::get('/customer-polizas-show', 'Sales\CustomerPolizaController@show');
-    Route::post('/customer-polizas-search', 'Sales\CustomerPolizaController@search');
-    Route::post('/customer-polizas-cancel', 'Sales\CustomerPolizaController@cancel_poliza');
-    Route::post('/customer-polizas-getdata', 'Sales\CustomerPolizaController@get_data_poliza');
-    Route::post('/customer-polizas-report', 'Sales\CustomerPolizaController@get_report_poliza');
-    Route::post('/customer-polizas-get-movs', 'Sales\CustomerPolizaController@get_facts_mov_data');
-    Route::post('/customer-polizas-save-movs', 'Sales\CustomerPolizaController@save_poliza_movs');
-    Route::post('/customer-polizas-delete', 'Sales\CustomerPolizaController@delete_poliza');
     
-    //REPORTES FACTURACION Y CONTABILIDAD
-    Route::get('/billing_report', 'Sales\BillingReportController@index');
-    Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
     Route::post('/customer-invoices-cont-rz', 'Sales\CustomerInvoiceController@getDataContractRz');
 
 });
@@ -1250,7 +1238,21 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
    Route::post('/get_diario_general', 'Accounting\DiaryPoliceController@get_diary_general_data');
    Route::post('/get_diario_detalle', 'Accounting\DiaryPoliceController@get_diary_detail_data');
     
+  //POLIZAS
+  Route::get('/customer-polizas-show', 'Accounting\CustomerPolizaController@show');
+  Route::post('/customer-polizas-search', 'Accounting\CustomerPolizaController@search');
+  Route::post('/customer-polizas-cancel', 'Accounting\CustomerPolizaController@cancel_poliza');
+  Route::post('/customer-polizas-getdata', 'Accounting\CustomerPolizaController@get_data_poliza');
+  Route::post('/customer-polizas-report', 'Accounting\CustomerPolizaController@get_report_poliza');
+  Route::post('/customer-polizas-get-movs', 'Accounting\CustomerPolizaController@get_facts_mov_data');
+  Route::post('/customer-polizas-save-movs', 'Accounting\CustomerPolizaController@save_poliza_movs');
+  Route::post('/customer-polizas-delete', 'Accounting\CustomerPolizaController@delete_poliza');
+  Route::post('/get-movs-by-poliza', 'Accounting\CustomerPolizaController@get_movtos_by_poliza');
   
+  //REPORTES FACTURACION Y CONTABILIDAD
+  Route::get('/billing_report', 'Sales\BillingReportController@index');
+  Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
+
   });
 
 Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
