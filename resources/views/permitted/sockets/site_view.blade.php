@@ -240,7 +240,7 @@
   </div>
   <!--Vista general-->
   <div class="modal fade" id="VistaGeneral" tabindex="-1" role="dialog" aria-labelledby="VistaGeneralLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <!--<div class="modal-header bg-primary">
           <h5 class="modal-title text-white" id="VistaGeneralLabel"><i class="far fa-eye"></i> Vista general</h5>
@@ -249,7 +249,7 @@
           </button>
         </div>-->
         <div class="modal-body">
-          <table id="lugares" class="table table-sm  table-borderless compact-tab w-100" style="">
+          <table id="lugares" class="table  table-borderless compact-tab w-100" style="">
             <thead class="bg-primary">
               <tr>
                 <th>Nombre</th>
@@ -291,7 +291,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
-  <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" charset="utf-8"></script>
+  <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
+  <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
   <script src="js/admin/sockets/dashboard/vistageneral.js" charset="utf-8"></script>
   <script src="js/admin/sockets/dashboard/main_socket.js" charset="utf-8"></script>
   <script src="js/admin/sockets/toastr.js"></script>
