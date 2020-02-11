@@ -30,7 +30,7 @@ class DiaryPoliceController extends Controller
 
 	public function view_diary_general()
 	{
-		return view('permitted.accounting.polizas_diario_general');
+		return view('permitted.accounting.polizas_diario');
 	}
 
 	public function get_diary_general_data(Request $request)
@@ -40,11 +40,6 @@ class DiaryPoliceController extends Controller
 		$result = DB::select('CALL px_polizas_xmes(?)', array($date_a));
 
 		return $result;
-	}
-
-	public function view_diary_detail()
-	{
-		return view('permitted.accounting.polizas_diario_detalle');
 	}
 
 	public function get_diary_detail_data(Request $request)

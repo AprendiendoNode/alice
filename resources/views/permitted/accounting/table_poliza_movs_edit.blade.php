@@ -77,8 +77,8 @@
                 @endforeach
               </select>
             </td>
-            <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia"  type="number" value="{{$day}}"></td>
-            <td><input style="width:94px;text-align:center" class="form-control form-control-sm tipo_cambio"  type="number" value="{{$data->exchange_rate}}"></td>
+            <td><input readonly style="width:58px;text-align:left" class="form-control form-control-sm dia"  type="number" value="{{$day}}"></td>
+            <td><input readonly style="width:94px;text-align:center" class="form-control form-control-sm tipo_cambio"  type="number" value="{{$data->exchange_rate}}"></td>
             <td class=""><input style="width:170px;text-align:left"  class="form-control form-control-sm nombre" type="text" value="{{$data->descripcion}}"></td>
             <td><input  onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos font-weight-bold" type="text" value="{{number_format($data->cargos, 2, '.', '')}}" ></td>
             <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm abonos font-weight-bold"  type="text" value="{{number_format($data->abonos, 2, '.', '')}}" ></td> 

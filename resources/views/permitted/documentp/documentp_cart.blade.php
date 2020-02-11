@@ -104,7 +104,7 @@
 
       });
     </script>
-    <script type="text/javascript" src="{{asset('js/admin/documentp/document_cart_general.js?v=2.2')}}"></script>
+    <script type="text/javascript" src="{{asset('js/admin/documentp/document_cart_general.js?v=3.0')}}"></script>
     @else
       @include('default.denied')
     @endif

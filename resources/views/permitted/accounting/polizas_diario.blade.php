@@ -24,7 +24,7 @@
         <div class="card-body">
           <form id="form" name="form" enctype="multipart/form-data">
             {{ csrf_field() }}
-            <h4 class="">Polizas de diario - Detalle</h4>
+            <h4 class="">Polizas de diario</h4>
             <div class="row">             
               <div class="col-md-3 col-xs-12">
                 <div class="form-group" id="date_from">
@@ -54,9 +54,48 @@
     </div>
   </div>
 
-    <div class="row">
+
+  <!------------------TABS POLIZAS DIARIO GENERAL / DETALLE---------------->
+
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-poliza-general-tab" data-toggle="tab" href="#nav-poliza-general" role="tab" aria-controls="nav-home" aria-selected="true">General</a>
+      <a class="nav-item nav-link" id="nav-poliza-detalle-tab" data-toggle="tab" href="#nav-poliza-detalle" role="tab" aria-controls="nav-profile" aria-selected="false">Detalle</a>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <!---------------------------------POLIZAS GENERAL---------------------------------->
+    <div class="tab-pane fade show active" id="nav-poliza-general" role="tabpanel" aria-labelledby="nav-poliza-general-tab">
+      <div class="row mt-5">
         <div class="col-12 table-responsive">
             <table id="tabla_diario_general" class="table table-sm">
+              <thead class="bg-secondary text-white">
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th>Ejerc.</th>
+                  <th>Mes</th>
+                  <th>Tipo</th>
+                  <th>Núm.</th>
+                  <th>Día</th>
+                  <th>Descripción gral.</th>
+                  <th>Cargos</th>
+                  <th>Abonos</th>
+                  <th>Fecha de creación</th>
+                  <th>Última modificación</th>
+                </tr>
+              </thead>
+              <tbody>
+                  
+              </tbody>
+            </table>    
+        </div>
+      </div>
+    </div>
+    <!---------------------------------POLIZAS DETALLE---------------------------------->
+    <div class="tab-pane fade" id="nav-poliza-detalle" role="tabpanel" aria-labelledby="nav-poliza-detalle-tab">
+      <div class="row mt-5">
+        <div class="col-12 table-responsive">
+            <table id="tabla_diario_detalle" class="table table-sm">
               <thead class="bg-secondary text-white">
                 <tr>
                   <th></th>
@@ -80,6 +119,61 @@
             </table>    
         </div>
     </div>
+    </div>
+    
+  </div>
+
+    
+
+    <!----------------------MODAL POLIZA MOVIMIENTOS--------------------------->
+  <div id="modal_view_poliza" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Póliza</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="form_update_asientos_contables">
+        <div class="modal-body">
+          <!------TABLA DE PARTIDAS / ASIENTO CONTABLE------>
+          <div class="row mt-2 mb-3">
+            <div id="data_asientos" class="col-12 table-responsive">
+              
+            </div>
+          </div>
+          <!------------RESUMEN FACTURA--------->
+          {{-- <div class="row mt-5">
+            <div class="col-12 table-responsive">
+              <table class="table table-sm">
+                <thead class="bg-secondary text-white">
+                  <tr>
+                    <th>Org.</th>
+                    <th>Partida</th>
+                    <th>Dia</th>
+                    <th>No.</th>
+                    <th>Tipo</th>
+                    <th>UUID / Folio</th>
+                    <th>Beneficiario</th>
+                    <th>Importe</th>
+                  </tr>
+                </thead>
+                <tbody>       
+                </tbody>
+              </table>
+            </div>
+          </div> --}}  
+        </div>
+        <div class="modal-footer">
+          <button type="submit" id="update_poliza_partida" type="button" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </form> 
+      </div>
+    </div>
+  </div>
+ <!----------------------------- FIN MODAL POLIZA MOVIMIENTOS--------------------------------->
   @else
     @include('default.denied')
   @endif
@@ -164,8 +258,18 @@
         height: 38px !important;
     }
 
+    #tabla_diario_detalle tbody tr td {
+      padding: 0.2rem 0.5rem;
+      height: 38px !important;
+    }
+
+    #tabla_diario_detalle thead tr th{
+        padding: 0.2rem 0.5rem;
+        height: 38px !important;
+    }
+
   </style>
-  <script src="{{ asset('js/admin/accounting/poliza_diario_detalle.js')}}"></script>
+  <script src="{{ asset('js/admin/accounting/poliza_diario.js')}}"></script>
   @else
   @endif
 @endpush

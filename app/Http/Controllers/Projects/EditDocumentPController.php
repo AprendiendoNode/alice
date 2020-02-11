@@ -54,6 +54,12 @@ class EditDocumentPController extends Controller
     $viewPermitted = view('permitted.documentp.show' ,compact('id_document', 'hour_created','grupos', 'anexos','data_header', 'tipo_cambio', 'categories', 'itc', 'verticals', 'comerciales', 
     'type_service', 'priorities', 'installation','products_gabinetes', 'materiales', 'medidas','product_ap', 'product_sw', 'product_fw'));
     $viewBlock = view('permitted.documentp.edit_documentp_block', compact('folio', 'hour_created'));
+    
+    //Solo Mario Lara y Manuel Moreno pueden editar documentos P | M aunque ya hayan sido entregados
+    if(Auth::id() == 86 || Auth::id() == 87){
+      return $viewPermitted;
+    }
+    
     //dd($this->validateHourEdit($hour_created, $num_edit));
     if($this->check_user_permission() == 0 || $this->check_user_permission() == 1){
         //Se revisa si el documento no ha sido aprobado

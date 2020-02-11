@@ -147,7 +147,7 @@ $(function () {
 
   $("#doc_type").on("change", function(){
     let type_doc = $(this).val();
-    localStorage.clear();
+    
     if(type_doc == 1){
       $(".fields_docp").css('display', 'block');
       $(".fields_docm").css('display', 'none');

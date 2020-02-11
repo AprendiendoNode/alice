@@ -76,7 +76,7 @@ $(function() {
     //-----------------------------------------------------------
     $("#form input[name='filter_date_from']").daterangepicker({
         singleDatePicker: true,
-        showDropdowns: true,
+        showDropd/owns: true,
         locale: {
             format: 'DD-MM-YYYY'
         },
@@ -496,7 +496,7 @@ function cancel_poliza(e){
 
 //Formato numerico: 00,000.00
 function format_number(number){
-  return number.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function remove_commas(number){

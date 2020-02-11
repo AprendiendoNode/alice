@@ -70,7 +70,7 @@
     @include('default.denied')
   @endif
   <script type="text/javascript" src="{{asset('js/admin/documentp/documentp_logs.js?v=1.0.3')}}"></script>
-  <script type="text/javascript" src="{{asset('js/admin/documentp/edit_document_cart_general.js?v=3.5')}}"></script>
+  <script type="text/javascript" src="{{asset('js/admin/documentp/edit_document_cart_general.js?v=4.0')}}"></script>
   @if( auth()->user()->can('View level zero documentp notification') )
     <script type="text/javascript" src="{{asset('js/admin/documentp/edit_documentp_itc.js?v=3.0.3')}}"></script>
   @elseif ( auth()->user()->can('View level one documentp notification') )
