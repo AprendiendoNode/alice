@@ -1,5 +1,24 @@
 $(window).on("load", function() {
 
+  //SHORTROUTES, TEMPORAL UBICATION
+  $(document).keydown(function(e) {
+      if (e.keyCode == 17 && ctrl_status > 0) { //ctrl key
+        ctrl_status = 2;
+        $('.blink').draggable('disable');
+        $('.blink').resizable('disable');
+      }
+  });
+
+  $(document).keyup(function(e) {
+      if (e.keyCode == 17 && ctrl_status > 0) { //ctrl key
+        ctrl_status = 1;
+        $('.blink').draggable('enable');
+        if($(".ui-selected").length == 0) {
+          $('.blink').resizable('enable');
+        }
+      }
+  });
+
   /*$("#mapa").draggable({
     containment: "#containment-wrapper",
     stop: function(e, ui) { ajustarMapa(1); }
@@ -48,7 +67,9 @@ $(window).on("load", function() {
       }
     },
     unselected: function(event,ui){
-      $('.blink').resizable('enable');
+      if(ctrl_status != 2) {
+        $('.blink').resizable('enable');
+      }
     }
   });
 

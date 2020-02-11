@@ -340,7 +340,8 @@
     var allAreas = null;
     var cambios = [];
     var pisoActual = "";
-    var elementsarray=[];
+    var elementsarray = [];
+    var ctrl_status = 1; //0 is OFF, 1 is ACTIVE and 2 is PRESSED
 
     $(window).on("load", function() {
 

@@ -7,13 +7,23 @@ $(window).on("load", function() {
       trigger: (($(window).width() < 700) ? 'left' : 'right'),
       events: {
          show : function(options) {
-           //console.log('entro');
+           ctrl_status = 0;
+           $(".blink").resizable('disable');
            $('#mapa').contextMenu(false);
-           $("#"+this[0].id).css("opacity", "0.5");
+           //$("#"+this[0].id).css("opacity", "0.5");
+           if(!$("#"+this[0].id).hasClass("ui-selected")) {
+             $(".blink").removeClass('ui-selected');
+             $("#"+this[0].id).addClass("ui-selected");
+           }
          },
          hide : function(options) {
+           ctrl_status = 1;
+           if($(".ui-selected").length == 0) {
+             $(".blink").resizable('enable');
+           }
            $('#mapa').contextMenu(true);
-           $("#"+this[0].id).css("opacity", "1");
+           //$("#"+this[0].id).css("opacity", "1");
+           //$("#"+this[0].id).removeClass("ui-selected");
          }
       },
       callback: function(key, options) {
@@ -38,10 +48,6 @@ $(window).on("load", function() {
 
               $("#nuevoNombre").val(areaActual[0].nombre);
 
-              if($(".ui-selected").length==0){
-              elementsarray.push(parseInt(areaActual[0].id));//$('#selected_area').val(areaActual[0].id);
-              }
-
               $("#CambiarNombre").modal("show");
 
               break;
@@ -49,10 +55,6 @@ $(window).on("load", function() {
             case "estado":
 
               $("#nuevoEstado").val(areaActual[0].estado);
-
-              if($(".ui-selected").length==0){
-              elementsarray.push(parseInt(areaActual[0].id));//$('#selected_area').val(areaActual[0].id);
-              }
 
               $("#CambiarEstado").modal("show");
 
@@ -63,19 +65,11 @@ $(window).on("load", function() {
               $("#nuevoPiso").val(areaActual[0].piso);
               $("#nuevoPiso").trigger('change');
 
-              if($(".ui-selected").length==0){
-              elementsarray.push(parseInt(areaActual[0].id));//$('#selected_area').val(areaActual[0].id);
-              }
-
               $("#CambiarPisoMenu").modal("show");
 
               break;
 
             case "eliminar":
-
-              if($(".ui-selected").length==0){
-              elementsarray.push(parseInt(areaActual[0].id));//$('#selected_area').val(areaActual[0].id);
-              }
 
               $("#EliminarArea").modal("show");
 
