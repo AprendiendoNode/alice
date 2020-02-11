@@ -76,7 +76,7 @@ $(function() {
     //-----------------------------------------------------------
     $("#form input[name='filter_date_from']").daterangepicker({
         singleDatePicker: true,
-        showDropd/owns: true,
+        showDropdowns: true,
         locale: {
             format: 'DD-MM-YYYY'
         },
