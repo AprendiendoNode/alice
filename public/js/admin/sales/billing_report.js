@@ -24,7 +24,7 @@ $("#search_info").validate({
     var formData = new FormData(form);
     $.ajax({
       type: "POST",
-      url: "/sales/get_billing_report",
+      url: "/accounting/get_billing_report",
       data: formData,
       contentType: false,
       processData: false,
@@ -48,12 +48,12 @@ function get_billing_report(){
     var formData = new FormData(form);
     $.ajax({
       type: "POST",
-      url: "/sales/get_billing_report",
+      url: "/accounting/get_billing_report",
       data: formData,
       contentType: false,
       processData: false,
       success: function (data){
-        // console.log(data);
+        console.log(data);
         table_billing(data, $("#table_billing"));
       },
       error: function (err) {

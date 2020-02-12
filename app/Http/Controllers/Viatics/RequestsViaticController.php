@@ -530,7 +530,7 @@ public function history_three (Request $request) { /*Devuelve todas las solicitu
   $user = Auth::user()->id;
   $estado = 3;
   $result = array();
-  if ($user === 424) {
+  if ($user === 78) {
     $user = 13;
   }
   $input_date_i= $request->get('date_to_search');

@@ -14,6 +14,7 @@ use App\Models\Purchases\Purchase;
 use App\Models\Purchases\PurchaseLine;
 use App\Models\Purchases\PurchaseTax;
 use App\Models\Catalogs\Tax;
+use App\Mail\PurchaseMail;
 use App\Cadena;
 use Carbon\Carbon;
 
@@ -117,8 +118,7 @@ class PurchasesController extends Controller
             $iva_ret = $request->iva_retencion;
             $pdf_fact = $request->file('file_pdf');
             $xml_fact = $request->file('file_xml');*/
-        //
-        // 
+        // End Variables
         
         // Begin a transaction
         \DB::beginTransaction();
