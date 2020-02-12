@@ -15,7 +15,7 @@ use App\Models\Catalogs\PaymentMethod;
 use App\Models\Catalogs\PaymentTerm;
 use App\Models\Catalogs\PaymentWay;
 
-
+use App\Models\Sales\Customer;
 use App\Models\Sales\Salesperson;
 
 use App\Models\Purchases\PurchaseLine;
@@ -67,6 +67,10 @@ class Purchase extends Model
     'created_uid',
     'updated_uid'
 ];
+public function customer()
+{
+    return $this->belongsTo(Customer::class);
+}
 
 public function paymentTerm()
 {

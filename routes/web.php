@@ -1286,6 +1286,17 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::post('/customer-credit-notes/get-accounting-account-product', 'Purchases\CustomerCreditNoteController@getAccountingAccountProduct');
   Route::post('/customer-credit-notes/total-lines', 'Purchases\CustomerCreditNoteController@totalLines');
   Route::post('/customer-credit-notes-cp-store', 'Purchases\CustomerCreditNoteController@store');
+
+  //Historial de notas de credito
+  Route::get('/credit-notes-history', 'Purchases\HistoryCreditNoteController@index');
+  Route::post('/credit-notes-history-search', 'Purchases\HistoryCreditNoteController@search');
+  Route::post('credit-notes-history/mark-sent', 'Purchases\HistoryCreditNoteController@markSent');
+  Route::post('credit-notes-history/destroy', 'Purchases\HistoryCreditNoteController@destroy');
+  Route::post('credit-notes-history/poliza', 'Purchases\HistoryCreditNoteController@poliza');
+  Route::get('credit-notes-history/{id}', 'Purchases\HistoryCreditNoteController@generate_invoice_pdfs');
+  Route::post('credit-notes-history/modal-send-mail', 'Purchases\HistoryCreditNoteController@modalSendMail');
+  Route::post('credit-notes-history-sendmail', 'Purchases\HistoryCreditNoteController@sendmail_facts_customers');
+
 });
 Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){
   //Integracion contable

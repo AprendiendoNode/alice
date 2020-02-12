@@ -20,6 +20,8 @@ use ZipArchive;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+use App\Models\Purchases\Purchase;
+
 class SalesHelper
 {
 
@@ -72,7 +74,32 @@ class SalesHelper
 
         return $html;
     }
+    /**
+     * Estatus de nota de credito compras en html
+     *
+     * @param $status
+     * @return string
+     */
+    public static function statusCustomerCreditNoteComprasHtml($status)
+    {
+        $html = '';
+        if ((int)$status == Purchase::ELABORADO) {
+            $html = '<label class="label label-primary">' . __('purchase.text_status_elaborado') . '</label>';
+        } elseif ((int)$status == Purchase::REVISADO) {
+            $html = '<label class="label label-success">' . __('purchase.text_status_revisado') . '</label>';
+        } elseif ((int)$status == Purchase::AUTORIZADO) {
+            $html = '<label class="label label-warning">' . __('purchase.text_status_autorizado') . '</label>';
+        } elseif ((int)$status == Purchase::CANCELADO) {
+            $html = '<label class="label label-danger">' . __('purchase.text_status_cancelado') . '</label>';
+        } elseif ((int)$status == Purchase::CONCILIADA) {
+            $html = '<label class="label label-dark">' . __('purchase.text_status_conciliada') . '</label>';
+        }
+         else {
 
+        }
+
+        return $html;
+    }
     /**
      * Estatus de pagos en html
      *

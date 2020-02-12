@@ -10,6 +10,8 @@ return [
     'text_status_revisado' => 'Revisado',
     'text_status_autorizado' => 'Autorizado',
     'text_status_cancelado' => 'Cancelado',
+    'text_status_conciliada' => 'Conciliada',
+
 
     'text_status_open' => 'Por conciliar',
     'text_status_paid' => 'Pagada',
