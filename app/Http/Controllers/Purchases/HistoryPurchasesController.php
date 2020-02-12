@@ -51,7 +51,7 @@ class HistoryPurchasesController extends Controller
         $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
         $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
         $estatus = $request->filter_status;
-        
+
         // $estatus = !empty($request->filter_status) ? $request->filter_status : '';
 
         $resultados = DB::select('CALL px_purchases_xrango (?,?,?)',array($date_a, $date_b, $estatus));
@@ -61,10 +61,24 @@ class HistoryPurchasesController extends Controller
     {
         $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
         $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
-        
+
         // $estatus = !empty($request->filter_status) ? $request->filter_status : '';
 
         $resultados = DB::select('CALL px_purchases_xrango (?,?,?)',array($date_a, $date_b, $estatus));
+        return $resultados;
+    }
+    public function modal_purchase(Request $request)
+    {
+        $purchase = $request->valor;
+
+        $resultados = DB::select('CALL px_purchases_xid (?)',array($purchase));
+        return $resultados;
+    }
+    public function modal_purchase_lines(Request $request)
+    {
+        $purchase = $request->valor;
+
+        $resultados = DB::select('CALL px_purchases_lines_xid (?)',array($purchase));
         return $resultados;
     }
 

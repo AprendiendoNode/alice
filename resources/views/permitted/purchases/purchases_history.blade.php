@@ -50,6 +50,96 @@
               </div>
             </div>
         </div>
+        <div class="modal modal-default fade" id="modal-purchase-view" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title"><i class="fa fa-eye"></i> Compra</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="card-body table-responsive">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-2">
+                      <img src="/img/company/sitwifi_logo.jpg" style="max-width: 200%;" alt="Error" >
+                    </div>
+                    <div class="col-md-8 text-center">
+                      <h4 style="margin-bottom: 0px;">SITWIFI, S.A. DE C.V.</h4>
+                      <p style="margin-bottom: 0px;">HAMBURGO No. Ext. 159 No. Int. PISO 1</p>
+                      <p style="margin-bottom: 0px;">Col. JUAREZ C.P. 06600</p>
+                      <p style="margin-bottom: 0px;">Delg. CUAUHTÉMOC Cd. CIUDAD DE MÉXICO</p>
+                      <p style="margin-bottom: 0px;">R.F.C.: SIT070918IXA</p>
+                    </div>
+                  </div>
+                  <div class="row mt-2" style="border: 1px solid black;">
+                    <div class="col-md-6" style="font-weight: bold;">
+                      <p style="margin-bottom: 0px;">Folio: <span style="font-weight: normal;" id="modalFolio"></span></p>
+                      <p style="margin-bottom: 0px;">Nombre: <span style="font-weight: normal;" id="modalNombre"></span></p>
+                      <p style="margin-bottom: 0px;">Fecha de registro: <span style="font-weight: normal;" id="modalFechaReg"></span></p>
+                      <p style="margin-bottom: 0px;">Fecha de facturación: <span style="font-weight: normal;" id="modalFechaFact"></span></p>
+                      <p style="margin-bottom: 0px;">Fecha de vencimiento: <span style="font-weight: normal;" id="modalFechaVenc"></span></p>
+                    </div>
+                    <div class="col-md-6" style="font-weight: bold;">
+                      <p style="margin-bottom: 0px;">Término de pago: <span style="font-weight: normal;" id="modalTerminoPago"></span></p>
+                      <p style="margin-bottom: 0px;">Forma de pago: <span style="font-weight: normal;" id="modalFormaPago"></span></p>
+                      <p style="margin-bottom: 0px;">Método de pago: <span style="font-weight: normal;" id="modalMetodoPago"></span></p>
+                      <p style="margin-bottom: 0px;">Uso de CFDI: <span style="font-weight: normal;" id="modalUsoCFDI"></span></p>
+                      <p style="margin-bottom: 0px;">Moneda: <span style="font-weight: normal;" id="modalMoneda"></span></p>
+                    </div>
+                  </div>
+                  <div class="row mt-1">
+                    <div class="table-responsive">
+                       <table id="table_modal_purchase" class="table table-striped table-bordered table-hover compact-tab w-100">
+                         <thead>
+                           <tr class="bg-secondary" style="background: #088A68;">
+                              <th> <small>Cantidad</small> </th>
+                              <th> <small>Producto</small> </th>
+                              <th> <small>Descripción</small> </th>
+                              <th> <small>Costo Unitario</small> </th>
+                              <th> <small>Importe S/Descuento</small> </th>
+                              <th> <small>Importe C/Descuento</small> </th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                         </tbody>
+                         <tfoot id='tfoot_average'>
+                           <tr>
+                             <th></th>
+                             <th></th>
+                             <th></th>
+                             <th></th>
+                             <th></th>
+                             <th></th>
+                           </tr>
+                         </tfoot>
+                       </table>
+                     </div>
+                  </div>
+                  <div class="row" style="font-weight: bold;">
+                    <div id="montoLetras" class="col-md-7" style="padding-top: 20px; border: 1px solid black;">f</div>
+                    <div class="col-md-3" style="border: 1px solid black;">
+                      <p style="margin-bottom: 0px;">Total S/Descuento</p>
+                      <p style="margin-bottom: 0px;">Total Descuento</p>
+                      <p style="margin-bottom: 0px;">Subtotal</p>
+                      <p style="margin-bottom: 0px;">Impuestos</p>
+                      <p style="margin-bottom: 0px;">Total</p>
+                    </div>
+                    <div class="col-md-2 text-right" style="border: 1px solid black;">
+                      <p style="margin-bottom: 0px;" id="totales1">$ 0</p>
+                      <p style="margin-bottom: 0px;" id="totales2">$ 0</p>
+                      <p style="margin-bottom: 0px;" id="totales3">$ 0</p>
+                      <p style="margin-bottom: 0px;" id="totales4">$ 0</p>
+                      <p style="margin-bottom: 0px; border-top: 1px solid black;" id="totales5">$ 0</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" style="margin-right: 4px;"></i>{{ trans('message.ccmodal') }}</button>
+                </div>
+              </div>
+            </div>
+        </div>
     @if( auth()->user()->can('View level zero purchase') )
       <div class="row">
         <div class="col-md-12">
@@ -219,7 +309,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="col-md-3 col-xs-12 pt-4">
                     <button type="submit"
                             onclick=""
@@ -344,7 +434,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <div class="col-md-3 col-xs-12 pt-4">
                       <button type="submit"
                               onclick=""
@@ -463,7 +553,7 @@
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
-
+    <script src="{{ asset('js/admin/purchases/purchase_view.js')}}"></script>
     @if( auth()->user()->can('View level zero purchase') )
       <script src="{{ asset('js/admin/purchases/purchase_history_zero.js')}}"></script>
     @elseif( auth()->user()->can('View level one purchase') )

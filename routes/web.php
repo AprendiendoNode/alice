@@ -1267,6 +1267,8 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   //Historial de compras
   Route::get('/view_purchases_show', 'Purchases\HistoryPurchasesController@index');
   Route::post('/view_purchases_search', 'Purchases\HistoryPurchasesController@search');
+  Route::post('/modal_purchase', 'Purchases\HistoryPurchasesController@modal_purchase');
+  Route::post('/modal_purchase_lines', 'Purchases\HistoryPurchasesController@modal_purchase_lines');
 
   Route::post('/send_purchase_one', 'Purchases\HistoryPurchasesController@approval_one');
   Route::post('/send_purchase_two', 'Purchases\HistoryPurchasesController@approval_two');
