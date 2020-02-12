@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View polizas') )
+  @if( auth()->user()->can('View polizas diario') )
   Diario - Vista General
   @else
   {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View polizas') )
+  @if( auth()->user()->can('View polizas diario') )
     Diario - Vista General
   @else
   {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View polizas') )
+  @if( auth()->user()->can('View polizas diario') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -166,7 +166,9 @@
           </div> --}}  
         </div>
         <div class="modal-footer">
-          <button type="submit" id="update_poliza_partida" type="button" class="btn btn-primary">Guardar</button>
+          @if( auth()->user()->can('Polizas update') )
+            <button type="submit" id="update_poliza_partida" type="button" class="btn btn-primary">Guardar</button>
+          @endif
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
       </form> 

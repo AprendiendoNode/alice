@@ -236,44 +236,52 @@ class CustomerPolizaController extends Controller
         $asientos = DB::select('CALL px_polizas_movtos_xpoliza(?)', array($id_poliza));
 
         //return $asientos;
-        
-        return view('permitted.accounting.table_poliza_movs_edit', 
+
+        if(auth()->user()->can('Polizas readonly')){
+            return view('permitted.accounting.table_poliza_movs_readonly', 
                compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num'));
+        }else{
+            return view('permitted.accounting.table_poliza_movs_edit', 
+               compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num'));
+        }   
         
     }
 
 
     public function delete_poliza(Request $request)
     {
-        $id_poliza = json_encode($request->id_poliza);
-        $flag = "false";
-        
-        if($id_poliza != null && $id_poliza != ''){
+        if(auth()->user()->can('Polizas delete')) {
+            $id_poliza = json_encode($request->id_poliza);
+            $flag = "3";
+            
+            if($id_poliza != null && $id_poliza != ''){
 
-            DB::beginTransaction();
+                DB::beginTransaction();
 
-            try {      
-                //Reestableciendo bandera de contabilizando a 0  de las facturas involucradas  
-                $ids_customers = DB::table('polizas_movtos')->select()->where('poliza_id', '=', $id_poliza )->pluck('customer_invoice_id'); 
-                $ids_customers_unique = $ids_customers->unique();
-                $customer_invoice = CustomerInvoice::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
-                //Eliminando partidas dentro de la poliza
-                DB::table('polizas_movtos')->where('poliza_id', '=', $id_poliza )->delete(); 
-                //Eliminando poliza
-                DB::table('polizas')->where('id', '=', $id_poliza)->delete();
-                DB::commit();
+                try {      
+                    //Reestableciendo bandera de contabilizando a 0  de las facturas involucradas  
+                    $ids_customers = DB::table('polizas_movtos')->select()->where('poliza_id', '=', $id_poliza )->pluck('customer_invoice_id'); 
+                    $ids_customers_unique = $ids_customers->unique();
+                    $customer_invoice = CustomerInvoice::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
+                    //Eliminando partidas dentro de la poliza
+                    DB::table('polizas_movtos')->where('poliza_id', '=', $id_poliza )->delete(); 
+                    //Eliminando poliza
+                    DB::table('polizas')->where('id', '=', $id_poliza)->delete();
+                    DB::commit();
 
-                $flag = "true";
+                    $flag = "1";
 
-            } catch(\Exception $e){
-                $error = $e->getMessage();
-                DB::rollback();
-                dd($error);
+                } catch(\Exception $e){
+                    $error = $e->getMessage();
+                    DB::rollback();
+                    dd($error);
+                }
             }
+        }else {
+            $flag = "2";
         }
 
-        return  $flag;
-        
+        return  $flag;        
     }
 
     public function delete_partida_poliza(Request $request)
