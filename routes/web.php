@@ -849,6 +849,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/configure_survey_admin' , 'Survey\ConfigurationSurveyController@index');
     Route::post('/assign_survey' , 'Survey\ConfigurationSurveyController@create');
     Route::get('/survey_results' , 'Survey\ResultsSurveyController@index');
+    Route::get('/survey_results_client' , 'Survey\ResultsSurveyController@index2');
+    Route::post('/survey_viewresults_modal' , 'Survey\ResultsSurveyController@survey_viewresults_modal');
+    Route::post('/sent_survey_client' , 'Survey\ResultsSurveyController@sent_survey_client');    
+    Route::post('get_history_surveyresult_modal','Survey\ResultsSurveyController@get_history_surveyresult_modal');
     //Crear encuestas
     Route::get('/create_survey_admin' , 'Survey\CreateSurveyController@index');
     Route::post('/store_new_survey_admin' , 'Survey\CreateSurveyController@store');
