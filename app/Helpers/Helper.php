@@ -302,6 +302,39 @@ class Helper
        }
     }
     /**
+     * Consecutivo por tipo de documento politica
+     *
+     * @param $code
+     * @return array
+     * @throws \Exception
+    */
+    public static function getNextDocumentTypePolicy($code)
+    {
+       try {
+           $data = [];
+
+           $document_type = DB::connection('contabilidad')
+                         ->table('tipos_poliza')
+                         ->where('id', '=', $code)
+                         ->select('id','clave', 'descripcion', 'contador')
+                         ->get();
+           if (!empty($document_type)) {
+             $document_type[0]->contador += 1;
+             $data['folio'] = $document_type[0]->contador;
+             $data['name'] = $document_type[0]->clave;
+             $data['id'] = $document_type[0]->id;
+           } else {
+               throw new \Exception(__('document_type.error_next_document_type'));
+           }
+           if (empty($data['id']) || empty($data['name'])) {
+               throw new \Exception(__('document_type.error_next_document_type'));
+           }
+           return $data;
+       } catch (\Exception $e) {
+           throw $e;
+       }
+    }
+    /**
      * Crea directorios para CFDI's
      *
      * @return string

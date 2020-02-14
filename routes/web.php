@@ -1298,6 +1298,10 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::get('credit-notes-history/{id}', 'Purchases\HistoryCreditNoteController@generate_invoice_pdfs');
   Route::post('credit-notes-history/modal-send-mail', 'Purchases\HistoryCreditNoteController@modalSendMail');
   Route::post('credit-notes-history-sendmail', 'Purchases\HistoryCreditNoteController@sendmail_facts_customers');
+  //
+  Route::post('get_note_cred_mov_data', 'Purchases\HistoryCreditNoteController@get_note_cred_mov_data');
+  Route::post('credit-notes-history/contador', 'Purchases\HistoryCreditNoteController@GetNextContador');
+
 
 });
 Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){

@@ -75,13 +75,10 @@ class HistoryCreditNoteController extends Controller
     public function search(Request $request)
     {
       $date_from  = $request->filter_date_from;
-      $date_to  = $request->filter_date_to;
-      $cliente = !empty($request->filter_customer_id) ? $request->filter_customer_id : NULL;
-      $estatus = !empty($request->filter_status) ? $request->filter_status : '';
-
+      $date_a  = $date_from.'-01';
+      $cliente = !empty($request->filter_customer_id) ? $request->filter_customer_id : 0;
       $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
-      $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
-      $resultados = DB::select('CALL px_purchase_xrango (?,?,?)',array($date_a, $date_b,  $cliente));
+      $resultados = DB::select('CALL px_purchase_xfecha (?,?)',array($date_a, $cliente));
       return json_encode($resultados);
     }
     public function generate_invoice_pdfs($id)
@@ -206,6 +203,22 @@ class HistoryCreditNoteController extends Controller
       $customer_credit_note->save();
       return response()->json(['status' => 200]);
     }
-    public function poliza(Request $request) {
+    public function get_note_cred_mov_data(Request $request) {
+      $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
+      $date_req = $request->date;
+      $date_rest = $date_req.'-01';
+      $date = \Carbon\Carbon::now();
+
+      $next_id_num = 0;
+      $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+      $facturas = json_decode($request->facturas);
+      $asientos = array();
+      return view('permitted.purchases.table_asientos_contables_nota',
+      compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num', 'date_rest', 'date'));
+    }
+    public function GetNextContador(Request $request)
+    {
+      $document_type = Helper::getNextDocumentTypePolicy(1);
+      return $document_type['folio'];    
     }
 }

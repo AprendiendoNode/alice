@@ -1,5 +1,23 @@
 var quill;
 $(function() {
+  moment.locale('es');
+
+  const startOfMonth = moment().startOf('month').format('YYYY-MM');
+  $('#filter_date_from').val(startOfMonth);
+  $('#filter_date_from').datepicker({
+    language: 'es',
+    orientation: "bottom left",
+    format: "yyyy-mm",
+    viewMode: "months",
+    minViewMode: "months",
+    endDate: '1m',
+    autoclose: true,
+    clearBtn: true,
+    templates: {
+      leftArrow: '<i class="simple-icon-arrow-left"></i>',
+      rightArrow: '<i class="simple-icon-arrow-right"></i>'
+    }
+  });
   if ($("#message").length) {
       quill = new Quill('#message', {
       modules: {
@@ -16,27 +34,7 @@ $(function() {
     });
   }
   $("#filter_customer_id").select2({ width: '90%' });
-  $("#filter_status").select2({ width: '80%' });
-  $("#form input[name='filter_date_from']").daterangepicker({
-      singleDatePicker: true,
-      showDropdowns: true,
-      locale: {
-          format: 'DD-MM-YYYY'
-      },
-      autoUpdateInput: false
-  }, function (chosen_date) {
-      $("#form input[name='filter_date_from']").val(chosen_date.format('DD-MM-YYYY'));
-  });
-  $("#form input[name='filter_date_to']").daterangepicker({
-      singleDatePicker: true,
-      showDropdowns: true,
-      locale: {
-          format: 'DD-MM-YYYY'
-      },
-      autoUpdateInput: false,
-  }, function (chosen_date) {
-      $("#form input[name='filter_date_to']").val(chosen_date.format('DD-MM-YYYY'));
-  });
+
   //-----------------------------------------------------------
   $("#form").validate({
     ignore: "input[type=hidden]",
@@ -77,12 +75,6 @@ $(function() {
           processData: false,
           success: function (data){
             table_filter(data, $("#table_filter_fact"));
-            // if (typeof data !== 'undefined' && data.length > 0) {
-            //   console.log(data.length);
-            // }
-            // else {
-            //
-            // }
           },
           error: function (err) {
             Swal.fire({
@@ -105,6 +97,7 @@ $.each(JSON.parse(datajson), function(index, information){
   var status = information.status;
   var mail = information.mail_sent;
   var poliza = information.poliza;
+  var contabilizado = information.contabilizado;
 
   var ELABORADO = 1; //ELABORADO
   var REVISADO = 2;  //REVISADO
@@ -155,7 +148,14 @@ $.each(JSON.parse(datajson), function(index, information){
 
   var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a09+a10+a11;
 
+  if ( parseInt(contabilizado) != 0 ) {
+    status_contabilizado = '<i class="fas fa-check text-success"></i>';
+  }
+  else {
+    status_contabilizado = '<i class="fas fa-times text-danger"></i>';
+  }
   vartable.fnAddData([
+    information.id,
     dropdown,
     information.name,
     information.customers,
@@ -164,15 +164,49 @@ $.each(JSON.parse(datajson), function(index, information){
     information.amount_total,
     information.balance,
     mail_status,
-    html
+    html,
+    status_contabilizado,
+    information.contabilizado
   ]);
 });
 }
 var Configuration_table_responsive_doctypes = {
+  "select": true,
+  "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
   "columnDefs": [
+      {
+        "targets": 0,
+        "checkboxes": {
+          'selectRow': true
+        },
+        "width": "0.1%",
+        "createdCell": function (td, cellData, rowData, row, col){
+          if ( cellData > 0 ) {
+            if(rowData[11] == 1){
+              this.api().cell(td).checkboxes.disable();
+              $(td).parent().attr('style', 'background: #D6FFBE !important');
+            }
+          }
+        },
+        "className": "text-center",
+      },
       {
           "targets": 1,
           "className": "text-center",
+      },
+      {
+          "targets": 8,
+          "className": "text-center",
+      },
+      {
+          "targets": 10,
+          "className": "text-center",
+      },
+      {
+          "targets": 11,
+          "className": "text-center",
+          "visible": false,
+          "searchable": false
       }
   ],
   dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
@@ -180,7 +214,59 @@ var Configuration_table_responsive_doctypes = {
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
     "order": [[ 3, "asc" ]],
     buttons: [
+      {
+        text: '<i class=""></i> Contabilizar',
+        titleAttr: 'Contabilizar',
+        className: 'btn bg-dark',
+        init: function(api, node, config) {
+          $(node).removeClass('btn-default')
+        },
+        action: function ( e, dt, node, config ) {
+          var rows_selected = $("#table_filter_fact").DataTable().column(0).checkboxes.selected();
+          var _token = $('input[name="_token"]').val();
+          var facturas= new Array();
+          $.each(rows_selected, function(index, rowId){
+            facturas.push(rowId);
+          });
+          if ( facturas.length === 0){
+            Swal.fire('Debe selecionar al menos una factura','','warning')
+          }
+          else {
+            let _token = $('meta[name="csrf-token"]').attr('content');
+            $("#tabla_asiento_contable tbody").empty();
+            $.ajax({
+                type: "POST",
+                url: '/purchases/get_note_cred_mov_data',
+                data: {facturas: JSON.stringify(facturas) , date:$('#filter_date_from').val(),  _token : _token},
+                success: function (data) {
+                  let suma_cargos = 0.0;
+                  let suma_abonos = 0.0;
 
+                  $('#data_asientos').html(data);
+
+                  var req_date=$('#date_resive').val();
+                  var inputDayDate = moment().format('DD');
+                  var inputMonthDate = moment(req_date).format('MMMM');
+
+                  $('#day_poliza').val(inputDayDate);
+                  $('#mes_poliza').val(inputMonthDate);
+
+                  // $('.cuenta_contable').select2();
+                  // $('#day_poliza').val(dd);
+                  // $('#mes_poliza').val(mes);
+                },
+                error: function (err) {
+                  Swal.fire({
+                      type: 'error',
+                      title: 'Oops...',
+                      text: err.statusText,
+                    });
+                }
+            })
+            $("#modal_view_poliza").modal("show");
+          }
+        }
+      },
       {
         extend: 'excelHtml5',
         title: 'Nota de credito compras',
@@ -287,7 +373,7 @@ function link_cancel(e){
   var _token = $('meta[name="csrf-token"]').attr('content');
   Swal.fire({
   title: '¿Estás seguro de cancelar la nota de credito '+folio+'?',
-  html: "Esta acción no se podrá deshacer una vez confirmada la cancelación"+'<br>',
+  html: "Esta acción no se podrá deshacer una vez confirmada la cancelación"+'<br>'+'<strong>Revertira la operación de poliza</strong>',
   type: 'warning',
   showCancelButton: true,
   confirmButtonColor: '#3085d6',
@@ -481,3 +567,28 @@ $('#send_mail_button').on('click', function(){
       Swal.fire('Ocurrio un error inesperado','','error');
     })
 })
+
+$("#form_save_asientos_contables").on('change','#type_poliza',function(){
+  var type = $(this).val();
+  let _token = $('meta[name="csrf-token"]').attr('content');
+  if (type != '') {
+    $.ajax({
+         type: "POST",
+         url: '/purchases/credit-notes-history/contador',
+         data: {document_type : type, _token : _token},
+         success: function (data) {
+           $('#num_poliza').val(data);
+         },
+         error: function (err) {
+           Swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: err.statusText,
+            });
+         }
+    });
+  }
+  else {
+    $('#num_poliza').val(0);
+  }
+});
