@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,7 +14,7 @@ use App\Workstation;
 use App\Department;
 class User extends Authenticatable
 {
-    use Notifiable,SoftDeletes, HasRoles; //<-Se añade el HasRoles
+    use HasApiTokens, Notifiable,SoftDeletes, HasRoles; //<-Se añade el HasRoles
     protected $dates = ['deleted_at'];
 
     /**
