@@ -61,14 +61,28 @@ class BillingReportController extends Controller
         // return $date;
         $result = DB::select('CALL px_reporte_facturacion(?,?) ', array($date, $currency));
         
-        // $totales = DB::select('CALL px_reporte_facturacion_totales(?)', array($date));
         // px_reporte_facturacion_totales('20191101')
         return $result;
     }
 
     public function get_totales(Request $request)
     {
-        return 'ok';
+        $input_date_i = $request->date_to_search;
+        $currency = $request->currency_id;
+
+        if ($input_date_i != '') {
+            $date = $input_date_i.'-01';
+        }
+        else {
+            $date_current = date('Y-m');
+            $date = $date_current.'-01';
+        }
+
+        if ($currency == '') {
+            $currency = 1;
+        }
+        $totales = DB::select('CALL px_reporte_facturacion_totales(?,?)', array($date, $currency));
+        return $totales;
     }
 
 }

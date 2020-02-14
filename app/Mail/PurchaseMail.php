@@ -11,17 +11,15 @@ class PurchaseMail extends Mailable
 {
     use Queueable, SerializesModels;
     
-    // public $param; //Variable publica
-    // public $totales; //Variable publica
+    public $param; //Variable publica
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($param, $totales)
+    public function __construct($param)
     {
         $this->param = $param;
-        $this->totales = $totales;
     }
 
     /**

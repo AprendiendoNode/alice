@@ -52,7 +52,11 @@
            </form>
          </div>
        </div>
-       
+       <!-- <input type="text" id="total1" name="total1">
+       <input type="text" id="total2" name="total2">
+       <input type="text" id="total3" name="total3">
+       <input type="text" id="total4" name="total4">
+       <input type="text" id="total5" name="total5"> -->
        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
          <br>
          <div class="table-responsive">
@@ -62,16 +66,16 @@
                     <th><small>Moneda</small></th>
                     <th><small>Tipo</small></th>
                     <th><small>Numero</small></th>
+                    <th><small>Fecha</small></th>
                     <th><small>Cliente</small></th>
                     <th><small>Nombre del cliente</small></th>
                     <th><small>Estatus</small></th>
                     <th><small>N</small></th>
-                    <th><small>Subtotal</small></th>
-                    <th><small>Descuento</small></th>
-                    <th><small>Imp. IVA</small></th>
-                    <th><small>Imp. Ref. IVA</small></th>
-                    <th><small>Imp. Ref. ISR</small></th>
-                    <th><small>Imp. Total</small></th>
+                    <th class="sum_col"><small>Subtotal</small></th>
+                    <th class="sum_col"><small>Descuento</small></th>
+                    <th class="sum_col"><small>Imp. IVA</small></th>
+                    <th class="sum_col"><small>Imp. Ret. IVA</small></th>
+                    <th class="sum_col"><small>Imp. Total</small></th>
                     <th><small>Tipo Cambio</small></th>
                     <th><small>UUID</small></th>
                     <th><small>Dato 1</small></th>
@@ -82,21 +86,47 @@
              </tbody>
              <tfoot id='tfoot_average'>
                <tr>
+                 <th colspan="4"></th>
+                 <!-- <th></th>
+                 <th></th>
+                 <th></th>
+                 <th></th> -->
+                 <th colspan="4">Cargos MXN/Peso mexicano: </th>
+                 <th id="suma_untaxed"></th>
+                 <th id="suma_discount"></th>
+                 <th id="suma_tax"></th>
+                 <th id="suma_tax_ret"></th>
+                 <th id="suma_total"></th>
                  <th></th>
                  <th></th>
                  <th></th>
                  <th></th>
+               </tr>
+               <tr>
+                 <th colspan="4"></th>
+                 <th colspan="4">Abonos MXN/Peso mexicano: </th>
+                 <th id="suma_untaxed_c"></th>
+                 <th id="suma_discount_c"></th>
+                 <th id="suma_tax_c"></th>
+                 <th id="suma_tax_ret_c"></th>
+                 <th id="suma_total_c"></th>
                  <th></th>
                  <th></th>
                  <th></th>
+                 <th></th> 
+               </tr>
+               <tr>
+                 <th colspan="4"></th>
+                 <th colspan="4">Final MXN/Peso mexicano: </th>
+                 <th id="suma_untaxed_final"></th>
+                 <th id="suma_discount_final"></th>
+                 <th id="suma_tax_final"></th>
+                 <th id="suma_tax_ret_final"></th>
+                 <th id="suma_total_final"></th>
                  <th></th>
                  <th></th>
                  <th></th>
-                 <th></th>
-                 <th></th>
-                 <th></th>
-                 <th></th>
-                 <th></th>
+                 <th></th> 
                </tr>
              </tfoot>
            </table>
