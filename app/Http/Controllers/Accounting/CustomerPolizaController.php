@@ -98,7 +98,8 @@ class CustomerPolizaController extends Controller
         $asientos_data = json_decode($asientos);
         
         $tam_asientos = count($asientos_data);
-
+        $flag = "false";
+        
         DB::beginTransaction();
 
         try {

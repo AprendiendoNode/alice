@@ -1305,7 +1305,15 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   //
   Route::post('get_note_cred_mov_data', 'Purchases\HistoryCreditNoteController@get_note_cred_mov_data');
   Route::post('credit-notes-history/contador', 'Purchases\HistoryCreditNoteController@GetNextContador');
-
+  //Ordenes de compra
+  Route::get('/view_purchase_order', 'Purchases\PurchaseOrderController@index');
+  Route::get('/getProvidersFromProject/doc_id/{doc_id}', 'Purchases\PurchaseOrderController@getProvidersFromProject');
+  Route::get('/getProductsFromProjectsByProvider/doc_id/{doc_id}', 'Purchases\PurchaseOrderController@getProductsFromProjectsByProvider');
+  Route::post('/store-order', 'Purchases\PurchaseOrderController@store');
+  Route::get('/view_history_order_purchases', 'Purchases\PurchaseOrderController@view_history_order_purchases');
+  Route::post('/get-history-orders', 'Purchases\PurchaseOrderController@get_history_purchases_order');
+  Route::post('/get-products-cart-order', 'Purchases\PurchaseOrderController@get_products_by_cart_order');
+  Route::get('/print-order-purchase/{id_order_shop}/{id_cart}', 'Purchases\PurchaseOrderController@print_order_purchase');
 
 });
 Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){
