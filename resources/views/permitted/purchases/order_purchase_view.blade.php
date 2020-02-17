@@ -56,7 +56,7 @@
                 <div class="col-md-4 col-xs-12">
                     <div class="form-group">
                        <label for="name_fact"># Numero de orden:<span style="color: red;">*</span></label>
-                       <input type="text" class="form-control required" id="name_fact" name="name_fact" value="">
+                       <input type="text" class="form-control required" id="name_fact" name="name_fact" value="" required>
                     </div>
                 </div>
                 <div class="col-md-4 col-xs-12">
@@ -73,7 +73,7 @@
                 <div class="col-md-4 col-xs-12">
                   <label for="date_delivery" class="control-label  my-2">Fecha de entrega:<span style="color: red;">*</span></label>
                     <div class="input-group mb-3">
-                      <input type="text"  datas="date_delivery" id="date_delivery" name="date_delivery" class="form-control" placeholder="" value="{{ \App\Helpers\Helper::date(Date::parse('first day of this month')) }}" required>
+                      <input type="text"  datas="date_delivery" id="date_delivery" name="date_delivery" class="form-control" placeholder="" value="" required>
                       <div class="input-group-append">
                         <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
                       </div>

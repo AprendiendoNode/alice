@@ -60,26 +60,24 @@ class PurchaseOrderController extends Controller
 
     public function print_order_purchase($id_order_shop, $id_cart)
     {
-        $order_purchases = DB::table('order_purchase')->select('id', 'total')
-                                    ->where('id', $id_order_shop)->get();
         
         
         $products = DB::select('CALL px_order_cart_products_xorder_cart(?)', array($id_cart));
+        $order_purchases = DB::select('CALL px_order_purchase_data(?)', array($id_order_shop));
         $format = new ConvertNumberToLetters();
-        $ammount_letter = $format->convertir($order_purchases[0]->total);
         //dd($order_purchases);
-        $pdf = PDF::loadView('permitted.purchases.order_purchase_pdf', compact('ammount_letter', 'products'));
+        $ammount_letter = $format->convertir($order_purchases[0]->total);
+        
+        $pdf = PDF::loadView('permitted.purchases.order_purchase_pdf', compact('ammount_letter', 'products', 'order_purchases'));
 
         return $pdf->stream();
     }
 
     public function store(Request $request)
     {  
-        //dd($request);
         $date = \Carbon\Carbon::now();
         $date = $date->format('Y-m-d');
-        $date_delivery = strtotime($request->date_delivery);
-        $date_delivery = date("Y-m-d", $date_delivery);
+        $date_delivery =  Carbon::parse($request->date_delivery)->format('Y-m-d');;
         //Objeto de polizas
         $products = $request->products;
         $products_data = json_decode($products);
@@ -111,13 +109,14 @@ class PurchaseOrderController extends Controller
 
             $order_purchase = DB::table('order_purchase')->insertGetId([
                 'num_order' => $request->name_fact,
-                'date_delivery' => '2020-02-12',
+                'date_delivery' => $date_delivery,
                 'date' => $date,
                 'referencia' => $request->reference,
                 'order_address_delivery_id' => $request->address_delivery_id,
                 'order_cart_id' => $id_order_cart,
                 'order_status_id' => 1,
-                'provider_id' => $request->provider_id
+                'provider_id' => $request->provider_id,
+                'total' => $request->total
             ]);
 
             DB::commit();
@@ -189,12 +188,38 @@ class PurchaseOrderController extends Controller
         //
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $flag = "3";
+        
+        if(auth()->user()->can('Delete purchase orders')) {
+
+            DB::beginTransaction();
+
+            try {
+                $order_purchase = DB::table('order_purchase')->select('id','order_cart_id')->where('id', $request->id)->get();
+                /
+                DB::table('order_cart_products')->where('order_cart_id', '=', $order_purchase[0]->order_cart_id)->delete();
+                DB::table('order_purchase')->where('id', '=',$order_purchase[0]->id)->delete();
+                DB::table('order_cart')->where('id', '=' ,$order_purchase[0]->order_cart_id)->delete();
+                        
+                DB::commit();
+
+            }catch(\Exception $e){
+                $error = $e->getMessage();
+                DB::rollback();
+                dd($error);
+            }
+
+            $flag = "1"; //Orden de compra eliminada correctamente
+
+        }else{
+            $flag = "2"; //No tiene permisos para borrar ordenes de compra
+        }
+        
+        return  $flag; 
     }
-
-
+        
 
     public function createFolio()
     {

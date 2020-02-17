@@ -162,6 +162,7 @@ $("#form").on("submit", function(e){
           let formData = new FormData(form);
       
           formData.append('products',JSON.stringify(products)); 
+          formData.append('total',remove_commas($('#total').text()));
   
           const headers = new Headers({        
              "Accept": "application/json",
@@ -174,6 +175,8 @@ $("#form").on("submit", function(e){
                              credentials: "same-origin",
                              body:formData,
                              cache: 'default' };
+
+                             
   
            return fetch('/purchases/store-order', miInit)
                  .then(function(response){

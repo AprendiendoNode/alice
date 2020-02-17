@@ -496,7 +496,7 @@ function cancel_poliza(e){
 
 //Formato numerico: 00,000.00
 function format_number(number){
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return number.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function remove_commas(number){

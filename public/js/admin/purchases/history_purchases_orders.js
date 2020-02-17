@@ -89,8 +89,8 @@ function table_orders(datajson, table){
                         <i class="fas fa-ellipsis-h"></i>
                       </button>
                       <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                      <a class="dropdown-item" target="_blank" href="/purchases/print-order-purchase/${information.id}/${information.order_cart_id}" ><span class="far fa-file-pdf"></span> Imprimir orden</a>
-                
+                        <a class="dropdown-item" target="_blank" href="/purchases/print-order-purchase/${information.id}/${information.order_cart_id}" ><span class="far fa-file-pdf"></span> Imprimir orden</a>
+                        <a class="dropdown-item" href="javascript:void(0);" onclick="delete_order(${information.id})" data-id="${information.id}"><span class="fas fa-window-close"></span> Eliminar orden</a>
                       </div>
                     </div>`;    
     
@@ -107,6 +107,77 @@ function table_orders(datajson, table){
     ]);
   });
 }
+
+/**************************ELIMINANDO POLIZAS***********************************/
+function delete_order(id_order){
+    
+  let _token = $('input[name="_token"]').val();
+  let data = {
+    id: id_order
+  };
+
+  Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Se eliminara esta orden de compra",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Confirmar',
+    cancelButtonText: 'Cancelar',
+    showLoaderOnConfirm: true,
+    preConfirm: () => {
+         
+      const headers = new Headers({        
+         "Accept": "application/json",
+         "X-Requested-With": "XMLHttpRequest",
+         'Content-Type': 'application/json',
+         "X-CSRF-TOKEN": _token
+      })
+
+      var miInit = { method: 'post',
+                         headers: headers,
+                         credentials: "same-origin",
+                         body: JSON.stringify(data),
+                         cache: 'default' };
+
+       return fetch('/purchases/delete-order-purchase', miInit)
+             .then(function(response){
+               if (!response.ok) {
+                  throw new Error(response.statusText)
+                }
+               return response.text();
+             })
+             .catch(function(error){
+               Swal.showValidationMessage(
+                 `Request failed: ${error}`
+               )
+             });
+    }//Preconfirm
+  }).then((result) => {
+    console.log(result.value);
+    if (result.value == "1") {
+      Swal.fire({
+        title: 'Orden eliminada',
+        text: "",
+        type: 'success',
+      }).then(function (result) {
+        if (result.value) {
+          window.location = "/purchases/view_history_order_purchases";
+        }
+      })
+    }else if(result.value == "2"){
+      Swal.fire('No tienes permiso para borrar ordenes de compra', 'Contacte a su administrador', 'error');
+    }else{
+      Swal.fire(
+        'No se cancelo la orden de compra','','warning'
+      )
+    }
+  })
+
+}
+
+/**********************************************************************************/
 
 var Configuration_table_orders = {
   "order": [[ 3, "asc" ]],

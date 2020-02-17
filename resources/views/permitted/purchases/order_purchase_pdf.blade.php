@@ -125,10 +125,12 @@
     }
 
     #table_totales{
-      position: absolute;
-      bottom: 10px;
-      margin-bottom: 10px;
+      margin-top: 10px;
       border: 2px solid black;
+    }
+
+    .text-white{
+      color: #fff;
     }
 
 </style>
@@ -153,13 +155,14 @@
   <table width="100%">
     <tr>
       <td style="width:60%;">
-        <h4>PROVEEDOR:</h4>
-        <h4></h4>
-        <h4>TEL: </h4>
+        <h4>PROVEEDOR: {{ $order_purchases[0]->provider }}</h4>
+        <h4>RFC: {{ $order_purchases[0]->taxid }}</h4>
+        <h4>TEL: {{ $order_purchases[0]->phone }}</h4>
       </td>
       <td style="width:40%;">
-        <h4>ORDEN No.:</h4>
-        <h4>FECHA</h4>
+        <h4>ORDEN No.: {{ $order_purchases[0]->num_order }}</h4>
+        <h4>FECHA: {{ $order_purchases[0]->date }} </h4>
+        <h4 class="text-white">-</h4>
       </td>
     </tr>
   </table>
@@ -187,10 +190,14 @@
     </tbody>
   </table>
 
+  
   <table id="table_totales" width="100%">
     <tr>
       <td style="width:70%;">
-        <h4 class="text-bold">({{$ammount_letter}} M.N.)</h4>
+        <p class="text-white">-</p>
+        <p class="text-white">-</p>
+        <p class="text-white">-</p>
+        <p class="text-bold">({{$ammount_letter}} M.N.)</p>
       </td>
       <td style="width:20%;">
         <p class="text-bold">SUBTOTAL:</p>

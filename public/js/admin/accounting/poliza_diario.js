@@ -168,8 +168,7 @@ function table_filter_general(datajson, table){
                             <i class="fas fa-ellipsis-h"></i>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="javascript:void(0);" onclick="get_movs_by_poliza(${information.poliza_id})" data-id="${information.poliza_id}"  value="${information.poliza_id}"><span class="fa fa-eye"></span> Ver detalle</a>
-                    
+                            <a class="dropdown-item" href="javascript:void(0);" onclick="get_movs_by_poliza(${information.poliza_id})" data-id="${information.poliza_id}"  value="${information.poliza_id}"><span class="fa fa-eye"></span> Ver detalle</a>                  
                           </div>
                         </div>`;    
         let mes = moment().month(information.mes - 1).format("MMMM");
@@ -723,7 +722,7 @@ $('#form_update_asientos_contables').on('submit', function(e){
 
   //Formato numerico: 00,000.00
   function format_number(number){
-      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return number.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   
   function remove_commas(number){

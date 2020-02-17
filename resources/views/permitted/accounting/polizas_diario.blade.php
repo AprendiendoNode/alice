@@ -271,7 +271,7 @@
     }
 
   </style>
-  <script src="{{ asset('js/admin/accounting/poliza_diario.js')}}"></script>
+  <script src="{{ asset('js/admin/accounting/poliza_diario.js?v=2.0')}}"></script>
   @else
   @endif
 @endpush

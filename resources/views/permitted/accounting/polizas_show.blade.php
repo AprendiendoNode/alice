@@ -236,7 +236,7 @@
       var CANCEL_PER_AUTHORIZED = "{{ \App\Models\Sales\CustomerInvoice::CANCEL_PER_AUTHORIZED }}";
   
   </script>
-  <script src="{{ asset('js/admin/accounting/polizas.js')}}"></script>
+  <script src="{{ asset('js/admin/accounting/polizas.js?v=2.0')}}"></script>
   @else
   @endif
 @endpush
