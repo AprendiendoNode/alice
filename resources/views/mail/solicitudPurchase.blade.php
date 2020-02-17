@@ -3,7 +3,18 @@
 <head>
 <meta name="viewport" content="width=device-width" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Datos de confirmación.</title>
+<link rel="shortcut icon" href="{{ asset('img/iconified/favicon.ico') }}" type="image/x-icon" />
+<link rel="apple-touch-icon" href="{{ asset('img/iconified/apple-touch-icon.png') }}" />
+<link rel="apple-touch-icon" sizes="57x57" href="{{ asset('img/iconified/apple-touch-icon-57x57.png') }}" />
+<link rel="apple-touch-icon" sizes="72x72" href="{{ asset('img/iconified/apple-touch-icon-72x72.png') }}" />
+<link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/iconified/apple-touch-icon-76x76.png') }}" />
+<link rel="apple-touch-icon" sizes="114x114" href="{{ asset('img/iconified/apple-touch-icon-114x114.png') }}" />
+<link rel="apple-touch-icon" sizes="120x120" href="{{ asset('img/iconified/apple-touch-icon-120x120.png') }}" />
+<link rel="apple-touch-icon" sizes="144x144" href="{{ asset('img/iconified/apple-touch-icon-144x144.png') }}" />
+<link rel="apple-touch-icon" sizes="152x152" href="{{ asset('img/iconified/apple-touch-icon-152x152.png') }}" />
+<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/iconified/apple-touch-icon-180x180.png') }}" />
+
+<title>Solicitud de compra.</title>
 <style type="text/css">
 img {
 max-width: 20%;
@@ -89,14 +100,13 @@ background-color: #f6f6f6;
     font-size: 14px;
   }
 </style>
-
 </head>
 
 <body itemscope style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
 
 <table class="body-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6"><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
-    <td class="container" width="900" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 900px !important; clear: both !important; margin: 0 auto;" valign="top">
-      <div class="content" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 900px; display: block; margin: 0 auto; padding: 20px;">
+    <td class="container" width="600" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">
+      <div class="content" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
 
         <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff"><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="alert alert-warning" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #f6f6f6; margin: 0; padding: 20px;border-bottom: 3pt solid #f69a0e;" align="center" bgcolor="#FF9F00" valign="top">
               <img src="http://alice.sitwifi.com/img/company/sitwifi_logo.jpg" />
@@ -106,79 +116,61 @@ background-color: #f6f6f6;
               <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                 <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                   <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-                    <h1 style="margin-top: 0; color: #2F3133;  font-size: 19px;  font-weight: bold;  text-align: left;">Pagos confirmados.</h1>
-                    <!--<h2 style="margin-top: 0; color: #2F3133;  font-size: 14px;  font-weight: bold;  text-align: left;">Folio: </h2>
-                     <strong style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">Advertencia</strong> -->
-                    <!-- <p style="margin-top: 20;
-                              color: #74787E;
-                              line-height: 1.5em;
-                              font-size: 14px;
-                              text-align: left;">Estimado(a) <strong></strong> tus datos de la solicitud de pago son las siguientes.</p>
+                    <h1 style="margin-top: 0; color: #2F3133;  font-size: 19px;  font-weight: bold;  text-align: left;">Solicitud de compra.</h1>
+                    <h2 style="margin-top: 0; color: #2F3133;  font-size: 14px;  font-weight: bold;  text-align: left;">Folio: {{ $param->folio }}</h2>
+                    <!-- <h2 style="margin-top: 5; color: #2F3133;  font-size: 14px;  font-weight: bold;  text-align: left;">Servicio: <strong> -- </strong></h2> -->
+                    <!-- <strong style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">Advertencia</strong> -->
 
-                    <p style="margin-top: 0;
-                              color: #74787E;
-                              line-height: 1.5em;
-                              text-align: left;
-                              font-size: 14px;
-                              text-align: left;">Proveedor: <strong></strong></p> -->
-
-                    <br>
-                    @if (count($param) === 0)
+                    @if($param->status == 1)
                       <p style="margin-top: 20;
-                                color: #74787E;
-                                line-height: 1.5em;
-                                font-size: 14px;
-                                text-align: left;"><strong>No se realizaron pagos esta semana.</strong></p>
+                              color: #74787E;
+                              line-height: 1.5em;
+                              font-size: 14px;
+                              text-align: left;">Nueva solicitud de compra creada por <strong> {{ $param->user }} </strong>
                     @else
-                    <label>Total MXN: </label><h4>{{$totales[0]->sum_MXN}}</h4><label> Total USD: </label><h4>{{$totales[0]->sum_USD}}</h4><br>
-                    
-                      <table class="greyGridTable">
-                        <thead>
-                        <tr>
-                        <th> <small>Factura</small> </th>
-                        <th> <small>Folio</small> </th>
-                        <th> <small>Proveedor</small> </th>
-                        <th> <small>Concepto</small> </th>
-                        <th> <small>Monto</small> </th>
-                        <th> <small>Moneda</small> </th>
-                        <th> <small>Fecha solicitud</small> </th>
-                        <th> <small>Realizó solicitud</small> </th>
-                        <th> <small>Autorizó solicitud</small> </th>
-                        <th> <small>Confirmó pago</small> </th>
-                        <th> <small>Fecha Confirmación</small> </th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                      <p style="margin-top: 20;
+                              color: #74787E;
+                              line-height: 1.5em;
+                              font-size: 14px;
+                              text-align: left;"> Solicitud de compra cambio a estado <strong> {{ $param->status_name }}</strong> por <strong> {{ $param->user }} </strong></p>
 
-                        @for ($i = 0; $i < count($param); $i++)
-                        <tr>
-                          <td>{{ $param[$i]->factura }}</td>
-                          <td>{{ $param[$i]->folio }}</td>
-                          <td>{{ $param[$i]->proveedor }}</td>
-                          <td>{{ $param[$i]->concepto }}</td>
-                          <td>{{ $param[$i]->monto }}</td>
-                          <td>{{ $param[$i]->monto_str }}</td>
-                          <td>{{ $param[$i]->fecha_elaboro }}</td>
-                          <td>{{ $param[$i]->elaboro }}</td>
-                          <td>{{ $param[$i]->autorizo }}</td>
-                          <td>{{ $param[$i]->realizo }}</td>
-                          <td>{{ $param[$i]->fecha }}</td>
-                        </tr>
-                        @endfor
-
-                        </tbody>
-                      </table>
+                      <!-- <p style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+                              margin-top: 20;
+                              color: #74787E;
+                              line-height: 1.5em;
+                              font-size: 14px;
+                              text-align: left;">Solicitud creada por: <strong>  </strong></p> -->
                     @endif
-                    <br>
+
                     <p style="margin-top: 0;
                               color: #74787E;
                               line-height: 1.5em;
                               text-align: left;
                               font-size: 14px;
-                              text-align: left;">Fecha de envío: <strong>{{Carbon\Carbon::now()->toCookieString()}}</strong></p>
+                              text-align: left;">Fecha factura: <strong> {{ $param->date_fact }} </strong></p>
 
+                    <p style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+                              margin-top: 20;
+                              color: #74787E;
+                              line-height: 1.5em;
+                              font-size: 14px;
+                              text-align: left;">Descripción: <strong> {{ $param->descripcion }} </strong></p>
 
+                    <p style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+                              margin-top: 20;
+                              color: #74787E;
+                              line-height: 1.5em;
+                              font-size: 14px;
+                              text-align: left;">Liga de seguimiento: <a href="{{ $param->url }}" target="_blank"><strong>Click aquí</strong></a></p>
+
+                    <p style="margin-top: 0;
+                              color: #74787E;
+                              line-height: 1.5em;
+                              text-align: left;
+                              font-size: 14px;
+                              text-align: left;">Fecha: <strong>{{Carbon\Carbon::now()}}</strong></p>
                   </td>
+
                 </tr><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
                   </td>
                 </tr>
@@ -190,7 +182,7 @@ background-color: #f6f6f6;
                 color: #74787E;
                 font-size: 12px;
                 line-height: 1.5em;
-                text-align: center;">&copy; 2018 SitWifi. Todos los derechos reservados.</p>
+                text-align: center;">&copy; 2020 SitWifi. Todos los derechos reservados.</p>
             <p  style="margin-top: 0;
                 color: #74787E;
                 font-size: 12px;

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use File;
 use Storage;
+use Mail;
 use App\Helpers\Helper;
 use App\Models\Base\DocumentType;
 use App\Models\Catalogs\PaymentTerm;
@@ -102,24 +103,6 @@ class PurchasesController extends Controller
      */
     public function store(Request $request)
     {
-        // Variables del controller
-            /*$provider = $request->customer_id;
-            $currency = $request->currency_id;
-            $currency_value = $request->currency_value;
-            $date_actual = $request->date;
-            $date_fact = $request->date_fact;
-            $payment_term = $request->payment_term_id;
-            $date_end = $request->date_due;
-            $payment_way = $request->payment_way_id;
-            $payment_method = $request->payment_method_id;
-            $cfdi_use = $request->cfdi_use_id;
-            $document_type = $request->document_type;
-            $iva = $request->iva_general;
-            $iva_ret = $request->iva_retencion;
-            $pdf_fact = $request->file('file_pdf');
-            $xml_fact = $request->file('file_xml');*/
-        // End Variables
-        
         // Begin a transaction
         \DB::beginTransaction();
 
@@ -158,9 +141,6 @@ class PurchasesController extends Controller
             // }else{
             //     return '5';
             // }
-
-            // return $res;
-            // return $cuenta_ex;
 
             $date = Carbon::now();
             $request->merge(['date' => $date]);
@@ -395,11 +375,23 @@ class PurchasesController extends Controller
             $purchase_store->amount_total = $amount_total;
             $purchase_store->balance = $amount_total;
             $purchase_store->update();
-
             // Factura END
 
             // END with Commit
             DB::commit();
+            // purchases/view_purchases_show
+            $mail_sol = \Auth::user()->email;
+            $mail_data = new \stdClass;
+            $mail_data->status = 1;
+            $mail_data->status_name = DB::table('purchases_states')->where('id', 1)->value('name');
+            $mail_data->folio = $document_type['name'];
+            $mail_data->date_fact = Helper::dateTimeToSql($date_fact);
+            $mail_data->descripcion = $request->reference;
+            $mail_data->user = \Auth::user()->name;
+            $mail_data->url = action('Purchases\HistoryPurchasesController@index');
+
+            Mail::to($mail_sol)->send(new PurchaseMail($mail_data));
+
             return 'success';
         }catch (\Exception $e) {
             $request->merge([

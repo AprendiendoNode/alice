@@ -29,7 +29,6 @@ class PurchaseMail extends Mailable
      */
     public function build()
     {
-        // return $this->subject('Confirmación de pago.')->view('mail.solicitudConP_mod');
-        return $this->view('view.name');
+        return $this->subject('Solicitud de compra.')->view('mail.solicitudPurchase');
     }
 }

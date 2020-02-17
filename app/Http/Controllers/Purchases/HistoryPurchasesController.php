@@ -10,6 +10,7 @@ use Gerardojbaez\Money\Money;
 use App\Helpers\Helper;
 use App\Helpers\PacHelper;
 use Jenssegers\Date\Date;
+use App\Mail\PurchaseMail;
 
 use App\Models\Base\DocumentType;
 use App\Models\Catalogs\PaymentTerm;
@@ -102,8 +103,26 @@ class HistoryPurchasesController extends Controller
           ]);
           $valor= 'true';
         }
-
         DB::commit();
+
+        // $correos = ['rgonzalez@sitwifi.com','jwalker@sitwifi.com', 'mmoreno@sitwifi.com'];
+
+        for ($i=0; $i <= (count($solicitud_id)-1); $i++) {
+            $data_purchase = DB::table('purchases')->where('id', $solicitud_id[$i])->first();
+            $mail_sol = DB::table('users')->where('id', $data_purchase->created_uid)->value('email');
+
+            $mail_data = new \stdClass;
+            $mail_data->status = 2;
+            $mail_data->status_name = DB::table('purchases_states')->where('id', 2)->value('name');
+            $mail_data->folio = $data_purchase->name;
+            $mail_data->date_fact = $data_purchase->date_fact;
+            $mail_data->descripcion = $data_purchase->reference;
+            $mail_data->user = \Auth::user()->name;
+            $mail_data->url = action('Purchases\HistoryPurchasesController@index');
+
+            Mail::to($mail_sol)->send(new PurchaseMail($mail_data));
+        }
+
         return $valor;
     }
     public function approval_two(Request $request)
@@ -126,8 +145,25 @@ class HistoryPurchasesController extends Controller
           ]);
           $valor= 'true';
         }
-
         DB::commit();
+
+
+        for ($i=0; $i <= (count($solicitud_id)-1); $i++) {
+            $data_purchase = DB::table('purchases')->where('id', $solicitud_id[$i])->first();
+            $mail_sol = DB::table('users')->where('id', $data_purchase->created_uid)->value('email');
+
+            $mail_data = new \stdClass;
+            $mail_data->status = 3;
+            $mail_data->status_name = DB::table('purchases_states')->where('id', 3)->value('name');
+            $mail_data->folio = $data_purchase->name;
+            $mail_data->date_fact = $data_purchase->date_fact;
+            $mail_data->descripcion = $data_purchase->reference;
+            $mail_data->user = \Auth::user()->name;
+            $mail_data->url = action('Purchases\HistoryPurchasesController@index');
+
+            Mail::to($mail_sol)->send(new PurchaseMail($mail_data));
+        }
+
         return $valor;
     }
 
