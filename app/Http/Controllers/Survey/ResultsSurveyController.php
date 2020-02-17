@@ -116,7 +116,7 @@ class ResultsSurveyController extends Controller
       $sub_month = date ( 'Y-m' , $sub_month );
       $date = $sub_month.'-01';
     }
-    $result = DB::select('CALL get_results_nps_full_xid (?,?,?)', array($date,$id,$hotel_id));
+    $result = DB::select('CALL get_results_nps_full_xid (?)', array($id));
     //$result2 = DB::select('CALL get_results_nps_full (?)', array($date));
     return $result;
 
@@ -136,7 +136,7 @@ class ResultsSurveyController extends Controller
       $sub_month = date ( 'Y-m' , $sub_month );
       $date = $sub_month.'-01';
     }
-    $result = DB::select('CALL get_results_nps_full_xemail (?,?,?)', array($date,$correo,$hotel_id));
+    $result = DB::select('CALL get_results_nps_full_xemail (?,?,?)', array($correo,$hotel_id,$date));
     return $result;
   }
 
