@@ -23,6 +23,14 @@
             </a>
           </li>
           @endif
+          @if( auth()->user()->can('View dash sabana itc') )
+          <li class="nav-item {{ Request::is('dash_sabana_itc') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ url('/dash_sabana_itc') }}">
+              <i class="fas fa-user-shield menu-icon"></i>
+              <span class="menu-title">Dash. General Por ITC </span>
+            </a>
+          </li>
+          @endif
           @forelse (auth()->user()->menus->groupBy('section_id') as $menu)
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#{{ App\Section::find($menu[0]->section_id)->display_name }}" aria-expanded="false" aria-controls="{{ App\Section::find($menu[0]->section_id)->display_name }}">

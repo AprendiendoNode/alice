@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View dash sabana') )
+    @if( auth()->user()->can('View dash sabana itc') )
     <strong>Dashboard General Por ITC</strong>
   @else
     {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('contentheader_description')
-  @if( auth()->user()->can('View dash sabana') )
+  @if( auth()->user()->can('View dash sabana itc') )
 
   @else
     {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View dash sabana') )
+  @if( auth()->user()->can('View dash sabana itc') )
     ITC
   @else
     {{ trans('message.denied') }}
@@ -25,7 +25,7 @@
 @endsection
 
 @section('content')
-    @if( auth()->user()->can('View dash sabana') )
+      @if( auth()->user()->can('View dash sabana itc') )
 
       <div class="input-group mb-3">
         <label class="mr-1">ITC:</label>
@@ -986,7 +986,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View dash sabana') )
+    @if( auth()->user()->can('View dash sabana itc') )
 
     <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/animate.css" />
