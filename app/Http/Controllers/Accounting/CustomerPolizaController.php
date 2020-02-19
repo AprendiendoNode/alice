@@ -223,6 +223,7 @@ class CustomerPolizaController extends Controller
                 }  
             }          
         }     
+        //dd($asientos);
        
         return view('permitted.accounting.table_asientos_contables', 
                compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num'));	

@@ -77,8 +77,9 @@ class PurchaseOrderController extends Controller
     {  
         $date = \Carbon\Carbon::now();
         $date = $date->format('Y-m-d');
-        $date_delivery =  Carbon::parse($request->date_delivery)->format('Y-m-d');;
-        //Objeto de polizas
+        $date_delivery =  Carbon::parse($request->date_delivery)->format('Y-m-d');
+        $folio = $this->createFolio();
+        //Objeto de productos
         $products = $request->products;
         $products_data = json_decode($products);
         
@@ -108,7 +109,7 @@ class PurchaseOrderController extends Controller
             }
 
             $order_purchase = DB::table('order_purchase')->insertGetId([
-                'num_order' => $request->name_fact,
+                'num_order' => $folio,
                 'date_delivery' => $date_delivery,
                 'date' => $date,
                 'referencia' => $request->reference,
@@ -135,26 +136,14 @@ class PurchaseOrderController extends Controller
 
     public function getProvidersFromProject($doc_id)
     {
-        $documentp = Documentp::findOrFail($doc_id);
-        $cart_id = $documentp->documentp_cart_id;
+        $providers = DB::select('CALL px_proveedores_documentp_xid(?)', array($doc_id));
 
-        $products = In_Documentp_cart::where('documentp_cart_id', $cart_id)->get();
-
-        $products = DB::table('in_documentp_cart as I')
-            ->join('products as P', 'P.id', '=', 'I.product_id')
-            ->join('customers as C', 'C.id', '=', 'P.proveedor_id')
-            ->select('I.id as id_documentp_cart', 'I.cantidad', 'I.descuento','I.total', 'I.total_usd', 'I.precio','I.product_id', 
-                     'P.name as producto', 'P.proveedor_id', 
-                     'C.id as proveedor_id', 'C.name as proveedor')
-            ->where('I.documentp_cart_id', '=', $cart_id)
-            ->get();
-
-        return $products;
+        return $providers;
     }
 
     public function getProductsFromProjectsByProvider($doc_id)
     {
-        $provedor_id = 92;
+        
         $documentp = Documentp::findOrFail($doc_id);
         $cart_id = $documentp->documentp_cart_id;
 
@@ -163,11 +152,12 @@ class PurchaseOrderController extends Controller
         $products = DB::table('in_documentp_cart as I')
             ->join('products as P', 'P.id', '=', 'I.product_id')
             ->join('customers as C', 'C.id', '=', 'P.proveedor_id')
+            ->join('currencies as D', 'D.id', '=', 'P.currency_id')
             ->select('I.id as id_documentp_cart', 'I.cantidad', 'I.descuento','I.total', 'I.total_usd', 'I.precio','I.product_id', 
-                     'P.name as producto', 'P.proveedor_id', 
+                     'P.name as producto', 'P.proveedor_id', 'D.code',
                      'C.id as proveedor_id', 'C.name as proveedor')
             ->where('I.documentp_cart_id', '=', $cart_id)
-            //->where('P.proveedor_id', '=', $provedor_id)
+            //->where('P.proveedor_id', '=', $request->provedor_id)
             ->get();
 
         return $products;
@@ -198,7 +188,7 @@ class PurchaseOrderController extends Controller
 
             try {
                 $order_purchase = DB::table('order_purchase')->select('id','order_cart_id')->where('id', $request->id)->get();
-                /
+                
                 DB::table('order_cart_products')->where('order_cart_id', '=', $order_purchase[0]->order_cart_id)->delete();
                 DB::table('order_purchase')->where('id', '=',$order_purchase[0]->id)->delete();
                 DB::table('order_cart')->where('id', '=' ,$order_purchase[0]->order_cart_id)->delete();
@@ -219,7 +209,13 @@ class PurchaseOrderController extends Controller
         
         return  $flag; 
     }
-        
+
+    public function add_address_delivery(Request $request)
+    {
+        $result = DB::table('order_address_delivery')->insert([
+            'address' => $request->new_address
+        ]);
+    }        
 
     public function createFolio()
     {
@@ -231,36 +227,40 @@ class PurchaseOrderController extends Controller
 
         $res = DB::table('order_purchase')->latest()->first();
         if (empty($res)) {
-        $nomenclatura = $nomenclatura.$complemento.'-'."000001";
+        $nomenclatura = $nomenclatura.$complemento.'-'."0000001";
 
         return $nomenclatura;
 
         } else {
-            $folio_latest = $res->folio;
+            $folio_latest = $res->num_order;
 
             if (empty($folio_latest)) {
-                $nomenclatura = $nomenclatura.$complemento.'-'."000001";
+                $nomenclatura = $nomenclatura.$complemento.'-'."0000001";
                 return $nomenclatura;
             } else {
                 $explode = explode('-', $folio_latest);
+                
                 $num_folio = (int)$explode[2];
                 $num_folio = $num_folio + 1;
                 $digits = strlen($num_folio);
 
                 switch ($digits) {
                 case 1:
-                    $num_folio = (string)$nomenclatura .$complemento.'-'. "00000" . $num_folio;
+                    $num_folio = (string)$nomenclatura .$complemento.'-'. "000000" . $num_folio;
                     break;
                 case 2:
-                    $num_folio = (string)$nomenclatura .$complemento.'-'. "0000" . $num_folio;
+                    $num_folio = (string)$nomenclatura .$complemento.'-'. "00000" . $num_folio;
                     break;
                 case 3:
-                    $num_folio = (string)$nomenclatura .$complemento.'-'. "000" . $num_folio;
+                    $num_folio = (string)$nomenclatura .$complemento.'-'. "0000" . $num_folio;
                     break;
                 case 4:
-                    $num_folio = (string)$nomenclatura .$complemento.'-'. "00" . $num_folio;
+                    $num_folio = (string)$nomenclatura .$complemento.'-'. "000" . $num_folio;
                     break;
                 case 5:
+                    $num_folio = (string)$nomenclatura .$complemento.'-'. "00" . $num_folio;
+                    break;
+                case 6:
                     $num_folio = (string)$nomenclatura .$complemento.'-'. "0" . $num_folio;
                     break;
                 default:

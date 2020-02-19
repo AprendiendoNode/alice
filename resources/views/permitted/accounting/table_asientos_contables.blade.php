@@ -1,12 +1,17 @@
 @php
-  $date = \Carbon\Carbon::now();
-  $date2 = \Carbon\Carbon::now();
-  $date = $date->format('d-m-Y');
-  $day = $date2->format('d');
+  $date_factura = $asientos[0]->fecha;
+  $explode = explode('-', $date_factura);
+  $anio_factura = $explode[0];
+  $mes_factura = $explode[1];
+  $dia_factura = $explode[2];
+  
   $total_cargos = 0.0;
   $total_abonos = 0.0;  
 @endphp
 <div class="row">
+  <input id="dia_hidden" type="hidden" value="{{$dia_factura}}">
+  <input id="mes_hidden" type="hidden" value="{{$mes_factura}}">
+  <input id="anio_hidden" type="hidden" value="{{$anio_factura}}">
   <div class="form-group col-md-3">
     <label class="" for="type_poliza">Tipo:</label>
     <select class="form-control form-control-sm mb-2 mr-sm-2" id="type_poliza" name="type_poliza" >
@@ -23,7 +28,7 @@
 
   <div class="form-group col-md-2">
     <label class="" for="day_poliza">Día:</label>
-    <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza" placeholder="">
+    <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2" value="{{$dia_factura}}" name="day_poliza" id="day_poliza">
   </div>
   <div class="form-group col-md-2">
     <label class="" for="mes_poliza">Mes:</label>
@@ -73,12 +78,12 @@
                 @endforeach
               </select>
             </td>
-            <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia" readonly type="number" value="{{$day}}"></td>
+            <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia" readonly type="number" value="{{$dia_factura}}"></td>
             <td><input style="width:94px;text-align:center" class="form-control form-control-sm tipo_cambio" readonly type="number" value="{{$data->tipo_cambio}}"></td>
-            <td class=""><input style="width:170px;text-align:left" readonly class="form-control form-control-sm nombre" type="text" value="{{$data->name}} {{$date}}"></td>
+          <td class=""><input style="width:170px;text-align:left" readonly class="form-control form-control-sm nombre" type="text" value="{{$data->name}} {{$date}}"></td>
             <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos" type="text" value="{{number_format($data->cargo, 2, '.', '')}}" ></td>
             <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm abonos"  type="text" value="{{number_format($data->abono, 2, '.', '')}}" ></td> 
-          <td><input style="width:135px;text-align:left" class="form-control form-control-sm referencia" type="text" value="{{$data->id_proyecto}}"></td>
+          <td><input style="width:135px;text-align:left" class="form-control form-control-sm referencia" type="text" value=""></td>
         </tr>
         @endforeach    
       </tbody>

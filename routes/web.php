@@ -1315,7 +1315,7 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::post('/get-products-cart-order', 'Purchases\PurchaseOrderController@get_products_by_cart_order');
   Route::get('/print-order-purchase/{id_order_shop}/{id_cart}', 'Purchases\PurchaseOrderController@print_order_purchase');
   Route::post('/delete-order-purchase', 'Purchases\PurchaseOrderController@destroy');
-  
+  Route::post('/add-address-delivery', 'Purchases\PurchaseOrderController@add_address_delivery');
 });
 Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){
   //Integracion contable

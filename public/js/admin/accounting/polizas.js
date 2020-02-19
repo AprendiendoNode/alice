@@ -207,8 +207,6 @@ $(function() {
           },
           action: function ( e, dt, node, config ) {
               
-            $('.cancel').prop('disabled', 'disabled');
-            $('.confirm').prop('disabled', 'disabled');
             var rows_selected = $("#table_filter_fact").DataTable().column(0).checkboxes.selected();
             var _token = $('input[name="_token"]').val();
             // Iterate over all selected checkboxes
@@ -224,26 +222,23 @@ $(function() {
               )
             }else{
               let _token = $('meta[name="csrf-token"]').attr('content');
-              let today = new Date();
-              let dd = String(today.getDate()).padStart(2, '0');
-              let mes = moment().format('MMMM');
-
-              $('#day_poliza').val(dd);
-              $('#mes_poliza').val(mes);
+              
               $("#tabla_asiento_contable tbody").empty();
             
               $.ajax({
                   type: "POST",
                   url: '/accounting/customer-polizas-get-movs',
                   data: {facturas: JSON.stringify(facturas) , _token : _token},
-                  success: function (data) {
+                  success: function (data) {         
                     
-                    let suma_cargos = 0.0;
-                    let suma_abonos = 0.0;
                     $('#data_asientos').html(data);
                     $('.cuenta_contable').select2();
-                    $('#day_poliza').val(dd);
-                    $('#mes_poliza').val(mes);
+                    let dia_factura = $('#dia_hidden').val();
+                    let mes_factura = $('#mes_hidden').val();
+                    let anio_factura = $('#anio_hidden').val();
+                    let mes_format = moment(new Date(anio_factura, parseInt(mes_factura)- 1, dia_factura)).format('MMMM');
+                                        
+                    $('#mes_poliza').val(mes_format);
                   },
                   error: function (err) {
                     Swal.fire({

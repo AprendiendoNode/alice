@@ -26,7 +26,8 @@ $(function() {
 
 $('#id_doc').on('change', function(){
     let doc_id = $(this).val();
-    getProductsFromProjectsByProvider(doc_id);
+	getProductsFromProjectsByProvider(doc_id);
+	getProvidersFromProject(doc_id);
 })
 
 function getProvidersFromProject(doc_id){
@@ -94,26 +95,25 @@ function generate_table_products(products){
         let cantidad = parseInt(key.cantidad);
         subtotal += parseFloat(key.total);
         descuento += parseFloat(key.descuento);
-        total += parseFloat(key.total_usd);
+        total += parseFloat(key.total);
         
         $('#tabla_productos tbody').append(`
             <tr>
                 <td id='${key.product_id}'><input value="${key.product_id}" class="product_id" type="hidden"></td>
-                <td><input value="${cantidad}" type="number" class="form-control form-control-sm cantidad" min="1" max="${cantidad}" required style="width:60px;text-align: right;"></td>
+                <td><input onblur="update_cantidades(this);"  value="${cantidad}" type="number" class="form-control form-control-sm cantidad" min="1" max="${cantidad}" required style="width:60px;text-align: right;"></td>
                 <td class="producto">${key.producto}</td>
                 <td class="text-right precio">${key.precio}</td>
-                <td class="text-right subtotal">${key.total}</td>
+                <td class="text-right code">${key.code}</td>
                 <td class="text-center descuento">${key.descuento}</td>
-                <td class="text-right total">${key.total_usd}</td>
-                <td><button type="button" onclick="deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td></td>
+				<td class="text-right subtotal">${key.total}</td>
+				<td><button type="button" onclick="deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td></td>
             </tr>
             `
         );
     });
-    $('#subtotal').text(format_number(subtotal));
     $('#descuento').text(format_number(descuento));
-    $('#iva').text(format_number(iva));
-    $('#total').text(format_number(total));
+	$('#subtotal').text(format_number(total));
+	$('#total').text(format_number(total - descuento));
     
 }
 
@@ -157,7 +157,7 @@ $("#form").on("submit", function(e){
             products.push(element);
       
           });
-          console.log(products);
+          
           let form = $('#form')[0];
           let formData = new FormData(form);
       
@@ -211,9 +211,64 @@ $("#form").on("submit", function(e){
       })
 })
 
+// Funcion para mofdificar datos al actualizar una cantidad de la tabla de pedidos
+function update_cantidades(e){
+	let tr = e.parentNode.parentNode;
+	let precio = parseFloat($(tr).find('.precio').text());
+	let subtotal = 0.0;
+	let descuento = $(tr).find('.descuento').text();
+	let cantidad = parseInt($(tr).find('.cantidad').val());
+	
+	subtotal = cantidad * precio;
+	
+	total = subtotal - percent(descuento, subtotal);
+	$(tr).find('.subtotal').text(total.toFixed(2));
+
+    sumaTotales();  
+}
+
+function sumaTotales(){
+	let element = {}
+	let products = [];
+	let total_products = 0.0;
+	let subtotal = 0.0;
+	let descuento = 0.0;
+	$('#tabla_productos tbody tr').each(function(row, tr){
+		let product_id = $(tr).find('.product_id').val();
+		let cantidad = $(tr).find('.cantidad').val();
+		let precio = $(tr).find('.precio').text();
+		let descuento = $(tr).find('.descuento').text();
+		let total = $(tr).find('.subtotal').text();
+		
+		element = {
+		  "product_id" : product_id,
+		  "cantidad" : cantidad,
+		  "precio" : precio,
+		  "descuento" : descuento,
+		  "total" : parseFloat(total)        
+		}
+		products.push(element);
+	});
+
+	products.forEach(function(product){
+		total_products += parseFloat(product.total);
+		descuento += parseFloat(product.descuento);
+	});
+
+	$('#descuento').text(format_number(descuento));
+	$('#subtotal').text(format_number(total_products));
+	$('#total').text(format_number(total_products - descuento));
+}
+
+//Calculo de porcentaje
+function percent(num, amount){
+  return (num * amount) / 100;
+}
+
 function deleteRow(fila) {
     var row = fila.parentNode.parentNode;
-    row.parentNode.removeChild(row);
+	row.parentNode.removeChild(row);
+	sumaTotales();
 }
 
 //Formato numerico: 00,000.00
@@ -225,4 +280,35 @@ function remove_commas(number){
   return number.replace(/,/g, "");
 }
 
+/*********************** MODAL DE DIRECCIONES **************************/
+
+$('#modal-address-button').on('click', function(){
+	$('#modalAddress').modal('show');
+})
+
+$('#form-add-address-delivery').on('submit', function(e){
+	e.preventDefault();
+	var form = $('#form-add-address-delivery')[0];
+	var formData = new FormData(form);
+	      
+	$.ajax({
+		type: "POST",
+		url: "/purchases/add-address-delivery",
+		data: formData,
+		contentType: false,
+	    processData: false,
+		success: function (data){
+			Swal.fire('Direccion guardada', '', 'success');
+			location.reload();	
+		},
+		error: function (err) {
+			Swal.fire({
+				type: 'error',
+				title: 'Oops...',
+				text: err.statusText,
+			});
+		}
+
+	});
+})
 
