@@ -35,9 +35,10 @@ class DiaryPoliceController extends Controller
 
 	public function get_diary_general_data(Request $request)
 	{
-        $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+		$date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+		$date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
 
-		$result = DB::select('CALL px_polizas_xmes(?)', array($date_a));
+		$result = DB::select('CALL px_polizas_xmes(?,?)', array($date_a, $date_b));
 
 		return $result;
 	}
@@ -45,8 +46,9 @@ class DiaryPoliceController extends Controller
 	public function get_diary_detail_data(Request $request)
 	{
         $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+		$date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
 
-		$result = DB::select('CALL px_polizas_movtos_xmes(?)', array($date_a));
+		$result = DB::select('CALL px_polizas_movtos_xmes(?,?)', array($date_a, $date_b));
 
 		return $result;
 	}

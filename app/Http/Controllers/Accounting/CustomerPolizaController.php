@@ -61,14 +61,11 @@ class CustomerPolizaController extends Controller
 	{
 		$folio = !empty($request->filter_name) ? $request->filter_name : '';
 		$date_from  = $request->filter_date_from;
-		//$date_to  = $request->filter_date_to;
-		$sucursal = !empty($request->filter_branch_office_id) ? $request->filter_branch_office_id : '';
-		$cliente = !empty($request->filter_customer_id) ? $request->filter_customer_id : '';
-		$estatus = !empty($request->filter_status) ? $request->filter_status : '';
+		$date_to  = $request->filter_date_to;
 
 		$date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
-		//$date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
-		$resultados = DB::select('CALL px_customer_polizas_filters_type (?,?,?)',array($date_a, $folio, '1'));
+		$date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
+		$resultados = DB::select('CALL px_customer_polizas_filters_type (?,?,?)',array($date_a, $date_b, '1'));
 
 		return json_encode($resultados);
 	}

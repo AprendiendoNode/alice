@@ -110,7 +110,7 @@ $(function() {
     }, function (chosen_date) {
         $("#form input[name='filter_date_from']").val(chosen_date.format('DD-MM-YYYY'));
     });
-    /*$("#form input[name='filter_date_to']").daterangepicker({
+    $("#form input[name='filter_date_to']").daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         locale: {
@@ -119,7 +119,7 @@ $(function() {
         autoUpdateInput: false,
     }, function (chosen_date) {
         $("#form input[name='filter_date_to']").val(chosen_date.format('DD-MM-YYYY'));
-    });*/
+    });
     $("#filter_customer_id").select2();
     //-----------------------------------------------------------
   });

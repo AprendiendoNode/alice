@@ -46,7 +46,9 @@ class PurchaseOrderController extends Controller
     {
         $date = strtotime($request->date);
         $date = date("Y-m-d", $date);
-        $result = DB::select('CALL px_order_purchase_all_xmes(?)', array($date));
+        $date_to = strtotime($request->filter_date_to);
+        $date_to = date("Y-m-d", $date_to);
+        $result = DB::select('CALL px_order_purchase_all_xmes(?,?)', array($date, $date_to));
 
         return $result;
     }
@@ -65,7 +67,7 @@ class PurchaseOrderController extends Controller
         $products = DB::select('CALL px_order_cart_products_xorder_cart(?)', array($id_cart));
         $order_purchases = DB::select('CALL px_order_purchase_data(?)', array($id_order_shop));
         $format = new ConvertNumberToLetters();
-        //dd($order_purchases);
+        //dd($products);
         $ammount_letter = $format->convertir($order_purchases[0]->total);
         
         $pdf = PDF::loadView('permitted.purchases.order_purchase_pdf', compact('ammount_letter', 'products', 'order_purchases'));

@@ -28,10 +28,23 @@
               <div class="col-md-3 col-xs-12">
                 <div class="form-group" id="date_from">
                   <label class="control-label" for="filter_date_from">
-                    Fecha
+                    Fecha inicial:
                   </label>
                   <div class="input-group mb-3">
                     <input type="text"  datas="filter_date_from" id="filter_date_from" name="filter_date_from" class="form-control" placeholder="" value="{{ \App\Helpers\Helper::date(Date::parse('first day of this month')) }}" required>
+                    <div class="input-group-append">
+                      <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group" id="date_from">
+                  <label class="control-label" for="filter_date_to">
+                    Fecha final:
+                  </label>
+                  <div class="input-group mb-3">
+                    <input type="text"  datas="filter_date_to" id="filter_date_to" name="filter_date_to" class="form-control" placeholder="" value="{{ \App\Helpers\Helper::date(Date::parse('last day of this month')) }}" required>
                     <div class="input-group-append">
                       <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
                     </div>

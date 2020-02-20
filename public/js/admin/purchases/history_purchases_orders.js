@@ -74,6 +74,16 @@ $(function() {
   }, function (chosen_date) {
       $("#form input[name='date']").val(chosen_date.format('DD-MM-YYYY'));
   });
+  $("#form input[name='filter_date_to']").daterangepicker({
+    singleDatePicker: true,
+    showDropdowns: true,
+    locale: {
+        format: 'DD-MM-YYYY'
+    },
+    autoUpdateInput: false,
+  }, function (chosen_date) {
+      $("#form input[name='filter_date_to']").val(chosen_date.format('DD-MM-YYYY'));
+  });
 
   //-----------------------------------------------------------
 });
