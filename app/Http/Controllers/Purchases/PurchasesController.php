@@ -46,12 +46,13 @@ class PurchasesController extends Controller
         $cadenas = Cadena::select('id', 'name')->get()->sortBy('name');
         
         $document_type = DocumentType::where('cfdi_type_id', 2)->get();// Solo documentos de ingresos
-
         $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
-        
         $accounting_account = DB::select('CALL Contab.px_catalogo_cuentas_contables()', array());
 
-        return view('permitted.purchases.purchase_view', compact('providers','sucursal','currency','payment_way','payment_term', 'payment_methods', 'cfdi_uses', 'cfdi_relations', 'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications', 'document_type', 'accounting_account', 'cadenas'));
+        // Purchase order list
+        $order_purchase = DB::table('order_purchase')->select('num_order', 'order_cart_id')->get();
+
+        return view('permitted.purchases.purchase_view', compact('providers','sucursal','currency','payment_way','payment_term', 'payment_methods', 'cfdi_uses', 'cfdi_relations', 'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications', 'document_type', 'accounting_account', 'cadenas', 'order_purchase'));
     }
 
     public function get_currency(Request $request)
@@ -80,19 +81,12 @@ class PurchasesController extends Controller
         }
     }
 
-    public function get_product_accounting(Request $request)
+    public function get_products_cartid(Request $request)
     {
-        // px_cuenta_contable_xproducto`(IN idx int)
+      $id_cart = $request->cart_id;
+      $products = DB::select('CALL px_order_cart_products_xorder_cart (?)', array($id_cart));
 
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-        // 
+      return $products;
     }
 
     /**

@@ -1267,7 +1267,8 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::post('/purchase-store', 'Purchases\PurchasesController@store');
   Route::post('/total-lines-purchase', 'Purchases\PurchasesController@totallines');
   Route::post('/get_consecutivo','Purchases\PurchasesController@get_consecutivo');
-
+  Route::post('/get_cart_products', 'Purchases\PurchasesController@get_products_cartid');
+  
   //Historial de compras
   Route::get('/view_purchases_show', 'Purchases\HistoryPurchasesController@index');
   Route::post('/view_purchases_search', 'Purchases\HistoryPurchasesController@search');

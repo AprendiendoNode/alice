@@ -38,6 +38,7 @@ class ticketsxdescription extends Command
      */
     public function handle()
     {
+        // 2018-03-13 borrar todo atras de esta fecha.
         $url_test = "https://sitwifi.zendesk.com/api/v2/tickets.json?page=23";
         $url = "https://sitwifi.zendesk.com/api/v2/tickets.json";
         $response = $this->curlZen($url_test);

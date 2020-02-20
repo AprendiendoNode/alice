@@ -30,6 +30,18 @@
                 value="{{ old('amount_total_tmp',0) }}">
             <div class="row">
               <div class="col-md-6 col-xs-12">
+                <label for="order_purchases" class="control-label  my-2">Ordenes de compra:</label>
+                <select class="custom-select required" id="order_purchase_id" name="order_purchase_id">
+                    <option value="" selected>Selecciona...</option>
+                    @forelse ($order_purchase as $orders)
+                      <option value="{{ $orders->order_cart_id }}">{{ $orders->num_order }}</option>
+                    @empty
+                    @endforelse
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-xs-12">
                 <label for="customer_id" class="control-label  my-2">Proveedores:<span style="color: red;">*</span></label>
                 <div class="input-group">
                   <select class="custom-select required" id="customer_id" name="customer_id">
@@ -1222,7 +1234,222 @@
       $(document).on("keyup", "#form #items tbody .col-quantity,#form #items tbody .col-price-unit,#form #items tbody .col-discount", function () {
           totalItem();
       });
-      
+      $('#order_purchase_id').on('change', function(){
+        // console.log($(this).val());
+        let id_cart = $(this).val();
+        var moneda_val = $('input[name="currency_id"]').val();
+        var tc_val = $('input[name="currency_value"]').val();
+        if (moneda_val == '' || tc_val == '') {
+          Swal.fire({
+             type: 'error',
+             title: 'Oops...',
+             text: 'Selecciona la moneda a usar e ingresa un TC',
+           });
+          $(this).val('');
+        }else{
+          $("#items tbody tr").remove();
+          item_row = 0;
+          let html = `<tr id="add_item">
+                        <td class="text-center">
+                              <button type="button" onclick="addItem();"
+                                        class="btn btn-xs btn-primary"
+                                        style="margin-bottom: 0;">
+                                    <i class="fa fa-plus"></i>
+                              </button>
+                            </td>
+                          <td class="text-right" colspan="12"></td>
+                        </tr>`;
+          $("#items tbody").append(html);
+          getProductDyn(id_cart);
+        }
+        
+      });
+      function getProductDyn(id_cart) {
+        var token = $('input[name="_token"]').val();
+        var fecha3 = moment($("#form input[name='date']").val(), 'DD-MM-YYYY').format('MMMM YYYY');
+        var currenct_value = $('#currency_value').val();
+        $.ajax({
+            type: "POST",
+            url: "/purchases/get_cart_products",
+            data: { _token : token,  cart_id : id_cart},
+            success: function (data){
+              console.log(data);
+
+              data.forEach(function(key,i) {
+                var html = '';
+                var current_unit= key.unit_measure_id;
+                var current_sat = key.sat_product_id;
+                var current_product_id = key.id;
+                var current_accounting = key.id_cuenta_contable;
+
+                html += '<tr id="item_row_' + item_row + '">';
+                html += '<td class="text-center" style="vertical-align: middle;">';
+                html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
+                html += '<i class="fa fa-trash"></i>';
+                html += '</button>';
+                html += '<input type="hidden" name="item[' + i + '][id]" id="item_id_' + item_row + '" /> ';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<div class="input-group input-group-sm">';
+                html += '<select class="form-control input-sm col-product-id" name="item[' + item_row + '][product_id]" id="item_product_id_' + item_row + '" data-row="' + item_row + '">';
+                html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                @forelse ($product as $product_data)
+                if( current_product_id == {{ $product_data->id  }})
+                {
+                  html += '<option value="{{ $product_data->id  }}" selected >{{ $product_data->name }}</option>';
+                }else{
+                  html += '<option value="{{ $product_data->id  }}">{{ $product_data->name }}</option>';
+                } 
+                @empty
+                @endforelse
+                html += '</div>';
+                html += '</div>';
+                html += '</td>';
+
+                /* row de cuenta contable */
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<div class="input-group input-group-sm">';
+                html += '<select class="form-control input-sm col-account-id" name="item[' + item_row + '][cuenta_id]" id="item_cuenta_id_' + item_row + '" data-row="' + item_row + '">';
+                html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                @forelse ($accounting_account as $account)
+                if( current_accounting == {{ $account->id  }})
+                {
+                  html += '<option value="{{ $account->id  }}">{{ $account->cuenta . " - " . $account->nombre }}</option>';
+                }else{
+                  html += '<option value="{{ $account->id  }}">{{ $account->cuenta . " - " . $account->nombre }}</option>';
+                }
+                
+                @empty
+                @endforelse
+                html += '</select>';
+                html += '</div>';
+                html += '</div>';
+                html += '</td>';
+                /* end row de cuenta contable*/
+
+                /* row de cadena id */
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<div class="input-group input-group-sm">';
+                html += '<select class="form-control input-sm col-cadena-id" name="item[' + item_row + '][cadena_id]" id="item_cadena_id_' + item_row + '" data-row="' + item_row + '">';
+                html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                @forelse ($cadenas as $data_cadenas)
+                html += '<option value="{{ $data_cadenas->id  }}">{{$data_cadenas->name}}</option>';
+                @empty
+                @endforelse
+
+                html += '</select>';
+                html += '</div>';
+                html += '</div>';
+                html += '</td>';
+                /* end row de cadena id*/
+
+                /* row de sitio id */
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<div class="input-group input-group-sm">';
+                html += '<select class="form-control input-sm col-sitio-id" name="item[' + item_row + '][sitio_id]" id="item_sitio_id_' + item_row + '" data-row="' + item_row + '">';
+                html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+
+                html += '</select>';
+                html += '</div>';
+                html += '</div>';
+                html += '</td>';
+                /* end row de sitio id*/
+                var text_description = key.descripcion;
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<textarea class="form-control form-control-sm col-name-id" name="item[' + item_row + '][name]" id="item_name_' + item_row + '" placeholder="" required rows="4" autocomplete="off" >';
+                html +=  text_description;
+                html += '</textarea>';
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<select class="form-control form-control-sm col-unit-measure-id" name="item[' + item_row + '][unit_measure_id]" id="item_unit_measure_id_' + item_row + '" required>';
+                html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                @forelse ($unitmeasures as $unitmeasures_data)
+                if( current_unit == {{ $unitmeasures_data->id  }})
+                {
+                  html += '<option value="{{ $unitmeasures_data->id  }}" selected>[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
+                }
+                else {
+                  html += '<option value="{{ $unitmeasures_data->id  }}">[{{ $unitmeasures_data->code }}]{{ $unitmeasures_data->name }}</option>';
+
+                }
+                @empty
+                @endforelse
+                html += '</select>';
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<select class="form-control form-control-sm col-sat-product-id" name="item[' + item_row + '][sat_product_id]" id="item_sat_product_id_' + item_row + '" required>';
+                html += '<option selected="selected" value="">@lang('message.selectopt')</option>';
+                @forelse ($satproduct as $satproduct_data)
+                if( current_sat == {{ $satproduct_data->id  }}){
+                  html += '<option value="{{ $satproduct_data->id  }}" selected>[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
+                }
+                else {
+                  html += '<option value="{{ $satproduct_data->id  }}">[{{ $satproduct_data->code }}]{{ $satproduct_data->name }}</option>';
+                }
+                @empty
+                @endforelse
+                html += '</select>';
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<input type="number" class="form-control form-control-sm text-right col-quantity" value="1"  name="item[' + item_row + '][quantity]" id="item_quantity_' + item_row + '" required step="any" />';
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<input type="number" class="form-control form-control-sm text-right col-price-unit" value="' + key.price + '" name="item[' + item_row + '][price_unit]" id="item_price_unit_' + item_row + '" required step="any" />';
+                html += '</div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<div class="form-group form-group-sm">';
+                html += '<input type="number" class="form-control form-control-sm text-center col-discount" value="' + key.discount + '" name="item[' + item_row + '][discount]" id="item_discount_' + item_row + '" step="any" />';
+                html += '</div>';
+                html += '</td>';
+
+                //
+
+                html += '<td class="text-right" style="padding-top: 11px;">';
+                html += '<span id="item_txt_amount_untaxed_' + i + '">0</span>';
+                html += '</td>';
+
+                html += '<td class="text-right" style="padding-top: 11px;">';
+                html += '<span id="exchange_rate_applied' + item_row + '">0</span>';
+                html += '</td>';
+
+                html += '</tr>';
+
+                $("#form #items tbody #add_item").before(html);
+                /* Configura lineas*/
+                $("#item_current_"+item_row+" option[value='" + key.currency_id +"']").attr('selected', true);
+                item_row++;
+              });
+
+              // $('#customer_id').val(data[0].proveedor_id).trigger('change');
+              initItem();
+              totalItem();
+
+            },
+            error: function (data) {
+              console.log('Error:', data);
+            }
+        });
+      }
       $('#currency_id').on("change", function(){
         var valor = $(this).val();
         var token = $('input[name="_token"]').val();
