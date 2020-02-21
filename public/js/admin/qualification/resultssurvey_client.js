@@ -65,8 +65,17 @@ function create_table_results(datajson, table) {
       '<div class="text-center">'+
       '<a href="javascript:void(0);" onclick="enviar(this)" value="'+status.id+'" data[hotel_id]="'+status.hotels_id+'" data[cliente]="'+status.Cliente+'" data[correo]="'+status.Cliente_email+'" data[it]="'+status.IT+'" data[it_email]="'+status.IT_email+'" data[comentario]="'+status.Comentario+'" data[nps]="'+status.NPS+'" class="btn btn-default btn-sm" role="button" data-target="#modal-edithotcl"><span class="fas fa-envelope"></span></a>'+
       '</div>',
+      tiene_seguimiento(status.Seguimiento)
     ]);
   });
+}
+function tiene_seguimiento(value){
+if(value==1){
+  return     '<div class="text-center"><span class="promotor fas fa-check-circle" style="color:#28C941;" ></span></div>';
+}
+else{
+  return     '';
+}
 }
 var correo_itc='';
 var hotel_id='';
@@ -136,6 +145,9 @@ function enviar(e){
 
 }
 correo_itc=e.getAttribute('data[it_email]').split(',');
+if(correo_itc[0]=="no hay IT asigado a este venue"){
+  correo_itc[0]='';
+}
 console.log(correo_itc);
 }
 
@@ -148,18 +160,23 @@ $('#sent').on('click',function(){
     if($('#date_to_search').val() != ''){
       var date = $('#date_to_search').val();
     }else{
-      var date = new Date().toISOString().slice(0,10);
+      var tmpdate = new Date().toISOString().slice(0,10).split("-");
+      tmpdate.pop();
+      var date= tmpdate.join("-").toString();
+      //console.log(date);
     }
+    console.log(date);
     //console.log(moment(date).format('MMM.'));
     $.ajax({
       type:"POST",
       url:"/sent_survey_client",
-      data:{_token:_token,date:date,cliente:cliente,correocli:correocli,itc_email:correo_itc,comentario:comentario_correo},
+      data:{_token:_token,date:date,cliente:cliente,correocli:correocli,itc_email:correo_itc,comentario:comentario_correo,hotel_id:hotel_id},
       success:function(data){
         //console.log(data);
         $('#ModalMail').modal('hide');
         Swal.fire("Operación Completada!", ":)", "success");
         setTimeout(function(){
+          table_results();
           Swal.close();
         },1000);
       },

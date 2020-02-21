@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-@if( auth()->user()->can('View survey tracking') )
+@if( auth()->user()->can('View results survey') )
 
   <!-- Modal -->
   <div class="modal fade" id="ModalMail" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
@@ -145,6 +145,7 @@
                                 <th>Calificación</th>
                                 <th>Ing. asignado</th>
                                 <th class="text-center">Opciones</th>
+                                <th class="text-center">Seguimiento</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -163,7 +164,7 @@
 @endsection
 
 @push('scripts')
-@if( auth()->user()->can('View survey tracking') )
+@if( auth()->user()->can('View results survey') )
 <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
 <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
 <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
 use Mail;
+use Carbon\Carbon;
 use App\Mail\SeguimientoEncuesta;
 
 class ResultsSurveyController extends Controller
@@ -141,7 +142,7 @@ class ResultsSurveyController extends Controller
   }
 
   public function sent_survey_client(Request $request){
-    //info($request);
+//    info($request);
     $client_email=$request->correocli;
     $itc_email=$request->itc_email;
     $param = [
@@ -152,10 +153,29 @@ class ResultsSurveyController extends Controller
 
     $copias = ['rdelgado@sitwifi.com', 'aarciga@sitwifi.com'];
 
+    if($itc_email[0]!=''){
     foreach($itc_email as $itc){
       array_push($copias,$itc);
     }
+    }
+    //$newdate=Carbon::parse($request->date.'-01')->format('Y-m-d');
+    $newdate = new Carbon($request->date.'-01');
+    $actualdate= \Carbon\Carbon::now();
 
+    if($newdate->format('Y-m')==$actualdate->format('Y-m')){
+    $newdate->modify('-01 months');
+    }
+
+    DB::Table('seguimiento_encuestas')->updateOrInsert(
+      ['hotel_id' => $request->hotel_id,'fecha' =>$newdate],
+      [
+      'hotel_id' => $request->hotel_id,
+      'email' => $request->correocli,
+      'comentario' => $request->comentario,
+      'seguimiento' =>1,
+      'fecha' =>$newdate,
+      'updated_at' =>\Carbon\Carbon::now()
+    ]);
     Mail::to($client_email)->cc($copias)->send(new SeguimientoEncuesta($param));
     //Mail::to('jcanul@sitwifi.com')->send(new SeguimientoEncuesta($param));
 
