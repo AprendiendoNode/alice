@@ -172,7 +172,7 @@
 <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
 <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="{{ asset('css/filter.css')}}">
-<script src="{{ asset('js/admin/qualification/resultssurvey_client.js')}}"></script>
+<script src="{{ asset('js/admin/qualification/resultssurvey_client.js?v2.0.0')}}"></script>
 <style media="screen">
     .pt-10 {
         padding-top: 10px;

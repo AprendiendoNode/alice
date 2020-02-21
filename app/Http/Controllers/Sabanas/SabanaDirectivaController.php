@@ -41,7 +41,7 @@ class SabanaDirectivaController extends Controller
     $idcadena=$request->idcadena;
     $anio=$request->anio;
     $result = DB::Select('CALL px_presupuesto_xsitioV2(?)',array($anio));
-    info($result);
+    //info($result);
     return $result;
 
   }

@@ -335,13 +335,13 @@ function load_gantt(data,title){
     gantt.templates.task_class  = function(start, end, task){
 
     switch (true){
-        case task.duration<2:
+        case task.duration<=6:
         return "high";
         break;
-        case task.duration<=8:
+        case task.duration<=11:
         return "medium";
         break;
-        case task.duration>=9:
+        case task.duration>11:
         return "low";
         break;
     }
