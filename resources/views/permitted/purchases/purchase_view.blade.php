@@ -525,36 +525,40 @@
                                       </td>
                                       <td class="text-right" colspan="10"></td>
                                   </tr>
-                                  <!-- Totales -->
-                                  <tr>
-                                      <td></td>
-                                      <td class="text-right" colspan="8" rowspan="4"
-                                          style="vertical-align: middle">
-                                          <textarea class="form-control input-sm col-name-id" name="comment" id="comment" placeholder="@lang('customer_credit_note.entry_comment')" rows="4" autocomplete="off" /></textarea>
-                                      </td>
-                                      <td class="text-right"><strong>Subtotal</strong></td>
-                                      <td class="text-right"><span id="txt_amount_untaxed">0</span></td>
-                                      <!-- <td class="text-right"></td> -->
-                                  </tr>
-                                  <tr>
-                                      <td></td>
-                                      <td class="text-right"><strong>Descuento</strong></td>
-                                      <td class="text-right"><span id="txt_amount_discount">0</span></td>
-                                      <!-- <td class="text-right"></td> -->
-                                  </tr>
-                                  <tr>
-                                      <td></td>
-                                      <td class="text-right"><strong>Impuesto</strong></td>
-                                      <td class="text-right"><span id="txt_amount_tax">0</span></td>
-                                      <!-- <td class="text-right"></td> -->
-                                  </tr>
-                                  <tr>
-                                      <td></td>
-                                      <td class="text-right"><strong>Total</strong></td>
-                                      <td class="text-right"><span id="txt_amount_total">0</span></td>
-                                      <!-- <td class="text-right"></td> -->
-                                  </tr>
+                                  
                                   </tbody>
+                                  <tfoot>
+                                    <!-- Totales -->
+                                      <tr>
+                                          <td></td>
+                                          <td class="text-right" colspan="10" rowspan="4"
+                                              style="vertical-align: middle">
+                                              <textarea class="form-control input-sm col-name-id" name="comment" id="comment" placeholder="@lang('customer_credit_note.entry_comment')" rows="4" autocomplete="off" /></textarea>
+                                          </td>
+                                          <td class="text-right"><strong>Subtotal</strong></td>
+                                          <td class="text-right"><span id="txt_amount_untaxed">0</span></td>
+                                          <!-- <td class="text-right"></td> -->
+                                      </tr>
+                                      <tr>
+                                          <td></td>
+                                          <td class="text-right"><strong>Descuento</strong></td>
+                                          <td class="text-right"><span id="txt_amount_discount">0</span></td>
+                                          <!-- <td class="text-right"></td> -->
+                                      </tr>
+                                      <tr>
+                                          <td></td>
+                                          <td class="text-right"><strong>Impuesto</strong></td>
+                                          <td class="text-right"><span id="txt_amount_tax">0</span></td>
+                                          <!-- <td class="text-right"></td> -->
+                                      </tr>
+                                      <tr>
+                                          <td></td>
+                                          <td class="text-right"><strong>Total</strong></td>
+                                          <td class="text-right"><span id="txt_amount_total">0</span></td>
+                                          <!-- <td class="text-right"></td> -->
+                                      </tr>
+                                    <!-- End totales -->
+                                  </tfoot>
                               </table>
                           </div>
 
@@ -1259,8 +1263,8 @@
                             </td>
                           <td class="text-right" colspan="12"></td>
                         </tr>`;
-          $("#items tbody").append(html);
           getProductDyn(id_cart);
+          $("#items tbody").append(html);
         }
         
       });
@@ -1406,7 +1410,7 @@
 
                 html += '<td>';
                 html += '<div class="form-group form-group-sm">';
-                html += '<input type="number" class="form-control form-control-sm text-right col-quantity" value="1"  name="item[' + item_row + '][quantity]" id="item_quantity_' + item_row + '" required step="any" />';
+                html += '<input type="number" class="form-control form-control-sm text-right col-quantity" value="'+ key.Cantidad+'"  name="item[' + item_row + '][quantity]" id="item_quantity_' + item_row + '" required step="any" />';
                 html += '</div>';
                 html += '</td>';
 
@@ -1418,7 +1422,7 @@
 
                 html += '<td>';
                 html += '<div class="form-group form-group-sm">';
-                html += '<input type="number" class="form-control form-control-sm text-center col-discount" value="' + key.discount + '" name="item[' + item_row + '][discount]" id="item_discount_' + item_row + '" step="any" />';
+                html += '<input type="number" class="form-control form-control-sm text-center col-discount" value="' + key.descuento_percent + '" name="item[' + item_row + '][discount]" id="item_discount_' + item_row + '" step="any" />';
                 html += '</div>';
                 html += '</td>';
 
