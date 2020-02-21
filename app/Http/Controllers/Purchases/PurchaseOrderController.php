@@ -61,9 +61,7 @@ class PurchaseOrderController extends Controller
     }
 
     public function print_order_purchase($id_order_shop, $id_cart)
-    {
-        
-        
+    {        
         $products = DB::select('CALL px_order_cart_products_xorder_cart(?)', array($id_cart));
         $order_purchases = DB::select('CALL px_order_purchase_data(?)', array($id_order_shop));
         $format = new ConvertNumberToLetters();
@@ -103,8 +101,10 @@ class PurchaseOrderController extends Controller
                     'order_cart_id' => $id_order_cart,
                     'product_id' => $products_data[$i]->product_id,
                     'cantidad' => $products_data[$i]->cantidad,
+                    'precio' => $products_data[$i]->precio,
                     'subtotal' => $products_data[$i]->subtotal,
                     'descuento' => $products_data[$i]->descuento,
+                    'descuento_percent' => $products_data[$i]->descuento_percent,
                     'total' => $products_data[$i]->total,
                     'created_at' => \Carbon\Carbon::now()
                 ]);
@@ -119,6 +119,10 @@ class PurchaseOrderController extends Controller
                 'order_cart_id' => $id_order_cart,
                 'order_status_id' => 1,
                 'provider_id' => $request->provider_id,
+                'tax_id' => 1,
+                'subtotal' => $request->subtotal,
+                'descuento' => $request->descuento,
+                'iva_amount' => $request->iva,
                 'total' => $request->total
             ]);
 

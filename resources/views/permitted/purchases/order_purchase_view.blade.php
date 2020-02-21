@@ -96,12 +96,15 @@
                       <thead>
                         <tr style="background: #496E7D;color:white;font-size:10px;">
                           <th></th>
+                          <th></th>
+                          <th class="text-center">Cant. req.</th>
                           <th class="text-center">Cantidad</th>
                           <th width="250px">Producto</th>
                           <th>Costo unitario</th>
                           <th>Modeda</th>
+                          <th>Subtotal</th>
                           <th>Descuento</th>
-                          <th>Total</th>
+                          <th>Total C/Desc.</th>
                           <th></th>
                         </tr>
                       </thead>
@@ -109,19 +112,19 @@
                       </tbody>
                       <tfoot class="text-right" style="font-size:18px;border-color:transparent">
                         <tr>
-                          <td colspan="2"></td> <td style="font-weight:bold;border-color:transparent" colspan="4">SUBTOTAL:</td>
+                          <td colspan="5"></td> <td style="font-weight:bold;border-color:transparent" colspan="4">SUBTOTAL:</td>
                           <td  style="font-weight:bold;" colspan="1">$ <span id="subtotal">0.00</span></td>
                         </tr>
                         <tr>
-                            <td colspan="2"></td> <td style="font-weight:bold;border-color:transparent" colspan="4">DESCUENTO:</td>
+                            <td colspan="5"></td> <td style="font-weight:bold;border-color:transparent" colspan="4">DESCUENTO:</td>
                             <td  style="font-weight:bold;" colspan="1">$ <span id="descuento">0.00</span></td>
                         </tr>                     
                         <tr>
-                            <td colspan="2"></td> <td style="font-weight:bold;border-color:transparent" colspan="4">I.V.A:</td>
+                            <td colspan="5"></td> <td style="font-weight:bold;border-color:transparent" colspan="4">I.V.A:</td>
                             <td  style="font-weight:bold;" colspan="1">$ <span id="iva">0.00</span></td>
                         </tr>
                         <tr>
-                            <td colspan="2"></td> <td style="font-weight:bold;border-color:transparent" colspan="4">TOTAL:</td>
+                            <td colspan="5"></td> <td style="font-weight:bold;border-color:transparent" colspan="4">TOTAL:</td>
                             <td  style="font-weight:bold;" colspan="1">$ <span id="total">0.00</span></td>
                         </tr>
                       </tfoot>
@@ -133,9 +136,7 @@
             <div class="ln_solid mt-5"></div>
             <div class="row">
               <div class="col-md-12 col-xs-12 text-right footer-form">
-                <button type="submit" class="btn btn-outline-dark">@lang('general.button_save')</button>
-                &nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-outline-danger">@lang('general.button_discard')</button>
+                <button type="submit" class="btn btn-outline-dark">@lang('general.button_save')</button>       
               </div>
             </div>
           <!-- /Footer form -->
@@ -181,16 +182,6 @@
   <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
   <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('plugins/select2/dist/js/i18n/es-MX.js') }}" type="text/javascript"></script>
-
-  <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
-  <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
-  <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
-
-  <link href="{{ asset('bower_components/bootstrap4-toggle-master/css/bootstrap4-toggle.min.css')}}" rel="stylesheet" type="text/css">
-  <script src="{{ asset('bower_components/bootstrap4-toggle-master/js/bootstrap4-toggle.min.js')}}"></script>
-
-  <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
-  <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
   <script src="{{ asset('plugins/momentupdate/moment.js')}}"></script>
   <link href="{{ asset('plugins/daterangepicker-master/daterangepicker.css')}}" rel="stylesheet" type="text/css">

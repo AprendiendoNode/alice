@@ -47,6 +47,10 @@ function getProvidersFromProject(doc_id){
             return response.json();
         })
         .then(function(data){
+          $('#provider_id').empty();
+          $.each(data, function(i, key) {
+            $('#provider_id').append(`<option value="${key.id}">${key.proveedor}</option>`);
+        });
             console.log(data);
         })
         .catch(function(error){
@@ -84,180 +88,194 @@ function getProductsFromProjectsByProvider(doc_id){
 }
 
 function generate_table_products(products){
-    let subtotal = 0.0;
-    let descuento = 0.0;
-    let iva = 0.0;
-    let total = 0.0;
-    
+
     $("#tabla_productos tbody tr").remove();
 
     $.each(products, function( i, key ) {
         let cantidad = parseInt(key.cantidad);
-        subtotal += parseFloat(key.total);
-        descuento += parseFloat(key.descuento);
-        total += parseFloat(key.total);
-        
+        let descuento = parseInt(key.descuento);
+        let precio = parseFloat(key.precio);
+        let subtotal = precio * cantidad;
+        let percent_amount = percent(descuento, subtotal);
+
         $('#tabla_productos tbody').append(`
             <tr>
                 <td id='${key.product_id}'><input value="${key.product_id}" class="product_id" type="hidden"></td>
+                <td><input value="${key.descuento}" class="descuento_percent" type="hidden"></td>
+                <td class="text-center">${cantidad}</td>
                 <td><input onblur="update_cantidades(this);"  value="${cantidad}" type="number" class="form-control form-control-sm cantidad" min="1" max="${cantidad}" required style="width:60px;text-align: right;"></td>
                 <td class="producto">${key.producto}</td>
-                <td class="text-right precio">${key.precio}</td>
+                <td class="text-right precio">${precio}</td>
                 <td class="text-right code">${key.code}</td>
-                <td class="text-center descuento">${key.descuento}</td>
-				<td class="text-right subtotal">${key.total}</td>
-				<td><button type="button" onclick="deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td></td>
+                <td class="text-right subtotal">${subtotal.toFixed(2)}</td>
+                <td class="text-center descuento">${percent_amount.toFixed(2)}</td>
+				        <td class="text-right total">${key.total}</td>
+				        <td><button type="button" onclick="deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td>
             </tr>
             `
         );
     });
-    $('#descuento').text(format_number(descuento));
-	$('#subtotal').text(format_number(total));
-	$('#total').text(format_number(total - descuento));
+
+    sumaTotales();
     
 }
 
 $("#form").on("submit", function(e){
-    e.preventDefault();
-    
-    Swal.fire({
-        title: "¿Estás seguro?",
-        text: "",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Confirmar',
-        cancelButtonText: 'Cancelar',
-        showLoaderOnConfirm: true,
-        preConfirm: () => {
-          
-          var _token = $('input[name="_token"]').val();
-          
-          var element = {}
-          var products = [];
+  e.preventDefault();
   
-          $('#tabla_productos tbody tr').each(function(row, tr){
-            let product_id = $(tr).find('.product_id').val();
-            let cantidad = $(tr).find('.cantidad').val();
-            let precio = $(tr).find('.precio').text();
-            let subtotal = $(tr).find('.subtotal').text();
-            let descuento = $(tr).find('.descuento').text();
-            let total = $(tr).find('.total').text();
-            
-            element = {
-              "product_id" : product_id,
-              "cantidad" : cantidad,
-              "precio" : precio,
-              "subtotal" : subtotal,
-              "descuento" : descuento,
-              "total" : parseFloat(total)        
-            }
-      
-            products.push(element);
-      
-          });
-          
-          let form = $('#form')[0];
-          let formData = new FormData(form);
-      
-          formData.append('products',JSON.stringify(products)); 
-          formData.append('total',remove_commas($('#total').text()));
-  
-          const headers = new Headers({        
-             "Accept": "application/json",
-             "X-Requested-With": "XMLHttpRequest",
-             "X-CSRF-TOKEN": _token
-          })
-  
-          var miInit = { method: 'post',
-                             headers: headers,
-                             credentials: "same-origin",
-                             body:formData,
-                             cache: 'default' };
+  Swal.fire({
+      title: "¿Estás seguro?",
+      text: "",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        
+        var _token = $('input[name="_token"]').val();
+        
+        var element = {}
+        var products = [];
 
-                             
-  
-           return fetch('/purchases/store-order', miInit)
-                 .then(function(response){
-                   if (!response.ok) {
-                      throw new Error(response.statusText)
-                    }
-                   return response.text();
-                 })
-                 .catch(function(error){
-                   Swal.showValidationMessage(
-                     `Request failed: ${error}`
-                   )
-                 });
-        }//Preconfirm
-      }).then((result) => {
-        console.log(result.value);
-        if (result.value == "true") {
-          Swal.fire({
-            title: 'Orden de compra guardada',
-            text: "",
-            type: 'success',
-          }).then(function (result) {
-            if (result.value) {
-              window.location = "/purchases/view_purchase_order";
-            }
-          })
-        }else{
-          Swal.fire(
-            'No se guardo la orden de compra','','warning'
-          )
-        }
-      })
+        $('#tabla_productos tbody tr').each(function(row, tr){
+          let product_id = $(tr).find('.product_id').val();
+          let cantidad = $(tr).find('.cantidad').val();
+          let precio = $(tr).find('.precio').text();
+          let subtotal = $(tr).find('.subtotal').text();
+          let descuento = $(tr).find('.descuento').text();
+          let descuento_percent = $(tr).find('.descuento_percent').val();
+          let total = $(tr).find('.total').text();
+          
+          element = {
+            "product_id" : product_id,
+            "cantidad" : cantidad,
+            "precio" : precio,
+            "subtotal" : subtotal,
+            "descuento" : descuento,
+            "descuento_percent" : descuento_percent,
+            "total" : parseFloat(total)        
+          }
+    
+          products.push(element);
+    
+        });
+        
+        let form = $('#form')[0];
+        let formData = new FormData(form);
+    
+        formData.append('products',JSON.stringify(products)); 
+        formData.append('subtotal',remove_commas($('#subtotal').text()));
+        formData.append('descuento',remove_commas($('#descuento').text()));
+        formData.append('iva',remove_commas($('#iva').text()));
+        formData.append('total',remove_commas($('#total').text()));
+
+        const headers = new Headers({        
+           "Accept": "application/json",
+           "X-Requested-With": "XMLHttpRequest",
+           "X-CSRF-TOKEN": _token
+        })
+
+        var miInit = { method: 'post',
+                           headers: headers,
+                           credentials: "same-origin",
+                           body:formData,
+                           cache: 'default' };
+
+                           
+
+         return fetch('/purchases/store-order', miInit)
+               .then(function(response){
+                 if (!response.ok) {
+                    throw new Error(response.statusText)
+                  }
+                 return response.text();
+               })
+               .catch(function(error){
+                 Swal.showValidationMessage(
+                   `Request failed: ${error}`
+                 )
+               });
+      }//Preconfirm
+    }).then((result) => {
+      console.log(result.value);
+      if (result.value == "true") {
+        Swal.fire({
+          title: 'Orden de compra guardada',
+          text: "",
+          type: 'success',
+        }).then(function (result) {
+          if (result.value) {
+            window.location = "/purchases/view_purchase_order";
+          }
+        })
+      }else{
+        Swal.fire(
+          'No se guardo la orden de compra','','warning'
+        )
+      }
+    })
 })
 
 // Funcion para mofdificar datos al actualizar una cantidad de la tabla de pedidos
 function update_cantidades(e){
-	let tr = e.parentNode.parentNode;
-	let precio = parseFloat($(tr).find('.precio').text());
-	let subtotal = 0.0;
-	let descuento = $(tr).find('.descuento').text();
-	let cantidad = parseInt($(tr).find('.cantidad').val());
-	
-	subtotal = cantidad * precio;
-	
-	total = subtotal - percent(descuento, subtotal);
-	$(tr).find('.subtotal').text(total.toFixed(2));
+  let tr = e.parentNode.parentNode;
+  let precio = parseFloat($(tr).find('.precio').text());
+  let cantidad = parseInt($(tr).find('.cantidad').val());
+  let descuento = parseFloat($(tr).find('.descuento_percent').val());
+  let total = 0.0;
+  let subtotal = precio * cantidad;
+ 
+  let percent_amount = percent(descuento, subtotal);
+  total = subtotal - percent_amount;
 
-    sumaTotales();  
+  $(tr).find('.subtotal').text(subtotal.toFixed(2));
+  $(tr).find('.descuento').text(percent_amount.toFixed(2));
+  $(tr).find('.total').text(total.toFixed(2));
+
+  sumaTotales();  
 }
 
 function sumaTotales(){
-	let element = {}
-	let products = [];
-	let total_products = 0.0;
-	let subtotal = 0.0;
-	let descuento = 0.0;
-	$('#tabla_productos tbody tr').each(function(row, tr){
-		let product_id = $(tr).find('.product_id').val();
-		let cantidad = $(tr).find('.cantidad').val();
-		let precio = $(tr).find('.precio').text();
-		let descuento = $(tr).find('.descuento').text();
-		let total = $(tr).find('.subtotal').text();
-		
-		element = {
-		  "product_id" : product_id,
-		  "cantidad" : cantidad,
-		  "precio" : precio,
-		  "descuento" : descuento,
-		  "total" : parseFloat(total)        
-		}
-		products.push(element);
-	});
+  let element = {}
+  let products = [];
+  let total_products = 0.0;
+  let total_subtotal = 0.0;
+  let total_descuento = 0.0;
+  var iva = 0.0;
+  $('#tabla_productos tbody tr').each(function(row, tr){
+    let product_id = $(tr).find('.product_id').val();
+    let cantidad = $(tr).find('.cantidad').val();
+    let precio = $(tr).find('.precio').text();
+    let descuento = $(tr).find('.descuento').text();
+    let subtotal = $(tr).find('.subtotal').text();
+    let total = $(tr).find('.total').text();
+    
+    element = {
+      "product_id" : product_id,
+      "cantidad" : cantidad,
+      "precio" : precio,
+      "descuento" : descuento,
+      "subtotal" : subtotal,
+      "total" : parseFloat(total)        
+    }
+    products.push(element);
+  });
 
-	products.forEach(function(product){
-		total_products += parseFloat(product.total);
-		descuento += parseFloat(product.descuento);
-	});
+  products.forEach(function(product){
+    total_subtotal += parseFloat(product.subtotal);
+    total_descuento += parseFloat(product.descuento);
+    total_products += parseFloat(product.total);
+  });
 
-	$('#descuento').text(format_number(descuento));
-	$('#subtotal').text(format_number(total_products));
-	$('#total').text(format_number(total_products - descuento));
+  iva = total_products * .16;
+  
+  $('#descuento').text(format_number(total_descuento));
+  $('#subtotal').text(format_number(total_subtotal));
+  $('#iva').text(format_number(iva));
+  $('#total').text(format_number(total_products + iva));
 }
 
 //Calculo de porcentaje

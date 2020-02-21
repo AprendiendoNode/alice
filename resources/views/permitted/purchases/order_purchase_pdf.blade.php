@@ -109,24 +109,15 @@
     #table_products{
       margin-top: 10px;
       border: 2px solid;
-      border-radius: 2px;
+      border-radius: 15px;
     }
 
-    #table_products {
-      border-collapse: collapse;
-    }
-
-    #table_products tbody {
-      border: 1px solid black;
-    }
-
-    #table_products tbody tr td{
-      border-right: 1px solid black;
-    }
+    
 
     #table_totales{
       margin-top: 10px;
       border: 2px solid black;
+      border-radius: 15px;
     }
 
     .text-white{
@@ -172,19 +163,23 @@
       <tr>       
         <th align="center">CANTIDAD</th>
         <th colspan="2" align="center">PRODUCTO</th>
-        <th>COSTO UNITARIO</th>
+        <th>COSTO U.</th>
+        <th>MONEDA</th>
+        <th>SUBTOTAL</th>
         <th>DESCUENTO</th>
-        <th>TOTAL</th>
+        <th>TOTAL C/DESC.</th>
       </tr>
     </thead>
     <tbody>
       @foreach ($products as $product)
           <tr>
-            <td>{{$product->cantidad}}</td>
+            <td class="text-center">{{$product->Cantidad}}</td>
             <td colspan="2">{{$product->name}}</td>
-            <td>{{$product->price}}</td>
-            <td>{{$product->discount}}</td>
-            <td>{{$product->total}}</td>
+            <td class="text-right">{{ number_format($product->price, 2, '.', ',') }}</td>
+            <td>{{$product->code}}</td>
+            <td class="text-right">{{$product->subtotal}}</td>
+            <td style="text-align: center">{{ number_format($product->descuento, 2, '.', ',') }}</td>
+            <td style="text-align: right">{{$product->total}}</td>
           </tr>
       @endforeach
     </tbody>
@@ -197,17 +192,20 @@
         <p class="text-white">-</p>
         <p class="text-white">-</p>
         <p class="text-white">-</p>
-        <p class="text-bold">({{$ammount_letter}} M.N.)</p>
+        <p class="text-bold">({{$ammount_letter}} {{$products[0]->code}})</p>
       </td>
       <td style="width:20%;">
-        <p class="text-bold">SUBTOTAL:</p>
+        <p class="text-bold">SUBTOTAL: </p>
         <p class="text-bold">DESCUENTO:</p>
         <p class="text-bold">I.V.A.</p>
         <p class="text-bold">TOTAL</p>
       </td>
       <td style="width:20%;">
-        
-      </td>
+        <p class="text-bold">$ {{ number_format($order_purchases[0]->subtotal, 2,'.', ',')  }}</p>
+        <p class="text-bold">$ {{ number_format($order_purchases[0]->descuento, 2,'.', ',')  }}</p>
+        <p class="text-bold">$ {{ number_format($order_purchases[0]->iva_amount, 2,'.', ',')  }}</p>
+        <p class="text-bold">$ {{ number_format($order_purchases[0]->total, 2,'.', ',')  }}</p>
+      </td class="text-bold">
     </tr>
   </table>
 
