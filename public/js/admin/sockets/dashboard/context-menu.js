@@ -8,7 +8,9 @@ $(window).on("load", function() {
       events: {
          show : function(options) {
            ctrl_status = 0;
-           $(".blink").resizable('disable');
+           try {
+             $(".blink").resizable('disable');
+           } catch(e) {}
            $('#mapa').contextMenu(false);
            //$("#"+this[0].id).css("opacity", "0.5");
            if(!$("#"+this[0].id).hasClass("ui-selected")) {

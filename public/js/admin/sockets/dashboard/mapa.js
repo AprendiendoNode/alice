@@ -61,9 +61,15 @@ $(window).on("load", function() {
       if($(".ui-selected").length > 0) {
         $(".blink").resizable('disable');
         $(".ui-selected").contextMenu(true);
-        $(".blink:not(.ui-selected)").contextMenu(false);
+        try {
+          $(".blink:not(.ui-selected)").contextMenu(false);
+        } catch (e) {
+          //Error controlado en caso de no existir elementos no seleccionados
+        }
       } else {
-        $(".blink").contextMenu(true);
+        try {
+          $(".blink").contextMenu(true);
+        } catch (e) {}
       }
     },
     unselected: function(event,ui){
@@ -75,8 +81,8 @@ $(window).on("load", function() {
 
   $(".row-select, .row-buttons").click(function() {
     $(".blink").removeClass("ui-selected");
-    $('.blink').resizable('enable');
     try {
+      $('.blink').resizable('enable');
       $('.blink').contextMenu(true);
     } catch(e) {}
     elementsarray=[];

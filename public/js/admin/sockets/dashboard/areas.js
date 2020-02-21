@@ -118,17 +118,17 @@ $(window).on("load",function() {
 
     var anchoBase = $("#mapa").width();
     var largoBase = $("#mapa").height();
-    var anchoArea = $("#" + areaId).width();
-    var largoArea = $("#" + areaId).height();
+    var anchoArea = $("#" + areaId).css("width").split("px")[0];
+    var largoArea = $("#" + areaId).css("height").split("px")[0];
     var leftArea = $("#" + areaId).css("left").split("px")[0];
     var topArea = $("#" + areaId).css("top").split("px")[0];
     if(parseInt(leftArea) < 0) leftArea = 0;
     if(parseInt(topArea) < 0) topArea = 0;
 
-    var widthArea = Math.ceil(((anchoArea * 100) / anchoBase));
-    var heightArea = Math.ceil(((largoArea * 100) / largoBase));
-    var leftArea = Math.round(((leftArea * 100) / anchoBase));
-    var topArea = Math.round(((topArea * 100) / largoBase));
+    var widthArea = (anchoArea * 100) / anchoBase;
+    var heightArea = (largoArea * 100) / largoBase;
+    var leftArea = (leftArea * 100) / anchoBase;
+    var topArea = (topArea * 100) / largoBase;
 
     var res = allAreas.filter(function (area) {
 
@@ -148,9 +148,9 @@ $(window).on("load",function() {
       //$("#" + areaId).css("font-size", $("#"+areaId).width() / 6 + "px");
       //$("#" + areaId).css("line-height", $("#"+areaId).width() / 6 + "px");
       $("#" + areaId).css("width", widthArea + "%");
-      $("#" + areaId).css("height", heightArea + 1 + "%");
+      $("#" + areaId).css("height", heightArea + "%");
       res[0].width = widthArea;
-      res[0].height = heightArea + 1;
+      res[0].height = heightArea;
 
     }
 
