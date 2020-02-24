@@ -1309,7 +1309,7 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   //Ordenes de compra
   Route::get('/view_purchase_order', 'Purchases\PurchaseOrderController@index');
   Route::get('/getProvidersFromProject/doc_id/{doc_id}', 'Purchases\PurchaseOrderController@getProvidersFromProject');
-  Route::get('/getProductsFromProjectsByProvider/doc_id/{doc_id}', 'Purchases\PurchaseOrderController@getProductsFromProjectsByProvider');
+  Route::get('/getProductsFromProjectsByProvider/doc_id/{doc_id}/provider_id/{provider_id}', 'Purchases\PurchaseOrderController@getProductsFromProjectsByProvider');
   Route::post('/store-order', 'Purchases\PurchaseOrderController@store');
   Route::get('/view_history_order_purchases', 'Purchases\PurchaseOrderController@view_history_order_purchases');
   Route::post('/get-history-orders', 'Purchases\PurchaseOrderController@get_history_purchases_order');

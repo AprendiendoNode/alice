@@ -25,9 +25,17 @@ $(function() {
 });
 
 $('#id_doc').on('change', function(){
-    let doc_id = $(this).val();
-	getProductsFromProjectsByProvider(doc_id);
-	getProvidersFromProject(doc_id);
+    let doc_id = $(this).val()
+    let provider_id = $('#provider_id').val();
+    getProvidersFromProject(doc_id);
+    getProductsFromProjectsByProvider(doc_id, provider_id);
+})
+
+$('#provider_id').on('change', function(){
+  let doc_id = $('#id_doc').val();
+  let provider_id = $(this).val();
+
+  getProductsFromProjectsByProvider(doc_id, provider_id);
 })
 
 function getProvidersFromProject(doc_id){
@@ -37,8 +45,7 @@ function getProvidersFromProject(doc_id){
         headers: headers,
         credentials: "same-origin",
         cache: 'default' };
-
-        
+ 
     fetch(`/purchases/getProvidersFromProject/doc_id/${doc_id}`, miInit)
         .then(function(response){
             if (!response.ok) {
@@ -60,7 +67,7 @@ function getProvidersFromProject(doc_id){
         });
 }
 
-function getProductsFromProjectsByProvider(doc_id){
+function getProductsFromProjectsByProvider(doc_id, provider_id){
 
     var miInit = {
         method: 'get',
@@ -69,7 +76,7 @@ function getProductsFromProjectsByProvider(doc_id){
         cache: 'default' };
 
         
-    fetch(`/purchases/getProductsFromProjectsByProvider/doc_id/${doc_id}`, miInit)
+    fetch(`/purchases/getProductsFromProjectsByProvider/doc_id/${doc_id}/provider_id/${provider_id}`, miInit)
         .then(function(response){
             if (!response.ok) {
                 throw new Error(response.statusText)
@@ -104,9 +111,9 @@ function generate_table_products(products){
                 <td><input value="${key.descuento}" class="descuento_percent" type="hidden"></td>
                 <td class="text-center">${cantidad}</td>
                 <td><input onblur="update_cantidades(this);"  value="${cantidad}" type="number" class="form-control form-control-sm cantidad" min="1" max="${cantidad}" required style="width:60px;text-align: right;"></td>
-                <td class="producto">${key.producto}</td>
+                <td class="producto">${key.product}</td>
                 <td class="text-right precio">${precio}</td>
-                <td class="text-right code">${key.code}</td>
+                <td class="text-right code">${key.currencies.substring(0, 3)}</td>
                 <td class="text-right subtotal">${subtotal.toFixed(2)}</td>
                 <td class="text-center descuento">${percent_amount.toFixed(2)}</td>
 				        <td class="text-right total">${key.total}</td>

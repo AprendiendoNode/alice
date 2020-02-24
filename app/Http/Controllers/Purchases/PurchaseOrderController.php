@@ -147,25 +147,14 @@ class PurchaseOrderController extends Controller
         return $providers;
     }
 
-    public function getProductsFromProjectsByProvider($doc_id)
+    public function getProductsFromProjectsByProvider($doc_id, $provider_id)
     {
         
         $documentp = Documentp::findOrFail($doc_id);
         $cart_id = $documentp->documentp_cart_id;
 
-        $products = In_Documentp_cart::where('documentp_cart_id', $cart_id)->get();
-
-        $products = DB::table('in_documentp_cart as I')
-            ->join('products as P', 'P.id', '=', 'I.product_id')
-            ->join('customers as C', 'C.id', '=', 'P.proveedor_id')
-            ->join('currencies as D', 'D.id', '=', 'P.currency_id')
-            ->select('I.id as id_documentp_cart', 'I.cantidad', 'I.descuento','I.total', 'I.total_usd', 'I.precio','I.product_id', 
-                     'P.name as producto', 'P.proveedor_id', 'D.code',
-                     'C.id as proveedor_id', 'C.name as proveedor')
-            ->where('I.documentp_cart_id', '=', $cart_id)
-            //->where('P.proveedor_id', '=', $request->provedor_id)
-            ->get();
-
+        $products = DB::select('CALL px_in_documentp_cart_products_xprov(? ,?)', array($cart_id, $provider_id));
+        
         return $products;
     }
    

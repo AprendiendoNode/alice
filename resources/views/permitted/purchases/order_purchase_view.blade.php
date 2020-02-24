@@ -189,7 +189,7 @@
   
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-  <script src="{{ asset('js/admin/purchases/purchases_orders.js')}}"></script>
+  <script src="{{ asset('js/admin/purchases/purchases_orders.js?v=1.0')}}"></script>
 
   <style media="screen">
     .white {background-color: #ffffff;}
