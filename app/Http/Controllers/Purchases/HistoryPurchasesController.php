@@ -166,5 +166,39 @@ class HistoryPurchasesController extends Controller
 
         return $valor;
     }
+  public function deny_purchase_act (Request $request) {
+    $user = Auth::user()->id;
+    $purchase_id= $request->get('idents');
+    $valor= 'false';
+    $comment = $request->comm;
 
+    if ( auth()->user()->can('View level one payment notification') || auth()->user()->can('View level two payment notification') ){
+        $count_md = DB::table('purchases')->where('id', '=', $purchase_id)->where('status', '!=', '4')->count();
+        if ($count_md != '0') {
+            $sql = DB::table('purchases')->where('id', '=', $purchase_id)->update(['status' => '4', 'updated_at' => Carbon::now()]);
+            DB::table('purchases_status_users')->insert([
+              'purchase_id'=>$purchase_id,
+              'user_id'=>$user,
+              'status_id'=>'4',
+              'created_at'=> Carbon::now(),
+            ]);
+            /*$new_reg_paym = new Pay_status_user;
+            $new_reg_paym->payment_id = $purchase_id;
+            $new_reg_paym->user_id = $user;
+            $new_reg_paym->status_id = '4';
+            $new_reg_paym->save();*/
+            if($comment != " " && $comment != null){
+              DB::table('deny_purchase_comments')->insert([
+                'name'=>$comment,
+                'purchase_id'=>$purchase_id,
+                'user_id'=>$user,
+                'created_at'=> Carbon::now(),
+              ]);
+            }
+            $valor= 'true';
+        }
+    }
+
+    return $valor;
+  }
 }

@@ -1,5 +1,26 @@
-function enviar(e, editing){
+$(function() {
+  $('#filter_date_from').datepicker({
+    language: 'es',
+    format: 'dd-mm-yyyy',
+    viewMode: "days",
+    minViewMode: "days",
+    endDate: '1d',
+    autoclose: true,
+    clearBtn: true
+  });
 
+  $('#filter_date_to').datepicker({
+    language: 'es',
+    format: 'dd-mm-yyyy',
+    viewMode: "days",
+    minViewMode: "days",
+    endDate: '1d',
+    autoclose: true,
+    clearBtn: true
+  });
+});
+
+function enviar(e, editing){
   var valor = e.getAttribute('value');
 
   $.ajax({
@@ -57,6 +78,43 @@ function enviar(e, editing){
 		   });
 		}
 	});
+}
+function enviartwo(e){
+  var valor= e.getAttribute('value');
+  var _token = $('input[name="_token"]').val();
+
+  Swal.fire({
+    title: "¿Estás seguro?",
+    html: "Se denegará la compra.!<br><br><textarea rows='3' placeholder='Añadir comentario' class='form-control' id='comentario'></textarea>",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    confirmButtonText: "Continuar",
+    cancelButtonText: "Cancelar!",
+  }).then((result) => {
+    var comment = $('#comentario').val();
+    if (comment === "") {
+      Swal.fire("Operación abortada!", "Añada un comentario de denegación.", "error");
+    }else{
+      $.ajax({
+          type: "POST",
+          url: "/purchases/deny_purchase",
+          data: { idents: valor, comm: comment, _token : _token },
+          success: function (data){
+            // console.log(data);
+            if (data === 'true') {
+              Swal.fire("Operación Completada!", "La compra ha sido denegada.", "success");
+              gen_purchases_auto();
+            }else{
+              Swal.fire("Operación abortada!", "No cuenta con el permiso o esta ya se encuentra denegada :) Nota: Si la compra ya esta confirmada no se puede denegar", "error");
+            }
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+      });
+    }
+  })
 
 }
 
