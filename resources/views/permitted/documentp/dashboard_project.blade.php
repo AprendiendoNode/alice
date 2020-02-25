@@ -27,7 +27,7 @@
               <h3 class="text-title">Resumen de compras</h3>
             </div>
             <div class="col-xs-12 col-md-6 col-md-offset-1">
-              
+
             </div>
           </div>
           <ul class="nav nav-tabs" role="tablist">
@@ -234,7 +234,7 @@
                     <p class="text-default"> Nuevo </p>
                     <h4><strong>{{ $status_cotizador[0]->Nuevo }}</strong></h4>
                   </div>
-                </div> 
+                </div>
               </div>
             </div>
           </div>
@@ -467,22 +467,22 @@
                   </tr>
                   <tr>
                     <td> <strong>Renovación</strong> </td>
-                    <td class="text-center p-2">{{ $projects_ejecucion_fact[4]->cantidad_facturando }}</td>
-                    <td class="text-center font-weight-bold">{{ number_format($projects_ejecucion_fact[4]->suma_facturando, 0, '.', ',') }}</td>
-                    <td class="text-center">{{ $projects_ejecucion_fact[4]->cantidad_xfacturar }}</td>
-                    <td class="text-center font-weight-bold"> {{ number_format($projects_ejecucion_fact[4]->suma_xfacturar, 0, '.', ',')  }} </td>
+                    <td class="text-center p-2">{{ $projects_ejecucion_fact[2]->cantidad_facturando }}</td>
+                    <td class="text-center font-weight-bold">{{ number_format($projects_ejecucion_fact[2]->suma_facturando, 0, '.', ',') }}</td>
+                    <td class="text-center">{{ $projects_ejecucion_fact[2]->cantidad_xfacturar }}</td>
+                    <td class="text-center font-weight-bold"> {{ number_format($projects_ejecucion_fact[2]->suma_xfacturar, 0, '.', ',')  }} </td>
                   </tr>
                 </tbody>
                 <tfoot>
                   @php
-                      $total_facturando_ejecucion = $projects_ejecucion_fact[0]->suma_facturando + $projects_ejecucion_fact[1]->suma_facturando + $projects_ejecucion_fact[4]->suma_facturando;
-                      $total_xfacturar_ejecucion = $projects_ejecucion_fact[0]->suma_xfacturar + $projects_ejecucion_fact[1]->suma_xfacturar + $projects_ejecucion_fact[4]->suma_xfacturar;
+                      $total_facturando_ejecucion = $projects_ejecucion_fact[0]->suma_facturando + $projects_ejecucion_fact[1]->suma_facturando + $projects_ejecucion_fact[2]->suma_facturando;
+                      $total_xfacturar_ejecucion = $projects_ejecucion_fact[0]->suma_xfacturar + $projects_ejecucion_fact[1]->suma_xfacturar + $projects_ejecucion_fact[2]->suma_xfacturar;
                  @endphp
                   <tr class="font-weight-bold" style="background-color: #D9D9D9 !important;">
                     <td><strong>Total</strong> </td>
-                    <td class="text-center p-2"> <span id="">{{ $projects_ejecucion_fact[0]->cantidad_facturando + $projects_ejecucion_fact[1]->cantidad_facturando + $projects_ejecucion_fact[4]->cantidad_facturando }}</span> </td>
+                    <td class="text-center p-2"> <span id="">{{ $projects_ejecucion_fact[0]->cantidad_facturando + $projects_ejecucion_fact[1]->cantidad_facturando + $projects_ejecucion_fact[2]->cantidad_facturando }}</span> </td>
                     <td class="text-center"> <span id="">{{ number_format($total_facturando_ejecucion ,  0, '.', ',') }}</span> </td>
-                    <td class="text-center"> <span id="">{{ $projects_ejecucion_fact[0]->cantidad_xfacturar + $projects_ejecucion_fact[1]->cantidad_xfacturar + $projects_ejecucion_fact[4]->cantidad_xfacturar }}</span> </td>
+                    <td class="text-center"> <span id="">{{ $projects_ejecucion_fact[0]->cantidad_xfacturar + $projects_ejecucion_fact[1]->cantidad_xfacturar + $projects_ejecucion_fact[2]->cantidad_xfacturar }}</span> </td>
                     <th class="text-center"> <span id=""></span> {{ number_format($total_xfacturar_ejecucion ,  0, '.', ',') }} </th>
                   </tr>
                   <!-----------venta-------------->
@@ -577,7 +577,7 @@
               </table>
             </div>
           </div>
-          
+
         </div>
       </div>
       <br>
@@ -612,10 +612,10 @@
                 </thead>
                 <tbody>
                     @php
-                      $total_proyectos = 0; 
-                      $total_serv_mensual = 0; 
-                      $total_facturando = 0; 
-                      $total_xfacturar = 0; 
+                      $total_proyectos = 0;
+                      $total_serv_mensual = 0;
+                      $total_facturando = 0;
+                      $total_xfacturar = 0;
                     @endphp
                     @foreach ($projects_ejecucion_motivo as $projects)
                     <tr>
@@ -636,7 +636,7 @@
                       @php
                           $total_percent = 1 - ($total_xfacturar / ($total_serv_mensual + 0.001));
                           $total_percent *= 100;
-                      @endphp                
+                      @endphp
                 </tbody>
                 <tfoot class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
                   <tr style="color:#0A1747;">
@@ -674,10 +674,10 @@
                 <tbody>
                   <tr>
                     @php
-                      $total_proyectos = 0; 
-                      $total_serv_mensual = 0; 
-                      $total_facturando = 0; 
-                      $total_xfacturar = 0; 
+                      $total_proyectos = 0;
+                      $total_serv_mensual = 0;
+                      $total_facturando = 0;
+                      $total_xfacturar = 0;
                     @endphp
                     @foreach ($projects_instalados_motivo as $projects)
                     <tr>
@@ -694,11 +694,11 @@
                          $total_facturando += $projects->suma_facturando;
                          $total_xfacturar += $projects->suma_xfacturar;
                      @endphp
-                    @endforeach 
+                    @endforeach
                      @php
                           $total_percent = 1 - ($total_xfacturar / ($total_serv_mensual + 0.001));
                           $total_percent *= 100;
-                      @endphp   
+                      @endphp
                   </tr>
                 </tbody>
                 <tfoot class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
@@ -716,8 +716,8 @@
           </div>
         </div>
       </div>
-      
-   
+
+
     @else
       @include('default.denied')
     @endif
