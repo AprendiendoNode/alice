@@ -50,7 +50,7 @@ class PurchasesController extends Controller
         $accounting_account = DB::select('CALL Contab.px_catalogo_cuentas_contables()', array());
 
         // Purchase order list
-        $order_purchase = DB::table('order_purchase')->select('num_order', 'order_cart_id')->get();
+        $order_purchase = DB::table('order_purchase')->select('num_order', 'order_cart_id')->where('order_status_id', '<>', 2)->get();
 
         return view('permitted.purchases.purchase_view', compact('providers','sucursal','currency','payment_way','payment_term', 'payment_methods', 'cfdi_uses', 'cfdi_relations', 'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications', 'document_type', 'accounting_account', 'cadenas', 'order_purchase'));
     }

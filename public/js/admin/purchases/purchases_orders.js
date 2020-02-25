@@ -55,6 +55,7 @@ function getProvidersFromProject(doc_id){
         })
         .then(function(data){
           $('#provider_id').empty();
+          $('#provider_id').append(`<option value="">Elige un proveedor</option>`);
           $.each(data, function(i, key) {
             $('#provider_id').append(`<option value="${key.id}">${key.proveedor}</option>`);
         });

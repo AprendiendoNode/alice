@@ -122,13 +122,16 @@
   <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
 
+  <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
+  <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
+
   <script src="{{ asset('plugins/momentupdate/moment.js')}}"></script>
   <link href="{{ asset('plugins/daterangepicker-master/daterangepicker.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('plugins/daterangepicker-master/daterangepicker.js')}}"></script>
   
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-  <script src="{{ asset('js/admin/purchases/history_purchases_orders.js')}}"></script>
+  <script src="{{ asset('js/admin/purchases/history_purchases_orders.js?v=2.0')}}"></script>
 
   <style media="screen">
 

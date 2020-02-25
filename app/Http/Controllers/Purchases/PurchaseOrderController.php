@@ -65,7 +65,7 @@ class PurchaseOrderController extends Controller
         $products = DB::select('CALL px_order_cart_products_xorder_cart(?)', array($id_cart));
         $order_purchases = DB::select('CALL px_order_purchase_data(?)', array($id_order_shop));
         $format = new ConvertNumberToLetters();
-        //dd($products);
+        
         $ammount_letter = $format->convertir($order_purchases[0]->total);
         
         $pdf = PDF::loadView('permitted.purchases.order_purchase_pdf', compact('ammount_letter', 'products', 'order_purchases'));
@@ -74,7 +74,7 @@ class PurchaseOrderController extends Controller
     }
 
     public function store(Request $request)
-    {  
+    {   
         $date = \Carbon\Carbon::now();
         $date = $date->format('Y-m-d');
         $date_delivery =  Carbon::parse($request->date_delivery)->format('Y-m-d');
@@ -123,7 +123,8 @@ class PurchaseOrderController extends Controller
                 'subtotal' => $request->subtotal,
                 'descuento' => $request->descuento,
                 'iva_amount' => $request->iva,
-                'total' => $request->total
+                'total' => $request->total,
+                'id_doc' => $request->id_doc
             ]);
 
             DB::commit();
@@ -210,7 +211,20 @@ class PurchaseOrderController extends Controller
         $result = DB::table('order_address_delivery')->insert([
             'address' => $request->new_address
         ]);
-    }        
+    }
+    
+    public function setStatusOrder(Request $request)
+    {
+        $order = $result = DB::table('order_purchase')
+        ->where('id', $request->id)
+        ->update([
+            'order_status_id' => $request->status
+        ]);
+
+        return response()->json([
+            'status' => 200
+        ]);
+    } 
 
     public function createFolio()
     {

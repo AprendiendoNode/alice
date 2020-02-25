@@ -1,3 +1,7 @@
+//Configuracion de x-editable jquery
+$.fn.editable.defaults.mode = 'popup';
+$.fn.editable.defaults.ajaxOptions = {type:'POST'};
+
 var _token = $('input[name="_token"]').val();
 const headers = new Headers({
     "Accept": "application/json",
@@ -111,7 +115,7 @@ function table_orders(datajson, table){
       information.num_order,
       information.provider,
       format_number(parseFloat(information.total)),
-      information.order_status,
+      `<a href="javascript:void(0)" data-type="select" data-pk="${information.id}" data-title="Estatus" data-value="${information.order_status_id}" class="set-status-order">`,
       information.date_delivery,    
       information.order_address
     ]);
@@ -187,12 +191,46 @@ function delete_order(id_order){
 
 }
 
+function setStatusOrder(id, status){
+  var _token = $('input[name="_token"]').val();
+  $.ajax({
+      type: "POST",
+      url: "/purchases/set-status-order",
+      data: { id : id, status : status, _token : _token },
+      success: function (data){
+        console.log(data);
+        if(data.status == 200){
+          menssage_toast('Mensaje', '3', 'Estatus actualizado' , '2000');
+        }else{
+          menssage_toast('Error', '2', 'Ocurrio un error inesperado' , '3000');
+        }
+      },
+      error: function (data) {
+        console.log('Error:', data);
+        menssage_toast('Error', '2', 'Ocurrio un error inesperado' , '3000');
+      }
+  });
+}
+
 /**********************************************************************************/
 
 var Configuration_table_orders = {
-  "order": [[ 3, "asc" ]],
-  "select": true,
+  "order": [[ 2, "desc" ]],
+  "select": false,
   "aLengthMenu": [[10, 25, -1], [10, 25, "All"]],
+  "fnDrawCallback": function() {
+    var source = [{'value': 1, 'text': 'Nuevo'}, {'value': 2, 'text': 'Enviado a proveeedor'}];
+    $('.set-status-order').editable({
+        type : 'text',
+        source: function() {
+        return source;
+      },
+      success: function(response, newValue) {
+        var id = $(this).data('pk');
+        setStatusOrder(id, newValue);
+      }
+    });
+  },
   "columnDefs": [
     {
       "targets": 0,
