@@ -851,7 +851,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/survey_results' , 'Survey\ResultsSurveyController@index');
     Route::get('/survey_results_client' , 'Survey\ResultsSurveyController@index2');
     Route::post('/survey_viewresults_modal' , 'Survey\ResultsSurveyController@survey_viewresults_modal');
-    Route::post('/sent_survey_client' , 'Survey\ResultsSurveyController@sent_survey_client');    
+    Route::post('/sent_survey_client' , 'Survey\ResultsSurveyController@sent_survey_client');
     Route::post('get_history_surveyresult_modal','Survey\ResultsSurveyController@get_history_surveyresult_modal');
     //Crear encuestas
     Route::get('/create_survey_admin' , 'Survey\CreateSurveyController@index');
@@ -1149,6 +1149,8 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-credit-notes/mark-reconciled', 'Sales\CustomerCreditNoteController@markReconciled');
     Route::post('/customer-credit-notes/modal-status-sat', 'Sales\CustomerCreditNoteController@modalStatusSat');
     Route::post('/customer-credit-notes/modal-send-mail', 'Sales\CustomerCreditNoteController@modalSendMail');
+    Route::post('get_note_credit_mov_data_cfdi', 'Sales\CustomerCreditNoteController@get_note_credit_mov_data_cfdi');
+    Route::post('get_note_credit_mov_data', 'Sales\CustomerCreditNoteController@get_note_credit_mov_data');
  // Route::post('/customer-credit-notes-sendmail-fact', 'Sales\CustomerInvoiceController@sendmail_notecredit_customers');
     //Notas de credito -cambio
     Route::post('/customer-credit-notes/destroy', 'Sales\CustomerCreditNoteController@destroy');
@@ -1224,7 +1226,8 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices/send_invoice_to_poliza', 'Sales\CustomerInvoiceController@send_invoice_to_poliza');
 
     Route::post('/customer-invoices-cont-rz', 'Sales\CustomerInvoiceController@getDataContractRz');
-
+    Route::get('customers/get-customer-bank-accounts', 'Sales\CustomerController@getCustomerBankAccounts')->name('customers/get-customer-bank-accounts');
+    Route::post('customer-payments/total-item-manual-reconciled', 'Sales\CustomerPaymentController@totalItemManualReconciled')->name('customer-payments/total-item-manual-reconciled');
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
@@ -1268,7 +1271,7 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::post('/total-lines-purchase', 'Purchases\PurchasesController@totallines');
   Route::post('/get_consecutivo','Purchases\PurchasesController@get_consecutivo');
   Route::post('/get_cart_products', 'Purchases\PurchasesController@get_products_cartid');
-  
+
   //Historial de compras
   Route::get('/view_purchases_show', 'Purchases\HistoryPurchasesController@index');
   Route::post('/view_purchases_search', 'Purchases\HistoryPurchasesController@search');
