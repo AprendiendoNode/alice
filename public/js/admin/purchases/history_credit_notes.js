@@ -236,7 +236,8 @@ var Configuration_table_responsive_doctypes = {
             $("#tabla_asiento_contable tbody").empty();
             $.ajax({
                 type: "POST",
-                url: '/purchases/get_note_cred_mov_data',
+                url: '/sales/get_note_credit_mov_data',
+                // url: '/purchases/get_note_cred_mov_data',
                 data: {facturas: JSON.stringify(facturas) , date:$('#filter_date_from').val(),  _token : _token},
                 success: function (data) {
                   let suma_cargos = 0.0;

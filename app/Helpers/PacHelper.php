@@ -618,14 +618,14 @@ class PacHelper
             */
             $params = [
                 'username' => $pac->username,
-                'password' => $pac->password,
+                'password' => Crypt::decryptString($pac->password),
                 'xml' => \Storage::get($tmp['path_xml'] . $tmp['file_xml']),
             ];
             //Metodo de timbrado
             $response = $client->__soapCall('stamp', ['parameters' => $params]);
 
             if (isset($response->stampResult->Incidencias->Incidencia)) {
-                throw new \Exception($response->stampResult->Incidencias->Incidencia->MensajeIncidencia);
+                throw new \Exception($response->stampResult->Incidencias->Incidencia->MensajeIncidencia . ': ' . $response->stampResult->Incidencias->Incidencia->ExtraInfo);
             }else{
                 $tmp_xml = $response->stampResult->xml;
                 $file_xml_pac = Str::random(40) . '.xml';
@@ -800,7 +800,7 @@ class PacHelper
             $response = $client->__soapCall('stamp', ['parameters' => $params]);
 
             if (isset($response->stampResult->Incidencias->Incidencia)) {
-                throw new \Exception($response->stampResult->Incidencias->Incidencia->MensajeIncidencia);
+                throw new \Exception($response->stampResult->Incidencias->Incidencia->MensajeIncidencia . ': ' . $response->stampResult->Incidencias->Incidencia->ExtraInfo);
             }else{
                 $tmp_xml = $response->stampResult->xml;
                 $file_xml_pac = Str::random(40) . '.xml';
@@ -950,5 +950,1028 @@ class PacHelper
             throw $e;
         }
     }
+
+    /**
+     * Clase para timbrado con Timbox pruebas
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function timboxTest($tmp, &$creator = null)
+    {
+        try {
+            $pac = $tmp['pac']; //PAC
+
+            //
+            $client = new SoapClient($pac->ws_url,[
+                'trace' => 1,
+                'use' => SOAP_LITERAL
+            ]);
+            $params = [
+                'username' => $pac->username,
+                'password' => Crypt::decryptString($pac->password),
+                'xml' => base64_encode(\Storage::get($tmp['path_xml'] . $tmp['file_xml'])),
+            ];
+
+            //Metodo de timbrado
+            $response = $client->__soapCall('timbrar_cfdi', $params);
+
+            $tmp_xml = $response->xml;
+            $file_xml_pac = Str::random(40) . '.xml';
+            \Storage::put($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac, $tmp_xml);
+
+
+            //Obtiene datos del CFDI ya timbrado
+            $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac));
+            $tfd = $cfdi->getNode()->searchNode('cfdi:Complemento', 'tfd:TimbreFiscalDigital');
+
+            //Actualiza los datos para guardar
+            $tmp['uuid'] = $tfd['UUID'];
+            $tmp['date'] = str_replace('T', ' ', $tfd['FechaTimbrado']);
+            $tmp['file_xml_pac'] = Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac;
+
+            return $tmp;
+        } catch (\SoapFault $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para obtener el estatus del UUID en pruebas
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function timboxTestStatus($tmp, $pac)
+    {
+        try {
+            $company = Helper::defaultCompany(); //Empresa
+
+            $client = new SoapClient($pac->ws_url_cancel);
+            $params = [
+                'username' => $pac->username,
+                'password' => Crypt::decryptString($pac->password),
+                'uuid' => $tmp['uuid'],
+                'rfc_emisor' => $company->taxid,
+                'rfc_receptor' => $tmp['rfcR'],
+                'total' => $tmp['total'],
+            ];
+            $response = $client->__soapCall('consultar_estatus', $params);
+            $data_status_sat = [];
+            if(isset($response->estado)){
+                //Valida si el CFDI puede ser cancelado 1 Sin aceptacion, 2 Con Aceptacion, 3 no cancelable o si ya esta cancelado
+                $cancelable = 1;
+                if(in_array($response->estado,['Cancelable con aceptación'])){
+                    $cancelable = 2;
+                }
+                if(in_array($response->estado,['No cancelable'])){
+                    $cancelable = 3;
+                }
+                if(in_array($response->estado,['Cancelado','No Encontrado'])){
+                    $cancelable = 3;
+                }
+                //Valida si ya fue aceptado el proceso de cancelacion
+                $status_cancelled = false;
+                if(in_array($response->estatus_cancelacion,['Cancelado con aceptación','Plazo vencido','Cancelado sin aceptación'])){
+                    $status_cancelled = true;
+                }
+
+                $data_status_sat = [
+                    'cancelable' => $cancelable,
+                    'status_cancelled' => $status_cancelled,
+                    'pac_is_cancelable' => $response->estado ?? '',
+                    'pac_status' => $response->estado ?? '',
+                    'pac_status_cancelation' => $response->estatus_cancelacion  ?? ''
+                ];
+
+            }
+            return $data_status_sat;
+        } catch (\SoapFault $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para cancelar timbrado Timbox de pruebas
+     *
+     * @param $tmp
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function timboxTestCancel($tmp, $pac)
+    {
+        try {
+            $company = Helper::defaultCompany(); //Empresa
+
+            //
+            $uuids = [
+                [
+                    'uuid' => $tmp['uuid'],
+                    'rfc_receptor' => $tmp['rfcR'],
+                    'total' => $tmp['total']
+                ]
+            ];
+            $client = new SoapClient($pac->ws_url_cancel);
+            $params = [
+                'username' => $pac->username,
+                'password' => Crypt::decryptString($pac->password),
+                'rfc_emisor' => $company->taxid,
+                'folios' => $uuids,
+                'cert_pem' => \Storage::get($company->pathFileCerPem()),
+                'llave_pem' => \Storage::get($company->pathFileKeyPem()),
+                /*'pfxbase64' => \Storage::get($company->pathFilePfx()),
+                'pfxpassword' => Crypt::decryptString($company->password_key),*/
+            ];
+            //Metodo de cancelacion de timbrado
+            $response = $client->__soapCall('cancelar_cfdi', $params);
+
+            //Valida respuesta
+            $tmp_response = 'ok';
+            if(!empty($response->acuse_cancelacion)){
+                $tmp_response = $response->acuse_cancelacion;
+            }
+
+            //Actualiza los datos para guardar
+            $tmp['cancel_date'] = Helper::dateTimeToSql(\Date::now());
+            $tmp['cancel_response'] = $tmp_response;
+
+            return $tmp;
+        } catch (\SoapFault $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para timbrado con Timbox
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function timbox($tmp, &$creator = null)
+    {
+        try {
+            $pac = $tmp['pac']; //PAC
+
+            //
+            $client = new SoapClient($pac->ws_url,[
+                'trace' => 1,
+                'use' => SOAP_LITERAL
+            ]);
+            $params = [
+                'username' => $pac->username,
+                'password' => Crypt::decryptString($pac->password),
+                'xml' => base64_encode(\Storage::get($tmp['path_xml'] . $tmp['file_xml'])),
+            ];
+
+            //Metodo de timbrado
+            $response = $client->__soapCall('timbrar_cfdi', $params);
+
+            $tmp_xml = $response->xml;
+            $file_xml_pac = Str::random(40) . '.xml';
+            \Storage::put($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac, $tmp_xml);
+
+
+            //Obtiene datos del CFDI ya timbrado
+            $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac));
+            $tfd = $cfdi->getNode()->searchNode('cfdi:Complemento', 'tfd:TimbreFiscalDigital');
+
+            //Actualiza los datos para guardar
+            $tmp['uuid'] = $tfd['UUID'];
+            $tmp['date'] = str_replace('T', ' ', $tfd['FechaTimbrado']);
+            $tmp['file_xml_pac'] = Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac;
+
+            return $tmp;
+        } catch (\SoapFault $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para obtener el estatus del UUID
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function timboxStatus($tmp, $pac)
+    {
+        try {
+            $company = Helper::defaultCompany(); //Empresa
+
+            $client = new SoapClient($pac->ws_url_cancel);
+            $params = [
+                'username' => $pac->username,
+                'password' => Crypt::decryptString($pac->password),
+                'uuid' => $tmp['uuid'],
+                'rfc_emisor' => $company->taxid,
+                'rfc_receptor' => $tmp['rfcR'],
+                'total' => $tmp['total'],
+            ];
+            $response = $client->__soapCall('consultar_estatus', $params);
+            $data_status_sat = [];
+            if(isset($response->estado)){
+                //Valida si el CFDI puede ser cancelado 1 Sin aceptacion, 2 Con Aceptacion, 3 no cancelable o si ya esta cancelado
+                $cancelable = 1;
+                if(in_array($response->estado,['Cancelable con aceptación'])){
+                    $cancelable = 2;
+                }
+                if(in_array($response->estado,['No cancelable'])){
+                    $cancelable = 3;
+                }
+                if(in_array($response->estado,['Cancelado','No Encontrado'])){
+                    $cancelable = 3;
+                }
+                //Valida si ya fue aceptado el proceso de cancelacion
+                $status_cancelled = false;
+                if(in_array($response->estatus_cancelacion,['Cancelado con aceptación','Plazo vencido','Cancelado sin aceptación'])){
+                    $status_cancelled = true;
+                }
+
+                $data_status_sat = [
+                    'cancelable' => $cancelable,
+                    'status_cancelled' => $status_cancelled,
+                    'pac_is_cancelable' => $response->estado ?? '',
+                    'pac_status' => $response->estado ?? '',
+                    'pac_status_cancelation' => $response->estatus_cancelacion  ?? ''
+                ];
+
+            }
+            return $data_status_sat;
+        } catch (\SoapFault $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para cancelar timbrado Timbox
+     *
+     * @param $tmp
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function timboxCancel($tmp, $pac)
+    {
+        try {
+            $company = Helper::defaultCompany(); //Empresa
+
+            //
+            $uuids = [
+                [
+                    'uuid' => $tmp['uuid'],
+                    'rfc_receptor' => $tmp['rfcR'],
+                    'total' => $tmp['total']
+                ]
+            ];
+            $client = new SoapClient($pac->ws_url_cancel);
+            $params = [
+                'username' => $pac->username,
+                'password' => Crypt::decryptString($pac->password),
+                'rfc_emisor' => $company->taxid,
+                'folios' => $uuids,
+                'cert_pem' => \Storage::get($company->pathFileCerPem()),
+                'llave_pem' => \Storage::get($company->pathFileKeyPem()),
+                /*'pfxbase64' => \Storage::get($company->pathFilePfx()),
+                'pfxpassword' => Crypt::decryptString($company->password_key),*/
+            ];
+            //Metodo de cancelacion de timbrado
+            $response = $client->__soapCall('cancelar_cfdi', $params);
+
+            //Valida respuesta
+            $tmp_response = 'ok';
+            if(!empty($response->acuse_cancelacion)){
+                $tmp_response = $response->acuse_cancelacion;
+            }
+
+            //Actualiza los datos para guardar
+            $tmp['cancel_date'] = Helper::dateTimeToSql(\Date::now());
+            $tmp['cancel_response'] = $tmp_response;
+
+            return $tmp;
+        } catch (\SoapFault $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Funcion de apoyo para parsear la respuesta de HTTP regresada por CURL
+     */
+    private static function parseResponseComdig($response, $headerSize){
+        $header_text = substr($response, 0, $headerSize);
+        $body = substr($response, $headerSize);
+        foreach (explode("\r\n", $header_text) as $i => $line)
+            if ($i === 0)
+                $headers['http_code'] = $line;
+            else
+            {
+                if(!empty($line)){
+                    list ($key, $value) = explode(': ', $line);
+                    $headers[$key] = $value;
+                }
+            }
+        return array($body,$headers);
+    }
+
+    /**
+     * Funcion de apoyo para parsear el acuse de cancelacion del SAT
+     */
+    private static function parseAckComdig($acuse_string){
+        $acuse=new \SimpleXMLElement($acuse_string);
+        $uuids = array();
+        foreach($acuse->Folios as $folio){
+            $uuid = (string)$folio->UUID;
+            $uuids[$uuid] = (string)$folio->EstatusUUID;
+        }
+        return $uuids;
+    }
+
+
+    /**
+     * Clase para timbrado con Comercio digital pruebas
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function comdigTest($tmp, &$creator = null)
+    {
+        try {
+            $pac = $tmp['pac']; //PAC
+
+            $ch = curl_init($pac->ws_url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, \Storage::get($tmp['path_xml'] . $tmp['file_xml']));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                [
+                    'Expect:',
+                    'Content-Type: text/xml',
+                    'usrws: '.$pac->username,
+                    'pwdws: '.Crypt::decryptString($pac->password),
+                    'tipo: XML'
+                ]
+            );
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+            curl_setopt($ch, CURLOPT_HEADER,1);
+            $response = curl_exec($ch);
+            $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            curl_close($ch);
+
+            list($response_body, $headers) = self::parseResponseComdig($response,$headerSize);
+            $codigo = $headers['codigo'];
+            $codigo_int = (int)$codigo;
+            if($codigo_int != 0){
+                throw new \Exception($headers['errmsg']);
+            }
+
+            $tmp_xml = $response_body;
+            $file_xml_pac = Str::random(40) . '.xml';
+            \Storage::put($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac, $tmp_xml);
+
+            //Obtiene datos del CFDI ya timbrado
+            $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac));
+            $tfd = $cfdi->getNode()->searchNode('cfdi:Complemento', 'tfd:TimbreFiscalDigital');
+
+            //Actualiza los datos para guardar
+            $tmp['uuid'] = $tfd['UUID'];
+            $tmp['date'] = str_replace('T', ' ', $tfd['FechaTimbrado']);
+            $tmp['file_xml_pac'] = Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac;
+
+            return $tmp;
+        }catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para obtener el estatus del UUID
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function comdigTestStatus($tmp,$company = null, $pac)
+    {
+        try {
+
+            $response = new \stdClass();
+            $response->estado = 'No proporcionado';
+            $response->estatus_cancelacion = 'No proporcionado';
+            $data_status_sat = [];
+            if(isset($response->estado)){
+                //Valida si el CFDI puede ser cancelado 1 Sin aceptacion, 2 Con Aceptacion, 3 no cancelable o si ya esta cancelado
+                $cancelable = 1;
+                /*if(in_array($response->estado,['Cancelable con aceptación'])){
+                    $cancelable = 2;
+                }
+                if(in_array($response->estado,['No cancelable'])){
+                    $cancelable = 3;
+                }
+                if(in_array($response->estado,['Cancelado','No Encontrado'])){
+                    $cancelable = 3;
+                }*/
+                //Valida si ya fue aceptado el proceso de cancelacion
+                $status_cancelled = false;
+                /*if(in_array($response->estatus_cancelacion,['Cancelado con aceptación','Plazo vencido','Cancelado sin aceptación'])){
+                    $status_cancelled = true;
+                }*/
+
+                $data_status_sat = [
+                    'cancelable' => $cancelable,
+                    'status_cancelled' => $status_cancelled,
+                    'pac_is_cancelable' => $response->estado ?? '',
+                    'pac_status' => $response->estado ?? '',
+                    'pac_status_cancelation' => $response->estatus_cancelacion  ?? ''
+                ];
+
+            }
+            return $data_status_sat;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para cancelar timbrado Comercio Digital de pruebas
+     *
+     * @param $tmp
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function comdigTestCancel($tmp,$company = null, $pac)
+    {
+        try {
+
+            $request = "USER=".$pac->username."\nPWDW=".Crypt::decryptString($pac->password)."\nRFC=".$company->taxid."\nUUID=".$tmp['uuid']."\nPWDK=".Crypt::decryptString($company->password_key)."\nKEYF=".base64_decode(\Storage::get($company->pathFileKey()))."\nCERT=".base64_encode(\Storage::get($company->pathFileCer()))."\nTIPO=CFDI3.3\nACUS=SI\n";
+            $ch = curl_init($pac->ws_url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                [
+                    'Expect:',
+                    'Content-Type: text/plain',
+                    'usrws: '.$pac->username,
+                    'pwdws: '.Crypt::decryptString($pac->password),
+                ]
+            );
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+            curl_setopt($ch, CURLOPT_HEADER,1);
+            $response = curl_exec($ch);
+            $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            curl_close($ch);
+
+            list($response_body, $headers) = self::parseResponseComdig($response,$headerSize);
+            $codigo = $headers['codigo'];
+            $codigo_int = (int)$codigo;
+            if($codigo_int != 0){
+                throw new \Exception($headers['errmsg']);
+            }
+
+            //Valida respuesta
+            $tmp_response = 'ok';
+            if(!empty($response_body)){
+                $tmp_response = $response_body;
+            }
+
+            //Actualiza los datos para guardar
+            $tmp['cancel_date'] = Helper::dateTimeToSql(\Date::now());
+            $tmp['cancel_response'] = $tmp_response;
+
+            return $tmp;
+        }catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para timbrado con Comercio digital pruebas
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function comdig($tmp, &$creator = null)
+    {
+        try {
+            $pac = $tmp['pac']; //PAC
+
+            $ch = curl_init($pac->ws_url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, \Storage::get($tmp['path_xml'] . $tmp['file_xml']));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                [
+                    'Expect:',
+                    'Content-Type: text/xml',
+                    'usrws: '.$pac->username,
+                    'pwdws: '.Crypt::decryptString($pac->password),
+                    'tipo: XML'
+                ]
+            );
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+            curl_setopt($ch, CURLOPT_HEADER,1);
+            $response = curl_exec($ch);
+            $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            curl_close($ch);
+
+            list($response_body, $headers) = self::parseResponseComdig($response,$headerSize);
+            $codigo = $headers['codigo'];
+            $codigo_int = (int)$codigo;
+            if($codigo_int != 0){
+                throw new \Exception($headers['errmsg']);
+            }
+
+            $tmp_xml = $response_body;
+            $file_xml_pac = Str::random(40) . '.xml';
+            \Storage::put($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac, $tmp_xml);
+
+            //Obtiene datos del CFDI ya timbrado
+            $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac));
+            $tfd = $cfdi->getNode()->searchNode('cfdi:Complemento', 'tfd:TimbreFiscalDigital');
+
+            //Actualiza los datos para guardar
+            $tmp['uuid'] = $tfd['UUID'];
+            $tmp['date'] = str_replace('T', ' ', $tfd['FechaTimbrado']);
+            $tmp['file_xml_pac'] = Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac;
+
+            return $tmp;
+        }catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para obtener el estatus del UUID
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function comdigStatus($tmp,$company = null, $pac)
+    {
+        try {
+
+            $request = "USER=".$pac->username."\nPWDW=".Crypt::decryptString($pac->password)."\nRFCR=".$tmp['rfcR']."\nRFCE=".$company->taxid."\nTOTAL=".$tmp['total']."\nUUID=".$tmp['uuid']."\n";
+            $ch = curl_init('https://cancela.comercio-digital.mx/arws/consultaEstatus');
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                [
+                    'Expect:',
+                    'Content-Type: text/plain',
+                    'usrws: '.$pac->username,
+                    'pwdws: '.Crypt::decryptString($pac->password),
+                ]
+            );
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+            curl_setopt($ch, CURLOPT_HEADER,1);
+            $response = curl_exec($ch);
+            $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            curl_close($ch);
+
+            list($response_body, $headers) = self::parseResponseComdig($response,$headerSize);
+            $codigo = $headers['codigo'];
+            $codigo_int = (int)$codigo;
+            if($codigo_int != 0){
+                throw new \Exception($headers['errmsg']);
+            }
+            $uuids = self::parseAckComdig($response_body);
+            $response = new \stdClass();
+            $response->estado = $uuids[$tmp['uuid']];
+            $response->estatus_cancelacion = 'No proporcionado';
+            $data_status_sat = [];
+            if(isset($response->estado)){
+                //Valida si el CFDI puede ser cancelado 1 Sin aceptacion, 2 Con Aceptacion, 3 no cancelable o si ya esta cancelado
+                $cancelable = 1;
+                if(in_array($response->estado,['Cancelable con aceptación'])){
+                    $cancelable = 2;
+                }
+                if(in_array($response->estado,['No cancelable'])){
+                    $cancelable = 3;
+                }
+                if(in_array($response->estado,['Cancelado','No Encontrado'])){
+                    $cancelable = 3;
+                }
+                //Valida si ya fue aceptado el proceso de cancelacion
+                $status_cancelled = false;
+                /*if(in_array($response->estatus_cancelacion,['Cancelado con aceptación','Plazo vencido','Cancelado sin aceptación'])){
+                    $status_cancelled = true;
+                }*/
+
+                $data_status_sat = [
+                    'cancelable' => $cancelable,
+                    'status_cancelled' => $status_cancelled,
+                    'pac_is_cancelable' => $response->estado ?? '',
+                    'pac_status' => $response->estado ?? '',
+                    'pac_status_cancelation' => $response->estatus_cancelacion  ?? ''
+                ];
+
+            }
+            return $data_status_sat;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para cancelar timbrado Comercio Digital de pruebas
+     *
+     * @param $tmp
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function comdigCancel($tmp,$company = null, $pac)
+    {
+        try {
+
+            $request = "USER=".$pac->username."\nPWDW=".Crypt::decryptString($pac->password)."\nRFC=".$company->taxid."\nUUID=".$tmp['uuid']."\nPWDK=".Crypt::decryptString($company->password_key)."\nKEYF=".base64_decode(\Storage::get($company->pathFileKey()))."\nCERT=".base64_encode(\Storage::get($company->pathFileCer()))."\nTIPO=CFDI3.3\nACUS=SI\n";
+            $ch = curl_init($pac->ws_url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                [
+                    'Expect:',
+                    'Content-Type: text/plain',
+                    'usrws: '.$pac->username,
+                    'pwdws: '.Crypt::decryptString($pac->password),
+                ]
+            );
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+            curl_setopt($ch, CURLOPT_HEADER,1);
+            $response = curl_exec($ch);
+            $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            curl_close($ch);
+
+            list($response_body, $headers) = self::parseResponseComdig($response,$headerSize);
+            $codigo = $headers['codigo'];
+            $codigo_int = (int)$codigo;
+            if($codigo_int != 0){
+                throw new \Exception($headers['errmsg']);
+            }
+
+            //Valida respuesta
+            $tmp_response = 'ok';
+            if(!empty($response_body)){
+                $tmp_response = $response_body;
+            }
+
+            //Actualiza los datos para guardar
+            $tmp['cancel_date'] = Helper::dateTimeToSql(\Date::now());
+            $tmp['cancel_response'] = $tmp_response;
+
+            return $tmp;
+        }catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para timbrado con Multifacturas pruebas
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function multifacturasTest($tmp, &$creator = null)
+    {
+        try {
+            $pac = $tmp['pac']; //PAC
+
+            //
+            $client = new SoapClient($pac->ws_url,[
+                'trace' => 1,
+                'use' => SOAP_LITERAL
+            ]);
+            $params = [
+                'rfc' => $pac->username,
+                'clave' => Crypt::decryptString($pac->password),
+                'xml' => base64_encode(\Storage::get($tmp['path_xml'] . $tmp['file_xml'])),
+                'produccion' => 'NO',
+            ];
+
+            //Metodo de timbrado
+            $response = $client->__soapCall('timbrar33b64', $params);
+            $codigo_int = (int)$response->codigo_mf_numero;
+            if($codigo_int != 0){
+                throw new \Exception($response->codigo_mf_texto);
+            }
+            $tmp_xml = base64_decode($response->cfdi);
+            $file_xml_pac = Str::random(40) . '.xml';
+            \Storage::put($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac, $tmp_xml);
+
+            //Obtiene datos del CFDI ya timbrado
+            $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac));
+            $tfd = $cfdi->getNode()->searchNode('cfdi:Complemento', 'tfd:TimbreFiscalDigital');
+
+            //Actualiza los datos para guardar
+            $tmp['uuid'] = strtoupper($tfd['UUID']);
+            $tmp['date'] = str_replace('T', ' ', $tfd['FechaTimbrado']);
+            $tmp['file_xml_pac'] = Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac;
+
+            return $tmp;
+        } catch (\SoapFault $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para obtener el estatus del UUID en pruebas
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function multifacturasTestStatus($tmp,$company = null, $pac)
+    {
+        try {
+
+            $response = new \stdClass();
+            $response->estado = 'No proporcionado';
+            $response->estatus_cancelacion = 'No proporcionado';
+            $data_status_sat = [];
+            if(isset($response->estado)){
+                //Valida si el CFDI puede ser cancelado 1 Sin aceptacion, 2 Con Aceptacion, 3 no cancelable o si ya esta cancelado
+                $cancelable = 1;
+                /*if(in_array($response->estado,['Cancelable con aceptación'])){
+                    $cancelable = 2;
+                }
+                if(in_array($response->estado,['No cancelable'])){
+                    $cancelable = 3;
+                }
+                if(in_array($response->estado,['Cancelado','No Encontrado'])){
+                    $cancelable = 3;
+                }*/
+                //Valida si ya fue aceptado el proceso de cancelacion
+                $status_cancelled = false;
+                /*if(in_array($response->estatus_cancelacion,['Cancelado con aceptación','Plazo vencido','Cancelado sin aceptación'])){
+                    $status_cancelled = true;
+                }*/
+
+                $data_status_sat = [
+                    'cancelable' => $cancelable,
+                    'status_cancelled' => $status_cancelled,
+                    'pac_is_cancelable' => $response->estado ?? '',
+                    'pac_status' => $response->estado ?? '',
+                    'pac_status_cancelation' => $response->estatus_cancelacion  ?? ''
+                ];
+
+            }
+            return $data_status_sat;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para cancelar timbrado Multifacturas de pruebas
+     *
+     * @param $tmp
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function multifacturasTestCancel($tmp,$company = null, $pac)
+    {
+        try {
+            //
+            $client = new SoapClient($pac->ws_url_cancel);
+            $params = [
+                'PAC' => [
+                    'usuario' => $pac->username,
+                    'pass' => Crypt::decryptString($pac->password),
+                ],
+                'usuario' => $pac->username,
+                'pass' => Crypt::decryptString($pac->password),
+                'accion' => 'cancelar',
+                'uuid' => $tmp['uuid'],
+                'rfc' => $company->taxid,
+                'b64Cer' => base64_encode(\Storage::get($company->pathFileCer())),
+                'b64Key' => base64_encode(\Storage::get($company->pathFileKey())),
+                'password' => Crypt::decryptString($company->password_key),
+                'produccion' => 'NO'
+            ];
+            //Metodo de cancelacion de timbrado
+            $response = $client->__soapCall('cancelarCfdi', ['datos' => $params]);
+            $codigo_int = (int)$response->codigo_mf_numero;
+            if($codigo_int != 0){
+                throw new \Exception($response->codigo_mf_texto);
+            }
+
+            //Valida respuesta
+            $tmp_response = 'ok';
+            if(!empty($response->acuse)){
+                $tmp_response = (!empty($response->codigo_respuesta_sat_texto) ? $response->codigo_respuesta_sat_texto : '-') .base64_decode($response->acuse);
+            }
+
+            //Actualiza los datos para guardar
+            $tmp['cancel_date'] = Helper::dateTimeToSql(\Date::now());
+            $tmp['cancel_response'] = $tmp_response;
+
+            return $tmp;
+        } catch (\SoapFault $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para timbrado con Multifacturas pruebas
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function multifacturas($tmp, &$creator = null)
+    {
+        try {
+            $pac = $tmp['pac']; //PAC
+
+            //
+            $client = new SoapClient($pac->ws_url,[
+                'trace' => 1,
+                'use' => SOAP_LITERAL
+            ]);
+            $params = [
+                'rfc' => $pac->username,
+                'clave' => Crypt::decryptString($pac->password),
+                'xml' => base64_encode(\Storage::get($tmp['path_xml'] . $tmp['file_xml'])),
+                'produccion' => 'SI',
+            ];
+
+            //Metodo de timbrado
+            $response = $client->__soapCall('timbrar33b64', $params);
+            $codigo_int = (int)$response->codigo_mf_numero;
+            if($codigo_int != 0){
+                throw new \Exception($response->codigo_mf_texto);
+            }
+            $tmp_xml = base64_decode($response->cfdi);
+            $file_xml_pac = Str::random(40) . '.xml';
+            \Storage::put($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac, $tmp_xml);
+
+            //Obtiene datos del CFDI ya timbrado
+            $cfdi = \CfdiUtils\Cfdi::newFromString(\Storage::get($tmp['path_xml'] . Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac));
+            $tfd = $cfdi->getNode()->searchNode('cfdi:Complemento', 'tfd:TimbreFiscalDigital');
+
+            //Actualiza los datos para guardar
+            $tmp['uuid'] = strtoupper($tfd['UUID']);
+            $tmp['date'] = str_replace('T', ' ', $tfd['FechaTimbrado']);
+            $tmp['file_xml_pac'] = Helper::makeDirectoryCfdi($tmp['path_xml']) . '/' . $file_xml_pac;
+
+            return $tmp;
+        } catch (\SoapFault $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para obtener el estatus del UUID en pruebas
+     *
+     * @param $tmp
+     * @param null $creator
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function multifacturasStatus($tmp,$company = null, $pac)
+    {
+        try {
+
+            $response = new \stdClass();
+            $response->estado = 'No proporcionado';
+            $response->estatus_cancelacion = 'No proporcionado';
+            $data_status_sat = [];
+            if(isset($response->estado)){
+                //Valida si el CFDI puede ser cancelado 1 Sin aceptacion, 2 Con Aceptacion, 3 no cancelable o si ya esta cancelado
+                $cancelable = 1;
+                /*if(in_array($response->estado,['Cancelable con aceptación'])){
+                    $cancelable = 2;
+                }
+                if(in_array($response->estado,['No cancelable'])){
+                    $cancelable = 3;
+                }
+                if(in_array($response->estado,['Cancelado','No Encontrado'])){
+                    $cancelable = 3;
+                }*/
+                //Valida si ya fue aceptado el proceso de cancelacion
+                $status_cancelled = false;
+                /*if(in_array($response->estatus_cancelacion,['Cancelado con aceptación','Plazo vencido','Cancelado sin aceptación'])){
+                    $status_cancelled = true;
+                }*/
+
+                $data_status_sat = [
+                    'cancelable' => $cancelable,
+                    'status_cancelled' => $status_cancelled,
+                    'pac_is_cancelable' => $response->estado ?? '',
+                    'pac_status' => $response->estado ?? '',
+                    'pac_status_cancelation' => $response->estatus_cancelacion  ?? ''
+                ];
+
+            }
+            return $data_status_sat;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Clase para cancelar timbrado Multifacturas de pruebas
+     *
+     * @param $tmp
+     * @return mixed
+     * @throws \Exception
+     */
+    /**
+     * Clase para cancelar timbrado Multifacturas de pruebas
+     *
+     * @param $tmp
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function multifacturasCancel($tmp,$company = null, $pac)
+    {
+        try {
+            //
+            $client = new SoapClient($pac->ws_url_cancel);
+            $params = [
+                'PAC' => [
+                    'usuario' => $pac->username,
+                    'pass' => Crypt::decryptString($pac->password),
+                ],
+                'usuario' => $pac->username,
+                'pass' => Crypt::decryptString($pac->password),
+                'accion' => 'cancelar',
+                'uuid' => $tmp['uuid'],
+                'rfc' => $company->taxid,
+                'b64Cer' => base64_encode(\Storage::get($company->pathFileCer())),
+                'b64Key' => base64_encode(\Storage::get($company->pathFileKey())),
+                'password' => Crypt::decryptString($company->password_key),
+                'produccion' => 'SI'
+            ];
+            //Metodo de cancelacion de timbrado
+            $response = $client->__soapCall('cancelarCfdi', ['datos' => $params]);
+            $codigo_int = (int)$response->codigo_mf_numero;
+            if($codigo_int != 0){
+                throw new \Exception($response->codigo_mf_texto);
+            }
+
+            //Valida respuesta
+            $tmp_response = 'ok';
+            if(!empty($response->acuse)){
+                $tmp_response = (!empty($response->codigo_respuesta_sat_texto) ? $response->codigo_respuesta_sat_texto : '-') .base64_decode($response->acuse);
+            }
+
+            //Actualiza los datos para guardar
+            $tmp['cancel_date'] = Helper::dateTimeToSql(\Date::now());
+            $tmp['cancel_response'] = $tmp_response;
+
+            return $tmp;
+        } catch (\SoapFault $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
 
 }

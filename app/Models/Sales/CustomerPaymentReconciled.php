@@ -19,7 +19,13 @@ class CustomerPaymentReconciled extends Model
           'last_balance',
           'number_of_payment',
           'sort_order',
-          'status'
+          'status',
+          'uuid_related',
+          'serie_related',
+          'folio_related',
+          'currency_code_related',
+          'payment_method_code_related',
+          'current_balance',
     ];
     public function customerPayment()
     {

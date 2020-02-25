@@ -187,6 +187,7 @@
                   <!-------------------------------------------------------------------------->
                   <div class="tab-pane fade show active" id="nav-product" role="tabpanel" aria-labelledby="nav-product-tab">
                     <div class="row">
+                      <!--
                       <div class="col-md-12 col-xs-12 mt-5">
                         <div class="card card-body bg-light">
                           <p class="text-center" style="margin: 0;">
@@ -198,6 +199,7 @@
                           </p>
                         </div>
                       </div>
+                      -->
                       <div class="col-md-12 col-xs-12">
                         <div class="table-responsive" style="fontsize: 8px;">
                           <table class="table table-items table-condensed table-hover table-bordered table-striped jambo_table mt-5" id="items" style="min-width: 1000px;">

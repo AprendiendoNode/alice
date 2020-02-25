@@ -20,7 +20,7 @@ use App\Models\Base\Pac;
 use App\Models\Base\DocumentType;
 use App\Models\Catalogs\CfdiRelation;
 use App\Models\Catalogs\State;
-use App\Models\Catalogs\country;
+use App\Models\Catalogs\country as Country;
 use App\Models\Catalogs\CfdiUse;
 use App\Models\Catalogs\Currency;
 use App\Models\Catalogs\PaymentMethod;
@@ -1630,7 +1630,13 @@ class CustomerInvoiceController extends Controller
              $cfdi33_receptor['Rfc'] = $customer_invoice->customer->taxid;
              $cfdi33_receptor['Nombre'] = trim($customer_invoice->customer->name);
              if ($customer_invoice->customer->taxid == 'XEXX010101000') {
-                 $cfdi33_receptor['ResidenciaFiscal'] = $customer_invoice->customer->country->code;
+               // return $customer_invoice->customer[0]['country_id'];
+
+                // return $customer_invoice->customer['country_id'];
+                // var_dump($customer_invoice->customer['country_id']);
+                $code = DB::table('countries')->select('code')->where('id', $customer_invoice->customer['country_id'])->value('code');
+                $cfdi33_receptor['ResidenciaFiscal'] = $code;
+                 // $cfdi33_receptor['ResidenciaFiscal'] = $customer_invoice->customer->country->code;
                  $cfdi33_receptor['NumRegIdTrib'] = $customer_invoice->customer->numid;
              }
              $cfdi33_receptor['UsoCFDI'] = $customer_invoice->cfdiUse->code;

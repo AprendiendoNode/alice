@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Sales\Customer;
+use App\Models\Sales\CustomerBankAccount;
+
 class CustomerController extends Controller
 {
     /**
@@ -27,7 +29,7 @@ class CustomerController extends Controller
       $cities = DB::select('CALL GetAllCitiesv2 ()', array());
       $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
       $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
-      
+
       return view('permitted.sales.customers',compact(
       'payment_term', 'payment_way', 'payment_methods', 'currency',
       'cfdi_uses', 'salespersons', 'countries', 'states', 'cities', 'cuentas_contables'
@@ -269,10 +271,10 @@ class CustomerController extends Controller
             ['id_cuenta_contable' => $request->cuenta_contable,
              'id_cuenta_compl' => $request->cuenta_complementaria,
              'provider' => $request->provider
-        ]);     
-        
+        ]);
+
       }
-    
+
       public function get_integration_cc_customer_provider(Request $request)
       {
         $result = DB::select('CALL px_integracion_contable_data(?)', array($request->id_cliente_prov));
@@ -280,17 +282,23 @@ class CustomerController extends Controller
         return $result;
       }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+      public function getCustomerBankAccounts(Request $request)
+      {
+        // Variables
+        $id = $request->id;
+        $customer_bank_account_id = $request->customer_bank_account_id;
+        //Logica
+        if ($request->ajax() && !empty($id)) {
+          $customer_bank_accounts = CustomerBankAccount::where('customer_id', $id)->select('id','name','account_number', 'clabe')->get();
+          return json_encode($customer_bank_accounts);
+          /*
+            $html = view('layouts.partials.commons.ajax_select')->with('results',
+            $customer_bank_accounts)->with('selected', $customer_bank_account_id)->render();
+            return response()->json($customer_bank_accounts,200);
+          */
+        }
+        return response()->json(['error' => __('general.error_general')], 422);
+      }
 
     /**
      * Remove the specified resource from storage.

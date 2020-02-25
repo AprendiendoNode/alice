@@ -11,7 +11,8 @@ class CustomerPaymentRelation extends Model
         'customer_payment_id',
         'relation_id',
         'sort_order',
-        'status'
+        'status',
+        'uuid_related'
     ];
     public function customerPayment()
     {
@@ -21,5 +22,5 @@ class CustomerPaymentRelation extends Model
     public function relation()
     {
         return $this->belongsTo(CustomerPayment::class,'relation_id','id');
-    }     
+    }
 }

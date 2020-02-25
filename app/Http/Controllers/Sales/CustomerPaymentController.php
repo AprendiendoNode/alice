@@ -577,7 +577,7 @@ class CustomerPaymentController extends Controller
                 $monto_conciliado[$key] = (double)$item_reconciled['amount_reconciled'];
               }
               $flag_concepts[$key] = 1;
-              
+
               // $item_reconciled_balance = (double)$item_reconciled['balance'];
               // $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
               // $items_reconciled[$key] = Helper::convertBalanceCurrency($currency,$item_reconciled_balance,$item_reconciled['currency_code'],$item_reconciled_currency_value);
@@ -601,6 +601,80 @@ class CustomerPaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function store_validation(Request $request)
+    {
+       //Busco la moneda
+       $currency = Currency::findOrFail($request->currency_id);
+       //Valida que la moneda de la cuenta bancaria sea igual a la de pago
+       if(!empty($request->company_bank_account_id)) {
+           $company_bank_account = CompanyBankAccount::findOrFail($request->company_bank_account_id);
+           if ($company_bank_account->currency->code != $currency->code) {
+             return 'error1';
+             // return  __('customer_payment.error_currency_id_company_bank_account_id')
+           }
+           //Valida que el patron de la cuenta beneficiaria coincida con el patron de la forma de pago solo para CFDI
+           $payment_way = PaymentWay::findOrFail($request->payment_way_id);
+           if(!empty($payment_way->patron_cuenta_beneficiaria)){
+             if(!preg_match('/^('.$payment_way->patron_cuenta_beneficiaria.')$/',$company_bank_account->account_number)){
+               return 'error2';
+               // return __('customer_payment.error_pattern_account_company_bank_account_id');
+             }
+           }
+       }
+       //Valida que la moneda de la cuenta bancaria sea igual a la de pago
+       if(!empty($request->customer_bank_account_id)) {
+           $customer_bank_account = CustomerBankAccount::findOrFail($request->customer_bank_account_id);
+           if ($customer_bank_account->currency->code != $currency->code) {
+             return 'error3';
+             // return __('customer_payment.error_currency_id_customer_bank_account_id');
+           }
+           //Valida que el patron de la cuenta beneficiaria coincida con el patron de la forma de pago solo para CFDI
+           $payment_way = PaymentWay::findOrFail($request->payment_way_id);
+           if(!empty($payment_way->patron_cuenta_ordenante)){
+             if(!preg_match('/^('.$payment_way->patron_cuenta_ordenante.')$/',$customer_bank_account->account_number)){
+               return 'error4';
+               // return __('customer_payment.error_pattern_account_customer_bank_account_id');
+             }
+           }
+       }
+       //Valida que el monto total de las lineas no supere al pago
+       $amount = (double)$request->amount;
+       $amount_reconciled = 0;
+       if (!empty($request->item_reconciled)) {
+        foreach ($request->item_reconciled as $key => $item_reconciled) {
+          if (!empty($item_reconciled['amount_reconciled'])) {
+            $item_reconciled_amount_reconciled = round((double)$item_reconciled['amount_reconciled'],2);
+            $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
+            $amount_reconciled += $item_reconciled_amount_reconciled;
+            //Valida que el monto conciliado no supere el saldo de la factura
+            $currency = Currency::findOrFail($request->currency_id);
+            $customer_invoice = CustomerInvoice::findOrFail($item_reconciled['reconciled_id']);
+            $tmp = round(Helper::invertBalanceCurrency($currency,$item_reconciled_amount_reconciled,$customer_invoice->currency->code,$item_reconciled_currency_value),2);
+            if($tmp > $customer_invoice->balance){
+              return 'error5';
+              // return __('customer_payment.error_reconciled_amount_reconciled_customer_invoice_balance');
+            }
+          }
+        }
+       }
+       $manual_amount_reconciled = 0;
+       //Validacion de las facturas sin registro
+       if (!empty($request->item_manual_reconciled)) {
+         foreach ($request->item_manual_reconciled as $key => $item) {
+           if (!empty($item['amount_reconciled'])) {
+             $item_amount_reconciled = round((double)$item['amount_reconciled'],2);
+             $manual_amount_reconciled += $item_amount_reconciled;
+           }
+         }
+       }
+       $amount_all = $amount_reconciled+$manual_amount_reconciled;
+       //Valida que el monto conciliado no supere el monto del pago
+       if($amount_all > $amount){
+         return 'error6';
+         // return  __('customer_payment.error_amount_amount_reconciled');
+       }
+
+    }
     public function store(Request $request)
     {
       //Validacion
@@ -608,6 +682,77 @@ class CustomerPaymentController extends Controller
 
       \DB::beginTransaction();
       try {
+        //Validaciones--------------
+        //Busco la moneda
+        $currency = Currency::findOrFail($request->currency_id);
+        //Valida que la moneda de la cuenta bancaria sea igual a la de pago
+        if(!empty($request->company_bank_account_id)) {
+            $company_bank_account = CompanyBankAccount::findOrFail($request->company_bank_account_id);
+            if ($company_bank_account->currency->code != $currency->code) {
+              return 'error1';
+              // return  __('customer_payment.error_currency_id_company_bank_account_id')
+            }
+            //Valida que el patron de la cuenta beneficiaria coincida con el patron de la forma de pago solo para CFDI
+            $payment_way = PaymentWay::findOrFail($request->payment_way_id);
+            if(!empty($payment_way->patron_cuenta_beneficiaria)){
+              if(!preg_match('/^('.$payment_way->patron_cuenta_beneficiaria.')$/',$company_bank_account->account_number)){
+                return 'error2';
+                // return __('customer_payment.error_pattern_account_company_bank_account_id');
+              }
+            }
+        }
+        //Valida que la moneda de la cuenta bancaria sea igual a la de pago
+        if(!empty($request->customer_bank_account_id)) {
+            $customer_bank_account = CustomerBankAccount::findOrFail($request->customer_bank_account_id);
+            if ($customer_bank_account->currency->code != $currency->code) {
+              return 'error3';
+              // return __('customer_payment.error_currency_id_customer_bank_account_id');
+            }
+            //Valida que el patron de la cuenta beneficiaria coincida con el patron de la forma de pago solo para CFDI
+            $payment_way = PaymentWay::findOrFail($request->payment_way_id);
+            if(!empty($payment_way->patron_cuenta_ordenante)){
+              if(!preg_match('/^('.$payment_way->patron_cuenta_ordenante.')$/',$customer_bank_account->account_number)){
+                return 'error4';
+                // return __('customer_payment.error_pattern_account_customer_bank_account_id');
+              }
+            }
+        }
+        //Valida que el monto total de las lineas no supere al pago
+        $amount = (double)$request->amount;
+        $amount_reconciled = 0;
+        if (!empty($request->item_reconciled)) {
+         foreach ($request->item_reconciled as $key => $item_reconciled) {
+           if (!empty($item_reconciled['amount_reconciled'])) {
+             $item_reconciled_amount_reconciled = round((double)$item_reconciled['amount_reconciled'],2);
+             $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
+             $amount_reconciled += $item_reconciled_amount_reconciled;
+             //Valida que el monto conciliado no supere el saldo de la factura
+             $currency = Currency::findOrFail($request->currency_id);
+             $customer_invoice = CustomerInvoice::findOrFail($item_reconciled['reconciled_id']);
+             $tmp = round(Helper::invertBalanceCurrency($currency,$item_reconciled_amount_reconciled,$customer_invoice->currency->code,$item_reconciled_currency_value),2);
+             if($tmp > $customer_invoice->balance){
+               return 'error5';
+               // return __('customer_payment.error_reconciled_amount_reconciled_customer_invoice_balance');
+             }
+           }
+         }
+        }
+        $manual_amount_reconciled = 0;
+        //Validacion de las facturas sin registro
+        if (!empty($request->item_manual_reconciled)) {
+          foreach ($request->item_manual_reconciled as $key => $item) {
+            if (!empty($item['amount_reconciled'])) {
+              $item_amount_reconciled = round((double)$item['amount_reconciled'],2);
+              $manual_amount_reconciled += $item_amount_reconciled;
+            }
+          }
+        }
+        $amount_all = $amount_reconciled+$manual_amount_reconciled;
+        //Valida que el monto conciliado no supere el monto del pago
+        if($amount_all > $amount){
+          return 'error6';
+          // return  __('customer_payment.error_amount_amount_reconciled');
+        }
         //Logica
         $request->merge(['created_uid' => \Auth::user()->id]);
         $request->merge(['updated_uid' => \Auth::user()->id]);
@@ -632,16 +777,20 @@ class CustomerPaymentController extends Controller
         //Facturas conciliadas
         $amount = (double)$request->amount;
         $amount_reconciled = 0;
+        $count = 1; //Contador de lineas
         //Lineas
         if (!empty($request->item_reconciled)) {
           foreach ($request->item_reconciled as $key => $item_reconciled) {
             if(!empty($item_reconciled['amount_reconciled'])) {
-              //Logica
-              $item_reconciled_amount_reconciled = round((double)$item_reconciled['amount_reconciled'],2);
-              $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
-              $amount_reconciled += $item_reconciled_amount_reconciled;
               //Datos de factura
               $customer_invoice = CustomerInvoice::findOrFail($item_reconciled['reconciled_id']);
+              //Logica
+              $item_reconciled_amount_reconciled = round((double)$item_reconciled['amount_reconciled'],2);
+              $amount_reconciled += $item_reconciled_amount_reconciled;
+              $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
+              //Convertimos el monto aplicado si la moneda del documento es diferente a la de pago
+              $item_reconciled_amount_reconciled = round(Helper::invertBalanceCurrency($customer_payment->currency,$item_reconciled_amount_reconciled,$customer_invoice->currency->code,$item_reconciled_currency_value),2);
+
               //Guardar linea
               $customer_payment_reconciled = CustomerPaymentReconciled::create([
                 'created_uid' => \Auth::user()->id,
@@ -652,11 +801,28 @@ class CustomerPaymentController extends Controller
                 'currency_value' => $item_reconciled_currency_value,
                 'amount_reconciled' => $item_reconciled_amount_reconciled,
                 'last_balance' => $customer_invoice->balance,
-                'sort_order' => $key,
+                'sort_order' => $count,
                 'status' => 1,
+                'uuid_related' => $customer_invoice->customerInvoiceCfdi->uuid,
+                'serie_related' => $customer_invoice->serie,
+                'folio_related' => $customer_invoice->folio,
+                'currency_code_related' => $customer_invoice->currency->code,
+                'payment_method_code_related' => $customer_invoice->paymentMethod->code,
+                'current_balance' => $customer_invoice->balance - $item_reconciled_amount_reconciled,
               ]);
+
+              $tmp_customer_payment_reconciled = CustomerPaymentReconciled::where('status', '=', '1')
+                  ->where('reconciled_id', '=', $customer_invoice->id)
+                  ->where(function ($query) {
+                      $query->WhereHas('customerPayment', function ($q) {
+                          $q->whereIn('customer_payments.status',
+                              [CustomerPayment::OPEN, CustomerPayment::RECONCILED]);
+                      });
+                  });
+              $customer_payment_reconciled->number_of_payment = $tmp_customer_payment_reconciled->count(); //Guarda el numero de parcialidad
+              $customer_payment_reconciled->save();
               //Actualiza el saldo de la factura relacionada
-              $customer_invoice->balance -= round(Helper::invertBalanceCurrency($customer_payment->currency,$item_reconciled_amount_reconciled,$customer_invoice->currency->code,$item_reconciled_currency_value),2);
+              $customer_invoice->balance -= $item_reconciled_amount_reconciled;
               if($customer_invoice->balance <= 0){
                   $customer_invoice->status = CustomerInvoice::PAID;
               }
@@ -664,9 +830,48 @@ class CustomerPaymentController extends Controller
             }
           }
         }
+        //Facturas manuales
+        //Lineas
+        if (!empty($request->item_manual_reconciled)) {
+          foreach ($request->item_manual_reconciled as $key => $item_reconciled) {
+            if(!empty($item_reconciled['amount_reconciled'])) {
+              //Logica
+              $item_reconciled_amount_reconciled = round((double)$item_reconciled['amount_reconciled'],2);
+              $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
+              if(!empty($item_reconciled_currency_value)){
+                  $amount_reconciled += $item_reconciled_amount_reconciled * $item_reconciled_currency_value;
+              }else{
+                  $amount_reconciled += $item_reconciled_amount_reconciled;
+              }
+              //Guardar linea
+              $customer_payment_reconciled = CustomerPaymentReconciled::create([
+                  'created_uid' => \Auth::user()->id,
+                  'updated_uid' => \Auth::user()->id,
+                  'customer_payment_id' => $customer_payment->id,
+                  'name' => $item_reconciled['serie_related'].$item_reconciled['folio_related'],
+                  'reconciled_id' => null,
+                  'currency_value' => $item_reconciled_currency_value,
+                  'amount_reconciled' => $item_reconciled_amount_reconciled,
+                  'number_of_payment' => $item_reconciled['number_of_payment'],
+                  'last_balance' => $item_reconciled['last_balance'],
+                  'sort_order' => $count,
+                  'status' => 1,
+                  'uuid_related' => $item_reconciled['uuid_related'],
+                  'serie_related' => $item_reconciled['serie_related'],
+                  'folio_related' => $item_reconciled['folio_related'],
+                  'currency_code_related' => DB::table('currencies')->where('id', $item_reconciled['currency_code_related'])->value('code'),
+                  'payment_method_code_related' => DB::table('payment_methods')->where('id', $item_reconciled['payment_method_code_related'])->value('code'),
+                  'current_balance' => $item_reconciled['current_balance'],
+              ]);
+              $count++;
+            }
+          }
+        }
         //Cfdi relacionados
         if (!empty($request->item_relation)) {
           foreach ($request->item_relation as $key => $result) {
+            $customer_payment_cfdi_relation = CustomerPaymentCfdi::where('customer_payment_id','=',$result['relation_id'])->first();
+
             //Guardar
             $customer_payment_relation = CustomerPaymentRelation::create([
               'created_uid' => \Auth::user()->id,
@@ -675,6 +880,7 @@ class CustomerPaymentController extends Controller
               'relation_id' => $result['relation_id'],
               'sort_order' => $key,
               'status' => 1,
+              'uuid_related' => !empty($customer_payment_cfdi_relation) ? $customer_payment_cfdi_relation->uuid : '',
             ]);
           }
         }
@@ -785,7 +991,8 @@ class CustomerPaymentController extends Controller
                  if ($customer_payment->customerPaymentRelations->isNotEmpty()) {
                      foreach ($customer_payment->customerPaymentRelations as $key => $result) {
                          $cfdi33_relacionado[$key] = [];
-                         $cfdi33_relacionado[$key]['UUID'] = $result->relation->customerPaymentCfdi->uuid;
+                         $cfdi33_relacionado[$key]['UUID'] = $result->uuid_related;
+                         // $cfdi33_relacionado[$key]['UUID'] = $result->relation->customerPaymentCfdi->uuid;
                      }
                  }
              }
@@ -890,7 +1097,7 @@ class CustomerPaymentController extends Controller
              $pagos10_doc_relacionados = [];
              if ($customer_payment->customerPaymentReconcileds->isNotEmpty()) {
                  foreach ($customer_payment->customerPaymentReconcileds as $key => $result) {
-                     $customer_invoice = $result->reconciled;
+                     /*$customer_invoice = $result->reconciled;
                      $tmp_id = $customer_invoice->id;
                      //Cuando se hace un pago en MXN para facturas en USD
                      $tmp = Helper::invertBalanceCurrency($customer_payment->currency,$result->amount_reconciled,$customer_invoice->currency->code,$result->currency_value);
@@ -904,20 +1111,20 @@ class CustomerPaymentController extends Controller
                              });
                          });
                      $result->number_of_payment = $tmp_customer_payment_reconciled->count(); //Guarda el numero de parcialidad
-                     $result->save();
+                     $result->save();*/
                      //
-                     $pagos10_doc_relacionados [$key]['IdDocumento'] = $customer_invoice->customerInvoiceCfdi->uuid;
-                     $pagos10_doc_relacionados [$key]['Serie'] = $customer_invoice->serie;
-                     $pagos10_doc_relacionados [$key]['Folio'] = $customer_invoice->folio;
-                     $pagos10_doc_relacionados [$key]['MonedaDR'] = $customer_invoice->currency->code;
-                     if($customer_payment->currency->code != $customer_invoice->currency->code) {
-                         $pagos10_doc_relacionados [$key]['TipoCambioDR'] = Helper::numberFormat($customer_payment->currency_value/$result->currency_value, 4, false);
+                     $pagos10_doc_relacionados [$key]['IdDocumento'] = $result->uuid_related;
+                     $pagos10_doc_relacionados [$key]['Serie'] = $result->serie_related;
+                     $pagos10_doc_relacionados [$key]['Folio'] = $result->folio_related;
+                     $pagos10_doc_relacionados [$key]['MonedaDR'] = $result->currency_code_related;
+                     if($customer_payment->currency->code != $result->currency_code_related) {
+                         $pagos10_doc_relacionados [$key]['TipoCambioDR'] = Helper::numberFormat($customer_payment->currency_value/$result->currency_value + 0.000001, 4, false);
                      }
-                     $pagos10_doc_relacionados [$key]['MetodoDePagoDR'] = $customer_invoice->paymentMethod->code;
+                     $pagos10_doc_relacionados [$key]['MetodoDePagoDR'] = $result->payment_method_code_related;
                      $pagos10_doc_relacionados [$key]['NumParcialidad'] = $result->number_of_payment;
-                     $pagos10_doc_relacionados [$key]['ImpSaldoAnt'] = Helper::numberFormat($result->last_balance,$customer_invoice->currency->decimal_place, false);
-                     $pagos10_doc_relacionados [$key]['ImpPagado'] = Helper::numberFormat($tmp,$customer_invoice->currency->decimal_place, false);
-                     $pagos10_doc_relacionados [$key]['ImpSaldoInsoluto'] = Helper::numberFormat($saldo_insoluto<0 ? 0 : $saldo_insoluto,$customer_invoice->currency->decimal_place, false);
+                     $pagos10_doc_relacionados [$key]['ImpSaldoAnt'] = Helper::numberFormat($result->last_balance,$customer_payment->currency->decimal_place, false);
+                     $pagos10_doc_relacionados [$key]['ImpPagado'] = Helper::numberFormat($result->amount_reconciled,$customer_payment->currency->decimal_place, false);
+                     $pagos10_doc_relacionados [$key]['ImpSaldoInsoluto'] = Helper::numberFormat($result->current_balance,$customer_payment->currency->decimal_place, false);
                  }
              }
 
@@ -965,152 +1172,6 @@ class CustomerPaymentController extends Controller
          }
      }
 
-
-
-
-
-
-
-    public function store2(Request $request)
-    {
-      //Validacion
-      $this->validation($request);
-      $cfdi = !empty($request->cfdi) ? 1 : 1;
-
-      \DB::beginTransaction();
-      try {
-        //Logica
-        $request->merge(['created_uid' => \Auth::user()->id]);
-        $request->merge(['updated_uid' => \Auth::user()->id]);
-        $request->merge(['status' => CustomerPayment::OPEN]);
-        $request->merge(['cfdi' =>  $cfdi]);
-        //Ajusta fecha y genera fecha de vencimiento
-        $date = Helper::createDateTime($request->date);
-        $request->merge(['date' => Helper::dateTimeToSql($date)]);
-        if (!empty($request->date_payment)) {
-          $date_payment = Helper::createDateTime($request->date_payment);
-          $request->merge(['date_payment' => Helper::dateTimeToSql($date_payment)]);
-        }
-        //Obtiene folio
-        $document_type = Helper::getNextDocumentTypeByCode('customer.payment');
-        $request->merge(['document_type_id' => $document_type['id']]);
-        $request->merge(['name' => $document_type['name']]);
-        $request->merge(['serie' => $document_type['serie']]);
-        $request->merge(['folio' => $document_type['folio']]);
-        //Guardar
-        //Registro principal
-        $customer_payment = CustomerPayment::create($request->input());
-        //Facturas conciliadas
-        $amount = (double)$request->amount;
-        $amount_reconciled = 0;
-        //Lineas
-        if (!empty($request->item_reconciled)) {
-          foreach ($request->item_reconciled as $key => $item_reconciled) {
-            if(!empty($item_reconciled['amount_reconciled'])) {
-              //Logica
-              $item_reconciled_amount_reconciled = round((double)$item_reconciled['amount_reconciled'],2);
-              $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
-              $amount_reconciled += $item_reconciled_amount_reconciled;
-              //Datos de factura
-              $customer_invoice = CustomerInvoice::findOrFail($item_reconciled['reconciled_id']);
-              //Guardar linea
-              $customer_payment_reconciled = CustomerPaymentReconciled::create([
-                'created_uid' => \Auth::user()->id,
-                'updated_uid' => \Auth::user()->id,
-                'customer_payment_id' => $customer_payment->id,
-                'name' => $customer_invoice->name,
-                'reconciled_id' => $customer_invoice->id,
-                'currency_value' => $item_reconciled_currency_value,
-                'amount_reconciled' => $item_reconciled_amount_reconciled,
-                'last_balance' => $customer_invoice->balance,
-                'sort_order' => $key,
-                'status' => 1,
-              ]);
-              //Actualiza el saldo de la factura relacionada
-              $customer_invoice->balance -= round(Helper::invertBalanceCurrency($customer_payment->currency,$item_reconciled_amount_reconciled,$customer_invoice->currency->code,$item_reconciled_currency_value),2);
-              if($customer_invoice->balance <= 0){
-                  $customer_invoice->status = CustomerInvoice::PAID;
-              }
-              $customer_invoice->save();
-            }
-          }
-        }
-        //Cfdi relacionados
-        if (!empty($request->item_relation)) {
-          foreach ($request->item_relation as $key => $result) {
-            //Guardar
-            $customer_payment_relation = CustomerPaymentRelation::create([
-              'created_uid' => \Auth::user()->id,
-              'updated_uid' => \Auth::user()->id,
-              'customer_payment_id' => $customer_payment->id,
-              'relation_id' => $result['relation_id'],
-              'sort_order' => $key,
-              'status' => 1,
-            ]);
-          }
-        }
-        //Registros de cfdi
-        $customer_payment_cfdi = CustomerPaymentCfdi::create([
-          'created_uid' => \Auth::user()->id,
-          'updated_uid' => \Auth::user()->id,
-          'customer_payment_id' => $customer_payment->id,
-          'name' => $customer_payment->name,
-          'status' => 1,
-        ]);
-
-        //Actualiza estatus de acuerdo al monto conciliado
-        $customer_payment->balance = $amount - $amount_reconciled;
-        if($customer_payment->balance <= 0 || !empty($request->cfdi)){ //Si es un CFDI lo marca como conciliado
-           $customer_payment->status = CustomerPayment::RECONCILED;
-        }
-        $customer_payment->update();
-        //Crear el CFDI si marcaron la opcion
-        if(!empty($cfdi)){
-          //Crear CFDI
-          $class_cfdi = setting('cfdi_version');
-          if (empty($class_cfdi)) {
-              throw new \Exception(__('general.error_cfdi_version'));
-          }
-          if (!method_exists($this, $class_cfdi)) {
-              throw new \Exception(__('general.error_cfdi_class_exists'));
-          }
-          //Valida Empresa y PAC para timbrado
-          PacHelper::validateSatActions();
-          //Crear XML y timbra
-          $tmp = $this->$class_cfdi($customer_payment);
-          //Guardar registros de CFDI
-          $customer_payment_cfdi->fill(array_only($tmp,[
-              'pac_id',
-              'cfdi_version',
-              'uuid',
-              'date',
-              'file_xml',
-              'file_xml_pac',
-          ]));
-          $customer_payment_cfdi->save();
-          return 'cfdi success';
-        }
-        else {
-          return 'cfdi error';
-        }
-        \DB::commit();
-        return 'success';
-      }
-      catch (\Exception $e) {
-        //Fix fechas
-        $request->merge([
-          'date' => Helper::convertSqlToDateTime($request->date),
-        ]);
-        if (!empty($request->date_payment)) {
-          $request->merge([
-            'date_payment' => Helper::convertSqlToDateTime($request->date_payment),
-          ]);
-        }
-        \DB::rollback();
-        return $e->getMessage();
-      }
-    }
-
     /**
      * Display the specified resource.
      *
@@ -1125,29 +1186,6 @@ class CustomerPaymentController extends Controller
         $list_status = $this->list_status;
         return view('permitted.sales.customer_payments_show',
         compact('customer', 'sucursal', 'payment_way', 'tipo_cadena_pagos', 'list_status'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /*
@@ -1210,9 +1248,9 @@ class CustomerPaymentController extends Controller
     {
       $moneda = (int)$request->moneda;
       $customer_bank = (int)$request->customer_bank;
-      
+
       $res = DB::table('company_bank_accounts')->select('currency_id')->where('id', $customer_bank)->value('currency_id');
-      
+
       if ($moneda == $res) {
         return '1';
       }else{
@@ -1227,5 +1265,40 @@ class CustomerPaymentController extends Controller
 
       return $result;
     }
-
+    /**
+     * Calcula el total de las lineas
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function totalItemManualReconciled(Request $request)
+    {
+      //Variables
+      $json = new \stdClass;
+      $input_items_manual_reconciled = $request->item_manual_reconciled;
+      $currency_id = $request->currency_id;
+      $currency_code = 'MXN';
+      if ($request->ajax()) {
+        //Datos de moneda
+        if (!empty($currency_id)) {
+          $currency = Currency::findOrFail($currency_id);
+          $currency_code = $currency->code;
+        }
+        //Variables de totales
+        $items_manual_reconciled = [];
+        if (!empty($input_items_manual_reconciled)) {
+          foreach ($input_items_manual_reconciled as $key => $item) {
+            //Logica
+            $item_last_balance = (double)$item['last_balance'];
+            $item_amount_reconciled = (double)$item['amount_reconciled'];
+            //Subtotales por cada item
+            $items_manual_reconciled[$key] = Helper::numberFormat($item_last_balance-$item_amount_reconciled,2, false);
+          }
+        }
+        //Respuesta
+        $json->items_manual_reconciled = $items_manual_reconciled;
+        return response()->json($json);
+      }
+      return response()->json(['error' => __('general.error_general')], 422);
+    }
 }

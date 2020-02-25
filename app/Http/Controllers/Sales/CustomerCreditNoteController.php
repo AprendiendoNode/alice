@@ -95,7 +95,7 @@ class CustomerCreditNoteController extends Controller
       $impuestos =  DB::select('CALL GetAllTaxesActivev2 ()', array());
 
       $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
-      $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+      $cuentas_contables = DB::select('CALL px_cuentas_contable_4000()');
 
       return view( 'permitted.sales.customer_credit_notes',compact('customer', 'sucursal', 'currency', 'payment_term', 'salespersons',
       'payment_way', 'payment_term' ,'payment_methods', 'cuentas_contables',
@@ -1156,18 +1156,24 @@ class CustomerCreditNoteController extends Controller
      }
      public function search(Request $request)
      {
+       /*
+        $folio = !empty($request->filter_date_from) ? $request->filter_name : '';
+        $folio = !empty($request->filter_name) ? $request->filter_name : '';
         $folio = !empty($request->filter_name) ? $request->filter_name : '';
         $date_from  = $request->filter_date_from;
         $date_to  = $request->filter_date_to;
         $sucursal = !empty($request->filter_branch_office_id) ? $request->filter_branch_office_id : '';
-        $cliente = !empty($request->filter_customer_id) ? $request->filter_customer_id : '';
         $estatus = !empty($request->filter_status) ? $request->filter_status : '';
-
+        $cliente = !empty($request->filter_customer_id) ? $request->filter_customer_id : '';
         $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
         $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
-
         $resultados = DB::select('CALL px_customer_note_credits_filters (?,?,?,?,?,?)', array($date_a, $date_b, $folio, $sucursal, $cliente, $estatus));
-
+      */
+        $date_from  = $request->filter_date_from;
+        $date_a  = $date_from.'-01';
+        $cliente = !empty($request->filter_customer_id) ? $request->filter_customer_id : NULL;
+        $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+        $resultados = DB::select('CALL px_customer_note_credits_xmes (?,?)',array($date_a, $cliente));
         return json_encode($resultados);
       }
       public function show(Request $request)
@@ -1468,7 +1474,39 @@ class CustomerCreditNoteController extends Controller
         }
 
     }
+    //Contabilizar historial de egreso (cfdi)
+    public function get_note_credit_mov_data_cfdi(Request $request) {
+      $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
+      $date_req = $request->date;
+      $date_rest = $date_req.'-01';
+      $date = \Carbon\Carbon::now();
 
+      $next_id_num = 0;
+      $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+      $facturas = json_decode($request->facturas);
+      $asientos = array();
+      /*
+      for ($i=0; $i <= (count($facturas)-1); $i++)
+      {
+          $data = DB::select('CALL px_poliza_xnotacredito_cc(?)', array($facturas[$i]));
+
+          if(count($data) > 0)
+          {
+              for($j=0; $j <= (count($data)-1); $j++)
+              {
+                  array_push($asientos, $data[$j]);
+              }
+          }
+      }
+      */
+      return view('permitted.sales.table_asientos_contables_nota_credito',
+      compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num', 'date_rest', 'date'));
+    }
+
+
+
+
+    //Compras
     public function getProduct(Request $request)
     {
         //Variables
@@ -1485,8 +1523,34 @@ class CustomerCreditNoteController extends Controller
       //Variables
       $id = $request->ident;
       //Logica
-      $resultados = DB::select('CALL px_cuentacontable_xprod (?)', array($id));
+      $resultados = DB::select('CALL px_cuentacontable_xprod_4000 (?)', array($id));
       return json_encode($resultados);
       // return response()->json($resultados, 200);
+    }
+    public function get_note_credit_mov_data(Request $request) {
+      $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
+      $date_req = $request->date;
+      $date_rest = $date_req.'-01';
+      $date = \Carbon\Carbon::now();
+
+      $next_id_num = 0;
+      $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+      $facturas = json_decode($request->facturas);
+      $asientos = array();
+
+      for ($i=0; $i <= (count($facturas)-1); $i++)
+      {
+          $data = DB::select('CALL px_poliza_xnotacredito_cc(?)', array($facturas[$i]));
+
+          if(count($data) > 0)
+          {
+              for($j=0; $j <= (count($data)-1); $j++)
+              {
+                  array_push($asientos, $data[$j]);
+              }
+          }
+      }
+      return view('permitted.sales.table_asientos_contables_nota_credito',
+      compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num', 'date_rest', 'date'));
     }
 }

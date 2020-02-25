@@ -264,6 +264,94 @@
     </tbody>
   </table>
   <!--------->
+  <p style="margin-bottom: 2px; margin-top: 15px; font-size: 12px;"><strong>@lang('customer_payment.text_payment_complement')</strong></p>
+
+  <table id="table_products" width="100%">
+    <thead>
+      <tr>
+        <th align="center">UUID</th>
+        <th align="center">Serie</th>
+        <th align="center">Folio</th>
+        <th align="center">Moneda</th>
+        <th align="center">TC</th>
+        <th align="center">Método de pago</th>
+        <th align="center">Parcialidad</th>
+        <th align="center">Saldo anterior</th>
+        <th align="center">Monto pagado</th>
+        <th align="center">Saldo insoluto</th>
+      </tr>
+    </thead>
+    <tbody>
+      @if($customer_payment->customerPaymentReconcileds->isNotEmpty())
+        @foreach($customer_payment->customerPaymentReconcileds as $result)
+          @if(!empty($result->uuid_related))
+            <tr>
+              <td class="text-center">{{ $result->uuid_related }}</td>
+              <td class="text-center">{{ $result->serie_related }}</td>
+              <td class="text-center">{{ $result->folio_related }}</td>
+              <td class="text-center">{{ $result->currency_code_related }}</td>
+              <td class="text-center">
+                {{$customer_payment->currency->code.'-'.$result->currency_code_related.'--'}}
+                {{-- {{$customer_payment->currency_value.'////'.$result->currency_value}} --}}
+                {{number_format($customer_payment->currency_value, 2,'.', ',').'////'.number_format($result->currency_value, 2,'.', ',') }}
+                {{--
+                @if($customer_payment->currency->code != $result->currency_code_related)
+                  {{ \App\Helpers\Helper::numberFormat($customer_payment->currency_value/$result->currency_value,6) }}
+                @endif
+                 --}}
+              </td>
+              <td class="text-center">{{ $result->payment_method_code_related }}</td>
+              <td class="text-center">{{ $result->number_of_payment }}</td>
+              <td class="text-right">
+                $&nbsp;{{number_format($result->last_balance, 2,'.', ',') }}
+                {{-- {{ money($result->last_balance,$customer_payment->currency->code,true) }} --}}
+              </td>
+              <td class="text-right">
+                $&nbsp;{{number_format($result->amount_reconciled, 2,'.', ',') }}
+                {{-- {{ money($result->amount_reconciled,$customer_payment->currency->code,true) }} --}}
+              </td>
+              <td class="text-right">
+                $&nbsp;{{number_format($result->current_balance, 2,'.', ',') }}
+                {{-- {{ money($result->current_balance,$customer_payment->currency->code,true) }} --}}
+              </td>
+            </tr>
+          @else
+            @php
+            $customer_invoice = $result->reconciled;
+            $tmp = \App\Helpers\Helper::invertBalanceCurrency($customer_payment->currency,$result->amount_reconciled,$customer_invoice->currency->code,$result->currency_value);
+            $saldo_insoluto = $result->last_balance - $tmp;
+            @endphp
+            <tr>
+              <td class="text-center">{{ $customer_invoice->customerInvoiceCfdi->uuid }}</td>
+              <td class="text-center">{{ $customer_invoice->serie }}</td>
+              <td class="text-center">{{ $customer_invoice->folio }}</td>
+              <td class="text-center">{{ $customer_invoice->currency->code }}</td>
+              <td class="text-center">
+                @if($customer_payment->currency->code != $customer_invoice->currency->code)
+                  {{ \App\Helpers\Helper::numberFormatMoney($customer_payment->currency_value/$result->currency_value,4) }}
+                @endif
+              </td>
+              <td class="text-center">{{ $customer_invoice->paymentMethod->code }}</td>
+              <td class="text-center">{{ $result->number_of_payment }}</td>
+              <td class="text-right">
+                $&nbsp;{{number_format($result->last_balance, 2,'.', ',') }}
+                {{-- {{ money($result->last_balance,$customer_payment->currency->code,true) }}--}}
+              </td>
+              <td class="text-right">
+                $&nbsp;{{number_format($tmp, 2,'.', ',') }}
+                {{-- {{ money($tmp,$customer_payment->currency->code,true) }} --}}
+              </td>
+              <td class="text-right">
+                $&nbsp;{{number_format($saldo_insoluto, 2,'.', ',') }}
+                {{-- {{ money($saldo_insoluto,$customer_payment->currency->code,true) }} --}}
+              </td>
+            </tr>
+          @endif
+        @endforeach
+      @endif
+    </tbody>
+  </table>
+  <!--------->
   <div class="header row">
     <div class="">
       <p>Forma de pago: <span>[{{ $customer_payment->paymentWay->code }}] {{ $customer_payment->paymentWay->name }}</span></p>
@@ -281,6 +369,7 @@
     @endif
   </div>
   <!--------->
+  @if(!empty($customer_payment->customerBankAccount->bank->taxid) || !empty($customer_payment->customerBankAccount->account_number) )
   <div class="header row">
     <strong> - @lang('customer_payment.text_ordenante') - </strong>
     <div class="">
@@ -303,6 +392,9 @@
       </p>
     </div>
   </div>
+  @endif
+
+  @if(!empty($customer_payment->companyBankAccount->bank->taxid) || !empty($customer_payment->companyBankAccount->account_number) )
   <div class="header row">
     <strong> - @lang('customer_payment.text_beneficiario') - </strong>
     <div class="">
@@ -316,56 +408,8 @@
       </p>
     </div>
   </div>
-  <!--------->
-  <table id="table_products" width="100%">
-    <thead>
-      <tr>
-        <th align="center">UUID</th>
-        <th align="center">Serie</th>
-        <th align="center">Folio</th>
-        <th align="center">Moneda</th>
-        <th align="center">TC</th>
-        <th align="center">Método de pago</th>
-        <th align="center">Parcialidad</th>
-        <th align="center">Saldo anterior</th>
-        <th align="center">Monto pagado</th>
-        <th align="center">Saldo insoluto</th>
-      </tr>
-    </thead>
-    <tbody>
-      @if($customer_payment->customerPaymentReconcileds->isNotEmpty())
-        @foreach($customer_payment->customerPaymentReconcileds as $result)
-          @php
-            $customer_invoice = $result->reconciled;
-            $tmp = \App\Helpers\Helper::invertBalanceCurrency($customer_payment->currency,$result->amount_reconciled,$customer_invoice->currency->code,$result->currency_value);
-            $saldo_insoluto = $result->last_balance - $tmp;
-          @endphp
-          <tr>
-            <td class="text-left">{{ $customer_invoice->customerInvoiceCfdi->uuid }}</td>
-            <td class="text-center">{{ $customer_invoice->serie }}</td>
-            <td class="text-center">{{ $customer_invoice->folio }}</td>
-            <td class="text-center">{{ $customer_invoice->currency->code }}</td>
-            <td class="text-center">
-              @if($customer_payment->currency->code != $customer_invoice->currency->code)
-                {{ \App\Helpers\Helper::numberFormatMoney($customer_payment->currency_value/$result->currency_value,4) }}
-              @endif
-            </td>
-            <td class="text-center">{{ $customer_invoice->paymentMethod->code }}</td>
-            <td class="text-center">{{ $result->number_of_payment }}</td>
-            <td class="text-right">
-              $ {{number_format($result->last_balance, 2,'.', ',') }}
-            </td>
-            <td class="text-right">
-              $ {{number_format($tmp, 2,'.', ',') }}
-            </td>
-            <td class="text-right">
-              $ {{number_format($saldo_insoluto, 2,'.', ',') }}
-            </td>
-          </tr>
-        @endforeach
-      @endif
-    </tbody>
-  </table>
+  @endif
+
   <!--------->
   @if(!empty($customer_payment->cfdi_relation_id))
     <table id="table_products" width="100%">

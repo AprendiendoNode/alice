@@ -173,23 +173,22 @@
         <p># {{ $customer_credit_note->name }}</p>
         <p>Estatus: <span>{!! \App\Helpers\SalesHelper::statusCustomerCreditNoteHtml($customer_credit_note->status) !!}</span> </p>
         <p>UUID: <span>{{ $customer_credit_note->customerInvoiceCfdi->uuid ?? '' }}</span></p>
-        <p>Tipo de comprobante: <span>[{{ $customer_credit_note->documentType->cfdiType->code ?? '' }}] {{ $customer_credit_note->documentType->cfdiType->name ?? '' }}</span></p>
     </div>
     <div class="">
+      <p>Tipo de comprobante: <span>[{{ $customer_credit_note->documentType->cfdiType->code ?? '' }}] {{ $customer_credit_note->documentType->cfdiType->name ?? '' }}</span></p>
       <p>Fecha: <span>{{ \App\Helpers\Helper::convertSqlToDateTime($customer_credit_note->date) }}</span> </p>
       <p>Términos de pago: <span>{{ $customer_credit_note->paymentTerm->name }}</span> </p>
-      <p>Uso de CFDI: <span>[{{ $customer_credit_note->cfdiUse->code }}] {{ $customer_credit_note->cfdiUse->name }}</span> </p>
     </div>
     <div class="">
+      <p>Uso de CFDI: <span>[{{ $customer_credit_note->cfdiUse->code }}] {{ $customer_credit_note->cfdiUse->name }}</span> </p>
       <p>Expedido en: <span>{{ $customer_credit_note->branchOffice->name ?? '' }}</span> </p>
       <p>C.P.: <span>{!! ($customer_credit_note->branchOffice->postcode ?  $customer_credit_note->branchOffice->postcode : '') !!} </span></p>
-      <p class="transparent">-</p>
     </div>
   </div>
 
   <div  class="header row">
     <div class="">
-      <p>Cliente</p>
+      <p style="text-decoration: underline;">Cliente</p>
       <p>Nombre:  <span>{{ mb_strtoupper($customer_credit_note->customer->name) }}</span></p>
       <p>RFC: <span>{{ mb_strtoupper($customer_credit_note->customer->taxid) }}</span> </p>
       <p class="transparent">-</p>
@@ -199,11 +198,15 @@
       <p>Dirección: <span>{{ $customer_credit_note->customer->address_1 ?? '' }} {{ $customer_credit_note->customer->address_2 ?? '' }} {{ $customer_credit_note->customer->address_3 ?? '' }} {{ $customer_credit_note->customer->address_4 ?? '' }}</span></p>
       <p>Ciudad: <span>{{ $customer_credit_note->customer->city->name ?? '' }}</span> </p>
       <p>Estado: <span>{{ $customer_credit_note->customer->state->name ?? '' }}</span> </p>
+      <p class="transparent">-</p>
+
     </div>
     <div class="">
       <p>Pais: <span>{{ $customer_credit_note->customer->country->name ?? '' }}</span> </p>
       <p>C.P: <span>{!! ($customer_credit_note->customer->postcode ? $customer_credit_note->customer->postcode : '') !!}</span></p>
       <p class="transparent">-</p>
+      <p class="transparent">-</p>
+
     </div>
   </div>
   <!-- Table row -->

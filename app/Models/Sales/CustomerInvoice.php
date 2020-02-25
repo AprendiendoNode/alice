@@ -21,7 +21,7 @@ use App\Models\Sales\CustomerInvoiceLine;
 use App\Models\Sales\CustomerInvoiceTax;
 use App\Models\Sales\CustomerInvoiceReconciled;
 use App\Models\Sales\CustomerInvoiceRelation;
-
+use App\Models\Sales\Customer;
 class CustomerInvoice extends Model
 {
   protected $table = 'customer_invoices';
@@ -192,7 +192,7 @@ class CustomerInvoice extends Model
                     $q->where('document_types.code', '=', $filter_document_type_code);
                 }
             });
-        }      
+        }
         if (!empty($input['filter_customer_id'])) {
             $customer_id = $input['filter_customer_id'];
             $query->where('customer_id', '=', $customer_id);

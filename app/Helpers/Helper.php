@@ -101,13 +101,17 @@ class Helper
      */
     public static function certificateNumber($serial_number): string
     {
-        $hex = self::bcdechex($serial_number);
-        $ser = '';
-        for ($i = 1; $i < @strlen($hex); $i = $i + 2) {
-            $ser .= substr($hex, $i, 1);
-        }
+         $ser = '';
+         for($i=0;$i<strlen($serial_number);$i++){
+             $ser .= ((($i%2)) ? $serial_number[$i] : '');
+         }
+         /*$hex = self::bcdechex($serial_number);
+         $ser = '';
+         for ($i = 1; $i < @strlen($hex); $i = $i + 2) {
+             $ser .= substr($hex, $i, 1);
+         }*/
 
-        return $ser;
+         return $ser;
     }
 
     public static function bcdechex($dec)
@@ -144,7 +148,8 @@ class Helper
      * @param $decimal_place
      * @return string
      */
-    public static function numberFormatPercent($val, $decimal_place)
+    // public static function numberFormatPercent($val, $decimal_place)
+    public static function numberFormatPercent($val, $decimal_place=0)
     {
         return self::numberFormat($val, $decimal_place) . '%';
     }
@@ -414,5 +419,20 @@ class Helper
     public static function defaultCompany(){
       return Company::get()->first();
     }
-
+    /*
+     * Buscar el codigo de moneda
+    */
+    public function searchCurrencyCode($val)
+    {
+      $moneda_code= DB::table('currencies')->where('id', $val)->value('code');
+      return $moneda_code;
+    }
+    /*
+     * Buscar el codigo de metodo de pago
+    */
+    public function searchPaymentMethodCode($val)
+    {
+      $moneda_code= DB::table('payment_methods')->where('id', $val)->value('code');
+      return $moneda_code;
+    }
 }
