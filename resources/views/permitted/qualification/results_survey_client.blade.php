@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-@if( auth()->user()->can('View results survey') )
+@if( auth()->user()->can('View survey tracking') )
 
   <!-- Modal -->
   <div class="modal fade" id="ModalMail" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
@@ -164,7 +164,7 @@
 @endsection
 
 @push('scripts')
-@if( auth()->user()->can('View results survey') )
+@if( auth()->user()->can('View survey tracking') )
 <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
 <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
 <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>

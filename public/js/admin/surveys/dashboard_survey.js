@@ -171,12 +171,22 @@ function data_nps(){
             if(status.Concepto == 'Encuestas Enviadas') {   $('#total_survey').text(status.Count); }
             if(status.Concepto == 'Sitios') {   $('#check_venues').text(status.Count); }
           });
+          data_nps2();
        },
        error: function (data) {
          menssage_toast('Mensaje', '2', 'Operation Abort' , '3000');
        }
    })
 }
+
+function data_nps2(){
+
+var nps = ((parseInt($('#total_promotores').text())-parseInt($('#total_detractores').text())-parseInt($('#unanswered').text()))
+/(parseInt($('#total_promotores').text())+parseInt($('#total_pasivos').text())+parseInt($('#total_detractores').text())+parseInt($('#unanswered').text())))*100;
+//console.log(nps);
+graph_gauge('nps_2', 'NPS', '100', '100', nps.toFixed(2));
+}
+
 function data_compare_nps(){
   var _token = $('input[name="_token"]').val();
   var objData = $('#search_info').find("select,textarea, input").serialize();
@@ -221,7 +231,7 @@ function graph_nps() {
           data_count1.push({ value: objdata.Count, name: objdata.Concepto + ' = ' + objdata.Count},);
         });
         graph_pie_default_four_with_porcent('main_grap_nps', data_name1, data_count1, 'Grafica', 'NPS', 'left');
-        
+
       },
       error: function (data) {
         console.log('Error:', data);

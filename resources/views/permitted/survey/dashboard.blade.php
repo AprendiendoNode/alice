@@ -195,12 +195,21 @@
           </div>
         </div>
 
-        <div class="col-md-5 grid-margin stretch-card">
+        <div class="col-md-4 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">NPS chart</h4>
               <!--<canvas id="lineChart" width="437" height="218" class="chartjs-render-monitor" style="display: block; width: 437px; height: 218px;"></canvas> -->
               <div id="main_nps" style="width: 100%; min-height: 320px; border:1px solid #ccc;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">NPS chart</h4>
+              <!--<canvas id="lineChart" width="437" height="218" class="chartjs-render-monitor" style="display: block; width: 437px; height: 218px;"></canvas> -->
+              <div id="nps_2" style="width: 100%; min-height: 320px; border:1px solid #ccc;"></div>
             </div>
           </div>
         </div>
@@ -249,6 +258,55 @@
           </div>
         </div>
 
+        <!--<div class="col-md-2">
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <div class="card">
+                <h6 style="background-color:#f7f7f7; text-align: center; padding: 7px 10px; margin-top: 0;">Comparación Anual</h6>
+                <div class="card-body padding-none">
+                  <div>
+                    <table id="tabla_comparativa" class="table table-striped table-bordered table-hover">
+                      <thead>
+                          <tr>
+                            <th class="text-center">Año</th>
+                            <th class="text-center">NPS</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <div class="card" id="box_sin_response">
+                <div class="card-body">
+                  <div class="ml-sm-3 ml-md-0 ml-xl-0 mt-2 mt-sm-0 mt-md-2 mt-xl-0 text-center">
+                    <h4 id="check_venues" class="mb-2 text-primary font-weight-bold">0</h4>
+    								<h6 class="mb-0">Sitios evaluados</h6>
+    							</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>-->
+      </div>
+
+      <div class="row">
+        <div class="col-10 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Encuesta semanal</h4>
+              <!-- <div id="sparkline-composite-chart" class="sparkline-demo-chart">
+                <canvas width="955" height="200" style="display: inline-block; width: 955.75px; height: 200px; vertical-align: top;"></canvas>
+              </div> -->
+              <div id="main_grap_nps_week" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
+            </div>
+          </div>
+        </div>
         <div class="col-md-2">
           <div class="row">
             <div class="col-md-12 mb-3">
@@ -282,6 +340,7 @@
                           </td>
                           <td>
                             83
+                          </td>
                           </tr>
                           <tr>
 
@@ -290,7 +349,6 @@
                             </td>
                             <td>
                             63
-                            </td>
                           </tr>
                       </tbody> -->
                     </table>
@@ -304,28 +362,15 @@
                 <div class="card-body">
                   <div class="ml-sm-3 ml-md-0 ml-xl-0 mt-2 mt-sm-0 mt-md-2 mt-xl-0 text-center">
                     <h4 id="check_venues" class="mb-2 text-primary font-weight-bold">0</h4>
-    								<h6 class="mb-0">Sitios evaluados</h6>
-    							</div>
+                    <h6 class="mb-0">Sitios evaluados</h6>
+                  </div>
                 </div>
               </div>
             </div>
             <!-- /.col -->
           </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col-12 mb-3">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">Encuesta semanal</h4>
-              <!-- <div id="sparkline-composite-chart" class="sparkline-demo-chart">
-                <canvas width="955" height="200" style="display: inline-block; width: 955.75px; height: 200px; vertical-align: top;"></canvas>
-              </div> -->
-              <div id="main_grap_nps_week" style="width: 100%; min-height: 300px; border:1px solid #ccc;padding:10px;"></div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="row">
