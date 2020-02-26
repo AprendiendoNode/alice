@@ -1485,7 +1485,6 @@ class CustomerCreditNoteController extends Controller
       $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
       $facturas = json_decode($request->facturas);
       $asientos = array();
-      /*
       for ($i=0; $i <= (count($facturas)-1); $i++)
       {
           $data = DB::select('CALL px_poliza_xnotacredito_cc(?)', array($facturas[$i]));
@@ -1498,9 +1497,21 @@ class CustomerCreditNoteController extends Controller
               }
           }
       }
-      */
-      return view('permitted.sales.table_asientos_contables_nota_credito',
-      compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num', 'date_rest', 'date'));
+      /*Permisos*/
+      if( auth()->user()->can('View polizas diario') ){
+        if(auth()->user()->can('Polizas readonly')){
+          return view('permitted.sales.table_asientos_contables_nota_credito_readonly',
+          compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num', 'date_rest', 'date'));
+        }
+        else {
+          return view('permitted.sales.table_asientos_contables_nota_credito',
+          compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num', 'date_rest', 'date'));
+        }
+      }
+      else{
+        return view('permitted.sales.table_asientos_contables_nota_credito_readonly',
+        compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num', 'date_rest', 'date'));
+      }
     }
 
 

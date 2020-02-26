@@ -104,7 +104,7 @@ $(function() {
     vartable.fnClearTable();
     $.each(JSON.parse(datajson), function(index, information){
       var status = information.status;
-      var mail = information.mail_sent;     
+      var mail = information.mail_sent;
       var html = "";
 
       if (parseInt(status) == OPEN) {
@@ -131,12 +131,12 @@ $(function() {
       var a03 = '<div class="dropdown-menu">';
       var a04 = '<a class="dropdown-item" target="_blank" href="/sales/customer-invoice-pdfs/'+information.id+'"><i class="fa fa-eye"></i> Ver</a>';
       var a05 = '', a06 ='', a07 ='', a08 ='', a09 ='', a10 ='', a11 ='', a12 ='', a13 ='', a14 ='', a15 ='', a16='', a17='', a19='';
-      
-       
+
+
       if ( information.uuid != "" ) {
         a19 = '<a class="dropdown-item" href="javascript:void(0);" onclick="cancel_poliza(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="fas fa-file-alt"></i> Cancelar póliza</a>';
       }
-      
+
       var a18 = '</div>';
       var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a09+a10+a11+a12+a19+a13+a14+a15+a16+a17+a18;
 
@@ -155,7 +155,7 @@ $(function() {
       ]);
     });
   }
-  
+
     $('.datepicker').datepicker({
       language: 'es',
       format: "yyyy-mm-dd",
@@ -165,7 +165,7 @@ $(function() {
       autoclose: true,
       clearBtn: true
     });
- 
+
   var Configuration_table_responsive_doctypes = {
     "order": [[ 3, "asc" ]],
     "select": true,
@@ -182,9 +182,9 @@ $(function() {
             if(rowData[10] == 1){
               this.api().cell(td).checkboxes.disable();
               $(td).parent().attr('style', 'background: #D6FFBE !important');
-            }           
+            }
           }
-        },  
+        },
         "className": "text-center",
       },
       {
@@ -196,7 +196,7 @@ $(function() {
     dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-      
+
       buttons: [
         {
           text: '<i class=""></i> Contabilizar',
@@ -206,7 +206,7 @@ $(function() {
             $(node).removeClass('btn-default')
           },
           action: function ( e, dt, node, config ) {
-              
+
             var rows_selected = $("#table_filter_fact").DataTable().column(0).checkboxes.selected();
             var _token = $('input[name="_token"]').val();
             // Iterate over all selected checkboxes
@@ -222,22 +222,22 @@ $(function() {
               )
             }else{
               let _token = $('meta[name="csrf-token"]').attr('content');
-              
+
               $("#tabla_asiento_contable tbody").empty();
-            
+
               $.ajax({
                   type: "POST",
                   url: '/accounting/customer-polizas-get-movs',
                   data: {facturas: JSON.stringify(facturas) , _token : _token},
-                  success: function (data) {         
-                    
+                  success: function (data) {
+
                     $('#data_asientos').html(data);
                     $('.cuenta_contable').select2();
                     let dia_factura = $('#dia_hidden').val();
                     let mes_factura = $('#mes_hidden').val();
                     let anio_factura = $('#anio_hidden').val();
                     let mes_format = moment(new Date(anio_factura, parseInt(mes_factura)- 1, dia_factura)).format('MMMM');
-                                        
+
                     $('#mes_poliza').val(mes_format);
                   },
                   error: function (err) {
@@ -248,11 +248,11 @@ $(function() {
                       });
                   }
               })
-            
+
               $("#modal_view_poliza").modal("show");
             }
-             
-            
+
+
           }
         },
         {
@@ -322,7 +322,7 @@ function suma_total_asientos(){
   let inputs_abonos = document.querySelectorAll('.abonos');
   let total_cargos = 0.0;
   let total_abonos = 0.0;
-  
+
   for (i = 0; i < inputs_cargos.length; ++ i){
     total_cargos+= parseFloat(inputs_cargos[i].value);
   }
@@ -346,7 +346,7 @@ function suma_total_asientos(){
 
 /*
 *****************************  GUARDANDO PÓLIZAS ***************************
-*/ 
+*/
 
 $('#form_save_asientos_contables').on('submit', function(e){
   e.preventDefault();
@@ -368,9 +368,9 @@ $('#form_save_asientos_contables').on('submit', function(e){
       cancelButtonText: 'Cancelar',
       showLoaderOnConfirm: true,
       preConfirm: () => {
-        
+
         var _token = $('input[name="_token"]').val();
-        
+
         var element = {}
         var asientos = [];
 
@@ -382,8 +382,8 @@ $('#form_save_asientos_contables').on('submit', function(e){
           let nombre = $(tr).find('.nombre').val();
           let cargo = $(tr).find('.cargos').val();
           let abono = $(tr).find('.abonos').val();
-          let referencia = $(tr).find('.referencia').val();    
-          
+          let referencia = $(tr).find('.referencia').val();
+
           element = {
             "factura_id" : id_factura,
             "cuenta_contable_id" : cuenta_contable,
@@ -392,21 +392,21 @@ $('#form_save_asientos_contables').on('submit', function(e){
             "nombre" : nombre,
             "cargo" : parseFloat(cargo),
             "abono" : parseFloat(abono),
-            "referencia" : referencia          
+            "referencia" : referencia
           }
-    
+
           asientos.push(element);
-    
+
         });
-    
+
         let form = $('#form_save_asientos_contables')[0];
         let formData = new FormData(form);
-    
-        formData.append('movs_polizas',JSON.stringify(asientos)); 
-        formData.append('total_cargos_format',total_cargos);
-        formData.append('total_abonos_format',total_abonos);  
 
-        const headers = new Headers({        
+        formData.append('movs_polizas',JSON.stringify(asientos));
+        formData.append('total_cargos_format',total_cargos);
+        formData.append('total_abonos_format',total_abonos);
+
+        const headers = new Headers({
            "Accept": "application/json",
            "X-Requested-With": "XMLHttpRequest",
            "X-CSRF-TOKEN": _token
@@ -457,7 +457,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
       'warning'
     );
   }
-  
+
 });
 
 ////////////////////////////////////////////////////////////////
@@ -477,7 +477,7 @@ function cancel_poliza(e){
             location.href ="/accounting/customer-polizas-show";
           });
         }
-        
+
       },
       error: function (err) {
         Swal.fire({

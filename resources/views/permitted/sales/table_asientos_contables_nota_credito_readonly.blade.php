@@ -7,7 +7,7 @@
 
   <div class="form-group col-md-3">
     <label class="" for="type_poliza">Tipo</label>
-    <select class="form-control form-control-sm mb-2 mr-sm-2 required" id="type_poliza" name="type_poliza" >
+    <select disabled class="form-control form-control-sm mb-2 mr-sm-2 required" id="type_poliza" name="type_poliza" >
       <option value="" selected>Selecciona...</option>
       @foreach ($tipos_poliza as $poliza_data)
         <option value="{{$poliza_data->id}}">{{$poliza_data->clave}} {{$poliza_data->descripcion}}</option>
@@ -17,20 +17,20 @@
 
   <div class="form-group col-md-2">
     <label class="" for="">Número:</label>
-  <input type="number" class="form-control form-control-sm mb-2 mr-sm-2 required" id="num_poliza" name="num_poliza" value="{{$next_id_num}}">
+    <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2 required" id="num_poliza" name="num_poliza" value="{{$next_id_num}}">
   </div>
 
   <div class="form-group col-md-2">
     <label class="" for="day_poliza">Día:</label>
-    <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza" placeholder="">
+    <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2 required" name="day_poliza" id="day_poliza" placeholder="">
   </div>
   <div class="form-group col-md-2">
     <label class="" for="mes_poliza">Mes:</label>
-    <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
+    <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 required" name="mes_poliza" id="mes_poliza">
   </div>
   <div class="form-group col-md-3">
     <label class="" for="mes_poliza">Descripción:</label>
-    <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 required" name="descripcion_poliza" id="descripcion_poliza">
+    <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 required" name="descripcion_poliza" id="descripcion_poliza">
   </div>
 </div>
 <!--------------Movimientos contables----------->
@@ -62,7 +62,7 @@
             <td><input class="id_factura" type="hidden" value="{{$data->customer_invoice_id}}"></td>
             <td>{{$data->mov}}</td>
             <td>
-              <select style="width:280px;" class="form-control form-control-sm cuenta_contable select2">
+              <select disabled style="width:280px;" class="form-control form-control-sm cuenta_contable select2">
                 <option value="">Elija</option>
                 @foreach ($cuentas_contables as $cuenta_data)
                   @if ($cuenta_data->id == $data->cuenta_contable_id)
@@ -73,12 +73,12 @@
                 @endforeach
               </select>
             </td>
-            <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia" readonly type="number" value="{{$day}}"></td>
-            <td><input style="width:94px;text-align:center" class="form-control form-control-sm tipo_cambio" readonly type="number" value="{{$data->tipo_cambio}}"></td>
-            <td class=""><input style="width:170px;text-align:left" readonly class="form-control form-control-sm nombre" type="text" value="{{$data->descripcion}} {{$date}}"></td>
-            <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos" type="text" value="{{number_format($data->cargo, 2, '.', '')}}" ></td>
-            <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm abonos"  type="text" value="{{number_format($data->abono, 2, '.', '')}}" ></td>
-          <td><input style="width:135px;text-align:left" class="form-control form-control-sm referencia" type="text"></td>
+            <td><input readonly style="width:58px;text-align:left" class="form-control form-control-sm dia" type="number" value="{{$day}}"></td>
+            <td><input readonly style="width:94px;text-align:center" class="form-control form-control-sm tipo_cambio" type="number" value="{{$data->tipo_cambio}}"></td>
+            <td class=""><input readonly style="width:170px;text-align:left" class="form-control form-control-sm nombre" type="text" value="{{$data->descripcion}} {{$date}}"></td>
+            <td><input readonly onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos" type="text" value="{{number_format($data->cargo, 2, '.', '')}}" ></td>
+            <td><input readonly onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm abonos"  type="text" value="{{number_format($data->abono, 2, '.', '')}}" ></td>
+          <td><input readonly style="width:135px;text-align:left" class="form-control form-control-sm referencia" type="text"></td>
         </tr>
         @endforeach
       </tbody>

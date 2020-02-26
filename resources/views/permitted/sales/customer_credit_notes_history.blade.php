@@ -38,7 +38,9 @@
             <!--TABLA DE PARTIDAS / ASIENTO CONTABLE------>
           </div>
           <div class="modal-footer">
-            <button type="submit" id="save_poliza_partida" type="button" class="btn btn-primary">Guardar</button>
+            @if( auth()->user()->hasAnyPermission(['Create polizas periodo']))
+              <button type="submit" id="save_poliza_partida" type="button" class="btn btn-primary">Guardar</button>
+            @endif
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
           </div>
         </form>

@@ -87,37 +87,6 @@ $(function() {
   });
   $("#filter_customer_id").select2();
   //-----------------------------------------------------------
-  $("#form_save_asientos_contables").validate({
-    ignore: "input[type=hidden]",
-    errorClass: "text-danger",
-    successClass: "text-success",
-    errorPlacement: function (error, element) {
-        var attr = $('[name="'+element[0].name+'"]').attr('datas');
-        if (element[0].id === 'fileInput') {
-          error.insertAfter($('#cont_file'));
-        }
-        else {
-          if(attr == 'filter_date_from'){
-            error.insertAfter($('#date_from'));
-          }
-          else if (attr == 'filter_date_to'){
-            error.insertAfter($('#date_to'));
-          }
-          else {
-            error.insertAfter(element);
-          }
-        }
-      },
-      rules: {
-      },
-      messages: {
-      },
-      submitHandler: function(e){
-       e.preventDefault();
-       save_poliza();
-      }
-  });
-  //-----------------------------------------------------------
 });
 
 function table_filter(datajson, table){
@@ -277,6 +246,8 @@ var Configuration_table_responsive_doctypes = {
           else {
             let _token = $('meta[name="csrf-token"]').attr('content');
             $("#tabla_asiento_contable tbody").empty();
+            $('#errores_element').hide();
+
             $.ajax({
               type: "POST",
               url: '/sales/get_note_credit_mov_data_cfdi',
@@ -740,6 +711,128 @@ function suma_total_asientos(){
     $('#total_abonos').css('border-color', '#dc3545');
   }
 }
+
+
+$('#form_save_asientos_contables').on('submit', function(e){
+  e.preventDefault();
+  var data_A = $('#type_poliza').val();
+  var data_B = $('#descripcion_poliza').val();
+  if (data_A == '' || data_B == '') {
+    $('#errores_element').show();
+    if ( data_A == '' ) {
+      $('#txt_a').show();
+    }
+    if ( data_B == '' ) {
+      $('#txt_b').show();
+    }
+  }
+  else{
+    $('#errores_element').hide();
+    $('#txt_a').hide();
+    $('#txt_b').hide();
+
+    // e.preventDefault();
+    let total_cargos = remove_commas($('#total_cargos').val());
+    total_cargos = parseFloat(total_cargos);
+    let total_abonos = remove_commas($('#total_abonos').val());
+    total_abonos = parseFloat(total_abonos);
+    if(check_totales_asientos(total_cargos, total_abonos)){
+
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+          var _token = $('input[name="_token"]').val();
+          var element = {}
+          var asientos = [];
+          $('#tabla_asiento_contable tbody tr').each(function(row, tr){
+            let id_factura = $(tr).find('.id_factura').val();
+            let cuenta_contable = $(tr).find('.cuenta_contable').val();
+            let dia = $(tr).find('.dia').val();
+            let tipo_cambio = $(tr).find('.tipo_cambio').val();
+            let nombre = $(tr).find('.nombre').val();
+            let cargo = $(tr).find('.cargos').val();
+            let abono = $(tr).find('.abonos').val();
+            let referencia = $(tr).find('.referencia').val();
+            element = {
+              "factura_id" : id_factura,
+              "cuenta_contable_id" : cuenta_contable,
+              "dia" : dia,
+              "tipo_cambio" : tipo_cambio,
+              "nombre" : nombre,
+              "cargo" : parseFloat(cargo),
+              "abono" : parseFloat(abono),
+              "referencia" : referencia
+            }
+            asientos.push(element);
+          });
+          let form = $('#form_save_asientos_contables')[0];
+          let formData = new FormData(form);
+          formData.append('movs_polizas',JSON.stringify(asientos));
+          formData.append('total_cargos_format',total_cargos);
+          formData.append('total_abonos_format',total_abonos);
+          const headers = new Headers({
+             "Accept": "application/json",
+             "X-Requested-With": "XMLHttpRequest",
+             "X-CSRF-TOKEN": _token
+          })
+          var miInit = { method: 'post',
+                             headers: headers,
+                             credentials: "same-origin",
+                             body:formData,
+                             cache: 'default' };
+           return fetch('/accounting/customer-polizas-save-movs', miInit)
+                 .then(function(response){
+                   if (!response.ok) {
+                      throw new Error(response.statusText)
+                    }
+                   return response.text();
+                 })
+                 .catch(function(error){
+                   Swal.showValidationMessage(
+                     `Request failed: ${error}`
+                   )
+                 });
+        }//Preconfirm
+      }).then((result) => {
+        console.log(result.value);
+        if (result.value == "true") {
+          Swal.fire({
+            title: 'Poliza guardada',
+            text: "",
+            type: 'success',
+          }).then(function (result) {
+            if (result.value) {
+              window.location = "/sales/credit-notes-history";
+            }
+          })
+        }
+        else{
+          Swal.fire(
+            'No se guardo la poliza','','warning'
+          )
+        }        
+      })
+    }
+    else{
+      Swal.fire(
+        'Los totales no coinciden',
+        'Revisar los saldos de los cargos y abonos',
+        'warning'
+      );
+    }
+  }
+});
+
+
+
 
 function save_poliza() {
   let total_cargos = remove_commas($('#total_cargos').val());
