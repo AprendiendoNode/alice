@@ -791,6 +791,11 @@ class CustomerPaymentController extends Controller
               //Convertimos el monto aplicado si la moneda del documento es diferente a la de pago
               $item_reconciled_amount_reconciled = round(Helper::invertBalanceCurrency($customer_payment->currency,$item_reconciled_amount_reconciled,$customer_invoice->currency->code,$item_reconciled_currency_value),2);
 
+              $se_timbra = DB::table('payment_ways')->where('id', $customer_invoice->payment_way_id)->value('timbrado');
+
+              if ($se_timbra != 1 ) {
+                throw new \Exception("Este documento no se puede timbrar por la forma de pago.");
+              }
               //Guardar linea
               $customer_payment_reconciled = CustomerPaymentReconciled::create([
                 'created_uid' => \Auth::user()->id,
