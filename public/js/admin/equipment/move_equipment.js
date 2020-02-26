@@ -17,6 +17,7 @@ $('#select_one').on('change', function(e){
 
 //Se ha subido un archivo
 var excelMACS = [], excelSeries = [];
+var excelMACS_aux = [], excelSeries_aux = [];
 
 $(document).ready(function(){
   $('#files').change(obtenerExcel);
@@ -41,7 +42,9 @@ function obtenerExcel(e) {
      });
      for(var i = 0; i < result.length ; i++) {
        excelMACS[i] = result[i].MAC;
+       excelMACS_aux[i] = result[i].MAC;
        excelSeries[i] = result[i].SERIE;
+       excelSeries_aux[i] = result[i].SERIE;
      }
      general_table_equipment_excel();
    };
@@ -245,8 +248,8 @@ $(".btn-conf-action").click(function(event) {
 });;
 
 $(".btn-conf-action2").click(function(event) {
-  var macs = excelMACS;
-  var series = excelSeries;
+  var macs = excelMACS_aux;
+  var series = excelSeries_aux;
   var _token = $('input[name="_token"]').val();
   //Extract required data
   var hotel_origen = "";
