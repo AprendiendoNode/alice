@@ -30,6 +30,9 @@ $(function () {
   $('#cuenta_contable').select2();
   $('#cuenta_complementaria').select2();
   $('#cuenta_anticipo').select2();
+  $('#cuenta_ingresos').select2();
+  $(".select2").select2({ width: '90%' });
+
   get_info_customers();
   $('#creatcustomers').formValidation({
    framework: 'bootstrap',
@@ -412,7 +415,7 @@ function table_customers(datajson, table){
         </div>
       </div>`,
       information.name,
-      information.taxid,      
+      information.taxid,
       information.email,
       information.phone,
       information.countries,
@@ -479,7 +482,7 @@ function edit_customers(e){
              text: 'Realice la operacion nuevamente!',
            });
          }
-           
+
        },
        error: function (data) {
          alert('Error:', data);
@@ -495,17 +498,17 @@ function edit_cc_modal(e){
   $('#cuenta_contable').val(null).trigger('change');
   $('#cuenta_complementaria').val(null).trigger('change');
   $('#cuenta_anticipo').val(null).trigger('change');
-    
+
     $.ajax({
       type: "POST",
       url: '/sales/customers-edit',
       data: {value : id_cliente_prov, _token : _token},
       success: function (data) {
 
-        if (data != []) {        
-          
-          $('#customer_name').val(data[0].name); 
-          validate_cc_by_currency(data[0].currency_id);   
+        if (data != []) {
+
+          $('#customer_name').val(data[0].name);
+          validate_cc_by_currency(data[0].currency_id);
           get_data_integracion_contable(id_cliente_prov);
           $('#modal-integracion-contable').modal('show');
         }
@@ -516,7 +519,7 @@ function edit_cc_modal(e){
             text: 'Realice la operacion nuevamente!',
           });
         }
-      
+
       },
       error: function (data) {
         alert('Error:', data);
@@ -534,15 +537,18 @@ function get_data_integracion_contable(id_cliente_prov){
       success: function (data) {
         console.log(data);
         if (data.length != 0) {
-          // Set selected 
+          // Set selected
           $('#cuenta_contable').val(data[0].id_cuenta_contable);
-          $('#cuenta_contable').select2().trigger('change'); 
+          $('#cuenta_contable').select2({ width: '90%' }).trigger('change');
           $('#cuenta_complementaria').val(data[0].id_cuenta_compl);
-          $('#cuenta_complementaria').select2().trigger('change');  
+          $('#cuenta_complementaria').select2({ width: '90%' }).trigger('change');
+          $('#cuenta_ingresos').val(data[0].id_cuenta_ingresos);
+          $('#cuenta_ingresos').select2({ width: '90%' }).trigger('change');
+
           $('#cuenta_anticipo').val(data[0].id_cuenta_anticipo);
-          $('#cuenta_anticipo').select2().trigger('change');       
+          $('#cuenta_anticipo').select2().trigger('change');
         }
-      
+
       },
       error: function (data) {
         alert('Error:', data);
@@ -563,7 +569,7 @@ $("#form_integration_cc").on("submit", function(e){
       contentType: false,
       processData: false,
       success: function (data, textStatus, xhr){
-        
+
         let timerInterval;
 
         Swal.fire({
@@ -586,7 +592,7 @@ $("#form_integration_cc").on("submit", function(e){
             //window.location.href = "/sales/customers";
           }
         });
-        
+
       },
       error: function (err) {
         Swal.fire({

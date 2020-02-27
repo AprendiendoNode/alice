@@ -54,7 +54,7 @@
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm required" id="inputCreatEmail" name="inputCreatEmail" placeholder="Correo electrónico" maxlength="100">
                     <small id="passwordHelpBlock" class="form-text text-muted">
-                      Para agregar mas de un email favor de separar por un <strong class="text-danger">;</strong> 
+                      Para agregar mas de un email favor de separar por un <strong class="text-danger">;</strong>
                       al final de cada email sin agregar espacios.
                     </small>
                   </div>
@@ -228,7 +228,7 @@
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm required" id="inputEditEmail" name="inputEditEmail" placeholder="{{ trans('auth.nombre') }}">
                     <small id="passwordHelpBlock" class="form-text text-muted">
-                      Para agregar mas de un email favor de separar por un <strong class="text-danger">;</strong> 
+                      Para agregar mas de un email favor de separar por un <strong class="text-danger">;</strong>
                       al final de cada email sin agregar espacios.
                     </small>
                   </div>
@@ -257,7 +257,7 @@
                     <input type="text" class="form-control form-control-sm onlynumber" id="inputEditMobile" name="inputEditMobile" placeholder="" maxlength="12">
                   </div>
                 </div>
-               
+
                 <div class="form-group row">
                   <label for="editCreatAddress_1" class="col-sm-3 col-form-label">Direccion<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
@@ -386,7 +386,7 @@
                       <th>Correo electrónico</th>
                       <th>Teléfono</th>
                       <th>País</th>
-                      <th>Estatus</th>   
+                      <th>Estatus</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -418,7 +418,7 @@
                 <div class="form-group row">
                   <label for="customer_name" class="col-sm-4 col-form-label">Cliente: <span style="color: red;">*</span></label>
                   <div class="col-sm-8">
-                    <input type="text" readonly style="min-width: 100px;" class="form-control form-control-sm required select2" id="customer_name" name="customer_name">
+                    <input type="text" readonly style="min-width: 100px;" class="form-control form-control-sm required" id="customer_name" name="customer_name">
                   </div>
                 </div>
                 <div class="form-group row">
@@ -429,7 +429,7 @@
                       @foreach ($cuentas_contables as $cuenta_data)
                         <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
                       @endforeach
-                    </select> 
+                    </select>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -440,7 +440,18 @@
                       @foreach ($cuentas_contables as $cuenta_data)
                         <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
                       @endforeach
-                    </select> 
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="cuenta_ingresos" class="col-sm-4 col-form-label">Cuenta de ingresos:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control form-control-sm select2" id="cuenta_ingresos" name="cuenta_ingresos">
+                      <option value="">Elegir</option>
+                      @foreach ($cuentas_contables as $cuenta_data)
+                        <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
+                      @endforeach
+                    </select>
                   </div>
                 </div>
                 <button type="submit" class="btn btn-navy"><i class="fas fa-check" style="margin-right: 4px;"></i> Aceptar</button>

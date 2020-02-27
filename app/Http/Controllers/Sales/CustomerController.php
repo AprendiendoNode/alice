@@ -270,6 +270,7 @@ class CustomerController extends Controller
             ['id_cliente_prov' => $request->id_customer_cc],
             ['id_cuenta_contable' => $request->cuenta_contable,
              'id_cuenta_compl' => $request->cuenta_complementaria,
+             'id_cuenta_ingresos' => $request->cuenta_ingresos,
              'provider' => $request->provider
         ]);
 

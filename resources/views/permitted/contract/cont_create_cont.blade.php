@@ -1064,7 +1064,6 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="sel_inside_sales"> Inside Sales:
-                              <span class="text-danger">*</span>
                             </label>
                             <select id="sel_inside_sales" name="sel_inside_sales" class="form-control" name="location" style="width:100%;">
                               <option value="" selected>{{ trans('pay.select_op') }}</option>
@@ -1078,7 +1077,6 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="sel_itconcierge_comision"> IT Concierge:
-                              <span class="text-danger">*</span>
                             </label>
                             <select id="sel_itconcierge_comision" name="sel_itconcierge_comision" class="form-control" name="location" style="width:100%;">
                               <option value="" selected>{{ trans('pay.select_op') }}</option>
@@ -1370,16 +1368,16 @@
           if ($(this).prop('checked') == true) {
             cont_vtc = 1;
             $('#div_comisiones').show();
-            $("#sel_inside_sales").prop('required',true);
-            $("#sel_itconcierge_comision").prop('required',true);
+            // $("#sel_inside_sales").prop('required',true);
+            // $("#sel_itconcierge_comision").prop('required',true);
             $('#comision').val(cont_vtc);
           }
           else {
             cont_vtc = 0;
             $('#comision').val(cont_vtc);
             $('#div_comisiones').hide();
-            $("#sel_inside_sales").prop('required',false);
-            $("#sel_itconcierge_comision").prop('required',false);
+            // $("#sel_inside_sales").prop('required',false);
+            // $("#sel_itconcierge_comision").prop('required',false);
           }
           reset_comision();
         });
@@ -1394,8 +1392,8 @@
             $('#kick_off_exit').val(1);
             $('#kickoff_info_div').show();
             $('#div_comisiones').hide();
-            $("#sel_inside_sales").prop('required',true);
-            $("#sel_itconcierge_comision").prop('required',true);
+            // $("#sel_inside_sales").prop('required',true);
+            // $("#sel_itconcierge_comision").prop('required',true);
             //Reset
             $('#select_kick_off').val('').trigger('change');
             $('#kick_off_id').val('');
@@ -1406,8 +1404,8 @@
             $('#kick_off_exit').val(0);
             $('#kickoff_info_div').hide();
             $('#div_comisiones').show();
-            $("#sel_inside_sales").prop('required',false);
-            $("#sel_itconcierge_comision").prop('required',false);
+            // $("#sel_inside_sales").prop('required',false);
+            // $("#sel_itconcierge_comision").prop('required',false);
             //Reset
             $('#select_kick_off').val('').trigger('change');
             $('#kick_off_id').val('');
@@ -2004,7 +2002,7 @@
                   contentType: false,
                   processData: false,
                   success: function (data){
-                    
+
                     datax = data;
                     if (datax != '0') {
                       Swal.fire("Operación Completada!", ":)", "success");
