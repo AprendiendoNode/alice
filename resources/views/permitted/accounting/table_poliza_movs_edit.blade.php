@@ -1,8 +1,9 @@
 @php
-  $date = \Carbon\Carbon::now();
-  $date2 = \Carbon\Carbon::now();
-  $date = $date->format('d-m-Y');
-  $day = $date2->format('d');
+  $date_factura = $asientos[0]->fecha;
+  $explode = explode('-', $date_factura);
+  $anio_factura = $explode[0];
+  $mes_factura = $explode[1];
+  $dia_factura = $explode[2];
   $total_cargos = 0.0;
   $total_abonos = 0.0;  
 @endphp
@@ -10,6 +11,7 @@
     
   <div class="form-group col-md-3">
     <input type="hidden" class="form-control form-control-sm mb-2 mr-sm-2" id="poliza_id" name="poliza_id"  value="{{$asientos[0]->poliza_id}}">
+    <input id="date_invoice" type="hidden" value="{{$date_factura}}">
     <label class="" for="type_poliza">Tipo:</label>
     <select class="form-control form-control-sm mb-2 mr-sm-2" id="type_poliza" name="type_poliza">
       @foreach ($tipos_poliza as $poliza_data)      
@@ -20,20 +22,20 @@
 
   <div class="form-group col-md-2">
     <label class="" for="">Número:</label>
-  <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" id="num_poliza" name="num_poliza"  value="{{$asientos[0]->numero}}">
+    <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" id="num_poliza" name="num_poliza"  value="{{$poliza_header[0]->numero}}">
   </div>
 
   <div class="form-group col-md-2">
     <label class="" for="day_poliza">Día:</label>
-    <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza">
+    <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2"  value="{{$poliza_header[0]->dia}}" name="day_poliza" id="day_poliza">
   </div>
   <div class="form-group col-md-2">
     <label class="" for="mes_poliza">Mes:</label>
-    <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
+    <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 text-capitalize" value="{{$poliza_header[0]->mes1}}" name="mes_poliza" id="mes_poliza">
   </div>
   <div class="form-group col-md-3">
     <label class="" for="descripcion_poliza">Descripción:</label>
-  <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="descripcion_poliza" id="descripcion_poliza" value="{{$asientos[0]->descripcion_poliza}}">
+    <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="descripcion_poliza" id="descripcion_poliza" value="{{$poliza_header[0]->descripcion}}">
   </div>
 </div>
 <!--------------Movimientos contables-----------> 
@@ -77,7 +79,7 @@
                 @endforeach
               </select>
             </td>
-            <td><input readonly style="width:58px;text-align:left" class="form-control form-control-sm dia"  type="number" value="{{$day}}"></td>
+            <td><input readonly style="width:58px;text-align:left" class="form-control form-control-sm dia"  type="number" value="{{$dia_factura}}"></td>
             <td><input readonly style="width:94px;text-align:center" class="form-control form-control-sm tipo_cambio"  type="number" value="{{$data->exchange_rate}}"></td>
             <td class=""><input style="width:170px;text-align:left"  class="form-control form-control-sm nombre" type="text" value="{{$data->descripcion}}"></td>
             <td><input  onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos font-weight-bold" type="text" value="{{number_format($data->cargos, 2, '.', '')}}" ></td>

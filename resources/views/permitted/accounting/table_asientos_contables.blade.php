@@ -12,6 +12,7 @@
   <input id="dia_hidden" type="hidden" value="{{$dia_factura}}">
   <input id="mes_hidden" type="hidden" value="{{$mes_factura}}">
   <input id="anio_hidden" type="hidden" value="{{$anio_factura}}">
+  <input id="date_invoice" type="hidden" value="{{$date_factura}}">
   <div class="form-group col-md-3">
     <label class="" for="type_poliza">Tipo:</label>
     <select class="form-control form-control-sm mb-2 mr-sm-2" id="type_poliza" name="type_poliza" >

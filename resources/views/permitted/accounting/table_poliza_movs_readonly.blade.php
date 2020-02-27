@@ -18,20 +18,20 @@
 
   <div class="form-group col-md-2">
     <label class="" for="">Número:</label>
-  <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" id="num_poliza" name="num_poliza"  value="{{$asientos[0]->numero}}" readonly>
+    <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2" id="num_poliza" name="num_poliza"  value="{{$poliza_header[0]->numero}}">
   </div>
 
   <div class="form-group col-md-2">
     <label class="" for="day_poliza">Día:</label>
-    <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2" name="day_poliza" id="day_poliza">
+    <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2"  value="{{$poliza_header[0]->dia}}" name="day_poliza" id="day_poliza">
   </div>
   <div class="form-group col-md-2">
     <label class="" for="mes_poliza">Mes:</label>
-    <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
+    <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 text-capitalize" value="{{$poliza_header[0]->mes1}}" name="mes_poliza" id="mes_poliza">
   </div>
   <div class="form-group col-md-3">
-    <label class="" for="mes_poliza">Descripción:</label>
-  <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="descripcion_poliza" id="descripcion_poliza" value="{{$asientos[0]->descripcion_poliza}}">
+    <label class="" for="descripcion_poliza">Descripción:</label>
+    <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="descripcion_poliza" id="descripcion_poliza" value="{{$poliza_header[0]->descripcion}}">
   </div>
 </div>
 <!--------------Movimientos contables-----------> 

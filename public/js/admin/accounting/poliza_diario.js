@@ -314,6 +314,7 @@ function get_movs_by_poliza(id_poliza){
 
 $('#form_update_asientos_contables').on('submit', function(e){
   e.preventDefault();
+  let date_invoice = remove_commas($('#date_invoice').val());
   let total_cargos = remove_commas($('#total_cargos').val());
   total_cargos = parseFloat(total_cargos);
   let total_abonos = remove_commas($('#total_abonos').val());
@@ -367,7 +368,8 @@ $('#form_update_asientos_contables').on('submit', function(e){
     
         let form = $('#form_update_asientos_contables')[0];
         let formData = new FormData(form);
-    
+
+        formData.append('date_invoice',date_invoice);
         formData.append('movs_polizas',JSON.stringify(asientos)); 
         formData.append('total_cargos_format',total_cargos);
         formData.append('total_abonos_format',total_abonos);  
