@@ -57,6 +57,25 @@
                                           <input type="text" class="form-control form-control-sm required" id="hotel_address" name="hotel_address" maxlength="100">
                                         </div>
                                       </div>
+                                      <!-- NEW Estados de la republica -->
+
+                                        <div class="col-md-8 col-md-offset-2">
+                                          <div class="form-group">
+                                            <label for="estado_crear" class="control-label">Estado:
+                                              <span style="color:red;">*</span>
+                                            </label>
+                                            <!-- agregar select dinamico -->
+                                            <select class="form-control form-control-sm required" id="estado_crear" name="estado_crear" style="width:100%;">
+                                            <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                            @forelse ($estados as $data_estados)
+                                            <option value="{{ $data_estados->id }}"> {{ $data_estados->name }} </option>
+                                            @empty
+                                            @endforelse
+                                          </select>
+                                          </div>
+                                        </div>
+
+                                      <!-- Estados -->
                                       <div class="col-md-8 col-md-offset-2">
                                         <div class="form-group">
                                           <label for="hotel_telephone" class="control-label">Telefono:
@@ -199,6 +218,25 @@
                                           <input type="text" class="form-control form-control-sm required" id="edit_hotel_address" name="edit_hotel_address" readonly>
                                         </div>
                                       </div>
+                                      <!-- NEW Estados de la republica -->
+
+                                        <div class="col-md-8 col-md-offset-2">
+                                          <div class="form-group">
+                                            <label for="estado_editar" class="control-label">Estado:
+                                              <span style="color:red;">*</span>
+                                            </label>
+                                            <!-- agregar select dinamico -->
+                                            <select class="form-control form-control-sm required" id="estado_editar" name="estado_editar" style="width:100%;">
+                                            <option value="" selected>{{ trans('pay.select_op') }}</option>
+                                            @forelse ($estados as $data_estados)
+                                            <option value="{{ $data_estados->id }}"> {{ $data_estados->name }} </option>
+                                            @empty
+                                            @endforelse
+                                          </select>
+                                          </div>
+                                        </div>
+
+                                      <!-- Estados -->
                                       <div class="col-md-8 col-md-offset-2">
                                         <div class="form-group">
                                           <label for="edit_hotel_telephone" class="control-label">Telefono:</label>
@@ -553,6 +591,7 @@
             $('[name="edit_hotel_name"]').val(datax[0].sitio);
             $('[name="edit_hotel_address"]').val(datax[0].Direccion);
             $('[name="edit_hotel_telephone"]').val(datax[0].Telefono);
+            $('[name="estado_editar"]').val(datax[0].estado_id);
             $('[name="sel_service_edit"]').val(datax[0].servicios_id);
             $('[name="sel_vertical_edit"]').val(datax[0].vertical_id);
 

@@ -19,7 +19,9 @@ class IdUbicacionController extends Controller
     $verticals = Vertical::select('id', 'name')->get();
     $servicios = Servicio::select('id', 'Nombre_servicio')->get();
     $cadenas = Cadena::select('id', 'name')->orderBy('name','ASC')->get();
-    return view('permitted.location.loc_create_idubic', compact('verticals','cadenas', 'servicios'));
+    $estados = DB::table('states')->select('id', 'name')->get();
+
+    return view('permitted.location.loc_create_idubic', compact('verticals','cadenas', 'servicios', 'estados'));
   }
 
   public function find_new_idubication(Request $request)
@@ -77,6 +79,13 @@ class IdUbicacionController extends Controller
       $datacp = '';
     }
 
+    if (isset($request->estado_crear)) {
+      $data_estado = $request->estado_crear;
+    }
+    else{
+      $data_estado = 48;
+    }
+
     $latitud= $request->latitud;
     $longitud= $request->longitud;
 
@@ -97,6 +106,7 @@ class IdUbicacionController extends Controller
         'num_ext' => $datanoext,
         'num_int' => $datanoint,
         'codigopostal' => $datacp,
+        'estado_id' => $data_estado,
         'servicios_id' => $request->sel_service,
         'vertical_id' => $request->sel_vertical,
         'created_at' => \Carbon\Carbon::now()
@@ -155,6 +165,12 @@ class IdUbicacionController extends Controller
       $datacp = '';
     }
 
+    if (isset($request->estado_editar)) {
+      $data_estado = $request->estado_editar;
+    }
+    else{
+      $data_estado = 48;
+    }
 
     $newId=DB::table('hotels')
             ->where('id', $id_sitio)
@@ -170,6 +186,7 @@ class IdUbicacionController extends Controller
               'num_ext' => $datanoext,
               'num_int' => $datanoint,
               'codigopostal' => $datacp,
+              'estado_id' => $data_estado,
               'servicios_id' => $request->sel_service_edit,
               'vertical_id' => $request->sel_vertical_edit,
               'updated_at' => \Carbon\Carbon::now()
