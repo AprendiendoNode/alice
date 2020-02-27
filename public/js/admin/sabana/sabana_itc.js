@@ -348,18 +348,18 @@ $(function() {
           status.sitio,
           '<a href="javascript:void(0);" id="ver-'+status.hotel_id+'-'+status.sitio+'" class="ver_antenas_sitio">'+status.aps+'</a>',
           (status.facturacion == null ? 0 : parseInt(status.facturacion)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-          status.Cal1,
-          status.Cal2,
-          status.Cal3,
-          status.Cal4,
-          status.Cal5,
-          status.Cal6,
-          status.Cal7,
-          status.Cal8,
-          status.Cal9,
-          status.Cal10,
-          status.Cal11,
-          status.Cal12,
+          '<span class="iconito fecha:11 hotel:'+status.hotel_id+'">'+status.Cal1+'</span>',
+          '<span class="iconito fecha:10 hotel:'+status.hotel_id+'">'+status.Cal2+'</span>',
+          '<span class="iconito fecha:9 hotel:'+status.hotel_id+'">'+status.Cal3+'</span>',
+          '<span class="iconito fecha:8 hotel:'+status.hotel_id+'">'+status.Cal4+'</span>',
+          '<span class="iconito fecha:7 hotel:'+status.hotel_id+'">'+status.Cal5+'</span>',
+          '<span class="iconito fecha:6 hotel:'+status.hotel_id+'">'+status.Cal6+'</span>',
+          '<span class="iconito fecha:5 hotel:'+status.hotel_id+'">'+status.Cal7+'</span>',
+          '<span class="iconito fecha:4 hotel:'+status.hotel_id+'">'+status.Cal8+'</span>',
+          '<span class="iconito fecha:3 hotel:'+status.hotel_id+'">'+status.Cal9+'</span>',
+          '<span class="iconito fecha:2 hotel:'+status.hotel_id+'">'+status.Cal10+'</span>',
+          '<span class="iconito fecha:1 hotel:'+status.hotel_id+'">'+status.Cal11+'</span>',
+          '<span class="iconito fecha:0 hotel:'+status.hotel_id+'">'+status.Cal12+'</span>',
           '<span id="prom'+index+'">'+status.NPS_resul+'</span>',
           //status.aps + ' <button id="ver-'+status.id+'-'+status.sitio+'" class="btn btn-default btn-sm ver_antenas_sitio"><span class="fa fa-eye"></span></button>',
         ]);
@@ -377,6 +377,11 @@ $(function() {
     $("#footer_total_facturacion").text(sumaFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
     $("#npsPromedio").text(Math.round(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
     $("#footer_npsPromedio").text(Math.round(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
+
+    if($("#hayFact").length == 0) { //Filtro de facturación
+      var column = vartable.api().columns(2);
+      column.visible(!column.visible());
+    }
 
     var extra = 0;
 
@@ -446,6 +451,53 @@ $(function() {
     $("#footer_npsPromedio").text(Math.round(sumaNPS / (parseInt($("#total_sitios").text()) - sitios_sin_calif)));
 
   }
+
+  $(document).on("click", ".iconito", function() {
+    var classes = this.classList;
+    var icon_mes = classes[1].split(":")[1];
+    var icon_hotel = classes[2].split(":")[1];
+    var fecha = new Date();
+    if(parseInt(fecha.getMonth()) + 1 < 10) {
+      fecha = fecha.getFullYear() + "-" + "0" + parseInt((fecha.getMonth()) + 1) +"-" + "01";
+    } else {
+      fecha = fecha.getFullYear() + "-" + parseInt((fecha.getMonth()) + 1) +"-" + "01";
+    }
+    var filtro = $('#filtroGeneral').val();
+    if(filtro > 12) {
+      fecha = filtro + "-12-01";
+    }
+    var mes_reciente = fecha.split("-")[1];
+    var mes_seleccionado = mes_reciente - icon_mes;
+    if(mes_seleccionado <= 0) {
+      var mes_seleccionado = 12 + mes_seleccionado;
+      if(mes_seleccionado < 10) {
+        fecha = (fecha.split("-")[0] - 1) + "-0" + mes_seleccionado + "-01";
+      } else {
+        fecha = (fecha.split("-")[0] - 1) + "-" + mes_seleccionado + "-01";
+      }
+    } else {
+      if(mes_seleccionado < 10) {
+        fecha = fecha.split("-")[0] + "-0" + mes_seleccionado + "-01";
+      } else {
+        fecha = fecha.split("-")[0] + "-" + mes_seleccionado + "-01";
+      }
+    }
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var itc = $('#select_itc').val();
+    $.ajax({
+      type: "POST",
+      url: "/sabana_itc_modal_encuestas_hover",
+      data: { _token : _token, fecha: fecha, hotel: icon_hotel, itc: itc },
+      success: function (data){
+
+        console.log(data);
+
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+    });
+  });
 
   $(document).on("click", ".ver_antenas_sitio", function() {
     var boton = $(this)[0].id.split("-");

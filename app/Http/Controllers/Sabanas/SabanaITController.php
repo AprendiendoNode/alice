@@ -21,9 +21,14 @@ class SabanaITController extends Controller
   {
     $user_id = Auth::user()->id;
     $cadena = Cadena::select('id', 'name')->get();
-    $users = DB::select('CALL list_user_itc()');
+    $users = DB::select('CALL list_user_itc_by_id(?)', array($user_id));
+    $facturacion = 0;
+    if(empty($users)) {
+      $users = DB::select('CALL list_user_itc()');
+      $facturacion = 1;
+    }
     $status_compras = DB::select('CALL px_documentp_status_doctype()', array());
-      return view('permitted.sabanas.sabana_itc', compact('users','cadena','status_compras'));
+    return view('permitted.sabanas.sabana_itc', compact('users','cadena','status_compras','facturacion'));
   }
   public function informacionITC(Request $request)
   {
@@ -241,6 +246,15 @@ class SabanaITController extends Controller
 
     $result = DB::select('CALL status_nps_anio_itc (?, ?, ?)', array($date, $encuestas, $itc));
     return json_encode($result);
+  }
+
+  public function sabana_itc_modal_encuestas_hover(Request $request ){
+    $date= $request->fecha;
+    $hotel= $request->hotel;
+    $itc= $request->itc;
+
+    $result = DB::select('CALL status_nps_anio_itc_hover (?, ?, ?)', array($date, $hotel, $itc));
+    return $result;
   }
 
   public function get_projects_itc(Request $request){

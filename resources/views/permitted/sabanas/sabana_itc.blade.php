@@ -365,7 +365,9 @@
                             <th>Correo</th>
                             <th>Sitios</th>
                             <th>AP's</th>
-                            <th>Facturación</th>
+                            @if($facturacion == 1)
+                              <th id="hayFact">Facturación</th>
+                            @endif
                             <th>NPS Promedio</th>
                           </tr>
                         </thead>
@@ -375,7 +377,9 @@
                             <th><span id="correoITC">XXX</span></th>
                             <th><span id="total_sitios">0</span></th>
                             <th><a href="javascript:void(0);" id="total_antenas">0</a></th>
-                            <th><span id="total_faturacion">0</span></th>
+                            @if($facturacion == 1)
+                              <th><span id="total_faturacion">0</span></th>
+                            @endif
                             <th><span id="npsPromedio">0</span></th>
                           </tr>
                         </tbody>

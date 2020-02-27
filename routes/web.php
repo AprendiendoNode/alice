@@ -905,6 +905,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_nps_itc_mensual', 'Sabanas\SabanaITController@get_nps_itc_mensual');
     Route::post('sabana_itc_modal_encuestas','Sabanas\SabanaITController@sabana_itc_modal_encuestas');
     Route::post('get_nps_comment_itc', 'Sabanas\SabanaITController@get_nps_comment_itc');
+    Route::post('sabana_itc_modal_encuestas_hover', 'Sabanas\SabanaITController@sabana_itc_modal_encuestas_hover');
 
     //Sabana Directiva
     Route::get('dash_sabana_directiva', 'Sabanas\SabanaDirectivaController@index');
