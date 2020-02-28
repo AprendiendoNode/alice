@@ -1005,7 +1005,7 @@
     <script src="{{ asset('bower_components/highcharts/highcharts.js')}}"></script>
     <script src="{{ asset('bower_components/highcharts/series-label.js')}}"></script>
     <script src="{{ asset('bower_components/highcharts/exporting.js')}}"></script>
-    <script src="{{ asset('js/admin/sabana/sabana_itc.js?v=4.3.6')}}"></script>
+    <script src="{{ asset('js/admin/sabana/sabana_itc.js?v=5.4.7')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">
@@ -1044,6 +1044,10 @@
       justify-content: center;
       align-items: center;
       border-right: 1px solid #eee;
+    }
+
+    .iconito {
+      cursor: pointer;
     }
     </style>
   @else

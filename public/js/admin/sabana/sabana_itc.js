@@ -490,7 +490,30 @@ $(function() {
       data: { _token : _token, fecha: fecha, hotel: icon_hotel, itc: itc },
       success: function (data){
 
-        console.log(data);
+        if(data.length > 0) {
+
+          var splash = "";
+
+          switch (data[0].NPS) {
+            case "Pr":
+              splash = "success";
+              break;
+            case "Ps":
+              splash = "warning";
+              break;
+            default:
+              splash = "error";
+          }
+
+          var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+          Swal.fire(
+            "<span style='color: gray;'>" + data[0].Sitio + " " + fecha.split("-")[0] + "-" + months[parseInt(fecha.split("-")[1]) - 1] + "</span>",
+            "<span style='font-weight: bold;'>" + data[0].Cliente + ": </span>" + data[0].comentario,
+            splash
+          );
+
+        }
 
       },
       error: function (data) {
@@ -718,7 +741,6 @@ $(function() {
         url: "/get_ticketsxstatus_itc",
         data: { itc_email: itc_email, fecha1: fecha1, fecha2: fecha2, _token : _token },
         success: function (data){
-          console.log(data);
           graph_tickets_status('graph_status_tickets',data);
           //document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
         },
