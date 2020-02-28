@@ -1187,8 +1187,12 @@
                 if(check != true){
                   data.forEach(function(key,i) {
                     var html = '';
+                    var current_impuesto = 0;
                     var current_unit= key.unit_measure_id;
                     var current_sat = key.sat_product_id;
+                    if (key.iva_id == 2) {
+                      current_impuesto = 1;
+                    }
 
                     html += '<tr id="item_row_' + item_row + '">';
                     html += '<td class="text-center" style="vertical-align: middle;">';
@@ -1297,7 +1301,12 @@
                     html += '<div class="form-group form-group-sm">';
                     html += '<select class="form-control form-control-sm my-select2 col-taxes" name="item[' + item_row + '][taxes][]" id="item_taxes_' + item_row + '" multiple>';
                     @forelse ($impuestos as $impuestos_data)
-                      html += '<option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>';
+                      if( current_impuesto == {{ $impuestos_data->id  }})
+                      {
+                        html += '<option value="{{ $impuestos_data->id  }}" selected>{{ $impuestos_data->name }}</option>';
+                      }else{
+                        html += '<option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>';
+                      }
                     @empty
                     @endforelse
                       html += '</select>';
