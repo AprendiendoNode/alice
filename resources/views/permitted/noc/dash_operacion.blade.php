@@ -31,203 +31,34 @@
         <div class="card">
             <div class="card-body">
               <div class="text-center">
-                <h4>Check List actividades diarias del ITC</h4>
+                <h4>Dashboard de operaciones</h4>
                 <br>
-                <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover">
-                  <thead class="bg-aqua text-center">
-                    <tr>
-                      <th>No.</th>
-                      <th>Rubro</th>
-                      <th>Si</th>
-                      <th>No</th>
-                      <th>NA</th>
-                    </tr>
-                  </thead>
-                  <tbody class="text-center"style="font-size: 11px;">
-                    <tr>
-                      <td>1</td>
-                      <td>Revisar Calendario de citas de hoy - Planear Mi dia</td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Seguimiento, documentación y cierre de tickets</td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Uso del Uniforme de ITC</td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>Uso de llave de ITC en el uniforme</td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td>Asistencia al gym</td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                    </tr>
-                    <tr>
-                      <td>6</td>
-                      <td>Mantener y dejar ordenado sus lugares de trabajo (no almacenar cajas ni equipo)</td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                    </tr>
-                    <tr>
-                      <td>7</td>
-                      <td>Trato cordial y amable a todos</td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                    </tr>
-                    <tr>
-                      <td>8</td>
-                      <td>Revisar Calendario de citas de los siguientes 2 dias</td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                      <td> <input type="checkbox" name="" value=""> </td>
-                    </tr>
-
-                  </tbody>
-                </table>
 
                 <div class="">
 
-                                  <h4>Check List por cliente(entrega el día 5 del mes)</h4>
-                                  <br>
-                                  <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover">
-                                    <thead class="bg-aqua text-center">
-                                      <tr>
-                                        <th>No.</th>
-                                        <th>Rubro</th>
-                                        <th>Si</th>
-                                        <th>No</th>
-                                        <th>NA</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody class="text-center"style="font-size: 11px;">
-                                      <tr>
-                                        <td>1</td>
-                                        <td>Reporte de Red Elaborado y entregado al cliente o en la carpeta de acceso al cliente</td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                      </tr>
-                                      <tr>
-                                        <td>2</td>
-                                        <td>NPS contestado</td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                      </tr>
-                                      <tr>
-                                        <td>3</td>
-                                        <td>Factura Entregada al cliente</td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                      </tr>
-                                      <tr>
-                                        <td>4</td>
-                                        <td>Memoria Técnica Actualizada</td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                      </tr>
-                                      <tr>
-                                        <td>5</td>
-                                        <td>Inventario Actualizado</td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
+
                 </div>
 
                 <div class="">
-                  <h4>Check List por cliente (entrega dia 20)</h4>
+                  <h4>Equipo activo Monitoreado</h4>
                   <br>
                   <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover">
                     <thead class="bg-aqua text-center">
                       <tr>
-                        <th>No.</th>
-                        <th>Rubro</th>
-                        <th>Si</th>
-                        <th>No</th>
-                        <th>NA</th>
+                        <th>Equipo Activo.</th>
+                        <th>Propietario</th>
+                        <th>Hospitalidad</th>
+                        <th>Educación</th>
+                        <th>Aeropuertos y terminales</th>
+                        <th>Transporte Terrestre</th>
+                        <th>Corporativo</th>
+                        <th>Retail</th>
+                        <th>Galerías</th>
+                        <th>Otros</th>
                       </tr>
                     </thead>
                     <tbody class="text-center"style="font-size: 11px;">
-                      <tr>
-                        <td>1</td>
-                        <td>Visita a cliente</td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>Detecta oportunidades del cliente</td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>Revisión de Información del cliente en Alice (Dashboard del cliente)</td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                      </tr>
-                      <tr>
-                        <td>4</td>
-                        <td>Detecta oportunidades de clientes nuevos  en el trayecto de visita a clientes asignados</td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                      </tr>
-                      <tr>
-                        <td>5</td>
-                        <td>Mantenimiento Preventivo o correctivo a  MDF/IDF (de acuerdo a calendario)</td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                      </tr>
-                      <tr>
-                        <td>6</td>
-                        <td>Realizar  Backup de equipos de comunicaciones ZD, SonicWall, ZQ, SW, etc.</td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                      </tr>
-                      <tr>
-                        <td>7</td>
-                        <td>Revisar y renovar licencia de ZD (si corresponde) </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                      </tr>
-                      <tr>
-                        <td>8</td>
-                        <td>Cliente al corriente en el pago de factura del mes</td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                        <td> <input type="checkbox" name="" value=""> </td>
-                      </tr>
+
 
                     </tbody>
                   </table>
