@@ -309,6 +309,10 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/update_group_equipment', 'Equipments\GroupEquipmentController@update_group');
   Route::post('/move_group', 'Equipments\GroupEquipmentController@update_move_group');
 
+  Route::get('/noc_tools','Noc\NocToolsController@index');
+  Route::get('/cl_diario','Noc\NocToolsController@cl_diario');
+  Route::get('/dash_operacion','Noc\NocToolsController@dash_operacion');
+
   //Carátula de entrega
   Route::get('/cover_equipment_delivery', 'Equipments\CoverDeliveryEquipmentController@index');
   Route::post('/cover_delivery_header', 'Equipments\CoverDeliveryEquipmentController@getHeader');
