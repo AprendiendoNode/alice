@@ -63,7 +63,7 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 text-center">
                           <h2><strong> Reporte de uso y estadísticas</strong></h2>
-                          <strong style="font-style: italic;">Red wifi huéspedes / colaboradores</strong>
+                          <strong style="font-style: italic;">Red wifi huéspedes / Guest</strong>
                           <br />
                           <p id="client_name">Hard Rock Punta Cana</p>
                           <strong>ID Proyecto:</strong> <small id="id_proyect"></small>
@@ -95,36 +95,36 @@
                     <div  class="row pad-top-botm client-info">
                       <div class="col-lg-3 col-md-3 col-sm-3">
                         <p class="text-center" style="border: 1px solid #FF851B" >Gigabyte</p>
-                        <strong><i class="fa fa-rss"></i> Maximo: </strong> <p id="gigamax" class="sameline"></p>
+                        <strong><i class="fa fa-rss"></i> Maximo/Max: </strong> <p id="gigamax" class="sameline"></p>
                         <br />
-                        <strong><i class="fa fa-upload"></i> Minino:</strong> <p id="gigamin" class="sameline"></p>
+                        <strong><i class="fa fa-upload"></i> Minino/Min:</strong> <p id="gigamin" class="sameline"></p>
                         <br />
-                        <strong><i class="fa fa-database"></i> Promedio:</strong> <p id="gigaprom" class="sameline"></p>
+                        <strong><i class="fa fa-database"></i> Promedio/Average:</strong> <p id="gigaprom" class="sameline"></p>
                       </div>
 
 
                       <div class="col-lg-3 col-md-3 col-sm-3">
-                        <p class="text-center" style="border: 1px solid #007bff" >Usuarios</p>
-                        <strong><i class="fa fa fa-level-up"></i><i class="fa fa fa fa-user"></i>  Maximo por mes: </strong> <p id="usermax" class="sameline"></p>
+                        <p class="text-center" style="border: 1px solid #007bff" >Usuarios/Users</p>
+                        <strong><i class="fa fa fa-level-up"></i><i class="fa fa fa fa-user"></i>  Maximo por mes/Max per month: </strong> <p id="usermax" class="sameline"></p>
                         <br />
-                        <strong><i class="fa fa-users"></i> Promedio:</strong> <p id="userprom" class="sameline"></p>
+                        <strong><i class="fa fa-users"></i> Promedio/Average:</strong> <p id="userprom" class="sameline"></p>
                         <br />
-                        <strong><i class="fa fa-database"></i>No. Usuarios mensuales:</strong> <p id="usermonth" class="sameline"> </p>
+                        <strong><i class="fa fa-database"></i>No. Usuarios mensuales/User per month:</strong> <p id="usermonth" class="sameline"> </p>
                       </div>
 
                       <div class="col-lg-3 col-md-3 col-sm-3">
-                        <p class="text-center" style="border: 1px solid #3D9970" >Información Adicional</p>
-                        <strong><i class="fa fa fa-hdd-o"></i> No. Antenas: </strong> <p id="noant" class="sameline"> </p>
+                        <p class="text-center" style="border: 1px solid #3D9970" >Información Ad/Additional Inf.</p>
+                        <strong><i class="fa fa fa-hdd-o"></i> No. Antenas/AP's: </strong> <p id="noant" class="sameline"> </p>
                         <br />
                         <strong><i class="fa fa-tablet"></i> Rogue devices:</strong> <p id="rogue" class="sameline"> - </p>
                         <br />
                       </div>
 
                       <div class="col-lg-3 col-md-3 col-sm-3">
-                        <p class="text-center" style="border: 1px solid #D53A35" >Dispositivos</p>
-                        <strong><i class="fa fa-desktop"></i> Diversos dispositivos por mes: </strong> <p id="device" class="sameline"> </p>
+                        <p class="text-center" style="border: 1px solid #D53A35" >Dispositivos/Devices</p>
+                        <strong><i class="fa fa-desktop"></i> Diversos dispositivos por mes/Mult. devices per month: </strong> <p id="device" class="sameline"> </p>
                         <br />
-                        <strong><i class="fa fa-building-o"></i> Promedio dispositivos por habitación diarios:</strong> <p id="promdevice" class="sameline"> </p>
+                        <strong><i class="fa fa-building-o"></i> Promedio dispositivos por habitación diarios/ Average devices per room daily:</strong> <p id="promdevice" class="sameline"> </p>
                         <br />
                       </div>
                     </div>
@@ -148,7 +148,7 @@
                       <div class="col-lg-12 col-md-12 col-sm-12">
                         <hr />
                           <span>
-                              <strong>Clientes</strong>
+                              <strong>Clientes/Clients</strong>
                           </span>
                         <hr />
                       </div>
@@ -171,7 +171,7 @@
                       <div class="col-lg-12 col-md-12 col-sm-12">
                         <hr />
                           <span>
-                              <strong>Consumos</strong>
+                              <strong>Consumos/Consumption</strong>
                           </span>
                         <hr />
                       </div>
@@ -211,9 +211,9 @@
                           <table id="table_top_aps" class="table table-striped table-bordered table-hover">
                             <thead>
                               <tr>
-                                <th>Descripción</th>
+                                <th>Descripción/Description</th>
                                 <th>MAC</th>
-                                <th>No. Clientes.</th>
+                                <th>No. Clientes./Clients</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -226,9 +226,9 @@
 
                     <div  class="row text-center contact-info">
                       <div class="col-lg-12 col-md-12 col-sm-12">
-                        <hr />
+                        <hr/>
                           <span>
-                              <strong>Tabla comparativa</strong>
+                              <strong>Tabla comparativa/Comparison</strong>
                           </span>
                         <hr />
                       </div>
@@ -239,10 +239,10 @@
                           <table id="table_comparative" class="table table-striped table-bordered table-hover">
                             <thead>
                               <tr>
-                                <th>Concepto</th>
+                                <th>Concepto/Concept</th>
                                 <th>Mes 1</th>
                                 <th>Mes 2</th>
-                                <th>Identificador</th>
+                                <th>Identificador/Identifier</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -308,7 +308,7 @@
     <script src="/plugins/momentupdate/moment-with-locales.js"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-    <script src="{{ asset('js/admin/report/view_reports.js')}}"></script>
+    <script src="{{ asset('js/admin/report/view_reports.js?v2.0.1')}}"></script>
   @else
   <!--NO VER-->
   @endif
