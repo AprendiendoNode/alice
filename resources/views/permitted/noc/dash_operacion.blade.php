@@ -270,26 +270,321 @@
                 <div class="">
                   <h4>Equipo activo Monitoreado</h4>
                   <br>
-                  <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover">
-                    <thead class="bg-aqua text-center">
-                      <tr>
-                        <th>Equipo Activo.</th>
-                        <th>Propietario</th>
-                        <th>Hospitalidad</th>
-                        <th>Educación</th>
-                        <th>Aeropuertos y terminales</th>
-                        <th>Transporte Terrestre</th>
-                        <th>Corporativo</th>
-                        <th>Retail</th>
-                        <th>Galerías</th>
-                        <th>Otros</th>
+                  <table id="table_EA" class="table table-striped table-bordered compact-tab table-hover">
+                    <thead class="text-center">
+                      <tr >
+                        <th style="color:orange;">Equipo Activo.</th>
+                        <th style="color:orange;">Propietario</th>
+                        <th style="color:orange;">Hospitalidad</th>
+                        <th style="color:orange;">Educación</th>
+                        <th style="color:orange;">Aeropuertos y terminales</th>
+                        <th style="color:orange;">Transporte Terrestre</th>
+                        <th style="color:orange;">Corporativo</th>
+                        <th style="color:orange;">Retail</th>
+                        <th style="color:orange;">Galerías</th>
+                        <th style="color:orange;">Otros</th>
                       </tr>
                     </thead>
                     <tbody class="text-center"style="font-size: 11px;">
+                      <tr style="color:orange !important;">
+                        <td rowspan="2">Antena</td>
+                        <td>Cliente</td>
+                        <td>2,307</td>
+                        <td>79</td>
+                        <td>553</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>46</td>
+                        <td>281</td>
+                        <td>3</td>
+                      </tr>
+                      <tr style="color:#23c1d6 !important;">
+                        <td>Sitwifi</td>
+                        <td>12,937</td>
+                        <td>2,615</td>
+                        <td>166</td>
+                        <td>485</td>
+                        <td>382</td>
+                        <td>0</td>
+                        <td>28</td>
+                        <td>101</td>
+                      </tr>
+                      <tr style="color:orange !important;">
+                        <td rowspan="2">SW</td>
+                        <td>Cliente</td>
+                        <td>118</td>
+                        <td>5</td>
+                        <td>115</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td>86</td>
+                        <td>0</td>
+                      </tr>
+                      <tr style="color:#23c1d6 !important;">
+                        <td>Sitwifi</td>
+                        <td>828</td>
+                        <td>333</td>
+                        <td>24</td>
+                        <td>81</td>
+                        <td>10</td>
+                        <td>0</td>
+                        <td>4</td>
+                        <td>47</td>
+                      </tr>
 
+                      <tr style="color:orange !important;">
+                        <td rowspan="2">SZ/ZD</td>
+                        <td>Cliente</td>
+                        <td>12</td>
+                        <td>3</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>0</td>
+                      </tr>
+                      <tr style="color:#23c1d6 !important;">
+                        <td>Sitwifi</td>
+                        <td>69</td>
+                        <td>76</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                      </tr>
+
+                      <tr style="color:orange !important;">
+                        <td rowspan="2">Icomera/ZQ</td>
+                        <td>Cliente</td>
+                        <td>10</td>
+                        <td>1</td>
+                        <td>21</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>18</td>
+                        <td>0</td>
+                      </tr>
+                      <tr style="color:#23c1d6 !important;">
+                        <td>Sitwifi</td>
+                        <td>35</td>
+                        <td>68</td>
+                        <td>1</td>
+                        <td>196</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                      </tr>
+
+                      <tr style="color:orange !important;">
+                        <td rowspan="2">Sonda</td>
+                        <td>Cliente</td>
+                        <td>6</td>
+                        <td>3</td>
+                        <td>20</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>23</td>
+                        <td>0</td>
+                      </tr>
+                      <tr style="color:#23c1d6 !important;">
+                        <td>Sitwifi</td>
+                        <td>60</td>
+                        <td>94</td>
+                        <td>8</td>
+                        <td>5</td>
+                        <td>35</td>
+                        <td>0</td>
+                        <td>2</td>
+                        <td>15</td>
+                      </tr>
+
+                      <tr style="color:orange !important;">
+                        <td rowspan="2">Sonic Wall</td>
+                        <td>Cliente</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td>33</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>25</td>
+                        <td>0</td>
+                      </tr>
+                      <tr style="color:#23c1d6 !important;">
+                        <td>Sitwifi</td>
+                        <td>22</td>
+                        <td>56</td>
+                        <td>14</td>
+                        <td>118</td>
+                        <td>131</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>5</td>
+                      </tr>
 
                     </tbody>
                   </table>
+                  <br>
+                  <h4>Total AP's instaladas</h4>
+                  <table id="table_aps" class="table table-striped table-bordered compact-tab table-hover">
+                    <thead class="text-center">
+                      <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="color:#3c3c3c !important;">
+                        <td>Total</td>
+                        <td>20,132</td>
+                        <td>20,132</td>
+                      </tr>
+                      <tr style="color:orange !important;">
+                        <td>Cliente</td>
+                        <td>3,323</td>
+                        <td>3,323</td>
+                      </tr>
+                      <tr style="color:#23c1d6 !important;">
+                        <td>Sitwifi</td>
+                        <td>3,323</td>
+                        <td>3,323</td>
+                      </tr>
+                    </tbody>
+
+                  </table>
+
+                  <br>
+                  <div class="row">
+                    <div class="col-md-6">
+
+                      <h4>Equipos en garantía y bajas</h4>
+                      <table id="table_garantia" class="table table-striped table-bordered compact-tab table-hover">
+                        <thead class="text-center">
+                          <tr style="color:orange !important;">
+                            <th style="color:orange !important;">Equipo</th>
+                            <th style="color:orange !important;">Acumulado enviados 2019</th>
+                            <th style="color:orange !important;">Acumulado garantia 2019</th>
+                            <th style="color:orange !important;" colspan="2"> Acumulado Bajas</th>
+                            <th style="color:orange !important;"> Promedio Mensual</th>
+                            <th style="color:orange !important;"> %</th>
+                            <th style="color:orange !important;"> Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr style="color:#168f9f !important;">
+                            <td>Antena</td>
+                            <td>180</td>
+                            <td>180</td>
+                            <td>15</td>
+                            <td>15</td>
+                            <td>10</td>
+                            <td><span class="fas fa-arrow-right"></span></td>
+                            <td align="center"> <div class="rounded-circle test"  ></div></td>
+                          </tr>
+                          <tr style="color:#168f9f !important;">
+                            <td>Icomera Gateway</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="fas fa-arrow-right"></span></td>
+                            <td align="center"> <div class="rounded-circle test"  ></div></td>
+                          </tr>
+
+                          <tr style="color:#168f9f !important;">
+                            <td>Laptop</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="fas fa-arrow-right"></span></td>
+                            <td align="center"> <div class="rounded-circle test"  ></div></td>
+                          </tr>
+
+                          <tr style="color:#168f9f !important;">
+                            <td>Regulador</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td><span class="fas fa-arrow-right"></span></td>
+                            <td align="center"> <div class="rounded-circle test"  ></div></td>
+                          </tr>
+
+                          <tr style="color:#168f9f !important;">
+                            <td>Sonda</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="fas fa-arrow-right"></span></td>
+                            <td align="center"> <div class="rounded-circle test"  ></div></td>
+                          </tr>
+
+                          <tr style="color:#168f9f !important;">
+                            <td>Sonic Wall</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="fas fa-arrow-right"></span></td>
+                            <td align="center"> <div class="rounded-circle test"  ></div></td>
+                          </tr>
+
+                          <tr style="color:#168f9f !important;">
+                            <td>SW</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="fas fa-arrow-right"></span></td>
+                            <td align="center"> <div class="rounded-circle test"  ></div></td>
+                          </tr>
+
+                          <tr style="color:#168f9f !important;">
+                            <td>UPS</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="fas fa-arrow-right"></span></td>
+                            <td align="center"> <div class="rounded-circle test"  ></div></td>
+                          </tr>
+
+                          <tr style="color:#168f9f !important;">
+                            <td>Zequenze</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="fas fa-arrow-right"></span></td>
+                            <td align="center"> <div class="rounded-circle test"  ></div></td>
+                          </tr>
+
+                        </tbody>
+
+                      </table>
+                    </div>
+                    <div class="col-md-5">
+                      <div id="graph_garantia"class=""></div>
+                    </div>
+                  </div>
                 </div>
 
               </div>
@@ -310,6 +605,7 @@
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <script src="{{ asset('js/admin/noctools/dash_operaciones_1.js')}}"></script>
+    <script src="{{ asset('js/admin/noctools/dash_operaciones_2.js')}}"></script>
     <style media="screen">
     .tableFixHead          { overflow-y: auto; height: 620px; }
     .tableFixHead thead th { position: sticky !important; top: 0; }
@@ -317,7 +613,7 @@
     background: #02948c;
     }
 
-    tbody {
+    #encuestas_results tbody,#sitios_results tbody,#detractores tbody,#tiempos tbody {
       width: 100% !important;
       display: table;
     }
