@@ -31,7 +31,7 @@ class MoveEquipmentController extends Controller
   public function sentMovements($email, $data, $data2)
   {
       //$email_test = ['aperez@sitwifi.com', 'marthaisabel@sitwifi.com'];
-      Mail::to($email)->cc('marthaisabel@sitwifi.com')->send(new MovimientosMail($data, $data2));
+      Mail::to($email)->send(new MovimientosMail($data, $data2));
   }
 
   public function getHotelName($id)
