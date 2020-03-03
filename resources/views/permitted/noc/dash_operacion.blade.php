@@ -132,6 +132,10 @@
 
                   <div class="col-md-7">
 
+                    <div class="">
+                      <div id="graph_nps"> </div>
+                    </div>
+
                   </div>
 
                   <div class="col-md-5 mt-4">
@@ -177,6 +181,7 @@
                     <h4 style="text-align: left;">Tickets</h4>
 
                     <table id="tiempos" class="table-responsive" style="text-align: center;">
+                      <tbody style=" width: 100% !important;">
                       <tr style="color: blue;">
                         <td colspan="6">Tiempo Primer Respuesta</td>
                       </tr>
@@ -247,13 +252,14 @@
                         <td><i class="fas fa-arrow-circle-up"></i></td>
                         <td class="ignore"><span class="green"></span></td>
                       </tr>
+                    </tbody>
                     </table>
 
                   </div>
 
                   <div class="col-md-5">
 
-                    <div class="d-flex justify-content-center w-100 col-sm-6 col-md-6">
+                    <div class="">
                       <div id="graph_tickets"> </div>
                     </div>
 
@@ -310,6 +316,12 @@
     .bg-aqua{
     background: #02948c;
     }
+
+    tbody {
+      width: 100% !important;
+      display: table;
+    }
+
     #encuestas_results tr td:not(.ignore), #sitios_results tr td, #tiempos tr td:not(.ignore) {
       font-size: 16px;
       border-bottom: 1px solid blue;
