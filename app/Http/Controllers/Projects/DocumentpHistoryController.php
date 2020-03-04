@@ -40,7 +40,8 @@ class DocumentpHistoryController extends Controller
 
     public function view_project_advance()
     {
-        return view('permitted.documentp.history_documentp_advance');
+        $user_id = Auth::user()->id;        
+        return view('permitted.documentp.history_documentp_advance',compact('user_id'));
     }
 
     public function view_project_advance_success()

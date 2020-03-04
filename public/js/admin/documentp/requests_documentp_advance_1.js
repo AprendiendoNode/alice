@@ -112,43 +112,78 @@ function documentp_table(datajson, table){
     }else{
       color = 'blue';
     }
-
+    if(Math.floor(data.total_global)==100 && Math.floor(data.presupuesto.slice(0,-1))>=100){
+      color = 'blue';
+      setAlert(data.id, 4);//Estatus 4 terminado.
+      //console.log('ID DOC: '+data.id +' Instalacion: '+Math.floor(data.total_global)+' Presupuesto: '+Math.floor(data.presupuesto.slice(0,-1)));
+    }
     vartable.fnAddData([
+      `<div class="btn-group">
+       <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           <i class="fas fa-ellipsis-h"></i>
+       </button>
+       <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+           <a class="dropdown-item" href="javascript:void(0);" onclick="addCommentModal(this)" data-id="${data.id}" value="${data.id}"><i class="fas fa-comment-alt"></i> Añadir comentario</a>
+           <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
+           <a class="dropdown-item" href="javascript:void(0);" onclick="uploadActaEntrega(this)" data-id="${data.id}" value="${data.id}"><i class="fas fa-upload"></i> Subir acta de entrega</a>
+           <a class="dropdown-item" target="_blank" href="/documentp_invoice/${data.id}/${data.documentp_cart_id}"><span class="far fa-file-pdf"></span> Imprimir productos</a>
+       </div>
+     </div>`,
       '<a href="javascript:void(0)" style="background-color:' + color +';" data-type="select" data-pk="'+ data.id +'" data-title="Estatus" data-value="' + data.alert + '" class="set-alert"></a>',
       data.nombre_proyecto,
-      '<span class="badge badge-dark badge-pill">'+Math.floor(data.total_global)+'%</span>',
-      '$' + data.total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-      '<span class="badge badge-success badge-pill">'+Math.floor(data.presupuesto.slice(0,-1))+'%</span>',
+      isOverdue(data.total_global,data.fecha_inicio),//'<span class="badge badge-dark badge-pill">'+Math.floor(data.total_global)+'%</span>',
       invertirFecha(data.fecha_inicio),
       invertirFecha(data.fecha_fin),
+      //invertirFecha(data.fecha_terminacion_real),
+      '$' + data.total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      isOverdue(data.presupuesto.slice(0,-1),data.fecha_entrega_ea),//'<span class="badge badge-success badge-pill">'+Math.floor(data.presupuesto.slice(0,-1))+'%</span>',
+      data.fecha_entrega_ea,
       data.atraso,
       data.motivo,
-      invertirFecha(data.fecha_firma),
+      //invertirFecha(data.fecha_firma),
       data.atraso_instalacion,
       data.servicio,
       '<a href="" data-type="number" data-pk="'+ data.id +'" data-title="Serv. mensual" data-value="' + data.servicio_mensual + '" class="set-servmensual">',
       data.itc,
       '<a href="javascript:void(0)" data-type="select" data-pk="'+ data.id +'" data-title="Estatus" data-value="' + data.facturando + '" class="set-facturacion">',
-      invertirFecha(data.updated_at.split(" ")[0])+" "+ data.updated_at.split(" ")[1],
-       `<div class="btn-group">
-        <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-ellipsis-h"></i>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="javascript:void(0);" onclick="addCommentModal(this)" data-id="${data.id}" value="${data.id}"><i class="fas fa-comment-alt"></i> Añadir comentario</a>
-            <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
-            <a class="dropdown-item" href="javascript:void(0);" onclick="uploadActaEntrega(this)" data-id="${data.id}" value="${data.id}"><i class="fas fa-upload"></i> Subir acta de entrega</a>
-            <a class="dropdown-item" target="_blank" href="/documentp_invoice/${data.id}/${data.documentp_cart_id}"><span class="far fa-file-pdf"></span> Imprimir productos</a>
-        </div>
-      </div>`,
+      //invertirFecha(data.updated_at.split(" ")[0])+" "+ data.updated_at.split(" ")[1],
       data.alert,
       data.comentario,
       data.servicio_mensual,
       data.facturando
       ]);
+        //console.log(data.fecha_inicio);
   });
+  //Esconde la columna facturacion si el ID no es el de Sandra
+  if (user_id!=21) { //21
+    var column = vartable.api().columns(15);
+    column.visible(!column.visible());
+  }
 }
 
+function isOverdue(num,date){
+if(date!='-'){
+  var current_date= new Date().toISOString().slice(0,10);
+  var limit_date= new Date(date).toISOString().slice(0,10);
+
+  switch (current_date<limit_date) {
+    case true:
+          return '<span class="badge badge-success badge-pill">'+Math.floor(num)+'%</span>';
+      break;
+    case false:
+          return '<span class="badge badge-danger badge-pill">'+Math.floor(num)+'%</span>';
+      break;
+    default:
+  }
+}else{
+  return '<span class="badge badge-danger badge-pill">'+Math.floor(num)+'%</span>';
+}
+
+}
+
+function inRisk(){
+
+}
 
 
 var Configuration_table_responsive_documentp= {
@@ -209,12 +244,12 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 0,
               "width": "0.5%",
-              "className": "text-center status",
+              "className": "text-center cell-large",
             },
             {
               "targets": 1,
               "width": "2.8%",
-              "className": "text-center",
+              "className": "text-center status",
             },
             {
               "targets": 2,
@@ -224,26 +259,26 @@ var Configuration_table_responsive_documentp= {
             {
               "targets": 3,
               "width": "0.2%",
-              "className": "text-right",
+              "className": "text-center",
             },
             {
               "targets": 4,
-              "width": "1%",
+              "width": "0.5%",
               "className": "text-center",
             },
             {
               "targets": 5,
-              "width": "1%",
+              "width": "0.5%",
               "className": "text-center",
             },
             {
               "targets": 6,
-              "width": "0.1%",
+              "width": "1%",
               "className": "text-center",
             },
             {
               "targets": 7,
-              "width": "0.5%",
+              "width": "1%",
               "className": "text-center",
             },
             {
@@ -285,11 +320,13 @@ var Configuration_table_responsive_documentp= {
               "targets": 15,
               "width": "1%",
               "className": "text-center",
+              //"visible": false
             },
             {
               "targets": 16,
               "width": "1%",
-              "className": "text-center cell-large",
+              "className": "text-center ",
+              "visible":  false
             },
             {
               "targets": 17,
@@ -309,12 +346,12 @@ var Configuration_table_responsive_documentp= {
               "className": "text-center",
               "visible": false
             },
-            {
+            /*{
               "targets": 20,
               "width": "1%",
               "className": "text-center",
               "visible": false
-            }
+            }*/
 
         ],
         dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +
