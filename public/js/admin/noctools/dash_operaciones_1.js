@@ -1,5 +1,19 @@
 graph_tickets('graph_tickets');
-graph_nps('graph_nps');
+//graph_nps('graph_nps');
+var $myFuelGauge;
+
+$myFuelGauge = $("div#fuel-gauge").dynameter({
+    label:'',
+    value: 94,
+    min: 0,
+    max: 100,
+    unit:'<strong style="font-size: 16px;">NPS</strong>',
+    regions: {// Value-keys and color-refs
+      0:'error',
+      80:'warn',
+      90:'normal'
+    }
+});
 
 function graph_tickets(title) {
   var chart = document.getElementById(title);
@@ -140,3 +154,5 @@ function graph_nps(title) {
       }
   });
 }
+
+//https://www.jqueryscript.net/other/jQuery-Plugin-To-Generate-Animated-Dynamic-Gauges-dynameter.html

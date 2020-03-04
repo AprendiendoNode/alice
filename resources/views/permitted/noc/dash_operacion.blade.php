@@ -132,9 +132,8 @@
 
                   <div class="col-md-7">
 
-                    <div class="">
-                      <div id="graph_nps"> </div>
-                    </div>
+                      <!--<div id="graph_nps"> </div>-->
+                      <div id="fuel-gauge" style="margin: 20px auto;"></div>
 
                   </div>
 
@@ -599,6 +598,11 @@
 @push('scripts')
 
     <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="{{ asset('bower_components/jquery.dynameter.css') }}">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="{{ asset('js/admin/noctools/jquery.dynameter.js') }}"></script>
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
@@ -624,12 +628,6 @@
     }
     .ignore {
       font-size: 16px;
-    }
-    #encuestas_results tr td {
-      padding: 1px 25px;
-    }
-    #sitios_results tr td, #detractores tr td, #tiempos tr td  {
-      padding: 1px 15px;
     }
     #detractores tr td {
       border-bottom: 1px solid blue;
