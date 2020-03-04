@@ -114,7 +114,7 @@ function documentp_table(datajson, table){
     }
     if(Math.floor(data.total_global)==100 && Math.floor(data.presupuesto.slice(0,-1))>=100){
       color = 'blue';
-      setAlert(data.id, 4);//Estatus 4 terminado.
+      setAlert(data.id, 3);//Estatus 4 terminado.
       //console.log('ID DOC: '+data.id +' Instalacion: '+Math.floor(data.total_global)+' Presupuesto: '+Math.floor(data.presupuesto.slice(0,-1)));
     }
     vartable.fnAddData([

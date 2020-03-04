@@ -20,6 +20,7 @@ use Mail;
 use File;
 use Storage;
 use App\Mail\SolicitudCompra;
+use App\Mail\NotificacionCartaEntrega;
 
 class DocumentpController extends Controller
 {
@@ -288,6 +289,14 @@ class DocumentpController extends Controller
       $documentp->save();
     }
 
+    $params = [
+      'fecha' => \Carbon\Carbon::now(),
+      'usuario' => 'Test',
+      'folio'=>$documentp->folio,
+      'proyecto' =>$documentp->nombre_proyecto,
+    ];
+    $copias = ['rdelgado@sitwifi.com','admin@sitwifi.com'];
+    Mail::to('aarciga@sitwifi.com')->cc($copias)->send(new NotificacionCartaEntrega($params));
   }
 
   public function downloadActaEntrega(Request $request)
@@ -297,10 +306,10 @@ class DocumentpController extends Controller
 
       if($url_file != null){
         $path = public_path('/images/storage/'.$url_file);
-        if(File::exists($path)){ 
+        if(File::exists($path)){
           return response()->download($path);
         }
-      }    
+      }
   }
 
   public function checkActaEntregaUpload($id_documentp)
@@ -314,7 +323,7 @@ class DocumentpController extends Controller
 	}
 
 	return $status;
-      
+
   }
 
   public function createFolio()
