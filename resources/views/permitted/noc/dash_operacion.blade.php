@@ -271,22 +271,22 @@
                   <h4>Equipo activo Monitoreado</h4>
                   <br>
                   <table id="table_EA" class="table table-striped table-bordered compact-tab table-hover">
-                    <thead class="text-center">
+                    <thead style="background-color:#3b3b3b !important;"class="text-center">
                       <tr >
-                        <th style="color:orange;">Equipo Activo.</th>
-                        <th style="color:orange;">Propietario</th>
-                        <th style="color:orange;">Hospitalidad</th>
-                        <th style="color:orange;">Educación</th>
-                        <th style="color:orange;">Aeropuertos y terminales</th>
-                        <th style="color:orange;">Transporte Terrestre</th>
-                        <th style="color:orange;">Corporativo</th>
-                        <th style="color:orange;">Retail</th>
-                        <th style="color:orange;">Galerías</th>
-                        <th style="color:orange;">Otros</th>
+                        <th >Equipo Activo.</th>
+                        <th >Propietario</th>
+                        <th >Hospitalidad</th>
+                        <th >Educación</th>
+                        <th >Aeropuertos y terminales</th>
+                        <th >Transporte Terrestre</th>
+                        <th >Corporativo</th>
+                        <th >Retail</th>
+                        <th >Galerías</th>
+                        <th >Otros</th>
                       </tr>
                     </thead>
                     <tbody class="text-center"style="font-size: 11px;">
-                      <tr style="color:orange !important;">
+                      <tr style="color:#e6641a !important;">
                         <td rowspan="2">Antena</td>
                         <td>Cliente</td>
                         <td>2,307</td>
@@ -309,7 +309,7 @@
                         <td>28</td>
                         <td>101</td>
                       </tr>
-                      <tr style="color:orange !important;">
+                      <tr style="color:#e6641a !important;">
                         <td rowspan="2">SW</td>
                         <td>Cliente</td>
                         <td>118</td>
@@ -333,7 +333,7 @@
                         <td>47</td>
                       </tr>
 
-                      <tr style="color:orange !important;">
+                      <tr style="color:#e6641a !important;">
                         <td rowspan="2">SZ/ZD</td>
                         <td>Cliente</td>
                         <td>12</td>
@@ -357,7 +357,7 @@
                         <td>0</td>
                       </tr>
 
-                      <tr style="color:orange !important;">
+                      <tr style="color:#e6641a !important;">
                         <td rowspan="2">Icomera/ZQ</td>
                         <td>Cliente</td>
                         <td>10</td>
@@ -381,7 +381,7 @@
                         <td>0</td>
                       </tr>
 
-                      <tr style="color:orange !important;">
+                      <tr style="color:#e6641a !important;">
                         <td rowspan="2">Sonda</td>
                         <td>Cliente</td>
                         <td>6</td>
@@ -405,7 +405,7 @@
                         <td>15</td>
                       </tr>
 
-                      <tr style="color:orange !important;">
+                      <tr style="color:#e6641a !important;">
                         <td rowspan="2">Sonic Wall</td>
                         <td>Cliente</td>
                         <td>0</td>
@@ -447,7 +447,7 @@
                         <td>20,132</td>
                         <td>20,132</td>
                       </tr>
-                      <tr style="color:orange !important;">
+                      <tr style="color:#e6641a !important;">
                         <td>Cliente</td>
                         <td>3,323</td>
                         <td>3,323</td>
@@ -467,15 +467,15 @@
 
                       <h4>Equipos en garantía y bajas</h4>
                       <table id="table_garantia" class="table table-striped table-bordered compact-tab table-hover">
-                        <thead class="text-center">
-                          <tr style="color:orange !important;">
-                            <th style="color:orange !important;">Equipo</th>
-                            <th style="color:orange !important;">Acumulado enviados 2019</th>
-                            <th style="color:orange !important;">Acumulado garantia 2019</th>
-                            <th style="color:orange !important;" colspan="2"> Acumulado Bajas</th>
-                            <th style="color:orange !important;"> Promedio Mensual</th>
-                            <th style="color:orange !important;"> %</th>
-                            <th style="color:orange !important;"> Status</th>
+                        <thead style="background-color:#3b3b3b !important;" class="text-center">
+                          <tr>
+                            <th >Equipo</th>
+                            <th >Acumulado enviados 2019</th>
+                            <th >Acumulado garantia 2019</th>
+                            <th colspan="2"> Acumulado Bajas</th>
+                            <th > Promedio Mensual</th>
+                            <th > %</th>
+                            <th > Status</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -648,6 +648,11 @@
       background-color: red;
       border-radius: 50%;
       display: inline-block;
+    }
+    .test{
+      width: 20px;
+      height: 20px;
+      background-color:orange;
     }
     </style>
 @endpush
