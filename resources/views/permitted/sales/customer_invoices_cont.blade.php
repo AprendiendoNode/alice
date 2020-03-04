@@ -148,7 +148,7 @@
                 <select class="form-control" required name="document_type" id="document_type">
                   <option value="">Elije...</option>
                   @foreach ($document_type as $data)
-                    <option value="{{$data->code}}">{{$data->prefix}}</option>
+                    <option value="{{$data->id}}">{{$data->prefix}}</option>
                   @endforeach
                 </select>
               </div>

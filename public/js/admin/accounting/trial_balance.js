@@ -11,7 +11,7 @@ $(function(){
   $("#endDatePicker").datepicker({
     format: 'yyyy-mm-dd'
   });
-  balance_table();
+  //balance_table();
 }());
 
 function balance_table() {

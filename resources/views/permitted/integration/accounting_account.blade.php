@@ -276,6 +276,16 @@
       .select2-selection__arrow {
         height: 36px !important;
       }
+
+      #table_filter tbody tr td {
+        padding: 0.2rem 0.5rem;
+        height: 38px !important;
+      }
+
+      #table_filter thead tr th{
+          padding: 0.2rem 0.5rem;
+          height: 38px !important;
+      }
     </style>
   @else
   @endif

@@ -306,6 +306,30 @@ class Helper
            throw $e;
        }
     }
+
+    public static function getNextDocumentTypeById($id)
+    {
+       try {
+           $data = [];
+           $document_type = DocumentType::where('id', '=', $id)->first();
+           if (!empty($document_type)) {
+               $document_type->current_number += $document_type->increment_number;
+               $data['serie'] = $document_type->prefix;
+               $data['folio'] = $document_type->current_number;
+               $data['name'] = $document_type->prefix . $document_type->current_number;
+               $data['id'] = $document_type->id;
+               $document_type->update();
+           } else {
+               throw new \Exception(__('document_type.error_next_document_type'));
+           }
+           if (empty($data['id']) || empty($data['name'])) {
+               throw new \Exception(__('document_type.error_next_document_type'));
+           }
+           return $data;
+       } catch (\Exception $e) {
+           throw $e;
+       }
+    }
     /**
      * Consecutivo por tipo de documento politica
      *

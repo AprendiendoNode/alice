@@ -1103,14 +1103,14 @@ class CustomerInvoiceController extends Controller
      }
 
      public function store_cont(Request $request)
-     {
+     {  
        // Begin a transaction
        \DB::beginTransaction();
 
        // Open a try/catch block
        try {
          //Logica
-
+         
          $cont_maestro_id = $request->cont_maestro_id;
          $result = DB::select('CALL px_data_fact_sat(?)', array($cont_maestro_id));
 
@@ -1134,8 +1134,10 @@ class CustomerInvoiceController extends Controller
              $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
          }
          $request->merge(['date_due' => Helper::dateToSql($date_due)]);
+         
          //Obtiene folio
-         $document_type = Helper::getNextDocumentTypeByCode($request->document_type);
+         $document_type = Helper::getNextDocumentTypeById($request->document_type);
+         
          $request->merge(['document_type_id' => $document_type['id']]);
          $request->merge(['name' => $document_type['name']]);
          $request->merge(['serie' => $document_type['serie']]);
@@ -1144,7 +1146,7 @@ class CustomerInvoiceController extends Controller
          $request->merge(['payment_way_id' => $payment_way_id]);
          $request->merge(['payment_method_id' => $payment_method_id]);
          $request->merge(['cfdi_use_id' => $cfdi_uses]);
-
+         
          //Guardar Registro principal
          $customer_invoice = CustomerInvoice::create($request->input());
          //Registro de lineas

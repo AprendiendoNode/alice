@@ -29,53 +29,57 @@
        <div class="container">
          <div class="card">
            <div class="card-body">
+            <h4>Balanza de comprobación</h4>
              <div class="row">
-           <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-              <div class="row">
-                <form id="validation" name="validation" class="form-inline" method="post">
-                  {{ csrf_field() }}
-                  <div class="form-group">
-                     <label class="col-xs-4 control-label mr-2">Fecha Inicio</label>
-                     <div class="col-xs-8 dateContainer">
-                         <div class="input-group input-append date" id="startDatePicker" name="startDatePicker">
-                           <input type="text" class="form-control" id="startDate" name="startDate" />
-                           <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                         </div>
-                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-xs-4 control-label mx-2">Fecha Fin</label>
-                    <div class="col-xs-8 dateContainer">
-                        <div class="input-group input-append date" id="endDatePicker" name="endDatePicker">
-                          <input type="text" class="form-control" id="endDate" name="endDate" />
-                          <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <div class="row">
+                    <form id="validation" name="validation" class="form-inline" method="post">
+                      {{ csrf_field() }}
+                      <div class="col-md-3 col-xs-12">
+                        <div class="form-group" id="date_from">
+                          <label class="control-label" for="filter_date_from">
+                            Fecha inicial:
+                          </label>
+                          <div class="input-group mb-3">
+                            <input type="text"  datas="filter_date_from" id="filter_date_from" name="filter_date_from" class="form-control" placeholder="" value="{{ \App\Helpers\Helper::date(Date::parse('first day of this month')) }}" required>
+                            <div class="input-group-append">
+                              <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
+                            </div>
+                          </div>
                         </div>
-                    </div>
+                      </div>
+                      <div class="col-md-3 col-xs-12">
+                        <div class="form-group" id="date_from">
+                          <label class="control-label" for="filter_date_to">
+                            Fecha final:
+                          </label>
+                          <div class="input-group mb-3">
+                            <input type="text"  datas="filter_date_to" id="filter_date_to" name="filter_date_to" class="form-control" placeholder="" value="{{ \App\Helpers\Helper::date(Date::parse('last day of this month')) }}" required>
+                            <div class="input-group-append">
+                              <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <button id="boton-aplica-filtro mt-3" type="button" class="btn btn-warning filtrarDashboard ml-2">
+                        <i class="fas fa-search-dollar"></i>  Buscar periodo
+                      </button>
+                    </form>
                   </div>
-                  <button id="boton-aplica-filtro" type="button" class="btn btn-info filtrarDashboard ml-2">
-                    <i class="fas fa-filter" aria-hidden="true"></i>  Filtrar
-                  </button>
-                </form>
               </div>
-           </div>
 
            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
              <div class="table-responsive">
                <table id="table_balance" class="table table-striped table-bordered table-hover compact-tab w-100">
                  <thead>
-                   <tr class="bg-primary" style="background: #088A68;">
-                     <th> <small>cliente</small> </th>
-                     <th> <small>taxid</small> </th>
-                     <th> <small>numid</small> </th>
-                     <th> <small>cc</small> </th>
-                     <th> <small>currencies</small> </th>
-                     <th> <small>customer_id</small> </th>
-                     <th> <small>monto descuento</small> </th>
-                     <th> <small>monto s/impuesto</small> </th>
-                     <th> <small>monto impuesto</small> </th>
-                     <th> <small>monto ret</small> </th>
-                     <th> <small>subtotal</small> </th>
-                     <th> <small>total</small> </th>
+                   <tr class="bg-secondary" style="background: #088A68;">
+                     <th> <small>Cuenta</small> </th>
+                     <th> <small>Nat.</small> </th>
+                     <th> <small>Nombre</small> </th>
+                     <th> <small>Saldo inicial</small> </th>
+                     <th> <small>Cargos</small> </th>
+                     <th> <small>Abonos</small> </th>
+                     <th> <small>Saldo final</small> </th>
                    </tr>
                  </thead>
                  <tbody>
@@ -83,11 +87,6 @@
                  <tfoot id='tfoot_average'>
                    <tr>
                      <!-- <th></th> -->
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
                      <th></th>
                      <th></th>
                      <th></th>
@@ -127,6 +126,16 @@
            background: #ffffff !important;
            border-radius: 3px;
        }
+
+       #table_balance tbody tr td {
+        padding: 0.2rem 0.5rem;
+        height: 38px !important;
+      }
+
+      #table_balance thead tr th{
+          padding: 0.2rem 0.5rem;
+          height: 38px !important;
+      }
     </style>
   @if( auth()->user()->can('View trial balance') )
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
