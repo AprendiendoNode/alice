@@ -85,7 +85,6 @@ function getProductsFromProjectsByProvider(doc_id, provider_id){
             return response.json();
         })
         .then(function(data){
-            console.log(data);
             generate_table_products(data);
         })
         .catch(function(error){
@@ -130,8 +129,42 @@ function generate_table_products(products){
 
 $("#form").on("submit", function(e){
   e.preventDefault();
-  
-  Swal.fire({
+
+  var _token = $('input[name="_token"]').val();   
+  var element = {}
+  let products = [];
+  let currencies = [];
+
+  $('#tabla_productos tbody tr').each(function(row, tr){
+    let product_id = $(tr).find('.product_id').val();
+    let cantidad = $(tr).find('.cantidad').val();
+    let precio = $(tr).find('.precio').text();
+    let currency = $(tr).find('.code').text();
+    let subtotal = $(tr).find('.subtotal').text();
+    let descuento = $(tr).find('.descuento').text();
+    let descuento_percent = $(tr).find('.descuento_percent').val();
+    let total = $(tr).find('.total').text();
+    
+    element = {
+      "product_id" : product_id,
+      "cantidad" : cantidad,
+      "precio" : precio,
+      "code" : currency,
+      "subtotal" : subtotal,
+      "descuento" : descuento,
+      "descuento_percent" : descuento_percent,
+      "total" : parseFloat(total)        
+    }
+
+    products.push(element);
+    currencies.push(element.code);
+
+  });
+
+  var uniqueItems = Array.from(new Set(currencies));
+
+  if(uniqueItems.length === 1){
+    Swal.fire({
       title: "¿Estás seguro?",
       text: "",
       type: "warning",
@@ -143,69 +176,41 @@ $("#form").on("submit", function(e){
       showLoaderOnConfirm: true,
       preConfirm: () => {
         
-        var _token = $('input[name="_token"]').val();
-        
-        var element = {}
-        var products = [];
+          let form = $('#form')[0];
+          let formData = new FormData(form);
+      
+          formData.append('products',JSON.stringify(products)); 
+          formData.append('subtotal',remove_commas($('#subtotal').text()));
+          formData.append('descuento',remove_commas($('#descuento').text()));
+          formData.append('iva',remove_commas($('#iva').text()));
+          formData.append('total',remove_commas($('#total').text()));
 
-        $('#tabla_productos tbody tr').each(function(row, tr){
-          let product_id = $(tr).find('.product_id').val();
-          let cantidad = $(tr).find('.cantidad').val();
-          let precio = $(tr).find('.precio').text();
-          let subtotal = $(tr).find('.subtotal').text();
-          let descuento = $(tr).find('.descuento').text();
-          let descuento_percent = $(tr).find('.descuento_percent').val();
-          let total = $(tr).find('.total').text();
+          const headers = new Headers({        
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-TOKEN": _token
+          })
+
+          var miInit = { method: 'post',
+                            headers: headers,
+                            credentials: "same-origin",
+                            body:formData,
+                            cache: 'default' };                     
+
+          return fetch('/purchases/store-order', miInit)
+                .then(function(response){
+                  if (!response.ok) {
+                      throw new Error(response.statusText)
+                    }
+                  return response.text();
+                })
+                .catch(function(error){
+                  Swal.showValidationMessage(
+                    `Request failed: ${error}`
+                  )
+                });
           
-          element = {
-            "product_id" : product_id,
-            "cantidad" : cantidad,
-            "precio" : precio,
-            "subtotal" : subtotal,
-            "descuento" : descuento,
-            "descuento_percent" : descuento_percent,
-            "total" : parseFloat(total)        
-          }
-    
-          products.push(element);
-    
-        });
         
-        let form = $('#form')[0];
-        let formData = new FormData(form);
-    
-        formData.append('products',JSON.stringify(products)); 
-        formData.append('subtotal',remove_commas($('#subtotal').text()));
-        formData.append('descuento',remove_commas($('#descuento').text()));
-        formData.append('iva',remove_commas($('#iva').text()));
-        formData.append('total',remove_commas($('#total').text()));
-
-        const headers = new Headers({        
-           "Accept": "application/json",
-           "X-Requested-With": "XMLHttpRequest",
-           "X-CSRF-TOKEN": _token
-        })
-
-        var miInit = { method: 'post',
-                           headers: headers,
-                           credentials: "same-origin",
-                           body:formData,
-                           cache: 'default' };
-
-                           
-
-         return fetch('/purchases/store-order', miInit)
-               .then(function(response){
-                 if (!response.ok) {
-                    throw new Error(response.statusText)
-                  }
-                 return response.text();
-               })
-               .catch(function(error){
-                 Swal.showValidationMessage(
-                   `Request failed: ${error}`
-                 )
-               });
       }//Preconfirm
     }).then((result) => {
       console.log(result.value);
@@ -225,6 +230,11 @@ $("#form").on("submit", function(e){
         )
       }
     })
+  }else{
+    Swal.fire('Orden con diferentes monedas','La orden de compra solo deben tener productos de una sola moneda', 'error');
+  }
+  
+  
 })
 
 // Funcion para mofdificar datos al actualizar una cantidad de la tabla de pedidos
@@ -295,6 +305,12 @@ function deleteRow(fila) {
     var row = fila.parentNode.parentNode;
 	row.parentNode.removeChild(row);
 	sumaTotales();
+}
+
+//Filtrar valores unicos
+
+function onlyUnique(value, index, self) { 
+  return self.indexOf(value) === index;
 }
 
 //Formato numerico: 00,000.00

@@ -106,7 +106,13 @@ function table_orders(datajson, table){
                         <a class="dropdown-item" target="_blank" href="/purchases/print-order-purchase/${information.id}/${information.order_cart_id}" ><span class="far fa-file-pdf"></span> Imprimir orden</a>
                         <a class="dropdown-item" href="javascript:void(0);" onclick="delete_order(${information.id})" data-id="${information.id}"><span class="fas fa-window-close"></span> Eliminar orden</a>
                       </div>
-                    </div>`;    
+                    </div>`;
+      let badge = '';
+      if(information.order_status_id == 1){
+        badge = 'warning';
+      }else if(information.order_status_id == 2){
+        badge = 'success';
+      }    
     
     vartable.fnAddData([
       information.id,
@@ -115,14 +121,14 @@ function table_orders(datajson, table){
       information.num_order,
       information.provider,
       format_number(parseFloat(information.total)),
-      `<a href="javascript:void(0)" data-type="select" data-pk="${information.id}" data-title="Estatus" data-value="${information.order_status_id}" class="set-status-order">`,
+      `<span class="badge badge-${badge} badge-pill"><a href="javascript:void(0)" data-type="select" data-pk="${information.id}" data-title="Estatus" data-value="${information.order_status_id}" class="set-status-order"></span>`,
       information.date_delivery,    
       information.order_address
     ]);
   });
 }
 
-/**************************ELIMINANDO POLIZAS***********************************/
+/**************************ELIMINANDO ORDENES***********************************/
 function delete_order(id_order){
     
   let _token = $('input[name="_token"]').val();

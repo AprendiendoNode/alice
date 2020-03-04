@@ -81,7 +81,7 @@
               <div class="col-md-6 col-xs-12">
                 <div class="form-group">
                   <label for="filter_customer_id">Cliente</label>
-                  <select class="form-control" id="filter_customer_id" id="filter_customer_id">
+                  <select class="form-control" id="filter_customer_id" name="filter_customer_id">
                     <option value="" selected>Selecciona...</option>
                     @forelse ($customer as $customer_data)
                       <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>

@@ -69,7 +69,8 @@
             <td><input class="id_factura" type="hidden" value="{{$data->customer_invoice_id}}"></td>
             <td>{{$data->mov}}</td>
             <td>
-              <select style="width:280px;" class="form-control form-control-sm cuenta_contable select2">
+              <select required style="width:280px;" class="form-control form-control-sm cuenta_contable select2">
+                <option value="">Seleccionar cuenta contable ...</option>
                 @foreach ($cuentas_contables as $cuenta_data)
                   @if ($cuenta_data->id == $data->cuenta_contable_id)
                     <option selected value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option> 
