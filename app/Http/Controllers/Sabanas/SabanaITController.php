@@ -25,7 +25,7 @@ class SabanaITController extends Controller
     $facturacion = 0;
     if(empty($users)) {
       $users = DB::select('CALL list_user_itc()');
-      $facturacion = 1;
+      //$facturacion = 1;
     }
     $status_compras = DB::select('CALL px_documentp_status_doctype()', array());
     return view('permitted.sabanas.sabana_itc', compact('users','cadena','status_compras','facturacion'));
