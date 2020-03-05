@@ -103,6 +103,33 @@ function documentp_table(datajson, table){
   let datajson_result = datajson.filter(data => data.status != 'Denegado' && data.alert != 4);
   let color = 'red';
   $.each(datajson_result, function(index, data){
+    //Verifica el estado del proyecto y lo actualiza en base a sus fechas
+    if(Math.floor(data.total_global)==100 && Math.floor(data.presupuesto.slice(0,-1))>=100){
+      color = 'green';
+      setAlert(data.id, 3);//Estatus 3 verde
+    }else{
+    if(data.alert!=1){
+    if(data.fecha_inicio!='-' && data.fecha_entrega_ea!='-'){
+      var current_date= new Date().toISOString().slice(0,10);
+      var limit_date= new Date(data.fecha_inicio).toISOString().slice(0,10);
+      var limit_date2=new Date(data.fecha_entrega_ea).toISOString().slice(0,10);
+      if(!current_date<limit_date){
+        setAlert(data.id, 1);
+        data.alert=1;
+      }
+      if(!current_date<limit_date2){
+        setAlert(data.id, 1);
+        data.alert=1;
+      }
+    }else{
+        setAlert(data.id, 1);
+        data.alert=1;
+    }
+
+
+    }
+    }
+
     if(data.alert == 1){
       color = 'red';
     }else if(data.alert == 2) {
@@ -112,11 +139,10 @@ function documentp_table(datajson, table){
     }else{
       color = 'blue';
     }
-    if(Math.floor(data.total_global)==100 && Math.floor(data.presupuesto.slice(0,-1))>=100){
-      color = 'blue';
-      setAlert(data.id, 3);//Estatus 4 terminado.
-      //console.log('ID DOC: '+data.id +' Instalacion: '+Math.floor(data.total_global)+' Presupuesto: '+Math.floor(data.presupuesto.slice(0,-1)));
-    }
+
+    /*if(alert!=1){
+    setAlert(id, 1);
+  }*/
     vartable.fnAddData([
       `<div class="btn-group">
        <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -165,7 +191,6 @@ function isOverdue(num,date){
 if(date!='-'){
   var current_date= new Date().toISOString().slice(0,10);
   var limit_date= new Date(date).toISOString().slice(0,10);
-
   switch (current_date<limit_date) {
     case true:
           return '<span class="badge badge-success badge-pill">'+Math.floor(num)+'%</span>';
@@ -176,13 +201,30 @@ if(date!='-'){
     default:
   }
 }else{
-  return '<span class="badge badge-danger badge-pill">'+Math.floor(num)+'%</span>';
+    return '<span class="badge badge-danger badge-pill">'+Math.floor(num)+'%</span>';
 }
 
 }
 
-function inRisk(){
+function inRisk(date1,date2,id,alert){
+  if(date1!='-' && date2!='-' ){
+    var current_date= new Date().toISOString().slice(0,10);
+    var limit_date= new Date(date1).toISOString().slice(0,10);
+    var limit_date2=new Date(date2).toISOString().slice(0,10);
+    if(!current_date<limit_date){
 
+      setAlert(id, 1);
+      return color = 'red';
+    }
+    if(!current_date<limit_date2){
+      setAlert(id, 1);
+      return color = 'red';
+    }
+
+  }else{
+      setAlert(id, 1);
+      return color = 'red';
+  }
 }
 
 

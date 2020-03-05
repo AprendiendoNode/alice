@@ -269,6 +269,7 @@
                 <div class="">
                   <h4>Equipo activo Monitoreado</h4>
                   <br>
+                  <div class="table-responsive">
                   <table id="table_EA" class="table table-striped table-bordered compact-tab table-hover">
                     <thead style="background-color:#3b3b3b !important;"class="text-center">
                       <tr >
@@ -430,6 +431,7 @@
 
                     </tbody>
                   </table>
+                  </div>
                   <br>
                   <h4>Total AP's instaladas</h4>
                   <table id="table_aps" class="table table-striped table-bordered compact-tab table-hover">
@@ -465,7 +467,8 @@
                     <div class="col-md-6">
 
                       <h4>Equipos en garantía y bajas</h4>
-                      <table id="table_garantia" class="table table-striped table-bordered compact-tab table-hover">
+                      <div class="table-responsive">
+                      <table id="table_garantia" class="table table-striped table-bordered compact-tab table-hover w-100">
                         <thead style="background-color:#3b3b3b !important;" class="text-center">
                           <tr>
                             <th >Equipo</th>
@@ -579,6 +582,7 @@
                         </tbody>
 
                       </table>
+                    </div>
                     </div>
                     <div class="col-md-5">
                       <div id="graph_garantia"class=""></div>

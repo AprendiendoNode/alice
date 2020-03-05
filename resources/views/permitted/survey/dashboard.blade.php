@@ -663,7 +663,7 @@
     <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
     <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/surveys/dashboard_survey.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/surveys/dashboard_survey.js?v=2.0.1')}}"></script>
     <style media="screen">
       h6 {
         font-size: 14px;
