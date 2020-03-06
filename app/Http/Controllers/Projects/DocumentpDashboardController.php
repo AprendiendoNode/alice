@@ -20,7 +20,7 @@ class DocumentpDashboardController extends Controller
       $projects_ejecucion_motivo = DB:: select('CALL px_tipo_motivo_acumulado_ejecucion_facturacion()', array());
       $projects_instalados_motivo = DB:: select('CALL px_tipo_motivo_acumulado_instalado_facturacion()', array());
       //dd($projects_ejecucion_motivo);
-      return view('permitted.documentp.dashboard_project', 
+      return view('permitted.documentp.dashboard_project',
              compact('status_projects', 'status_compras', 'status_cotizador'
              ,'status_projects_instalado', 'projects_ejecucion_fact', 'projects_instalacion_fact', 'projects_ejecucion_motivo', 'projects_instalados_motivo'));
     }
@@ -113,6 +113,11 @@ class DocumentpDashboardController extends Controller
     {
       $result = DB::select('CALL px_documentp_atraso_filtroXmotivo_instalado(?)', array($id));
 
+      return $result;
+    }
+    public function project_xstatus(Request $request){
+      $id_alert= $request->id_alert;
+      $result = DB::select('CALL px_documentop_mensual_advance_xstatus(?)',array($id_alert));
       return $result;
     }
 

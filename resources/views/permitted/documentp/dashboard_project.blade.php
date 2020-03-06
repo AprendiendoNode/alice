@@ -270,9 +270,9 @@
                   </tr>
                   <tr id="status" class="">
                     <th class="text">Tipo de servicio</th>
-                    <th class="text-center"><i style="color:red;" class="fa fa-circle" aria-hidden="true"></i></th>
-                    <th class="text-center"><i style="color:yellow;" class="fa fa-circle" aria-hidden="true"></i></th>
-                    <th class="text-center"><i style="color:green;" class="fa fa-circle" aria-hidden="true"></i></th>
+                    <th id="red" class="text-center"><i style="color:red;" class="fa fa-circle" aria-hidden="true"></i></th>
+                    <th id="yellow" class="text-center"><i style="color:yellow;" class="fa fa-circle" aria-hidden="true"></i></th>
+                    <th id="green" class="text-center"><i style="color:green;" class="fa fa-circle" aria-hidden="true"></i></th>
                     <th class="text-center" rowspan="">Total</th>
                   </tr>
                 </thead>
@@ -717,6 +717,82 @@
         </div>
       </div>
 
+      <!-- Modal -->
+      <div class="modal fade" id="modal_project_xstatus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Proyectos en ejecución</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <div class="table-responsive">
+                <table id="table_documentp" class="table table-striped compact-tab table-bordered table-condensed" style="width:100%">
+                  <thead>
+                    <tr style="background: #088A68;">
+                      <th></th>
+                      <th> <small>Estatus</small> </th>
+                      <th> <small>Proyecto</small> </th>
+                      <th> <small>Avance instalación</small> </th>
+                      <th> <small>Entrega compromiso</small> </th>
+                      <th> <small>Entrega estimada</small> </th>
+                      <!--<th> <small>Entrega compromiso</small> </th>-->
+                      <th> <small>Presupuesto USD</small> </th>
+                      <th> <small>Presupuesto ejercido %</small> </th>
+                      <th> <small>Entrega compromiso</small> </th>
+                      <th> <small>Atraso compra </small> </th>
+                      <th> <small>Motivos</small> </th>
+                      <!--<th> <small>Fecha firma</small> </th>-->
+                      <th> <small>Atraso instalación</small> </th>
+                      <th> <small>Tipo de servicio</small> </th>
+                      <th> <small>Renta mensual</small> </th>
+                      <th> <small>IT Concierge</small> </th>
+                      <th> <small>Facturando</small> </th>
+                      <!--<th> <small>Última actualización</small> </th>-->
+                      <th> <small>Estatus</small> </th>
+                      <th> <small>Comentario</small> </th>
+                      <th> <small>Renta mensual</small> </th>
+                      <th> <small>Facturando</small> </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                  <tfoot id='tfoot_average'>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     @else
       @include('default.denied')
@@ -731,13 +807,23 @@
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=4.0.0')}}"></script>
+    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=5.0.1')}}"></script>
     <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
 
 @else
   @include('default.denied')
 @endif
 <style>
+    #table_documentp td, #table_documentp th{
+      vertical-align: middle;
+    }
+
+    #table_documentp  td a.set-alert{
+      border-radius: 15px;
+      padding: 3px 11px;
+      color: transparent;
+      border-bottom: none;
+    }
   .card{
     padding: 1em;
     border-radius: 5px;

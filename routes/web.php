@@ -453,6 +453,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/get_table_atraso_filterby_motivo_instalado/id/{id}', 'Projects\DocumentpDashboardController@get_table_atraso_filterby_motivo_instalado');
   Route::get('/get_table_atraso_filterby_servicio/{tipo_servicio}/{atraso}', 'Projects\DocumentpDashboardController@get_table_atraso_filterby_servicio');
   Route::get('/get_table_atraso_filterby_servicio_instalado/{tipo_servicio}/{atraso}', 'Projects\DocumentpDashboardController@get_table_atraso_filterby_servicio_instalado');
+  Route::post('/get_documentp_project_xstatus','Projects\DocumentpDashboardController@project_xstatus');
   //Presupuesto proyectos.
   Route::get('/view_budget','Projects\BudgetController@index');
   Route::post('/get_annual_table', 'Projects\BudgetController@get_annual_budget');
