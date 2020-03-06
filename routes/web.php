@@ -1313,6 +1313,7 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::post('credit-notes-history/modal-send-mail', 'Purchases\HistoryCreditNoteController@modalSendMail');
   Route::post('credit-notes-history-sendmail', 'Purchases\HistoryCreditNoteController@sendmail_facts_customers');
   //
+  Route::post('get_note_cred_mov_data_dev_desc', 'Purchases\HistoryCreditNoteController@get_note_cred_mov_data_dev_desc');
   Route::post('get_note_cred_mov_data', 'Purchases\HistoryCreditNoteController@get_note_cred_mov_data');
   Route::post('credit-notes-history/contador', 'Purchases\HistoryCreditNoteController@GetNextContador');
   //Ordenes de compra
@@ -1327,6 +1328,7 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::post('/delete-order-purchase', 'Purchases\PurchaseOrderController@destroy');
   Route::post('/add-address-delivery', 'Purchases\PurchaseOrderController@add_address_delivery');
   Route::post('/set-status-order', 'Purchases\PurchaseOrderController@setStatusOrder');
+  Route::post('/customer_polizas_movs_save', 'Purchases\PurchaseOrderController@customer_polizas_movs_save');
 });
 Route::group(['prefix' => 'integration', 'middleware' => 'auth'], function(){
   //Integracion contable
