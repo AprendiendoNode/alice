@@ -276,5 +276,30 @@ class SabanaITController extends Controller
     $result=DB::Select('CALL px_documentxtype_itc_v2(?,?,?)',array($itc_id, $fecha, $tipo_doc));
     return $result;
   }
+  public function cl_diario_itc(Request $request){
+    info($request);
+    $fecha=$request->fecha;
+    $itc_id= $request->itc_id;
+    $newdate=Carbon::parse($fecha);
+    $newdate->format('Y/m/d');
+    DB::table('cl_diario')
+    ->updateOrInsert(
+        ['fecha' => $fecha,'itc_id' => $itc_id],
+        ['calendario_hoy' => $request->calendario_hoy,
+         'documentacion_tickets'=>$request->documentacion_tickets,
+         'uniforme'=>$request->uniforme,
+         'llave_uniforme'=>$request->llave_uniforme,
+         'gym'=>$request->gym,
+         'mantener_orden'=>$request->mantener_orden,
+         'trato_cordial'=>$request->trato_cordial,
+         'calendario_2dias'=>$request->calendario_2dias,
+         'diagnosticar_equipos'=>$request->diagnosticar_equipos,
+         'fecha'=>$newdate,
+         'itc_id'=>$itc_id
+        ]
+    );
+
+    return "ok";
+  }
 
 }

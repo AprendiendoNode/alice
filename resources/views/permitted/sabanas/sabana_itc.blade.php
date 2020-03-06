@@ -349,6 +349,7 @@
               <!--<li><i class="fas fa-funnel-dollar"></i> Presupuesto</li>-->
               <li><i class="fas fa-hand-holding-usd"></i></i> Viáticos</li>
               <li><i class="fas fa-file-contract"></i></i> Proyectos</li>
+              <li><i class="fas fa-file-contract"></i></i> Checklist</li>
               <!--<li id="tab_consumo"><i class="fas fa-chart-bar"></i></i> Estadísticas de consumo</li>-->
           </ul>
           <div class="content_wrapper">
@@ -976,6 +977,419 @@
     </div>
 
               </div>
+<div class="tab_content">
+    <div class="row">
+        <div class="col-md-12 grid-margin-onerem  stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <div class="row pb-3">
+                            <div class=" col-md-12 text-center">
+                                <h4>Check List actividades diarias del ITC</h4>
+                            </div>
+                        </div>
+
+                        <form class=""  method="post">
+                        <div class="row">
+                            <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover">
+                                <thead class="bg-aqua text-center">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Rubro</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center" style="font-size: 11px;">
+                                    <tr>
+                                        <td>1</td>
+                                        <td class="text-left">Revisar Calendario de citas de hoy - Planear Mi dia</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select id="calendario_hoy" class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td class="text-left">Seguimiento, documentación y cierre de tickets</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select id="documentacion_tickets" class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td class="text-left">Uso del Uniforme de ITC</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select id="uniforme" class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td class="text-left">Uso de llave de ITC en el uniforme</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select id="llave_uniforme" class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td class="text-left">Asistencia al gym</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select id="gym" class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td class="text-left">Mantener y dejar ordenado sus lugares de trabajo (no almacenar cajas ni equipo)</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select id="mantener_orden" class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td class="text-left">Trato cordial y amable a todos</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select id="trato_cordial" class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td class="text-left">Revisar Calendario de citas de los siguientes 2 dias</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select id="calendario_2dias" class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td class="text-left">Limpiar y diagnosticar equipos dañado y entregar a almacén.</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select id="diagnosticar_equipos" class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="row container-fluid">
+                              <div class="col-md-12 ">
+                                  <button id="btn_cl_diario" class="btn btn-success float-right" type="button">Aceptar</button>
+                              </div>
+                            </div>
+                        </div>
+                        </form>
+
+                        <div class="row pt-5 pb-3">
+                          <div class="col-md-12 text-center">
+                            <h4>Check List por cliente(entrega el día 5 del mes)</h4>
+                        </div>
+                        </div>
+
+                        <div class="row">
+                            <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover">
+                                <thead class="bg-aqua text-center">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Rubro</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center" style="font-size: 11px;">
+                                    <tr>
+                                        <td>1</td>
+                                        <td class="text-left">Reporte de Red Elaborado y entregado al cliente o en la carpeta de acceso al cliente</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td class="text-left">NPS contestado</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td class="text-left">Factura Entregada al cliente</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td class="text-left">Memoria Técnica Actualizada</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td class="text-left">Inventario Actualizado</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row container-fluid">
+                              <div class="col-md-12 ">
+                                  <button id="btn_cl_diario" class="btn btn-success disabled float-right" type="button">Aceptar</button>
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="row pt-5 pb-3">
+                          <div class="col-md-12 text-center">
+                              <h4>Check List por cliente (entrega dia 20)</h4>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                            <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover">
+                                <thead class="bg-aqua text-center">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Rubro</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center" style="font-size: 11px;">
+                                    <tr>
+                                        <td>1</td>
+                                        <td class="text-left">Visita a cliente</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td class="text-left">Revisar y Asegurar disponibilidad del 98 % del equipo activo en sitio</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td class="text-left">Detecta oportunidades del cliente</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td class="text-left">Revisión de Información del cliente en Alice (Dashboard del cliente)</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td class="text-left">Detecta oportunidades de clientes nuevos en el trayecto de visita a clientes asignados</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td class="text-left">Mantenimiento Preventivo o correctivo a MDF/IDF (de acuerdo a calendario)</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td class="text-left">Realizar Backup de equipos de comunicaciones ZD, SonicWall, ZQ, SW, etc.</td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td class="text-left">Revisar y renovar licencia de ZD (si corresponde) </td>
+                                        <td>
+                                          <div class="form-group">
+                                          <select class="form-control" name="">
+                                                <option value="0">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">NA</option>
+                                                </optgroup>
+                                          </select>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <td>9</td>
+                                    <td class="text-left">Cliente al corriente en el pago de factura del mes</td>
+                                    <td>
+                                      <div class="form-group">
+                                      <select class="form-control" name="">
+                                            <option value="0">No</option>
+                                            <option value="1">Si</option>
+                                            <option value="2">NA</option>
+                                            </optgroup>
+                                      </select>
+                                      </div>
+                                    </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="row container-fluid">
+                              <div class="col-md-12 ">
+                                  <button id="btn_cl_diario" class="btn btn-success disabled float-right" type="button">Aceptar</button>
+                              </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
           </div>
       </div>
       <div style="margin-left: 40%;">
@@ -995,6 +1409,8 @@
     <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/animate.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
+    <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script type="text/javascript" src="js/jquery.multipurpose_tabcontent.js"></script>
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
@@ -1006,6 +1422,7 @@
     <script src="{{ asset('bower_components/highcharts/series-label.js')}}"></script>
     <script src="{{ asset('bower_components/highcharts/exporting.js')}}"></script>
     <script src="{{ asset('js/admin/sabana/sabana_itc.js?v=5.4.7')}}"></script>
+    <script src="{{ asset('js/admin/sabana/sabana_checklist.js?v=1.0.0')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">

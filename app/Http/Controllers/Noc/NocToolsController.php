@@ -23,7 +23,13 @@ class NocToolsController extends Controller
   }
 
   public function cl_diario(){
-    return view('permitted.noc.cl_diario');
+    $cl_diario=DB::Table('cl_diario')->get();
+    return view('permitted.noc.cl_diario',compact('cl_diario'));
+  }
+
+  public function get_cl_diario(){
+    $result=DB::Select('CALL px_get_cl_diario()',array());
+    return $result;
   }
 
   public function dash_operacion(){

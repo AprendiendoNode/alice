@@ -312,7 +312,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/noc_tools','Noc\NocToolsController@index');
   Route::get('/cl_diario','Noc\NocToolsController@cl_diario');
   Route::get('/dash_operacion','Noc\NocToolsController@dash_operacion');
-
+  Route::post('/get_cl_diario','Noc\NocToolsController@get_cl_diario');
   //Carátula de entrega
   Route::get('/cover_equipment_delivery', 'Equipments\CoverDeliveryEquipmentController@index');
   Route::post('/cover_delivery_header', 'Equipments\CoverDeliveryEquipmentController@getHeader');
@@ -911,7 +911,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('sabana_itc_modal_encuestas','Sabanas\SabanaITController@sabana_itc_modal_encuestas');
     Route::post('get_nps_comment_itc', 'Sabanas\SabanaITController@get_nps_comment_itc');
     Route::post('sabana_itc_modal_encuestas_hover', 'Sabanas\SabanaITController@sabana_itc_modal_encuestas_hover');
-
+    Route::post('cl_diario_itc', 'Sabanas\SabanaITController@cl_diario_itc');
     //Sabana Directiva
     Route::get('dash_sabana_directiva', 'Sabanas\SabanaDirectivaController@index');
     Route::post('getAllCadena','Sabanas\SabanaDirectivaController@getAllCadena');
