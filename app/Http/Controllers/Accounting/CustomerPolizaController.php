@@ -37,6 +37,14 @@ class CustomerPolizaController extends Controller
         ];
     }
 
+    public function index()
+    {
+        $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+        $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
+
+        return view('permitted.accounting.create_polizas', compact('cuentas_contables', 'tipos_poliza'));
+    }
+
 	/**
 	 * Muestra el apartado de todas las facturas
 	*
@@ -287,9 +295,9 @@ class CustomerPolizaController extends Controller
         return  $flag;
     }
 
-    public function delete_partida_poliza(Request $request)
+    public function create_poliza_without_invoice(Request $request)
     {
-
+        dd($request);
     }
 
 }

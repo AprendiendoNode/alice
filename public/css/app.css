@@ -226,3 +226,6 @@ button.toast-close-button {
   }
 }
 
+.sidebar .nav.sub-menu {
+  padding: 0.25rem 0 0.6rem 2.0rem !important;
+}

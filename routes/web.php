@@ -1252,6 +1252,7 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
    Route::post('/get_diario_detalle', 'Accounting\DiaryPoliceController@get_diary_detail_data');
 
   //POLIZAS
+  Route::get('/create-polizas', 'Accounting\CustomerPolizaController@index');
   Route::get('/customer-polizas-show', 'Accounting\CustomerPolizaController@show');
   Route::post('/customer-polizas-search', 'Accounting\CustomerPolizaController@search');
   Route::post('/customer-polizas-cancel', 'Accounting\CustomerPolizaController@cancel_poliza');
