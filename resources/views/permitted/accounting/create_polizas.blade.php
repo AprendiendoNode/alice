@@ -25,6 +25,7 @@
           <h4 class="text-dark">Creacion de polizas</h4>
         </div>
         <form id="form_create_asientos_contables">
+            <input id="date_invoice" name="date_invoice" type="hidden" value="">
             <div class="row">
               <div class="col-md-3 col-xs-12">
                 <div class="form-group">
@@ -49,11 +50,11 @@
               </div>   
               <div class="form-group col-md-2">
                 <label class="" for="day_poliza">Día:</label>
-                <input type="number" class="form-control form-control-sm mb-2 mr-sm-2" value="" name="day_poliza" id="day_poliza">
+                <input readonly type="number" class="form-control form-control-sm mb-2 mr-sm-2" value="" name="day_poliza" id="day_poliza">
               </div>
               <div class="form-group col-md-2">
                 <label class="" for="mes_poliza">Mes:</label>
-                <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
+                <input readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2" name="mes_poliza" id="mes_poliza">
               </div>
               <div class="form-group col-md-3">
                 <label class="" for="mes_poliza">Descripción:</label>
@@ -91,7 +92,7 @@
                           </select>
                         </td>
                         <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia" readonly type="number" value=""></td>
-                        <td><input style="width:80px;text-align:center" class="form-control form-control-sm tipo_cambio" type="number" value=""></td>
+                        <td><input style="width:80px;text-align:center" class="form-control form-control-sm tipo_cambio" type="number" value="1"></td>
                         <td class=""><input style="width:170px;text-align:left" class="form-control form-control-sm nombre" type="text" value=""></td>
                         <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos" type="text" value="0.0"></td>
                         <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm abonos"  type="text" value="0.0" ></td> 
@@ -110,7 +111,7 @@
                         </select>
                       </td>
                       <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia" readonly type="number" value=""></td>
-                      <td><input style="width:80px;text-align:center" class="form-control form-control-sm tipo_cambio" type="number" value=""></td>
+                      <td><input style="width:80px;text-align:center" class="form-control form-control-sm tipo_cambio" type="number" value="1"></td>
                       <td><input style="width:170px;text-align:left" class="form-control form-control-sm nombre" type="text" value=""></td>
                       <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos" type="text" value="0.0"></td>
                       <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm abonos"  type="text" value="0.0" ></td> 
@@ -131,8 +132,8 @@
             </div>
             <div class="form-inline col-md-5">
               <label class="" for="">Totales: </label>
-              <input style="width:120px;" value="" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 text-right font-weight-bold" name="total_cargos" id="total_cargos">
-              <input style="width:120px;" value="" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 text-right font-weight-bold" name="total_abonos" id="total_abonos">
+              <input style="width:120px;" value="0.00" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 text-right font-weight-bold" name="total_cargos" id="total_cargos">
+              <input style="width:120px;" value="0.00" readonly type="text" class="form-control form-control-sm mb-2 mr-sm-2 text-right font-weight-bold" name="total_abonos" id="total_abonos">
             </div>
           </div>
 

@@ -11,12 +11,7 @@ $(function(){
     autoUpdateInput: false,
     }, function (chosen_date) {
         $("#form_create_asientos_contables input[name='date_poliza']").val(chosen_date.format("DD-MM-YYYY"));
-        let date_selected = $("input[name='date_poliza']").val();
-        console.log(date_selected);
-        let dia = moment(chosen_date).format("DD");
-        let mes = moment(chosen_date).format("MMMM");
-        console.log(dia);
-        console.log(mes);
+        set_date_inputs(chosen_date);
     });
 
 })
@@ -33,6 +28,22 @@ function delete_mov_cc(e){
     row.parentNode.removeChild(row);
 }
 
+function set_date_inputs(chosen_date){
+    let dia = moment(chosen_date).format("DD");
+    let mes = moment(chosen_date).format("MMMM");
+    let date_invoice = chosen_date.format("YYYY-MM-DD");
+
+    $('#day_poliza').val(dia);
+    $('#mes_poliza').val(mes);
+    $('#date_invoice').val(date_invoice);
+
+    let list = document.getElementsByClassName('dia');
+    
+    for (let n = 0; n < list.length; ++n) {
+        list[n].value= dia;
+    }
+    
+}
 
 $("#form_create_asientos_contables").on('submit', function(e){
     e.preventDefault();
@@ -124,7 +135,7 @@ $("#form_create_asientos_contables").on('submit', function(e){
           type: 'success',
         }).then(function (result) {
           if (result.value) {
-            //window.location = "/accounting/create-polizas";
+            window.location = "/accounting/view-create-polizas";
           }
         })
       }else{

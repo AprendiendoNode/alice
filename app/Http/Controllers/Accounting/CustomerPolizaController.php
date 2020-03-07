@@ -297,7 +297,61 @@ class CustomerPolizaController extends Controller
 
     public function create_poliza_without_invoice(Request $request)
     {
-        dd($request);
+        //Objeto de polizas
+        $asientos = $request->movs_polizas;
+        $asientos_data = json_decode($asientos);
+
+        $tam_asientos = count($asientos_data);
+        $flag = "false";
+
+        DB::beginTransaction();
+
+        try {
+
+            $id_poliza = DB::table('polizas')->insertGetId([
+                'tipo_poliza_id' => $request->type_poliza,
+                'numero' => $request->num_poliza,
+                'fecha' => $request->date_invoice,
+                'descripcion' => $request->descripcion_poliza,
+                'total_cargos' => $request->total_cargos_format,
+                'total_abonos' => $request->total_abonos_format
+            ]);
+
+            //Insertando movimientos de las polizas
+            for ($i=0; $i < $tam_asientos; $i++)
+            {
+              if ( $asientos_data[$i]->cuenta_contable_id ) {
+                if ( $asientos_data[$i]->cargo == 0 && $asientos_data[$i]->abono == 0) {
+                   /* NO_INSERTAR */
+                }
+                else{
+                  /* SE INSERTAR */
+                  $sql = DB::table('polizas_movtos')->insert([
+                    'poliza_id' => $id_poliza,
+                    'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
+                    'fecha' => $request->date_invoice,
+                    'exchange_rate' => $asientos_data[$i]->tipo_cambio,
+                    'descripcion' => $asientos_data[$i]->nombre,
+                    'cargos' => $asientos_data[$i]->cargo,
+                    'abonos' => $asientos_data[$i]->abono,
+                    'referencia' => $asientos_data[$i]->referencia
+                  ]);
+                }
+              }
+            }
+
+            DB::commit();
+
+            $flag = "true";
+
+
+        } catch(\Exception $e){
+            $error = $e->getMessage();
+            DB::rollback();
+            dd($error);
+        }
+
+        return  $flag;
     }
 
 }
