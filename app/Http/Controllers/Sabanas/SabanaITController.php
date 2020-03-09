@@ -277,7 +277,7 @@ class SabanaITController extends Controller
     return $result;
   }
   public function cl_diario_itc(Request $request){
-    info($request);
+    //info($request);
     $fecha=$request->fecha;
     $itc_id= $request->itc_id;
     $newdate=Carbon::parse($fecha);
@@ -299,6 +299,37 @@ class SabanaITController extends Controller
         ]
     );
 
+    return "ok";
+  }
+
+  public function search_client_itc(Request $request){
+    //info($request);
+    $id_itc=$request->id_itc;
+    $result=DB::Select('CALL px_sitios_by_itc(?)',array($id_itc));
+    return $result;
+  }
+  public function cl_5dia_itc(Request $request){
+    //info($request);
+
+    $fecha=$request->fecha;
+    $itc_id= $request->itc_id;
+    $sitio= $request->sitio;
+    $newdate=Carbon::parse($fecha);
+    $newdate->format('Y/m/d');
+
+    DB::table('cl_5_dia')
+    ->updateOrInsert(
+        ['fecha' => $fecha,'itc_id' => $itc_id,'id_hotel'=>$sitio],
+        ['reporte' => $request->reporte,
+         'nps'=>$request->nps,
+         'factura_cliente'=>$request->factura_cliente,
+         'memoria_tecnica'=>$request->memoria_tecnica,
+         'inventario_actualizado'=>$request->inventario_actualizado,
+         'itc_id'=>$itc_id,
+         'fecha'=>$newdate,
+         'id_hotel'=>$sitio,
+        ]
+    );
     return "ok";
   }
 

@@ -81,7 +81,30 @@ $(function() {
     //getFoliosByHotel(itc);
     getViaticsByITC(itc);
     getProjects(itc);
+    genclientsitc(itc);
   });
+
+  function genclientsitc(itc){
+    $('#cliente_5dia').html('');
+    $('#cliente_5dia').append('<option value="0">Seleccione</option>');
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+    type:"POST",
+    url:"/search_client_itc",
+    data:{_token:_token,id_itc:itc},
+    success:function(data){
+    console.log(data);
+    data.forEach(function(element){
+      $('#cliente_5dia').append('<option value="'+element.id+'">'+element.sitio+'</option>')
+    });
+    },
+    error:function(data){
+      console.log('Error en: '+data);
+    }
+
+  });
+  }
+
 
   $('#filtroGeneral').on('change', function(e) {
     var itc = $('#select_itc').val();

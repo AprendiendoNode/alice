@@ -1137,14 +1137,30 @@
                         </div>
                         </form>
 
-                        <div class="row pt-5 pb-3">
+                        <div class="row pt-5 pb-2">
                           <div class="col-md-12 text-center">
                             <h4>Check List por cliente(entrega el día 5 del mes)</h4>
                         </div>
                         </div>
 
+                        <div class="row pt-5 pb-2">
+                          <div class="col-md-2">
+                            <p>Seleccione cliente:</p>
+                          </div>
+                          <div class="col-md-8">
+                            <select id="cliente_5dia"class="form-control" name="">
+                              <option value="0">Seleccione</option>
+                            </select>
+                          </div>
+                          <div class="col-md-2">
+
+                          </div>
+                        </div>
+
                         <div class="row">
-                            <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover">
+                          <form id="form_5dia" name="form" class="w-100" >
+                            {{ csrf_field() }}
+                            <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover w-100">
                                 <thead class="bg-aqua text-center">
                                     <tr>
                                         <th>No.</th>
@@ -1158,7 +1174,7 @@
                                         <td class="text-left">Reporte de Red Elaborado y entregado al cliente o en la carpeta de acceso al cliente</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="reporte_red" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1172,7 +1188,7 @@
                                         <td class="text-left">NPS contestado</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="nps" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1186,7 +1202,7 @@
                                         <td class="text-left">Factura Entregada al cliente</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="factura_cliente" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1200,7 +1216,7 @@
                                         <td class="text-left">Memoria Técnica Actualizada</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="memoria_tecnica" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1214,7 +1230,7 @@
                                         <td class="text-left">Inventario Actualizado</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="inventario_actualizado" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1225,9 +1241,10 @@
                                     </tr>
                                 </tbody>
                             </table>
+                          </form>
                             <div class="row container-fluid">
                               <div class="col-md-12 ">
-                                  <button id="btn_cl_diario" class="btn btn-success disabled float-right" type="button">Aceptar</button>
+                                  <button id="btn_cl_5dia" class="btn btn-success disabled float-right" type="button">Aceptar</button>
                               </div>
                             </div>
                         </div>

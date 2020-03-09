@@ -29,7 +29,7 @@ $.ajax({
       timer: 1200
     })
 
-    console.log(data);
+    //console.log(data);
   },
   error:function(data){
     Swal.fire({
@@ -42,5 +42,42 @@ $.ajax({
   }
 })
 
+
+});
+
+
+$('#cliente_5dia').on('change',function(){
+  var cliente=$('#cliente_5dia').val();
+  if(cliente!=0){
+    $('#btn_cl_5dia').removeClass('disabled');
+  }else{
+    $('#btn_cl_5dia').addClass('disabled');
+  }
+
+});
+
+$('#btn_cl_5dia').on('click',function(){
+    var _token = $('meta[name="csrf-token"]').attr('content');
+    var reporte =$('#reporte_red').val();
+    var nps = $('#nps').val();
+    var factura_cliente = $('#factura_cliente').val();
+    var memoria_tecnica = $('#memoria_tecnica').val();
+    var inventario_actualizado = $('#inventario_actualizado').val();
+    var current_date= new Date().toISOString().slice(0,10);
+    var itc_id = $('#select_itc').val();
+    var sitio = $('#cliente_5dia').val();
+
+    $.ajax({
+      type:"POST",
+      url:"/cl_5dia_itc",
+      data:{_token:_token,reporte:reporte,nps:nps,factura_cliente:factura_cliente,memoria_tecnica:memoria_tecnica,
+            inventario_actualizado:inventario_actualizado,fecha:current_date,itc_id:itc_id,sitio:sitio},
+      success:function(data){
+        console.log(data);
+      },
+      error:function(data){
+        console.log('Error en: '+data);
+      }
+    });
 
 });

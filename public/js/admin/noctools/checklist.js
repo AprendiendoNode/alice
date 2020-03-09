@@ -24,6 +24,28 @@ function table_antenas(datajson, table){
 
 }
 
+function table_cl_5(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_chlist);
+  vartable.fnClearTable();
+
+  $.each(datajson, function(index, status){
+
+    vartable.fnAddData([
+      status.name,
+      status.Nombre_hotel,
+      eval_state(status.reporte),
+      eval_state(status.nps),
+      eval_state(status.factura_cliente),
+      eval_state(status.memoria_tecnica),
+      eval_state(status.inventario_actualizado),
+      status.fecha
+    ]);
+  });
+
+}
+
+
 function eval_state(state){
   switch (state) {
       case 0:

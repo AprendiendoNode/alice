@@ -53,61 +53,36 @@
 
                   </tbody>
                 </table>
-
-                <!--<div class="row pt-4">
-
-                                  <h4>Check List por cliente(entrega el día 5 del mes)</h4>
-                                  <br>
-                                  <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover">
-                                    <thead class="bg-aqua text-center">
-                                      <tr>
-                                        <th>No.</th>
-                                        <th>Rubro</th>
-                                        <th>Si</th>
-                                        <th>No</th>
-                                        <th>NA</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody class="text-center"style="font-size: 11px;">
-                                      <tr>
-                                        <td>1</td>
-                                        <td>Reporte de Red Elaborado y entregado al cliente o en la carpeta de acceso al cliente</td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                      </tr>
-                                      <tr>
-                                        <td>2</td>
-                                        <td>NPS contestado</td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                      </tr>
-                                      <tr>
-                                        <td>3</td>
-                                        <td>Factura Entregada al cliente</td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                      </tr>
-                                      <tr>
-                                        <td>4</td>
-                                        <td>Memoria Técnica Actualizada</td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                      </tr>
-                                      <tr>
-                                        <td>5</td>
-                                        <td>Inventario Actualizado</td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                        <td> <input type="checkbox" name="" value=""> </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
                 </div>
 
+  <div class="row pt-4">
+      <div class="col-md-12">
+
+          <div class="text-center">
+              <h4>Check List por cliente(entrega el día 5 del mes)</h4>
+              <br>
+              <table id="table_cl_5" class="table table-striped table-bordered compact-tab table-hover w-100">
+                  <thead class="bg-aqua text-center">
+                      <tr>
+                          <th>Nombre</th>
+                          <th>Nombre sitio</th>
+                          <th>Reporte de elaborado y entregado al cliente o en la carpeta de acceso al cliente</th>
+                          <th>NPS contestado</th>
+                          <th>Factura entregada al cliente</th>
+                          <th>Memoria eécnica actualizada</th>
+                          <th>Inventario actualizado</th>
+                          <th>Fecha</th>
+                      </tr>
+                  </thead>
+                  <tbody class="text-center" style="font-size: 11px;">
+
+                  </tbody>
+              </table>
+          </div>
+
+      </div>
+  </div>
+<!--
                 <div class="">
                   <h4>Check List por cliente (entrega dia 20)</h4>
                   <br>
@@ -160,8 +135,6 @@
                     </tbody>
                   </table>
                 </div>-->
-
-              </div>
             </div>
         </div>
     </div>
@@ -188,6 +161,18 @@
       data:{_token:_token},
       success:function(data){
         table_antenas(data,$('#table_cl_diario'));
+      },
+      error:function(data){
+
+      }
+    });
+
+    $.ajax({
+      type:"POST",
+      url:"/get_cl_5_dia",
+      data:{_token:_token},
+      success:function(data){
+        table_cl_5(data,$('#table_cl_5'));
       },
       error:function(data){
 
