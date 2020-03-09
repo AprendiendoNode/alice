@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\ConvertNumberToLetters;
 use Mail;
-
+use App\Models\Purchases\Purchase;
 class CustomerPolizaController extends Controller
 {
 
@@ -231,7 +231,7 @@ class CustomerPolizaController extends Controller
                 for($j=0; $j <= (count($data)-1); $j++)
                 {
                     array_push($asientos, $data[$j]);
-                } 
+                }
             }
         }
 
@@ -247,7 +247,7 @@ class CustomerPolizaController extends Controller
         $poliza_header = DB::select('CALL px_enc_poliza_xid(?)', array($id_poliza));
 
         $asientos = DB::select('CALL px_polizas_movtos_xpoliza(?)', array($id_poliza));
-   
+
         if(auth()->user()->can('Polizas readonly')){
             return view('permitted.accounting.table_poliza_movs_readonly',
                compact('asientos', 'cuentas_contables', 'tipos_poliza', 'poliza_header'));
@@ -273,7 +273,20 @@ class CustomerPolizaController extends Controller
                     //Reestableciendo bandera de contabilizando a 0  de las facturas involucradas
                     $ids_customers = DB::table('polizas_movtos')->select()->where('poliza_id', '=', $id_poliza )->pluck('customer_invoice_id');
                     $ids_customers_unique = $ids_customers->unique();
-                    $customer_invoice = CustomerInvoice::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
+                    if (empty($ids_customers_unique[0])) {
+                      /*COMPRAS*/
+                      $ids_customers = DB::table('polizas_movtos')->select()->where('poliza_id', '=', $id_poliza )->pluck('purchase_id');
+                      $ids_customers_unique = $ids_customers->unique();
+                      $customer_invoice = Purchase::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
+                    }
+                    else {
+                      $customer_invoice = CustomerInvoice::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
+                    }
+                    //Reestableciendo bandera de contabilizando a 0  de las facturas involucradas
+                    // $ids_customers = DB::table('polizas_movtos')->select()->where('poliza_id', '=', $id_poliza )->pluck('customer_invoice_id');
+                    // $ids_customers_unique = $ids_customers->unique();
+                    // $customer_invoice = CustomerInvoice::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
+
                     //Eliminando partidas dentro de la poliza
                     DB::table('polizas_movtos')->where('poliza_id', '=', $id_poliza )->delete();
                     //Eliminando poliza

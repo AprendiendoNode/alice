@@ -230,31 +230,32 @@ class HistoryCreditNoteController extends Controller
 
       $next_id_num = 0;
       $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+      $cuentas_devoluciones_descuentos = DB::select('CALL px_cuentas_contable_5001()');
+
       $facturas = json_decode($request->facturas);
       $asientos = array();
-      /*----------------------------------------------------------------------
       for ($i=0; $i <= (count($facturas)-1); $i++)
       {
-          $data = DB::select('CALL px_poliza_xfactura_cc(?)', array($facturas[$i]));
+        $data = DB::select('CALL px_poliza_notas_credito_compras(?)', array($facturas[$i]));
 
-          if(count($data) > 0)
+        if(count($data) > 0)
+        {
+          for($j=0; $j <= (count($data)-1); $j++)
           {
-              for($j=0; $j <= (count($data)-1); $j++)
-              {
-                  array_push($asientos, $data[$j]);
-              }
+            array_push($asientos, $data[$j]);
           }
+        }
       }
+      /*----------------------------------------------------------------------
       ----------------------------------------------------------------------*/
       return view('permitted.purchases.table_asientos_contables_nota_credito_poliza',
-      compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num', 'date_rest', 'date'));
+      compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num', 'date_rest', 'date', 'cuentas_devoluciones_descuentos'));
     }
     public function customer_polizas_movs_save(Request $request)
     {
       //Objeto de polizas
       $asientos = $request->movs_polizas;
       $asientos_data = json_decode($asientos);
-      //
       $tam_asientos = count($asientos_data);
       $flag = "false";
       DB::beginTransaction();
@@ -262,7 +263,7 @@ class HistoryCreditNoteController extends Controller
         $id_poliza = DB::table('polizas')->insertGetId([
             'tipo_poliza_id' => $request->type_poliza,
             'numero' => $request->num_poliza,
-            'fecha' => $request->date_invoice,
+            'fecha' => $request->date_resive,
             'descripcion' => $request->descripcion_poliza,
             'total_cargos' => $request->total_cargos_format,
             'total_abonos' => $request->total_abonos_format
@@ -280,7 +281,7 @@ class HistoryCreditNoteController extends Controller
                 'poliza_id' => $id_poliza,
                 'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
                 'purchase_id' => $asientos_data[$i]->factura_id,
-                'fecha' => $request->date_invoice,
+                'fecha' => $request->date_resive,
                 'exchange_rate' => $asientos_data[$i]->tipo_cambio,
                 'descripcion' => $asientos_data[$i]->nombre,
                 'cargos' => $asientos_data[$i]->cargo,
@@ -288,7 +289,7 @@ class HistoryCreditNoteController extends Controller
                 'referencia' => $asientos_data[$i]->referencia
               ]);
               //Marcando facturas a contabilizado
-              $customer_invoice = CustomerInvoice::findOrFail($asientos_data[$i]->factura_id);
+              $customer_invoice = Purchase::findOrFail($asientos_data[$i]->factura_id);
               $customer_invoice->contabilizado = 1;
               $customer_invoice->save();
             }

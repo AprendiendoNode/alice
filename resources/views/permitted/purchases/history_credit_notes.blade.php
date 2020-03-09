@@ -127,8 +127,8 @@
                 </div>
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
-                    <label for="filter_customer_id">Cliente</label>
-                    <select class="form-control" id="filter_customer_id" id="filter_customer_id">
+                    <label for="filter_customer_id">Proveedor</label>
+                    <select class="form-control" id="filter_customer_id" name="filter_customer_id">
                       <option value="" selected>Selecciona...</option>
                       @forelse ($providers as $providers_data)
                         <option value="{{ $providers_data->id  }}">{{ $providers_data->name }}</option>

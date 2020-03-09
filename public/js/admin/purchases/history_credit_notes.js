@@ -131,14 +131,15 @@ $.each(JSON.parse(datajson), function(index, information){
   a03 = '<div class="dropdown-menu">';
   a04 = '<a class="dropdown-item" target="_blank" href="/purchases/credit-notes-history/'+information.id+'"><i class="fa fa-eye"></i> Ver</a>';
 
-  a05 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-envelope"></i> Enviar correo electrónico</a>';
-
-  if (parseInt(mail) == 0) {
-    a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> Marcar como enviada</a>';
-  }
+  // a05 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_mail(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-envelope"></i> Enviar correo electrónico</a>';
+  /*
+   if (parseInt(mail) == 0) {
+     a06 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent(this)" value="'+information.id+'" datas="'+information.name+'"><i class="far fa-hand-paper"></i> Marcar como enviada</a>';
+   }
   if ( parseInt(poliza) != 1 ) {
     a07 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent_poliza(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-paper-plane"></i> Enviar a poliza</a>';
   }
+  */
   if ( parseInt(status) != CANCELADO ) {
     a08 = '<div class="dropdown-divider"></div>';
     a09 = '<a class="dropdown-item" href="javascript:void(0);"  onclick="link_cancel(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-trash-alt"></i> Cancelar</a>';
@@ -146,7 +147,7 @@ $.each(JSON.parse(datajson), function(index, information){
   }
   var a11 = '</div>';
 
-  var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a09+a10+a11;
+  var dropdown = a01+a02+a03+a04+a08+a09+a10+a11;
 
   if ( parseInt(contabilizado) != 0 ) {
     status_contabilizado = '<i class="fas fa-check text-success"></i>';
@@ -213,7 +214,7 @@ var Configuration_table_responsive_doctypes = {
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
     "order": [[ 3, "asc" ]],
-    buttons: [
+  buttons: [
       {
         text: '<i class=""></i> Contabilizar',
         titleAttr: 'Contabilizar',
@@ -255,7 +256,7 @@ var Configuration_table_responsive_doctypes = {
 
                   $("#modal_view_poliza").modal("show");
 
-                  // $('.cuenta_contable').select2();
+                  $('.cuenta_contable').select2();
                   // $('#day_poliza').val(dd);
                   // $('#mes_poliza').val(mes);
                 },
@@ -570,7 +571,21 @@ $('#send_mail_button').on('click', function(){
       Swal.fire('Ocurrio un error inesperado','','error');
     })
 })
-
+//LOGICA DE MODAL
+//Formato numerico: 00,000.00
+function format_number(number){
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+function remove_commas(number){
+  return number.replace(/,/g, "");
+}
+function check_totales_asientos(total_cargos,total_abonos){
+  if(parseFloat(total_cargos) != parseFloat(total_abonos)){
+    return false;
+  }else{
+    return true
+  }
+}
 $("#form_save_asientos_contables").on('change','#type_poliza',function(){
   var type = $(this).val();
   let _token = $('meta[name="csrf-token"]').attr('content');
@@ -600,7 +615,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
   e.preventDefault();
   var data_A = $('#type_poliza').val();
   var data_B = $('#descripcion_poliza').val();
-  if (data_A == '' || data_B == '') {
+  if (data_A == '' || data_B == '' || $('.cuenta_contable').val().trim() === '') {
     $('#errores_element').show();
     if ( data_A == '' ) {
       $('#txt_a').show();
@@ -608,11 +623,15 @@ $('#form_save_asientos_contables').on('submit', function(e){
     if ( data_B == '' ) {
       $('#txt_b').show();
     }
+    if ( $('.cuenta_contable').val().trim() === '' ) {
+      $('#txt_c').show();
+    }
   }
   else{
     $('#errores_element').hide();
     $('#txt_a').hide();
     $('#txt_b').hide();
+    $('#txt_c').hide();
 
     // e.preventDefault();
     let total_cargos = remove_commas($('#total_cargos').val());

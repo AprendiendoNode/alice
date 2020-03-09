@@ -50,6 +50,45 @@
         </tr>
       </thead>
       <tbody>
+        @foreach ($asientos as $data)
+          @php
+              $total_cargos+=$data->cargo;
+              $total_abonos+=$data->abono;
+              $fecha = strtotime($data->fecha);
+              $date = date("d-m-Y", $fecha);
+              $day = date("d", $fecha);
+          @endphp
+          <tr>
+              <td><input class="id_factura" type="hidden" value="{{$data->purchase_id}}"></td>
+              <td>{{$data->mov}}</td>
+              <td>
+                <select style="width:280px;" class="form-control form-control-sm cuenta_contable select2 required">
+                  <option value="">Elija</option>
+                  @if ($data->mov == 1)
+                    @foreach ($cuentas_devoluciones_descuentos as $cuenta_dev_des)
+                      <option value="{{$cuenta_dev_des->id}}">{{$cuenta_dev_des->cuenta}} {{$cuenta_dev_des->nombre}}</option>
+                    @endforeach
+
+                  @else
+                    @foreach ($cuentas_contables as $cuenta_data)
+                      @if ($cuenta_data->id == $data->cuenta_contable_id)
+                        <option selected value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
+                      @else
+                        <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>
+                      @endif
+                    @endforeach
+                  @endif
+                </select>
+              </td>
+              <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia" readonly type="number" value="{{$day}}"></td>
+              <td><input style="width:94px;text-align:center" class="form-control form-control-sm tipo_cambio" readonly type="number" value="{{$data->tipo_cambio}}"></td>
+              <td class=""><input style="width:170px;text-align:left" readonly class="form-control form-control-sm nombre" type="text" value="{{$data->descripcion}} {{$date}}"></td>
+              <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos" type="text" value="{{number_format($data->cargo, 2, '.', '')}}" ></td>
+              <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm abonos"  type="text" value="{{number_format($data->abono, 2, '.', '')}}" ></td>
+            <td><input style="width:135px;text-align:left" class="form-control form-control-sm referencia" type="text"></td>
+          </tr>
+
+        @endforeach
 
       </tbody>
     </table>
@@ -68,6 +107,7 @@
           <h6 class="alert-heading">The following fields are required!</h6>
           <p id="txt_a" name="txt_a" style="display:none;">Elija un tipo de póliza.</p>
           <p id="txt_b" name="txt_b" style="display:none;">Ingresé una descripción.</p>
+          <p id="txt_c" name="txt_c" style="display:none;">Llenar todas las listas desplegables.</p>
         </div>
       </div>
     </div>
