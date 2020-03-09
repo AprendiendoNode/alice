@@ -140,7 +140,7 @@ $.each(JSON.parse(datajson), function(index, information){
     a07 = '<a class="dropdown-item" href="javascript:void(0);" onclick="mark_sent_poliza(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-paper-plane"></i> Enviar a poliza</a>';
   }
   */
-  if ( parseInt(status) != CANCELADO ) {
+  if ( parseInt(status) != CANCELADO &&  parseInt(contabilizado) == 0 ) {
     a08 = '<div class="dropdown-divider"></div>';
     a09 = '<a class="dropdown-item" href="javascript:void(0);"  onclick="link_cancel(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-trash-alt"></i> Cancelar</a>';
     a10 = '</div>';
