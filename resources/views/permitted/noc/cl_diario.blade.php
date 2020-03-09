@@ -82,59 +82,42 @@
 
       </div>
   </div>
-<!--
-                <div class="">
-                  <h4>Check List por cliente (entrega dia 20)</h4>
-                  <br>
-                  <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover">
-                    <thead class="bg-aqua text-center">
-                      <tr>
-                        <th>No.</th>
-                        <th>Rubro</th>
-                        <th>Si</th>
-                        <th>No</th>
-                        <th>NA</th>
-                      </tr>
-                    </thead>
-                    <tbody class="text-center"style="font-size: 11px;">
-                      <tr>
-                        <td>1</td>
-                        <td>Visita a cliente</td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>Detecta oportunidades del cliente</td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>Revisión de Información del cliente en Alice (Dashboard del cliente)</td>
-                      </tr>
-                      <tr>
-                        <td>4</td>
-                        <td>Detecta oportunidades de clientes nuevos  en el trayecto de visita a clientes asignados</td>
-                      </tr>
-                      <tr>
-                        <td>5</td>
-                        <td>Mantenimiento Preventivo o correctivo a  MDF/IDF (de acuerdo a calendario)</td>
-                      </tr>
-                      <tr>
-                        <td>6</td>
-                        <td>Realizar  Backup de equipos de comunicaciones ZD, SonicWall, ZQ, SW, etc.</td>
-                      </tr>
-                      <tr>
-                        <td>7</td>
-                        <td>Revisar y renovar licencia de ZD (si corresponde) </td>
 
-                      </tr>
-                      <tr>
-                        <td>8</td>
-                        <td>Cliente al corriente en el pago de factura del mes</td>
+                <div class="row pt-4">
+                  <div class="col-md-12">
+                    <div class="text-center">
+                      <h4>Check List por cliente (entrega dia 20)</h4>
+                      <br>
+                      <div class="table-responsive">
 
-                      </tr>
 
-                    </tbody>
-                  </table>
-                </div>-->
+                      <table id="table_cl_20" class="table table-striped table-bordered compact-tab table-hover">
+                        <thead class="bg-aqua text-center">
+                          <tr>
+                              <th>Nombre</th>
+                              <th>Nombre sitio</th>
+                              <th>Visita a cliente</th>
+                              <th>Revisar y Asegurar disponibilidad del 98 % del equipo activo en sitio</th>
+                              <th>Detecta oportunidades del cliente</th>
+                              <th>Revisión de Información del cliente en Alice (Dashboard del cliente)</th>
+                              <th>Detecta oportunidades de clientes nuevos  en el trayecto de visita a clientes asignados</th>
+                              <th>Mantenimiento Preventivo o correctivo a  MDF/IDF (de acuerdo a calendario)</th>
+                              <th>Realizar  Backup de equipos de comunicaciones ZD, SonicWall, ZQ, SW, etc.</th>
+                              <th>Revisar y renovar licencia de ZD (si corresponde)</th>
+                              <th>Cliente al corriente en el pago de factura del mes</th>
+                              <th>Fecha</th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-center"style="font-size: 11px;">
+
+
+                        </tbody>
+                      </table>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -151,7 +134,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-    <script src="{{ asset('js/admin/noctools/checklist.js?v=1.0.0')}}"></script>
+    <script src="{{ asset('js/admin/noctools/checklist.js?v=2.0.0')}}"></script>
     <script type="text/javascript">
     var cl_diario = {!! json_encode($cl_diario->toArray()) !!};
     var _token = $('meta[name="csrf-token"]').attr('content');
@@ -173,6 +156,18 @@
       data:{_token:_token},
       success:function(data){
         table_cl_5(data,$('#table_cl_5'));
+      },
+      error:function(data){
+
+      }
+    });
+
+    $.ajax({
+      type:"POST",
+      url:"/get_cl_20_dia",
+      data:{_token:_token},
+      success:function(data){
+        table_cl_20(data,$('#table_cl_20'));
       },
       error:function(data){
 

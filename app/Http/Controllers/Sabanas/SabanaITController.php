@@ -333,4 +333,33 @@ class SabanaITController extends Controller
     return "ok";
   }
 
+  public function cl_20dia_itc(Request $request){
+    //info($request);
+
+    $fecha=$request->fecha;
+    $itc_id= $request->itc_id;
+    $sitio= $request->sitio;
+    $newdate=Carbon::parse($fecha);
+    $newdate->format('Y/m/d');
+
+    DB::table('cl_20_dia')
+    ->updateOrInsert(
+        ['fecha' => $fecha,'itc_id' => $itc_id,'id_hotel'=>$sitio],
+        ['visita_cliente' => $request->visita_cliente,
+         'revisar_disp'=>$request->revisar_disp,
+         'detectar_oportunidad'=>$request->detectar_oportunidad,
+         'revisar_informacion'=>$request->revisar_informacion,
+         'detecta_nuevas_oportunidades'=>$request->detecta_nuevas_oportunidades,
+         'mantto'=>$request->mantto,
+         'backup'=>$request->backup,
+         'revisar_renovar'=>$request->revisar_renovar,
+          'cliente_pago'=>$request->cliente_pago,
+         'itc_id'=>$itc_id,
+         'fecha'=>$newdate,
+         'id_hotel'=>$sitio,
+        ]
+    );
+    return "ok";
+  }
+
 }

@@ -1255,8 +1255,23 @@
                           </div>
                         </div>
 
+                        <div class="row pt-5 pb-2">
+                          <div class="col-md-2">
+                            <p>Seleccione cliente:</p>
+                          </div>
+                          <div class="col-md-8">
+                            <select id="cliente_20dia"class="form-control" name="">
+                              <option value="0">Seleccione</option>
+                            </select>
+                          </div>
+                          <div class="col-md-2">
+
+                          </div>
+                        </div>
+
+
                         <div class="row">
-                            <table id="table_sitios" class="table table-striped table-bordered compact-tab table-hover">
+                            <table id="table_cl_20" class="table table-striped table-bordered compact-tab table-hover">
                                 <thead class="bg-aqua text-center">
                                     <tr>
                                         <th>No.</th>
@@ -1270,7 +1285,7 @@
                                         <td class="text-left">Visita a cliente</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="visita_cliente" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1284,7 +1299,7 @@
                                         <td class="text-left">Revisar y Asegurar disponibilidad del 98 % del equipo activo en sitio</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="revisar_disp" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1299,7 +1314,7 @@
                                         <td class="text-left">Detecta oportunidades del cliente</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="detectar_oportunidad" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1313,7 +1328,7 @@
                                         <td class="text-left">Revisión de Información del cliente en Alice (Dashboard del cliente)</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="revisar_informacion" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1327,7 +1342,7 @@
                                         <td class="text-left">Detecta oportunidades de clientes nuevos en el trayecto de visita a clientes asignados</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="detecta_nuevas_oportunidades" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1341,7 +1356,7 @@
                                         <td class="text-left">Mantenimiento Preventivo o correctivo a MDF/IDF (de acuerdo a calendario)</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="mantto" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1355,7 +1370,7 @@
                                         <td class="text-left">Realizar Backup de equipos de comunicaciones ZD, SonicWall, ZQ, SW, etc.</td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="backup" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1369,7 +1384,7 @@
                                         <td class="text-left">Revisar y renovar licencia de ZD (si corresponde) </td>
                                         <td>
                                           <div class="form-group">
-                                          <select class="form-control" name="">
+                                          <select id="revisar_renovar" class="form-control" name="">
                                                 <option value="0">No</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">NA</option>
@@ -1382,7 +1397,7 @@
                                     <td class="text-left">Cliente al corriente en el pago de factura del mes</td>
                                     <td>
                                       <div class="form-group">
-                                      <select class="form-control" name="">
+                                      <select id="cliente_pago" class="form-control" name="">
                                             <option value="0">No</option>
                                             <option value="1">Si</option>
                                             <option value="2">NA</option>
@@ -1396,7 +1411,7 @@
                             </table>
                             <div class="row container-fluid">
                               <div class="col-md-12 ">
-                                  <button id="btn_cl_diario" class="btn btn-success disabled float-right" type="button">Aceptar</button>
+                                  <button id="btn_cl_20dia" class="btn btn-success disabled float-right" type="button">Aceptar</button>
                               </div>
                             </div>
                         </div>
@@ -1438,8 +1453,8 @@
     <script src="{{ asset('bower_components/highcharts/highcharts.js')}}"></script>
     <script src="{{ asset('bower_components/highcharts/series-label.js')}}"></script>
     <script src="{{ asset('bower_components/highcharts/exporting.js')}}"></script>
-    <script src="{{ asset('js/admin/sabana/sabana_itc.js?v=5.4.7')}}"></script>
-    <script src="{{ asset('js/admin/sabana/sabana_checklist.js?v=1.0.0')}}"></script>
+    <script src="{{ asset('js/admin/sabana/sabana_itc.js?v=6.4.7')}}"></script>
+    <script src="{{ asset('js/admin/sabana/sabana_checklist.js?v=2.0.0')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">

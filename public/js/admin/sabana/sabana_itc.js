@@ -87,6 +87,8 @@ $(function() {
   function genclientsitc(itc){
     $('#cliente_5dia').html('');
     $('#cliente_5dia').append('<option value="0">Seleccione</option>');
+    $('#cliente_20dia').html('');
+    $('#cliente_20dia').append('<option value="0">Seleccione</option>');
     var _token = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
     type:"POST",
@@ -95,7 +97,8 @@ $(function() {
     success:function(data){
     console.log(data);
     data.forEach(function(element){
-      $('#cliente_5dia').append('<option value="'+element.id+'">'+element.sitio+'</option>')
+      $('#cliente_5dia').append('<option value="'+element.id+'">'+element.sitio+'</option>');
+      $('#cliente_20dia').append('<option value="'+element.id+'">'+element.sitio+'</option>');
     });
     },
     error:function(data){

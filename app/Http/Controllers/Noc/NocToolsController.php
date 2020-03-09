@@ -36,6 +36,10 @@ class NocToolsController extends Controller
     $result=DB::Select('CALL px_get_cl_5_dia()',array());
     return $result;
   }
+  public function get_cl_20_dia(){
+    $result=DB::Select('CALL px_get_cl_20_dia()',array());
+    return $result;
+  }
 
   public function dash_operacion(){
     return view('permitted.noc.dash_operacion');

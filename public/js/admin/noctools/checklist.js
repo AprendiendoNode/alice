@@ -45,6 +45,31 @@ function table_cl_5(datajson, table){
 
 }
 
+function table_cl_20(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_chlist);
+  vartable.fnClearTable();
+
+  $.each(datajson, function(index, status){
+
+    vartable.fnAddData([
+      status.name,
+      status.Nombre_hotel,
+      eval_state(status.visita_cliente),
+      eval_state(status.revisar_disp),
+      eval_state(status.detectar_oportunidad),
+      eval_state(status.revisar_informacion),
+      eval_state(status.detecta_nuevas_oportunidades),
+      eval_state(status.mantto),
+      eval_state(status.backup),
+      eval_state(status.revisar_renovar),
+      eval_state(status.cliente_pago),
+      status.fecha
+    ]);
+  });
+
+}
+
 
 function eval_state(state){
   switch (state) {
