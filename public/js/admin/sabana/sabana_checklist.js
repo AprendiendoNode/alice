@@ -50,8 +50,10 @@ $('#cliente_5dia').on('change',function(){
   var cliente=$('#cliente_5dia').val();
   if(cliente!=0){
     $('#btn_cl_5dia').removeClass('disabled');
+    $('#btn_cl_5dia').show();
   }else{
     $('#btn_cl_5dia').addClass('disabled');
+    $('#btn_cl_5dia').hide();
   }
 
 });
@@ -99,8 +101,10 @@ $('#cliente_20dia').on('change',function(){
   var cliente=$('#cliente_20dia').val();
   if(cliente!=0){
     $('#btn_cl_20dia').removeClass('disabled');
+    $('#btn_cl_20dia').show();
   }else{
     $('#btn_cl_20dia').addClass('disabled');
+    $('#btn_cl_20dia').hide();
   }
 
 });
@@ -147,5 +151,4 @@ $('#btn_cl_20dia').on('click',function(){
         console.log('Error en: '+data);
       }
     });
-
 });

@@ -62,6 +62,8 @@ $(function() {
     var itc = $('#select_itc').val();
     var itc_email=$('#select_itc').find(':selected').data("email");
     $(".first_tab").addClass("d-none");
+    $('#btn_cl_5dia').hide();
+    $('#btn_cl_20dia').hide();
     //$("#cargando").removeClass("d-none");
     $('#gral_sitio').removeClass('d-none');//Muestra la informacion por sitio
     $('#gral_cadena').addClass('d-none');//oculta la informacion por cadena.
