@@ -1251,7 +1251,7 @@
 
                         <div class="row pt-5 pb-3">
                           <div class="col-md-12 text-center">
-                              <h4>Check List por cliente (entrega dia 20)</h4>
+                              <h4>Check List por cliente (entrega dia 20 del mes)</h4>
                           </div>
                         </div>
 

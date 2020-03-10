@@ -1,4 +1,72 @@
+var _token = $('meta[name="csrf-token"]').attr('content');
 
+$('#date_to_search').datepicker({
+  language: 'es',
+  format: "yyyy-mm-dd",
+  viewMode: "months",
+  minViewMode: "months",
+  endDate: '0m',
+  autoclose: true,
+  clearBtn: true
+}).datepicker("setDate",'now');
+//$('#date_to_search').val('').datepicker('update');
+var date=$('#date_to_search').val();
+get_cl_diario(date);
+get_cl_5_dia(date);
+get_cl_20_dia(date);
+$('#btn-filtro').on('click',function(){
+var date=$('#date_to_search').val();
+if (date == ''){
+  var date = moment().format('YYYY-MM-DD');
+}
+//console.log(date);
+get_cl_diario(date);
+get_cl_5_dia(date);
+get_cl_20_dia(date);
+});
+
+
+function get_cl_diario(date){
+  $.ajax({
+    type:"POST",
+    url:"/get_cl_diario",
+    data:{_token:_token,date:date},
+    success:function(data){
+      table_antenas(data,$('#table_cl_diario'));
+    },
+    error:function(data){
+
+    }
+  });
+}
+
+function get_cl_5_dia(date){
+  $.ajax({
+    type:"POST",
+    url:"/get_cl_5_dia",
+    data:{_token:_token,date:date},
+    success:function(data){
+      table_cl_5(data,$('#table_cl_5'));
+    },
+    error:function(data){
+
+    }
+  });
+}
+
+function get_cl_20_dia(date){
+  $.ajax({
+    type:"POST",
+    url:"/get_cl_20_dia",
+    data:{_token:_token,date:date},
+    success:function(data){
+      table_cl_20(data,$('#table_cl_20'));
+    },
+    error:function(data){
+
+    }
+  });
+}
 
 function table_antenas(datajson, table){
   table.DataTable().destroy();

@@ -32,6 +32,33 @@
             <div class="card-body">
               <div class="text-center">
                 <h4>Check List actividades diarias del ITC</h4>
+                <div class="row pb-3">
+                  <div class="row pb-3 w-100">
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-3 ">
+                      <div class="form-group" id="date_from">
+                        <label class="control-label" for="date_to_search">
+                          {{ __('general.date_from') }}
+                        </label>
+                        <div class="input-group mb-3">
+                          <input type="text"  datas="filter_date_from" id="date_to_search" name="date_to_search" class="form-control form-control-sm" placeholder="" value="" required>
+                          <div class="input-group-append">
+                            <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-3  pt-4">
+                      <button id="btn-filtro"  type="button"
+                              class="btn btn-primary" >
+                          <i class="fas fa-filter"> Filtrar</i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
                 <br>
                 <table id="table_cl_diario" class="table table-striped table-bordered compact-tab table-hover">
                   <thead class="bg-aqua text-center">
@@ -86,7 +113,7 @@
                 <div class="row pt-4">
                   <div class="col-md-12">
                     <div class="text-center">
-                      <h4>Check List por cliente (entrega dia 20)</h4>
+                      <h4>Check List por cliente (entrega el dia 20 del mes)</h4>
                       <br>
                       <div class="table-responsive">
 
@@ -134,48 +161,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-    <script src="{{ asset('js/admin/noctools/checklist.js?v=2.0.0')}}"></script>
-    <script type="text/javascript">
-    var cl_diario = {!! json_encode($cl_diario->toArray()) !!};
-    var _token = $('meta[name="csrf-token"]').attr('content');
-    $.ajax({
-      type:"POST",
-      url:"/get_cl_diario",
-      data:{_token:_token},
-      success:function(data){
-        table_antenas(data,$('#table_cl_diario'));
-      },
-      error:function(data){
-
-      }
-    });
-
-    $.ajax({
-      type:"POST",
-      url:"/get_cl_5_dia",
-      data:{_token:_token},
-      success:function(data){
-        table_cl_5(data,$('#table_cl_5'));
-      },
-      error:function(data){
-
-      }
-    });
-
-    $.ajax({
-      type:"POST",
-      url:"/get_cl_20_dia",
-      data:{_token:_token},
-      success:function(data){
-        table_cl_20(data,$('#table_cl_20'));
-      },
-      error:function(data){
-
-      }
-    });
-
-
-    </script>
+    <script src="{{ asset('js/admin/noctools/checklist.js?v=3.3.1')}}"></script>
 
     <style media="screen">
     .tableFixHead          { overflow-y: auto; height: 620px; }

@@ -27,17 +27,20 @@ class NocToolsController extends Controller
     return view('permitted.noc.cl_diario',compact('cl_diario'));
   }
 
-  public function get_cl_diario(){
-    $result=DB::Select('CALL px_get_cl_diario()',array());
+  public function get_cl_diario(Request $request){
+    $date=$request->date;
+    $result=DB::Select('CALL px_get_cl_diario(?)',array($date));
     return $result;
   }
 
-  public function get_cl_5_dia(){
-    $result=DB::Select('CALL px_get_cl_5_dia()',array());
+  public function get_cl_5_dia(Request $request){
+    $date=$request->date;
+    $result=DB::Select('CALL px_get_cl_5_dia(?)',array($date));
     return $result;
   }
-  public function get_cl_20_dia(){
-    $result=DB::Select('CALL px_get_cl_20_dia()',array());
+  public function get_cl_20_dia(Request $request){
+    $date=$request->date;
+    $result=DB::Select('CALL px_get_cl_20_dia(?)',array($date));
     return $result;
   }
 
