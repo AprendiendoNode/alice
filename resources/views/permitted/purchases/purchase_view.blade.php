@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View purchases') )
-    Compras
+    Solicitud de pago.
   @else
   {{ trans('message.denied') }}
   @endif
@@ -10,7 +10,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View purchases') )
-    Compras
+    Solicitud de pago.
   @else
   {{ trans('message.denied') }}
   @endif

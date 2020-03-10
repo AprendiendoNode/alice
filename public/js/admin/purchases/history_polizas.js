@@ -726,7 +726,21 @@ $("#form_save_asientos_contables").on('change','#type_poliza',function(){
     $('#num_poliza').val(0);
   }
 });
-
+//LOGICA DE MODAL
+//Formato numerico: 00,000.00
+function format_number(number){
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+function remove_commas(number){
+  return number.replace(/,/g, "");
+}
+function check_totales_asientos(total_cargos,total_abonos){
+  if(parseFloat(total_cargos) != parseFloat(total_abonos)){
+    return false;
+  }else{
+    return true
+  }
+}
 $('#form_save_asientos_contables').on('submit', function(e){
   e.preventDefault();
   var data_A = $('#type_poliza').val();

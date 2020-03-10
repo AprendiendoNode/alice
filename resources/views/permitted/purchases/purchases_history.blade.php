@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View purchases show') )
-    Historial de compras
+    Historial de solicitud de pagos.
   @else
     {{ trans('message.denied') }}
   @endif
@@ -10,7 +10,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View purchases show') )
-    Historial de compras
+    Historial de solicitud de pagos.
   @else
     {{ trans('message.denied') }}
   @endif
