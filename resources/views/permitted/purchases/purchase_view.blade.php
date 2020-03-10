@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View purchases') )
     Compras
   @else
   {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View purchases') )
     Compras
   @else
   {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View purchases') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -31,7 +31,7 @@
             <div class="row">
               <div class="col-md-6 col-xs-12">
                 <label for="order_purchases" class="control-label  my-2">Ordenes de compra:</label>
-                <select class="custom-select required" id="order_purchase_id" name="order_purchase_id">
+                <select class="custom-select" id="order_purchase_id" name="order_purchase_id">
                     <option value="" selected>Selecciona...</option>
                     @forelse ($order_purchase as $orders)
                       <option value="{{ $orders->order_cart_id }}">{{ $orders->num_order }}</option>
@@ -692,7 +692,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('View purchases') )
   <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
   <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
   <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
