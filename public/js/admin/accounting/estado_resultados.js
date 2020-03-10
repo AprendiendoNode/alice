@@ -50,6 +50,8 @@ function busqueda() {
     processData: false,
     success: function (data){
       remplazar_thead_th_periodo($("#all_month"), 2 ,13);
+      remplazar_pintar_header($("#all_month"), 14,17);
+
       fill_table_periodo(data, $("#all_month"));
       pintar_celda($("#all_month"));
 
@@ -63,7 +65,11 @@ function busqueda() {
     }
   });
 }
-
+function remplazar_pintar_header(table, posicionini, posicionfin) {
+  for (var i = posicionini; i <= posicionfin; i++) {
+    table.DataTable().columns(i).header().to$().addClass('azul');
+  }
+}
 
 function remplazar_thead_th_periodo(table, posicionini, posicionfin) {
   var year = $('#period_month').val();
@@ -87,33 +93,9 @@ function pintar_celda(table) {
   //   true : false;
   // } ).nodes().to$().addClass('azul');
 
-  table.DataTable().cells().every( function () {
-    if ( this.data() == 'SUMA' ) { $(this.node()).addClass('sumita'); }
-    if ( this.data() == 'TOTAL INGRESOS' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'COSTO SERVS ADMINISTRADOS' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'IMPORTACIONES' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'FELTES Y ENVÍOS' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'COSTO DE VENTA' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'COSTOS VMW' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'COSTO SUBARRENDAMIENTOS' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'TOTAL COSTO' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'RESULTADO BRUTO' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'COMPLEMENTO DE SUELDO' ) { $(this.node()).addClass('red'); }
-
-    if ( this.data() == 'GASTOS DE COMERCIALIZACIÓN' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'EBITDA' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'EBIT' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'GASTOS FINANCIEROS' ) { $(this.node()).addClass('red'); }
-
-    if ( this.data() == 'PRODUCTOS FINANCIEROS' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'COSTO INTEGRAL DE FINANCIAMIENTO' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'RESULTADO DEL EJERCICIO ANTES IMPTOS' ) { $(this.node()).addClass('red'); }
-
-    if ( this.data() == 'ISR' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'PTU' ) { $(this.node()).addClass('red'); }
-    if ( this.data() == 'RESULTADO DEL EJERCICIO NETO IMPTOS' ) { $(this.node()).addClass('red'); }
-
-  });
+  // table.DataTable().cells().every( function () {
+  //   if ( this.data() == 'SUMA' ) { $(this.node()).addClass('sumita'); }
+  // });
 }
 
 
@@ -137,6 +119,7 @@ function fill_table_periodo (datajson, table){
       status.n10,
       status.n11,
       status.n12,
+      '0000',
       status.porcentaje,
       status.cr_rd,
       status.porcentaje_cr_rd,
@@ -154,6 +137,16 @@ var Configuration_table_no_options_biweekly = {
     //"pageLength": 5,
   // bInfo: false,
   "scrollX": true,
+  "columnDefs": [
+      {
+        "targets": [14,16],
+        "className": "colorcolumna"
+      },
+      {
+        "targets": [0,15,17],
+        "className": "colorcolumnawhite"
+      },
+  ],
   fixedColumns:   {
       leftColumns: 2//Le indico que deje fijas solo las 2 primeras columnas
   },
@@ -190,16 +183,77 @@ var Configuration_table_no_options_biweekly = {
       }
   ],
   "processing": true,
+  // "createdRow": function( row, data, dataIndex ) {
+  //   if ( data[4] == "A" ) {
+  //
+  //   }
+  // },
   "rowCallback": function( row, data, index ) {
-    // console.log(data[1]); //Columna 1
+    var text_001 = 'SUMA';
+    var text_002 = 'TOTAL INGRESOS' ;
+    var text_003 = 'COSTO SERVS ADMINISTRADOS';
+    var text_004 = 'IMPORTACIONES';
+    var text_005 = 'FELTES Y ENVÍOS';
 
-    if (data[1] = 'TOTAL COSTO') {
-      // $(row).columns(3).addClass('azul');
+
+    var text_006 = 'TOTAL COSTO';
+    var text_007 = 'RESULTADO BRUTO';
+
+    var text_008 = 'GASTOS DE OPERACION';
+    var text_009 = 'COMPLEMENTO DE SUELDO';
+
+    var text_010 = 'GASTOS DE COMERCIALIZACIÓN';
+    var text_011 = 'EBITDA';
+
+    var text_012 = 'EBIT';
+
+    var text_013 = 'GASTOS FINANCIEROS';
+    var text_014 = 'PRODUCTOS FINANCIEROS';
+    var text_015 = 'COSTO INTEGRAL DE FINANCIAMIENTO';
+    var text_016 = 'RESULTADO DEL EJERCICIO ANTES IMPTOS';
+    var text_017 = 'ISR';
+    var text_018 = 'PTU';
+    var text_019 = 'RESULTADO DEL EJERCICIO NETO IMPTOS';
+
+    var text_column_0 = data[0];
+    var text_column_1 = data[1];
+    // console.log(text_column_1.toLowerCase());
+
+    if ( text_column_0.toLowerCase() == text_001.toLowerCase() ) {
+      $(row).find('td:eq(0)').addClass('sumita');
+      // $(row).find('td:eq(1)').css('color', 'red'); // $(row).columns(3).addClass('azul');
     }
+    // if ( text_column_1.toLowerCase() == text_009.toLowerCase() ) {
+    //   $(row).find('td:eq(1)').addClass('nombre_columna');
+    // }
+    //
+    if ( text_column_1.toLowerCase() == text_002.toLowerCase() ) { $(row).addClass('azul'); $(row).find('td:eq(1)').addClass('nombre_columna_nav'); $(row).find('td:eq(14)').addClass('azul'); $(row).find('td:eq(16)').addClass('azul');}
+    if ( text_column_1.toLowerCase() == text_003.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
 
-          // if (data.office == "London") {
-          //   $('td', row).css('background-color', 'Red');
-          // }
+    if ( text_column_1.toLowerCase() == text_004.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_red'); }
+    if ( text_column_1.toLowerCase() == text_005.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_red'); }
+
+    if ( text_column_1.toLowerCase() == text_006.toLowerCase() ) { $(row).addClass('azul'); $(row).find('td:eq(1)').addClass('nombre_columna_nav'); $(row).find('td:eq(14)').addClass('azul'); $(row).find('td:eq(16)').addClass('azul');}
+    if ( text_column_1.toLowerCase() == text_007.toLowerCase() ) { $(row).addClass('azul'); $(row).find('td:eq(1)').addClass('nombre_columna_nav'); $(row).find('td:eq(14)').addClass('azul'); $(row).find('td:eq(16)').addClass('azul');}
+
+    if ( text_column_1.toLowerCase() == text_008.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
+    if ( text_column_1.toLowerCase() == text_009.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_amarillo'); }
+
+    if ( text_column_1.toLowerCase() == text_010.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
+    if ( text_column_1.toLowerCase() == text_011.toLowerCase() ) { $(row).addClass('azul'); $(row).find('td:eq(1)').addClass('nombre_columna_nav'); $(row).find('td:eq(14)').addClass('azul'); $(row).find('td:eq(16)').addClass('azul');}
+
+    if ( text_column_1.toLowerCase() == text_012.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
+
+    if ( text_column_1.toLowerCase() == text_013.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
+    if ( text_column_1.toLowerCase() == text_014.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
+    if ( text_column_1.toLowerCase() == text_015.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
+
+    if ( text_column_1.toLowerCase() == text_016.toLowerCase() ) { $(row).addClass('azul'); $(row).find('td:eq(1)').addClass('nombre_columna_nav'); $(row).find('td:eq(14)').addClass('azul'); $(row).find('td:eq(16)').addClass('azul');}
+
+    if ( text_column_1.toLowerCase() == text_017.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
+    if ( text_column_1.toLowerCase() == text_018.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
+    if ( text_column_1.toLowerCase() == text_019.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
+
   },
   language:{
     "sProcessing":     "Procesando...",

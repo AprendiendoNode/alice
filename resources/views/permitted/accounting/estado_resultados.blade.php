@@ -38,7 +38,7 @@
         <div class="row my-4">
           <div class="col-lg-12 col-md-12 mb-4">
             <div class="table-responsive">
-              <table id="all_month" class="table tablita stripe row-border order-column">
+              <table id="all_month" class="table tablita table-striped stripe row-border order-column">
                 <thead>
                   <tr>
                     <th>Cuenta Movimiento</th>
@@ -55,6 +55,7 @@
                     <th></th>
                     <th></th>
                     <th></th>
+                    <th>total</th>
                     <th>%</th>
                     <th class="text-left">Con CR y RD</th>
                     <th>%</th>
@@ -77,8 +78,13 @@
 
   <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
+
+  {{-- <link href="{{ asset('bower_components/datatables_bootstrap_4/FixedColumns-3.2.5/css/fixedColumns.bootstrap.css')}}" rel="stylesheet" type="text/css"> --}}
+  {{-- <script src="{{ asset('bower_components/datatables_bootstrap_4/FixedColumns-3.2.5/js/dataTables.fixedColumns.js')}}"></script> --}}
+
   <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
   <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
+
 
   <script src="{{ asset('js/admin/accounting/estado_resultados.js')}}"></script>
   <style media="screen">
@@ -89,15 +95,33 @@
       /*Se deja en 0 para evitar tu problema de que se vean atras*/
       border-color: grey !important;
     }
-    .azul {
-      background-color: #0B93F6 !important;
+    .nombre_columna_nav {
+      background-color: #333F4F !important;
       color: #fff !important;
-    }
-    .sumita {
-      background: gray !important;
-      /* background-color: red !important; */
       font-weight: bold !important;
-      color: blue !important;
+    }
+    .subnombre_columna_black {
+      background-color: #F2F3F2 !important;
+      color: #000000 !important;
+    }
+    .subnombre_columna_gris {
+      background-color: #fff !important;
+      font-style: italic !important;
+      color: #E8EAED !important;
+    }
+    .subnombre_columna_red {
+      background-color: #fff !important;
+      color: #F34429 !important;
+    }
+    .subnombre_columna_amarillo {
+      background-color: #FFEB9C !important;
+      color: #CF8025 !important;
+    }
+    .colorcolumna {
+      background-color: #D9EFFE;
+    }
+    .colorcolumnawhite {
+      background-color: #fff !important;
     }
     .red{
       font-weight: bold !important;
@@ -105,11 +129,15 @@
     .negritas_font {
       font-weight: bold !important;
     }
-    table.dataTable.table-striped.DTFC_Cloned tbody tr:nth-of-type(odd) {
-          background-color: #F3F3F3 !important;
-      }
-      table.dataTable.table-striped.DTFC_Cloned tbody tr:nth-of-type(even) {
-          background-color: white !important;
-      }
+    .azul {
+      background-color: #0B93F6 !important;
+      color: #fff !important;
+    }
+    .sumita {
+      background-color: gray !important;
+      /* background-color: red !important; */
+      font-weight: bold !important;
+      color: #000080 !important;
+    }
   </style>
 @endpush
