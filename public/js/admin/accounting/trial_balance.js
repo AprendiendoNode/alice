@@ -15,11 +15,10 @@ $(function(){
   });
 
 
-  balance_table();
 }());
 
 function balance_table() {
-  var objData = $("#validation").find("select,textarea, input").serialize();
+  var objData = $("#form-balance").find("select,textarea, input").serialize();
   $.ajax({
       type: "POST",
       url: "/accounting/get_balance_by_month",
@@ -41,11 +40,9 @@ function generate_table(datajson, table){
 
   $.each(datajson, function(index, data){
     vartable.fnAddData([
-        data.anio,
-        data.mes,
-        '-',
-        '-',
-        '-',
+        data.cuenta,
+        data.NA,
+        data.nombre,
         data.sdo_inicial,
         data.cargos,
         data.abonos,
@@ -55,28 +52,30 @@ function generate_table(datajson, table){
   document.getElementById("table_balance_wrapper").setAttribute("class", "dataTables_wrapper form-inline dt-bootstrap4 no-footer");
 }
 
+$('#form-balance').on('submit', function(e){
+  e.preventDefault();
+  balance_table();
+})
+
 
 var Configuration_table_responsive_balance = {
-  "order": [[ 1, "asc" ]],
-  "select": true,
   "aLengthMenu": [[-1], ["Todos"]],
   "columnDefs": [
       {
-          "targets": [0,1,2,3],
+          "targets": [0,2],
           "width": "1%",
-          "className": "text-center",
+          "className": "text-left",
       },
       {
-        "targets": 4,
-        "width": "0.2%",
-        "className": "text-left",
-    },
-    {
-      "targets": [5,6,7,8],
-      "width": "1%",
-      "className": "text-right",
-    },
-
+        "targets": 1,
+        "width": "1%",
+        "className": "text-center",
+      },
+      {
+        "targets": [3,4,5,6],
+        "width": "1%",
+        "className": "text-right",
+      },
   ],
   "select": {
     'style': 'multi',
@@ -87,25 +86,15 @@ var Configuration_table_responsive_balance = {
       text: '<i class="far fa-file-excel"></i> Excel',
       titleAttr: 'Excel',
       title: function ( e, dt, node, config ) {
-        var ax = '';
-        if($('input[name="startDate"]').val() != '' && $('input[name="endDate"]').val() != ''){
-          ax= '- Periodo: ' + $('input[name="startDate"]').val() + " - " + $('input[name="endDate"]').val();
-        }
-        else {
-          txx='- Periodo: ';
-          var fecha = new Date();
-          var ano = fecha.getFullYear();
-          var mes = fecha.getMonth()+1;
-          var fechita = ano+'-'+mes;
-          ax = txx+fechita;
-        }
-        return 'Historial de pago '+ax;
+        let date_month = document.getElementById('date_month').value;
+        
+        return 'Balanza de comprobacion - Periodo:'+ date_month;
       },
       init: function(api, node, config) {
          $(node).removeClass('btn-default')
       },
       exportOptions: {
-          columns: [ 0,1,2,3,4,5,6,7,8,9 ],
+          columns: [ 0,1,2,3,4,5,6 ],
           modifier: {
               page: 'all',
           }
@@ -113,34 +102,29 @@ var Configuration_table_responsive_balance = {
       className: 'btn btn-success',
     },
     {
-      extend: 'pdf',
-      text: '<i class="far fa-file-pdf"></i>  PDF',
-      title: function ( e, dt, node, config ) {
-        var ax = '';
-        if($('input[name="date_to_search"]').val() != ''){
-          ax= '- Periodo: ' + $('input[name="date_to_search"]').val();
-        }
-        else {
-          txx='- Periodo: ';
-          var fecha = new Date();
-          var ano = fecha.getFullYear();
-          var mes = fecha.getMonth()+1;
-          var fechita = ano+'-'+mes;
-          ax = txx+fechita;
-        }
-        return 'Historial de pago '+ax;
-      },
+      text: '<i class=""></i> PDF',
+      titleAttr: 'Revisar Marcados',
+      className: 'btn btn-danger',
       init: function(api, node, config) {
         $(node).removeClass('btn-default')
       },
-      exportOptions: {
-        columns: [ 1,2,3,4,5,6 ],
-        modifier: {
-          page: 'all',
-        }
-      },
-      className: 'btn btn-danger',
-    }
+      action: function ( e, dt, node, config ) {
+          var _token = $('input[name="_token"]').val();
+          let date_month = document.getElementById('date_month').value;
+
+          if(date_month != '' && date_month != undefined){
+            window.open(
+               `/accounting/balance_general_pdf/${date_month}`,
+              '_blank' 
+            );
+          }else{
+            Swal.fire('Debe seleccionar un periodo','','warning');
+          }
+          
+          
+        
+      }
+    },
   ],
   dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +
         "<'row'<'col-sm-12'tr>>" +

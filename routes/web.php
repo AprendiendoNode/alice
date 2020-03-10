@@ -1246,6 +1246,7 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
    Route::get('/view_accounting_configuration','Accounting\AccountingConfigurationController@index');
    // Contabilidad
    Route::get('/view_balance_accounting','Accounting\BalanceController@index');
+   Route::get('/balance_general_pdf/{periodo}','Accounting\BalanceController@generate_balace_pdf');
    Route::post('/get_balance_by_month','Accounting\BalanceController@getBalanceByMonth');
    Route::post('/get_balance_data','Accounting\BalanceController@get_balance');
    Route::get('/view_balance_general_mayor','Accounting\BalanceController@view_balance_general_mayor');

@@ -33,20 +33,20 @@
              <div class="row">
               <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                   <div class="row">
-                    <form id="validation" name="validation" class="form-inline" method="post">
+                    <form id="form-balance" class="form-inline" method="post">
                       {{ csrf_field() }}
                       <div class="col-md-8 col-xs-12">
                         <div class="form-group" id="date_from">
                           <div class="form-group row">
                             <label for="date_month" class="col-sm-3 col-form-label"><span style="color: red;">*</span>Periodo: </label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control form-control-sm required datepickermonth" id="date_month" name="date_month">
+                              <input required type="text" class="form-control form-control-sm required datepickermonth" id="date_month" name="date_month">
                             </div>
                           </div>
                         </div>
                       </div>
                       <div class="col-md-4 col-xs-12">
-                        <button id="boton-aplica-filtro mt-3" type="button" class="btn btn-warning filtrarDashboard ml-2">
+                        <button id=" mt-3" type="submit" class="btn btn-warning filtrarDashboard ml-2">
                            Buscar periodo
                         </button>
                       </div>
@@ -59,8 +59,6 @@
                <table id="table_balance" class="table table-striped table-bordered table-hover">
                  <thead>
                    <tr class="bg-secondary" style="background: #088A68;">
-                     <th> <small>Ejer.</small> </th>
-                     <th> <small>Mes</small> </th> 
                      <th> <small>Cuenta</small> </th>
                      <th> <small>Nat.</small> </th>
                      <th> <small>Nombre</small> </th>
@@ -74,8 +72,6 @@
                  </tbody>
                  <tfoot id='tfoot_average'>
                    <tr>
-                     <th></th>
-                     <th></th>
                      <th></th>
                      <th></th>
                      <th></th>
@@ -128,7 +124,7 @@
     <script src="{{ asset('bower_components/jsPDF/dist/jspdf.min.js')}}"></script>
     <script src="{{ asset('bower_components/html2canvas/html2canvas.js')}}"></script>
     
-    <script src="{{ asset('js/admin/accounting/trial_balance.js?v=0.0.0')}}"></script>
+    <script src="{{ asset('js/admin/accounting/trial_balance.js?v=1.0')}}"></script>
   @else
     <!--NO VER-->
   @endif
