@@ -310,7 +310,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/move_group', 'Equipments\GroupEquipmentController@update_move_group');
 
   Route::get('/noc_tools','Noc\NocToolsController@index');
-  Route::get('/cl_diario','Noc\NocToolsController@cl_diario');
+  Route::get('/checklist','Noc\NocToolsController@cl_diario');
   Route::get('/dash_operacion','Noc\NocToolsController@dash_operacion');
   Route::post('/get_cl_diario','Noc\NocToolsController@get_cl_diario');
   Route::post('/get_cl_5_dia','Noc\NocToolsController@get_cl_5_dia');

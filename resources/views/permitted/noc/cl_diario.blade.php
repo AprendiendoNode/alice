@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View noc') )
-    <strong>CL diario</strong>
+  @if( auth()->user()->can('View checklist') )
+    <strong>  Checklist</strong>
   @else
     {{ trans('message.denied') }}
   @endif
 @endsection
 
 @section('contentheader_description')
-  @if( auth()->user()->can('View noc') )
+  @if( auth()->user()->can('View checklist') )
 
   @else
     {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View noc') )
+  @if( auth()->user()->can('View checklist') )
     NOC
   @else
     {{ trans('message.denied') }}
@@ -25,7 +25,7 @@
 @endsection
 
 @section('content')
-
+  @if( auth()->user()->can('View checklist') )
 <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
         <div class="card">
@@ -149,12 +149,13 @@
         </div>
     </div>
 </div>
-
-
+@else
+  {{ trans('message.denied') }}
+@endif
 @endsection
 
 @push('scripts')
-
+  @if( auth()->user()->can('View checklist') )
     <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
@@ -170,4 +171,7 @@
     background: #02948c;
     }
     </style>
+  @else
+    {{ trans('message.denied') }}
+  @endif
 @endpush

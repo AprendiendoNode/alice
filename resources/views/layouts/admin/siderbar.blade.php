@@ -31,6 +31,14 @@
             </a>
           </li>
           @endif
+          @if( auth()->user()->can('View checklist') )
+          <li class="nav-item {{ Request::is('checklist') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ url('/checklist') }}">
+              <i class="fas fa-tasks menu-icon"></i>
+              <span class="menu-title">Checklist </span>
+            </a>
+          </li>
+          @endif
           @forelse (auth()->user()->menus->groupBy('section_id') as $menu)
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#{{ App\Section::find($menu[0]->section_id)->display_name }}" aria-expanded="false" aria-controls="{{ App\Section::find($menu[0]->section_id)->display_name }}">
