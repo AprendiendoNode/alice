@@ -4,21 +4,25 @@ $(function(){
   //console.log(cx_sat);
   // balance_table(token);
 
-  $("#startDatePicker").datepicker({
-    format: 'yyyy-mm-dd'
+  $("#date_month").datepicker({
+    language: 'es',
+    format: "yyyy-mm",
+    viewMode: "months",
+    minViewMode: "months",
+    endDate: '0m',
+    autoclose: true,
+    clearBtn: true
   });
 
-  $("#endDatePicker").datepicker({
-    format: 'yyyy-mm-dd'
-  });
-  //balance_table();
+
+  balance_table();
 }());
 
 function balance_table() {
   var objData = $("#validation").find("select,textarea, input").serialize();
   $.ajax({
       type: "POST",
-      url: "/accounting/get_balance_data",
+      url: "/accounting/get_balance_by_month",
       data: objData,
       success: function (data){
         console.log(data);
@@ -37,18 +41,15 @@ function generate_table(datajson, table){
 
   $.each(datajson, function(index, data){
     vartable.fnAddData([
-        data.cliente,
-        data.taxid,
-        data.numid,
-        data.cc,
-        data.currencies,
-        data.customer_id,
-        data.amount_discount,
-        data.amount_untaxed,
-        data.amount_tax,
-        data.amount_tax_ret,
-        data.amount_total,
-        data.balance
+        data.anio,
+        data.mes,
+        '-',
+        '-',
+        '-',
+        data.sdo_inicial,
+        data.cargos,
+        data.abonos,
+        data.sdo_final
       ]);
   });
   document.getElementById("table_balance_wrapper").setAttribute("class", "dataTables_wrapper form-inline dt-bootstrap4 no-footer");
@@ -58,43 +59,24 @@ function generate_table(datajson, table){
 var Configuration_table_responsive_balance = {
   "order": [[ 1, "asc" ]],
   "select": true,
-  "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+  "aLengthMenu": [[-1], ["Todos"]],
   "columnDefs": [
       {
-          "targets": [0,1,2,3,4,5],
+          "targets": [0,1,2,3],
           "width": "1%",
           "className": "text-center",
       },
       {
-          "targets": 6,
-          "width": "0.2%",
-          "className": "text-center",
-      },
-      {
-          "targets": 7,
-          "width": "1%",
-          "className": "text-center",
-      },
-      {
-          "targets": 8,
-          "width": "1%",
-          "className": "text-center",
-      },
-      {
-          "targets": 9,
-          "width": "0.5%",
-          "className": "text-center",
-      },
-      {
-          "targets": 10,
-          "width": "0.5%",
-          "className": "text-center",
-      },
-      {
-          "targets": 11,
-          "width": "0.5%",
-          "className": "text-center",
-      }
+        "targets": 4,
+        "width": "0.2%",
+        "className": "text-left",
+    },
+    {
+      "targets": [5,6,7,8],
+      "width": "1%",
+      "className": "text-right",
+    },
+
   ],
   "select": {
     'style': 'multi',

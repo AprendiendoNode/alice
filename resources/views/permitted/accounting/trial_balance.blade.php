@@ -35,44 +35,32 @@
                   <div class="row">
                     <form id="validation" name="validation" class="form-inline" method="post">
                       {{ csrf_field() }}
-                      <div class="col-md-3 col-xs-12">
+                      <div class="col-md-8 col-xs-12">
                         <div class="form-group" id="date_from">
-                          <label class="control-label" for="filter_date_from">
-                            Fecha inicial:
-                          </label>
-                          <div class="input-group mb-3">
-                            <input type="text"  datas="filter_date_from" id="filter_date_from" name="filter_date_from" class="form-control" placeholder="" value="{{ \App\Helpers\Helper::date(Date::parse('first day of this month')) }}" required>
-                            <div class="input-group-append">
-                              <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
+                          <div class="form-group row">
+                            <label for="date_month" class="col-sm-3 col-form-label"><span style="color: red;">*</span>Periodo: </label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control form-control-sm required datepickermonth" id="date_month" name="date_month">
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-3 col-xs-12">
-                        <div class="form-group" id="date_from">
-                          <label class="control-label" for="filter_date_to">
-                            Fecha final:
-                          </label>
-                          <div class="input-group mb-3">
-                            <input type="text"  datas="filter_date_to" id="filter_date_to" name="filter_date_to" class="form-control" placeholder="" value="{{ \App\Helpers\Helper::date(Date::parse('last day of this month')) }}" required>
-                            <div class="input-group-append">
-                              <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
-                            </div>
-                          </div>
-                        </div>
+                      <div class="col-md-4 col-xs-12">
+                        <button id="boton-aplica-filtro mt-3" type="button" class="btn btn-warning filtrarDashboard ml-2">
+                           Buscar periodo
+                        </button>
                       </div>
-                      <button id="boton-aplica-filtro mt-3" type="button" class="btn btn-warning filtrarDashboard ml-2">
-                        <i class="fas fa-search-dollar"></i>  Buscar periodo
-                      </button>
                     </form>
                   </div>
               </div>
 
-           <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10">
+           <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 pt-10 mt-3">
              <div class="table-responsive">
-               <table id="table_balance" class="table table-striped table-bordered table-hover compact-tab w-100">
+               <table id="table_balance" class="table table-striped table-bordered table-hover">
                  <thead>
                    <tr class="bg-secondary" style="background: #088A68;">
+                     <th> <small>Ejer.</small> </th>
+                     <th> <small>Mes</small> </th> 
                      <th> <small>Cuenta</small> </th>
                      <th> <small>Nat.</small> </th>
                      <th> <small>Nombre</small> </th>
@@ -86,7 +74,8 @@
                  </tbody>
                  <tfoot id='tfoot_average'>
                    <tr>
-                     <!-- <th></th> -->
+                     <th></th>
+                     <th></th>
                      <th></th>
                      <th></th>
                      <th></th>
@@ -110,18 +99,7 @@
 
 @push('scripts')
     <style media="screen">
-      .pt-10 {
-        padding-top: 10px;
-      }
 
-      .margin-top-short{
-        margin-top: 7px;
-      }
-
-      .modal-content{
-        width: 180%;
-        margin-left: -40%;
-      }
       input:disabled,textarea:disabled {
            background: #ffffff !important;
            border-radius: 3px;

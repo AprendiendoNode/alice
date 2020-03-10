@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View polizas') )
+  @if( auth()->user()->can('Create polizas') )
   Historial de polizas
   @else
   {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View polizas') )
+  @if( auth()->user()->can('Create polizas') )
     Historial de polizas
   @else
   {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View polizas') )
+  @if( auth()->user()->can('Create polizas') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem card">
       <div class="card-body">
@@ -150,7 +150,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View polizas') )
+  @if( auth()->user()->can('Create polizas') )
   <style media="screen">
     .editor-wrapper {
       min-height: 250px;

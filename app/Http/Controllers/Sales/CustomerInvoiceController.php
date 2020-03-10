@@ -830,7 +830,7 @@ class CustomerInvoiceController extends Controller
           }
           $request->merge(['date_due' => Helper::dateToSql($date_due)]);
           //Obtiene folio
-          $document_type = Helper::getNextDocumentTypeByCode($request->document_type);
+          $document_type = Helper::getNextDocumentTypeById($request->document_type);
           $request->merge(['document_type_id' => $document_type['id']]);
           $request->merge(['name' => $document_type['name']]);
           $request->merge(['serie' => $document_type['serie']]);
@@ -2455,7 +2455,7 @@ class CustomerInvoiceController extends Controller
             $request->merge(['date' => $date_format ]);
             $request->merge(['date_due' => $date_due_format]);
             //Obtiene folio
-            $document_type = Helper::getNextDocumentTypeByCode($request->document_type);
+            $document_type = Helper::getNextDocumentTypeById($request->document_type);
             $request->merge(['document_type_id' => $document_type['id']]);
             $request->merge(['name' => $document_type['name']]);
             $request->merge(['serie' => $document_type['serie']]);

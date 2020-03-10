@@ -12,7 +12,15 @@ class BalanceController extends Controller
     {
     	return view('permitted.accounting.trial_balance');
     	// return 'vista en proceso';
+	}
+	
+	public function getBalanceByMonth()
+    {
+        $result = DB::table('Contab.balanza')->select()->get();
+
+        return $result;
     }
+
     public function get_balance(Request $request)
     {
 	    $input1 = $request->startDate;
