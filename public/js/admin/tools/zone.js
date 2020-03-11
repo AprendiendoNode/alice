@@ -18,7 +18,12 @@ $('#select_one').on('change', function(){
 	    //console.log(data);
 	    if (data.length === 0) {
 	    	if ($('#direccion_ip').val() === "" && $('#puerto_dir').val() === "") {
-	    		menssage_toast('Mensaje', '2', 'Este hotel no cuenta con ip pública.' , '3000');
+	    		// menssage_toast('Mensaje', '2', 'Este hotel no cuenta con ip pública.' , '3000');
+					Swal.fire({
+						 type: 'error',
+						 title: 'Oops',
+						 text:  'Este hotel no cuenta con ip pública.',
+					 });
 	    	}
 	    }else if (data.length > 1) {
 			zd1 = data[0].ip;
@@ -34,7 +39,7 @@ $('#select_one').on('change', function(){
 	    				text: "ZD puerto 2",
 	    				value: 2,
 	    			},
-	    		},	
+	    		},
 	    	})
 	    	.then((value) => {
 	    		switch (value) {
@@ -67,7 +72,7 @@ $('#select_one').on('change', function(){
 	    console.log('Error:', data);
 	  }
 	});
-	
+
 });
 
 $('#comprobarip').on('click', function(){
@@ -85,17 +90,29 @@ $('#comprobarip').on('click', function(){
 			  data: { num_dir : direc , num_port : 161 ,_token : _token  },
 			  success: function (data){
 	            if (data === '0'){
-	              menssage_toast('Mensaje', '4', 'Ping successful!.', '3000');
+	              // menssage_toast('Mensaje', '4', 'Ping successful!.', '3000');
+								Swal.fire({
+	                 type: 'success',
+	                 title: 'Operación Exitosa',
+	                 text: 'Ping successful!.',
+	               });
 	            }
 	            else {
 	              var mens2='Timeout: No Response from'+direc+':'+puert;
-	              menssage_toast('Mensaje', '2', mens2, '3000s');
+	              // menssage_toast('Mensaje', '2', mens2, '3000s');
+
+								Swal.fire({
+	                 type: 'error',
+	                 title: 'Oops...',
+	                 text: mens2,
+	               });
+
 	            }
 			  },
 			  error: function (data) {
 			    console.log('Error:', data);
 			  }
-			});	
+			});
     	}else{
     		//ajax con puerto.
 			$.ajax({
@@ -104,21 +121,36 @@ $('#comprobarip').on('click', function(){
 			  data: { num_dir : direc , num_port : puert ,_token : _token  },
 			  success: function (data){
 	            if (data === '0'){
-	              menssage_toast('Mensaje', '4', 'Ping successful!.', '3000');
+	              // menssage_toast('Mensaje', '4', 'Ping successful!.', '3000');
+								Swal.fire({
+	                 type: 'success',
+	                 title: 'Operación Exitosa',
+	                 text: 'Ping successful!.',
+	               });
 	            }
 	            else {
 	              var mens2='Timeout: No Response from'+direc+':'+puert;
-	              menssage_toast('Mensaje', '2', mens2, '3000s');
+								Swal.fire({
+	                 type: 'error',
+	                 title: 'Oops...',
+	                 text: mens2,
+	               });
+	              // menssage_toast('Mensaje', '2', mens2, '3000s');
 	            }
 			  },
 			  error: function (data) {
 			    console.log('Error:', data);
 			  }
-			});	
+			});
 
     	}
     }else{
-		menssage_toast('Mensaje', '2', 'LLene los campos correctamente.' , '3000');
+		// menssage_toast('Mensaje', '2', 'LLene los campos correctamente.' , '3000');
+		 Swal.fire({
+			 type: 'error',
+			 title: 'Oops...',
+			 text: 'LLene los campos correctamente.',
+		 });
     }
 });
 
