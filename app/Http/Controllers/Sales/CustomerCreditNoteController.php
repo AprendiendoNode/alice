@@ -95,7 +95,7 @@ class CustomerCreditNoteController extends Controller
       $impuestos =  DB::select('CALL GetAllTaxesActivev2 ()', array());
 
       $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
-      $cuentas_contables = DB::select('CALL px_cuentas_contable_4000()');
+      $cuentas_contables = DB::select('CALL px_cuentas_contable_4001()');
 
       return view( 'permitted.sales.customer_credit_notes',compact('customer', 'sucursal', 'currency', 'payment_term', 'salespersons',
       'payment_way', 'payment_term' ,'payment_methods', 'cuentas_contables',
@@ -1534,7 +1534,7 @@ class CustomerCreditNoteController extends Controller
       //Variables
       $id = $request->ident;
       //Logica
-      $resultados = DB::select('CALL px_cuentacontable_xprod_4000 (?)', array($id));
+      $resultados = DB::select('CALL px_cuentacontable_xprod_4001 (?)', array($id));
       return json_encode($resultados);
       // return response()->json($resultados, 200);
     }
