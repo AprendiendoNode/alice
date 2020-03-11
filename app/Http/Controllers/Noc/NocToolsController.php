@@ -48,5 +48,40 @@ class NocToolsController extends Controller
     return view('permitted.noc.dash_operacion');
   }
 
+  public function dash_operacion_nps(Request $request) {
+    $fecha = $request->fecha;
+    $aux = explode("-", $fecha);
+    $meses = array(
+      "01" => "Enero",
+      "02" => "Febrero",
+      "03" => "Marzo",
+      "04" => "Abril",
+      "05" => "Mayo",
+      "06" => "Junio",
+      "07" => "Julio",
+      "08" => "Agosto",
+      "09" => "Septiembre",
+      "10" => "Octubre",
+      "11" => "Noviembre",
+      "12" => "Diciembre"
+    );
+    $mes_number = array_search($aux[0], $meses);
+    $anio_number = $aux[1];
+    $date = $anio_number."-".$mes_number."-01";
+    $result2 = DB::select('CALL NPS_MONTH (?)', array($date));
+    $result4 = substr($meses[$mes_number], 0, 3);
+    $mes_number--;
+    if($mes_number == 0) {
+      $mes_number = "12";
+      $anio_number--;
+    }
+    if($mes_number < 10) {
+      $mes_number = "0".$mes_number;
+    }
+    $date = $anio_number."-".$mes_number."-01";
+    $result1 = DB::select('CALL NPS_MONTH (?)', array($date));
+    $result3 = substr($meses[$mes_number], 0, 3);
+    return array($result1, $result2, $result3, $result4);
+  }
 
 }

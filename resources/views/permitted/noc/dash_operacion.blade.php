@@ -39,36 +39,36 @@
                   <div class="col-md-7">
 
                     <h4 style="text-align: left;">Reporte Mensual</h4>
-                    <p style="font-size: 16px;">Respondieron encuesta<strong style="margin-left: 10px;">62</strong><span style="margin-left: 10px;">NPS</span><strong style="margin-left: 10px;">94</strong></p>
+                    <p style="font-size: 16px;">Respondieron encuesta<strong id="respondieron" style="margin-left: 10px;"></strong><span style="margin-left: 10px;">NPS</span><strong id="nps" style="margin-left: 10px;"></strong></p>
 
                     <table id="encuestas_results" class="table-responsive" style="text-align: center;">
                       <tr style="color: brown;">
                         <td></td>
-                        <td>Feb</td>
-                        <td>Mar</td>
+                        <td class="mes1"></td>
+                        <td class="mes2"></td>
                         <td></td>
                         <td class="ignore">% Respuestas</td>
                       </tr>
                       <tr>
                         <td style="color: green;">Promotores</td>
-                        <td>122</td>
-                        <td>60</td>
-                        <td><i class="fas fa-arrow-circle-down"></i></td>
-                        <td class="ignore">97%</td>
+                        <td id="pro1"></td>
+                        <td id="pro2"></td>
+                        <td id="pro-icon"></td>
+                        <td id="pro-res" class="ignore"></td>
                       </tr>
                       <tr>
                         <td style="color: orange;">Pasivos</td>
-                        <td>8</td>
-                        <td>0</td>
-                        <td><i class="fas fa-arrow-circle-down"></i></td>
-                        <td class="ignore">0%</td>
+                        <td id="pas1"></td>
+                        <td id="pas2"></td>
+                        <td id="pas-icon"></td>
+                        <td id="pas-res" class="ignore"></td>
                       </tr>
                       <tr>
                         <td style="color: red;">Detractores</td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td><i class="fas fa-arrow-circle-down"></i></td>
-                        <td class="ignore">3%</td>
+                        <td id="det1"></td>
+                        <td id="det2"></td>
+                        <td id="det-icon"></td>
+                        <td id="det-res" class="ignore"></td>
                       </tr>
                     </table>
 
@@ -77,50 +77,37 @@
                   <div class="col-md-5">
                     <div style="text-align: left;">
                       <h4 style="display: inline-block;">Mes</h4>
-                      <select id="month" style="background-color: white; width: 40%;">
-                        <option value="1">Marzo</option> <!--Default-->
-                        <option value="2">Febrero</option>
-                        <option value="3">Marzo</option>
-                        <option value="4">Abril</option>
-                        <option value="5">Marzo</option>
-                        <option value="6">Junio</option>
-                        <option value="7">Julio</option>
-                        <option value="8">Agosto</option>
-                        <option value="9">Septiembre</option>
-                        <option value="10">Octubre</option>
-                        <option value="11">Noviembre</option>
-                        <option value="12">Diciembre</option>
-                      </select>
+                        <input id="mes" type="text" style="text-align: center; background-color: lightyellow; font-weight: bold; font-size: 18px; width: 50%;">
                       <p style="font-size: 16px; text-align: center;">Sitios Evaluados</p>
                     </div>
                     <table id="sitios_results" class="table-responsive" style="text-align: center;">
                       <tr style="color: brown;">
                         <td></td>
-                        <td>Feb</td>
-                        <td>Mar</td>
-                        <td>%</td>
+                        <td class="mes1"></td>
+                        <td class="mes2"></td>
+                        <td></td>
                         <td></td>
                       </tr>
                       <tr>
                         <td style="color: green;">Total</td>
-                        <td>206</td>
-                        <td>205</td>
-                        <td>0%</td>
-                        <td><i class="fas fa-arrow-circle-down"></i></td>
+                        <td id="total1"></td>
+                        <td id="total2"></td>
+                        <td id="total-porcentaje"></td>
+                        <td id="total-icon"></td>
                       </tr>
                       <tr>
                         <td style="color: orange;">Respondieron</td>
-                        <td>109</td>
-                        <td>51</td>
-                        <td>-53%</td>
-                        <td><i class="fas fa-arrow-circle-down"></i></td>
+                        <td id="res1"></td>
+                        <td id="res2"></td>
+                        <td id="res-porcentaje"></td>
+                        <td id="res-icon"></td>
                       </tr>
                       <tr>
                         <td style="color: red;">Sin respuesta</td>
-                        <td>97</td>
-                        <td>154</td>
-                        <td>59%</td>
-                        <td><i class="fas fa-arrow-circle-up"></i></td>
+                        <td id="sinres1"></td>
+                        <td id="sinres2"></td>
+                        <td id="sinres-porcentaje"></td>
+                        <td id="sinres-icon"></td>
                       </tr>
                     </table>
 
@@ -143,9 +130,9 @@
 
                     <table id="detractores" class="table-responsive" style="text-align: center;">
                       <tr style="color: brown;">
-                        <td>Feb</td>
+                        <td class="mes1"></td>
                         <td>Status actual</td>
-                        <td>Mar</td>
+                        <td class="mes2"></td>
                       </tr>
                       <tr>
                         <td>Palace Grande</td>
@@ -187,8 +174,8 @@
                       <tr style="color: brown;">
                         <td>Tiempo</td>
                         <td>Objetivo</td>
-                        <td>Feb</td>
-                        <td>Mar</td>
+                        <td class="mes1"></td>
+                        <td class="mes2"></td>
                         <td>%</td>
                         <td class="ignore">Objetivo</td>
                       </tr>
@@ -222,8 +209,8 @@
                       <tr style="color: brown;">
                         <td>Tiempo</td>
                         <td>Objetivo</td>
-                        <td>Feb</td>
-                        <td>Mar</td>
+                        <td class="mes1"></td>
+                        <td class="mes2"></td>
                         <td>%</td>
                         <td class="ignore">Objetivo</td>
                       </tr>
@@ -601,12 +588,9 @@
 
 @push('scripts')
 
-    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="{{ asset('bower_components/jquery.dynameter.css') }}">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="{{ asset('js/admin/noctools/jquery.dynameter.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>

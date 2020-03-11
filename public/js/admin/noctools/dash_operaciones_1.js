@@ -1,10 +1,21 @@
-graph_tickets('graph_tickets');
-//graph_nps('graph_nps');
-var $myFuelGauge;
+//DASHBOARD DE OPERACIONES
 
-$myFuelGauge = $("div#fuel-gauge").dynameter({
+$('#mes').datepicker({
+  language: 'es',
+  format: "MM-yyyy",
+  viewMode: "months",
+  minViewMode: "months",
+  autoclose: true,
+  clearBtn: true,
+  orientation: 'bottom'
+}).datepicker("setDate",'now');
+
+//graph_nps('graph_nps');
+var myFuelGauge;
+
+myFuelGauge = $("div#fuel-gauge").dynameter({
     label:'',
-    value: 94,
+    value: 0,
     min: 0,
     max: 100,
     unit:'<strong style="font-size: 16px;">NPS</strong>',
@@ -13,6 +24,14 @@ $myFuelGauge = $("div#fuel-gauge").dynameter({
       80:'warn',
       90:'normal'
     }
+});
+
+graph_tickets('graph_tickets');
+data_nps();
+
+$('#mes').datepicker().on('changeDate', function (ev) {
+  graph_tickets('graph_tickets');
+  data_nps();
 });
 
 function graph_tickets(title) {
@@ -156,3 +175,67 @@ function graph_nps(title) {
 }
 
 //https://www.jqueryscript.net/other/jQuery-Plugin-To-Generate-Animated-Dynamic-Gauges-dynameter.html
+
+function data_nps() {
+  var _token = $('input[name="_token"]').val();
+  var fecha = $('#mes').val();
+  $.ajax({
+       type: "POST",
+       url: '/dash_operacion_nps',
+       data: { _token: _token, fecha: fecha },
+       success: function (data) {
+          //ReporteMensual
+          $("#respondieron").text(data[1][5].Count);
+          $("#nps").text(data[1][3].Count);
+          myFuelGauge.changeValue(data[1][3].Count);
+          $(".mes1").text(data[2]);
+          $(".mes2").text(data[3]);
+          $("#pro1").text(data[0][0].Count);
+          $("#pro2").text(data[1][0].Count);
+          $("#pro-icon").html(data[0][0].Count < data[1][0].Count ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+          $("#pas1").text(data[0][1].Count);
+          $("#pas2").text(data[1][1].Count);
+          $("#pas-icon").html(data[0][1].Count < data[1][1].Count ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+          $("#det1").text(data[0][2].Count);
+          $("#det2").text(data[1][2].Count);
+          $("#det-icon").html(data[0][2].Count < data[1][2].Count ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+          if($("#respondieron").text() != "0") {
+            $("#pro-res").text(parseInt(data[1][0].Count / data[1][5].Count) + "%");
+            $("#pas-res").text(parseInt(data[1][1].Count / data[1][5].Count) + "%");
+            $("#det-res").text(parseInt(data[1][2].Count / data[1][5].Count) + "%");
+          } else {
+            $("#pro-res").text("0%");
+            $("#pas-res").text("0%");
+            $("#det-res").text("0%");
+          }
+          //SitiosEvaluados
+          $("#total1").text(data[0][6].Count);
+          $("#total2").text(data[1][6].Count);
+          if(data[1][6].Count == 0) {
+            $("#total-porcentaje").text("0%");
+          } else {
+            $("#total-porcentaje").text((data[1][6].Count / data[0][6].Count - 1).toFixed(2) * 100 + "%");
+          }
+          $("#total-icon").html(data[0][6].Count < data[1][6].Count ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+          $("#res1").text(data[0][5].Count);
+          $("#res2").text(data[1][5].Count);
+          if(data[1][5].Count == 0) {
+            $("#res-porcentaje").text("0%");
+          } else {
+            $("#res-porcentaje").text((data[1][5].Count / data[0][5].Count - 1).toFixed(2) * 100 + "%");
+          }
+          $("#res-icon").html(data[0][5].Count < data[1][5].Count ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+          $("#sinres1").text(data[0][4].Count);
+          $("#sinres2").text(data[1][4].Count);
+          if(data[1][4].Count == 0) {
+            $("#sinres-porcentaje").text("0%");
+          } else {
+            $("#sinres-porcentaje").text((data[1][4].Count / data[0][4].Count - 1).toFixed(2) * 100 + "%");
+          }
+          $("#sinres-icon").html(data[0][4].Count < data[1][4].Count ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+       },
+       error: function (data) {
+         console.error(data);
+       }
+   });
+}

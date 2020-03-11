@@ -312,6 +312,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/noc_tools','Noc\NocToolsController@index');
   Route::get('/checklist','Noc\NocToolsController@cl_diario');
   Route::get('/dash_operacion','Noc\NocToolsController@dash_operacion');
+  Route::post('/dash_operacion_nps','Noc\NocToolsController@dash_operacion_nps');
   Route::post('/get_cl_diario','Noc\NocToolsController@get_cl_diario');
   Route::post('/get_cl_5_dia','Noc\NocToolsController@get_cl_5_dia');
   Route::post('/get_cl_20_dia','Noc\NocToolsController@get_cl_20_dia');
@@ -1278,7 +1279,7 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   Route::get('/billing_report', 'Sales\BillingReportController@index');
   Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
   Route::get('/estado_resultados', 'Accounting\EstadoResultadoController@index');
-  Route::post('/estado_resultados_search', 'Accounting\EstadoResultadoController@estado_resultados_search'); 
+  Route::post('/estado_resultados_search', 'Accounting\EstadoResultadoController@estado_resultados_search');
   });
 
 Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
