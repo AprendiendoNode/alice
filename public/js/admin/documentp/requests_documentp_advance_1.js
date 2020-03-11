@@ -111,8 +111,8 @@ function documentp_table(datajson, table){
     if(data.alert!=1){
     if(data.fecha_inicio!='-' && data.fecha_entrega_ea!='-'){
       var current_date= new Date().toISOString().slice(0,10);
-      var limit_date= new Date(data.fecha_inicio).toISOString().slice(0,10);
-      var limit_date2=new Date(data.fecha_entrega_ea).toISOString().slice(0,10);
+      var limit_date= new Date(invertirFecha(data.fecha_inicio)).toISOString().slice(0,10);
+      var limit_date2=new Date(invertirFecha(data.fecha_entrega_ea)).toISOString().slice(0,10);
       if(!current_date<limit_date){
         setAlert(data.id, 1);
         data.alert=1;
@@ -163,7 +163,7 @@ function documentp_table(datajson, table){
       //invertirFecha(data.fecha_terminacion_real),
       '$' + data.total_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
       isOverdue(data.presupuesto.slice(0,-1),data.fecha_entrega_ea),//'<span class="badge badge-success badge-pill">'+Math.floor(data.presupuesto.slice(0,-1))+'%</span>',
-      data.fecha_entrega_ea,
+      invertirFecha(data.fecha_entrega_ea),
       data.atraso,
       data.motivo,
       //invertirFecha(data.fecha_firma),

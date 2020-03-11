@@ -115,6 +115,7 @@
             <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
               <thead>
                 <tr style="background: #088A68;">
+                  <th></th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>Proyecto</small> </th>
                   <th> <small>Avance instalación</small> </th>
@@ -131,7 +132,6 @@
                   <th> <small>IT Concierge</small> </th>
                   <th> <small>Facturando</small> </th>
                   <th> <small>Última actualización</small> </th>
-                  <th></th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>Comentario</small> </th>
                   <th> <small>Renta mensual</small> </th>
@@ -183,6 +183,7 @@
             <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
               <thead>
                 <tr style="background: #088A68;">
+                  <th></th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>Proyecto</small> </th>
                   <th> <small>Avance instalación</small> </th>
@@ -199,7 +200,6 @@
                   <th> <small>IT Concierge</small> </th>
                   <th> <small>Facturando</small> </th>
                   <th> <small>Última actualización</small> </th>
-                  <th></th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>Comentario</small> </th>
                   <th> <small>Renta mensual</small> </th>
@@ -251,6 +251,7 @@
             <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
               <thead>
                 <tr style="background: #088A68;">
+                  <th></th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>Proyecto</small> </th>
                   <th> <small>Avance instalación</small> </th>
@@ -267,7 +268,6 @@
                   <th> <small>IT Concierge</small> </th>
                   <th> <small>Facturando</small> </th>
                   <th> <small>Última actualización</small> </th>
-                  <th></th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>Comentario</small> </th>
                   <th> <small>Renta mensual</small> </th>

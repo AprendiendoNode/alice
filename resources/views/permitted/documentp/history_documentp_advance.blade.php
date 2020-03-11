@@ -379,13 +379,13 @@
       <script src="{{ asset('js/admin/documentp/requests_documentp_advance_0.js?v=2.0.6')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level one documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=3.0.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=4.0.6')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level two documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=3.0.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=4.0.6')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level three documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=3.0.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=4.0.6')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=5.0.0')}}"></script>
     @endif
 

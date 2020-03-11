@@ -113,6 +113,17 @@ function documentp_table(datajson, table){
       color = 'blue';
     }
     vartable.fnAddData([
+      `<div class="btn-group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-h"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <a class="dropdown-item" href="javascript:void(0);" onclick="addCommentModal(this)" data-id="${data.id}" value="${data.id}"><i class="fas fa-comment-alt"></i> Añadir comentario</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="uploadActaEntrega(this)" data-id="${data.id}" value="${data.id}"><i class="fas fa-upload"></i> Subir acta de entrega</a>
+            <a class="dropdown-item" target="_blank" href="/documentp_invoice/${data.id}/${data.documentp_cart_id}"><span class="far fa-file-pdf"></span> Imprimir productos</a>
+        </div>
+      </div>`,
       '<a href="javascript:void(0)" style="background-color:' + color +';" data-type="select" data-pk="'+ data.id +'" data-title="Alerta" data-value="' + data.alert + '" class="set-alert">',
       data.nombre_proyecto,
       '<span class="badge badge-dark badge-pill">'+Math.floor(data.total_global)+'%</span>',
@@ -129,17 +140,6 @@ function documentp_table(datajson, table){
       data.itc,
       '<a href="javascript:void(0)" data-type="select" data-pk="'+ data.id +'" data-title="Estatus" data-value="' + data.facturando + '" class="set-facturacion">',
       invertirFecha(data.updated_at.split(" ")[0])+" "+ data.updated_at.split(" ")[1],
-      `<div class="btn-group">
-        <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-ellipsis-h"></i>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="javascript:void(0);" onclick="addCommentModal(this)" data-id="${data.id}" value="${data.id}"><i class="fas fa-comment-alt"></i> Añadir comentario</a>
-            <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
-            <a class="dropdown-item" href="javascript:void(0);" onclick="uploadActaEntrega(this)" data-id="${data.id}" value="${data.id}"><i class="fas fa-upload"></i> Subir acta de entrega</a>
-            <a class="dropdown-item" target="_blank" href="/documentp_invoice/${data.id}/${data.documentp_cart_id}"><span class="far fa-file-pdf"></span> Imprimir productos</a>
-        </div>
-      </div>`,
       data.alert,
       data.comentario,
       data.servicio_mensual,
