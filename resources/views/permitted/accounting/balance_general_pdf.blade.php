@@ -64,7 +64,7 @@
             <p>HAMBURGO No. 159  COL JUAREZ</p>
             <p class="text-bold">SIT070918IXA</p>
             <h4>BALANZA DE COMPROBACION</h4>
-            <p>PERIODO DEL   AL </p>
+            <p>PERIODO DEL {{ $first_day_month }}   AL {{ $last_day_month }}</p>
         </td>
         <td style="width:20%;" valign="top"></td>
     </tr>
@@ -98,9 +98,6 @@
       @endforeach
     </tbody>
   </table>
-
-  
-
 
 </body>
 </html>

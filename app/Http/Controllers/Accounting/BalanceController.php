@@ -34,9 +34,17 @@ class BalanceController extends Controller
 			$anio = $explode[0];
 			$mes = $explode[1];
 
+			$dt = \Carbon\Carbon::createFromFormat('m', $mes);
+			$dt->firstOfMonth();
+			$first_day_month = $dt->format('d/m/Y');
+
+			$dt = \Carbon\Carbon::createFromFormat('m', $mes);
+			$dt->endOfMonth();
+			$last_day_month = $dt->format('d/m/Y');
+
 			$data = DB::select('CALL Contab.px_balanza_xperiodo(?,?)',array($anio, $mes));
 
-			$pdf = PDF::loadView('permitted.accounting.balance_general_pdf', compact('data'));
+			$pdf = PDF::loadView('permitted.accounting.balance_general_pdf', compact('data', 'first_day_month', 'last_day_month'));
 			
 			return $pdf->download('balanza_comprobacion_'. $periodo .'.pdf');
 		}

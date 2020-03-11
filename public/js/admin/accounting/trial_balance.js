@@ -102,8 +102,8 @@ var Configuration_table_responsive_balance = {
       className: 'btn btn-success',
     },
     {
-      text: '<i class=""></i> PDF',
-      titleAttr: 'Revisar Marcados',
+      text: '<i class="fas fa-file-pdf"></i> PDF',
+      titleAttr: 'Descargar PDF',
       className: 'btn btn-danger',
       init: function(api, node, config) {
         $(node).removeClass('btn-default')
