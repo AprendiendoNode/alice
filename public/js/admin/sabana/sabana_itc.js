@@ -903,7 +903,7 @@ function getViaticsByITC(itc){
           });
           savedGastos.push(row.name.toLowerCase().trim());
         } else {
-          data2[i].cantidad += row.aprobado;
+          data2[i].cantidad += parseFloat(row.aprobado);
         }
         montoTotal+=parseFloat(row.aprobado);
 
@@ -1256,8 +1256,8 @@ function viatics_table(datajson, table){
       var i=0;
 
       data.forEach(function(element){
-      if(subtext == "PAGADOS" || subtext == "PESOS") group[i] = {value:element.cantidad,name: element.tipo+' ($'+element.cantidad.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+' MXN)'};
-      else if(subtext == "DÓLARES") group[i] = {value:element.cantidad,name: element.tipo+' ($'+element.cantidad.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+' USD)'};
+      if(subtext == "PAGADOS" || subtext == "PESOS") group[i] = {value:element.cantidad,name: element.tipo+' ($'+parseFloat(element.cantidad).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+' MXN)'};
+      else if(subtext == "DÓLARES") group[i] = {value:element.cantidad,name: element.tipo+' ($'+parseFloat(element.cantidad).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+' USD)'};
       else group[i] = {value:element.cantidad,name: element.tipo+' ('+element.cantidad+')'};
       i++;
       });
