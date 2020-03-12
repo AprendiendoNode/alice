@@ -44,6 +44,8 @@ class BalanceController extends Controller
 
 			$data = DB::select('CALL Contab.px_balanza_xperiodo(?,?)',array($anio, $mes));
 
+			return view('permitted.accounting.balance_general_pdf', compact('data', 'first_day_month', 'last_day_month'));
+
 			$pdf = PDF::loadView('permitted.accounting.balance_general_pdf', compact('data', 'first_day_month', 'last_day_month'));
 			
 			return $pdf->download('balanza_comprobacion_'. $periodo .'.pdf');
