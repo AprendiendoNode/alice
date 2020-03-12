@@ -111,8 +111,8 @@ function documentp_table(datajson, table){
     if(data.alert!=1){
     if(data.fecha_inicio!='-' && data.fecha_entrega_ea!='-'){
       var current_date= new Date().toISOString().slice(0,10);
-      var limit_date= new Date(invertirFecha(data.fecha_inicio)).toISOString().slice(0,10);
-      var limit_date2=new Date(invertirFecha(data.fecha_entrega_ea)).toISOString().slice(0,10);
+      var limit_date= new Date(data.fecha_inicio).toISOString().slice(0,10);
+      var limit_date2=new Date(data.fecha_entrega_ea).toISOString().slice(0,10);
       if(!current_date<limit_date){
         setAlert(data.id, 1);
         data.alert=1;
@@ -424,7 +424,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,17,18,19,20,15 ],
+                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,17,18,19 ],
                 modifier: {
                     page: 'all',
                 }
@@ -454,7 +454,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,17,18,19,20,15 ],
+                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,17,18,19],
                 modifier: {
                     page: 'all',
                 }
@@ -484,7 +484,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,17,18,19,20,15 ],
+                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,17,18,19],
                 modifier: {
                     page: 'all',
                 }
