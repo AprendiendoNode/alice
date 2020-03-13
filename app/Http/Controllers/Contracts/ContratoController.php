@@ -1731,4 +1731,20 @@ class ContratoController extends Controller
    $resultados = DB::select('CALL px_kickoff_xcomision_contacto (?)',array($id));
    return $resultados;
  }
+
+
+ public function vigencia_contratos_12meses(Request $request){
+
+   $date=$request->start;
+    $result= DB::select('CALL px_contratos_anexos_vencidos_xvencer_xfecha(?)',array($date));
+    return json_encode($result);
+ }
+
+ public function vigencia_contratos_vencidos_12meses(Request $request){
+   $date=$request->start;
+    $result= DB::select('CALL px_contratos_anexos_vencidos_xfecha(?)',array($date));
+    return json_encode($result);
+ }
+
+
 }

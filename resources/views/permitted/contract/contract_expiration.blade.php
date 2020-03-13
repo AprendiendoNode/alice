@@ -57,26 +57,25 @@
   @if( auth()->user()->can('Contract expiration') )
     <div class="card mb-4">
       <div class="card-body">
-        <form id="search" name="search" class="forms-sample" enctype="multipart/form-data"> <!-- change -->
+        <!--<form id="search" name="search" class="forms-sample" enctype="multipart/form-data">--> <!-- change -->
           {{ csrf_field() }}
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-group mb-3">
                   <label>Periodo</label>
-                  <div class="input-daterange input-group" id="datepicker2">
-                      <input type="text" class="input-sm form-control required" id="start" name="start"
+                  <div class="input-daterange input-group">
+                      <input type="text" class="input-sm form-control" id="start" name="start"
                           placeholder="Fecha Inicial" />
-                      <span class="input-group-addon"></span>
-                      <input type="text" class="input-sm form-control required" id="end" name="end"
-                          placeholder="Fecha Final" />
+                      <!--<input type="text" class="input-sm form-control required" id="end" name="end"
+                          placeholder="Fecha Final" />-->
                   </div>
               </div>
             </div>
             <div class="col-sm-2">
-              <button type="submit" class="btn btn-primary default mb-1" style="margin-top: 1.8rem !important;">Generar</button>
+              <button type="button" class="btn btn-primary default mb-1 btnGenerar" style="margin-top: 1.8rem !important;">Generar</button>
             </div>
           </div>
-        </form>
+        <!--</form>-->
       </div>
     </div>
     <div class="row">
@@ -85,13 +84,23 @@
           <div class="card-body dashboard-tabs2 ">
             <ul class="nav nav-tabs px-4 not_borde" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Servicio Administrado</a>
+                <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Contratos</a>
               </li>
-              <li class="nav-item">
+              <!--<li class="nav-item">
                 <a class="nav-link" id="sales-tab" data-toggle="tab" href="#sales" role="tab" aria-controls="sales" aria-selected="false">Venues</a>
-              </li>
+              </li>-->
             </ul>
             <div class="tab-content">
+            <div class="row">
+              <div class="col-md-1"></div>
+                <div class="d-flex justify-content-center border-bottom w-100 col-sm-5 col-md-5">
+                  <div  id="graph_vigentes" style="min-height: 300px;left: 0px;right: 0px;"> </div>
+                </div>
+                <div class="d-flex justify-content-center border-bottom w-100 col-sm-5 col-md-5">
+                  <div  id="graph_vencidos" style="min-height: 300px;left: 0px;right: 0px;"> </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
 
               <div class="tab-pane fade active show" id="overview" role="tabpanel" aria-labelledby="overview-tab">
                 <div class="card">
@@ -99,18 +108,19 @@
                     <div class="row py-2">
                       <div class="col-md-12 col-xs-12">
                         <div class="table-responsive" style="fontsize: 8px;">
-                          <table id="all_notvenue" class="table">
-                            <thead>
+                          <table id="all_notvenue" class="table compact-tab">
+                            <thead style="background: rgb(25, 50, 87);">
                               <tr>
-                                <th>No.</th>
-                                <th>ID Contrato Anexo</th>
-                                <th>Clasificacion</th>
+                                <th>Estado</th>
+                                <th>Cliente</th>
                                 <th>Vertical</th>
-                                <th>Cadena</th>
-                                <th>ID Contrato Maestro</th>
+                                <th>Clasificacion</th>
+                                <th>ID Contrato</th>
+                                <!--<th>ID Contrato Maestro</th>-->
                                 <th>ITC</th>
                                 <th>Vencimiento</th>
-                                <th>-</th>
+                                <th>Meses restantes</th>
+                                <!--<th>-</th>-->
                               </tr>
                             </thead>
                             <tbody>
@@ -123,7 +133,38 @@
                 </div>
               </div>
 
-              <div class="tab-pane fade" id="sales" role="tabpanel" aria-labelledby="sales-tab">
+              <div class="tab-pane fade active show" id="overview_2" role="tabpanel" aria-labelledby="overview-tab">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row py-2">
+                      <div class="col-md-12 col-xs-12">
+                        <div class="table-responsive" style="fontsize: 8px;">
+                          <table id="all_notvenue_vencidos" class="table compact-tab">
+                            <thead style="background: rgb(25, 50, 87);">
+                              <tr>
+                                <th>Estado</th>
+                                <th>Cliente</th>
+                                <th>Vertical</th>
+                                <th>Clasificacion</th>
+                                <th>ID Contrato</th>
+                                <!--<th>ID Contrato Maestro</th>-->
+                                <th>ITC</th>
+                                <th>Vencimiento</th>
+                                <th>Meses vencido</th>
+                                <!--<th>-</th>-->
+                              </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!--<div class="tab-pane fade" id="sales" role="tabpanel" aria-labelledby="sales-tab">
                 <div class="card">
                   <div class="card-body">
                     <div class="row py-2">
@@ -151,7 +192,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>-->
 
             </div>
 
@@ -188,7 +229,7 @@
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
-    <script src="{{ asset('js/admin/contract/contract_expiration.js')}}"></script>
+    <script src="{{ asset('js/admin/contract/contract_expiration.js?v2.0.1')}}"></script>
     <style media="screen">
       .not_borde {
         border-top: none !important;

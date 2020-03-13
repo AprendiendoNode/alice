@@ -18,7 +18,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View checklist') )
-    NOC
+    Checklist
   @else
     {{ trans('message.denied') }}
   @endif
