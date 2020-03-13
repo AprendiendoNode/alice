@@ -113,7 +113,7 @@ class CustomerPolizaController extends Controller
     
                       //Acumulando saldos
                       $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
-                      $this->add_balances_polizas($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
+                      $this->add_balances_polizas_ingresos($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
     
                       $sql = DB::table('polizas_movtos')->insert([
                         'poliza_id' => $id_poliza,
@@ -148,7 +148,7 @@ class CustomerPolizaController extends Controller
 
     }
 
-    public function add_balances_polizas($cc_array, $periodo, $cargo, $abono)
+    public function add_balances_polizas_ingresos($cc_array, $periodo, $cargo, $abono)
     {
         $explode = explode('-', $periodo);
         $anio = $explode[0];
@@ -199,8 +199,7 @@ class CustomerPolizaController extends Controller
             $anio = $explode[0];
             $mes = $explode[1];
 
-            foreach($cc_array as $cc)
-            {
+            
                 //Obtengo saldos de la cuenta contable en la balanza en el periodo requerido
                 $result = DB::table('Contab.balanza')->select('id','cargos', 'abonos', 'sdo_inicial', 'sdo_final')
                 ->where('anio', $anio)
@@ -230,8 +229,9 @@ class CustomerPolizaController extends Controller
                         'abonos' => $total_abonos,
                         'sdo_final' => $saldo_final
                     ]);
-            }
+            
         }
+
     }
 
     public function update_poliza_movs(Request $request)
@@ -260,7 +260,18 @@ class CustomerPolizaController extends Controller
 
             //actualizando movimientos de las polizas
             for ($i=0; $i < $tam_asientos; $i++)
-            {
+            {      
+                 $asientos_contables_poliza = DB::table('polizas_movtos')->select('cuenta_contable_id', 'cargos', 'abonos','fecha')->where('poliza_id', '=', $request->poliza_id)->get();
+                        
+                 foreach($asientos_contables_poliza as $asiento)
+                 {
+                     //Deshaciendo saldos  en balanza￼￼ con totales
+                     $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asiento->cuenta_contable_id));
+                     $this->cancel_balances_polizas_ingresos($cc_array, $asiento->fecha, $asiento->cargos, $asiento->abonos);
+                     //Actualizando saldos           
+                     $this->add_balances_polizas_ingresos($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);    
+                 }
+               
                 $sql = DB::table('polizas_movtos')
                     ->where('id' ,$asientos_data[$i]->id)
                     ->update([
@@ -344,16 +355,7 @@ class CustomerPolizaController extends Controller
 
                 DB::beginTransaction();
 
-                try {
-                    //Deshaciendo saldos  en balanza￼￼        
-                    $asientos_contables = DB::table('polizas_movtos')->select('cuenta_contable_id', 'cargos', 'abonos','fecha')->where('poliza_id', '=', $id_poliza )->get();
-                      
-                    foreach($asientos_contables as $asiento)
-                    {
-                        $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array(1081));
-                        
-                        $this->cancel_balances_polizas_ingresos($cc_array, $asiento->fecha, $asiento->cargos, $asiento->abonos);
-                    }                  
+                try {                  
                     //Reestableciendo bandera de contabilizando a 0  de las facturas involucradas
                     $ids_customers = DB::table('polizas_movtos')->select()->where('poliza_id', '=', $id_poliza )->pluck('customer_invoice_id');
                     $ids_customers_unique = $ids_customers->unique();
@@ -364,7 +366,14 @@ class CustomerPolizaController extends Controller
                       $customer_invoice = Purchase::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
                     }
                     else {
+                        //Deshaciendo saldos  en balanza￼￼        
+                        $asientos_contables = DB::table('polizas_movtos')->select('cuenta_contable_id', 'cargos', 'abonos','fecha')->where('poliza_id', '=', $id_poliza )->get();
                         
+                        foreach($asientos_contables as $asiento)
+                        {
+                            $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asiento->cuenta_contable_id));
+                            $this->cancel_balances_polizas_ingresos($cc_array, $asiento->fecha, $asiento->cargos, $asiento->abonos);
+                        }
 
                         $customer_invoice = CustomerInvoice::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
                     }
