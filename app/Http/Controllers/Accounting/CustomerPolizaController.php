@@ -78,22 +78,6 @@ class CustomerPolizaController extends Controller
 		return json_encode($resultados);
 	}
 
-     //Cancela las polizas y las regresa en su historial de facturas
-    public function cancel_poliza(Request $request)
-    {
-        $customer_invoice = CustomerInvoice::findOrFail($request->id_invoice);
-        $customer_invoice->poliza = 0;
-		$customer_invoice->save();
-
-		//Pendiente Cancelar movimientos
-
-        return response()->json([
-            'message' => " La poliza $customer_invoice->name se ha cancelado",
-            'code' => 200
-        ]);
-
-    }
-
     public function save_poliza_movs(Request $request)
     {
         
@@ -189,8 +173,7 @@ class CustomerPolizaController extends Controller
                 $saldo_final = $saldo_inicial + $total_abonos - $total_cargos; 
             }else if($cc->naturaleza == 'D'){
                 $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
-            }
-            
+            }   
             //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
             DB::table('Contab.balanza')
                 ->where('anio', $anio)
@@ -204,43 +187,50 @@ class CustomerPolizaController extends Controller
         }
     }
 
-    public function remove_balances_polizas($cc_array, $periodo, $cargo, $abono)
+    public function cancel_balances_polizas_ingresos($cc_array, $periodo, $cargo, $abono)  
     {
         $explode = explode('-', $periodo);
         $anio = $explode[0];
         $mes = $explode[1];
-
+       
         foreach($cc_array as $cc)
         {
-            //Obtengo saldos de la cuenta contable en la balanza en el periodo requerido
-            $result = DB::table('Contab.balanza')->select('cargos', 'abonos', 'sdo_inicial', 'sdo_final')
-            ->where('anio', $anio)
-            ->where('mes', $mes)
-            ->where('cuenta_contable_id', $cc->cuenta_contable_id)
-            ->get();
+            $explode = explode('-', $periodo);
+            $anio = $explode[0];
+            $mes = $explode[1];
 
-            $saldo_inicial = $result[0]->sdo_inicial;
-            $saldo_final = $result[0]->sdo_final;
-            //Sumo totales de la poliza con el acumulado en la balanza
-            $total_cargos = $result[0]->cargos - $cargo;
-            $total_abonos = $result[0]->abonos - $abono;
-            //Calculo el saldo final de la cuenta contable dependiendo su naturaleza
-            if($cc->naturaleza == 'D'){
-                $saldo_final = $saldo_inicial - $total_abonos + $total_cargos; 
-            }else if($cc->naturaleza == 'A'){
-                $saldo_final = $saldo_inicial - $total_cargos + $total_abonos; 
-            }
-            
-            //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
-            DB::table('Contab.balanza')
+            foreach($cc_array as $cc)
+            {
+                //Obtengo saldos de la cuenta contable en la balanza en el periodo requerido
+                $result = DB::table('Contab.balanza')->select('id','cargos', 'abonos', 'sdo_inicial', 'sdo_final')
                 ->where('anio', $anio)
                 ->where('mes', $mes)
                 ->where('cuenta_contable_id', $cc->cuenta_contable_id)
-                ->update([
-                    'cargos' => $total_cargos,
-                    'abonos' => $total_abonos,
-                    'sdo_final' => $saldo_final
-                ]);
+                ->get();
+                
+                $saldo_inicial = $result[0]->sdo_inicial;
+                $saldo_final = $result[0]->sdo_final;
+                //Resto totales de la balanza para cancelar el saldo de la poliza
+                $total_cargos = $result[0]->cargos - $cargo;
+                $total_abonos = $result[0]->abonos - $abono;
+                
+                //Recalculo el saldo final de la cuenta contable dependiendo su naturaleza
+                if($cc->naturaleza == 'A'){
+                    $saldo_final = $saldo_inicial + $total_abonos - $total_cargos; 
+                }else if($cc->naturaleza == 'D'){
+                    $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
+                }   
+                //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
+                DB::table('Contab.balanza')
+                    ->where('anio', $anio)
+                    ->where('mes', $mes)
+                    ->where('cuenta_contable_id', $cc->cuenta_contable_id)
+                    ->update([
+                        'cargos' => $total_cargos,
+                        'abonos' => $total_abonos,
+                        'sdo_final' => $saldo_final
+                    ]);
+            }
         }
     }
 
@@ -355,6 +345,15 @@ class CustomerPolizaController extends Controller
                 DB::beginTransaction();
 
                 try {
+                    //Deshaciendo saldos  en balanza￼￼        
+                    $asientos_contables = DB::table('polizas_movtos')->select('cuenta_contable_id', 'cargos', 'abonos','fecha')->where('poliza_id', '=', $id_poliza )->get();
+                      
+                    foreach($asientos_contables as $asiento)
+                    {
+                        $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array(1081));
+                        
+                        $this->cancel_balances_polizas_ingresos($cc_array, $asiento->fecha, $asiento->cargos, $asiento->abonos);
+                    }                  
                     //Reestableciendo bandera de contabilizando a 0  de las facturas involucradas
                     $ids_customers = DB::table('polizas_movtos')->select()->where('poliza_id', '=', $id_poliza )->pluck('customer_invoice_id');
                     $ids_customers_unique = $ids_customers->unique();
@@ -365,7 +364,9 @@ class CustomerPolizaController extends Controller
                       $customer_invoice = Purchase::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
                     }
                     else {
-                      $customer_invoice = CustomerInvoice::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
+                        
+
+                        $customer_invoice = CustomerInvoice::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
                     }
                     
                      //Eliminando partidas dentro de la poliza

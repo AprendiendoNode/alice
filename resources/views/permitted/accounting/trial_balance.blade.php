@@ -59,28 +59,18 @@
                <table id="table_balance" class="table table-striped table-bordered table-hover">
                  <thead>
                    <tr class="bg-secondary" style="background: #088A68;">
-                     <th> <small>Cuenta</small> </th>
-                     <th> <small>Nat.</small> </th>
-                     <th> <small>Nombre</small> </th>
-                     <th> <small>Saldo inicial</small> </th>
-                     <th> <small>Cargos</small> </th>
-                     <th> <small>Abonos</small> </th>
-                     <th> <small>Saldo final</small> </th>
+                     <th> <small>CUENTA</small> </th>
+                     <th> <small>NAT.</small> </th>
+                     <th> <small>NOMBRE</small> </th>
+                     <th> <small>SALDO INICIAL</small> </th>
+                     <th> <small>CARGOS</small> </th>
+                     <th> <small>ABONOS</small> </th>
+                     <th> <small>SALDO FINAL</small> </th>
                    </tr>
                  </thead>
                  <tbody>
                  </tbody>
-                 <tfoot id='tfoot_average'>
-                   <tr>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                   </tr>
-                 </tfoot>
+                 
                </table>
              </div>
            </div>
@@ -99,11 +89,11 @@
       input:disabled,textarea:disabled {
            background: #ffffff !important;
            border-radius: 3px;
-       }
+      }
 
        #table_balance tbody tr td {
-        padding: 0.2rem 0.5rem;
-        height: 38px !important;
+        padding: 0.2rem 0.2rem;
+        height: 30px !important;
       }
 
       #table_balance thead tr th{

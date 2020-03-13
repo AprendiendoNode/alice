@@ -24,7 +24,7 @@ class BalanceController extends Controller
 
 		$result = DB::select('CALL Contab.px_balanza_xperiodo(?,?)',array($anio, $mes));
 
-        return $result;
+        return datatables()->of($result)->make(true);
     }
 
 	public function generate_balace_pdf($periodo)
@@ -43,12 +43,14 @@ class BalanceController extends Controller
 			$last_day_month = $dt->format('d/m/Y');
 
 			$data = DB::select('CALL Contab.px_balanza_xperiodo(?,?)',array($anio, $mes));
+			   
+				
+			//return view('permitted.accounting.balance_general_pdf', compact('data', 'first_day_month', 'last_day_month'));
 
-			return view('permitted.accounting.balance_general_pdf', compact('data', 'first_day_month', 'last_day_month'));
-
-			$pdf = PDF::loadView('permitted.accounting.balance_general_pdf', compact('data', 'first_day_month', 'last_day_month'));
+			$pdf = PDF::loadView('permitted.accounting.balance_general_pdf', compact('data', 'first_day_month', 'last_day_month'));		
 			
-			return $pdf->download('balanza_comprobacion_'. $periodo .'.pdf');
+			return $pdf->stream('balanza_comprobacion_'. $periodo .'.pdf');
+
 		}
 		
 	}

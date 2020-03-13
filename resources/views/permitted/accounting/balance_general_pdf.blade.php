@@ -2,9 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <title>
-  
 </title>
-
 <style type="text/css">
     * {
         font-family: Verdana, Arial, sans-serif;
@@ -19,10 +17,10 @@
     }
 
     .header_address{
-      line-height: .2rem;
+      line-height: .1rem;
     }
 
-    .header_address h4{
+    .header_address h5{
       font-size: 1.1rem;
     }
 
@@ -51,10 +49,8 @@
       font-size: 8px !important;
     }
 </style>
-
 </head>
 <body>
-
   <table width="100%">
     <tr>
         <td style="width:20%;" valign="top"></td>
@@ -63,15 +59,12 @@
             <p class="text-bold">SITWIFI, S.A DE C.V.</p>
             <p>HAMBURGO No. 159  COL JUAREZ</p>
             <p class="text-bold">SIT070918IXA</p>
-            <h4>BALANZA DE COMPROBACION</h4>
+            <h5>BALANZA DE COMPROBACION</h5>
             <p>PERIODO DEL {{ $first_day_month }}   AL {{ $last_day_month }}</p>
         </td>
         <td style="width:20%;" valign="top"></td>
     </tr>
   </table>
-
-
-
   <table id="table_balance" width="100%">
     <thead>
       <tr style="background: #A6A6A6;">
@@ -98,6 +91,5 @@
       @endforeach
     </tbody>
   </table>
-
 </body>
 </html>
