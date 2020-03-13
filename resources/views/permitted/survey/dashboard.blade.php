@@ -207,7 +207,7 @@
         <div class="col-md-4 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">NPS chart</h4>
+              <h4 class="card-title">WTF</h4>
               <!--<canvas id="lineChart" width="437" height="218" class="chartjs-render-monitor" style="display: block; width: 437px; height: 218px;"></canvas> -->
               <div id="nps_2" style="width: 100%; min-height: 320px; border:1px solid #ccc;"></div>
             </div>

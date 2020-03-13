@@ -797,6 +797,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/contract_expiration_notvenue', 'Contracts\ContratoController@contract_expiration_notvenue');
     Route::post('/contract_expiration_venue', 'Contracts\ContratoController@contract_expiration_venue');
     Route::post('/contract_expiration_info', 'Contracts\ContratoController@contract_expiration_info');
+    Route::post('/vigencia_contratos_12meses', 'Contracts\ContratoController@vigencia_contratos_12meses');
+    Route::post('/vigencia_contratos_vencidos_12meses', 'Contracts\ContratoController@vigencia_contratos_vencidos_12meses');
+
     //Lista por facturar
     Route::get('/view_payauto', 'Contracts\PruebasController@index_pagos');
     Route::post('/recordmens', 'Contracts\PruebasController@record_a')->name('recordmens');

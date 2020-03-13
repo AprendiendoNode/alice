@@ -424,7 +424,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,17,18,19 ],
+                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,14,17,18,19 ],
                 modifier: {
                     page: 'all',
                 }
@@ -454,7 +454,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,17,18,19],
+                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,14,17,18,19],
                 modifier: {
                     page: 'all',
                 }
@@ -484,7 +484,7 @@ var Configuration_table_responsive_documentp= {
                $(node).removeClass('btn-default')
             },
             exportOptions: {
-                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,17,18,19],
+                columns: [ 1,2,3,4,5,6,7,8,9,10,11,13,14,17,18,19],
                 modifier: {
                     page: 'all',
                 }
