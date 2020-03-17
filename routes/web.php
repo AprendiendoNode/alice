@@ -1307,6 +1307,9 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::get('/view_purchases_poliza', 'Purchases\HistoryPurchasesController@index_poliza');
   Route::post('/polizas_compras_search', 'Purchases\HistoryPurchasesController@search_poliza');
   Route::post('get_purchase_mov_data', 'Purchases\HistoryPurchasesController@get_purchase_mov_data');
+  Route::get('/view_purchase_poliza_pay', 'Purchases\HistoryPurchasesController@index_poliza_pay'); 
+  Route::post('/polizas_pay_search','Purchases\HistoryPurchasesController@search_poliza_pay');
+
 
   //Cuentas bancarias de proveedor
   Route::get('/view_cb_provider', 'Purchases\CbProviderController@index');

@@ -54,6 +54,20 @@ class HistoryPurchasesController extends Controller
         
         return view('permitted.purchases.purchases_polizas', compact('providers'));
     }
+    public function index_poliza_pay()
+    {
+      $providers = DB::table('customers')->select('id', 'name')->where('provider', 1)->get();
+      return view('permitted.purchases.purchases_polizas_pay', compact('providers'));
+    }
+    public function search_poliza_pay(Request $request)
+    {
+      $date_from  = $request->filter_date_from;
+      $date_a  = $date_from.'-01';
+      $cliente = !empty($request->filter_customer_id) ? $request->filter_customer_id : 0;
+      $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+      $resultados = DB::select('CALL px_purchase_con_polizadiario_xfecha (?,?)',array($date_a, $cliente));
+      return json_encode($resultados);
+    }
     public function search_poliza(Request $request)
     {
       $date_from  = $request->filter_date_from;

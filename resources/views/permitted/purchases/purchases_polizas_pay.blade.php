@@ -2,7 +2,7 @@
 
 @section('contentheader_title')
   @if( auth()->user()->can('View purchases') )
-    Póliza de diario - pagos
+    Póliza de pago
   @else
     {{ trans('message.denied') }}
   @endif
@@ -10,7 +10,7 @@
 
 @section('breadcrumb_title')
   @if( auth()->user()->can('View purchases') )
-    Póliza de diario - pagos
+    Póliza de pago
   @else
     {{ trans('message.denied') }}
   @endif
@@ -341,7 +341,7 @@
         height: 38px !important;
       }
     </style>
-    <script src="{{ asset('js/admin/purchases/history_polizas.js')}}"></script>
+    <script src="{{ asset('js/admin/purchases/poliza_pago.js')}}"></script>
 
   @else
   @endif

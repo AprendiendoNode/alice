@@ -1278,14 +1278,14 @@
             data: { _token : token,  cart_id : id_cart},
             success: function (data){
               console.log(data);
-
+              $('#customer_id').val(data[0].proveedor_id).trigger('change');
               data.forEach(function(key,i) {
                 var html = '';
                 var current_unit= key.unit_measure_id;
                 var current_sat = key.sat_product_id;
                 var current_product_id = key.id;
                 var current_accounting = key.id_cuenta_contable;
-
+                // console.log(current_accounting);
                 html += '<tr id="item_row_' + item_row + '">';
                 html += '<td class="text-center" style="vertical-align: middle;">';
                 html += '<button type="button" onclick="$(\'#item_row_' + item_row + '\').remove(); totalItem();" class="btn btn-xs btn-danger" style="margin-bottom: 0;">';
@@ -1321,7 +1321,7 @@
                 @forelse ($accounting_account as $account)
                 if( current_accounting == {{ $account->id  }})
                 {
-                  html += '<option value="{{ $account->id  }}">{{ $account->cuenta . " - " . $account->nombre }}</option>';
+                  html += '<option selected="selected" value="{{ $account->id  }}">{{ $account->cuenta . " - " . $account->nombre }}</option>';
                 }else{
                   html += '<option value="{{ $account->id  }}">{{ $account->cuenta . " - " . $account->nombre }}</option>';
                 }
@@ -1570,8 +1570,8 @@
             timePicker: true,
             timePicker24Hour: true,
             showDropdowns: true,
-            minDate: moment().subtract(4, 'months'),
-            maxDate : moment().add(3, 'days'),
+            minDate: moment().startOf('month'),
+            maxDate : moment().add(5, 'days'),
             locale: {
                 format: "DD-MM-YYYY HH:mm:ss"
             },
