@@ -241,8 +241,6 @@ class CustomerPolizaController extends Controller
         $asientos = $request->movs_polizas;
         $asientos_data = json_decode($asientos);
 
-        $tam_asientos = count($asientos_data);
-
         DB::beginTransaction();
 
         try {
@@ -258,31 +256,33 @@ class CustomerPolizaController extends Controller
                 'updated_at' => $date
             ]);
 
+            $asientos_contables_poliza = DB::table('polizas_movtos')->select('cuenta_contable_id', 'cargos', 'abonos','fecha')->where('poliza_id', '=', $request->poliza_id)->get();
+                    
+            foreach($asientos_contables_poliza as $asiento)
+            {                                                                                                                                            
+                //Deshaciendo saldos  en balanza￼￼ con totales
+                $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asiento->cuenta_contable_id));
+                $this->cancel_balances_polizas_ingresos($cc_array, $asiento->fecha, $asiento->cargos, $asiento->abonos);        
+            }
+
             //actualizando movimientos de las polizas
-            for ($i=0; $i < $tam_asientos; $i++)
-            {      
-                 $asientos_contables_poliza = DB::table('polizas_movtos')->select('cuenta_contable_id', 'cargos', 'abonos','fecha')->where('poliza_id', '=', $request->poliza_id)->get();
-                        
-                 foreach($asientos_contables_poliza as $asiento)
-                 {
-                     //Deshaciendo saldos  en balanza￼￼ con totales
-                     $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asiento->cuenta_contable_id));
-                     $this->cancel_balances_polizas_ingresos($cc_array, $asiento->fecha, $asiento->cargos, $asiento->abonos);
-                     //Actualizando saldos           
-                     $this->add_balances_polizas_ingresos($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);    
-                 }
-               
+            foreach ($asientos_data as $asientos_new)
+            {         
+                //Actualizando saldos
+                $cc_array2 = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_new->cuenta_contable_id));           
+                $this->add_balances_polizas_ingresos($cc_array2, $request->date_invoice, $asientos_new->cargo, $asientos_new->abono);
+
                 $sql = DB::table('polizas_movtos')
-                    ->where('id' ,$asientos_data[$i]->id)
+                    ->where('id' ,$asientos_new->id)
                     ->update([
-                    'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
-                    'customer_invoice_id' => $asientos_data[$i]->factura_id,
+                    'cuenta_contable_id' => $asientos_new->cuenta_contable_id,
+                    'customer_invoice_id' => $asientos_new->factura_id,
                     'fecha' => $request->date_invoice,
-                    'exchange_rate' => $asientos_data[$i]->tipo_cambio,
-                    'descripcion' => $asientos_data[$i]->nombre,
-                    'cargos' => $asientos_data[$i]->cargo,
-                    'abonos' => $asientos_data[$i]->abono,
-                    'referencia' => $asientos_data[$i]->referencia,
+                    'exchange_rate' => $asientos_new->tipo_cambio,
+                    'descripcion' => $asientos_new->nombre,
+                    'cargos' => $asientos_new->cargo,
+                    'abonos' => $asientos_new->abono,
+                    'referencia' => $asientos_new->referencia,
                     'updated_at' => $date
                 ]);
             }
