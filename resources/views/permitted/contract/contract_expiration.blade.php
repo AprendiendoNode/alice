@@ -106,7 +106,8 @@
                 <div class="card">
                   <div class="card-body">
                     <div class="row py-2">
-                      <div class="col-md-12 col-xs-12">
+                      <div class="col-md-12 col-xs-12 text-center">
+                        <h3 class="pb-2">Contratos vigentes</h3>
                         <div class="table-responsive" style="fontsize: 8px;">
                           <table id="all_notvenue" class="table compact-tab">
                             <thead style="background: rgb(25, 50, 87);">
@@ -133,11 +134,12 @@
                 </div>
               </div>
 
-              <div class="tab-pane fade active show" id="overview_2" role="tabpanel" aria-labelledby="overview-tab">
+              <div class="" id="overview_2" role="tabpanel" aria-labelledby="overview-tab">
                 <div class="card">
                   <div class="card-body">
                     <div class="row py-2">
-                      <div class="col-md-12 col-xs-12">
+                      <div class="col-md-12 col-xs-12 text-center">
+                        <h3 class="pb-2">Contratos vencidos</h3>
                         <div class="table-responsive" style="fontsize: 8px;">
                           <table id="all_notvenue_vencidos" class="table compact-tab">
                             <thead style="background: rgb(25, 50, 87);">
@@ -229,7 +231,7 @@
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
-    <script src="{{ asset('js/admin/contract/contract_expiration.js?v2.0.1')}}"></script>
+    <script src="{{ asset('js/admin/contract/contract_expiration.js?v3.0.1')}}"></script>
     <style media="screen">
       .not_borde {
         border-top: none !important;

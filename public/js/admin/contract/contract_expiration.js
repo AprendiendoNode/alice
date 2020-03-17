@@ -62,6 +62,7 @@ $.ajax({
 
 var doceMt=0,onceMt=0,seisMt=0;
 function fill_table_notvenue(datajson, table){
+  doceMt=0,onceMt=0,seisMt=0;
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_payment_tracking);
   vartable.fnClearTable();
@@ -92,6 +93,7 @@ graph_tickets_type('graph_vigentes',cantidades,'Contratos vigentes',color);
 
 var ven_doceMt=0,ven_onceMt=0,ven_seisMt=0;
 function fill_table_notvenue_vencidos(datajson, table){
+  ven_doceMt=0,ven_onceMt=0,ven_seisMt=0;
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_payment_tracking);
   vartable.fnClearTable();
@@ -129,7 +131,7 @@ function verify_status(num){
       seisMt++;
       return '<div class="text-center"><span class="badge badge-pill text-white" style="background-color:#ff0000">'+num+'</span></div>';
       break;
-      case (num<=11):
+      case (num<=11 && num>6):
       onceMt++;
       return '<div class="text-center"><span class="badge badge-pill text-white" style="background-color:#ff5400">'+num+'</span></div>';
       break;
@@ -147,7 +149,7 @@ function verify_status_vencido(num){
       ven_seisMt++;
       return '<div class="text-center"><span class="badge badge-pill text-white" style="background-color:#f1c40f">'+num+'</span></div>';
       break;
-      case (num<=11):
+      case (num<=11 && num>6):
       ven_onceMt++;
       return '<div class="text-center"><span class="badge badge-pill text-white" style="background-color:#ff5400">'+num+'</span></div>';
       break;
