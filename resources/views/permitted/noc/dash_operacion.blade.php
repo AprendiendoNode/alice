@@ -129,30 +129,10 @@
                     <h4 style="text-align: left;">Detractores</h4>
 
                     <table id="detractores" class="table-responsive" style="text-align: center;">
-                      <tr style="color: brown;">
+                      <tr id="seek0" style="color: brown;">
                         <td class="mes1"></td>
-                        <td>Status actual</td>
+                        <td>Status posterior</td>
                         <td class="mes2"></td>
-                      </tr>
-                      <tr>
-                        <td>Palace Grande</td>
-                        <td>Sin calificación</td>
-                        <td>California Playa maroma</td>
-                      </tr>
-                      <tr>
-                        <td>Colegio La Florida</td>
-                        <td style="color: green;">Promotor</td>
-                        <td>Galerías Polanco</td>
-                      </tr>
-                      <tr>
-                        <td>Iberostar Cancún</td>
-                        <td style="color: green;">Promotor</td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>Galerias San Juan del Río</td>
-                        <td>Sin calificación</td>
-                        <td></td>
                       </tr>
                     </table>
 

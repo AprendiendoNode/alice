@@ -233,6 +233,49 @@ function data_nps() {
             $("#sinres-porcentaje").text((data[1][4].Count / data[0][4].Count - 1).toFixed(2) * 100 + "%");
           }
           $("#sinres-icon").html(data[0][4].Count < data[1][4].Count ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+          //Detractores
+          console.log(data);
+          var new_row = "";
+          var old = 0, act = 0;
+          $(".new_detractores_rows").html("");
+          for(var i = 0; i < data[4].length ; i++) {
+            if(data[4][i].cal_anterior == "D") {
+              old++;
+              new_row += "<tr id='seek" + (i + 1) + "' class='new_detractores_rows'><td>" + data[4][i].Nombre_hotel + "</td>";
+              switch(data[4][i].cal_siguiente) {
+                case "Pr":
+                  new_row += "<td><span style='color: green;'>Promotor</span></td>";
+                  break;
+                case "Ps":
+                  new_row += "<td><span style='color: orange;'>Pasivo</span></td>";
+                  break;
+                case "D":
+                  new_row += "<td><span style='color: red;'>Detractor</span></td>";
+                  break;
+                default:
+                  new_row += "<td>No hay respuesta</td>";
+              }
+              new_row += "<td class='actual_detractores'></td></tr>";
+            } else if(old > 0) {
+              act++;
+              if(act > old) {
+                new_row += "<tr id='seek" + (i + 1) + "' class='new_detractores_rows'><td></td>";
+                new_row += "<td></td>";
+                new_row += "<td class='actual_detractores'>" + data[4][i].Nombre_hotel + "</td></tr>";
+                $("#seek" + old).after(new_row);
+                new_row = "";
+                continue;
+              } else {
+                $(".actual_detractores").eq(act - 1).text(data[4][i].Nombre_hotel);
+              }
+            } else {
+              new_row += "<tr id='seek" + (i + 1) + "' class='new_detractores_rows'><td></td>";
+              new_row += "<td></td>";
+              new_row += "<td class='actual_detractores'>" + data[4][i].Nombre_hotel + "</td></tr>";
+            }
+            $("#seek" + i).after(new_row);
+            new_row = "";
+          }
        },
        error: function (data) {
          console.error(data);

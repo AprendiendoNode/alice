@@ -70,6 +70,7 @@ class NocToolsController extends Controller
     $date = $anio_number."-".$mes_number."-01";
     $result2 = DB::select('CALL NPS_MONTH (?)', array($date));
     $result4 = substr($meses[$mes_number], 0, 3);
+    $result5 = DB::select('CALL px_detractores_xfecha(?)', array($date));
     $mes_number--;
     if($mes_number == 0) {
       $mes_number = "12";
@@ -81,7 +82,7 @@ class NocToolsController extends Controller
     $date = $anio_number."-".$mes_number."-01";
     $result1 = DB::select('CALL NPS_MONTH (?)', array($date));
     $result3 = substr($meses[$mes_number], 0, 3);
-    return array($result1, $result2, $result3, $result4);
+    return array($result1, $result2, $result3, $result4, $result5);
   }
 
 }
