@@ -1,5 +1,5 @@
 $(function () {
-  get_info_workstation();
+  $(".select2").select2();
   get_info_department();
   $('.datepicker').datepicker({
    language: 'es',

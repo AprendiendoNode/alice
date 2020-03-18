@@ -107,7 +107,7 @@
                   <div class="form-group row">
                     <label for="selectposition" class="col-sm-3 col-form-label">Puesto de trabajo<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
-                      <select  id="selectposition" name="selectposition" class="form-control form-control-sm required">
+                      <select  id="selectposition" name="selectposition" class="form-control form-control-sm select2 required">
                         <option value="">{{ trans('message.selectopt') }}</option>
                         @forelse ($workstations as $workstations_data)
                         <option value="{{ $workstations_data->id }}"> {{ $workstations_data->name }} </option>
@@ -119,7 +119,7 @@
                   <div class="form-group row">
                     <label for="selectuserposition" class="col-sm-3 col-form-label">Usuario<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
-                      <select  id="selectuserposition" name="selectuserposition" class="form-control form-control-sm required">
+                      <select  id="selectuserposition" name="selectuserposition" class="form-control form-control-sm select2 required">
                         <option value="">{{ trans('message.selectopt') }}</option>
                         @forelse ($user as $user_data)
                         <option value="{{ $user_data->id }}"> {{ $user_data->name }} </option>
@@ -178,7 +178,7 @@
                 <div class="form-group row">
                   <label for="selectpositionEdit" class="col-sm-3 col-form-label">Puesto de trabajo<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="selectpositionEdit" name="selectpositionEdit" class="form-control form-control-sm required">
+                    <select  id="selectpositionEdit" name="selectpositionEdit" class="form-control form-control-sm select2 required">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($workstations as $workstations_data)
                       <option value="{{ $workstations_data->id }}"> {{ $workstations_data->name }} </option>
@@ -190,7 +190,7 @@
                 <div class="form-group row">
                   <label for="selectuserpositionEdit" class="col-sm-3 col-form-label">Usuario<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="selectuserpositionEdit" name="selectuserpositionEdit" class="form-control form-control-sm required">
+                    <select  id="selectuserpositionEdit" name="selectuserpositionEdit" class="form-control form-control-sm select2 required">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($user as $user_data)
                       <option value="{{ $user_data->id }}"> {{ $user_data->name }} </option>
@@ -304,7 +304,7 @@
                   <div class="form-group row">
                     <label for="selectdepartament" class="col-sm-3 col-form-label">Departamento<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
-                      <select  id="selectdepartament" name="selectdepartament" class="form-control form-control-sm required">
+                      <select  id="selectdepartament" name="selectdepartament" class="form-control form-control-sm select2 required">
                         <option value="">{{ trans('message.selectopt') }}</option>
                         @forelse ($departments as $departments_data)
                         <option value="{{ $departments_data->id }}"> {{ $departments_data->name }} </option>
@@ -316,7 +316,7 @@
                   <div class="form-group row">
                     <label for="selectuserdepartament" class="col-sm-3 col-form-label">Usuario<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
-                      <select  id="selectuserdepartament" name="selectuserdepartament" class="form-control form-control-sm required">
+                      <select  id="selectuserdepartament" name="selectuserdepartament" class="form-control form-control-sm select2 required">
                         <option value="">{{ trans('message.selectopt') }}</option>
                         @forelse ($user as $user_data)
                         <option value="{{ $user_data->id }}"> {{ $user_data->name }} </option>
@@ -363,7 +363,7 @@
                   <div class="form-group row">
                     <label for="selectcadena" class="col-sm-3 col-form-label">Cadena<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
-                      <select  id="selectcadena" name="selectcadena" class="form-control form-control-sm required">
+                      <select  id="selectcadena" name="selectcadena" class="form-control form-control-sm select2 required">
                         <option value="">{{ trans('message.selectopt') }}</option>
                         @forelse ($cadena as $cadena_data)
                         <option value="{{ $cadena_data->id }}"> {{ $cadena_data->name }} </option>
@@ -375,7 +375,7 @@
                   <div class="form-group row">
                     <label for="selectusermaster" class="col-sm-3 col-form-label">Usuario<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
-                      <select  id="selectusermaster" name="selectusermaster" class="form-control form-control-sm required">
+                      <select  id="selectusermaster" name="selectusermaster" class="form-control form-control-sm select2 required">
                         <option value="">{{ trans('message.selectopt') }}</option>
                         @forelse ($user as $user_data)
                         <option value="{{ $user_data->id }}"> {{ $user_data->name }} </option>
@@ -428,7 +428,7 @@
                 <div class="form-group row">
                   <label for="selectcadenaEdit" class="col-sm-3 col-form-label">Hotel<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="selectcadenaEdit" name="selectcadenaEdit" class="form-control form-control-sm required">
+                    <select  id="selectcadenaEdit" name="selectcadenaEdit" class="form-control form-control-sm select2 required">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($cadena as $cadena_data)
                       <option value="{{ $cadena_data->id }}"> {{ $cadena_data->name }} </option>
@@ -440,7 +440,7 @@
                 <div class="form-group row">
                   <label for="selectUserMasterEdit" class="col-sm-3 col-form-label">Usuario<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="selectUserMasterEdit" name="selectUserMasterEdit" class="form-control form-control-sm required">
+                    <select  id="selectUserMasterEdit" name="selectUserMasterEdit" class="form-control form-control-sm select2 required">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($user as $user_data)
                       <option value="{{ $user_data->id }}"> {{ $user_data->name }} </option>
@@ -473,7 +473,7 @@
                 <div class="form-group row">
                   <label for="selecthotel" class="col-sm-3 col-form-label">Hotel<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="selecthotel" name="selecthotel" class="form-control form-control-sm required">
+                    <select  id="selecthotel" name="selecthotel" class="form-control form-control-sm select2 required">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($hotel as $hotel_data)
                       <option value="{{ $hotel_data->id }}"> {{ $hotel_data->Nombre_hotel }} </option>
@@ -485,7 +485,7 @@
                 <div class="form-group row">
                   <label for="selectuserjunior" class="col-sm-3 col-form-label">Usuario<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="selectuserjunior" name="selectuserjunior" class="form-control form-control-sm required">
+                    <select  id="selectuserjunior" name="selectuserjunior" class="form-control form-control-sm select2 required">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($user as $user_data)
                       <option value="{{ $user_data->id }}"> {{ $user_data->name }} </option>
@@ -538,7 +538,7 @@
                 <div class="form-group row">
                   <label for="selectHotelEdit" class="col-sm-3 col-form-label">Hotel<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="selectHotelEdit" name="selectHotelEdit" class="form-control form-control-sm required">
+                    <select  id="selectHotelEdit" name="selectHotelEdit" class="form-control form-control-sm select2 required">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($hotel as $hotel_data)
                       <option value="{{ $hotel_data->id }}"> {{ $hotel_data->Nombre_hotel }} </option>
@@ -550,7 +550,7 @@
                 <div class="form-group row">
                   <label for="selectUserJuniorEdit" class="col-sm-3 col-form-label">Usuario<span style="color: red;">*</span></label>
                   <div class="col-sm-9">
-                    <select  id="selectUserJuniorEdit" name="selectUserJuniorEdit" class="form-control form-control-sm required">
+                    <select  id="selectUserJuniorEdit" name="selectUserJuniorEdit" class="form-control form-control-sm select2 required">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($user as $user_data)
                       <option value="{{ $user_data->id }}"> {{ $user_data->name }} </option>
@@ -590,6 +590,8 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
   <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
+  <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" type="text/css" />
+  <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
 
   <script src="{{ asset('js/admin/classification.js')}}"></script>
   <script src="{{ asset('js/admin/pivot_classification_job.js')}}"></script>
