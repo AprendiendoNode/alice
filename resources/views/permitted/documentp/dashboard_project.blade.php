@@ -248,12 +248,27 @@
             <div class="col-12 col-md-6">
               <h4 class="text-title">Estatus de instalación</h4>
             </div>
-            <div class="col-12 col-md-6">
-              <h4 class="text-right pr-4"><span id="calif_projects">0 %</span> </h4>
+            <div class="col-12 col-md-3">
+
+            </div>
+            <div class="col-12 col-md-3">
+              <!--<h4 class="text-right pr-4"><span id="calif_projects">0 %</span> </h4>-->
+                <div class="form-group" id="date_from">
+                  <label class="control-label" for="date_to_search">
+                    {{ __('general.date_from') }}
+                  </label>
+                  <div class="input-group mb-3">
+                    <input type="text"  datas="filter_date_from" id="date_to_search" name="date_to_search" class="form-control form-control-sm" placeholder="" value="" required>
+                    <div class="input-group-append">
+                      <span class="input-group-text white"><i class="fa fa-calendar"></i></span>
+                    </div>
+                  </div>
+                </div>
+
             </div>
           </div>
           <div class="row d-flex mb-short">
-            <div class="col-xs-12 col-md-6 table-responsive p-3">
+            <div class="col-xs-12 col-md-8 table-responsive p-3">
               <table id="table-dash" class="table table-sm table-bordered table-striped ">
                 <thead>
                   <tr>
@@ -263,55 +278,123 @@
                   </tr>
                   <tr style="background: #193257;color:white;">
                     <th>Estatus</th>
+                    <th>Tipo</th>
                     <th class="text-center">Riesgo</th>
                     <th class="text-center">Atención</th>
                     <th class="text-center">Normal</th>
                     <th></th>
+                    <th>Instalado</th>
                   </tr>
                   <tr id="status" class="">
                     <th class="text">Tipo de servicio</th>
+                    <th></th>
                     <th id="red" class="text-center"><i style="color:red;" class="fa fa-circle" aria-hidden="true"></i></th>
                     <th id="yellow" class="text-center"><i style="color:yellow;" class="fa fa-circle" aria-hidden="true"></i></th>
                     <th id="green" class="text-center"><i style="color:green;" class="fa fa-circle" aria-hidden="true"></i></th>
                     <th class="text-center" rowspan="">Total</th>
+                    <th id="blue" class="text-center"><i style="color:blue;" class="fa fa-circle" aria-hidden="true"></i></th>
                   </tr>
                 </thead>
                 <tbody>
+
                   <tr>
-                    <td> <strong>Cliente Nuevo</strong> </td>
+                    <td rowspan="2"> <strong>Cliente Nuevo</strong> </td>
+                    <td>Instalacion</td>
                     <td class="text-center p-2">{{ $status_projects[0]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[0]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[0]->normal }}</td>
                     <td class="text-center font-weight-bold"> {{ $status_projects[0]->riesgo + $status_projects[0]->atencion + $status_projects[0]->normal }} </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[0]->instalado }}</td>
                   </tr>
                   <tr>
-                    <td> <strong>Ampliación</strong> </td>
+                    <td>Compras</td>
+                    <td class="text-center p-2">{{ $status_projects[0]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[0]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[0]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[0]->riesgo + $status_projects[0]->atencion + $status_projects[0]->normal }} </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[0]->instalado }}</td>
+                  </tr>
+
+                  <tr>
+                    <td rowspan="2" > <strong>Ampliación</strong> </td>
+                    <td>Instalación</td>
                     <td class="text-center p-2">{{ $status_projects[1]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[1]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[1]->normal }}</td>
                     <td class="text-center font-weight-bold"> {{ $status_projects[1]->riesgo + $status_projects[1]->atencion + $status_projects[1]->normal }} </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[1]->instalado }}</td>
                   </tr>
+
                   <tr>
-                    <td> <strong>Renovación</strong> </td>
+                    <td>Compras</td>
+                    <td class="text-center p-2">{{ $status_projects[1]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[1]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[1]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[1]->riesgo + $status_projects[1]->atencion + $status_projects[1]->normal }} </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[1]->instalado }}</td>
+                  </tr>
+
+                  <tr>
+                    <td rowspan="2" > <strong>Renovación</strong> </td>
+                    <td>Instalacion</td>
                     <td class="text-center p-2">{{ $status_projects[2]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[2]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[2]->normal }}</td>
                     <td class="text-center font-weight-bold"> {{ $status_projects[2]->riesgo + $status_projects[2]->atencion + $status_projects[2]->normal }} </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[2]->instalado }}</td>
                   </tr>
+                  <tr>
+                    <td>Compras</td>
+                    <td class="text-center p-2">{{ $status_projects[2]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[2]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[2]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[2]->riesgo + $status_projects[2]->atencion + $status_projects[2]->normal }} </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[2]->instalado }}</td>
+                  </tr>
+
+
+                  <tr>
+                    <td rowspan="2"> <strong>Venta</strong> </td>
+                    <td>Instalación</td>
+                    <td class="text-center p-2">{{ $status_projects[4]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[4]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[4]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[4]->riesgo + $status_projects[4]->atencion + $status_projects[4]->normal }} </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[4]->instalado }}</td>
+                  </tr>
+                  <tr>
+                    <td>Compras</td>
+                    <td class="text-center p-2">{{ $status_projects[4]->riesgo }}</td>
+                    <td class="text-center">{{ $status_projects[4]->atencion }}</td>
+                    <td class="text-center">{{ $status_projects[4]->normal }}</td>
+                    <td class="text-center font-weight-bold"> {{ $status_projects[4]->riesgo + $status_projects[4]->atencion + $status_projects[4]->normal }} </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[4]->instalado }}</td>
+                  </tr>
+
+
                 </tbody>
                 <tfoot>
                   <tr class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
                     <td><strong>Total</strong> </td>
-                    <td class="text-center p-2"> <span id="total_rojo">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo }}</span> </td>
-                    <td class="text-center"> <span id="total_amarillo">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion }}</span> </td>
-                    <td class="text-center"> <span id="total_verde">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal }}</span> </td>
+                    <td></td>
+                    <td class="text-center p-2"> <span id="total_rojo">{{ $status_projects[0]->riesgo + $status_projects[1]->riesgo + $status_projects[2]->riesgo + $status_projects[4]->riesgo }}</span> </td>
+                    <td class="text-center"> <span id="total_amarillo">{{ $status_projects[0]->atencion + $status_projects[1]->atencion + $status_projects[2]->atencion + $status_projects[4]->atencion }}</span> </td>
+                    <td class="text-center"> <span id="total_verde">{{ $status_projects[0]->normal + $status_projects[1]->normal + $status_projects[2]->normal + $status_projects[4]->normal }}</span> </td>
                     <th class="text-center"> <span id="total_project_instalation"></span>  </th>
+                    <td class="text-center p-2"> <span id="">{{ $status_projects_instalado[0]->instalado + $status_projects_instalado[1]->instalado + $status_projects_instalado[2]->instalado +$status_projects_instalado[4]->instalado}}</span> </td>
                   </tr>
                 </tfoot>
               </table>
             </div>
+
+            <div class="col-md-4 grid-margin text-center">
+                  <h4 class="card-title">NPS chart</h4>
+                  <div class="d-flex justify-content-center  border-bottom w-100">
+                    <div id="main_nps" style="width: 100%; min-height: 120px; "></div>
+                  </div>
+            </div>
             <!-------------------------------------------------->
-            <div class="col-xs-12 col-md-6 table-responsive p-3">
+            <!--<div class="col-xs-12 col-md-6 table-responsive p-3">
               <table id="table-dash" class="table table-sm table-bordered table-striped">
                 <thead>
                   <tr>
@@ -341,22 +424,26 @@
                     <td> <strong>Renovación</strong> </td>
                     <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[2]->instalado }}</td>
                   </tr>
+                  <tr>
+                    <td> <strong>Venta</strong> </td>
+                    <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[4]->instalado }}</td>
+                  </tr>
                 </tbody>
                 <tfoot>
                   <tr class="font-weight-bold" style="border-top:2px solid #B9B9B7 !important;">
                     <td><strong>Total</strong> </td>
-                    <td class="text-center p-2"> <span id="">{{ $status_projects_instalado[0]->instalado + $status_projects_instalado[1]->instalado + $status_projects_instalado[2]->instalado }}</span> </td>
+                    <td class="text-center p-2"> <span id="">{{ $status_projects_instalado[0]->instalado + $status_projects_instalado[1]->instalado + $status_projects_instalado[2]->instalado +$status_projects_instalado[4]->instalado}}</span> </td>
                   </tr>
                 </tfoot>
               </table>
-            </div>
+            </div>-->
           </div>
           <!-----------VENTA------------->
           <div class="row">
             <div class="col-12">
               <div class="row d-flex mb-short">
                 <div class="col-xs-12 col-md-6 table-responsive p-3">
-                  <table id="" class="table table-sm table-bordered table-striped">
+                  <!--<table id="" class="table table-sm table-bordered table-striped">
                     <thead>
                       <tr>
                         <th class="text-center text-success text-weigh-bold" colspan="7">
@@ -387,10 +474,10 @@
                         <td class="text-center font-weight-bold"> {{ $status_projects[4]->riesgo + $status_projects[4]->atencion + $status_projects[4]->normal }} </td>
                       </tr>
                     </tbody>
-                  </table>
+                  </table>-->
                 </div>
                 <div class="col-xs-12 col-md-6 table-responsive p-3">
-                  <table id="table-dash" class="table table-sm table-bordered table-striped">
+                  <!--<table id="table-dash" class="table table-sm table-bordered table-striped">
                     <thead>
                       <tr>
                         <th class="text-center text-dark text-weigh-bold" colspan="7">
@@ -412,7 +499,7 @@
                         <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[4]->instalado }}</td>
                       </tr>
                     </tbody>
-                  </table>
+                  </table>-->
                 </div>
               </div>
             </div>
@@ -807,7 +894,7 @@
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=5.0.1')}}"></script>
+    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=6.3.1')}}"></script>
     <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
 
 @else

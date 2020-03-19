@@ -11,6 +11,16 @@ var initGet = { method: 'get',
                   credentials: "same-origin",
                   cache: 'default' };
 
+$('#date_to_search').datepicker({
+  language: 'es',
+  format: "yyyy-mm-dd",
+  viewMode: "months",
+  minViewMode: "months",
+  endDate: '0m',
+  autoclose: true,
+  clearBtn: true
+}).datepicker("setDate",'now');
+
 (function(){
   moment.locale('es');
   $('#date_to_search').datepicker({
@@ -48,7 +58,8 @@ function get_calif_project(){
   let calif = parseInt(total_verde) / total;
   calif *= 100;
   calif = parseInt(calif);
-  document.getElementById('calif_projects').innerHTML = `${calif} %`;
+  graph_gauge_hotel('main_nps', 'NPS', '0', '100', calif);
+/*  document.getElementById('calif_projects').innerHTML = `${calif} %`;
 
   if(calif > 76){
     document.getElementById('calif_projects').style.color = "green";
@@ -57,7 +68,7 @@ function get_calif_project(){
   }else{
     document.getElementById('calif_projects').style.color = "red";
   }
-
+*/
 
 }
 
@@ -1860,4 +1871,100 @@ var Configuration_table_responsive_documentp= {
       }
       });
 
+    });
+
+    $('#blue').on('click',function(){
+    var _token = $('input[name="_token"]').val();
+
+      $.ajax({
+      type:"POST",
+      url:"/get_documentp_project_xstatus",
+      data:{_token:_token,id_alert:4},
+      success:function(data){
+        //console.log(data);
+        $('#modal_project_xstatus').modal('show');
+        documentp_table(data,$('#table_documentp'));
+      },
+      error:function(data){
+        console.log(data);
+      }
+      });
+
+    });
+
+    function graph_gauge_hotel(title, grapname, valuemin, valuemax, valor) {
+      //$('#'+title).width($('#'+title).width());
+      //$('#'+title).height($('#'+title).height());
+
+     var chart = document.getElementById(title);
+      var resizeMainContainer = function () {
+       chart.style.width = 320+'px';
+       chart.style.height = 320+'px';
+     };
+      resizeMainContainer();
+        var myChart = echarts.init(chart);
+      var option = {
+        tooltip : {
+            formatter: "{a} <br/>{b} : {c}"
+        },
+        grid: {
+            show : true,
+            containLabel: false,
+            backgroundColor: 'transparent',
+            borderColor: '#ccc',
+            borderWidth: 0,
+            top: -10,
+            x: 5,
+            y: 0,
+            x2: 5,
+            y2: 0,
+        },
+        toolbox: {
+            feature: {
+              restore : {show: false, title : 'Recargar'},
+              saveAsImage : {show: false , title : 'Guardar'}
+            }
+        },
+        series: [
+            {
+                name: grapname,
+                type: 'gauge',
+                splitNumber: 20,
+                min: -valuemin,
+                max: valuemax,
+                detail: {formatter:'{value}'},
+                data: [{value: valor, name: grapname}],
+                axisLine: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: [[0.85, '#f0120a'],[0.90, '#f5e60c'],[1, '#0fe81e']],
+                        width: 30
+                    }
+                },
+                axisLabel: {           // 坐标轴文本标签，详见axis.axisLabel
+                    textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                        color: 'auto',
+                        fontSize: 10,
+
+                    }
+                },
+            }
+        ]
+      };
+
+      myChart.setOption(option);
+
+      $(window).on('resize', function(){
+          if(myChart != null && myChart != undefined){
+             //chart.style.width = 100+'%';
+             //chart.style.height = 100+'%';
+             chart.style.width = $(window).width()*0.5;
+             chart.style.height = $(window).width()*0.5;
+              myChart.resize();
+
+          }
+      });
+    }
+
+    $('#date_to_search').on('change',function(){
+      console.log('funciona');
     });
