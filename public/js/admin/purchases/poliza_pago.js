@@ -69,7 +69,7 @@ $(function() {
         var formData = new FormData(form);
         $.ajax({
           type: "POST",
-          url: "/purchases/polizas_pay_search",
+          url: "/accounting/polizas_pay_search",
           data: formData,
           contentType: false,
           processData: false,
@@ -236,7 +236,7 @@ var Configuration_table_responsive_doctypes = {
             $.ajax({
                 type: "POST",
                 // url: '/sales/get_note_credit_mov_data',
-                url: '/purchases/get_purchase_mov_data',
+                url: '/accounting/get_purchase_mov_data',
                 data: {facturas: JSON.stringify(facturas) , date:$('#filter_date_from').val(),  _token : _token},
                 success: function (data) {
 
