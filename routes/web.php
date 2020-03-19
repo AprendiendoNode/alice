@@ -1277,13 +1277,19 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   Route::post('/customer-polizas-delete', 'Accounting\CustomerPolizaController@delete_poliza');
   Route::post('/get-movs-by-poliza', 'Accounting\CustomerPolizaController@get_movtos_by_poliza');
   Route::post('/update-poliza-movs', 'Accounting\CustomerPolizaController@update_poliza_movs');
-
+ //POLIZAS INGRESO
+  Route::get('/view_poliza_ingresos', 'Accounting\CustomerPolizaController@view_poliza_ingreso');
+  Route::post('/facturas_contabilizadas_data', 'Accounting\CustomerPolizaController@facturas_contabilizadas_data');
   //REPORTES FACTURACION Y CONTABILIDAD
   Route::get('/billing_report', 'Sales\BillingReportController@index');
   Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
   Route::get('/estado_resultados', 'Accounting\EstadoResultadoController@index');
   Route::post('/estado_resultados_search', 'Accounting\EstadoResultadoController@estado_resultados_search');
-  });
+  //CXC
+  Route::get('/view_cxc_history', 'Accounting\CustomerPolizaController@view_cxc');
+  Route::post('/cxc_data', 'Accounting\CustomerPolizaController@cxc_data');
+
+});
 
 Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   // Compras

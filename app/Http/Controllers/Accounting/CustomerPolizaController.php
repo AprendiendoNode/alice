@@ -45,6 +45,44 @@ class CustomerPolizaController extends Controller
         return view('permitted.accounting.create_polizas', compact('cuentas_contables', 'tipos_poliza'));
     }
 
+    public function view_poliza_ingreso()
+    {
+        return view('permitted.accounting.polizas_ingresos');
+    }
+
+    public function facturas_contabilizadas_data(Request $request)
+    {
+        $date_from  = $request->filter_date_from;
+		$date_to  = $request->filter_date_to;
+
+		$date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+        $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
+        
+        $result = DB::select('CALL px_customer_polizas_filters_type_contabilizado(?,?,?)', array($date_a, $date_b, '1'));
+
+        return $result;
+    }
+
+    public function view_cxc()
+    {
+        //px_customer_polizas_filters_type_contabilizado
+
+        return view('permitted.accounting.cxc_history');
+    }
+
+    public function cxc_data(Request $request)
+    {
+        $date_from  = $request->filter_date_from;
+		$date_to  = $request->filter_date_to;
+
+		$date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+        $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
+        
+        $result = DB::select('CALL px_antiguedad_saldos()', array());
+
+        return $result;
+    }
+
 	/**
 	 * Muestra el apartado de todas las facturas
 	*
@@ -301,7 +339,33 @@ class CustomerPolizaController extends Controller
 
     }
 
+    //MOVIMIENTOS DE POLIZA DE DIARIO
     public function get_facts_mov_data(Request $request)
+    {
+        $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
+        $next_id_num = DB::table('polizas')->max('numero') + 1;
+        $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+        $facturas = json_decode($request->facturas);
+        $asientos = array();
+        for ($i=0; $i <= (count($facturas)-1); $i++)
+        {
+            $data = DB::select('CALL px_poliza_xfactura_cc(?)', array($facturas[$i]));
+
+            if(count($data) > 0)
+            {
+                for($j=0; $j <= (count($data)-1); $j++)
+                {
+                    array_push($asientos, $data[$j]);
+                }
+            }
+        }
+
+        return view('permitted.accounting.table_asientos_contables',
+               compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num'));
+    }
+
+    //MOVIMIENTOS DE POLIZA DE INGRESOS
+    public function get_facts_poliza_ingreso_mov_data(Request $request)
     {
         $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
         $next_id_num = DB::table('polizas')->max('numero') + 1;
