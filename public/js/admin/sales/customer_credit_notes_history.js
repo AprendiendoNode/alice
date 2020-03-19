@@ -761,6 +761,8 @@ $('#form_save_asientos_contables').on('submit', function(e){
             let cargo = $(tr).find('.cargos').val();
             let abono = $(tr).find('.abonos').val();
             let referencia = $(tr).find('.referencia').val();
+            let fecha = $(tr).find('.fechita').val();
+
             element = {
               "factura_id" : id_factura,
               "cuenta_contable_id" : cuenta_contable,
@@ -769,7 +771,8 @@ $('#form_save_asientos_contables').on('submit', function(e){
               "nombre" : nombre,
               "cargo" : parseFloat(cargo),
               "abono" : parseFloat(abono),
-              "referencia" : referencia
+              "referencia" : referencia,
+              "fecha" : fecha
             }
             asientos.push(element);
           });
@@ -788,7 +791,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
                              credentials: "same-origin",
                              body:formData,
                              cache: 'default' };
-           return fetch('/accounting/customer-polizas-save-movs', miInit)
+           return fetch('/sales/customer-polizas-save-movs-egresos', miInit)
                  .then(function(response){
                    if (!response.ok) {
                       throw new Error(response.statusText)
@@ -818,7 +821,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
           Swal.fire(
             'No se guardo la poliza','','warning'
           )
-        }        
+        }
       })
     }
     else{
@@ -892,6 +895,7 @@ function save_poliza2() {
           let cargo = $(tr).find('.cargos').val();
           let abono = $(tr).find('.abonos').val();
           let referencia = $(tr).find('.referencia').val();
+          let fecha = $(tr).find('.fechita').val();
 
           element = {
             "factura_id" : id_factura,
@@ -901,7 +905,8 @@ function save_poliza2() {
             "nombre" : nombre,
             "cargo" : parseFloat(cargo),
             "abono" : parseFloat(abono),
-            "referencia" : referencia
+            "referencia" : referencia,
+            "fecha" : fecha,
           }
 
           asientos.push(element);

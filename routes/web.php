@@ -1172,6 +1172,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::get('/customer-credit-notes/get-product', 'Sales\CustomerCreditNoteController@getproduct');
     Route::post('/customer-credit-notes/get-accounting-account-product', 'Sales\CustomerCreditNoteController@getAccountingAccountProduct');
     Route::post('/customer-credit-notes-sendmail-fact', 'Sales\CustomerInvoiceController@sendmail_notecredit_customers');
+    Route::post('/customer-polizas-save-movs-egresos', 'Sales\CustomerCreditNoteController@save_poliza_movs');
 
     Route::get('/customer-invoices/autocomplete-cfdi', 'Sales\CustomerInvoiceController@autocompleteCfdi');
     Route::get('customer-invoices/get-customer-invoice', 'Sales\CustomerInvoiceController@getCustomerInvoice')->name('customer-invoices/get-customer-invoice');
@@ -1293,7 +1294,7 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   Route::post('/purchase_polizas_movs_save', 'Purchases\HistoryPurchasesController@purchase_polizas_movs_save');
   Route::post('/polizas_compras_search', 'Purchases\HistoryPurchasesController@search_poliza');
   Route::post('get_purchase_mov_data', 'Purchases\HistoryPurchasesController@get_purchase_mov_data');
-  Route::get('/view_purchase_poliza_pay', 'Purchases\HistoryPurchasesController@index_poliza_pay'); 
+  Route::get('/view_purchase_poliza_pay', 'Purchases\HistoryPurchasesController@index_poliza_pay');
   Route::post('/polizas_pay_search','Purchases\HistoryPurchasesController@search_poliza_pay');
 
 });

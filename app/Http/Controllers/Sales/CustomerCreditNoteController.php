@@ -1478,7 +1478,7 @@ class CustomerCreditNoteController extends Controller
     public function get_note_credit_mov_data_cfdi(Request $request) {
       $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
       $date_req = $request->date;
-      $date_rest = $date_req.'-01';
+      $date_rest = $date_req;
       $date = \Carbon\Carbon::now();
 
       $next_id_num = 0;
@@ -1514,6 +1514,75 @@ class CustomerCreditNoteController extends Controller
       }
     }
 
+    /* Guardar poliza - historial de egreso (cfdi)*/
+    public function save_poliza_movs(Request $request)
+    {
+      return $request;
+      try {
+
+        DB::transaction(function () use($request){
+          //Objeto de polizas
+          $asientos = $request->movs_polizas;
+          $asientos_data = json_decode($asientos);
+
+          $tam_asientos = count($asientos_data);
+          $flag = "false";
+
+          $id_poliza = DB::table('polizas')->insertGetId([
+            'tipo_poliza_id' => $request->type_poliza,
+            'numero' => $request->num_poliza,
+            'fecha' => $request->date_resive.'-'.$request->day_poliza,
+            'descripcion' => $request->descripcion_poliza,
+            'total_cargos' => $request->total_cargos_format,
+            'total_abonos' => $request->total_abonos_format
+          ]);
+
+          //Insertando movimientos de las polizas
+          for ($i=0; $i < $tam_asientos; $i++)
+          {
+            if ( $asientos_data[$i]->cuenta_contable_id ) {
+              if ( $asientos_data[$i]->cargo == 0 && $asientos_data[$i]->abono == 0) {
+                /* NO_INSERTAR */
+              }
+              else{
+                /* SE INSERTAR */
+
+                //Acumulando saldos
+                $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
+                // $this->add_balances_polizas_ingresos($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
+
+                $sql = DB::table('polizas_movtos')->insert([
+                  'poliza_id' => $id_poliza,
+                  'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
+                  'customer_invoice_id' => $asientos_data[$i]->factura_id,
+                  'fecha' => $asientos_data[$i]->fecha,
+                  'exchange_rate' => $asientos_data[$i]->tipo_cambio,
+                  'descripcion' => $asientos_data[$i]->nombre,
+                  'cargos' => $asientos_data[$i]->cargo,
+                  'abonos' => $asientos_data[$i]->abono,
+                  'referencia' => $asientos_data[$i]->referencia
+                ]);
+                //Marcando facturas a contabilizado
+                $customer_invoice = CustomerInvoice::findOrFail($asientos_data[$i]->factura_id);
+                $customer_invoice->contabilizado = 1;
+                $customer_invoice->save();
+
+              }
+            }
+          }
+        });
+
+        $flag = "true";
+
+
+      } catch(\Exception $e){
+        $error = $e->getMessage();
+        dd($error);
+      }
+
+      return  $flag;
+
+    }
 
 
 
@@ -1564,4 +1633,5 @@ class CustomerCreditNoteController extends Controller
       return view('permitted.sales.table_asientos_contables_nota_credito',
       compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num', 'date_rest', 'date'));
     }
+
 }

@@ -2,13 +2,15 @@ $(function() {
   moment.locale('es');
   $('#period_month').datepicker({
     language: 'es',
-    format: " yyyy",
-    viewMode: "years",
-    minViewMode: "years",
+    format: " yyyy-mm",
+    viewMode: "months",
+    minViewMode: "months",
+    endDate: '1m',
     autoclose: true,
     clearBtn: true
   });
-  const nowOfYear = moment().format('YYYY');
+
+  const nowOfYear = moment().format('YYYY-MM');
   // $('#period_month').val(nowOfYear).datepicker('update');
 
   $("#search").validate({
@@ -73,7 +75,7 @@ function remplazar_pintar_header(table, posicionini, posicionfin) {
 
 function remplazar_thead_th_periodo(table, posicionini, posicionfin) {
   var year = $('#period_month').val();
-  var fecha = year+'-12-01';
+  var fecha = year+'-01';
   const nowOfYear = moment(fecha).format('YYYY-MM-DD');
 
   var j= posicionfin-posicionini;
