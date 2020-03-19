@@ -11,7 +11,7 @@ class DocumentpDashboardController extends Controller
     public function index()
     {
       $status_projects = DB::select('CALL px_tipo_servicio_acumulado_ejecucion()', array());
-      $status_projects_instalado = DB::select('CALL px_tipo_servicio_acumulado_instalado()', array());
+      $status_projects_instalado = DB::select('CALL px_tipo_servicio_acumulado_instalado(?)', array('010120'));
       $status_compras = DB::select('CALL px_documentp_status_doctype()', array());
       $status_cotizador = DB::select('CALL px_cotizador_status()', array());
 
