@@ -1191,6 +1191,7 @@ $('#provider').on('change', function() {
 
 function getBank() {
     var id_client = $('#customer').val();
+    console.log('idclient:  ' + id_client);
     var id_prov = $('#provider').val();
 
     var _token = $('input[name="_token"]').val();

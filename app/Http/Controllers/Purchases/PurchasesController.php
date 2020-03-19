@@ -48,11 +48,13 @@ class PurchasesController extends Controller
         $document_type = DocumentType::where('cfdi_type_id', 2)->get();// Solo documentos de ingresos
         $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
         $accounting_account = DB::select('CALL Contab.px_catalogo_cuentas_contables()', array());
-
+        
+        // $currency = Currency::select('id','name')->get();
+        $banquitos = DB::table('banks')->select('id', 'name')->where('sitwifi', 0)->get();
         // Purchase order list
         $order_purchase = DB::table('order_purchase')->select('num_order', 'order_cart_id')->where('order_status_id', '<>', 2)->get();
 
-        return view('permitted.purchases.purchase_view', compact('providers','sucursal','currency','payment_way','payment_term', 'payment_methods', 'cfdi_uses', 'cfdi_relations', 'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications', 'document_type', 'accounting_account', 'cadenas', 'order_purchase'));
+        return view('permitted.purchases.purchase_view', compact('providers','sucursal','currency','payment_way','payment_term', 'payment_methods', 'cfdi_uses', 'cfdi_relations', 'product', 'unitmeasures', 'satproduct', 'impuestos', 'cxclassifications', 'document_type', 'accounting_account', 'cadenas', 'order_purchase', 'banquitos'));
     }
 
     public function get_currency(Request $request)
@@ -121,6 +123,18 @@ class PurchasesController extends Controller
                 $currency_value = $current_rate->rate;
             }
 
+            $banco = $request->bank;
+            $account = $request->account;
+            $referencia = $request->reference_banc;
+            $ref_sql = DB::table('customer_bank_accounts')->select('referencia')->where('id', $account)->first();
+
+            $nueva_referencia = "default";
+
+            if($referencia != ($ref_sql->referencia)) {
+
+              $nueva_referencia = $referencia;
+              
+            }
             $currency_code = 'MXN'; //En caso que no haya moneda le digo por defecto es pesos mexicanos
 
             // $cuenta_contable_general = $request->cuenta_contable;

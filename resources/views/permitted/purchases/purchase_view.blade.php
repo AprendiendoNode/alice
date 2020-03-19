@@ -18,6 +18,76 @@
 
 @section('content')
   @if( auth()->user()->can('View purchases') )
+  <div class="modal modal-default fade" id="modal_bank" data-backdrop="static">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title"><i class="fas fa-university" style="margin-right: 4px;"></i>{{ trans('pay.data_bakl') }}</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="card table-responsive">
+                <div class="card-body">
+                  @if( auth()->user()->can('Create data bank by multiple payment') )
+                      <form class="form-horizontal" id="data_account_bank" name="data_account_bank">
+                        {{ csrf_field() }}
+                        <div class="row form-group mb-2">
+                          <label for="reg_provider" class="col-md-3 control-label">{{ trans('pay.proveedor') }}</label>
+                          <input class="form-control col-md-9" type="text" name="reg_provider" id="reg_provider" value="" readonly>
+                        </div>
+                        <div class="row form-group my-2">
+                          <label for="reg_bancos" class="col-md-3 control-label">{{ trans('pay.bank') }}</label>
+                          <select id="reg_bancos" name="reg_bancos" class="col-md-9 form-control select2" style="width:100%;">
+                            <option value="" selected>{{ trans('pay.select_op') }}</option>
+                            @forelse ($banquitos as $data_banquitos)
+                              <option value="{{ $data_banquitos->id }}"> {{ $data_banquitos->name }} </option>
+                            @empty
+                            @endforelse
+                          </select>
+                        </div>
+                        <div class="row form-group my-2">
+                          <label for="reg_coins" class="col-md-3 control-label">{{ trans('pay.type_coins') }}</label>
+                          <select id="reg_coins" name="reg_coins" class="col-md-9 form-control select2" style="width:100%;">
+                            <option value="" selected>{{ trans('pay.select_op') }}</option>
+                            @forelse ($currency as $data_currency)
+                              <option value="{{ $data_currency->id }}"> {{ $data_currency->name }} </option>
+                            @empty
+                            @endforelse
+                          </select>
+                        </div>
+                        <div class="row form-group my-2">
+                          <label for="reg_cuenta" class="col-md-3 control-label">{{ trans('pay.cuenta') }}</label>
+                          <input class="col-md-9 form-control" type="text" name="reg_cuenta" id="reg_cuenta" value="">
+                        </div>
+                        <div class="row form-group my-2">
+                          <label for="reg_clabe" class="col-md-3 control-label">{{ trans('pay.clabe') }}</label>
+                          <input class="col-md-9 form-control" type="text" name="reg_clabe" id="reg_clabe" value="">
+                        </div>
+                        <div class="row form-group my-2">
+                          <label for="reg_reference" class="col-md-3 control-label">{{ trans('pay.reference') }}</label>
+                          <input class="col-md-9 form-control" type="text" name="reg_reference" id="reg_reference" value="">
+                        </div>
+                        <div class="row my-2">
+                          @if( auth()->user()->can('Create data bank provider by multiple payment') )
+                            <button type="submit" class="btn btn-secondary col-md-4 mr-3"><i class="fas fa-plus-square"></i>&nbsp;{{ trans('message.create') }}</button>
+                            <!-- <button type="button" class="btn bg-navy create_provider"><i class="fa fa-plus-square-o" style="margin-right: 4px;"></i>{{ trans('message.create') }}</button> -->
+                          @endif
+                          <button type="button" class="btn btn-danger delete_provider col-md-7" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;{{ trans('message.cancelar') }} & {{ trans('message.ccmodal') }}</button>
+                        </div>
+                      </form>
+                  @else
+                    <div class="col-xs-12">
+                      @include('default.deniedmodule')
+                    </div>
+                  @endif
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+  </div>
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -237,6 +307,45 @@
               </div>
             </div>
 
+            <div class="row">
+              <div class="col-md-6 col-xs-12">
+                <div class="form-group">
+                  <label for="bank">Banco:</label>
+                  <select class="form-control select2" id="bank" name="bank">
+                    <option value="" selected>{{ trans('pay.select_op') }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12">
+                <div class="form-group">
+                  <label for="account">{{ trans('pay.cuenta') }}:</label>
+                  <select id="account" name="account" class="form-control">
+                    <option value="" selected>{{ trans('pay.select_op') }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-xs-12">
+                <div class="form-group">
+                  <label for="clabe">{{ trans('pay.clabe') }}:</label>
+                  <input type="text" class="form-control" id="clabe" name="clabe" data-currency="0" placeholder="{{ trans('pay.clabe_int') }}" disabled>
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12">
+                <div class="form-group">
+                  <label for="reference_banc">{{ trans('pay.reference') }}:</label>
+                  <input type="text" class="form-control" id="reference_banc" name="reference_banc" placeholder="{{ trans('pay.reference_bank') }}">
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">&nbsp;</div>
+              <div class="form-group col-md-6">
+                <a class="btn btn-block btn-social btn-google text-white databank"><i class="fa fa-plus-square"></i> Añadir datos bancarios</a>
+              </div>
+            </div>
             <!-- Seccion de cuentas contables de pagos. -->
               <!-- <div class="row">
                 <div class="col-md-6 col-xs-6">
@@ -1610,6 +1719,14 @@
               }
               item_relation_row = 1 ;
 
+              $('#bank').empty();
+              $('#bank').append('<option value="">Elegir...</option>');
+              $('#account').empty();
+              $('#account').append('<option value="">Elegir...</option>');
+              $('#clabe').val('');
+              $('#reference_banc').val('');
+
+              getBank();
 
               $.ajax({
                   url: "{{ route('customers/get-customer') }}",
@@ -1990,6 +2107,7 @@
       // End funciones cuenta contable.
   </script>
 
+  <script src="{{ asset('js/admin/purchases/modal_bank_purchase.js')}}"></script>
   <style media="screen">
     .btn-xs {
       padding: .35rem .4rem .25rem !important;
