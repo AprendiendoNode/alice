@@ -120,33 +120,37 @@ $(function() {
         information.fecha,
         information.documento,
         information.vencimiento,
-        information.Por_Vencer,
-        information._0_30_dias,
-        information._31_60_dias,
-        information._61_90_dias,
-        information._91_120_dias,
-        information._121_150_dias,
-        information._151_180_dias,
-        information.mas_de_180_dias,
-        information._1mes,
-        information._2meses,
-        information.mas_de_3meses,
+        `$${information.Por_Vencer}`,
+        `$${information._0_30_dias}`,
+        `$${information._31_60_dias}`,
+        `$${information._61_90_dias}`,
+        `$${information._91_120_dias}`,
+        `$${information._121_150_dias}`,
+        `$${information._151_180_dias}`,
+        `$${information.mas_de_180_dias}`,
+        `$${information._1mes}`,
+        `$${information._2meses}`,
+        `$${information.mas_de_3meses}`,
         information.moneda,
-        information.total,
+        `$${information.total}`,
         information.semana
       ]);
     });
   }
 
   var Configuration_table_responsive_cxc = {
-    "order": [[ 3, "asc" ]],
+    "order": [[ 1, "asc" ]],
     "select": false,
     "aLengthMenu": [[25, -1], [25, "Todos"]],
     "columnDefs": [
       {
-        
+        "targets" : [2, 4, 16, 18],
+        "className" : "text-center"
       },
-  
+      {
+        "targets" : [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17],
+        "className" : "text-right"
+      },  
     ],
     dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
             "<'row'<'col-sm-12'tr>>" +

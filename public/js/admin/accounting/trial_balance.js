@@ -119,30 +119,30 @@ function generate_table(){
         },
         className: 'btn btn-success',
       },
-      {
-        text: '<i class="fas fa-file-pdf"></i> PDF',
-        titleAttr: 'Descargar PDF',
-        className: 'btn btn-danger',
-        init: function(api, node, config) {
-          $(node).removeClass('btn-default')
-        },
-        action: function ( e, dt, node, config ) {
-            var _token = $('input[name="_token"]').val();
-            let date_month = document.getElementById('date_month').value;
+      // {
+      //   text: '<i class="fas fa-file-pdf"></i> PDF',
+      //   titleAttr: 'Descargar PDF',
+      //   className: 'btn btn-danger',
+      //   init: function(api, node, config) {
+      //     $(node).removeClass('btn-default')
+      //   },
+      //   action: function ( e, dt, node, config ) {
+      //       var _token = $('input[name="_token"]').val();
+      //       let date_month = document.getElementById('date_month').value;
   
-            if(date_month != '' && date_month != undefined){
-              window.open(
-                 `/accounting/balance_general_pdf/${date_month}`,
-                '_blank' 
-              );
-            }else{
-              Swal.fire('Debe seleccionar un periodo','','warning');
-            }
+      //       if(date_month != '' && date_month != undefined){
+      //         window.open(
+      //            `/accounting/balance_general_pdf/${date_month}`,
+      //           '_blank' 
+      //         );
+      //       }else{
+      //         Swal.fire('Debe seleccionar un periodo','','warning');
+      //       }
             
             
           
-        }
-      },
+      //   }
+      // },
     ],
     dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +
           "<'row'<'col-sm-12'tr>>" +
