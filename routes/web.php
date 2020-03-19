@@ -1290,6 +1290,7 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   Route::post('/cxc_data', 'Accounting\CustomerPolizaController@cxc_data');
   // Poliza de compras
   Route::get('/view_purchases_poliza', 'Purchases\HistoryPurchasesController@index_poliza');
+  Route::post('/purchase_polizas_movs_save', 'Purchases\HistoryPurchasesController@purchase_polizas_movs_save');
   Route::post('/polizas_compras_search', 'Purchases\HistoryPurchasesController@search_poliza');
   Route::post('get_purchase_mov_data', 'Purchases\HistoryPurchasesController@get_purchase_mov_data');
   Route::get('/view_purchase_poliza_pay', 'Purchases\HistoryPurchasesController@index_poliza_pay'); 
@@ -1322,6 +1323,7 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
 
   //Cuentas por pagar
   Route::get('/view_account_to_pay', 'Purchases\AccountPayController@index');
+  Route::post('/cxp_data','Purchases\AccountPayController@show');
 
   //Notas de credito - COMPRAS
   Route::get('/customer-credit-notes-cp', 'Purchases\CustomerCreditNoteController@index');

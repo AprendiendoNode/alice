@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Purchases;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use DB;
 
 class AccountPayController extends Controller
 {
@@ -14,7 +15,8 @@ class AccountPayController extends Controller
      */
     public function index()
     {
-        return view('permitted.purchases.account_pay');
+        return view('permitted.purchases.cxp_history');
+        // return view('permitted.purchases.account_pay');
     }
 
     /**
@@ -38,15 +40,12 @@ class AccountPayController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show()
     {
-        //
+        //px_antiguedad_saldos_purchases
+        $result = DB::select('CALL px_antiguedad_saldos_purchases()', array()); 
+ 
+        return $result; 
     }
 
     /**

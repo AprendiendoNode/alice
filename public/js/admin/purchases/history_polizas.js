@@ -816,7 +816,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
                              credentials: "same-origin",
                              body:formData,
                              cache: 'default' };
-           return fetch('/purchases/customer_polizas_movs_save', miInit)
+           return fetch('/accounting/purchase_polizas_movs_save', miInit)
                  .then(function(response){
                    if (!response.ok) {
                       throw new Error(response.statusText)

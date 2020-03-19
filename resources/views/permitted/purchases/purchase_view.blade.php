@@ -329,7 +329,7 @@
               <div class="col-md-6 col-xs-12">
                 <div class="form-group">
                   <label for="clabe">{{ trans('pay.clabe') }}:</label>
-                  <input type="text" class="form-control" id="clabe" name="clabe" data-currency="0" placeholder="{{ trans('pay.clabe_int') }}" disabled>
+                  <input type="text" class="form-control required" id="clabe" name="clabe" data-currency="0" placeholder="{{ trans('pay.clabe_int') }}" disabled>
                 </div>
               </div>
               <div class="col-md-6 col-xs-12">
@@ -787,7 +787,7 @@
                 &nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-outline-danger">@lang('general.button_discard')</button>
               </div>
-              <button type="button" id="button_testing" class="btn btn-outline-primary">@lang('general.button_save')</button>
+              <!-- <button type="button" id="button_testing" class="btn btn-outline-primary">@lang('general.button_save')</button> -->
             </div>
           <!-- /Footer form -->
           </form>

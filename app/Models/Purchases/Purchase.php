@@ -42,6 +42,7 @@ class Purchase extends Model
     'name_fact',
     'fact_url',
     'xml_url',
+    'reference_bank',
     'reference',
     'payment_term_id',
     'payment_way_id',
@@ -64,6 +65,7 @@ class Purchase extends Model
     'customer_id',
     'confirmacion',
     'date_delivery',
+    'customer_bank_account_id',
     'created_uid',
     'updated_uid'
 ];

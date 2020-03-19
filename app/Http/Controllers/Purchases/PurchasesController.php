@@ -178,8 +178,8 @@ class PurchasesController extends Controller
             $request->merge(['payment_way_id' => $request->payment_way_id]);
             $request->merge(['payment_method_id' => $request->payment_method_id]);
             $request->merge(['cfdi_use_id' => $request->cfdi_use_id]);
-            // $request->merge(['cuenta_contable_id' => $res_cuenta]);
-            // $request->merge(['hotel_id' => $request->sitio_id]);
+            $request->merge(['reference_bank' => $nueva_referencia]);
+            $request->merge(['customer_bank_account_id' => $account]);
 
             $file_pdf = $request->file('file_pdf');
             $file_xml = $request->file('file_xml');
