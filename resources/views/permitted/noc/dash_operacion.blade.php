@@ -162,26 +162,26 @@
                       <tr>
                         <td>&#60;30</td>
                         <td>95%</td>
-                        <td>52%</td>
-                        <td>31%</td>
-                        <td><i class="fas fa-arrow-circle-down"></i></td>
-                        <td class="ignore"><span class="red"></span></td>
+                        <td id="30_1"></td>
+                        <td id="30_2"></td>
+                        <td id="30_porc"></td>
+                        <td id="30_color" class="ignore"></td>
                       </tr>
                       <tr>
                         <td>30&#60;240</td>
                         <td>3%</td>
-                        <td>23%</td>
-                        <td>36%</td>
-                        <td><i class="fas fa-arrow-circle-up"></i></td>
-                        <td class="ignore"><span class="red"></span></td>
+                        <td id="30_240_1"></td>
+                        <td id="30_240_2"></td>
+                        <td id="30_240_porc"></td>
+                        <td id="30_240_color" class="ignore"></td>
                       </tr>
                       <tr>
                         <td>&#62;240</td>
                         <td>2%</td>
-                        <td>25%</td>
-                        <td>33%</td>
-                        <td><i class="fas fa-arrow-circle-up"></i></td>
-                        <td class="ignore"><span class="red"></span></td>
+                        <td id="240_1"></td>
+                        <td id="240_2"></td>
+                        <td id="240_porc"></td>
+                        <td id="240_color" class="ignore"></td>
                       </tr>
                       <tr style="color: blue;">
                         <td colspan="6">Tiempo de solución</td>
@@ -197,26 +197,26 @@
                       <tr>
                         <td>&#60; 2 hrs</td>
                         <td>90%</td>
-                        <td>93%</td>
-                        <td>86%</td>
-                        <td><i class="fas fa-arrow-circle-down"></i></td>
-                        <td class="ignore"><span class="red"></span></td>
+                        <td id="2hrs_1"></td>
+                        <td id="2hrs_2"></td>
+                        <td id="2hrs_porc"></td>
+                        <td id="2hrs_color" class="ignore"></td>
                       </tr>
                       <tr>
                         <td>&#60; 2 días</td>
                         <td>5%</td>
-                        <td>7%</td>
-                        <td>3%</td>
-                        <td><i class="fas fa-arrow-circle-down"></i></td>
-                        <td class="ignore"><span class="green"></span></td>
+                        <td id="2dias_1"></td>
+                        <td id="2dias_2"></td>
+                        <td id="2dias_porc"></td>
+                        <td id="2dias_color" class="ignore"></td>
                       </tr>
                       <tr>
                         <td>&#62; 2 días</td>
                         <td>5%</td>
-                        <td>0%</td>
-                        <td>0%</td>
-                        <td><i class="fas fa-arrow-circle-up"></i></td>
-                        <td class="ignore"><span class="green"></span></td>
+                        <td id="M2dias_1"></td>
+                        <td id="M2dias_2"></td>
+                        <td id="M2dias_porc"></td>
+                        <td id="M2dias_color" class="ignore"></td>
                       </tr>
                     </tbody>
                     </table>

@@ -26,17 +26,15 @@ myFuelGauge = $("div#fuel-gauge").dynameter({
     }
 });
 
-graph_tickets('graph_tickets');
-data_nps();
+all_data();
 
 $('#mes').datepicker().on('changeDate', function (ev) {
-  graph_tickets('graph_tickets');
-  data_nps();
+  all_data();
 });
 
-function graph_tickets(title) {
+function graph_tickets(title, data) {
+  var vals = Object.values(data);
   var chart = document.getElementById(title);
-
      var myChart = echarts.init(chart);
      var group=[];
      var titles=[];
@@ -49,52 +47,59 @@ function graph_tickets(title) {
        chart.style.height = $("#tiempos").height() * 1.45 + "px";
        myChart.resize();
     };
- resizeMainContainer();
+   resizeMainContainer();
 
-
-    option = {
-      title: {
-          text: 'Número de tickets del mes de Marzo 419'
-      },
-      tooltip: {
-          trigger: 'axis'
-      },
-      legend: {
-        top: '10%',
-          data: ['Promotores', 'Pasivos', 'Detractores']
-      },
-      grid: {
-          containLabel: true
-      },
-      xAxis: {
-          type: 'category',
-          boundaryGap: true,
-          data: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-          axisTick: {
-              alignWithLabel: true
-          },
-          axisLabel : {
-             show: true,
-             interval: '0',
-             rotate: 90,
-             fontSize: 11
-          }
-      },
-      yAxis: {
-          type: 'value'
-      },
-      series: [
-          {
-              name: 'Cantidad',
-              type: 'line',
-              data: [1163, 419, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              label: {
-                show: true
-              }
-          }
-      ],
-      color: ['brown']
-    };
+   option = {
+     title: {
+         text: 'Número de tickets por mes'
+     },
+     tooltip: {
+         trigger: 'axis'
+     },
+     legend: {
+       top: '10%',
+         data: ['Cantidad', 'Prom. Semanal']
+     },
+     grid: {
+         containLabel: true
+     },
+     xAxis: {
+         type: 'category',
+         boundaryGap: true,
+         data: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+         axisTick: {
+             alignWithLabel: true
+         },
+         axisLabel : {
+            show: true,
+            interval: '0',
+            rotate: 90,
+            fontSize: 11
+         }
+     },
+     yAxis: {
+         type: 'value'
+     },
+     series: [
+         {
+             name: 'Cantidad',
+             type: 'line',
+             data: vals,
+             label: {
+               show: true
+             }
+         },
+         {
+             name: 'Prom. Semanal',
+             type: 'line',
+             data: vals.map(function(v) { return parseInt(v / 4); }),
+             label: {
+               show: true
+             }
+         }
+     ],
+     color: ['blue','brown']
+   };
 
   myChart.setOption(option);
 
@@ -176,7 +181,7 @@ function graph_nps(title) {
 
 //https://www.jqueryscript.net/other/jQuery-Plugin-To-Generate-Animated-Dynamic-Gauges-dynameter.html
 
-function data_nps() {
+function all_data() {
   var _token = $('input[name="_token"]').val();
   var fecha = $('#mes').val();
   $.ajax({
@@ -200,9 +205,9 @@ function data_nps() {
           $("#det2").text(data[1][2].Count);
           $("#det-icon").html(data[0][2].Count < data[1][2].Count ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
           if($("#respondieron").text() != "0") {
-            $("#pro-res").text(parseInt(data[1][0].Count / data[1][5].Count) + "%");
-            $("#pas-res").text(parseInt(data[1][1].Count / data[1][5].Count) + "%");
-            $("#det-res").text(parseInt(data[1][2].Count / data[1][5].Count) + "%");
+            $("#pro-res").text(parseInt((data[1][0].Count / data[1][5].Count)*100) + "%");
+            $("#pas-res").text(parseInt((data[1][1].Count / data[1][5].Count)*100) + "%");
+            $("#det-res").text(parseInt((data[1][2].Count / data[1][5].Count)*100) + "%");
           } else {
             $("#pro-res").text("0%");
             $("#pas-res").text("0%");
@@ -234,7 +239,6 @@ function data_nps() {
           }
           $("#sinres-icon").html(data[0][4].Count < data[1][4].Count ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
           //Detractores
-          console.log(data);
           var new_row = "";
           var old = 0, act = 0;
           $(".new_detractores_rows").html("");
@@ -276,6 +280,51 @@ function data_nps() {
             $("#seek" + i).after(new_row);
             new_row = "";
           }
+          $.ajax({
+             type: "POST",
+             url: '/dash_operacion_tickets',
+             data: { _token: _token, fecha: fecha },
+             success: function (data) {
+               $("#30_1").text(parseInt(data[0][0]['<30'] * 100) + "%");
+               $("#30_2").text(parseInt(data[0][1]['<30'] * 100) + "%");
+               $("#30_porc").html(data[0][0]['<30'] < data[0][1]['<30'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+               $("#30_color").html(0.95 <= data[0][1]['<30'] ? "<span class='green'></span>" : "<span class='red'></span>");
+               $("#30_240_1").text(parseInt(data[0][0]['30<240'] * 100) + "%");
+               $("#30_240_2").text(parseInt(data[0][1]['30<240'] * 100) + "%");
+               $("#30_240_porc").html(data[0][0]['30<240'] < data[0][1]['30<240'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+               $("#30_240_color").html(0.03 >= data[0][1]['30<240'] ? "<span class='green'></span>" : "<span class='red'></span>");
+               $("#240_1").text(parseInt(data[0][0]['>240'] * 100) + "%");
+               $("#240_2").text(parseInt(data[0][1]['>240'] * 100) + "%");
+               $("#240_porc").html(data[0][0]['>240'] < data[0][1]['>240'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+               $("#240_color").html(0.02 >= data[0][1]['>240'] ? "<span class='green'></span>" : "<span class='red'></span>");
+               $("#2hrs_1").text(parseInt(data[0][0]['<2hrs'] * 100) + "%");
+               $("#2hrs_2").text(parseInt(data[0][1]['<2hrs'] * 100) + "%");
+               $("#2hrs_porc").html(data[0][0]['<2hrs'] < data[0][1]['<2hrs'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+               $("#2hrs_color").html(0.9 <= data[0][1]['<2hrs'] ? "<span class='green'></span>" : "<span class='red'></span>");
+               $("#2dias_1").text(parseInt(data[0][0]['<2dias'] * 100) + "%");
+               $("#2dias_2").text(parseInt(data[0][1]['<2dias'] * 100) + "%");
+               $("#2dias_porc").html(data[0][0]['<2dias'] < data[0][1]['<2dias'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+               $("#2dias_color").html(0.05 >= data[0][1]['<2dias'] ? "<span class='green'></span>" : "<span class='red'></span>");
+               $("#M2dias_1").text(parseInt(data[0][0]['>2dias'] * 100) + "%");
+               $("#M2dias_2").text(parseInt(data[0][1]['>2dias'] * 100) + "%");
+               $("#M2dias_porc").html(data[0][0]['>2dias'] < data[0][1]['>2dias'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
+               $("#M2dias_color").html(0.05 >= data[0][1]['>2dias'] ? "<span class='green'></span>" : "<span class='red'></span>");
+               $.ajax({
+                  type: "POST",
+                  url: '/graph_operacion_tickets',
+                  data: { _token: _token, fecha: fecha },
+                  success: function (data) {
+                    graph_tickets('graph_tickets', data[0]);
+                  },
+                  error: function (data) {
+                    console.error(data);
+                  }
+                });
+             },
+             error: function (data) {
+               console.error(data);
+             }
+          });
        },
        error: function (data) {
          console.error(data);
