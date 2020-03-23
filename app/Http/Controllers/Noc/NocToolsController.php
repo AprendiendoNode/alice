@@ -44,8 +44,13 @@ class NocToolsController extends Controller
     return $result;
   }
 
-  public function dash_operacion(){
-    return view('permitted.noc.dash_operacion');
+  public function dash_operacion() {
+    $user_id = Auth::user()->id;
+    if(/*$user_id == 86 || */$user_id == 432) {
+      return view('permitted.noc.dash_operacion');
+    } else {
+      return view('home');
+    }
   }
 
   public function dash_operacion_nps(Request $request) {

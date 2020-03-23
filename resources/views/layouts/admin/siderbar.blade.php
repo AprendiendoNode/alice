@@ -31,6 +31,14 @@
             </a>
           </li>
           @endif
+          @if( auth()->user()->can('View dash sabana') )
+          <li class="nav-item {{ Request::is('dash_sabana') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ url('/dash_operacion') }}">
+              <i class="fas fa-user-cog menu-icon"></i>
+              <span class="menu-title">Dash. Operaciones</span>
+            </a>
+          </li>
+          @endif
           @if( auth()->user()->can('View checklist') )
           <li class="nav-item {{ Request::is('checklist') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('/checklist') }}">
