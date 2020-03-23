@@ -51,7 +51,7 @@ class DocumentTypeController extends Controller
             $result= DB::table('document_types')
                       ->select('code')
                       ->where([
-                          ['code', '=', $code],
+                          ['prefix', '=', $prefix],
                         ])->count();
             if($result == 0)
             {
@@ -105,7 +105,7 @@ class DocumentTypeController extends Controller
          $result = DB::table('document_types')
                    ->select('code')
                    ->where([
-                       ['code', '=', $code],
+                       ['prefix', '=', $prefix],
                        ['id', '!=', $id_received],
                      ])->count();
          if($result == 0)

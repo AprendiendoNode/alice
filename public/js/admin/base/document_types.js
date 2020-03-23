@@ -86,7 +86,7 @@ $(function () {
               Swal.fire({
                  type: 'error',
                  title: 'Error encontrado..',
-                 text: 'Ya existe!',
+                 text: 'El prefijo ya existe!',
                });
             }
             else {
@@ -204,7 +204,7 @@ $(function () {
              Swal.fire({
                 type: 'error',
                 title: 'Error encontrado..',
-                text: 'La clave ya existe!',
+                text: 'El prefijo ya existe!',
               });
            }
           else if (data == 'abort') {
