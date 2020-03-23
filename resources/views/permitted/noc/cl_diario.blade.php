@@ -178,6 +178,7 @@
                               <th>Realizar las Pruebas de Funcionamiento para entrega al cliente</th>
                               <th>Revisar la Instalacion de Enlace de Internet</th>
                               <th>Revisar la Configuracion de Enlace de Internet y Pruebas (Soporte)</th>
+                              <th>Actualizar en tiempo y forma los avances de proyecto en Alice.</th>
                               <th>Realizar / Revisar la Documentacion de Proyecto y Bitacora para cierre de proyecto</th>
                               <th>Realizar / Revisar la Memoria Técnica</th>
                               <th>Realizar / Revisar la Memoria Fotográfica</th>

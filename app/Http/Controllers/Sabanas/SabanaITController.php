@@ -389,10 +389,11 @@ class SabanaITController extends Controller
         'puebas_funcionamiento' => $opciones[16],
         'revision_enlace' => $opciones[17],
         'revision_enlace_conf' => $opciones[18],
-        'bitacora_cierre' => $opciones[19],
-        'memoria_tecnica' => $opciones[20],
-        'memoria_foto' => $opciones[21],
-        'carta_entrega' => $opciones[22],
+        'actualizar_proyecto_alice' => $opciones[19],
+        'bitacora_cierre' => $opciones[20],
+        'memoria_tecnica' => $opciones[21],
+        'memoria_foto' => $opciones[22],
+        'carta_entrega' => $opciones[23],
         'itc_id' => $idITC,
         'hotel_id' => $idHotel
       ]);

@@ -174,6 +174,7 @@ function table_instalaciones(data, table) {
       eval_state(status.puebas_funcionamiento),
       eval_state(status.revision_enlace),
       eval_state(status.revision_enlace_conf),
+      eval_state(status.actualizar_proyecto_alice),
       eval_state(status.bitacora_cierre),
       eval_state(status.memoria_tecnica),
       eval_state(status.memoria_foto),

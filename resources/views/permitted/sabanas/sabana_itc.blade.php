@@ -1419,7 +1419,8 @@
                     </div>
                     <div class="row pt-5 pb-2">
                       <div class="col-md-12 text-center">
-                        <h4>Check List de instalaciónes</h4>
+                        <h4>Check List de instalaciones</h4>
+                        (Solo cuando se tengan proyectos)
                       </div>
                     </div>
                     
