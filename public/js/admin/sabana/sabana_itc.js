@@ -84,6 +84,31 @@ $(function() {
     getViaticsByITC(itc);
     getProjects(itc);
     genclientsitc(itc);
+    getClientsInstalacionesByITC(itc);
+  });
+
+
+  function getClientsInstalacionesByITC(id_itc) {
+    let select = $("#ck_instalaciones_select_client");
+    const _token = $('meta[name="csrf-token"]').attr('content');
+    select.html('<option value="0" selected disabled>Seleccione</option>');
+    $.post('search_client_itc',{ _token, id_itc }, response => {
+      response.forEach( data => select.append(`<option value="${data.id}">${data.sitio}</option>`) );
+    });
+    select.on('change', () => $("#ck_instalaciones_btn").removeAttr('style'));
+  }
+
+  $("#ck_instalaciones_btn").on('click', () => {
+    const form = $("#ck_instalaciones_table_form");
+    const itc = parseInt($('#select_itc').val());
+    // console.log("Form serialize", form.serialize());
+    form.append(`<input type="hidden" name="itc" value="${itc}" />`);
+    $.post('cl_inst_add', form.serialize(), response => {
+      // console.log("Response ck_l", response);
+      form[0].reset();
+      $("#ck_instalaciones_btn").attr('style','display: none;');
+      Swal.fire('Checklist guardado', '', 'success');
+    });
   });
 
   function genclientsitc(itc){

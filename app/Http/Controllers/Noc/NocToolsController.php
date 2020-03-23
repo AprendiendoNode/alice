@@ -44,6 +44,14 @@ class NocToolsController extends Controller
     return $result;
   }
 
+  public function get_cl_instalaciones(Request $request) {
+    $result = DB::select('CALL px_cl_instalaciones_datos(?) ', [$request->date]);
+    foreach( $result as &$res ) {
+      $res->created_at = date_format(date_create( $res->created_at), 'Y-m-d');
+    }
+    return $result;
+  }
+
   public function dash_operacion() {
     $user_id = Auth::user()->id;
     if(/*$user_id == 86 || */$user_id == 432) {

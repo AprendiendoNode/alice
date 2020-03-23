@@ -145,6 +145,57 @@
                   </div>
 
                 </div>
+
+                <div class="row pt-4">
+                  <div class="col-md-12">
+                    <div class="text-center">
+                      <h4>Check List de Instalaciones</h4>
+                      <br>
+                      <div class="table-responsive">
+                
+                
+                      <table id="table_cl_instalaciones" class="table table-striped table-bordered compact-tab table-hover">
+                        <thead class="bg-aqua text-center">
+                          <tr>
+                              <th>Nombre</th>
+                              <th>Nombre sitio</th>
+                              <th>Se realizo el Levantamiento en sitio.</th>
+                              <th>Revisar los Horarios de Inicio de labores con el contratista</th>
+                              <th>Se Revizó la Cotización y los alcances del contrato</th>
+                              <th>Realizar el Documento P, con todos los materiales y equipos</th>
+                              <th>Realizar Documento A para KickOff</th>
+                              <th>Realizar una Junta Operativa Interna (Sitwifi) externa (Cliente)</th>
+                              <th>Se tienen los Planos Arquitectonicos del Inmueble</th>
+                              <th>Se tienen los Diagramas de Red y Sembrado de AP</th>
+                              <th>Se Realizó el Project y entregó al cliente </th>
+                              <th>Solicitar la entrega de Materiales (Administracion)</th>
+                              <th>Solicitar y revisar el Equipo ACTIVO (Soporte)</th>
+                              <th>Revisar el Rack que este tenga las preparaciones para tierra fisica</th>
+                              <th>Revisar el Rack que tenga las preparaciones para corriente regulada</th>
+                              <th>Reviasar con el contratista la Identificacion-Probado y Etiquetado de Cables UTP y FO</th>
+                              <th>Revisar la Instalacion de Antenas Ruckus en Habitaciones y Áreas (aleatorio-selectivo)</th>
+                              <th>Revisar la Instalacion y Configuracion de Equipo Activo</th>
+                              <th>Realizar las Pruebas de Funcionamiento para entrega al cliente</th>
+                              <th>Revisar la Instalacion de Enlace de Internet</th>
+                              <th>Revisar la Configuracion de Enlace de Internet y Pruebas (Soporte)</th>
+                              <th>Realizar / Revisar la Documentacion de Proyecto y Bitacora para cierre de proyecto</th>
+                              <th>Realizar / Revisar la Memoria Técnica</th>
+                              <th>Realizar / Revisar la Memoria Fotográfica</th>
+                              <th>Raizar la Carta de Entrega para firma con el cliente.</th>
+                              <th>Fecha</th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-center"style="font-size: 11px;">
+                
+                
+                        </tbody>
+                      </table>
+                      </div>
+                    </div>
+                  </div>
+                
+                </div>
+                
             </div>
         </div>
     </div>

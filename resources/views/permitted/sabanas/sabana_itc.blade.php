@@ -1417,6 +1417,379 @@
                         </div>
 
                     </div>
+                    <div class="row pt-5 pb-2">
+                      <div class="col-md-12 text-center">
+                        <h4>Check List de instalaciónes</h4>
+                      </div>
+                    </div>
+                    
+                    <div class="row pt-5 pb-2">
+                      <div class="col-md-2">
+                        <p>Seleccione cliente:</p>
+                      </div>
+                      <div class="col-md-8">
+                        <select id="ck_instalaciones_select_client" class="form-control" name="clientID" form="ck_instalaciones_table_form">
+                          <option value="0">Seleccione</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2">
+                    
+                      </div>
+                    </div>
+                    
+                    <form id="ck_instalaciones_table_form">
+                    <div class="row">
+                      
+                      <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                      <table id="table_cl_20" class="table table-striped table-bordered compact-tab table-hover">
+                          <thead class="bg-aqua text-center">
+                              <tr>
+                                  <th>No.</th>
+                                  <th>Rubro</th>
+                                  <th>Estado</th>
+                              </tr>
+                          </thead>
+                          
+                          <tbody class="text-center" style="font-size: 11px;">
+                    
+                              <tr>
+                                  <td>1</td>
+                                  <td class="text-left">Se realizo el Levantamiento en sitio.</td>
+                                  <td>
+                                    <div class="form-group">
+                                    <select class="form-control" name="clInstOp[]">
+                                          <option value="0">No</option>
+                                          <option value="1">Si</option>
+                                          <option value="2">NA</option>
+                                          </optgroup>
+                                    </select>
+                                    </div>
+                                  </td>
+                              </tr>
+                              <tr>
+                                <td>2</td>
+                                <td class="text-left">Revisar los Horarios de Inicio de labores con el contratista</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>3</td>
+                                <td class="text-left">Se Revizó la Cotización y los alcances del contrato</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>4</td>
+                                <td class="text-left">Realizar el Documento P, con todos los materiales y equipos</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>4</td>
+                                <td class="text-left">Realizar Documento A para KickOff</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>5</td>
+                                <td class="text-left">Realizar una Junta Operativa Interna (Sitwifi) externa (Cliente)</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>6</td>
+                                <td class="text-left">Se tienen los Planos Arquitectonicos del Inmueble</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>7</td>
+                                <td class="text-left">Se tienen los Diagramas de Red y Sembrado de AP</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>8</td>
+                                <td class="text-left">Se Realizó el Project y entregó al cliente </td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>9</td>
+                                <td class="text-left">Solicitar la entrega de Materiales (Administracion)</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>10</td>
+                                <td class="text-left">Solicitar y revisar el Equipo ACTIVO (Soporte)</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>11</td>
+                                <td class="text-left">Revisar el Rack que este tenga las preparaciones para tierra fisica</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>12</td>
+                                <td class="text-left">Revisar el Rack que tenga las preparaciones para corriente regulada</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>13</td>
+                                <td class="text-left">Reviasar con el contratista la Identificacion-Probado y Etiquetado de Cables UTP y FO</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>14</td>
+                                <td class="text-left">Revisar la Instalacion de Antenas Ruckus en Habitaciones y Áreas (aleatorio-selectivo)</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>15</td>
+                                <td class="text-left">Revisar la Instalacion y Configuracion de Equipo Activo</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>16</td>
+                                <td class="text-left">Realizar las Pruebas de Funcionamiento para entrega al cliente</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>17</td>
+                                <td class="text-left">Revisar la Instalacion de Enlace de Internet</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>18</td>
+                                <td class="text-left">Revisar la Configuracion de Enlace de Internet y Pruebas (Soporte)</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>19</td>
+                                <td class="text-left">Realizar / Revisar la Documentacion de Proyecto y Bitacora para cierre de proyecto</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>20</td>
+                                <td class="text-left">Realizar / Revisar la Memoria Técnica</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>21</td>
+                                <td class="text-left">Realizar / Revisar la Memoria Fotográfica</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>22</td>
+                                <td class="text-left">Realizar la Carta de Entrega para firma con el cliente.</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                    
+                          </tbody>
+                      </table>
+                      
+                      
+                      <div class="row container-fluid">
+                        <div class="col-md-12 ">
+                            <button
+                              style="display: none;"
+                              id="ck_instalaciones_btn"
+                              class="btn btn-success disabled float-right"
+                              type="button">Aceptar</button>
+                        </div>
+                      </div>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>

@@ -362,4 +362,45 @@ class SabanaITController extends Controller
     return "ok";
   }
 
+  public function ck_inst_add(Request $request) {
+    $opciones = $request->clInstOp;
+    $idHotel = $request->clientID;
+    $idITC = $request->itc;
+    DB::beginTransaction();
+
+    try {
+      $idCheck = DB::table('cl_instalaciones')->insertGetId([
+        'levantamiento' => $opciones[0],
+        'horario_inicio' => $opciones[1],
+        'cotizacion_alcances' => $opciones[2],
+        'documento_p' => $opciones[3],
+        'documento_kickoff' => $opciones[4],
+        'junta_operativa' => $opciones[5],
+        'planos_inmueble' => $opciones[6],
+        'diagramas_red_sembrado' => $opciones[7],
+        'realizo_entrega_proyecto' => $opciones[8],
+        'entrega_materiales' => $opciones[9],
+        'equipo_activo' => $opciones[10],
+        'rack_tierra_fisica' => $opciones[11],
+        'rack_corriente_regulada' => $opciones[12],
+        'contratista_UTP_FO' => $opciones[13],
+        'antenas_ruckus' => $opciones[14],
+        'revisar_equipo' => $opciones[15],
+        'puebas_funcionamiento' => $opciones[16],
+        'revision_enlace' => $opciones[17],
+        'revision_enlace_conf' => $opciones[18],
+        'bitacora_cierre' => $opciones[19],
+        'memoria_tecnica' => $opciones[20],
+        'memoria_foto' => $opciones[21],
+        'carta_entrega' => $opciones[22],
+        'itc_id' => $idITC,
+        'hotel_id' => $idHotel
+      ]);
+      DB::commit();
+    } catch(\Exception $e) {
+      DB::rollback();
+    }
+    return response()->json($idCheck);
+  }
+
 }

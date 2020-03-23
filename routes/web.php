@@ -316,6 +316,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/dash_operacion_tickets','Noc\NocToolsController@dash_operacion_tickets');
   Route::post('/graph_operacion_tickets','Noc\NocToolsController@graph_operacion_tickets');
   Route::post('/get_cl_diario','Noc\NocToolsController@get_cl_diario');
+  Route::post('get_cl_instalaciones', 'Noc\NocToolsController@get_cl_instalaciones');
   Route::post('/get_cl_5_dia','Noc\NocToolsController@get_cl_5_dia');
   Route::post('/get_cl_20_dia','Noc\NocToolsController@get_cl_20_dia');
   //Carátula de entrega
@@ -921,6 +922,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('sabana_itc_modal_encuestas_hover', 'Sabanas\SabanaITController@sabana_itc_modal_encuestas_hover');
     Route::post('cl_diario_itc', 'Sabanas\SabanaITController@cl_diario_itc');
     Route::post('search_client_itc', 'Sabanas\SabanaITController@search_client_itc');
+    Route::post('cl_inst_add', 'Sabanas\SabanaITController@ck_inst_add');
     Route::post('cl_5dia_itc', 'Sabanas\SabanaITController@cl_5dia_itc');
     Route::post('cl_20dia_itc', 'Sabanas\SabanaITController@cl_20dia_itc');
     //Sabana Directiva

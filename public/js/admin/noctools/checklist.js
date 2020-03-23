@@ -14,6 +14,7 @@ var date=$('#date_to_search').val();
 get_cl_diario(date);
 get_cl_5_dia(date);
 get_cl_20_dia(date);
+get_cl_instalaciones(date);
 $('#btn-filtro').on('click',function(){
 var date=$('#date_to_search').val();
 if (date == ''){
@@ -23,8 +24,16 @@ if (date == ''){
 get_cl_diario(date);
 get_cl_5_dia(date);
 get_cl_20_dia(date);
+get_cl_instalaciones(date);
 });
 
+
+function get_cl_instalaciones(date) {
+  $.post('get_cl_instalaciones', { _token, date }, response => {
+    // console.log("Response check historial", response);
+    table_instalaciones(response, $("#table_cl_instalaciones"));
+  });
+}
 
 function get_cl_diario(date){
   $.ajax({
@@ -138,6 +147,41 @@ function table_cl_20(datajson, table){
 
 }
 
+function table_instalaciones(data, table) {
+  table.DataTable().destroy();
+  const vartable = table.dataTable(Configuration_table_chlist);
+  vartable.fnClearTable();
+  $.each(data, (index, status) => {
+    vartable.fnAddData([
+      status.itc,
+      status.sitio,
+      eval_state(status.levantamiento),
+      eval_state(status.horario_inicio),
+      eval_state(status.cotizacion_alcances),
+      eval_state(status.documento_p),
+      eval_state(status.documento_kickoff),
+      eval_state(status.junta_operativa),
+      eval_state(status.planos_inmueble),
+      eval_state(status.diagramas_red_sembrado),
+      eval_state(status.realizo_entrega_proyecto),
+      eval_state(status.entrega_materiales),
+      eval_state(status.equipo_activo),
+      eval_state(status.rack_tierra_fisica),
+      eval_state(status.rack_corriente_regulada),
+      eval_state(status.contratista_UTP_FO),
+      eval_state(status.antenas_ruckus),
+      eval_state(status.revisar_equipo),
+      eval_state(status.puebas_funcionamiento),
+      eval_state(status.revision_enlace),
+      eval_state(status.revision_enlace_conf),
+      eval_state(status.bitacora_cierre),
+      eval_state(status.memoria_tecnica),
+      eval_state(status.memoria_foto),
+      eval_state(status.carta_entrega),
+      status.created_at
+    ]);
+  });
+}
 
 function eval_state(state){
   switch (state) {
