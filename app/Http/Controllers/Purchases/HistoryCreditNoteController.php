@@ -253,6 +253,7 @@ class HistoryCreditNoteController extends Controller
     }
     public function customer_polizas_movs_save(Request $request)
     {
+      return $request;
       //Objeto de polizas
       $asientos = $request->movs_polizas;
       $asientos_data = json_decode($asientos);

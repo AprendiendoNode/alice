@@ -13,10 +13,6 @@ $(function() {
     endDate: '1m',
     autoclose: true,
     clearBtn: true,
-    templates: {
-      leftArrow: '<i class="simple-icon-arrow-left"></i>',
-      rightArrow: '<i class="simple-icon-arrow-right"></i>'
-    }
   });
   if ($("#message").length) {
       quill = new Quill('#message', {
@@ -167,7 +163,8 @@ $.each(JSON.parse(datajson), function(index, information){
     mail_status,
     html,
     status_contabilizado,
-    information.contabilizado
+    information.contabilizado,
+    parseInt(status),
   ]);
 });
 }

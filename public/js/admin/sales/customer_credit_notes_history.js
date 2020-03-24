@@ -1,6 +1,19 @@
 $(function() {
   moment.locale('es');
+
   const startOfMonth = moment().startOf('month').format('YYYY-MM');
+  $('#filter_date_from').val(startOfMonth);
+  $('#filter_date_from').datepicker({
+    language: 'es',
+    orientation: "bottom left",
+    format: "yyyy-mm",
+    viewMode: "months",
+    minViewMode: "months",
+    endDate: '1m',
+    autoclose: true,
+    clearBtn: true,
+
+  });
   //-----------------------------------------------------------
   if ($("#message").length) {
     quill = new Quill('#message', {
@@ -70,19 +83,7 @@ $(function() {
     }
   });
   //-----------------------------------------------------------
-  $('#filter_date_from').val(startOfMonth);
-  $('#filter_date_from').datepicker({
-    language: 'es',
-    orientation: "bottom left",
-    format: "yyyy-mm",
-    viewMode: "months",
-    minViewMode: "months",
-    endDate: '1m',
-    autoclose: true,
-    clearBtn: true,
-
-  });
-  $("#filter_customer_id").select2();
+  $("#filter_customer_id").select2({ width: '90%' });
   //-----------------------------------------------------------
 });
 

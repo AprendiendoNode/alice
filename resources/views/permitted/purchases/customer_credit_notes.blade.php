@@ -472,7 +472,7 @@
             timePicker: true,
             timePicker24Hour: true,
             showDropdowns: true,
-            minDate: moment(),
+            // minDate: moment(),
             maxDate : moment().add(3, 'days'),
             locale: {
                 format: "DD-MM-YYYY HH:mm:ss"

@@ -19,9 +19,11 @@ class EstadoResultadoController extends Controller
   }
   public function estado_resultados_search(Request $request)
   {
-      $month = $request->period_month;
-      // $resultados = DB::select('CALL get_contadores_vendedor (?)', array($month));
+      $month = $request->period_month.'-01';
+      // $resultados = DB::select('CALL Contab.px_estado_resultados_xanio (?)', array($month));
       // return json_encode($resultados);
+
+
       $resultados = array();
       for ($i=1; $i <= 4; $i++) {
         $faker = Faker::create();

@@ -171,6 +171,7 @@
                       <th class="text-center">Estatus</th>
                       <th class="text-center">Contabilizada <br> Poliza</th>
                       <th></th>
+                      <th></th>
                   </tr>
                 </thead>
               </table>
