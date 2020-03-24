@@ -117,21 +117,21 @@
 
                 <div class="row">
 
-                  <div class="col-md-7">
+                  <div class="col-md-5">
 
                       <!--<div id="graph_nps"> </div>-->
                       <div id="fuel-gauge" style="margin: 20px auto;"></div>
 
                   </div>
 
-                  <div class="col-md-5 mt-4">
+                  <div class="col-md-7 mt-4">
 
                     <h4 style="text-align: left;">Detractores</h4>
 
                     <table id="detractores" class="table-responsive" style="text-align: center;">
                       <tr id="seek0" style="color: brown;">
                         <td class="mes1"></td>
-                        <td>Status posterior</td>
+                        <td>Status actual</td>
                         <td class="mes2"></td>
                       </tr>
                     </table>
@@ -599,7 +599,7 @@
     }
     #detractores tr td {
       border-bottom: 1px solid blue;
-      font-size: 12px;
+      /*font-size: 12px;*/
     }
     .green {
       height: 15px;
