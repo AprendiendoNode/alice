@@ -80,10 +80,7 @@ $(function() {
     endDate: '1m',
     autoclose: true,
     clearBtn: true,
-    templates: {
-      leftArrow: '<i class="simple-icon-arrow-left"></i>',
-      rightArrow: '<i class="simple-icon-arrow-right"></i>'
-    }
+
   });
   $("#filter_customer_id").select2();
   //-----------------------------------------------------------
@@ -169,7 +166,8 @@ function table_filter(datajson, table){
       information.balance,
       mail_status,
       html,
-      information.contabilizado
+      information.contabilizado,
+      parseInt(status),
     ]);
   });
 }
@@ -194,9 +192,14 @@ var Configuration_table_responsive_doctypes = {
         "width": "0.1%",
         "createdCell": function (td, cellData, rowData, row, col){
           if ( cellData > 0 ) {
-            if(rowData[13] == 1){
+            if(rowData[13] == 1 || rowData[14] == 4){
               this.api().cell(td).checkboxes.disable();
-              $(td).parent().attr('style', 'background: #D6FFBE !important');
+              if(rowData[13] == 1){
+                $(td).parent().attr('style', 'background: #D6FFBE !important');
+              }
+              if(rowData[14] == 4){
+                $(td).parent().attr('style', 'background: #ff9090 !important');
+              }
             }
           }
         },
@@ -216,6 +219,12 @@ var Configuration_table_responsive_doctypes = {
       },
       {
           "targets": 13,
+          "className": "text-center",
+          "visible": false,
+          "searchable": false
+      },
+      {
+          "targets": 14,
           "className": "text-center",
           "visible": false,
           "searchable": false
@@ -522,6 +531,13 @@ function link_cancel(e){
                  location.href ="/sales/credit-notes-history";
                });
              }
+             else if (data.status == 422){
+               Swal.fire({
+                  type: 'error',
+                  title: 'Oops...',
+                  text:  'La nota de credito '+folio+','+' cuenta con poliza, para realizar esta acción necesitas eliminar primero la poliza generada',
+                });
+             }
              else {
                Swal.fire({
                   type: 'error',
@@ -805,7 +821,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
                  });
         }//Preconfirm
       }).then((result) => {
-        console.log(result.value);
+        // console.log(result.value);
         if (result.value == "true") {
           Swal.fire({
             title: 'Poliza guardada',

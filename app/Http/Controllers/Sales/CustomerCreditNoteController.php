@@ -1381,50 +1381,61 @@ class CustomerCreditNoteController extends Controller
           $customer_credit_note = CustomerCreditNote::findOrFail($id);
           //Logica
           if ((int)$customer_credit_note->status != CustomerCreditNote::CANCEL) {
-            //Actualiza status
-            $customer_credit_note->updated_uid = \Auth::user()->id;
-            $customer_credit_note->status = CustomerCreditNote::CANCEL;
-            $customer_credit_note->save();
-            //Actualiza saldos de facturas
-            if($customer_credit_note->customerInvoiceReconcileds->isNotEmpty()){
-              foreach($customer_credit_note->customerInvoiceReconcileds as $result){
-                //Datos de factura
-                $customer_invoice = CustomerInvoice::findOrFail($result->reconciled_id);
-                //Actualiza el saldo de la factura relacionada
-                $customer_invoice->balance += round(Helper::invertBalanceCurrency($customer_credit_note->currency,$result->amount_reconciled,$customer_invoice->currency->code,$result->currency_value),2);
-                if($customer_invoice->balance > 0){
+            $exite_poliza = DB::table('polizas_movtos')
+                      ->select('customer_invoice_id')
+                      ->where([
+                          ['customer_invoice_id', '=', $id],
+                        ])->count();
+            if($exite_poliza == 0)
+            {
+              //Actualiza status
+              $customer_credit_note->updated_uid = \Auth::user()->id;
+              $customer_credit_note->status = CustomerCreditNote::CANCEL;
+              $customer_credit_note->save();
+              //Actualiza saldos de facturas
+              if($customer_credit_note->customerInvoiceReconcileds->isNotEmpty()){
+                foreach($customer_credit_note->customerInvoiceReconcileds as $result){
+                  //Datos de factura
+                  $customer_invoice = CustomerInvoice::findOrFail($result->reconciled_id);
+                  //Actualiza el saldo de la factura relacionada
+                  $customer_invoice->balance += round(Helper::invertBalanceCurrency($customer_credit_note->currency,$result->amount_reconciled,$customer_invoice->currency->code,$result->currency_value),2);
+                  if($customer_invoice->balance > 0){
                     $customer_invoice->status = CustomerInvoice::OPEN;
+                  }
+                  $customer_invoice->save();
                 }
-                $customer_invoice->save();
               }
-            }
-            //Actualiza status CFDI
-            $customer_credit_note->customerInvoiceCfdi->status = 0;
-            $customer_credit_note->customerInvoiceCfdi->save();
-            //Cancelacion del timbre fiscal
-            if (!empty($customer_credit_note->customerInvoiceCfdi->cfdi_version) && !empty($customer_credit_note->customerInvoiceCfdi->uuid)) {
-              //Valida Empresa y PAC para cancelar timbrado
-              PacHelper::validateSatCancelActions($customer_credit_note->customerInvoiceCfdi->pac);
-              //Arreglo temporal para actualizar Customer Credit Note CFDI
-              $tmp = [
+              //Actualiza status CFDI
+              $customer_credit_note->customerInvoiceCfdi->status = 0;
+              $customer_credit_note->customerInvoiceCfdi->save();
+              //Cancelacion del timbre fiscal
+              if (!empty($customer_credit_note->customerInvoiceCfdi->cfdi_version) && !empty($customer_credit_note->customerInvoiceCfdi->uuid)) {
+                //Valida Empresa y PAC para cancelar timbrado
+                PacHelper::validateSatCancelActions($customer_credit_note->customerInvoiceCfdi->pac);
+                //Arreglo temporal para actualizar Customer Credit Note CFDI
+                $tmp = [
                   'cancel_date' => Helper::dateTimeToSql(\Date::now()),
                   'cancel_response' => '',
                   'cancel_state' => '',
                   'rfcR' => $customer_credit_note->customer->taxid,
                   'uuid' => $customer_credit_note->customerInvoiceCfdi->uuid,
                   'total' => Helper::numberFormat($customer_credit_note->amount_total,
-                      $customer_credit_note->currency->decimal_place, false),
-              ];
-              //Cancelar Timbrado de XML
-              $class_pac = $customer_credit_note->customerInvoiceCfdi->pac->code . 'Cancel';
-              $tmp = PacHelper::$class_pac($tmp,$customer_credit_note->customerInvoiceCfdi->pac);
-              //Guardar registros de CFDI
-              $customer_credit_note->customerInvoiceCfdi->fill(array_only($tmp,[
-                'cancel_date',
-                'cancel_response',
-                'cancel_state',
-              ]));
-              $customer_credit_note->customerInvoiceCfdi->save();
+                  $customer_credit_note->currency->decimal_place, false),
+                ];
+                //Cancelar Timbrado de XML
+                $class_pac = $customer_credit_note->customerInvoiceCfdi->pac->code . 'Cancel';
+                $tmp = PacHelper::$class_pac($tmp,$customer_credit_note->customerInvoiceCfdi->pac);
+                //Guardar registros de CFDI
+                $customer_credit_note->customerInvoiceCfdi->fill(array_only($tmp,[
+                  'cancel_date',
+                  'cancel_response',
+                  'cancel_state',
+                ]));
+                $customer_credit_note->customerInvoiceCfdi->save();
+              }
+            }
+            else {
+              return response()->json(['status' => 422]);
             }
           }
           \DB::commit();
@@ -1517,13 +1528,15 @@ class CustomerCreditNoteController extends Controller
     /* Guardar poliza - historial de egreso (cfdi)*/
     public function save_poliza_movs(Request $request)
     {
-      return $request;
+      #return $request;
       try {
 
         DB::transaction(function () use($request){
           //Objeto de polizas
           $asientos = $request->movs_polizas;
           $asientos_data = json_decode($asientos);
+
+          $fecha_general = $request->date_resive.'-'.$request->day_poliza;
 
           $tam_asientos = count($asientos_data);
           $flag = "false";
@@ -1549,8 +1562,7 @@ class CustomerCreditNoteController extends Controller
 
                 //Acumulando saldos
                 $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
-                // $this->add_balances_polizas_ingresos($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
-
+                $this->add_balances_polizas_ingresos($cc_array, $fecha_general, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
                 $sql = DB::table('polizas_movtos')->insert([
                   'poliza_id' => $id_poliza,
                   'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
@@ -1571,20 +1583,53 @@ class CustomerCreditNoteController extends Controller
             }
           }
         });
-
         $flag = "true";
-
-
       } catch(\Exception $e){
         $error = $e->getMessage();
         dd($error);
       }
-
       return  $flag;
-
     }
+    public function add_balances_polizas_ingresos($cc_array, $periodo, $cargo, $abono)
+    {
+      $explode = explode('-', $periodo);
+      $anio = $explode[0];
+      $mes = $explode[1];
 
+      foreach($cc_array as $cc)
+      {
+        //Obtengo saldos de la cuenta contable en la balanza en el periodo requerido
+        $result = DB::table('Contab.balanza')->select('cargos', 'abonos', 'sdo_inicial', 'sdo_final')
+        ->where('anio', $anio)
+        ->where('mes', $mes)
+        ->where('cuenta_contable_id', $cc->cuenta_contable_id)
+        ->get();
+        #4001-003-002 HOTELES
+        $saldo_inicial = $result[0]->sdo_inicial; # 1362512.38
+        $saldo_final = $result[0]->sdo_final;     # 1362512.38
 
+        //Sumo totales de la poliza con el acumulado en la balanza
+        $total_cargos = $result[0]->cargos - $cargo; #$total_cargos = 200 - 100
+        $total_abonos = $result[0]->abonos - $abono; #$total_abonos = 0 - 0
+
+        //Calculo el saldo final de la cuenta contable dependiendo su naturaleza
+        if($cc->naturaleza == 'A'){
+            $saldo_final = $saldo_inicial - $total_cargos + $total_abonos;
+        }else if($cc->naturaleza == 'D'){
+            $saldo_final = $saldo_inicial + $total_cargos - $total_abonos;
+        }
+        //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
+        DB::table('Contab.balanza')
+            ->where('anio', $anio)
+            ->where('mes', $mes)
+            ->where('cuenta_contable_id', $cc->cuenta_contable_id)
+            ->update([
+                'cargos' => $total_cargos,
+                'abonos' => $total_abonos,
+                'sdo_final' => $saldo_final
+            ]);
+      }
+    }
 
     //Compras
     public function getProduct(Request $request)

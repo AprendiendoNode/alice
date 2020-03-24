@@ -139,6 +139,7 @@
                         {{__('customer_invoice.column_status')}}
                     </th>
                     <th></th>
+                    <th></th>
                 </tr>
               </thead>
             </table>
