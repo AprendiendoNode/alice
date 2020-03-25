@@ -643,9 +643,6 @@
           if ( information.uuid != "" ) {
             a12 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_status_sat(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('general.button_status_sat')</a>';
           }
-          if ( information.uuid != "" ) {
-            a19 = '<a class="dropdown-item" href="javascript:void(0);" onclick="link_send_poliza(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="fas fa-file-alt"></i> Enviar a póliza</a>';
-          }
           if ( parseInt(status) != CANCEL || parseInt(status) != CANCEL_PER_AUTHORIZED || information.balance >= information.amount_total ) {
             a13 = '<div class="dropdown-divider"></div>';
             a14 = '<a class="dropdown-item" href="javascript:void(0);"  onclick="link_cancel(this)" value="'+information.id+'" datas="'+information.name+'"><i class="fas fa-trash-alt"></i> @lang('general.button_cancel')</a>';
@@ -656,7 +653,7 @@
             a17 = '<a class="dropdown-item" href="javascript:void(0);" onclick="cancel_rejected(this)" value="'+information.id+'" datas="'+information.name+'" ><i class="far fa-question-circle"></i> @lang('customer_invoice.text_cancel_rejected')</a>';
           }
           var a18 = '</div>';
-          var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a09+a10+a11+a12+a19+a13+a14+a15+a16+a17+a18;
+          var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a09+a10+a11+a12+a13+a14+a15+a16+a17+a18;
 
           vartable.fnAddData([
             dropdown,

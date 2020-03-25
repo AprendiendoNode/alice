@@ -179,6 +179,7 @@
               <table id="table_filter_fact" name='table_filter_fact' class="table table-striped table-hover table-condensed">
                 <thead>
                   <tr class="mini">
+                    <th></th>
                     <th class="text-center" width="5%">
                       Opciones
                     </th>
@@ -284,6 +285,58 @@
   </div>
   <!-- /modal about -->
 
+   <!----------------------MODAL POLIZA MOVIMIENTOS--------------------------->
+   <div id="modal_view_poliza" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Póliza</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="form_update_asientos_contables">
+        <div class="modal-body">
+          <!------TABLA DE PARTIDAS / ASIENTO CONTABLE------>
+          <div class="row mt-2 mb-3">
+            <div id="data_asientos" class="col-12 table-responsive">
+              
+            </div>
+          </div>
+          <!------------RESUMEN FACTURA--------->
+          {{-- <div class="row mt-5">
+            <div class="col-12 table-responsive">
+              <table class="table table-sm">
+                <thead class="bg-secondary text-white">
+                  <tr>
+                    <th>Org.</th>
+                    <th>Partida</th>
+                    <th>Dia</th>
+                    <th>No.</th>
+                    <th>Tipo</th>
+                    <th>UUID / Folio</th>
+                    <th>Beneficiario</th>
+                    <th>Importe</th>
+                  </tr>
+                </thead>
+                <tbody>       
+                </tbody>
+              </table>
+            </div>
+          </div> --}}  
+        </div>
+        <div class="modal-footer">
+          @if( auth()->user()->can('Polizas update') )
+            <button type="submit" id="update_poliza_partida" type="button" class="btn btn-primary">Guardar</button>
+          @endif
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </form> 
+      </div>
+    </div>
+  </div>
+ <!----------------------------- FIN MODAL POLIZA MOVIMIENTOS--------------------------------->
+
   @else
     @include('default.denied')
   @endif
@@ -305,6 +358,11 @@
       }
       th { font-size: 12px !important; }
       td { font-size: 10px !important; }
+
+      #table_filter_fact tbody tr td {
+        padding: 0.2rem 0.5rem;
+        height: 38px !important;
+      }
     </style>
 
     <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
@@ -328,7 +386,11 @@
 
     <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-
+    <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
+    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
+    <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
+    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
+  
     <script type="text/javascript">
       $(function() {
         var quill;
@@ -476,6 +538,7 @@
           var dropdown = a01+a02+a03+a04+a05+a06+a07+a08+a09+a10+a11+a12+a13+a14+a15;
 
           vartable.fnAddData([
+            information.id,
             dropdown,
             information.folio,
             information.date,
@@ -488,24 +551,48 @@
             information.balance,
             mail_status,
             html,
+            information.contabilizado
           ]);
         });
       }
 
       var Configuration_table_responsive_comp_pago = {
+        "order": [[ 2, "asc" ]],
+        "select": true,
+        "aLengthMenu": [[25, -1], [25, "Todos"]],
         "columnDefs": [
-            {
-                "targets": 9,
-                "width": "0.2%",
-                "className": "text-center",
+              {
+                "targets": 0,
+                "checkboxes": {
+                  'selectRow': true
+                },
+                "width": "0.1%",
+                "createdCell": function (td, cellData, rowData, row, col){
+                  if ( cellData > 0 ) {
+                    if(rowData[13] == 1){
+                      this.api().cell(td).checkboxes.disable();
+                      $(td).parent().attr('style', 'background: #D6FFBE !important');
+                    }
+                  }
+                },
+              "className": "text-center",
             },
             {
                 "targets": 10,
+                "width": "0.2%",
                 "className": "text-center",
             },
             {
                 "targets": 11,
                 "className": "text-center",
+            },
+            {
+                "targets": 12,
+                "className": "text-center",
+            },
+            {
+                "targets": 13,
+                "visible": false,
             }
         ],
         dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
@@ -513,6 +600,62 @@
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
           "order": [[ 7, "asc" ]],
         buttons: [
+          {
+            text: '<i class=""></i> Contabilizar',
+            titleAttr: 'Contabilizar',
+            className: 'btn btn-dark btn-sm',
+            init: function(api, node, config) {
+              $(node).removeClass('btn-default')
+            },
+            action: function ( e, dt, node, config ) {
+
+              var rows_selected = $("#table_filter_fact").DataTable().column(0).checkboxes.selected();
+              var _token = $('input[name="_token"]').val();
+              // Iterate over all selected checkboxes
+              var facturas= new Array();
+              $.each(rows_selected, function(index, rowId){
+                facturas.push(rowId);
+              });
+              if ( facturas.length === 0){
+                Swal.fire(
+                  'Debe selecionar al menos una factura',
+                  '',
+                  'warning'
+                )
+              }else{
+                let _token = $('meta[name="csrf-token"]').attr('content');
+
+                $("#tabla_asiento_contable tbody").empty();
+
+                $.ajax({
+                    type: "POST",
+                    url: '/accounting/customer-polizas-get-movs',
+                    data: {facturas: JSON.stringify(facturas) , _token : _token},
+                    success: function (data) {
+
+                      $('#data_asientos').html(data);
+                      $('.cuenta_contable').select2();
+                      let dia_factura = $('#dia_hidden').val();
+                      let mes_factura = $('#mes_hidden').val();
+                      let anio_factura = $('#anio_hidden').val();
+                      let mes_format = moment(new Date(anio_factura, parseInt(mes_factura)- 1, dia_factura)).format('MMMM');
+
+                      $('#mes_poliza').val(mes_format);
+                    },
+                    error: function (err) {
+                      Swal.fire({
+                          type: 'error',
+                          title: 'Oops...',
+                          text: err.statusText,
+                        });
+                    }
+                })
+
+                $("#modal_view_poliza").modal("show");
+              }
+
+            }
+          },
             {
               extend: 'excelHtml5',
               title: 'Facturas',

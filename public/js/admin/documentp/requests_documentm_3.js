@@ -38,7 +38,7 @@ function documentp_table(datajson, table){
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
   //Filtrando documentos M
-  let datajson_result = datajson.filter(data => data.doc_type == 2 && data.status != 'Denegado');
+  let datajson_result = datajson.filter(data => data.doc_type == 2);
   let type_doc = 'M';
   $.each(datajson_result, function(index, data){
 
@@ -110,7 +110,7 @@ var Configuration_table_responsive_documentp= {
                 "width": "0.1%",
                 "createdCell": function (td, cellData, rowData, row, col){
                   if ( cellData > 0 ) {
-                    if(rowData[15] != 'Reviso'){
+                    if(rowData[15] != 'Reviso' && rowData[15] != 'Denegado'){
                       this.api().cell(td).checkboxes.disable();
                     }
                     if(rowData[16] != null){

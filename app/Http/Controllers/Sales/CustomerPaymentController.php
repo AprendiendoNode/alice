@@ -81,14 +81,14 @@ class CustomerPaymentController extends Controller
     {
         $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
         $customer = DB::select('CALL px_only_customer_data ()', array());
-        $company_bank_accounts =  DB::select('CALL px_bancos_activos ()', array());
-
+        $company_bank_accounts =  DB::select('CALL px_accounts_banks_company ()', array());
+       
         $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
         $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
         $list_status = $this->list_status;
         $tipo_cadena_pagos = $this->tipo_cadena_pagos;
         $cfdi_relations = DB::select('CALL GetAllCfdiRelationsv2 ()', array());
-        $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());
+        $payment_methods = DB::select('CALL GetAllPaymentMethodsv2 ()', array());          
 
         return view('permitted.sales.customer_payments',
         compact('customer', 'payment_way', 'company_bank_accounts', 'payment_methods',
@@ -1305,5 +1305,13 @@ class CustomerPaymentController extends Controller
         return response()->json($json);
       }
       return response()->json(['error' => __('general.error_general')], 422);
+    }
+
+    public function get_exchange_rate_by_date()
+    {
+      $result = DB::table('exchange_rate')->salect('current_date','current_rate_fix', 'current_rate_dof','current_rate')
+                    ->where('current_date', $request->date)->get();
+      
+      return $result;
     }
 }

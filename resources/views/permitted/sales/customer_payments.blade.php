@@ -34,19 +34,19 @@
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="date">Fecha actual:<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" id="date" name="date">
+                    <input type="text" class="form-control form-control-sm" id="date" name="date">
                   </div>
                 </div>
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
-                    <label for="date_payment">Fecha de pago:<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" id="date_payment" name="date_payment">
+                    <label for="date_payment">Fecha de cobro:<span style="color: red;">*</span></label>
+                    <input type="text" class="form-control form-control-sm" id="date_payment" name="date_payment">
                   </div>
                 </div>
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="branch_office_id" class="control-label">Sucursal:<span style="color: red;">*</span></label>
-                    <select id="branch_office_id" name="branch_office_id" class="form-control required" style="width:100%;">
+                    <select id="branch_office_id" name="branch_office_id" class="form-control form-control-sm required" style="width:100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($sucursal as $sucursal_data)
                         <option value="{{ $sucursal_data->id  }}">{{ $sucursal_data->name }}</option>
@@ -58,13 +58,13 @@
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="reference">Número de operación</label>
-                    <input type="text" class="form-control" id="reference" name="reference" value="">
+                    <input type="text" class="form-control form-control-sm" id="reference" name="reference" value="">
                   </div>
                 </div>
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="payment_way_id" class="control-label">Forma de pago:<span style="color: red;">*</span></label>
-                    <select id="payment_way_id" name="payment_way_id" class="form-control required" style="width:100%;">
+                    <select id="payment_way_id" name="payment_way_id" class="form-control form-control-sm required" style="width:100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($payment_way as $payment_way_data)
                       <option value="{{ $payment_way_data->id }}"> [{{ $payment_way_data->code }}] {{ $payment_way_data->name }} </option>
@@ -91,10 +91,10 @@
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="company_bank_account_id" class="control-label">Cuenta beneficiaria:</label>
-                    <select id="company_bank_account_id" name="company_bank_account_id" class="form-control" style="width:100%;" disabled>
+                    <select id="company_bank_account_id" name="company_bank_account_id" class="form-control form-control-sm" style="width:100%;" disabled>
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($company_bank_accounts as $company_bank_accounts_data)
-                        <option value="{{ $company_bank_accounts_data->id  }}"> [{{$company_bank_accounts_data->currencies}}] {{ $company_bank_accounts_data->bank }}</option>
+                        <option value="{{ $company_bank_accounts_data->id  }}">{{$company_bank_accounts_data->banco}} [{{ $company_bank_accounts_data->account_number }}] {{$company_bank_accounts_data->nombre_cuenta}} </option>
                       @empty
                       @endforelse
                     </select>
@@ -103,16 +103,15 @@
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="customer_bank_account_id" class="control-label">Cuenta ordenante/cliente:</label>
-                    <select id="customer_bank_account_id" name="customer_bank_account_id" class="form-control" style="width:100%;" disabled>
+                    <select id="customer_bank_account_id" name="customer_bank_account_id" class="form-control form-control-sm" style="width:100%;" disabled>
                       <option value="">{{ trans('message.selectopt') }}</option>
                     </select>
                   </div>
                 </div>
-
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
-                    <select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
+                    <select id="currency_id" name="currency_id" class="form-control form-control-sm required" style="width:100%;">
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($currency as $currency_data)
                         <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
@@ -124,13 +123,13 @@
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="currency_value">TC:<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" id="currency_value" name="currency_value" required>
+                    <input type="text" class="form-control form-control-sm" id="currency_value" name="currency_value" required>
                   </div>
                 </div>
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="amount">Monto:<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" id="amount" name="amount" required>
+                    <input type="text" class="form-control form-control-sm" id="amount" name="amount" required>
                   </div>
                 </div>
 

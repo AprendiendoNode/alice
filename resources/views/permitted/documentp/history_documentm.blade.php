@@ -310,7 +310,7 @@
         <script src="{{ asset('js/admin/documentp/requests_documentm_2.js?v=3.2')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @elseif ( auth()->user()->can('View level three documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_3.js?v=3.2')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_3.js?v=3.4')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=5.0.1')}}"></script>
       @endif
   @else

@@ -322,7 +322,7 @@
       <script src="{{ asset('js/admin/documentp/requests_documentp_2.js?v=3.1')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level three documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_3.js?v=3.2')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_3.js?v=3.4')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=5.0.0')}}"></script>
     @else
       @include('default.denied')
