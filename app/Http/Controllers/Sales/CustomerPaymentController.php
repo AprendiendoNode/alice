@@ -1307,11 +1307,192 @@ class CustomerPaymentController extends Controller
       return response()->json(['error' => __('general.error_general')], 422);
     }
 
-    public function get_exchange_rate_by_date()
+    public function get_exchange_rate_by_date(Request $request)
     {
-      $result = DB::table('exchange_rate')->salect('current_date','current_rate_fix', 'current_rate_dof','current_rate')
-                    ->where('current_date', $request->date)->get();
+      $date_payment = Carbon::parse($request->date_payment)->format('Y-m-d');
+      
+      $result = DB::table('exchange_rates')->select('current_date','current_rate_fix', 'current_rate_dof','current_rate')
+                    ->where('current_date', $date_payment)->get();
       
       return $result;
     }
+
+    //MOVIMIENTOS DE POLIZA DE INGRESO
+    public function get_facts_mov_data(Request $request)
+    {
+        $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
+        $next_id_num = DB::table('polizas')->max('numero') + 1;
+        $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
+        $facturas = json_decode($request->facturas);
+        $asientos = array();
+        for ($i=0; $i <= (count($facturas)-1); $i++)
+        {
+          $data = DB::select('CALL poliza_mov_ingresos(?)', array($facturas[$i]));
+          //dd($data);
+          if(count($data) > 0)
+          {
+            for($j=0; $j <= (count($data)-1); $j++)
+            {
+              array_push($asientos, $data[$j]);
+            }
+          }
+        }
+
+        return view('permitted.accounting.tabla_asientos_contables_ingresos',
+               compact('asientos', 'cuentas_contables', 'tipos_poliza', 'next_id_num'));
+    }
+
+    public function save_poliza_ingreso_movs(Request $request)
+    {
+        
+        try {
+
+            DB::transaction(function () use($request){
+                //Objeto de polizas
+                $asientos = $request->movs_polizas;
+                $asientos_data = json_decode($asientos);
+
+                $tam_asientos = count($asientos_data);
+                $flag = "false";
+                
+                $id_poliza = DB::table('polizas')->insertGetId([
+                    'tipo_poliza_id' => $request->type_poliza,
+                    'numero' => $request->num_poliza,
+                    'fecha' => $request->date_invoice,
+                    'descripcion' => $request->descripcion_poliza,
+                    'total_cargos' => $request->total_cargos_format,
+                    'total_abonos' => $request->total_abonos_format
+                ]);
+    
+                //Insertando movimientos de las polizas
+                for ($i=0; $i < $tam_asientos; $i++)
+                {
+                  if ( $asientos_data[$i]->cuenta_contable_id ) {
+                    if ( $asientos_data[$i]->cargo == 0 && $asientos_data[$i]->abono == 0) {
+                       /* NO_INSERTAR */
+                    }
+                    else{
+                      /* SE INSERTAR */
+    
+                      //Acumulando saldos
+                      $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
+                      $this->add_balances_polizas_ingresos($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
+    
+                      $sql = DB::table('polizas_movtos')->insert([
+                        'poliza_id' => $id_poliza,
+                        'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
+                        'customer_payment_id' => $asientos_data[$i]->factura_id,
+                        'fecha' => $request->date_invoice,
+                        'exchange_rate' => $asientos_data[$i]->tipo_cambio,
+                        'descripcion' => $asientos_data[$i]->nombre,
+                        'cargos' => $asientos_data[$i]->cargo,
+                        'abonos' => $asientos_data[$i]->abono,
+                        'referencia' => $asientos_data[$i]->referencia
+                      ]);
+                      //Marcando complementos de pago a contabilizado
+                      $customer_payment = CustomerPayment::findOrFail($asientos_data[$i]->complemento_pago_id);
+                      $customer_payment->contabilizado = 1;
+                      $customer_payment->save();
+                      
+                    }
+                  }
+                }
+            });
+
+            $flag = "true";
+
+
+        } catch(\Exception $e){
+            $error = $e->getMessage();
+            dd($error);
+        }
+
+        return  $flag;
+
+    }
+
+    public function add_balances_complemento_pago($cc_array, $periodo, $cargo, $abono)
+    {
+        $explode = explode('-', $periodo);
+        $anio = $explode[0];
+        $mes = $explode[1];
+
+        foreach($cc_array as $cc)
+        {
+            //Obtengo saldos de la cuenta contable en la balanza en el periodo requerido
+            $result = DB::table('Contab.balanza')->select('cargos', 'abonos', 'sdo_inicial', 'sdo_final')
+            ->where('anio', $anio)
+            ->where('mes', $mes)
+            ->where('cuenta_contable_id', $cc->cuenta_contable_id)
+            ->get();
+
+            $saldo_inicial = $result[0]->sdo_inicial;
+            $saldo_final = $result[0]->sdo_final;
+            //Sumo totales de la poliza con el acumulado en la balanza
+            $total_cargos = $result[0]->cargos + $cargo;
+            $total_abonos = $result[0]->abonos + $abono;
+            //Calculo el saldo final de la cuenta contable dependiendo su naturaleza
+            if($cc->naturaleza == 'A'){
+                $saldo_final = $saldo_inicial + $total_abonos - $total_cargos; 
+            }else if($cc->naturaleza == 'D'){
+                $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
+            }   
+            //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
+            DB::table('Contab.balanza')
+                ->where('anio', $anio)
+                ->where('mes', $mes)
+                ->where('cuenta_contable_id', $cc->cuenta_contable_id)
+                ->update([
+                    'cargos' => $total_cargos,
+                    'abonos' => $total_abonos,
+                    'sdo_final' => $saldo_final
+                ]);
+        }
+    }
+
+    public function cancel_balances_complemento_pago($cc_array, $periodo, $cargo, $abono)  
+    {
+        $explode = explode('-', $periodo);
+        $anio = $explode[0];
+        $mes = $explode[1];
+       
+        foreach($cc_array as $cc)
+        {
+          $explode = explode('-', $periodo);
+          $anio = $explode[0];
+          $mes = $explode[1];         
+          //Obtengo saldos de la cuenta contable en la balanza en el periodo requerido
+          $result = DB::table('Contab.balanza')->select('id','cargos', 'abonos', 'sdo_inicial', 'sdo_final')
+          ->where('anio', $anio)
+          ->where('mes', $mes)
+          ->where('cuenta_contable_id', $cc->cuenta_contable_id)
+          ->get();
+          
+          $saldo_inicial = $result[0]->sdo_inicial;
+          $saldo_final = $result[0]->sdo_final;
+          //Resto totales de la balanza para cancelar el saldo de la poliza
+          $total_cargos = $result[0]->cargos - $cargo;
+          $total_abonos = $result[0]->abonos - $abono;
+          
+          //Recalculo el saldo final de la cuenta contable dependiendo su naturaleza
+          if($cc->naturaleza == 'A'){
+              $saldo_final = $saldo_inicial + $total_abonos - $total_cargos; 
+          }else if($cc->naturaleza == 'D'){
+              $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
+          }   
+          //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
+          DB::table('Contab.balanza')
+            ->where('anio', $anio)
+            ->where('mes', $mes)
+            ->where('cuenta_contable_id', $cc->cuenta_contable_id)
+            ->update([
+                'cargos' => $total_cargos,
+                'abonos' => $total_abonos,
+                'sdo_final' => $saldo_final
+          ]);
+            
+        }
+
+    }
+
 }

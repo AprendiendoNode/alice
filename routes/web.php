@@ -1248,6 +1248,10 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices-cont-rz', 'Sales\CustomerInvoiceController@getDataContractRz');
     Route::get('customers/get-customer-bank-accounts', 'Sales\CustomerController@getCustomerBankAccounts')->name('customers/get-customer-bank-accounts');
     Route::post('customer-payments/total-item-manual-reconciled', 'Sales\CustomerPaymentController@totalItemManualReconciled')->name('customer-payments/total-item-manual-reconciled');
+    Route::get('customer-payments-show', 'Sales\CustomerPaymentController@show');
+    Route::post('customer-payments-poliza-movs', 'Sales\CustomerPaymentController@get_facts_mov_data');
+    Route::post('customer-payments-poliza-save', 'Sales\CustomerPaymentController@save_poliza_ingreso_movs');
+    Route::post('get_exchange_rate_by_date', 'Sales\CustomerPaymentController@get_exchange_rate_by_date');
 });
 
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){

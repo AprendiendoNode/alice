@@ -119,7 +119,6 @@ class CustomerPolizaController extends Controller
     public function save_poliza_movs(Request $request)
     {
         
-
         try {
 
             DB::transaction(function () use($request){
@@ -251,12 +250,13 @@ class CustomerPolizaController extends Controller
                 $total_cargos = $result[0]->cargos - $cargo;
                 $total_abonos = $result[0]->abonos - $abono;
                 
+                $saldo_final = $saldo_inicial + $total_cargos - $total_abonos;
                 //Recalculo el saldo final de la cuenta contable dependiendo su naturaleza
-                if($cc->naturaleza == 'A'){
+                /**if($cc->naturaleza == 'A'){
                     $saldo_final = $saldo_inicial + $total_abonos - $total_cargos; 
                 }else if($cc->naturaleza == 'D'){
                     $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
-                }   
+                }   */
                 //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
                 DB::table('Contab.balanza')
                     ->where('anio', $anio)

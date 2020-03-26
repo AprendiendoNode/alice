@@ -347,15 +347,18 @@
     <style media="screen">
       .white {background-color: #ffffff;}
       .select2-selection__rendered {
-        line-height: 44px !important;
-        padding-left: 20px !important;
+        line-height: 36px !important;
+        padding-left: 15px !important;
       }
+
       .select2-selection {
-        height: 42px !important;
+        height: 34px !important;
       }
+
       .select2-selection__arrow {
-        height: 36px !important;
+        height: 28px !important;
       }
+
       th { font-size: 12px !important; }
       td { font-size: 10px !important; }
 
@@ -629,10 +632,10 @@
 
                 $.ajax({
                     type: "POST",
-                    url: '/accounting/customer-polizas-get-movs',
+                    url: '/sales/customer-payments-poliza-movs',
                     data: {facturas: JSON.stringify(facturas) , _token : _token},
                     success: function (data) {
-
+                             
                       $('#data_asientos').html(data);
                       $('.cuenta_contable').select2();
                       let dia_factura = $('#dia_hidden').val();

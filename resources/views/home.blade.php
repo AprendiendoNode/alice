@@ -406,7 +406,7 @@
         });
       }
       $(function() {
-        graph_vtc()
+       // graph_vtc()
         //graph_vtc_real();
       });
       $('#btn_graph1VTC').on('click', function(e){

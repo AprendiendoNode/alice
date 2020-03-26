@@ -70,7 +70,7 @@
               $day = date("d", $fecha);
           @endphp
         <tr>
-            <td><input class="id_factura" type="hidden" value="{{$data->customer_invoice_id}}"></td>
+            <td><input class="id_factura" type="hidden" value="{{$data->customer_payment_id}}"></td>
             <td>{{$data->mov}}</td>
             <td>
               <select style="width:280px;" class="form-control form-control-sm cuenta_contable select2">
@@ -86,10 +86,10 @@
             </td>
             <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia" readonly type="number" value="{{$dia_factura}}"></td>
             <td><input style="width:94px;text-align:center" class="form-control form-control-sm tipo_cambio" readonly type="number" value="{{$data->tipo_cambio}}"></td>
-          <td class=""><input style="width:170px;text-align:left" readonly class="form-control form-control-sm nombre" type="text" value="{{$data->name}} {{$date}}"></td>
+          <td class=""><input style="width:170px;text-align:left" readonly class="form-control form-control-sm nombre" type="text" value="{{$data->descripcion}} {{$date}}"></td>
             <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos" type="text" value="{{number_format($data->cargo, 2, '.', '')}}" ></td>
             <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm abonos"  type="text" value="{{number_format($data->abono, 2, '.', '')}}" ></td> 
-          <td><input style="width:135px;text-align:left" class="form-control form-control-sm referencia" type="text" value=""></td>
+          <td><input style="width:135px;text-align:left" class="form-control form-control-sm referencia" type="text" value="">{{ $data->referencia }}</td>
         </tr>
         @endforeach    
       </tbody>

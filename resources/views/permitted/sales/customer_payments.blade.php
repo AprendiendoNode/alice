@@ -673,6 +673,7 @@
                 if (data != '[]') {
                   item_row = 0;
                   var html = '';
+                  let tc_date_payment = $('#currency_value').val();
                   data.forEach(function(key,i) {
                     html += '<tr>';
 
@@ -709,7 +710,7 @@
 
                     if (key.currency_id != 1) {
                       html += '<td class="text-right" style="padding-top: 11px;">';
-                      html += '<input type="number" class="form-control form-control-sm text-right col-currency-value" value="' + key.currency_value + '"  name="item_reconciled[' + item_row + '][currency_value]" id="item_reconciled_currency_value_' + item_row + '" required step="any" />';
+                      html += '<input type="number" class="form-control form-control-sm text-right col-currency-value" value="' + tc_date_payment + '"  name="item_reconciled[' + item_row + '][currency_value]" id="item_reconciled_currency_value_' + item_row + '" required step="any" />';
                       html += '</td>';
                     }
                     else {
@@ -930,17 +931,15 @@
               $("#form input[name='date']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
           });
           /*Fecha pago*/
-          $("#form input[name='date_payment']").daterangepicker({
-              singleDatePicker: true,
-              timePicker: true,
-              timePicker24Hour: true,
-              showDropdowns: true,
-              locale: {
-                  format: "DD-MM-YYYY HH:mm:ss"
-              },
-              autoUpdateInput: true
+          $("#form input[name='date_payment']").datepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: 'DD-MM-YYYY'
+            },
+            autoUpdateInput: false
           }, function (chosen_date) {
-              $("#form input[name='date_payment']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
+              $("#form input[name='date_payment']").val(chosen_date.format('DD-MM-YYYY'));
           });
           /*Forma de pago*/
           $('#payment_way_id').on('change', function(){
@@ -989,6 +988,28 @@
           });
           //-----------------------------------------------------------
         });
+
+        $('#date_payment').on('blur', function(){
+          let date_payment = $(this).val();
+          var token = $('input[name="_token"]').val();
+          console.log(date_payment);
+          $.ajax({
+              url: "/sales/get_exchange_rate_by_date",
+              type: "POST",
+              dataType: "JSON",
+              data: { _token : token, date_payment: date_payment },
+              success: function (data) {
+                  if(data.length != 0){
+                    $("#currency_value").val(data[0].current_rate);
+                  }else{
+                    $("#currency_value").val('');
+                  }
+              },
+              error: function (error, textStatus, errorThrown) {
+                  console.log(error);
+              }
+          });
+        })
 
         /* Selecciona moneda */
         $("#form select[name='currency_id']").on("change", function () {
