@@ -64,7 +64,8 @@ function busqueda() {
           title: 'Oops...',
           text: err.statusText,
         });
-    }
+    },
+    complete: () => console.log("Peticion terminada")
   });
 }
 function remplazar_pintar_header(table, posicionini, posicionfin) {
@@ -101,33 +102,55 @@ function pintar_celda(table) {
 }
 
 
-function fill_table_periodo (datajson, table){
+function fill_table_periodo (response, table){
   table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_no_options_biweekly);
   vartable.fnClearTable();
-  $.each(JSON.parse(datajson), function(index, status){
-    vartable.fnAddData([
+  $.each(response, function(index, status){
+    const data = [];
+    for( let dt of Object.entries(status) ) data.push(dt[1]);
+    vartable.fnAddData( data );
+    /*vartable.fnAddData([
       status.cuenta,
       status.nombre,
-      status.n01,
-      status.n02,
-      status.n03,
-      status.n04,
-      status.n05,
-      status.n06,
-      status.n07,
-      status.n08,
-      status.n09,
-      status.n10,
-      status.n11,
-      status.n12,
-      '0000',
+      status.Ene,
+      status.Feb,
+      status.Mar,
+      status.Abr,
+      status.May,
+      status.Jun,
+      status.Jul,
+      status.Ago,
+      status.Sep,
+      status.Oct,
+      status.Nov,
+      status.Dic,
+      status.total,
       status.porcentaje,
       status.cr_rd,
       status.porcentaje_cr_rd,
-    ]);
+    ]);*/
   });
 }
+
+let imgSitData = null;
+let imgSit = new Image();
+const imgSitDimensions = { w: 150, h: 38 }
+imgSit.width = imgSitDimensions.w;
+imgSit.height = imgSitDimensions.h;
+
+imgSit.onload = () => {
+  const cnvs = document.createElement("canvas");
+  cnvs.width = imgSit.width;
+  cnvs.height = imgSit.height;
+
+  cnvs.getContext("2d").drawImage(imgSit, 0, 0, imgSitDimensions.w, imgSitDimensions.h);
+  // console.log( "Img encoded", cnvs.toDataURL("image/png") );
+  imgSitData = cnvs.toDataURL("image/png");
+
+}
+// imgSit.src = "https://alice.sitwifi.com/images/storage/SIT070918IXA/files/companies/logo.png"; // <-- production
+ imgSit.src = "http://localhost:8000/images/storage/SIT070918IXA/files/companies/logo.png"; // <-- local
 
 var Configuration_table_no_options_biweekly = {
   paging: true,
@@ -139,6 +162,7 @@ var Configuration_table_no_options_biweekly = {
     //"pageLength": 5,
   // bInfo: false,
   "scrollX": true,
+  scrollY: '300px',
   "columnDefs": [
       {
         "targets": [14,16],
@@ -150,7 +174,7 @@ var Configuration_table_no_options_biweekly = {
       },
   ],
   fixedColumns:   {
-      leftColumns: 2//Le indico que deje fijas solo las 2 primeras columnas
+      leftColumns: 1//Le indico que deje fijas solo las 2 primeras columnas
   },
 
   dom: "<'row'<'col-sm-5'B><'col-sm-3'l><'col-sm-4'f>>" +
@@ -169,8 +193,7 @@ var Configuration_table_no_options_biweekly = {
         exportOptions: {
             columns: [ 0, 1, 2, 3]
         },
-      },
-      {
+      }, {
         extend: 'csvHtml5',
         title: 'Estado de resultados',
         init: function(api, node, config) {
@@ -182,6 +205,57 @@ var Configuration_table_no_options_biweekly = {
         exportOptions: {
             columns: [ 0, 1, 2, 3]
         },
+      }, {
+        extend: 'pdfHtml5',
+        title: 'Estado de resultados',
+        init: (api, node, config) => $(node).removeClass('btn-secondary'),
+        text: '<i class="fas fa-file-pdf fastable mt-2"></i> Extraer a PDF',
+        titleAttr: 'PDF',
+        className: 'btn btn-danger btn-sm',
+        orientation: 'landscape',
+        pageSize: 'A3',
+        exportOptions: {
+            columns: () => {
+              const numberColumns = 18; // Numero de columnas a agregar
+              const cols = [];
+              for(let i=0; i < numberColumns; i++) cols.push(i);
+              return cols;
+            }
+        },
+        customize: doc => {
+          doc.defaultStyle.fontSize = 7;
+          doc.content.splice(0, 0, {
+            margin: [0,0,0,12],
+            alignment: 'left',
+            image: imgSitData
+          });
+          doc.content.splice(1,0, {
+            margin: [0,0,0,0],
+            alignment: 'center',
+            text: 'SITWIFI, S.A DE C.V.',
+            fontSize: 12
+          });
+          doc.content.splice(2,0, {
+            margin: [100,0,100,12],
+            alignment: 'center',
+            text: 'HAMBURGO 159-PISO 1, Col. JUAREZ, Cd. CIUDAD DE MÉXICO, CP 06600, CUAUHTÉMOC, CIUDAD DE MÉXICO, MÉXICO',
+            fontSize: 10
+          });
+          doc.styles = {
+            title: {
+              alignment: "center",
+              fontSize: 18
+            },
+            tableHeader: {
+              bold: .9,
+              fontSize: 11,
+              color:'white',
+              fillColor: '#003776',
+              alignment:'center'
+            }
+          }
+        }
+
       }
   ],
   "processing": true,

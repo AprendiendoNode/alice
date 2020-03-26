@@ -20,12 +20,34 @@ class EstadoResultadoController extends Controller
   public function estado_resultados_search(Request $request)
   {
       $month = $request->period_month.'-01';
-      // $resultados = DB::select('CALL Contab.px_estado_resultados_xanio (?)', array($month));
-      // return json_encode($resultados);
+      $period = explode('-', $request->period_month);
+      $resultados = DB::select('CALL Contab.px_estado_resultados_xanio (?)', [intval($period[0])]);
+      foreach( $resultados as &$resultado ) {
+        $resultado->cuenta = $resultado->cuenta!=null?$resultado->cuenta:'S/N';
+        $resultado->nombre = $resultado->nombre!=null?$resultado->nombre:'S/N';
+        $resultado->Ene = $resultado->Ene!=null?$resultado->Ene:0;
+        $resultado->Feb = $resultado->Feb!=null?$resultado->Feb:0;
+        $resultado->Mar = $resultado->Mar!=null?$resultado->Mar:0;
+        $resultado->Abr = $resultado->Abr!=null?$resultado->Abr:0;
+        $resultado->May = $resultado->May!=null?$resultado->May:0;
+        $resultado->Jun = $resultado->Jun!=null?$resultado->Jun:0;
+        $resultado->Jul = $resultado->Jul!=null?$resultado->Jul:0;
+        $resultado->Ago = $resultado->Ago!=null?$resultado->Ago:0;
+        $resultado->Sep = $resultado->Sep!=null?$resultado->Sep:0;
+        $resultado->Oct = $resultado->Oct!=null?$resultado->Oct:0;
+        $resultado->Nov = $resultado->Nov!=null?$resultado->Nov:0;
+        $resultado->Dic = $resultado->Dic!=null?$resultado->Dic:0;
+        //$resultado->total = intval($resultado->Ene)+intval($resultado->Feb)+intval($resultado->Mar)+intval($resultado->Abr)+intval($resultado->May)+intval($resultado->Jun)+intval($resultado->Jul)+intval($resultado->Ago)+intval($resultado->Sep)+intval($resultado->Oct)+intval($resultado->Nov)+intval($resultado->Dic);
+        $resultado->total = $this->sumaItems( $resultado->Ene, $resultado->Feb, $resultado->Mar, $resultado->Abr, $resultado->May, $resultado->Jun, $resultado->Jul, $resultado->Ago, $resultado->Sep, $resultado->Oct, $resultado->Nov, $resultado->Dic );
+        $resultado->porcentaje = 0;
+        $resultado->cr_rd = 0;
+        $resultado->porcentaje_cr_rd = 0;
+      }
+      return response()->json( $resultados );
 
 
-      $resultados = array();
-      for ($i=1; $i <= 4; $i++) {
+      //$resultados = array();
+      /*for ($i=1; $i <= 4; $i++) {
         $faker = Faker::create();
         $ranmdon = rand(1000, 12000);
         array_push($resultados,
@@ -796,6 +818,16 @@ class EstadoResultadoController extends Controller
         )
       );
 
-      return json_encode($resultados);
+      return json_encode($resultados);*/
   }
+
+  private function sumaItems( ...$items ) {
+    $total = 0;
+    foreach( $items as $item ) {
+      $item = str_replace(',','',$item);
+      $total+= intval($item);
+    }
+    return number_format($total, 2, '.', ',');
+  }
+
 }
