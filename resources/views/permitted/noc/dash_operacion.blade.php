@@ -233,7 +233,224 @@
 
                 </div>
 
-                <div class="">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4 style="text-align: left;">Disponibilidad</h4>
+                    <table id="disponibilidad" class="table-responsive" style="text-align: center;">
+                      <tr style="color: brown;">
+                        <td>Vertical</td>
+                        <td>Sitio</td>
+                        <td>Carrier</td>
+                        <td># Sitios</td>
+                        <td>SLA Contrato</td>
+                        <td class="mes1"></td>
+                        <td class="mes2"></td>
+                        <td>SLA Sitwfi</td>
+                        <td>%</td>
+                        <td>SLA Promedio</td>
+                      </tr>
+                      <tr>
+                        <td rowspan="5" style="border-right: 1px solid blue;">Transporte terrestre</td>
+                        <td rowspan="2">ADO</td>
+                        <td>TELMEX</td>
+                        <td id="ado_telmex_sitios"></td>
+                        <td>98%</td>
+                        <td id="ado_telmex_disp1"></td>
+                        <td id="ado_telmex_disp2"></td>
+                        <td id="ado_telmex_ball"></td>
+                        <td id="ado_telmex_arrow"></td>
+                        <td id="sla_prom_1" rowspan="5" style="border-left: 1px solid blue;"></td>
+                      </tr>
+                      <tr>
+                        <td>TOTALPLAY</td>
+                        <td id="ado_totalplay_sitios"></td>
+                        <td>98%</td>
+                        <td id="ado_totalplay_disp1"></td>
+                        <td id="ado_totalplay_disp2"></td>
+                        <td id="ado_totalplay_ball"></td>
+                        <td id="ado_totalplay_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td rowspan="2">METROBUS</td>
+                        <td>BBS</td>
+                        <td id="metrobus_bbs_sitios"></td>
+                        <td>98%</td>
+                        <td id="metrobus_bbs_disp1"></td>
+                        <td id="metrobus_bbs_disp2"></td>
+                        <td id="metrobus_bbs_ball"></td>
+                        <td id="metrobus_bbs_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td>TOTALPLAY</td>
+                        <td id="metrobus_totalplay_sitios"></td>
+                        <td>98%</td>
+                        <td id="metrobus_totalplay_disp1"></td>
+                        <td id="metrobus_totalplay_disp2"></td>
+                        <td id="metrobus_totalplay_ball"></td>
+                        <td id="metrobus_totalplay_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td>METRORREY</td>
+                        <td>TOTALPLAY</td>
+                        <td id="metrorrey_totalplay_sitios"></td>
+                        <td>98%</td>
+                        <td id="metrorrey_totalplay_disp1"></td>
+                        <td id="metrorrey_totalplay_disp2"></td>
+                        <td id="metrorrey_totalplay_ball"></td>
+                        <td id="metrorrey_totalplay_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td rowspan="5" style="border-right: 1px solid blue;">Aeropuerto</td>
+                        <td rowspan="2">OMA</td>
+                        <td>ALESTRA</td>
+                        <td id="oma_alestra_sitios"></td>
+                        <td>98%</td>
+                        <td id="oma_alestra_disp1"></td>
+                        <td id="oma_alestra_disp2"></td>
+                        <td id="oma_alestra_ball"></td>
+                        <td id="oma_alestra_arrow"></td>
+                        <td id="sla_prom_2" rowspan="5" style="border-left: 1px solid blue;"></td>
+                      </tr>
+                      <tr>
+                        <td>TELMEX</td>
+                        <td id="oma_telmex_sitios"></td>
+                        <td>98%</td>
+                        <td id="oma_telmex_disp1"></td>
+                        <td id="oma_telmex_disp2"></td>
+                        <td id="oma_telmex_ball"></td>
+                        <td id="oma_telmex_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td rowspan="3">ASUR</td>
+                        <td>ALESTRA</td>
+                        <td id="asur_alestra_sitios"></td>
+                        <td>98%</td>
+                        <td id="asur_alestra_disp1"></td>
+                        <td id="asur_alestra_disp2"></td>
+                        <td id="asur_alestra_ball"></td>
+                        <td id="asur_alestra_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td>OTROS</td>
+                        <td id="asur_otros_sitios"></td>
+                        <td>98%</td>
+                        <td id="asur_otros_disp1"></td>
+                        <td id="asur_otros_disp2"></td>
+                        <td id="asur_otros_ball"></td>
+                        <td id="asur_otros_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td>TELMEX</td>
+                        <td id="asur_telmex_sitios"></td>
+                        <td>98%</td>
+                        <td id="asur_telmex_disp1"></td>
+                        <td id="asur_telmex_disp2"></td>
+                        <td id="asur_telmex_ball"></td>
+                        <td id="asur_telmex_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td rowspan="3" colspan="2">GALERÍAS</td>
+                        <td>ALESTRA</td>
+                        <td id="galerias_alestra_sitios"></td>
+                        <td>98%</td>
+                        <td id="galerias_alestra_disp1"></td>
+                        <td id="galerias_alestra_disp2"></td>
+                        <td id="galerias_alestra_ball"></td>
+                        <td id="galerias_alestra_arrow"></td>
+                        <td id="sla_prom_3" rowspan="3" style="border-left: 1px solid blue;"></td>
+                      </tr>
+                      <tr>
+                        <td>TELMEX</td>
+                        <td id="galerias_telmex_sitios"></td>
+                        <td>98%</td>
+                        <td id="galerias_telmex_disp1"></td>
+                        <td id="galerias_telmex_disp2"></td>
+                        <td id="galerias_telmex_ball"></td>
+                        <td id="galerias_telmex_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td>TOTALPLAY</td>
+                        <td id="galerias_totalplay_sitios"></td>
+                        <td>98%</td>
+                        <td id="galerias_totalplay_disp1"></td>
+                        <td id="galerias_totalplay_disp2"></td>
+                        <td id="galerias_totalplay_ball"></td>
+                        <td id="galerias_totalplay_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td rowspan="4" colspan="2">HOSPITALIDAD</td>
+                        <td>TELMEX</td>
+                        <td id="hosp_telmex_sitios"></td>
+                        <td>98%</td>
+                        <td id="hosp_telmex_disp1"></td>
+                        <td id="hosp_telmex_disp2"></td>
+                        <td id="hosp_telmex_ball"></td>
+                        <td id="hosp_telmex_arrow"></td>
+                        <td id="sla_prom_4" rowspan="4" style="border-left: 1px solid blue;"></td>
+                      </tr>
+                      <tr>
+                        <td>TOTALPLAY</td>
+                        <td id="hosp_totalplay_sitios"></td>
+                        <td>98%</td>
+                        <td id="hosp_totalplay_disp1"></td>
+                        <td id="hosp_totalplay_disp2"></td>
+                        <td id="hosp_totalplay_ball"></td>
+                        <td id="hosp_totalplay_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td>OTROS</td>
+                        <td id="hosp_otros_sitios"></td>
+                        <td>98%</td>
+                        <td id="hosp_otros_disp1"></td>
+                        <td id="hosp_otros_disp2"></td>
+                        <td id="hosp_otros_ball"></td>
+                        <td id="hosp_otros_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td>IZZI</td>
+                        <td id="hosp_izzi_sitios"></td>
+                        <td>98%</td>
+                        <td id="hosp_izzi_disp1"></td>
+                        <td id="hosp_izzi_disp2"></td>
+                        <td id="hosp_izzi_ball"></td>
+                        <td id="hosp_izzi_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">RETAIL</td>
+                        <td>TELMEX</td>
+                        <td id="retail_telmex_sitios"></td>
+                        <td>98%</td>
+                        <td id="retail_telmex_disp1"></td>
+                        <td id="retail_telmex_disp2"></td>
+                        <td id="retail_telmex_ball"></td>
+                        <td id="retail_telmex_arrow"></td>
+                        <td id="sla_prom_5" style="border-left: 1px solid blue;"></td>
+                      </tr>
+                      <tr>
+                        <td rowspan="2" colspan="2">EDUCACIÓN</td>
+                        <td>ALESTRA</td>
+                        <td id="educacion_alestra_sitios"></td>
+                        <td>98%</td>
+                        <td id="educacion_alestra_disp1"></td>
+                        <td id="educacion_alestra_disp2"></td>
+                        <td id="educacion_alestra_ball"></td>
+                        <td id="educacion_alestra_arrow"></td>
+                        <td id="sla_prom_6" rowspan="2" style="border-left: 1px solid blue;"></td>
+                      </tr>
+                      <tr>
+                        <td>TELMEX</td>
+                        <td id="educacion_telmex_sitios"></td>
+                        <td>98%</td>
+                        <td id="educacion_telmex_disp1"></td>
+                        <td id="educacion_telmex_disp2"></td>
+                        <td id="educacion_telmex_ball"></td>
+                        <td id="educacion_telmex_arrow"></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="py-3">
                   <h4>Equipo activo Monitoreado</h4>
                   <br>
                   <div class="table-responsive">
@@ -585,12 +802,11 @@
     background: #02948c;
     }
 
-    #encuestas_results tbody,#sitios_results tbody,#detractores tbody,#tiempos tbody {
+    #encuestas_results tbody,#sitios_results tbody,#detractores tbody,#tiempos tbody, #disponibilidad tbody {
       width: 100% !important;
       display: table;
     }
-
-    #encuestas_results tr td:not(.ignore), #sitios_results tr td, #tiempos tr td:not(.ignore) {
+    #encuestas_results tr td:not(.ignore), #sitios_results tr td, #tiempos tr td:not(.ignore), #disponibilidad tr td {
       font-size: 16px;
       border-bottom: 1px solid blue;
     }

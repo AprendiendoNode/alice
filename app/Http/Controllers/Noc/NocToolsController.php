@@ -130,4 +130,37 @@ class NocToolsController extends Controller
     return $result;
   }
 
+  public function all_disponibilidad(Request $request) {
+    $fecha = $request->fecha;
+    $aux = explode("-", $fecha);
+    $mes2 = strtoupper($aux[0]);
+    $result2 = DB::select('CALL all_disponibilidad (?)', array($mes2));
+    $meses = array(
+      "01" => "Enero",
+      "02" => "Febrero",
+      "03" => "Marzo",
+      "04" => "Abril",
+      "05" => "Mayo",
+      "06" => "Junio",
+      "07" => "Julio",
+      "08" => "Agosto",
+      "09" => "Septiembre",
+      "10" => "Octubre",
+      "11" => "Noviembre",
+      "12" => "Diciembre"
+    );
+    $mes_number = (int)array_search($aux[0], $meses);
+    $mes_number--;
+    if($mes_number < 1) {
+      $mes_number = "12";
+    } else if($mes_number < 10) {
+      $mes_number = "0".$mes_number;
+    } else {
+      $mes_number = strval($mes_number);
+    }
+    $mes1 = strtoupper($meses[$mes_number]);
+    $result1 = DB::select('CALL all_disponibilidad (?)', array($mes1));
+    return array($result1, $result2);
+  }
+
 }

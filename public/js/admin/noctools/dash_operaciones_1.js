@@ -43,7 +43,7 @@ function graph_tickets(title, data) {
      var tamanio = 12;
 
      var resizeMainContainer = function () {
-       chart.style.width = $("#detractores").width() + "px";
+       chart.style.width = $("#sitios_results").width() + "px";
        chart.style.height = $("#tiempos").height() * 1.45 + "px";
        myChart.resize();
     };
@@ -315,6 +315,430 @@ function all_data() {
                   data: { _token: _token, fecha: fecha },
                   success: function (data) {
                     graph_tickets('graph_tickets', data[0]);
+                    $.ajax({
+                         type: "POST",
+                         url: '/all_disponibilidad',
+                         data: { _token: _token, fecha: fecha },
+                         success: function (data) {
+                           let ado_telmex_sitios = 0;
+                           let ado_telmex_sitios_ant = 0;
+                           let ado_telmex_disp1 = 0;
+                           let ado_telmex_disp2 = 0;
+                           let ado_totalplay_sitios = 0;
+                           let ado_totalplay_sitios_ant = 0;
+                           let ado_totalplay_disp1 = 0;
+                           let ado_totalplay_disp2 = 0;
+                           let metrobus_bbs_sitios = 0;
+                           let metrobus_bbs_sitios_ant = 0;
+                           let metrobus_bbs_disp1 = 0;
+                           let metrobus_bbs_disp2 = 0;
+                           let metrobus_totalplay_sitios = 0;
+                           let metrobus_totalplay_sitios_ant = 0;
+                           let metrobus_totalplay_disp1 = 0;
+                           let metrobus_totalplay_disp2 = 0;
+                           let metrorrey_totalplay_sitios = 0;
+                           let metrorrey_totalplay_sitios_ant = 0;
+                           let metrorrey_totalplay_disp1 = 0;
+                           let metrorrey_totalplay_disp2 = 0;
+                           let oma_alestra_sitios = 0;
+                           let oma_alestra_sitios_ant = 0;
+                           let oma_alestra_disp1 = 0;
+                           let oma_alestra_disp2 = 0;
+                           let oma_telmex_sitios = 0;
+                           let oma_telmex_sitios_ant = 0;
+                           let oma_telmex_disp1 = 0;
+                           let oma_telmex_disp2 = 0;
+                           let asur_alestra_sitios = 0;
+                           let asur_alestra_sitios_ant = 0;
+                           let asur_alestra_disp1 = 0;
+                           let asur_alestra_disp2 = 0;
+                           let asur_telmex_sitios = 0;
+                           let asur_telmex_sitios_ant = 0;
+                           let asur_telmex_disp1 = 0;
+                           let asur_telmex_disp2 = 0;
+                           let asur_otros_sitios = 0;
+                           let asur_otros_sitios_ant = 0;
+                           let asur_otros_disp1 = 0;
+                           let asur_otros_disp2 = 0;
+                           let galerias_alestra_sitios = 0;
+                           let galerias_alestra_sitios_ant = 0;
+                           let galerias_alestra_disp1 = 0;
+                           let galerias_alestra_disp2 = 0;
+                           let galerias_telmex_sitios = 0;
+                           let galerias_telmex_sitios_ant = 0;
+                           let galerias_telmex_disp1 = 0;
+                           let galerias_telmex_disp2 = 0;
+                           let galerias_totalplay_sitios = 0;
+                           let galerias_totalplay_sitios_ant = 0;
+                           let galerias_totalplay_disp1 = 0;
+                           let galerias_totalplay_disp2 = 0;
+                           let hosp_telmex_sitios = 0;
+                           let hosp_telmex_sitios_ant = 0;
+                           let hosp_telmex_disp1 = 0;
+                           let hosp_telmex_disp2 = 0;
+                           let hosp_totalplay_sitios = 0;
+                           let hosp_totalplay_sitios_ant = 0;
+                           let hosp_totalplay_disp1 = 0;
+                           let hosp_totalplay_disp2 = 0;
+                           let hosp_izzi_sitios = 0;
+                           let hosp_izzi_sitios_ant = 0;
+                           let hosp_izzi_disp1 = 0;
+                           let hosp_izzi_disp2 = 0;
+                           let hosp_otros_sitios = 0;
+                           let hosp_otros_sitios_ant = 0;
+                           let hosp_otros_disp1 = 0;
+                           let hosp_otros_disp2 = 0;
+                           let retail_telmex_sitios = 0;
+                           let retail_telmex_sitios_ant = 0;
+                           let retail_telmex_disp1 = 0;
+                           let retail_telmex_disp2 = 0;
+                           let educacion_alestra_sitios = 0;
+                           let educacion_alestra_sitios_ant = 0;
+                           let educacion_alestra_disp1 = 0;
+                           let educacion_alestra_disp2 = 0;
+                           let educacion_telmex_sitios = 0;
+                           let educacion_telmex_sitios_ant = 0;
+                           let educacion_telmex_disp1 = 0;
+                           let educacion_telmex_disp2 = 0;
+                           $.each(data[1], function (i, e) { //Mes elegido
+                             if(e["sitio"].startsWith("ADO")) {
+                               if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 ado_telmex_sitios++;
+                                 ado_telmex_disp2+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 ado_totalplay_sitios++;
+                                 ado_totalplay_disp2+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["vertical"].toUpperCase() == "METROBUS") {
+                               if(e["carrier"].startsWith("BBS")) {
+                                 metrobus_bbs_sitios++;
+                                 metrobus_bbs_disp2+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 metrobus_totalplay_sitios++;
+                                 metrobus_totalplay_disp2+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["sitio"].startsWith("METRORREY")) {
+                               if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 metrorrey_totalplay_sitios++;
+                                 metrorrey_totalplay_disp2+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["sitio"].startsWith("OMA")) {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 oma_alestra_sitios++;
+                                 oma_alestra_disp2+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 oma_telmex_sitios++;
+                                 oma_telmex_disp2+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["sitio"].startsWith("ASUR")) {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 asur_alestra_sitios++;
+                                 asur_alestra_disp2+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 asur_telmex_sitios++;
+                                 asur_telmex_disp2+=parseInt(e["disponibilidad"]);
+                               } else {
+                                 asur_otros_sitios++;
+                                 asur_otros_disp2+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["vertical"].toUpperCase() == "PLAZA") {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 galerias_alestra_sitios++;
+                                 galerias_alestra_disp2+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 galerias_telmex_sitios++;
+                                 galerias_telmex_disp2+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 galerias_totalplay_sitios++;
+                                 galerias_totalplay_disp2+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["vertical"].toUpperCase() == "HOSPITALIDAD") {
+                               if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 hosp_telmex_sitios++;
+                                 hosp_telmex_disp2+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 hosp_totalplay_sitios++;
+                                 hosp_totalplay_disp2+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "IZZI") {
+                                 hosp_izzi_sitios++;
+                                 hosp_izzi_disp2+=parseInt(e["disponibilidad"]);
+                               } else {
+                                 hosp_otros_sitios++;
+                                 hosp_otros_disp2+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["vertical"].toUpperCase() == "RETAIL") {
+                               if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 retail_telmex_sitios++;
+                                 retail_telmex_disp2+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["vertical"].toUpperCase() == "EDUCACION") {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 educacion_alestra_sitios++;
+                                 educacion_alestra_disp2+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 educacion_telmex_sitios++;
+                                 educacion_telmex_disp2+=parseInt(e["disponibilidad"]);
+                               }
+                             }
+                           });
+                           $.each(data[0], function (i, e) { //Mes anterior
+                             if(e["sitio"].startsWith("ADO")) {
+                               if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 ado_telmex_sitios_ant++;
+                                 ado_telmex_disp1+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 ado_totalplay_sitios_ant++;
+                                 ado_totalplay_disp1+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["vertical"].toUpperCase() == "METROBUS") {
+                               if(e["carrier"].startsWith("BBS")) {
+                                 metrobus_bbs_sitios_ant++;
+                                 metrobus_bbs_disp1+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 metrobus_totalplay_sitios_ant++;
+                                 metrobus_totalplay_disp1+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["sitio"].startsWith("METRORREY")) {
+                               if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 metrorrey_totalplay_sitios_ant++;
+                                 metrorrey_totalplay_disp1+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["sitio"].startsWith("OMA")) {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 oma_alestra_sitios_ant++;
+                                 oma_alestra_disp1+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 oma_telmex_sitios_ant++;
+                                 oma_telmex_disp1+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["sitio"].startsWith("ASUR")) {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 asur_alestra_sitios_ant++;
+                                 asur_alestra_disp1+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 asur_telmex_sitios_ant++;
+                                 asur_telmex_disp1+=parseInt(e["disponibilidad"]);
+                               } else {
+                                 asur_otros_sitios_ant++;
+                                 asur_otros_disp1+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["vertical"].toUpperCase() == "PLAZA") {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 galerias_alestra_sitios_ant++;
+                                 galerias_alestra_disp1+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 galerias_telmex_sitios_ant++;
+                                 galerias_telmex_disp1+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 galerias_totalplay_sitios_ant++;
+                                 galerias_totalplay_disp1+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["vertical"].toUpperCase() == "HOSPITALIDAD") {
+                               if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 hosp_telmex_sitios_ant++;
+                                 hosp_telmex_disp1+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 hosp_totalplay_sitios_ant++;
+                                 hosp_totalplay_disp1+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "IZZI") {
+                                 hosp_izzi_sitios_ant++;
+                                 hosp_izzi_disp1+=parseInt(e["disponibilidad"]);
+                               } else {
+                                 hosp_otros_sitios_ant++;
+                                 hosp_otros_disp1+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["vertical"].toUpperCase() == "RETAIL") {
+                               if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 retail_telmex_sitios_ant++;
+                                 retail_telmex_disp1+=parseInt(e["disponibilidad"]);
+                               }
+                             } else if(e["vertical"].toUpperCase() == "EDUCACION") {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 educacion_alestra_sitios_ant++;
+                                 educacion_alestra_disp1+=parseInt(e["disponibilidad"]);
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 educacion_telmex_sitios_ant++;
+                                 educacion_telmex_disp1+=parseInt(e["disponibilidad"]);
+                               }
+                             }
+                           });
+                           let sla_prom_1 = 0;
+                           $("#ado_telmex_sitios").text(ado_telmex_sitios);
+                           let aux_porc = parseInt(ado_telmex_disp2 / ado_telmex_sitios);
+                           $("#ado_telmex_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#ado_telmex_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(ado_telmex_disp1 / ado_telmex_sitios_ant);
+                           $("#ado_telmex_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#ado_telmex_arrow").html(parseFloat($("#ado_telmex_disp1").text()) > parseFloat($("#ado_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#ado_telmex_disp1").text()) == parseFloat($("#ado_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_1+=parseFloat($("#ado_telmex_disp2").text());
+                           $("#ado_totalplay_sitios").text(ado_totalplay_sitios);
+                           aux_porc = parseInt(ado_totalplay_disp2 / ado_totalplay_sitios);
+                           $("#ado_totalplay_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#ado_totalplay_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(ado_totalplay_disp1 / ado_totalplay_sitios_ant);
+                           $("#ado_totalplay_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#ado_totalplay_arrow").html(parseFloat($("#ado_totalplay_disp1").text()) > parseFloat($("#ado_totalplay_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#ado_totalplay_disp1").text()) == parseFloat($("#ado_totalplay_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_1+=parseFloat($("#ado_totalplay_disp2").text());
+                           $("#metrobus_bbs_sitios").text(metrobus_bbs_sitios);
+                           aux_porc = parseInt(metrobus_bbs_disp2 / metrobus_bbs_sitios);
+                           $("#metrobus_bbs_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#metrobus_bbs_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(metrobus_bbs_disp1 / metrobus_bbs_sitios_ant);
+                           $("#metrobus_bbs_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#metrobus_bbs_arrow").html(parseFloat($("#metrobus_bbs_disp1").text()) > parseFloat($("#metrobus_bbs_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#metrobus_bbs_disp1").text()) == parseFloat($("#metrobus_bbs_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_1+=parseFloat($("#metrobus_bbs_disp2").text());
+                           $("#metrobus_totalplay_sitios").text(metrobus_totalplay_sitios);
+                           aux_porc = parseInt(metrobus_totalplay_disp2 / metrobus_totalplay_sitios);
+                           $("#metrobus_totalplay_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#metrobus_totalplay_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(metrobus_totalplay_disp1 / metrobus_totalplay_sitios_ant);
+                           $("#metrobus_totalplay_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#metrobus_totalplay_arrow").html(parseFloat($("#metrobus_totalplay_disp1").text()) > parseFloat($("#metrobus_totalplay_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#metrobus_totalplay_disp1").text()) == parseFloat($("#metrobus_totalplay_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_1+=parseFloat($("#metrobus_totalplay_disp2").text());
+                           $("#metrorrey_totalplay_sitios").text(metrorrey_totalplay_sitios);
+                           aux_porc = parseInt(metrorrey_totalplay_disp2 / metrorrey_totalplay_sitios);
+                           $("#metrorrey_totalplay_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#metrorrey_totalplay_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(metrorrey_totalplay_disp1 / metrorrey_totalplay_sitios_ant);
+                           $("#metrorrey_totalplay_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#metrorrey_totalplay_arrow").html(parseFloat($("#metrorrey_totalplay_disp1").text()) > parseFloat($("#metrorrey_totalplay_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#metrorrey_totalplay_disp1").text()) == parseFloat($("#metrorrey_totalplay_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_1+=parseFloat($("#metrorrey_totalplay_disp2").text());
+                           $("#sla_prom_1").text(parseInt(sla_prom_1 / 5) + "%");
+                           let sla_prom_2 = 0;
+                           $("#oma_alestra_sitios").text(oma_alestra_sitios);
+                           aux_porc = parseInt(oma_alestra_disp2 / oma_alestra_sitios);
+                           $("#oma_alestra_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#oma_alestra_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(oma_alestra_disp1 / oma_alestra_sitios_ant);
+                           $("#oma_alestra_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#oma_alestra_arrow").html(parseFloat($("#oma_alestra_disp1").text()) > parseFloat($("#oma_alestra_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#oma_alestra_disp1").text()) == parseFloat($("#oma_alestra_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_2+=parseFloat($("#oma_alestra_disp2").text());
+                           $("#oma_telmex_sitios").text(oma_telmex_sitios);
+                           aux_porc = parseInt(oma_telmex_disp2 / oma_telmex_sitios);
+                           $("#oma_telmex_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#oma_telmex_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(oma_telmex_disp1 / oma_telmex_sitios_ant);
+                           $("#oma_telmex_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#oma_telmex_arrow").html(parseFloat($("#oma_telmex_disp1").text()) > parseFloat($("#oma_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#oma_telmex_disp1").text()) == parseFloat($("#oma_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_2+=parseFloat($("#oma_telmex_disp2").text());
+                           $("#asur_alestra_sitios").text(asur_alestra_sitios);
+                           aux_porc = parseInt(asur_alestra_disp2 / asur_alestra_sitios);
+                           $("#asur_alestra_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#asur_alestra_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(asur_alestra_disp1 / asur_alestra_sitios_ant);
+                           $("#asur_alestra_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#asur_alestra_arrow").html(parseFloat($("#asur_alestra_disp1").text()) > parseFloat($("#asur_alestra_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#asur_alestra_disp1").text()) == parseFloat($("#asur_alestra_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_2+=parseFloat($("#asur_alestra_disp2").text());
+                           $("#asur_telmex_sitios").text(asur_telmex_sitios);
+                           aux_porc = parseInt(asur_telmex_disp2 / asur_telmex_sitios);
+                           $("#asur_telmex_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#asur_telmex_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(asur_telmex_disp1 / asur_telmex_sitios_ant);
+                           $("#asur_telmex_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#asur_telmex_arrow").html(parseFloat($("#asur_telmex_disp1").text()) > parseFloat($("#asur_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#asur_telmex_disp1").text()) == parseFloat($("#asur_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_2+=parseFloat($("#asur_telmex_disp2").text());
+                           $("#asur_otros_sitios").text(asur_otros_sitios);
+                           aux_porc = parseInt(asur_otros_disp2 / asur_otros_sitios);
+                           $("#asur_otros_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#asur_otros_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(asur_otros_disp1 / asur_otros_sitios_ant);
+                           $("#asur_otros_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#asur_otros_arrow").html(parseFloat($("#asur_otros_disp1").text()) > parseFloat($("#asur_otros_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#asur_otros_disp1").text()) == parseFloat($("#asur_otros_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_2+=parseFloat($("#asur_otros_disp2").text());
+                           $("#sla_prom_2").text(parseInt(sla_prom_2 / 5) + "%");
+                           let sla_prom_3 = 0;
+                           $("#galerias_alestra_sitios").text(galerias_alestra_sitios);
+                           aux_porc = parseInt(galerias_alestra_disp2 / galerias_alestra_sitios);
+                           $("#galerias_alestra_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#galerias_alestra_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(galerias_alestra_disp1 / galerias_alestra_sitios_ant);
+                           $("#galerias_alestra_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#galerias_alestra_arrow").html(parseFloat($("#galerias_alestra_disp1").text()) > parseFloat($("#galerias_alestra_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#galerias_alestra_disp1").text()) == parseFloat($("#galerias_alestra_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_3+=parseFloat($("#galerias_alestra_disp2").text());
+                           $("#galerias_telmex_sitios").text(galerias_telmex_sitios);
+                           aux_porc = parseInt(galerias_telmex_disp2 / galerias_telmex_sitios);
+                           $("#galerias_telmex_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#galerias_telmex_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(galerias_telmex_disp1 / galerias_telmex_sitios_ant);
+                           $("#galerias_telmex_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#galerias_telmex_arrow").html(parseFloat($("#galerias_telmex_disp1").text()) > parseFloat($("#galerias_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#galerias_telmex_disp1").text()) == parseFloat($("#galerias_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_3+=parseFloat($("#galerias_telmex_disp2").text());
+                           $("#galerias_totalplay_sitios").text(galerias_totalplay_sitios);
+                           aux_porc = parseInt(galerias_totalplay_disp2 / galerias_totalplay_sitios);
+                           $("#galerias_totalplay_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#galerias_totalplay_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(galerias_totalplay_disp1 / galerias_totalplay_sitios_ant);
+                           $("#galerias_totalplay_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#galerias_totalplay_arrow").html(parseFloat($("#galerias_totalplay_disp1").text()) > parseFloat($("#galerias_totalplay_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#galerias_totalplay_disp1").text()) == parseFloat($("#galerias_totalplay_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_3+=parseFloat($("#galerias_totalplay_disp2").text());
+                           $("#sla_prom_3").text(parseInt(sla_prom_3 / 3) + "%");
+                           let sla_prom_4 = 0;
+                           $("#hosp_telmex_sitios").text(hosp_telmex_sitios);
+                           aux_porc = parseInt(hosp_telmex_disp2 / hosp_telmex_sitios);
+                           $("#hosp_telmex_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#hosp_telmex_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(hosp_telmex_disp1 / hosp_telmex_sitios_ant);
+                           $("#hosp_telmex_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#hosp_telmex_arrow").html(parseFloat($("#hosp_telmex_disp1").text()) > parseFloat($("#hosp_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#hosp_telmex_disp1").text()) == parseFloat($("#hosp_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_4+=parseFloat($("#hosp_telmex_disp2").text());
+                           $("#hosp_totalplay_sitios").text(hosp_totalplay_sitios);
+                           aux_porc = parseInt(hosp_totalplay_disp2 / hosp_totalplay_sitios);
+                           $("#hosp_totalplay_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#hosp_totalplay_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(hosp_totalplay_disp1 / hosp_totalplay_sitios_ant);
+                           $("#hosp_totalplay_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#hosp_totalplay_arrow").html(parseFloat($("#hosp_totalplay_disp1").text()) > parseFloat($("#hosp_totalplay_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#hosp_totalplay_disp1").text()) == parseFloat($("#hosp_totalplay_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_4+=parseFloat($("#hosp_totalplay_disp2").text());
+                           $("#hosp_izzi_sitios").text(hosp_izzi_sitios);
+                           aux_porc = parseInt(hosp_izzi_disp2 / hosp_izzi_sitios);
+                           $("#hosp_izzi_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#hosp_izzi_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(hosp_izzi_disp1 / hosp_izzi_sitios_ant);
+                           $("#hosp_izzi_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#hosp_izzi_arrow").html(parseFloat($("#hosp_izzi_disp1").text()) > parseFloat($("#hosp_izzi_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#hosp_izzi_disp1").text()) == parseFloat($("#hosp_izzi_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_4+=parseFloat($("#hosp_izzi_disp2").text());
+                           $("#hosp_otros_sitios").text(hosp_otros_sitios);
+                           aux_porc = parseInt(hosp_otros_disp2 / hosp_otros_sitios);
+                           $("#hosp_otros_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#hosp_otros_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(hosp_otros_disp1 / hosp_otros_sitios_ant);
+                           $("#hosp_otros_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#hosp_otros_arrow").html(parseFloat($("#hosp_otros_disp1").text()) > parseFloat($("#hosp_otros_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#hosp_otros_disp1").text()) == parseFloat($("#hosp_otros_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_4+=parseFloat($("#hosp_otros_disp2").text());
+                           $("#sla_prom_4").text(parseInt(sla_prom_4 / 4) + "%");
+                           let sla_prom_5 = 0;
+                           $("#retail_telmex_sitios").text(retail_telmex_sitios);
+                           aux_porc = parseInt(retail_telmex_disp2 / retail_telmex_sitios);
+                           $("#retail_telmex_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#retail_telmex_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(retail_telmex_disp1 / retail_telmex_sitios_ant);
+                           $("#retail_telmex_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#retail_telmex_arrow").html(parseFloat($("#retail_telmex_disp1").text()) > parseFloat($("#retail_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#retail_telmex_disp1").text()) == parseFloat($("#retail_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_5+=parseFloat($("#retail_telmex_disp2").text());
+                           $("#sla_prom_5").text(parseInt(sla_prom_5 / 1) + "%");
+                           let sla_prom_6 = 0;
+                           $("#educacion_alestra_sitios").text(educacion_alestra_sitios);
+                           aux_porc = parseInt(educacion_alestra_disp2 / educacion_alestra_sitios);
+                           $("#educacion_alestra_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#educacion_alestra_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(educacion_alestra_disp1 / educacion_alestra_sitios_ant);
+                           $("#educacion_alestra_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#educacion_alestra_arrow").html(parseFloat($("#educacion_alestra_disp1").text()) > parseFloat($("#educacion_alestra_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#educacion_alestra_disp1").text()) == parseFloat($("#educacion_alestra_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_6+=parseFloat($("#educacion_alestra_disp2").text());
+                           $("#educacion_telmex_sitios").text(educacion_telmex_sitios);
+                           aux_porc = parseInt(educacion_telmex_disp2 / educacion_telmex_sitios);
+                           $("#educacion_telmex_ball").html(98 > aux_porc ? "<span class='red'></span>" : (isNaN(aux_porc) ? "<span class='red'></span>" : "<span class='green'></span>"));
+                           $("#educacion_telmex_disp2").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           aux_porc = parseInt(educacion_telmex_disp1 / educacion_telmex_sitios_ant);
+                           $("#educacion_telmex_disp1").text(isNaN(aux_porc) ? "0%" : (aux_porc+"%"));
+                           $("#educacion_telmex_arrow").html(parseFloat($("#educacion_telmex_disp1").text()) > parseFloat($("#educacion_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#educacion_telmex_disp1").text()) == parseFloat($("#educacion_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                           sla_prom_6+=parseFloat($("#educacion_telmex_disp2").text());
+                           $("#sla_prom_6").text(parseInt(sla_prom_6 / 2) + "%");
+                         },
+                         error: function (data) {
+                           console.error(data);
+                         }
+                    });
                   },
                   error: function (data) {
                     console.error(data);

@@ -315,6 +315,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/dash_operacion_nps','Noc\NocToolsController@dash_operacion_nps');
   Route::post('/dash_operacion_tickets','Noc\NocToolsController@dash_operacion_tickets');
   Route::post('/graph_operacion_tickets','Noc\NocToolsController@graph_operacion_tickets');
+  Route::post('/all_disponibilidad','Noc\NocToolsController@all_disponibilidad');
   Route::post('/get_cl_diario','Noc\NocToolsController@get_cl_diario');
   Route::post('get_cl_instalaciones', 'Noc\NocToolsController@get_cl_instalaciones');
   Route::post('/get_cl_5_dia','Noc\NocToolsController@get_cl_5_dia');
