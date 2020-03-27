@@ -734,6 +734,229 @@ function all_data() {
                            $("#educacion_telmex_arrow").html(parseFloat($("#educacion_telmex_disp1").text()) > parseFloat($("#educacion_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#educacion_telmex_disp1").text()) == parseFloat($("#educacion_telmex_disp2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
                            sla_prom_6+=parseFloat($("#educacion_telmex_disp2").text());
                            $("#sla_prom_6").text(parseInt(sla_prom_6 / 2) + "%");
+                           let alestra_sitwifi = 0;
+                           let alestra_sitwifi_disp = 0;
+                           let bbs_sitwifi = 0;
+                           let bbs_sitwifi_disp = 0;
+                           let otros_sitwifi = 0;
+                           let otros_sitwifi_disp = 0;
+                           let telmex_sitwifi = 0;
+                           let telmex_sitwifi_disp = 0;
+                           let totalplay_sitwifi = 0;
+                           let totalplay_sitwifi_disp = 0;
+                           let total_general_sitwifi = 0;
+                           let total_general_sitwifi_disp = 0;
+                           let alestra_cliente = 0;
+                           let alestra_cliente_disp = 0;
+                           let bbs_cliente = 0;
+                           let bbs_cliente_disp = 0;
+                           let izzi_cliente = 0;
+                           let izzi_cliente_disp = 0;
+                           let otros_cliente = 0;
+                           let otros_cliente_disp = 0;
+                           let telmex_cliente = 0;
+                           let telmex_cliente_disp = 0;
+                           let total_general_cliente = 0;
+                           let total_general_cliente_disp = 0;
+                           $.each(data[1], function (i, e) { //Mes actual
+                             if(e["sitio"].startsWith("ADO")) {
+                               if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   telmex_sitwifi++;
+                                   telmex_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   telmex_cliente++;
+                                   telmex_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   totalplay_sitwifi++;
+                                   totalplay_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   console.log("totalplay_cliente no resumido...");
+                                 }
+                               }
+                             } else if(e["vertical"].toUpperCase() == "METROBUS") {
+                               if(e["carrier"].startsWith("BBS")) {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   bbs_sitwifi++;
+                                   bbs_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   bbs_cliente++;
+                                   bbs_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   totalplay_sitwifi++;
+                                   totalplay_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   console.log("totalplay_cliente no resumido...");
+                                 }
+                               }
+                             } else if(e["sitio"].startsWith("METRORREY")) {
+                               if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   totalplay_sitwifi++;
+                                   totalplay_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   console.log("totalplay_cliente no resumido...");
+                                 }
+                               }
+                             } else if(e["sitio"].startsWith("OMA")) {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   alestra_sitwifi++;
+                                   alestra_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   alestra_cliente++;
+                                   alestra_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   telmex_sitwifi++;
+                                   telmex_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   telmex_cliente++;
+                                   telmex_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               }
+                             } else if(e["sitio"].startsWith("ASUR")) {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   alestra_sitwifi++;
+                                   alestra_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   alestra_cliente++;
+                                   alestra_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   telmex_sitwifi++;
+                                   telmex_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   telmex_cliente++;
+                                   telmex_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               } else {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   otros_sitwifi++;
+                                   otros_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   otros_cliente++;
+                                   otros_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               }
+                             } else if(e["vertical"].toUpperCase() == "PLAZA") {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   alestra_sitwifi++;
+                                   alestra_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   alestra_cliente++;
+                                   alestra_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   telmex_sitwifi++;
+                                   telmex_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   telmex_cliente++;
+                                   telmex_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   totalplay_sitwifi++;
+                                   totalplay_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   console.log("totalplay_cliente no resumido...");
+                                 }
+                               }
+                             } else if(e["vertical"].toUpperCase() == "HOSPITALIDAD") {
+                               if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   telmex_sitwifi++;
+                                   telmex_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   telmex_cliente++;
+                                   telmex_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               } else if(e["carrier"].toUpperCase() == "TOTALPLAY") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   totalplay_sitwifi++;
+                                   totalplay_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   console.log("totalplay_cliente no resumido...");
+                                 }
+                               } else if(e["carrier"].toUpperCase() == "IZZI") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   console.log("totalplay_sitwifi no resumido...");
+                                 } else {
+                                   izzi_cliente++;
+                                   izzi_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               } else {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   otros_sitwifi++;
+                                   otros_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   otros_cliente++;
+                                   otros_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               }
+                             } else if(e["vertical"].toUpperCase() == "RETAIL") {
+                               if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   telmex_sitwifi++;
+                                   telmex_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   telmex_cliente++;
+                                   telmex_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               }
+                             } else if(e["vertical"].toUpperCase() == "EDUCACION") {
+                               if(e["carrier"].toUpperCase() == "ALESTRA") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   alestra_sitwifi++;
+                                   alestra_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   alestra_cliente++;
+                                   alestra_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               } else if(e["carrier"].toUpperCase() == "TELMEX") {
+                                 if(e["propietario"] == "SITWIFI") {
+                                   telmex_sitwifi++;
+                                   telmex_sitwifi_disp+=parseInt(e["disponibilidad"]);
+                                 } else {
+                                   telmex_cliente++;
+                                   telmex_cliente_disp+=parseInt(e["disponibilidad"]);
+                                 }
+                               }
+                             }
+                           });
+                           $("#rs_alestra_cant").text(alestra_sitwifi);
+                           $("#rs_alestra_disp").text(alestra_sitwifi != 0 ? parseInt(alestra_sitwifi_disp / alestra_sitwifi) + "%" : "0%");
+                           $("#rs_bbs_cant").text(bbs_sitwifi);
+                           $("#rs_bbs_disp").text(bbs_sitwifi != 0 ? parseInt(bbs_sitwifi_disp / bbs_sitwifi) + "%" : "0%");
+                           $("#rs_otros_cant").text(otros_sitwifi);
+                           $("#rs_otros_disp").text(otros_sitwifi != 0 ? parseInt(otros_sitwifi_disp / otros_sitwifi) + "%" : "0%");
+                           $("#rs_telmex_cant").text(telmex_sitwifi);
+                           $("#rs_telmex_disp").text(telmex_sitwifi != 0 ? parseInt(telmex_sitwifi_disp / telmex_sitwifi) + "%" : "0%");
+                           $("#rs_totalplay_cant").text(totalplay_sitwifi);
+                           $("#rs_totalplay_disp").text(totalplay_sitwifi != 0 ? parseInt(totalplay_sitwifi_disp / totalplay_sitwifi) + "%" : "0%");
+                           $("#rs_total_cant").text(alestra_sitwifi + bbs_sitwifi + otros_sitwifi + telmex_sitwifi + totalplay_sitwifi);
+                           $("#rs_total_disp").text($("#rs_total_cant").text() != "0" ? parseInt((alestra_sitwifi_disp + bbs_sitwifi_disp + otros_sitwifi_disp + telmex_sitwifi_disp + totalplay_sitwifi_disp) / parseInt($("#rs_total_cant").text())) + "%" : "0%");
+                           $("#rc_alestra_cant").text(alestra_cliente);
+                           $("#rc_alestra_disp").text(alestra_cliente != 0 ? parseInt(alestra_cliente_disp / alestra_cliente) + "%" : "0%");
+                           $("#rc_bbs_cant").text(bbs_cliente);
+                           $("#rc_bbs_disp").text(bbs_cliente != 0 ? parseInt(bbs_cliente_disp / bbs_cliente) + "%" : "0%");
+                           $("#rc_otros_cant").text(otros_cliente);
+                           $("#rc_otros_disp").text(otros_cliente != 0 ? parseInt(otros_cliente_disp / otros_cliente) + "%" : "0%");
+                           $("#rc_telmex_cant").text(telmex_cliente);
+                           $("#rc_telmex_disp").text(telmex_cliente != 0 ? parseInt(telmex_cliente_disp / telmex_cliente) + "%" : "0%");
+                           $("#rc_izzi_cant").text(izzi_cliente);
+                           $("#rc_izzi_disp").text(izzi_cliente != 0 ? parseInt(izzi_cliente_disp / izzi_cliente) + "%" : "0%");
+                           $("#rc_total_cant").text(alestra_cliente + bbs_cliente + otros_cliente + telmex_cliente + izzi_cliente);
+                           $("#rc_total_disp").text($("#rc_total_cant").text() != "0" ? parseInt((alestra_cliente_disp + bbs_cliente_disp + otros_cliente_disp + telmex_cliente_disp + izzi_cliente_disp) / parseInt($("#rc_total_cant").text())) + "%" : "0%");
                          },
                          error: function (data) {
                            console.error(data);

@@ -54,7 +54,7 @@ class NocToolsController extends Controller
 
   public function dash_operacion() {
     $user_id = Auth::user()->id;
-    if(/*$user_id == 86 || */$user_id == 432) {
+    if($user_id == 18 || $user_id == 86 || $user_id == 432) {
       return view('permitted.noc.dash_operacion');
     } else {
       return view('home');

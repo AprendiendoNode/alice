@@ -450,6 +450,94 @@
                   </div>
                 </div>
 
+                <h4 style="text-align: left; margin-top: 15px;">Resumen enlaces</h4>
+                <div class="row">
+                  <div class="col-md-6">
+                    <table id="resumen_sitwifi" class="table-responsive" style="text-align: center;">
+                      <tr style="color: blue;">
+                        <td colspan="3">Sitwifi</td>
+                      </tr>
+                      <tr style="color: brown;">
+                        <td>Carrier</td>
+                        <td>Cantidad</td>
+                        <td>Disponibilidad</td>
+                      </tr>
+                      <tr>
+                        <td>ALESTRA</td>
+                        <td id="rs_alestra_cant"></td>
+                        <td id="rs_alestra_disp"></td>
+                      </tr>
+                      <tr>
+                        <td>BBS</td>
+                        <td id="rs_bbs_cant"></td>
+                        <td id="rs_bbs_disp"></td>
+                      </tr>
+                      <tr>
+                        <td>OTROS</td>
+                        <td id="rs_otros_cant"></td>
+                        <td id="rs_otros_disp"></td>
+                      </tr>
+                      <tr>
+                        <td>TELMEX</td>
+                        <td id="rs_telmex_cant"></td>
+                        <td id="rs_telmex_disp"></td>
+                      </tr>
+                      <tr>
+                        <td>TOTALPLAY</td>
+                        <td id="rs_totalplay_cant"></td>
+                        <td id="rs_totalplay_disp"></td>
+                      </tr>
+                      <tr>
+                        <td>Total general</td>
+                        <td id="rs_total_cant"></td>
+                        <td id="rs_total_disp"></td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="col-md-6">
+                    <table id="resumen_cliente" class="table-responsive" style="text-align: center;">
+                      <tr style="color: blue;">
+                        <td colspan="3">Cliente</td>
+                      </tr>
+                      <tr style="color: brown;">
+                        <td>Carrier</td>
+                        <td>Cantidad</td>
+                        <td>Disponibilidad</td>
+                      </tr>
+                      <tr>
+                        <td>ALESTRA</td>
+                        <td id="rc_alestra_cant"></td>
+                        <td id="rc_alestra_disp"></td>
+                      </tr>
+                      <!--<tr>
+                        <td>BBS</td>
+                        <td id="rc_bbs_cant"></td>
+                        <td id="rc_bbs_disp"></td>
+                      </tr>-->
+                      <tr>
+                        <td>OTROS</td>
+                        <td id="rc_otros_cant"></td>
+                        <td id="rc_otros_disp"></td>
+                      </tr>
+                      <tr>
+                        <td>TELMEX</td>
+                        <td id="rc_telmex_cant"></td>
+                        <td id="rc_telmex_disp"></td>
+                      </tr>
+                      <tr>
+                        <td>IZZI</td>
+                        <td id="rc_izzi_cant"></td>
+                        <td id="rc_izzi_disp"></td>
+                      </tr>
+                      <tr>
+                        <td>Total general</td>
+                        <td id="rc_total_cant"></td>
+                        <td id="rc_total_disp"></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
                 <div class="py-3">
                   <h4>Equipo activo Monitoreado</h4>
                   <br>
@@ -793,7 +881,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-    <script src="{{ asset('js/admin/noctools/dash_operaciones_1.js')}}"></script>
+    <script src="{{ asset('js/admin/noctools/dash_operaciones_1.js?v=1.0.4')}}"></script>
     <script src="{{ asset('js/admin/noctools/dash_operaciones_2.js')}}"></script>
     <style media="screen">
     .tableFixHead          { overflow-y: auto; height: 620px; }
@@ -802,11 +890,11 @@
     background: #02948c;
     }
 
-    #encuestas_results tbody,#sitios_results tbody,#detractores tbody,#tiempos tbody, #disponibilidad tbody {
+    #encuestas_results tbody,#sitios_results tbody,#detractores tbody,#tiempos tbody, #disponibilidad tbody, #resumen_sitwifi tbody, #resumen_cliente tbody {
       width: 100% !important;
       display: table;
     }
-    #encuestas_results tr td:not(.ignore), #sitios_results tr td, #tiempos tr td:not(.ignore), #disponibilidad tr td {
+    #encuestas_results tr td:not(.ignore), #sitios_results tr td, #tiempos tr td:not(.ignore), #disponibilidad tr td, #resumen_sitwifi tr td, #resumen_cliente tr td {
       font-size: 16px;
       border-bottom: 1px solid blue;
     }
