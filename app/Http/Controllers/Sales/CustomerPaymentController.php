@@ -1344,7 +1344,7 @@ class CustomerPaymentController extends Controller
 
     public function save_poliza_ingreso_movs(Request $request)
     {
-        
+
         try {
 
             DB::transaction(function () use($request){
@@ -1372,16 +1372,15 @@ class CustomerPaymentController extends Controller
                        /* NO_INSERTAR */
                     }
                     else{
-                      /* SE INSERTAR */
     
                       //Acumulando saldos
-                      $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
-                      $this->add_balances_polizas_ingresos($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
+                      //$cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
+                      //$this->add_balances_polizas_ingresos($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
     
                       $sql = DB::table('polizas_movtos')->insert([
                         'poliza_id' => $id_poliza,
                         'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
-                        'customer_payment_id' => $asientos_data[$i]->factura_id,
+                        'customer_payment_id' => $asientos_data[$i]->customer_payment_id,
                         'fecha' => $request->date_invoice,
                         'exchange_rate' => $asientos_data[$i]->tipo_cambio,
                         'descripcion' => $asientos_data[$i]->nombre,
@@ -1390,7 +1389,7 @@ class CustomerPaymentController extends Controller
                         'referencia' => $asientos_data[$i]->referencia
                       ]);
                       //Marcando complementos de pago a contabilizado
-                      $customer_payment = CustomerPayment::findOrFail($asientos_data[$i]->complemento_pago_id);
+                      $customer_payment = CustomerPayment::findOrFail($asientos_data[$i]->customer_payment_id);
                       $customer_payment->contabilizado = 1;
                       $customer_payment->save();
                       
@@ -1399,8 +1398,9 @@ class CustomerPaymentController extends Controller
                 }
             });
 
-            $flag = "true";
+            DB::commit();
 
+            $flag = "true";
 
         } catch(\Exception $e){
             $error = $e->getMessage();
@@ -1431,12 +1431,7 @@ class CustomerPaymentController extends Controller
             //Sumo totales de la poliza con el acumulado en la balanza
             $total_cargos = $result[0]->cargos + $cargo;
             $total_abonos = $result[0]->abonos + $abono;
-            //Calculo el saldo final de la cuenta contable dependiendo su naturaleza
-            if($cc->naturaleza == 'A'){
-                $saldo_final = $saldo_inicial + $total_abonos - $total_cargos; 
-            }else if($cc->naturaleza == 'D'){
-                $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
-            }   
+            $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
             //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
             DB::table('Contab.balanza')
                 ->where('anio', $anio)
@@ -1473,13 +1468,7 @@ class CustomerPaymentController extends Controller
           //Resto totales de la balanza para cancelar el saldo de la poliza
           $total_cargos = $result[0]->cargos - $cargo;
           $total_abonos = $result[0]->abonos - $abono;
-          
-          //Recalculo el saldo final de la cuenta contable dependiendo su naturaleza
-          if($cc->naturaleza == 'A'){
-              $saldo_final = $saldo_inicial + $total_abonos - $total_cargos; 
-          }else if($cc->naturaleza == 'D'){
-              $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
-          }   
+          $saldo_final = $saldo_inicial + $total_cargos - $total_abonos;      
           //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
           DB::table('Contab.balanza')
             ->where('anio', $anio)
@@ -1489,8 +1478,7 @@ class CustomerPaymentController extends Controller
                 'cargos' => $total_cargos,
                 'abonos' => $total_abonos,
                 'sdo_final' => $saldo_final
-          ]);
-            
+            ]);   
         }
 
     }

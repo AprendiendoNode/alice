@@ -24,7 +24,7 @@
         <div class="card-body">
           <form id="form" name="form" enctype="multipart/form-data">
             {{ csrf_field() }}
-            <h4 class="">Polizas de diario</h4>
+            <h4 class="">Diario de movimientos</h4>
             <div class="row">             
               <div class="col-md-3 col-xs-12">
                 <div class="form-group" id="date_from">
@@ -52,12 +52,30 @@
                   </div>
                 </div>
               </div>
+              <div class="col-md-3 col-xs-12">
+                <div class="form-group" id="date_from">
+                  <label class="control-label" for="">
+                    Tipo de poliza:
+                  </label>
+                  <div class="input-group mb-3">
+                    <select required class="form-control mb-2 mr-sm-2" id="type_poliza" name="type_poliza" >
+                      @foreach ($tipos_poliza as $poliza_data)
+                        @if ($poliza_data->id == 2)      
+                            <option selected value="{{$poliza_data->id}}">{{$poliza_data->clave}} {{$poliza_data->descripcion}}</option>
+                        @else
+                            <option value="{{$poliza_data->id}}">{{$poliza_data->clave}} {{$poliza_data->descripcion}}</option>  
+                        @endif
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
               <div class="col-md-3 col-xs-12 pt-4">
                 <button type="submit"
                         onclick=""
-                        class="btn btn-xs btn-info "
+                        class="btn btn-xs btn-dark"
                         style="margin-top: 4px">
-                    <i class="fa fa-filter"> {{__('general.button_search')}}</i>
+                    <i class="fa fa-filter"> Filtrar</i>
                 </button>
               </div>
             </div>

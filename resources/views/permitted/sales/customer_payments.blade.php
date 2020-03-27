@@ -94,7 +94,7 @@
                     <select id="company_bank_account_id" name="company_bank_account_id" class="form-control form-control-sm" style="width:100%;" disabled>
                       <option value="">{{ trans('message.selectopt') }}</option>
                       @forelse ($company_bank_accounts as $company_bank_accounts_data)
-                        <option value="{{ $company_bank_accounts_data->id  }}">{{$company_bank_accounts_data->banco}} [{{ $company_bank_accounts_data->account_number }}] {{$company_bank_accounts_data->nombre_cuenta}} </option>
+                        <option value="{{ $company_bank_accounts_data->id  }}">{{$company_bank_accounts_data->banco}} {{ $company_bank_accounts_data->account_number }} [{{$company_bank_accounts_data->cuenta_contable}}] </option>
                       @empty
                       @endforelse
                     </select>

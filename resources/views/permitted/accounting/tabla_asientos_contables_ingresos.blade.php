@@ -89,7 +89,7 @@
           <td class=""><input style="width:170px;text-align:left" readonly class="form-control form-control-sm nombre" type="text" value="{{$data->descripcion}} {{$date}}"></td>
             <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos" type="text" value="{{number_format($data->cargo, 2, '.', '')}}" ></td>
             <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm abonos"  type="text" value="{{number_format($data->abono, 2, '.', '')}}" ></td> 
-          <td><input style="width:135px;text-align:left" class="form-control form-control-sm referencia" type="text" value="">{{ $data->referencia }}</td>
+          <td><input style="width:135px;text-align:left" class="form-control form-control-sm referencia" type="text" value="{{ $data->reference }}"></td>
         </tr>
         @endforeach    
       </tbody>

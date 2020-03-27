@@ -146,7 +146,7 @@ class CustomerPolizaController extends Controller
                        /* NO_INSERTAR */
                     }
                     else{
-                      /* SE INSERTAR */
+                      /* INSERTAR */
     
                       //Acumulando saldos
                       $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
@@ -194,23 +194,18 @@ class CustomerPolizaController extends Controller
         foreach($cc_array as $cc)
         {
             //Obtengo saldos de la cuenta contable en la balanza en el periodo requerido
-            $result = DB::table('Contab.balanza')->select('cargos', 'abonos', 'sdo_inicial', 'sdo_final')
-            ->where('anio', $anio)
-            ->where('mes', $mes)
-            ->where('cuenta_contable_id', $cc->cuenta_contable_id)
-            ->get();
-
+            $result = DB::table('Contab.balanza')->select('id','cargos', 'abonos', 'sdo_inicial', 'sdo_final')
+                ->where('anio', $anio)
+                ->where('mes', $mes)
+                ->where('cuenta_contable_id', $cc->cuenta_contable_id)
+                ->get();
+            
             $saldo_inicial = $result[0]->sdo_inicial;
             $saldo_final = $result[0]->sdo_final;
             //Sumo totales de la poliza con el acumulado en la balanza
             $total_cargos = $result[0]->cargos + $cargo;
             $total_abonos = $result[0]->abonos + $abono;
-            //Calculo el saldo final de la cuenta contable dependiendo su naturaleza
-            if($cc->naturaleza == 'A'){
-                $saldo_final = $saldo_inicial + $total_abonos - $total_cargos; 
-            }else if($cc->naturaleza == 'D'){
-                $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
-            }   
+            $saldo_final = $saldo_inicial + $total_cargos - $total_abonos;          
             //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
             DB::table('Contab.balanza')
                 ->where('anio', $anio)
@@ -234,40 +229,30 @@ class CustomerPolizaController extends Controller
         {
             $explode = explode('-', $periodo);
             $anio = $explode[0];
-            $mes = $explode[1];
-
+            $mes = $explode[1];   
+            //Obtengo saldos de la cuenta contable en la balanza en el periodo requerido
+            $result = DB::table('Contab.balanza')->select('id','cargos', 'abonos', 'sdo_inicial', 'sdo_final')
+            ->where('anio', $anio)
+            ->where('mes', $mes)
+            ->where('cuenta_contable_id', $cc->cuenta_contable_id)
+            ->get();
             
-                //Obtengo saldos de la cuenta contable en la balanza en el periodo requerido
-                $result = DB::table('Contab.balanza')->select('id','cargos', 'abonos', 'sdo_inicial', 'sdo_final')
+            $saldo_inicial = $result[0]->sdo_inicial;
+            $saldo_final = $result[0]->sdo_final;
+            //Resto totales de la balanza para cancelar el saldo de la poliza
+            $total_cargos = $result[0]->cargos - $cargo;
+            $total_abonos = $result[0]->abonos - $abono;   
+            $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
+            //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
+            DB::table('Contab.balanza')
                 ->where('anio', $anio)
                 ->where('mes', $mes)
                 ->where('cuenta_contable_id', $cc->cuenta_contable_id)
-                ->get();
-                
-                $saldo_inicial = $result[0]->sdo_inicial;
-                $saldo_final = $result[0]->sdo_final;
-                //Resto totales de la balanza para cancelar el saldo de la poliza
-                $total_cargos = $result[0]->cargos - $cargo;
-                $total_abonos = $result[0]->abonos - $abono;
-                
-                $saldo_final = $saldo_inicial + $total_cargos - $total_abonos;
-                //Recalculo el saldo final de la cuenta contable dependiendo su naturaleza
-                /**if($cc->naturaleza == 'A'){
-                    $saldo_final = $saldo_inicial + $total_abonos - $total_cargos; 
-                }else if($cc->naturaleza == 'D'){
-                    $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
-                }   */
-                //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
-                DB::table('Contab.balanza')
-                    ->where('anio', $anio)
-                    ->where('mes', $mes)
-                    ->where('cuenta_contable_id', $cc->cuenta_contable_id)
-                    ->update([
-                        'cargos' => $total_cargos,
-                        'abonos' => $total_abonos,
-                        'sdo_final' => $saldo_final
-                    ]);
-            
+                ->update([
+                    'cargos' => $total_cargos,
+                    'abonos' => $total_abonos,
+                    'sdo_final' => $saldo_final
+                ]);        
         }
 
     }

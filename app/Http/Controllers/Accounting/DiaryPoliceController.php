@@ -30,7 +30,9 @@ class DiaryPoliceController extends Controller
 
 	public function view_diary_general()
 	{
-		return view('permitted.accounting.polizas_diario');
+		$tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
+
+		return view('permitted.accounting.polizas_diario', compact('tipos_poliza'));
 	}
 
 	public function get_diary_general_data(Request $request)
@@ -38,7 +40,7 @@ class DiaryPoliceController extends Controller
 		$date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
 		$date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
 
-		$result = DB::select('CALL px_polizas_xmes(?,?)', array($date_a, $date_b));
+		$result = DB::select('CALL px_polizas_xmes(?,?,?)', array($date_a, $date_b, $request->type_poliza));
 
 		return $result;
 	}
@@ -48,7 +50,7 @@ class DiaryPoliceController extends Controller
         $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
 		$date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
 
-		$result = DB::select('CALL px_polizas_movtos_xmes(?,?)', array($date_a, $date_b));
+		$result = DB::select('CALL px_polizas_movtos_xmes(?,?,?)', array($date_a, $date_b, $request->type_poliza));
 
 		return $result;
 	}
