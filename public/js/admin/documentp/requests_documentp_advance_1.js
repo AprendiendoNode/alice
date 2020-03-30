@@ -108,11 +108,22 @@ function documentp_table(datajson, table){
       color = 'green';
       setAlert(data.id, 3);//Estatus 3 verde
     }else{
-    if(data.alert!=1){
+
+    var current_date= moment().format('YYYY-MM-DD');
+    var limit_date= moment(data.fecha_inicio).format('YYYY-MM-DD')//fecha proyectos
+    var limit_date2=moment(data.fecha_entrega_ea).format('YYYY-MM-DD')//fecha compras
+
+    var limit_date_plus_seven = moment(data.fecha_inicio).add(7,'days').format('YYYY-MM-DD'); //fecha proyectos + 7 dias
+    var result_dates = moment(current_date).isBetween(limit_date,limit_date_plus_seven);//entre fecha proyectos y fecha proyectos + 7 dias
+    //console.log(limit_date);
+    //console.log(limit_date_plus_seven);
+    //console.log(result_dates);
+
+    if(data.alert!=1){//Primero los que estan en riesgo
     if(data.fecha_inicio!='-' && data.fecha_entrega_ea!='-'){
-      var current_date= new Date().toISOString().slice(0,10);
+      /*var current_date= new Date().toISOString().slice(0,10);
       var limit_date= new Date(data.fecha_inicio).toISOString().slice(0,10);
-      var limit_date2=new Date(data.fecha_entrega_ea).toISOString().slice(0,10);
+      var limit_date2=new Date(data.fecha_entrega_ea).toISOString().slice(0,10);*/
       if(!current_date<limit_date){
         setAlert(data.id, 1);
         data.alert=1;
@@ -128,6 +139,13 @@ function documentp_table(datajson, table){
 
 
     }
+    //Despues verificamos si existe alguno en atencion (a tiempo).
+    if(result_dates){
+      setAlert(data.id, 2);
+      data.alert=2;
+      current_date='';
+    }
+
     }
 
     if(data.alert == 1){
@@ -234,7 +252,7 @@ var Configuration_table_responsive_documentp= {
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
         "fnDrawCallback": function() {
           var source_colors = [{'value': 1, 'text': 'R'}, {'value': 2, 'text': 'A'}, {'value': 3, 'text': 'V'}, {'value': 4, 'text': 'B'}];
-          var source_factura = [{'value': 0, 'text': 'No'}, {'value': 1, 'text': 'Si'}, {'value': 2, 'text': 'En proceso'}];
+          var source_factura = [{'value': 0, 'text': 'No'}, {'value': 1, 'text': 'Si'}, {'value': 2, 'text': 'En proceso'},{'value': 3, 'text': 'N/A'}];
 
           $('.set-alert').editable({
               type : 'select',
