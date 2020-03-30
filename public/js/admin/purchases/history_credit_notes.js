@@ -234,7 +234,6 @@ var Configuration_table_responsive_doctypes = {
             $("#tabla_asiento_contable tbody").empty();
             $.ajax({
                 type: "POST",
-                // url: '/sales/get_note_credit_mov_data',
                 url: '/purchases/get_note_cred_mov_data_dev_desc',
                 data: {facturas: JSON.stringify(facturas) , date:$('#filter_date_from').val(),  _token : _token},
                 success: function (data) {
@@ -245,7 +244,7 @@ var Configuration_table_responsive_doctypes = {
                   $('#data_asientos').html(data);
 
                   var req_date=$('#date_resive').val();
-                  var inputDayDate = moment().format('DD');
+                  var inputDayDate = moment(req_date).format('DD');
                   var inputMonthDate = moment(req_date).format('MMMM');
 
                   $('#day_poliza').val(inputDayDate);
@@ -254,8 +253,6 @@ var Configuration_table_responsive_doctypes = {
                   $("#modal_view_poliza").modal("show");
 
                   $('.cuenta_contable').select2();
-                  // $('#day_poliza').val(dd);
-                  // $('#mes_poliza').val(mes);
                 },
                 error: function (err) {
                   Swal.fire({
@@ -660,6 +657,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
             let cargo = $(tr).find('.cargos').val();
             let abono = $(tr).find('.abonos').val();
             let referencia = $(tr).find('.referencia').val();
+            let fecha = $(tr).find('.fechita').val();
             element = {
               "factura_id" : id_factura,
               "cuenta_contable_id" : cuenta_contable,
@@ -668,7 +666,8 @@ $('#form_save_asientos_contables').on('submit', function(e){
               "nombre" : nombre,
               "cargo" : parseFloat(cargo),
               "abono" : parseFloat(abono),
-              "referencia" : referencia
+              "referencia" : referencia,
+              "fecha" : fecha
             }
             asientos.push(element);
           });

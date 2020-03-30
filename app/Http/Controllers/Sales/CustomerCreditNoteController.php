@@ -1613,11 +1613,12 @@ class CustomerCreditNoteController extends Controller
         $total_abonos = $result[0]->abonos - $abono; #$total_abonos = 0 - 0
 
         //Calculo el saldo final de la cuenta contable dependiendo su naturaleza
-        if($cc->naturaleza == 'A'){
-            $saldo_final = $saldo_inicial - $total_cargos + $total_abonos;
-        }else if($cc->naturaleza == 'D'){
-            $saldo_final = $saldo_inicial + $total_cargos - $total_abonos;
-        }
+        // if($cc->naturaleza == 'A'){
+        // $saldo_final = $saldo_inicial - $total_cargos + $total_abonos;
+        // }else if($cc->naturaleza == 'D'){
+        //  $saldo_final = $saldo_inicial + $total_cargos - $total_abonos;
+        // }
+        $saldo_final = $saldo_inicial + $total_cargos - $total_abonos;
         //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
         DB::table('Contab.balanza')
             ->where('anio', $anio)

@@ -269,7 +269,7 @@ var Configuration_table_responsive_doctypes = {
                 $('#data_asientos').html(data);
 
                 var req_date=$('#date_resive').val();
-                var inputDayDate = moment().format('DD');
+                var inputDayDate = moment(req_date).format('DD');
                 var inputMonthDate = moment(req_date).format('MMMM');
 
                 $('#day_poliza').val(inputDayDate);

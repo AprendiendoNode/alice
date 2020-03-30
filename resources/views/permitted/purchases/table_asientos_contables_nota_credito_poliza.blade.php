@@ -1,9 +1,10 @@
 @php
   $total_cargos = 0.0;
   $total_abonos = 0.0;
+  $date_factura = $asientos[0]->fecha;
 @endphp
 <div class="row">
-  <input id="date_resive" name="date_resive" type="hidden" value="{{$date_rest}}">
+  <input id="date_resive" name="date_resive" type="hidden" value="{{$date_factura}}">
 
   <div class="form-group col-md-3">
     <label class="" for="type_poliza">Tipo</label>
@@ -55,6 +56,7 @@
               $total_cargos+=$data->cargo;
               $total_abonos+=$data->abono;
               $fecha = strtotime($data->fecha);
+              $date_format = date("Y-m-d", $fecha);
               $date = date("d-m-Y", $fecha);
               $day = date("d", $fecha);
           @endphp
@@ -80,7 +82,9 @@
                   @endif
                 </select>
               </td>
-              <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia" readonly type="number" value="{{$day}}"></td>
+              <td><input style="width:58px;text-align:left" class="form-control form-control-sm dia" readonly type="number" value="{{$day}}">
+                <input class="form-control form-control-sm fechita" type="hidden" readonly value="{{$date_format}}">
+              </td>
               <td><input style="width:94px;text-align:center" class="form-control form-control-sm tipo_cambio" readonly type="number" value="{{$data->tipo_cambio}}"></td>
               <td class=""><input style="width:170px;text-align:left" readonly class="form-control form-control-sm nombre" type="text" value="{{$data->descripcion}} {{$date}}"></td>
               <td><input onblur="suma_total_asientos();" style="width:115px;text-align:right" class="form-control form-control-sm cargos" type="text" value="{{number_format($data->cargo, 2, '.', '')}}" ></td>
