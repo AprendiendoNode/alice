@@ -21864,7 +21864,7 @@
                                 dblclick: function (n) {
                                   var urlarray=(window.location.href).split("/");
                                     //var url = "http://alice.sitwifi.com/images/storage/filestore/storage/"+e._s(t.path);
-                                    var url = "http://"+urlarray[2]+"/images/storage/filestore/storage/"+e._s(t.path);  //URl modal drive
+                                    var url = "https://"+urlarray[2]+"/images/storage/filestore/storage/"+e._s(t.path);  //URl modal drive
                                     if(url.split(".").pop().toUpperCase() == "PDF") {
                                       modalToggle(url, e._s(t.filename), e._s(e.bytesToHuman(t.size))); //drive.js
                                     }

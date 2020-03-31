@@ -1258,6 +1258,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
 Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
    //Administrador Contabilidad
    Route::get('/view_accounting_configuration','Accounting\AccountingConfigurationController@index');
+   Route::post('/get_periodo_actual','Accounting\AccountingConfigurationController@get_periodo_actual');
    // Contabilidad
    Route::get('/view_balance_accounting','Accounting\BalanceController@index');
    Route::get('/balance_general_pdf/{periodo}','Accounting\BalanceController@generate_balace_pdf');

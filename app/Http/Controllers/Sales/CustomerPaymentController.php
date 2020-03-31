@@ -1344,10 +1344,9 @@ class CustomerPaymentController extends Controller
 
     public function save_poliza_ingreso_movs(Request $request)
     {
-
-        try {
-
-            DB::transaction(function () use($request){
+      
+       \DB::beginTransaction();
+        try {         
                 //Objeto de polizas
                 $asientos = $request->movs_polizas;
                 $asientos_data = json_decode($asientos);
@@ -1374,8 +1373,8 @@ class CustomerPaymentController extends Controller
                     else{
     
                       //Acumulando saldos
-                      //$cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
-                      //$this->add_balances_polizas_ingresos($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
+                      $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
+                      $this->add_balances_polizas_ingresos($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
     
                       $sql = DB::table('polizas_movtos')->insert([
                         'poliza_id' => $id_poliza,
@@ -1396,18 +1395,19 @@ class CustomerPaymentController extends Controller
                     }
                   }
                 }
-            });
-
-            DB::commit();
-
-            $flag = "true";
+            
+             $flag = "true";   
+             \DB::commit();   
+            
 
         } catch(\Exception $e){
-            $error = $e->getMessage();
-            dd($error);
+            \DB::rollback();
+        }catch(\ErrorException $e){
+            \DB::rollback();
         }
-
+        
         return  $flag;
+        
 
     }
 
@@ -1432,6 +1432,41 @@ class CustomerPaymentController extends Controller
             $total_cargos = $result[0]->cargos + $cargo;
             $total_abonos = $result[0]->abonos + $abono;
             $saldo_final = $saldo_inicial + $total_cargos - $total_abonos; 
+            //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
+            DB::table('Contab.balanza')
+                ->where('anio', $anio)
+                ->where('mes', $mes)
+                ->where('cuenta_contable_id', $cc->cuenta_contable_id)
+                ->update([
+                    'cargos' => $total_cargos,
+                    'abonos' => $total_abonos,
+                    'sdo_final' => $saldo_final
+                ]);
+        }
+    }
+
+    public function add_balances_polizas_ingresos($cc_array, $periodo, $cargo, $abono)
+    {
+
+        $explode = explode('-', $periodo);
+        $anio = $explode[0];
+        $mes = $explode[1];
+
+        foreach($cc_array as $cc)
+        {
+            //Obtengo saldos de la cuenta contable en la balanza en el periodo requerido
+            $result = DB::table('Contab.balanza')->select('id','cargos', 'abonos', 'sdo_inicial', 'sdo_final')
+                ->where('anio', $anio)
+                ->where('mes', $mes)
+                ->where('cuenta_contable_id', $cc->cuenta_contable_id)
+                ->get();
+            
+            $saldo_inicial = $result[0]->sdo_inicial;
+            $saldo_final = $result[0]->sdo_final;
+            //Sumo totales de la poliza con el acumulado en la balanza
+            $total_cargos = $result[0]->cargos + $cargo;
+            $total_abonos = $result[0]->abonos + $abono;
+            $saldo_final = $saldo_inicial + $total_cargos - $total_abonos;          
             //Actualizo la balanza de la cuenta contable en el periodo que le corresponde
             DB::table('Contab.balanza')
                 ->where('anio', $anio)

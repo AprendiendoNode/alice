@@ -260,8 +260,7 @@ function table_filter_general(datajson, table){
                });
       }//Preconfirm
     }).then((result) => {
-      console.log(result.value);
-      if (result.value == "1") {
+      if (result.value == 1) {
         Swal.fire({
           title: 'Poliza eliminada',
           text: "",
@@ -271,11 +270,17 @@ function table_filter_general(datajson, table){
             window.location = "/accounting/view_diario_general";
           }
         })
-      }else if(result.value == "2"){
-        Swal.fire('No tienes permiso para borrar polizas', 'Contacte a su administrador', 'error');
+      }else if(result.value == 2){
+        Swal.fire(
+          'El ejercicio se encuentra cerrado','No tienes permiso para eliminar polizas','warning'
+        )
+      }else if(result.value == 3){
+        Swal.fire(
+          'Este periodo se encuentra cerrado','No se permiten modificaciones','warning'
+        )
       }else{
         Swal.fire(
-          'No se cancelo la póliza','','warning'
+          'No se guardo la poliza','','error'
         )
       }
     })

@@ -59,12 +59,8 @@
                   </label>
                   <div class="input-group mb-3">
                     <select required class="form-control mb-2 mr-sm-2" id="type_poliza" name="type_poliza" >
-                      @foreach ($tipos_poliza as $poliza_data)
-                        @if ($poliza_data->id == 2)      
-                            <option selected value="{{$poliza_data->id}}">{{$poliza_data->clave}} {{$poliza_data->descripcion}}</option>
-                        @else
-                            <option value="{{$poliza_data->id}}">{{$poliza_data->clave}} {{$poliza_data->descripcion}}</option>  
-                        @endif
+                      @foreach ($tipos_poliza as $poliza_data)       
+                        <option value="{{$poliza_data->id}}">{{$poliza_data->clave}} {{$poliza_data->descripcion}}</option>  
                       @endforeach
                     </select>
                   </div>
