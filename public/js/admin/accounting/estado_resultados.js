@@ -9,6 +9,15 @@ $(function() {
     autoclose: true,
     clearBtn: true
   });
+  $("#period_month_end").datepicker({
+    language: 'es',
+    format: " yyyy-mm",
+    viewMode: "months",
+    minViewMode: "months",
+    endDate: '1m',
+    autoclose: true,
+    clearBtn: true
+  });
 
   const nowOfYear = moment().format('YYYY-MM');
   // $('#period_month').val(nowOfYear).datepicker('update');
@@ -44,28 +53,32 @@ $(function() {
 function busqueda() {
   var form = $('#search')[0];
   var formData = new FormData(form);
+  $("#btnGenerar").attr("disabled","disabled");
+  $("#btnGenerar").html(`
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <span class="sr-only">Generando...</span>
+  `);
   $.ajax({
     type: "POST",
     url: "/accounting/estado_resultados_search",
     data: formData,
     contentType: false,
     processData: false,
-    success: function (data){
+    /*success: function (data){
       remplazar_thead_th_periodo($("#all_month"), 2 ,13);
       remplazar_pintar_header($("#all_month"), 14,17);
 
       fill_table_periodo(data, $("#all_month"));
       pintar_celda($("#all_month"));
-
-    },
+    },*/
+    success: data => renderTableEstados( data, $("#all_month") ),
     error: function (err) {
       Swal.fire({
           type: 'error',
           title: 'Oops...',
           text: err.statusText,
         });
-    },
-    complete: () => console.log("Peticion terminada")
+    }
   });
 }
 function remplazar_pintar_header(table, posicionini, posicionfin) {
@@ -102,35 +115,26 @@ function pintar_celda(table) {
 }
 
 
-function fill_table_periodo (response, table){
-  table.DataTable().destroy();
+function fill_table_periodo (response, columnsLength,table) {
+  //table.DataTable().destroy();
+  console.log("Colum lenght", columnsLength);
+  if( columnsLength > 11 ) {
+    Configuration_table_no_options_biweekly.buttons[2].orientation="landscape";
+    Configuration_table_no_options_biweekly.buttons[2].pageSize="A3";
+  } else {
+    Configuration_table_no_options_biweekly.buttons[2].orientation="portrait";
+    Configuration_table_no_options_biweekly.buttons[2].pageSize="A4";
+  }
   var vartable = table.dataTable(Configuration_table_no_options_biweekly);
   vartable.fnClearTable();
   $.each(response, function(index, status){
     const data = [];
     for( let dt of Object.entries(status) ) data.push(dt[1]);
     vartable.fnAddData( data );
-    /*vartable.fnAddData([
-      status.cuenta,
-      status.nombre,
-      status.Ene,
-      status.Feb,
-      status.Mar,
-      status.Abr,
-      status.May,
-      status.Jun,
-      status.Jul,
-      status.Ago,
-      status.Sep,
-      status.Oct,
-      status.Nov,
-      status.Dic,
-      status.total,
-      status.porcentaje,
-      status.cr_rd,
-      status.porcentaje_cr_rd,
-    ]);*/
   });
+  $("#btnGenerar").removeAttr("disabled");
+  $("#btnGenerar").html("Generar");
+  vartable.DataTable().columns.adjust();
 }
 
 let imgSitData = null;
@@ -149,8 +153,8 @@ imgSit.onload = () => {
   imgSitData = cnvs.toDataURL("image/png");
 
 }
-// imgSit.src = "https://alice.sitwifi.com/images/storage/SIT070918IXA/files/companies/logo.png"; // <-- production
- imgSit.src = "http://localhost:8000/images/storage/SIT070918IXA/files/companies/logo.png"; // <-- local
+imgSit.src = "https://alice.sitwifi.com/images/storage/SIT070918IXA/files/companies/logo.png"; // <-- production
+//imgSit.src = "http://localhost:8000/images/storage/SIT070918IXA/files/companies/logo.png"; // <-- local
 
 var Configuration_table_no_options_biweekly = {
   paging: true,
@@ -165,12 +169,18 @@ var Configuration_table_no_options_biweekly = {
   scrollY: '300px',
   "columnDefs": [
       {
-        "targets": [14,16],
+        "targets": [
+          $("#all_month").find("thead tr:first th").length - 2,
+          $("#all_month").find("thead tr:first th").length - 1
+        ],
         "className": "colorcolumna"
       },
       {
-        "targets": [0,15,17],
-        "className": "colorcolumnawhite"
+        "targets": [0],
+        styles: {
+          backgroundColor: '#2f5b8f',
+          color: 'white'
+        }
       },
   ],
   fixedColumns:   {
@@ -212,11 +222,9 @@ var Configuration_table_no_options_biweekly = {
         text: '<i class="fas fa-file-pdf fastable mt-2"></i> Extraer a PDF',
         titleAttr: 'PDF',
         className: 'btn btn-danger btn-sm',
-        orientation: 'landscape',
-        pageSize: 'A3',
         exportOptions: {
             columns: () => {
-              const numberColumns = 18; // Numero de columnas a agregar
+              const numberColumns = $("#all_month").find("thead tr:first th").length; // Numero de columnas a agregar
               const cols = [];
               for(let i=0; i < numberColumns; i++) cols.push(i);
               return cols;
@@ -264,7 +272,7 @@ var Configuration_table_no_options_biweekly = {
   //
   //   }
   // },
-  "rowCallback": function( row, data, index ) {
+  /*"rowCallback": function( row, data, index ) {
     var text_001 = 'SUMA';
     var text_002 = 'TOTAL INGRESOS' ;
     var text_003 = 'COSTO SERVS ADMINISTRADOS';
@@ -330,7 +338,7 @@ var Configuration_table_no_options_biweekly = {
     if ( text_column_1.toLowerCase() == text_018.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
     if ( text_column_1.toLowerCase() == text_019.toLowerCase() ) { $(row).find('td:eq(1)').addClass('subnombre_columna_black'); }
 
-  },
+  },*/
   language:{
     "sProcessing":     "Procesando...",
     "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -356,3 +364,20 @@ var Configuration_table_no_options_biweekly = {
     }
   }
 };
+
+function renderTableEstados( data, tableMain ) {
+  const parent = $("#all_month_table_content");
+  const id = tableMain.attr("id");
+  const cssClass = tableMain.attr("class");
+
+  table = $(`<table id="${id}" clas="${cssClass}"></table>`);
+  parent.empty();
+  parent.html(table);
+  table.append("<thead><tr></tr></thead>");
+  table.append("<tbody></tbody>");
+  const thead = table.find("thead tr");
+
+  for( let header of data.columnas ) thead.append(`<th>${header.toUpperCase()}</th>`);
+  table.DataTable().destroy();
+  fill_table_periodo( data.datos, data.columnas.length,$(table) );
+}
