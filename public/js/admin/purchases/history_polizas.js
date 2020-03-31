@@ -708,7 +708,8 @@ $("#form_save_asientos_contables").on('change','#type_poliza',function(){
   if (type != '') {
     $.ajax({
          type: "POST",
-         url: '/purchases/credit-notes-history/contador',
+         // purchase_poliza
+         url: '/purchases/purchase_poliza/contador',
          data: {document_type : type, _token : _token},
          success: function (data) {
            $('#num_poliza').val(data);
@@ -837,7 +838,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
             type: 'success',
           }).then(function (result) {
             if (result.value) {
-              window.location = "/purchases/credit-notes-history";
+              window.location = "/accounting/view_purchases_poliza";
             }
           })
         }

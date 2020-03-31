@@ -122,7 +122,7 @@ background-color: #f6f6f6;
                                   line-height: 1.5em;
                                   font-size: 12px;
                                   text-align: left;">Agradecemos su valiosa ayuda para contestar la siguiente pregunta. Le deseamos un excelente día.
-                                  <a href="{{'http://alice.sitwifi.com/questionary/' . $msg['shell_data']}}" target="_blank">Contesta la pregunta aquí.</a></p>
+                                  <a href="{{'https://alice.sitwifi.com/questionary/' . $msg['shell_data']}}" target="_blank">Contesta la pregunta aquí.</a></p>
 
 
                         <p style="margin-top: 0;

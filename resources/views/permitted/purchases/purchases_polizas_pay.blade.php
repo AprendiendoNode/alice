@@ -244,6 +244,15 @@
       <div class="col-md-12 grid-margin-onerem  stretch-card">
         <div class="card">
           <div class="card-body">
+            <div class="form-group col-md-3">
+              <label class="" for="tipo_poliza">Elija poliza de egreso:</label>
+              <select class="form-control form-control-sm mb-2 mr-sm-2 required" id="tipo_poliza" name="tipo_poliza" >
+                <option value="" selected>Selecciona...</option>
+                @foreach ($tipos_poliza as $poliza_data)
+                  <option value="{{$poliza_data->id}}">{{$poliza_data->clave}} {{$poliza_data->descripcion}}</option>
+                @endforeach
+              </select>
+            </div>
             <div class="table-responsive table-data table-dropdown">
               <table id="table_filter_fact" name='table_filter_fact' class="table table-striped table-hover table-condensed table-sm">
                 <thead>
@@ -258,7 +267,7 @@
                       <th class="text-center">Saldo</th>
                       <th class="text-center">Enviada</th>
                       <th class="text-center">Estatus</th>
-                      <th class="text-center">Contabilizada <br> Poliza</th>
+                      <th class="text-center">Pago<br>Contabilizado</th>
                       <th></th>
                   </tr>
                 </thead>

@@ -97,7 +97,7 @@ function table_filter(datajson, table){
     var status = information.status;
     var mail = information.mail_sent;
     var poliza = information.poliza;
-    var contabilizado = information.contabilizado;
+    var contabilizado = information.pagado;
 
     var ELABORADO = 1; //ELABORADO
     var REVISADO = 2;  //REVISADO
@@ -165,7 +165,7 @@ function table_filter(datajson, table){
       mail_status,
       html,
       status_contabilizado,
-      information.contabilizado
+      information.pagado
     ]);
   });
 }
@@ -181,8 +181,8 @@ var Configuration_table_responsive_doctypes = {
         "width": "0.1%",
         "createdCell": function (td, cellData, rowData, row, col){
           if ( cellData > 0 ) {
-            $(td).parent().attr('style', 'background: #D6FFBE !important');
-            if(rowData[11] != 1){
+            if(rowData[11] == 1){
+              $(td).parent().attr('style', 'background: #D6FFBE !important');
               this.api().cell(td).checkboxes.disable();
             }
           }
@@ -214,7 +214,7 @@ var Configuration_table_responsive_doctypes = {
     "order": [[ 3, "asc" ]],
     buttons: [
       {
-        text: '<i class=""></i> Contabilizar',
+        text: '<i class=""></i> Contabilizar Pago',
         titleAttr: 'Contabilizar',
         className: 'btn bg-dark',
         init: function(api, node, config) {
@@ -224,11 +224,12 @@ var Configuration_table_responsive_doctypes = {
           var rows_selected = $("#table_filter_fact").DataTable().column(0).checkboxes.selected();
           var _token = $('input[name="_token"]').val();
           var facturas= new Array();
+          var tipo_poliza = $('#tipo_poliza').val();
           $.each(rows_selected, function(index, rowId){
             facturas.push(rowId);
           });
-          if ( facturas.length === 0){
-            Swal.fire('Debe selecionar al menos una factura','','warning')
+          if ( facturas.length === 0 || tipo_poliza == ''){
+            Swal.fire('Debe selecionar al menos una factura y seleccionar una póliza','','warning')
           }
           else {
             let _token = $('meta[name="csrf-token"]').attr('content');
@@ -236,8 +237,8 @@ var Configuration_table_responsive_doctypes = {
             $.ajax({
                 type: "POST",
                 // url: '/sales/get_note_credit_mov_data',
-                url: '/accounting/get_purchase_mov_data',
-                data: {facturas: JSON.stringify(facturas) , date:$('#filter_date_from').val(),  _token : _token},
+                url: '/accounting/get_purchase_mov_pay_data',
+                data: {facturas: JSON.stringify(facturas) , date:$('#filter_date_from').val(), tipo_poliza: tipo_poliza , _token : _token},
                 success: function (data) {
 
                   let suma_cargos = 0.0;
@@ -816,7 +817,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
                              credentials: "same-origin",
                              body:formData,
                              cache: 'default' };
-           return fetch('/purchases/customer_polizas_movs_save', miInit)
+           return fetch('/accounting/purchase_polizas_movs_save_pay', miInit)
                  .then(function(response){
                    if (!response.ok) {
                       throw new Error(response.statusText)
@@ -832,12 +833,12 @@ $('#form_save_asientos_contables').on('submit', function(e){
       }).then((result) => {
         if (result.value == "true") {
           Swal.fire({
-            title: 'Poliza guardada',
+            title: 'Póliza guardada',
             text: "",
             type: 'success',
           }).then(function (result) {
             if (result.value) {
-              window.location = "/purchases/credit-notes-history";
+              window.location = "/accounting/view_purchase_poliza_pay";
             }
           })
         }
@@ -873,8 +874,8 @@ function suma_total_asientos(){
     total_abonos+= parseFloat(inputs_abonos[i].value);
   }
 
-  $('#total_cargos').val(format_number(total_cargos));
-  $('#total_abonos').val(format_number(total_abonos));
+  $('#total_cargos').val(format_number(total_cargos.toFixed(2)));
+  $('#total_abonos').val(format_number(total_abonos.toFixed(2)));
 
   if(check_totales_asientos(total_cargos,total_abonos)){
     $('#total_cargos').css('border-color', '#28a745');
