@@ -7,7 +7,7 @@ class ContabPeriodoHelper
 {
     public static function validar_ejercicio($anio)
     {
-        $flag = True;
+        $flag = False;
         $ejercicio = DB::table('Contab.ejercicios')->select('anio', 'fecha_inicio', 'fecha_final', 'status_id')
             ->where('anio', $anio)->get();
         //Si se cumple, el ejercicio esta abierto
@@ -20,7 +20,7 @@ class ContabPeriodoHelper
 
     public static function validar_periodo($anio, $mes)
     {
-        $flag = True;
+        $flag = False;
         $ejercicio = DB::table('Contab.periodos as A')->select('A.periodo','A.status_id as periodo_status', 'B.anio', 'B.status_id as ejercicio_status')
             ->join('Contab.ejercicios as B', 'A.ejercicio_id', '=', 'B.id')    
             ->where('A.periodo', $mes)

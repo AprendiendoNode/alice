@@ -449,7 +449,7 @@ class CustomerPolizaController extends Controller
                         }
                         else if(count($ids_customer_payments) > 0){
                             $ids_customer_payments_unique = $ids_customer_payments->unique();
-                            $customer_invoice = CustomerPayment::whereIn('id', $ids_customers_unique)->update(['contabilizado' => 0]);
+                            $customer_invoice = CustomerPayment::whereIn('id', $ids_customer_payments_unique)->update(['contabilizado' => 0]);
                             //Deshaciendo saldos  en balanza￼￼        
                             $asientos_contables = DB::table('polizas_movtos')->select('cuenta_contable_id', 'cargos', 'abonos','fecha')->where('poliza_id', '=', $id_poliza )->get();
                             

@@ -15,7 +15,7 @@ class ContabPeriodoTableSeeder extends Seeder
     public function run()
     {
         $qry = DB::table('Contab.ejercicios')->select('anio')
-                ->where('id', 1)->get();
+                ->where('id', 2)->get();
 
         $anio = $qry[0]->anio;
 
@@ -31,7 +31,7 @@ class ContabPeriodoTableSeeder extends Seeder
             $last_day_month = $dt->format('Y-m-d');
             
             DB::table('Contab.periodos')->insert([
-                'ejercicio_id' => 1,
+                'ejercicio_id' => 2,
                 'periodo' => $periodo,
                 'fecha_inicio' => $first_day_month,
                 'fecha_final' => $last_day_month,

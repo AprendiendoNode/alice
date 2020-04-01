@@ -1402,6 +1402,7 @@ class CustomerPaymentController extends Controller
 
         } catch(\Exception $e){
             \DB::rollback();
+            dd($e);
         }catch(\ErrorException $e){
             \DB::rollback();
         }
