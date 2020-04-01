@@ -163,4 +163,10 @@ class NocToolsController extends Controller
     return array($result1, $result2);
   }
 
+  public function dash_operacion_eq_act_mon(Request $request) {
+    $fecha = $request->fecha;
+    $result = DB::select('CALL px_equipo_activo_monitoreado ()');
+    return $result;
+  }
+
 }

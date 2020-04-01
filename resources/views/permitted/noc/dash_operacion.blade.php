@@ -450,7 +450,7 @@
                   </div>
                 </div>
 
-                <h4 style="text-align: left; margin-top: 15px;">Resumen enlaces</h4>
+                <h4 style="text-align: left; margin-top: 25px;">Resumen enlaces</h4>
                 <div class="row">
                   <div class="col-md-6">
                     <table id="resumen_sitwifi" class="table-responsive" style="text-align: center;">
@@ -538,7 +538,64 @@
                   </div>
                 </div>
 
-                <div class="py-3">
+                <h4 style="text-align: left; margin-top: 25px;">Equipo activo monitoreado</h4>
+                <div class="row">
+                  <div class="col-md-12">
+                    <table id="equipo_monitoreado" class="table-responsive" style="text-align: center;">
+                      <tr id="em_first_row" style="color: brown;">
+                        <td>Tipo</td>
+                        <td>Propietario</td>
+                        <td>Hospitalidad</td>
+                        <td>Educación</td>
+                        <td>Aeropuertos y</br>terminales</td>
+                        <td>Transporte</br>terrestre</td>
+                        <td>Corporativo</td>
+                        <td>Retail</td>
+                        <td>Galerías</td>
+                        <td>Otros</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <h4 style="text-align: left; margin-top: 25px;">AP'S Instaladas</h4>
+                <div class="row">
+                  <div class="col-md-6">
+                    <table id="aps_instaladas" class="table-responsive" style="text-align: center;">
+                      <tr style="color: brown;">
+                        <td></td>
+                        <td class="mes1"></td>
+                        <td class="mes2"></td>
+                        <td>%</td>
+                      </tr>
+                      <tr>
+                        <td>Total</td>
+                        <td id="total_aps_1"></td>
+                        <td id="total_aps_2"></td>
+                        <td id="total_aps_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td style="color: blue;">Sitwifi</td>
+                        <td id="sitwifi_aps_1"></td>
+                        <td id="sitwifi_aps_2"></td>
+                        <td id="sitwifi_aps_arrow"></td>
+                      </tr>
+                      <tr>
+                        <td style="color: brown;">Cliente</td>
+                        <td id="cliente_aps_1"></td>
+                        <td id="cliente_aps_2"></td>
+                        <td id="cliente_aps_arrow"></td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="">
+                      <div id="graph_aps"> </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--<div class="py-3">
                   <h4>Equipo activo Monitoreado</h4>
                   <br>
                   <div class="table-responsive">
@@ -734,7 +791,7 @@
 
                   </table>
 
-                  <br>
+                  <br>-->
                   <div class="row">
                     <div class="col-md-6">
 
@@ -890,11 +947,11 @@
     background: #02948c;
     }
 
-    #encuestas_results tbody,#sitios_results tbody,#detractores tbody,#tiempos tbody, #disponibilidad tbody, #resumen_sitwifi tbody, #resumen_cliente tbody {
+    #encuestas_results tbody,#sitios_results tbody,#detractores tbody,#tiempos tbody, #disponibilidad tbody, #resumen_sitwifi tbody, #resumen_cliente tbody, #equipo_monitoreado tbody, #aps_instaladas tbody {
       width: 100% !important;
       display: table;
     }
-    #encuestas_results tr td:not(.ignore), #sitios_results tr td, #tiempos tr td:not(.ignore), #disponibilidad tr td, #resumen_sitwifi tr td, #resumen_cliente tr td {
+    #encuestas_results tr td:not(.ignore), #sitios_results tr td, #tiempos tr td:not(.ignore), #disponibilidad tr td, #resumen_sitwifi tr td, #resumen_cliente tr td, #equipo_monitoreado tr td, #aps_instaladas tr td {
       font-size: 16px;
       border-bottom: 1px solid blue;
     }

@@ -108,6 +108,69 @@ function graph_tickets(title, data) {
   });
 }
 
+function graph_aps(title, data) {
+  var chart = document.getElementById(title);
+     var myChart = echarts.init(chart);
+     var group=[];
+     var titles=[];
+     var i=0;
+     var rotar = 45;
+     var tamanio = 12;
+
+     var resizeMainContainer = function () {
+       chart.style.width = $("#aps_instaladas").width() + "px";
+       chart.style.height = $("#aps_instaladas").height() * 3 + "px";
+       myChart.resize();
+    };
+   resizeMainContainer();
+
+   option = {
+     title: {
+         text: ''
+     },
+     tooltip: {
+         trigger: 'axis'
+     },
+     grid: {
+         containLabel: true
+     },
+     xAxis: {
+         type: 'category',
+         boundaryGap: true,
+         data: ["Hospitalidad", "Educacion", "Aeropuertos", "Transporte", "Corporativo", "Retail", "Galerías", "Otros"],
+         axisTick: {
+             alignWithLabel: true
+         },
+         axisLabel : {
+            show: true,
+            interval: '0',
+            rotate: 20,
+            fontSize: 11
+         }
+     },
+     yAxis: {
+         type: 'value'
+     },
+     series: [
+         {
+             name: 'Cantidad',
+             type: 'line',
+             data: data,
+             label: {
+               show: true
+             }
+         }
+     ],
+     color: ['blue']
+   };
+
+  myChart.setOption(option);
+
+  $(window).on('resize', function(){
+    resizeMainContainer();
+  });
+}
+
 function graph_nps(title) {
   //$('#'+title).width($('#'+title).width());
   //$('#'+title).height($('#'+title).height());
@@ -280,7 +343,7 @@ function all_data() {
             $("#seek" + i).after(new_row);
             new_row = "";
           }
-          $.ajax({
+          /*$.ajax({
              type: "POST",
              url: '/dash_operacion_tickets',
              data: { _token: _token, fecha: fecha },
@@ -314,7 +377,7 @@ function all_data() {
                   url: '/graph_operacion_tickets',
                   data: { _token: _token, fecha: fecha },
                   success: function (data) {
-                    graph_tickets('graph_tickets', data[0]);
+                    graph_tickets('graph_tickets', data[0]);*/
                     $.ajax({
                          type: "POST",
                          url: '/all_disponibilidad',
@@ -956,13 +1019,102 @@ function all_data() {
                            $("#rc_izzi_cant").text(izzi_cliente);
                            $("#rc_izzi_disp").text(izzi_cliente != 0 ? parseInt(izzi_cliente_disp / izzi_cliente) + "%" : "0%");
                            $("#rc_total_cant").text(alestra_cliente + bbs_cliente + otros_cliente + telmex_cliente + izzi_cliente);
-                           $("#rc_total_disp").text($("#rc_total_cant").text() != "0" ? parseInt((alestra_cliente_disp + bbs_cliente_disp + otros_cliente_disp + telmex_cliente_disp + izzi_cliente_disp) / parseInt($("#rc_total_cant").text())) + "%" : "0%");
+                           $("#rc_total_disp").text($("#rc_total_cant").text() != "0" ? parseInt((alestra_cliente_disp + bbs_cliente_disp + otros_cliente_disp + telmex_cliente_disp + izzi_cliente_disp) / parseInt($("#rc_total_cant").text())) + "%" : "0");
+                           $.ajax({
+                                type: "POST",
+                                url: '/dash_operacion_eq_act_mon',
+                                data: { _token: _token, fecha: fecha },
+                                success: function (data) {
+                                  try { $(".em_after_rows").html(""); } catch(e) {}
+                                  var em_after_rows = "", rowspan = 1;
+                                  var aps_sitwifi = 0, aps_cliente = 0, aps_hos = 0, aps_edu = 0, aps_aer = 0, aps_trt = 0, aps_cor = 0, aps_ret = 0, aps_gal = 0, aps_otr = 0;
+                                  $.each(data, function (i, e) {
+                                    em_after_rows+="<tr class='em_after_rows'>";
+                                    if(rowspan == 2) {
+                                      rowspan = 1;
+                                      em_after_rows+="<td style='color: brown; border: 1px solid blue;'>Cliente</td>";
+                                      em_after_rows+="<td>"+e['Hospitalidad']+"</td>";
+                                      em_after_rows+="<td>"+e['Educacion']+"</td>";
+                                      em_after_rows+="<td>"+e['Aeropuertos y Terminales']+"</td>";
+                                      em_after_rows+="<td>"+e['Transporte Terrestre']+"</td>";
+                                      em_after_rows+="<td>"+e['Corporativo']+"</td>";
+                                      em_after_rows+="<td>"+e['Retail']+"</td>";
+                                      em_after_rows+="<td>"+e['Galerias']+"</td>";
+                                      em_after_rows+="<td>"+e['Otros']+"</td>";
+                                    } else {
+                                      em_after_rows+="<td rowspan='2'>"+e['EquipoActivo']+"</td>";
+                                      em_after_rows+="<td style='color: blue; border: 1px solid blue;'>Sitwifi</td>";
+                                      em_after_rows+="<td>"+e['Hospitalidad']+"</td>";
+                                      em_after_rows+="<td>"+e['Educacion']+"</td>";
+                                      em_after_rows+="<td>"+e['Aeropuertos y Terminales']+"</td>";
+                                      em_after_rows+="<td>"+e['Transporte Terrestre']+"</td>";
+                                      em_after_rows+="<td>"+e['Corporativo']+"</td>";
+                                      em_after_rows+="<td>"+e['Retail']+"</td>";
+                                      em_after_rows+="<td>"+e['Galerias']+"</td>";
+                                      em_after_rows+="<td>"+e['Otros']+"</td>";
+                                      rowspan++;
+                                    }
+                                    em_after_rows+="</tr>";
+                                    if(e['EquipoActivo'] == 'Antena') {
+                                      if(e['Propietario'].indexOf("Activo") >= 0) {
+                                        aps_hos += parseInt(e['Hospitalidad']);
+                                        aps_sitwifi += parseInt(e['Hospitalidad']);
+                                        aps_edu += parseInt(e['Educacion']);
+                                        aps_sitwifi += parseInt(e['Educacion']);
+                                        aps_aer += parseInt(e['Aeropuertos y Terminales']);
+                                        aps_sitwifi += parseInt(e['Aeropuertos y Terminales']);
+                                        aps_trt += parseInt(e['Transporte Terrestre']);
+                                        aps_sitwifi += parseInt(e['Transporte Terrestre']);
+                                        aps_cor += parseInt(e['Corporativo']);
+                                        aps_sitwifi += parseInt(e['Corporativo']);
+                                        aps_ret += parseInt(e['Retail']);
+                                        aps_sitwifi += parseInt(e['Retail']);
+                                        aps_gal += parseInt(e['Galerias']);
+                                        aps_sitwifi += parseInt(e['Galerias']);
+                                        aps_otr += parseInt(e['Otros']);
+                                        aps_sitwifi += parseInt(e['Otros']);
+                                      } else {
+                                        aps_hos += parseInt(e['Hospitalidad']);
+                                        aps_cliente += parseInt(e['Hospitalidad']);
+                                        aps_edu += parseInt(e['Educacion']);
+                                        aps_cliente += parseInt(e['Educacion']);
+                                        aps_aer += parseInt(e['Aeropuertos y Terminales']);
+                                        aps_cliente += parseInt(e['Aeropuertos y Terminales']);
+                                        aps_trt += parseInt(e['Transporte Terrestre']);
+                                        aps_cliente += parseInt(e['Transporte Terrestre']);
+                                        aps_cor += parseInt(e['Corporativo']);
+                                        aps_cliente += parseInt(e['Corporativo']);
+                                        aps_ret += parseInt(e['Retail']);
+                                        aps_cliente += parseInt(e['Retail']);
+                                        aps_gal += parseInt(e['Galerias']);
+                                        aps_cliente += parseInt(e['Galerias']);
+                                        aps_otr += parseInt(e['Otros']);
+                                        aps_cliente += parseInt(e['Otros']);
+                                      }
+                                    }
+                                  });
+                                  $("#em_first_row").after(em_after_rows);
+                                  $("#total_aps_1").text((aps_sitwifi + aps_cliente).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                                  $("#total_aps_2").text((aps_sitwifi + aps_cliente).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                                  $("#total_aps_arrow").html(parseFloat($("#total_aps_1").text()) > parseFloat($("#total_aps_2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#total_aps_1").text()) == parseFloat($("#total_aps_2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                                  $("#sitwifi_aps_1").text(aps_sitwifi.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                                  $("#sitwifi_aps_2").text(aps_sitwifi.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                                  $("#sitwifi_aps_arrow").html(parseFloat($("#sitwifi_aps_1").text()) > parseFloat($("#sitwifi_aps_2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#sitwifi_aps_1").text()) == parseFloat($("#sitwifi_aps_2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                                  $("#cliente_aps_1").text(aps_cliente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                                  $("#cliente_aps_2").text(aps_cliente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                                  $("#cliente_aps_arrow").html(parseFloat($("#cliente_aps_1").text()) > parseFloat($("#cliente_aps_2").text()) ? "<i class='fas fa-arrow-circle-down'></i>" : (parseFloat($("#cliente_aps_1").text()) == parseFloat($("#cliente_aps_2").text()) ? "<i class='fas fa-arrow-circle-right'></i>" : "<i class='fas fa-arrow-circle-up'></i>"));
+                                  graph_aps("graph_aps", [aps_hos, aps_edu, aps_aer, aps_trt, aps_cor, aps_ret, aps_gal, aps_otr]);
+                                },
+                                error: function (data) {
+                                  console.error(data);
+                                }
+                            });
                          },
                          error: function (data) {
                            console.error(data);
                          }
                     });
-                  },
+                  /*},
                   error: function (data) {
                     console.error(data);
                   }
@@ -971,7 +1123,7 @@ function all_data() {
              error: function (data) {
                console.error(data);
              }
-          });
+          });*/
        },
        error: function (data) {
          console.error(data);
