@@ -32,6 +32,8 @@ $('#mes').datepicker().on('changeDate', function (ev) {
   all_data();
 });
 
+$("footer").css("display", "none");
+
 function graph_tickets(title, data) {
   var vals = Object.values(data);
   var chart = document.getElementById(title);
