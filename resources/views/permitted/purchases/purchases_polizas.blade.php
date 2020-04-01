@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View purchases') )
+  @if( auth()->user()->can('View purchase poliza') )
     Póliza de diario - pagos
   @else
     {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View purchases') )
+  @if( auth()->user()->can('View purchase poliza') )
     Póliza de diario - pagos
   @else
     {{ trans('message.denied') }}
@@ -18,6 +18,7 @@
 
 @section('content')
   <!-- modal about -->
+  @if( auth()->user()->can('View purchase poliza') )
   <div id="modal_customer_invoice_send_mail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalmail" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
       <!--Content-->
@@ -193,7 +194,7 @@
         </div>
       </div>
   </div>
-  @if( auth()->user()->can('View purchases') )
+
     <div class="row">
       <div class="col-md-12 grid-margin-onerem  stretch-card">
         <div class="card">
@@ -274,7 +275,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View purchases') )
+  @if( auth()->user()->can('View purchase poliza') )
     <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
     <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>

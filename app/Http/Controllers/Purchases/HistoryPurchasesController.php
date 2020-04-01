@@ -372,9 +372,7 @@ class HistoryPurchasesController extends Controller
             'total_abonos' => $request->total_abonos_format
         ]);
         // Probar esta mierda en la nube...
-        //DB::connection('contabilidad')->table('tipos_poliza')
-          //->where('id', $request->type_poliza)
-          //->update(['contador' => $request->num_poliza]);
+        $success_var = DB::select('CALL Contab.px_actualiza_contador_xbanco(?, ?)', array($request->type_poliza, $request->num_poliza));
         //Insertando movimientos de las polizas
         for ($i=0; $i < $tam_asientos; $i++)
         {
@@ -443,9 +441,7 @@ class HistoryPurchasesController extends Controller
             'total_abonos' => $request->total_abonos_format
         ]);
         // Probar esta mierda en la nube...
-        //DB::connection('contabilidad')->table('tipos_poliza')
-          //->where('id', $request->type_poliza)
-          //->update(['contador' => $request->num_poliza]);
+        $success_var = DB::select('CALL Contab.px_actualiza_contador_xbanco(?, ?)', array($request->type_poliza, $request->num_poliza));
         //Insertando movimientos de las polizas
         for ($i=0; $i < $tam_asientos; $i++)
         {
