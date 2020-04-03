@@ -36,7 +36,7 @@
                 <div class="btn-group mr-md-2 mt-3" role="group" aria-label="First group">
                     <button type="button" onclick="modal_periodo_actual();" class="btn btn-dark"><i class="far fa-calendar-alt"></i> Periodo actual</button>
                     <button type="button" onclick="modal_cerrar_periodo();" class="btn btn-secondary"><i class="far fa-calendar-check"></i> Cierre mensual</button>
-                    <button type="button" class="btn btn-danger"><i class="fas fa-exclamation-circle"></i> Cerrar periodo anual</button>
+                    <button type="button" onclick="modal_cerrar_ejercicio()" class="btn btn-danger"><i class="fas fa-exclamation-circle"></i> Cerrar periodo anual</button>
                 </div>             
             </div>
         </div>
@@ -116,12 +116,14 @@
         </div>
         <div class="modal-body">
           <form id="form-cerrar-periodo">
+            {{ csrf_field() }}
             <div class="form-group row mt-2">
               <label class="col-12 col-sm-6" for="">Ejercicio:</label>
               <div class="col-12 col-sm-6">
                 <select class="form-control form-control-sm" name="ejercicio" id="ejercicio">
+                   <option value="" selected>Seleccionar ejercicio</option> 
                   @foreach ($ejercicios as $ejercicio)
-                    <option value="{{$ejercicio->anio}}">{{$ejercicio->anio}}</option>  
+                   <option value="{{$ejercicio->anio}}">{{$ejercicio->anio}}</option>  
                   @endforeach
                 </select>  
               </div>        
@@ -130,60 +132,129 @@
               <label class="col-12 col-sm-6" for="">Periodo:</label>
               <div class="col-12 col-sm-6">
                 <select class="form-control form-control-sm" name="periodo" id="periodo">
-                  <option value="1">Enero</option>
-                  <option value="2">Febrero</option>
-                  <option value="3">Marzo</option>
-                  <option value="4">Abril</option>
-                  <option value="5">Mayo</option>
-                  <option value="6">Junio</option>
-                  <option value="7">Julio</option>
-                  <option value="8">Agosto</option>
-                  <option value="9">Septiembre</option>
-                  <option value="10">Octubre</option>
-                  <option value="11">Noviembre</option>
-                  <option value="12">Diciembre</option>
+                  
                 </select>  
               </div>        
           </div>
-            <div class="form-group row mt-2">
+          <div class="form-group row mt-2">
+            <label class="col-12 col-sm-6" for="">Estatus:</label>
+            <div class="col-12 col-sm-6">
+                <input readonly id="status_periodo" name="status_periodo" class="form-control form-control-sm" value="">
+            </div>          
+          </div>
+          <div class="form-group row mt-2">
+            <label class="col-12 col-sm-6" for="">Fecha inicio:</label>
+            <div class="col-12 col-sm-6">
+                <input readonly id="fecha_inicial_periodo_close" name="fecha_inicial_periodo_close" class="form-control form-control-sm" value="">
+            </div>          
+          </div>
+          <div class="form-group row mt-2">
+              <label class="col-12 col-sm-6" for="">Fecha fin:</label>
+              <div class="col-12 col-sm-6">
+                  <input readonly id="fecha_final_periodo_close" name="fecha_final_periodo_close" class="form-control form-control-sm" value="">
+              </div>          
+          </div>
+          <hr>
+          <br>
+          <div class="form-group row mt-2">
               <label class="col-12 col-sm-6" for="">Fecha inicial del ejercicio:</label>
               <div class="col-12 col-sm-6">
-                  <input readonly id="fecha_inicio_ejercicio_actual_read" name="fecha_inicio_ejercicio_actual_read" class="form-control form-control-sm" value="">
+                  <input readonly id="fecha_inicio_ejercicio_close" name="fecha_inicio_ejercicio_actual_close" class="form-control form-control-sm" value="">
               </div>          
           </div>
             <div class="form-group row mt-2">
-                <label class="col-12 col-sm-6" for="">Fecha inicial del ejercicio:</label>
-                <div class="col-12 col-sm-6">
-                    <input readonly id="fecha_inicio_ejercicio_actual_read" name="fecha_inicio_ejercicio_actual_read" class="form-control form-control-sm" value="">
-                </div>          
-            </div>
-            <div class="form-group row mt-2">
                 <label class="col-12 col-sm-6" for="">Fecha final del ejercicio:</label>
                 <div class="col-12 col-sm-6">
-                    <input readonly id="fecha_final_ejercicio_actual_read" name="fecha_final_ejercicio_actual_read" class="form-control form-control-sm" value="">
+                    <input readonly id="fecha_final_ejercicio_close" name="fecha_final_ejercicio_actual_close" class="form-control form-control-sm" value="">
                 </div>          
             </div>
-            <br>
-            <hr>
+            <br>            
+            
+            <button type="submit" class="btn btn-danger">Cerrar periodo</button>
+          </form>
+        </div>
+        <div class="modal-footer">   
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!----------------------- Modal Cierre anual ------------------------>
+
+  <div id="modal-ejercicio-cierre" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="far fa-calendar-alt"></i> Cerrar Ejercicio</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="form-cerrar-ejercicio">
+            {{ csrf_field() }}
             <div class="form-group row mt-2">
-                <label class="col-12 col-sm-6" for="">Periodo actual:</label>
-                <div class="col-12 col-sm-2">
-                    <input readonly id="periodo_actual_read" name="periodo_actual_read" class="form-control form-control-sm" value="">
-                </div>          
-            </div>
-            <div class="form-group row mt-2">
-                <label class="col-12 col-sm-6" for="">Fecha inicio:</label>
-                <div class="col-12 col-sm-6">
-                    <input readonly id="fecha_inicial_periodo_actual_read" name="fecha_final_periodo_actual_read" class="form-control form-control-sm" value="">
-                </div>          
-            </div>
-            <div class="form-group row mt-2">
-                <label class="col-12 col-sm-6" for="">Fecha fin:</label>
-                <div class="col-12 col-sm-6">
-                    <input readonly id="fecha_final_periodo_actual_read" name="fecha_final_periodo_actual_read" class="form-control form-control-sm" value="">
-                </div>          
-            </div>
-            <button type="submit" class="btn btn-danger" data-dismiss="modal">Cerrar periodo</button>
+              <label class="col-12 col-sm-6" for="">Ejercicio:</label>
+              <div class="col-12 col-sm-6">
+                <select required class="form-control form-control-sm" name="ejercicio_cierre_anual" id="ejercicio_cierre_anual">
+                   <option value="" selected>Seleccionar ejercicio</option> 
+                  @foreach ($ejercicios as $ejercicio)
+                   <option value="{{$ejercicio->anio}}">{{$ejercicio->anio}}</option>  
+                  @endforeach
+                </select>  
+              </div>        
+          </div>
+          <div class="form-group row mt-2">
+            <label class="col-12 col-sm-6" for="">Periodo:</label>
+            <div class="col-12 col-sm-6">
+              <select required class="form-control form-control-sm" name="periodo_cierre_anual" id="periodo_cierre_anual">
+                <option selected value="12">12</option>
+              </select>  
+            </div>        
+          </div>
+          <hr>
+          <br>
+          <h6>Poliza termino del ejercicio</h6>
+          <div class="form-group row mt-2">
+            <label class="col-12 col-sm-6" for="">Tipo de poliza:</label>
+            <div class="col-12 col-sm-6">
+              <select  class="form-control form-control-sm" name="tipo_poliza" id="tipo_poliza">
+                <option selected value="1">001 - Diario</option>
+              </select>  
+            </div>        
+          </div>
+          <div class="form-group row mt-2">
+            <label class="col-12 col-sm-6" for="">Descripcion:</label>
+            <div class="col-12 col-sm-6">
+              <input class="form-control form-control-sm" name="decripcion_poliza_cierre_anual" id="decripcion_poliza_cierre_anual">  
+            </div>        
+          </div>
+          <div class="form-group row mt-2">
+            <label class="col-12 col-sm-6" for="">Numero poliza:</label>
+            <div class="col-12 col-sm-6">
+              <input type="number" class="form-control form-control-sm" name="num_poliza" id="num_poliza">  
+            </div>        
+          </div>
+          <div class="form-group row mt-2">
+            <label class="col-12 col-sm-6" for="">Dia:</label>
+            <div class="col-12 col-sm-6">
+              <input type="number" class="form-control form-control-sm" name="dia_poliza" id="dia_poliza">  
+            </div>        
+          </div>
+          <div class="form-group row mt-2">
+            <label class="col-12 col-sm-6" for="">Contra cuenta:</label>
+            <div class="col-12 col-sm-6">
+              <select id="cuenta_contable_termino" name="cuenta_contable_termino"  class="form-control form-control-sm cuenta_contable select2">
+                <option value="">Seleccionar cuenta contable ...</option>
+                @foreach ($cuentas_contables as $cuenta_data)
+                  <option value="{{$cuenta_data->id}}">{{$cuenta_data->cuenta}} {{$cuenta_data->nombre}}</option>  
+                @endforeach
+              </select>  
+            </div>      
+          </div>              
+            
+            <button type="submit" class="btn btn-danger">Cerrar ejercicio</button>
           </form>
         </div>
         <div class="modal-footer">   
@@ -240,6 +311,19 @@
   <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
   <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/js/dataTables.checkboxes.min.js"></script>
   <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.10/css/dataTables.checkboxes.css" rel="stylesheet" />
+
+
+  <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
+    <!-- FormValidation plugin and the class supports validating Bootstrap form -->
+    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.steps.min.js')}}"></script>
+    <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
+    <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.css')}}" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-wizard-master-two/steps.css')}}" >
+    <!-- FormValidation plugin and the class supports validating Bootstrap form -->
+    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/formValidation.min.js')}}"></script>
+    <script src="{{ asset('plugins/jquery-wizard-master/libs/formvalidation/bootstrap.min.js')}}"></script>
   
 
   <!-- Main Quill library -->

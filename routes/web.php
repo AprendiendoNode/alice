@@ -1260,7 +1260,11 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
    //Administrador Contabilidad
    Route::get('/view_accounting_configuration','Accounting\AccountingConfigurationController@index');
    Route::post('/get_periodo_actual','Accounting\AccountingConfigurationController@get_periodo_actual');
-   // Contabilidad
+   Route::post('/get_periodos_by_year','Accounting\AccountingConfigurationController@get_periodos_by_year');
+   Route::post('/get_periodo_month','Accounting\AccountingConfigurationController@get_periodo_month');
+   Route::post('/cerrarPeriodoMensual','Accounting\AccountingConfigurationController@cerrarPeriodoMensual');
+   Route::post('/cerrar_ejercicio','Accounting\AccountingConfigurationController@cerrar_ejercicio');
+   // Contabilidados
    Route::get('/view_balance_accounting','Accounting\BalanceController@index');
    Route::get('/balance_general_pdf/{periodo}','Accounting\BalanceController@generate_balace_pdf');
    Route::post('/get_balance_by_month','Accounting\BalanceController@getBalanceByMonth');

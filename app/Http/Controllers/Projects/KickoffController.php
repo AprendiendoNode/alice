@@ -29,9 +29,10 @@ class KickoffController extends Controller
       $id = $request->id_doc_3;
       $document = DB::select('CALL px_documentop_data(?)', array($id));
       $documentP = Documentp::find($id);
+
       $id_document = $documentP->id;
       $in_document_cart = In_Documentp_cart::where('documentp_cart_id', $document[0]->documentp_cart_id)->first();
-      //dd($document);
+     
       $tipo_cambio = $in_document_cart->tipo_cambio;
       $installation = DB::table('documentp_installation')->select('id', 'name')->get();
       $adquisition = DB::table('documentp_adquisition')->select('id', 'name')->get();
@@ -51,19 +52,22 @@ class KickoffController extends Controller
       $cotizador = DB::table('cotizador')->select('id', 'id_doc')->where('id_doc', $document[0]->id)->get();
       $real_ejercido = $this->get_presupuesto_ejercido($document[0]->id);
       $num_aps = $this->get_num_aps($document[0]->documentp_cart_id);
-
+      
       if(count($cotizador) == 1) {
         $objetivos = DB::table('cotizador_objetivos')->select()->where('cotizador_id', $cotizador[0]->id)->get();
-        $gastos_mensuales = Cotizador_gastos::findOrFail(['cotizador_id' => $cotizador[0]->id]);
-        $inversion = Cotizador_inversion::findOrFail(['cotizador_id' => $cotizador[0]->id]);
-        $comision = $inversion[0]->comision;
+        $gastos_mensuales = Cotizador_gastos::firstOrCreate(['cotizador_id' => $cotizador[0]->id]);
+        $inversion = Cotizador_inversion::firstOrCreate(['cotizador_id' => $cotizador[0]->id]);
+        
+        $comision = $inversion->comision;
         $vtc = $objetivos[0]->vtc;
-        $gasto_mtto = $gastos_mensuales[0]->mantto_seg_otro;
-        $gasto_mtto_percent = $gastos_mensuales[0]->mantto_seg_otro_percent;
-        $credito_mensual_percent = $gastos_mensuales[0]->credito_mensual_percent;
+        $gasto_mtto = $gastos_mensuales->mantto_seg_otro;
+        $gasto_mtto_percent = $gastos_mensuales->mantto_seg_otro_percent;
+        $credito_mensual_percent = $gastos_mensuales->credito_mensual_percent;
       }
+      
       //KICKOFF DATA
       $kickoff = Kickoff_project::firstOrCreate(['id_doc' => $id_document]);
+      
       $kickoff_approvals = Kickoff_approvals::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $kickoff_compras = Kickoff_compras::firstOrCreate(['kickoff_id' => $kickoff->id]);
       $kickoff_contrato = Kickoff_contrato::firstOrCreate(['kickoff_id' => $kickoff->id]);

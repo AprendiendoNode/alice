@@ -452,7 +452,7 @@ class QuotingController extends Controller
 
         if($status == 6){
           $document = Documentp::find($doc_id[$i]);
-          $this->send_mail_new_kickoff($document->id);
+          //$this->send_mail_new_kickoff($document->id);
         }
 
         $valor= 'true';
