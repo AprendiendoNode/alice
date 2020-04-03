@@ -184,7 +184,7 @@ function data_nps2(){
 var nps = ((parseInt($('#total_promotores').text())-parseInt($('#total_detractores').text())-parseInt($('#unanswered').text()))
 /(parseInt($('#total_promotores').text())+parseInt($('#total_pasivos').text())+parseInt($('#total_detractores').text())+parseInt($('#unanswered').text())))*100;
 //console.log(nps);
-graph_gauge('nps_2', 'NPS', '100', '100', nps.toFixed(2));
+graph_gauge('nps_2', 'NPS', '100', '100', Math.round(nps));
 }
 
 function data_compare_nps(){
