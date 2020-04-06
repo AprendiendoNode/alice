@@ -117,7 +117,7 @@ background-color: #f6f6f6;
                               font-size: 18px;
                               text-align: left;"><strong> {{$param['nombre_proyecto']}}</strong></h2>
 
-                    <a href="http://alice.sitwifi.com/view_history_quoting_kickoff" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+                    <a href="https://alice.sitwifi.com/view_history_quoting_kickoff" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
                     margin-top: 20;
                     color: #2039CC;
                     text-decoration:underline;

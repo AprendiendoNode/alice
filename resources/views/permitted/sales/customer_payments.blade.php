@@ -880,6 +880,7 @@
                       },
                       onClose: () => {
                         clearInterval(timerInterval)
+                        location.reload();
                       }
                     }).then((result) => {
                       if (
@@ -931,15 +932,17 @@
               $("#form input[name='date']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
           });
           /*Fecha pago*/
-          $("#form input[name='date_payment']").datepicker({
-            singleDatePicker: true,
-            showDropdowns: true,
-            locale: {
-                format: 'DD-MM-YYYY'
-            },
-            autoUpdateInput: false
+          $("#form input[name='date_payment']").daterangepicker({
+              singleDatePicker: true,
+              timePicker: true,
+              timePicker24Hour: true,
+              showDropdowns: true,
+              locale: {
+                  format: "DD-MM-YYYY HH:mm:ss"
+              },
+              autoUpdateInput: true
           }, function (chosen_date) {
-              $("#form input[name='date_payment']").val(chosen_date.format('DD-MM-YYYY'));
+              $("#form input[name='date_payment']").val(chosen_date.format("DD-MM-YYYY HH:mm:ss"));
           });
           /*Forma de pago*/
           $('#payment_way_id').on('change', function(){
