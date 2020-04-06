@@ -307,6 +307,28 @@ class Helper
        }
     }
 
+    public static function getFolioAvailable($document_id, $search_current_number) {
+      $respuesta = false;
+      $count_tabla_customer_invoices = DB::table('customer_invoices')
+        ->select('folio')
+        ->where([
+          ['folio', '=', $search_current_number],
+          ['document_type_id', '=', $document_id],
+        ])->count();
+
+      $count_tabla_purchases = DB::table('purchases')
+        ->select('folio')
+        ->where([
+          ['folio', '=', $search_current_number],
+          ['document_type_id', '=', $document_id],
+        ])->count();
+
+        if ($count_tabla_customer_invoices == 1 || $count_tabla_purchases == 1) {
+          $respuesta = true;
+        }
+        return $respuesta;
+    }
+
     public static function getNextDocumentTypeById($id)
     {
        try {
@@ -314,12 +336,19 @@ class Helper
            $document_type = DocumentType::where('id', '=', $id)->first();
            if (!empty($document_type)) {
                $document_type->current_number += $document_type->increment_number;
+
+               $SearchFolioAvailable = self::getFolioAvailable($document_type->id, $document_type->current_number);
+               while ($SearchFolioAvailable == true) {
+                 $document_type->current_number += $document_type->increment_number;
+                 $SearchFolioAvailable = self::getFolioAvailable($document_type->id, $document_type->current_number);
+               }
                $data['serie'] = $document_type->prefix;
                $data['folio'] = $document_type->current_number;
                $data['name'] = $document_type->prefix . $document_type->current_number;
                $data['id'] = $document_type->id;
                $document_type->update();
-           } else {
+           }
+           else {
                throw new \Exception(__('document_type.error_next_document_type'));
            }
            if (empty($data['id']) || empty($data['name'])) {
@@ -330,6 +359,7 @@ class Helper
            throw $e;
        }
     }
+
     /**
      * Consecutivo por tipo de documento politica
      *

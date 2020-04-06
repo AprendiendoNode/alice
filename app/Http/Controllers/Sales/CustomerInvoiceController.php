@@ -389,6 +389,14 @@ class CustomerInvoiceController extends Controller
    * @param Request $request
    * @return \Illuminate\Http\JsonResponse
    */
+   public function redondeo_tc(Request $request)
+   {
+       //Variables
+       $items_tc = !empty($request->tc) ? $request->tc : ''; //Filtra las facturas por cliente
+       $json = new \stdClass;
+       $json->text = round($items_tc, 4);
+       return response()->json($json);
+   }
    public function totalLines(Request $request)
    {
        //Variables
@@ -406,7 +414,7 @@ class CustomerInvoiceController extends Controller
        }
        if (empty($currency_value)) {
          $current_select_rate = DB::table('currencies')->select('rate')->where('id', $currency_id)->first();
-         $currency_value = $current_rate->rate;
+         $currency_value = round($current_rate->rate, 4);
        }
 
        $currency_code = 'MXN'; //En caso que no haya moneda le digo por defecto es pesos mexicanos
@@ -530,17 +538,17 @@ class CustomerInvoiceController extends Controller
                // $items[$key] = $currency_id;
                // $items[$key] = $item_amount_total;
                // $items[$key] = moneyFormat($item_amount_total, $currency_code);
-               $items[$key] = $item_amount_total;
+               $items[$key] = round($item_amount_total, 2);;
              }
            }
            //Respuesta
            $json->text = $currency_value;
            $json->items = $items;
-           $json->amount_subtotal = $amount_subtotal;
-           $json->amount_discount = $amount_discount;
+           $json->amount_subtotal = round($amount_subtotal, 2);
+           $json->amount_discount = round($amount_discount, 2);
            $json->amount_untaxed = $amount_untaxed;
            $json->amount_tax = $amount_tax + $amount_tax_ret;
-           $json->amount_total = $amount_total;
+           $json->amount_total = round($amount_total, 2);
            $json->amount_total_tmp = $amount_total;
            $json->tc_used = $items_tc;
            return response()->json($json);
@@ -672,13 +680,13 @@ class CustomerInvoiceController extends Controller
           return response()->json(['error' => __('general.error_general')], 422);
         }
         else{
-          return $current_rate->current_rate;
+          return round($current_rate->current_rate,4);
         }
       }
       else {
         $item_currency_code = DB::table('currencies')->select('rate')
         ->where('id', $currency)->value('rate');
-        return $item_currency_code;
+        return round($item_currency_code,4);
       }
    }
 
@@ -1103,14 +1111,14 @@ class CustomerInvoiceController extends Controller
      }
 
      public function store_cont(Request $request)
-     {  
+     {
        // Begin a transaction
        \DB::beginTransaction();
 
        // Open a try/catch block
        try {
          //Logica
-         
+
          $cont_maestro_id = $request->cont_maestro_id;
          $result = DB::select('CALL px_data_fact_sat(?)', array($cont_maestro_id));
 
@@ -1134,10 +1142,10 @@ class CustomerInvoiceController extends Controller
              $date_due = $payment_term->days > 0 ? $date->copy()->addDays($payment_term->days) : $date->copy();
          }
          $request->merge(['date_due' => Helper::dateToSql($date_due)]);
-         
+
          //Obtiene folio
          $document_type = Helper::getNextDocumentTypeById($request->document_type);
-         
+
          $request->merge(['document_type_id' => $document_type['id']]);
          $request->merge(['name' => $document_type['name']]);
          $request->merge(['serie' => $document_type['serie']]);
@@ -1146,7 +1154,7 @@ class CustomerInvoiceController extends Controller
          $request->merge(['payment_way_id' => $payment_way_id]);
          $request->merge(['payment_method_id' => $payment_method_id]);
          $request->merge(['cfdi_use_id' => $cfdi_uses]);
-         
+
          //Guardar Registro principal
          $customer_invoice = CustomerInvoice::create($request->input());
          //Registro de lineas

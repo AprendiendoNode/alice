@@ -97,7 +97,7 @@
                   <div class="col-md-3 col-xs-12">
                     <div class="form-group">
                       <label for="currency_value">TC:<span style="color: red;">*</span></label>
-                      <input type="text" class="form-control form-control-sm" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;">
+                      <input onblur="redondeo_tc();" type="text" class="form-control form-control-sm" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;">
                     </div>
                   </div>
                   <div class="col-md-3 col-xs-12">
@@ -198,9 +198,9 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <button type="submit" class="btn btn-danger mt-3">Timbrar</button>
+                    <button type="submit" class="btn btn-danger mt-3 submit">Timbrar</button>
                   </div>
-                </div>                
+                </div>
               </form>
             </div>
           </div>

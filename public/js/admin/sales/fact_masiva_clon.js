@@ -196,6 +196,7 @@ $(function(){
               });
             }
             else {
+              $("form .submit").attr("disabled", true); //Deshabilito el boton de submit
               var form = $('#form')[0];
               var formData = new FormData(form);
               formData.append('currency_id', $('#currency_id').val());
@@ -538,5 +539,20 @@ var Configuration_table_responsive_simple_classification= {
             text: err.statusText,
           });
         }
+      });
+    }
+    function redondeo_tc() {
+      var token = $('input[name="_token"]').val();
+      var valor = $('#currency_value').val();
+      $.ajax({
+          type: "POST",
+          url: "/sales/redondeo_tc",
+          data: { _token : token, tc: valor },
+          success: function (data){
+            var valor = $('#currency_value').val(data.text);
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
       });
     }

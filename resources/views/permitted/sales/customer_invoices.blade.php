@@ -33,21 +33,23 @@
 
 
           <div class="row">
-            <div class="col-md-6 col-xs-12">
-              <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
-              <div class="input-group">
-                <select class="custom-select" id="customer_id" name="customer_id">
-                  <option value="" selected>Selecciona...</option>
-                  @forelse ($customer as $customer_data)
-                    {{-- <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option> --}}
-                    <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
+            <div class="col-md-3 col-xs-12">
+              <div class="form-group">
+                <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
+                <select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
+                  <option value="">{{ trans('message.selectopt') }}</option>
+                  @forelse ($currency as $currency_data)
+                    <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
                   @empty
                   @endforelse
                 </select>
-                <div class="input-group-append">
-                  {{-- <button class="btn btn btn-outline-primary btn-xs" type="button"><i class="fas fa-search"></i></button> --}}
-                  <button class="btn btn-outline-info btn-xs" type="button"><i class="fas fa-plus-square"></i></button>
-                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-xs-12">
+              <div class="form-group">
+                <label for="currency_value">TC:<span style="color: red;">*</span></label>
+                <input onblur="redondeo_tc();" type="text" class="form-control" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;" required>
               </div>
             </div>
 
@@ -66,32 +68,31 @@
 
             <div class="col-md-3 col-xs-12">
               <div class="form-group">
-                <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
-                <select id="currency_id" name="currency_id" class="form-control required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($currency as $currency_data)
-                    <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
+                <label for="date">Fecha actual:<span style="color: red;">*</span></label>
+                <input type="text" class="form-control" id="date" name="date">
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-xs-12">
+              <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
+              <div class="input-group">
+                <select class="custom-select" id="customer_id" name="customer_id">
+                  <option value="" selected>Selecciona...</option>
+                  @forelse ($customer as $customer_data)
+                    {{-- <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option> --}}
+                    <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
                   @empty
                   @endforelse
                 </select>
+                {{-- <div class="input-group-append"> --}}
+                  {{-- <button class="btn btn btn-outline-primary btn-xs" type="button"><i class="fas fa-search"></i></button> --}}
+                  {{-- <button class="btn btn-outline-info btn-xs" type="button"><i class="fas fa-plus-square"></i></button> --}}
+                {{-- </div> --}}
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="currency_value">TC:<span style="color: red;">*</span></label>
-                <input type="text" class="form-control" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;">
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="date">Fecha actual:<span style="color: red;">*</span></label>
-                <input type="text" class="form-control" id="date" name="date">
 
-                {{-- <input type="text" class="form-control" id="date" name="date" value="@php $date = new DateTime("now", new DateTimeZone('America/Mexico_City'));echo $date->format('Y-m-d H:i:s');@endphp"> --}}
-              </div>
-            </div>
             <div class="col-md-3 col-xs-12">
               <div class="form-group">
                 <label for="payment_term_id" class="control-label">Termino de pago:<span style="color: red;">*</span></label>
@@ -178,42 +179,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Seccion de cuentas contables de pagos. -->
-          <!-- <div class="row">
-            <div class="col-md-6 col-xs-6">
-
-              <div class="col-md-12 col-xs-12">
-                <label for="classif_id" class="control-label">Servicio:<span style="color: red;">*</span></label>
-                <select class="custom-select" id="classif_id" name="classif_id" required>
-                  <option value="" selected>Selecciona...</option>
-                  @forelse ($cxclassifications as $data_service)
-                    <option value="{{ $data_service->id }}"> {{ $data_service->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-
-              <div class="col-md-12 col-xs-12">
-                <label  class="control-label">Nivel 1:<span style="color: red;">*</span></label>
-                <select name="dyn_field[0]" class="form-control select2 changeField0" required>
-                  <option value="">Elija...</option>
-                </select>
-              </div>
-
-              <div class="hide" id="template_cc">
-                <div class="col-md-12 col-xs-12">
-                  <label class="col-xs-2 change_label">xxxx_1.</label>
-                  <select name="dyn_field" class="form-control select2">
-                    <option value="">Elija...</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6 col-xs-6">
-            </div>
-          </div> -->
 
           <!---------------------------------------------------------------------------------->
           <div class="row mt-5">
@@ -889,10 +854,8 @@
           $.ajax({
               url: "/sales/customer-invoices/currency_now",
               type: "POST",
-              // dataType: "JSON",
               data: { _token : token, id_currency: valor },
               success: function (data) {
-                console.log(data);
                 $('#currency_value').val(data);
               },
               error: function (error, textStatus, errorThrown) {
@@ -974,7 +937,7 @@
             theme: "bootstrap",
             placeholder: "Selecciona",
             dropdownAutoWidth : true,
-            width: "80%",
+            width: "100%",
             height: "110%"
             // allowClear: true,
         }).on("change", function () {
@@ -1108,6 +1071,21 @@
             theme: "bootstrap",
             width: "auto",
             dropdownAutoWidth: true,
+        });
+      }
+      function redondeo_tc() {
+        var token = $('input[name="_token"]').val();
+        var valor = $('#currency_value').val();
+        $.ajax({
+            type: "POST",
+            url: "/sales/redondeo_tc",
+            data: { _token : token, tc: valor },
+            success: function (data){
+              var valor = $('#currency_value').val(data.text);
+            },
+            error: function (data) {
+              console.log('Error:', data);
+            }
         });
       }
 

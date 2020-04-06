@@ -35,6 +35,26 @@
           <div class="row">
             <div class="col-md-3 col-xs-12">
               <div class="form-group">
+                <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
+                <select id="currency_id" name="currency_id" class="form-control form-control-sm required" style="width:100%;">
+                  <option value="">{{ trans('message.selectopt') }}</option>
+                  @forelse ($currency as $currency_data)
+                    <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
+                  @empty
+                  @endforelse
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 col-xs-12">
+              <div class="form-group">
+                <label for="currency_value">TC:<span style="color: red;">*</span></label>
+                <input onblur="redondeo_tc();" type="text" class="form-control form-control-sm"
+                id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;"
+                >
+              </div>
+            </div>
+            <div class="col-md-3 col-xs-12">
+              <div class="form-group">
                 <label for="cadena_id" class="control-label">Cadena:<span style="color: red;">*</span></label>
                 <select id="cadena_id" name="cadena_id" class="form-control form-control-sm required" style="width:100%;">
                   <option value="">{{ trans('message.selectopt') }}</option>
@@ -52,25 +72,20 @@
                 </select>
               </div>
             </div>
+          </div>
+          <div class="row">
             <div class="col-md-6 col-xs-12">
               <label for="customer_id" class="control-label  my-2">Clientes:<span style="color: red;">*</span></label>
               <div class="input-group">
                 <select class="custom-select" id="customer_id" name="customer_id">
                   <option value="" selected>Selecciona...</option>
                   @forelse ($customer as $customer_data)
-                    {{-- <option value="{{ $banks_data->id  }}">{{ $banks_data->name }}</option> --}}
                     <option value="{{ $customer_data->id  }}">{{ $customer_data->name }}</option>
                   @empty
                   @endforelse
                 </select>
-                <div class="input-group-append">
-                  {{-- <button class="btn btn btn-outline-primary btn-xs" type="button"><i class="fas fa-search"></i></button> --}}
-                  <button class="btn btn-outline-info btn-xs" type="button"><i class="fas fa-plus-square"></i></button>
-                </div>
               </div>
             </div>
-          </div>
-          <div class="row">
             <div class="col-md-3 col-xs-12">
               <div class="form-group">
                 <label for="branch_office_id" class="control-label">Sucursal:<span style="color: red;">*</span></label>
@@ -84,30 +99,11 @@
               </div>
             </div>
 
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="currency_id" class="control-label">Moneda:<span style="color: red;">*</span></label>
-                <select id="currency_id" name="currency_id" class="form-control form-control-sm required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($currency as $currency_data)
-                    <option value="{{ $currency_data->id  }}">{{ $currency_data->name }}</option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <div class="form-group">
-                <label for="currency_value">TC:<span style="color: red;">*</span></label>
-                <input type="text" class="form-control form-control-sm" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;">
-              </div>
-            </div>
+
             <div class="col-md-3 col-xs-12">
               <div class="form-group">
                 <label for="date">Fecha actual:<span style="color: red;">*</span></label>
                 <input type="text" class="form-control form-control-sm" id="date" name="date">
-
-                {{-- <input type="text" class="form-control" id="date" name="date" value="@php $date = new DateTime("now", new DateTimeZone('America/Mexico_City'));echo $date->format('Y-m-d H:i:s');@endphp"> --}}
               </div>
             </div>
             <div class="col-md-3 col-xs-12">
@@ -115,16 +111,6 @@
                 <label for="date_due">Fecha Vencimiento:</label>
                 <input type="text" class="form-control form-control-sm" id="date_due" name="date_due" value="">
               </div>
-              <!-- <div class="form-group">
-                <label for="payment_term_id" class="control-label">Termino de pago:<span style="color: red;">*</span></label>
-                <select id="payment_term_id" name="payment_term_id" class="form-control required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($payment_term as $payment_term_data)
-                  <option value="{{ $payment_term_data->id }}"> {{ $payment_term_data->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div> -->
             </div>
             <div class="col-md-3 col-xs-12">
               <div class="form-group">
@@ -137,10 +123,6 @@
                   @endforelse
                 </select>
               </div>
-              <!-- <div class="form-group">
-                <label for="date_due">Fecha Vencimiento:</label>
-                <input type="text" class="form-control form-control-sm" id="date_due" name="date_due" value="">
-              </div> -->
             </div>
             <div class="col-md-6 col-xs-12">
               <div class="form-group">
@@ -155,47 +137,6 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-3 col-xs-12">
-            </div>
-
-            <div class="col-md-3 col-xs-12">
-              <!-- <div class="form-group">
-                <label for="payment_way_id" class="control-label">Forma de pago:<span style="color: red;">*</span></label>
-                <select id="payment_way_id" name="payment_way_id" class="form-control form-control-sm required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($payment_way as $payment_way_data)
-                  <option value="{{ $payment_way_data->id }}"> {{ $payment_way_data->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div> -->
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <!-- <div class="form-group">
-                <label for="payment_method_id" class="control-label">Metodo de pago:<span style="color: red;">*</span></label>
-                <select id="payment_method_id" name="payment_method_id" class="form-control form-control-sm required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($payment_methods as $payment_methods_data)
-                  <option value="{{ $payment_methods_data->id }}"> {{ $payment_methods_data->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div> -->
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <!-- <div class="form-group">
-                <label for="cfdi_use_id" class="control-label">Uso de cfdi:<span style="color: red;">*</span></label>
-                <select id="cfdi_use_id" name="cfdi_use_id" class="form-control form-control-sm required" style="width:100%;">
-                  <option value="">{{ trans('message.selectopt') }}</option>
-                  @forelse ($cfdi_uses as $cfdi_uses_data)
-                  <option value="{{ $cfdi_uses_data->id }}"> {{ $cfdi_uses_data->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div> -->
-            </div>
-
-            
             <div class="col-md-6 col-xs-12">
               <div class="form-group">
                 <label for="reference">Referencia:</label>
@@ -203,43 +144,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Seccion de cuentas contables de pagos. -->
-          <!-- <div class="row">
-            <div class="col-md-6 col-xs-6">
-
-              <div class="col-md-12 col-xs-12">
-                <label for="classif_id" class="control-label">Servicio:<span style="color: red;">*</span></label>
-                <select class="custom-select" id="classif_id" name="classif_id" required>
-                  <option value="" selected>Selecciona...</option>
-                  @forelse ($cxclassifications as $data_service)
-                    <option value="{{ $data_service->id }}"> {{ $data_service->name }} </option>
-                  @empty
-                  @endforelse
-                </select>
-              </div>
-
-              <div class="col-md-12 col-xs-12">
-                <label  class="control-label">Nivel 1:<span style="color: red;">*</span></label>
-                <select name="dyn_field[0]" class="form-control select2 changeField0" required>
-                  <option value="">Elija...</option>
-                </select>
-              </div>
-
-              <div class="hide" id="template_cc">
-                <div class="col-md-12 col-xs-12">
-                  <label class="col-xs-2 change_label">xxxx_1.</label>
-                  <select name="dyn_field" class="form-control select2">
-                    <option value="">Elija...</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6 col-xs-6">
-            </div>
-          </div> -->
-
           <!---------------------------------------------------------------------------------->
           <div class="row mt-3">
             <div class="row mt-3">
@@ -335,118 +239,7 @@
                                   @php
                                     $tmp_products = [];
                                   @endphp
-                                  {{-- <tr id="item_row_{{ $item_row }}">
-                                    <td class="text-center" style="vertical-align: middle;">
-                                        <button type="button"
-                                                onclick="$('#item_row_{{ $item_row }}').remove(); totalItem();"
-                                                class="btn btn-xs btn-danger"
-                                                style="margin-bottom: 0;">
-                                                <i class="fa fa-trash-o"></i>
-                                        </button>
-                                        <!-- input hidden -->
-                                        <input type="hidden" id="item_id_{{ $item_row }}"
-                                               name="item[{{ $item_row }}][id]"
-                                                value="{{ old('item.' . $item_row . '.id') }}">
-                                        <!-- /.input hidden -->
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <select class="form-control form-control-sm"  id="item{{ $item_row.'[product_id]'}}" name="item[{{ $item_row }}][product_id]" required>
-                                          <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                          @forelse ($product as $product_data)
-                                            <option value="{{ $product_data->id  }}">{{ $product_data->name }}</option>
-                                          @empty
-                                          @endforelse
-                                        </select>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control form-control-sm text-center"
-                                        id="item{{ $item_row.'['.$item.']'}}"
-                                        name="item[{{ $item_row }}][name]"
-                                        value="{{old('item.' . $item_row . '.name')}}"
-                                        required />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <select class="form-control form-control-sm"  id="item{{ $item_row.'[unit_measure_id]'}}" name="item[{{ $item_row }}][unit_measure_id]" required>
-                                          <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                          @forelse ($unitmeasures as $unitmeasures_data)
-                                            <option value="{{ $unitmeasures_data->id  }}">{{ $unitmeasures_data->name }}</option>
-                                          @empty
-                                          @endforelse
-                                        </select>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <select class="form-control form-control-sm"  id="item{{ $item_row.'[sat_product_id]'}}" name="item[{{ $item_row }}][sat_product_id]" required>
-                                          <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                          @forelse ($satproduct as $satproduct_data)
-                                            <option value="{{ $satproduct_data->id  }}">{{ $satproduct_data->name }}</option>
-                                          @empty
-                                          @endforelse
-                                        </select>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control form-control-sm input-sm text-center"
-                                        id="item{{ $item_row.'['.$item.']'}}"
-                                        name="item[{{ $item_row }}][quantity]"
-                                        value="{{old('item.' . $item_row . '.quantity')}}"
-                                        required />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control form-control-sm input-sm text-center"
-                                        id="item{{ $item_row.'['.$item.']'}}"
-                                        name="item[{{ $item_row }}][price_unit]"
-                                        value="{{old('item.' . $item_row . '.price_unit')}}"
-                                        required />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control form-control-sm input-sm text-center"
-                                        id="item{{ $item_row.'['.$item.']'}}"
-                                        name="item[{{ $item_row }}][discount]"
-                                        value="{{old('item.' . $item_row . '.discount')}}"
-                                        required />
-                                      </div>
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <input type="text" class="form-control form-control-sm input-sm text-center"
-                                        id="item{{ $item_row.'['.$item.']'}}"
-                                        name="item[{{ $item_row }}][current]"
-                                        value="{{old('item.' . $item_row . '.current')}}"
-                                        required />
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="form-group form-group-sm">
-                                        <select class="form-control form-control-sm input-sm"  id="item{{ $item_row.'[taxes]'}}" name="item[{{ $item_row }}][taxes]" required>
-                                          <option selected="selected" value="">{{ trans('message.selectopt') }}</option>
-                                          @forelse ($impuestos as $impuestos_data)
-                                            <option value="{{ $impuestos_data->id  }}">{{ $impuestos_data->name }}</option>
-                                          @empty
-                                          @endforelse
-                                        </select>
-                                      </div>
-                                    </td>
-                                    <td class="text-right" style="padding-top: 11px;">
-                                      <span id="item_txt_amount_untaxed_{{ $item_row }}">0</span>
-                                    </td>
-                                  </tr> --}}
                                 @endforeach
-                                {{-- @php
-                                  $item_row++;
-                                @endphp --}}
                                 <!-- Agregar nuevo item -->
                                 <tr id="add_item">
                                     <td class="text-center">
@@ -492,10 +285,6 @@
                                 </tfoot>
                             </table>
                         </div>
-
-
-                        <!--------------------------------------------------------------------------------->
-
                         <!--------------------------------------------------------------------------------->
                     </div>
                   </div>
@@ -954,7 +743,7 @@
             theme: "bootstrap",
             placeholder: "Selecciona",
             dropdownAutoWidth : true,
-            width: "80%",
+            width: "100%",
             height: "110%"
             // allowClear: true,
         }).on("change", function () {
@@ -1144,7 +933,7 @@
       })
       function get_rzcustomer(id) {
         var token = $('input[name="_token"]').val();
-        
+
         $.ajax({
             type: "POST",
             url: "/sales/customer-data-rzcustomer",
@@ -1478,261 +1267,21 @@
             }
         });
 	    }
-
-	  // Funciones para cuentas contables dinamicas.
-        /*var select2_options = {
-              theme: "bootstrap",
-              placeholder: "Selecciona",
-              dropdownAutoWidth : true,
-              width: "100%",
-              height: "110%"
-        };
-        $("#form select[name='classif_id']").select2(select2_options);
-
-        $('#classif_id').on('change',function(){
-          var id = $(this).val();
-          if (conceptIndex === 2) {
-            // console.log('Existe nivel 3');
-              var $row  = $('.level2');
-              var $row2  = $('.level1');
-              //Remove field
-              $row.remove();
-              $row2.remove();
-
-              conceptIndex = 0;
-          }else if(conceptIndex === 1){
-            // console.log('Existe nivel 2');
-              var $row  = $('.level1');
-              //Remove field
-              $row.remove();
-
-              conceptIndex = 0;
-          }
-
-          get_dyn1(id);
-          // summarize_chains(id);
+      function redondeo_tc() {
+        var token = $('input[name="_token"]').val();
+        var valor = $('#currency_value').val();
+        $.ajax({
+            type: "POST",
+            url: "/sales/redondeo_tc",
+            data: { _token : token, tc: valor },
+            success: function (data){
+              var valor = $('#currency_value').val(data.text);
+            },
+            error: function (data) {
+              console.log('Error:', data);
+            }
         });
-        // Funcion para filtrar sitios por cuenta contable (probablemente se use)
-        function summarize_chains(id_classif) {
-          var _token = $('input[name="_token"]').val();
-          var datax = [];
-
-          $.ajax({
-            type: "POST",
-            url: "/get_chainxclassif",
-            data: { _token : _token, data_one: id_classif},
-            success: function (data){
-              //console.log(data);
-              //cadena_id
-              emptySelect('cadena_id');
-              datax.push({id : "", text : "Elija ..."});
-              $.each(data, function(index, datos){
-                datax.push({id: datos.id, text: datos.cadena});
-              });
-              $('#form').find('[name="cadena_id"]').select2({
-                data : datax
-              });
-            },
-            error: function (data) {
-              console.log('Error:', data);
-            }
-          });
-        }
-        //
-        function get_dyn1(id_classif) {
-          var _token = $('input[name="_token"]').val();
-          var datax = [];
-          $('#form').find('[name="dyn_field[0]"]').select2(select2_options);
-          $.ajax({
-            type: "POST",
-            url: "/get_class_serv",
-            data: { _token : _token,  data_one: id_classif},
-            success: function (data){
-              //console.log(data);
-              emptySelect('dyn_field[0]');
-              datax.push({id : "", text : "Elija ..."});
-              $.each(data, function(index, datos){
-                datax.push({id: datos.id, text: datos.key+' | '+datos.name});
-              });
-              $('#form').find('[name="dyn_field[0]"]').select2({
-                data : datax
-              });
-            },
-            error: function (data) {
-              console.log('Error:', data);
-            }
-          });
-        }
-        async function get_dyn2_test(id_serv) {
-          var _token = $('input[name="_token"]').val();
-          var datax = [];
-          var res = 0;
-          await $.ajax({
-            type: "POST",
-            url: "/get_serv_concept",
-            data: { _token : _token,  data_one: id_serv},
-            success: function (data){
-              //console.log(data);
-              if (data === undefined || data.length === 0) {
-                //console.log('data vacia');
-                res = 0;
-              }else{
-                datax.push({id : "", text : "Elija ..."});
-                $.each(data, function(index, datos){
-                  datax.push({id: datos.id, text: datos.key+' | '+datos.name});
-                });
-                res = datax;
-              }
-            },
-            error: function (data) {
-              console.log('Error:', data);
-            }
-          });
-          return res;
-        }
-        function fill_dyn2(data) {
-          $('#form').find('[name="dyn_field[1]"]').select2(select2_options);
-          emptySelect('dyn_field[1]');
-          $('#form').find('[name="dyn_field[1]"]').select2({
-            data : data
-          });
-        }
-        async function get_dyn3_test(id_desc) {
-          var _token = $('input[name="_token"]').val();
-          var datax = [];
-          var res = 0;
-          await $.ajax({
-            type: "POST",
-            url: "/get_concept_desc",
-            data: { _token : _token,  data_one: id_desc},
-            success: function (data){
-              if (data === undefined || data.length === 0) {
-                res = 0;
-              }else{
-                datax.push({id : "", text : "Elija ..."});
-                $.each(data, function(index, datos){
-                  datax.push({id: datos.id, text: datos.key+' | '+datos.name});
-                });
-                res = datax;
-              }
-            },
-            error: function (data) {
-              console.log('Error:', data);
-            }
-          });
-          return res;
-        }
-        function fill_dyn3(data) {
-          $('#form').find('[name="dyn_field[2]"]').select2();
-          emptySelect('dyn_field[2]');
-          $('#form').find('[name="dyn_field[2]"]').select2({
-            data : data
-          });
-        }
-        function emptySelect(selects) {
-          var formV = $('#form');
-          formV.find('[name="'+selects+'"]').empty();
-          formV.find('[name="'+selects+'"]').select2("destroy");
-        }
-
-        $("#form").on('change', '.changeField0', async function(){
-          var id = $(this).val();
-          var name_key = $("option:selected",this).text();
-          // $('#cc_key').val(name_key);
-          // $('#cc_key2').val(name_key);
-          var check_data;
-          //console.log('cambio: ' + id);
-          if (conceptIndex === 0) {
-            check_data = await get_dyn2_test(id);
-            if (check_data === 0) {
-              //console.log('Vacio: ' + check_data);
-            }else{
-              //console.log('datos: ' + check_data);
-              conceptIndex = 1;
-              var $template = $('#template_cc'),
-                  $clone    = $template
-                                  .clone()
-                                  .removeClass('hide')
-                                  .removeAttr('id')
-                                  .addClass('level1')
-                                  .attr('data-book-index', conceptIndex)
-                                  .insertBefore($template);
-              $clone
-                  .find('[name="dyn_field"]').attr('name', 'dyn_field[' + conceptIndex + ']').attr('data_row', conceptIndex).addClass('changeField1').prop('required',true).end()
-                  .find('.change_label').text('Nivel 2:').end();
-              fill_dyn2(check_data);
-            }
-          }else if(conceptIndex > 0){
-            check_data = await get_dyn2_test(id);
-            if (conceptIndex === 2) {
-              console.log('Existe nivel 3');
-                var $row  = $('.level2');
-                //Remove field
-                $row.remove();
-
-                conceptIndex = 1;
-            }
-            if (check_data === 0) {
-              //console.log('Vacio: ' + check_data);
-              var $row  = $('.level1');
-              //Remove field
-              $row.remove();
-
-              conceptIndex = 0;
-            }else{
-              //console.log('datos: ' + check_data);
-              fill_dyn2(check_data);
-            }
-          }
-        }).on('change', '.changeField1', async function(){
-          var id = $(this).val();
-          var name_key = $("option:selected",this).text();
-          // $('#cc_key').val(name_key);
-          // $('#cc_key2').val(name_key);
-          var check_data2;
-          //console.log('cambio: ' + id);
-          if (conceptIndex === 1) {
-            check_data2 = await get_dyn3_test(id);
-            if (check_data2 === 0) {
-              //console.log('Vacio Level2: ' + check_data2);
-            }else{
-              conceptIndex = 2;
-              var $template = $('#template_cc'),
-                  $clone    = $template
-                                  .clone()
-                                  .removeClass('hide')
-                                  .removeAttr('id')
-                                  .addClass('level2')
-                                  .attr('data-book-index', conceptIndex)
-                                  .insertBefore($template);
-              $clone
-                  .find('[name="dyn_field"]').attr('name', 'dyn_field[' + conceptIndex + ']').attr('data_row', conceptIndex).addClass('changeField2').prop('required',true).end()
-                  .find('.change_label').text('Nivel 3').end();
-              //createEventListenerField1();
-              fill_dyn3(check_data2);
-              console.log(conceptIndex);
-            }
-          }else if(conceptIndex === 2){
-            check_data2 = await get_dyn3_test(id);
-            if (check_data2 === 0) {
-              //console.log('Vacio: ' + check_data2);
-              var $row  = $('.level2');
-              //Remove field
-              $row.remove();
-              conceptIndex = 1;
-            }else{
-              //console.log('datos: ' + check_data2);
-              fill_dyn3(check_data2);
-            }
-          }
-        }).on('change', '.changeField2', function(){
-            var name_key = $("option:selected",this).text();
-            // $('#cc_key').val(name_key);
-            // $('#cc_key2').val(name_key);
-        });*/
-      //
-
-
+      }
   </script>
 
   <style media="screen">
