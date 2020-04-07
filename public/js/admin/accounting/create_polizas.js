@@ -93,7 +93,7 @@ $("#form_create_asientos_contables").on('submit', function(e){
           asientos.push(element);
 
         });
-        console.log(asientos);
+        
         let form = $('#form_create_asientos_contables')[0];
         let formData = new FormData(form);
 
@@ -127,8 +127,8 @@ $("#form_create_asientos_contables").on('submit', function(e){
                });
       }//Preconfirm
     }).then((result) => {
-      console.log(result.value);
-      if (result.value == "true") {
+  
+      if (result.value == 1) {
         Swal.fire({
           title: 'Poliza guardada',
           text: "",
@@ -138,9 +138,13 @@ $("#form_create_asientos_contables").on('submit', function(e){
             window.location = "/accounting/view-create-polizas";
           }
         })
+      }else if(result.value == 2){
+        Swal.fire(
+          'El periodo se encuentra cerrado','Ingrese la poliza con una fecha del periodo actual','warning'
+        )
       }else{
         Swal.fire(
-          'No se guardo la poliza','','warning'
+          'Ocurrio un error', '', 'error'
         )
       }
     })

@@ -216,6 +216,7 @@
                     <th class="text-center">
                         {{__('customer_payment.column_status') }}
                     </th>
+                    <th></th>
                   </tr>
                 </thead>
               </table>

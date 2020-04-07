@@ -446,6 +446,13 @@ class CustomerPolizaController extends Controller
                         if (count($ids_purchases) > 0) {   
                             $ids_purchases_unique = $ids_customer_payments->unique();  
                             $customer_purchase = Purchase::whereIn('id', $ids_purchases_unique)->update(['contabilizado' => 0]);
+                            $asientos_contables = DB::table('polizas_movtos')->select('cuenta_contable_id', 'cargos', 'abonos','fecha')->where('poliza_id', '=', $id_poliza )->get();
+                            
+                            foreach($asientos_contables as $asiento)
+                            {
+                                $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asiento->cuenta_contable_id));
+                                $this->cancel_balances_polizas_ingresos($cc_array, $asiento->fecha, $asiento->cargos, $asiento->abonos);
+                            }
                         }
                         else if(count($ids_customer_payments) > 0){
                             $ids_customer_payments_unique = $ids_customer_payments->unique();
@@ -471,6 +478,16 @@ class CustomerPolizaController extends Controller
                                 $this->cancel_balances_polizas_ingresos($cc_array, $asiento->fecha, $asiento->cargos, $asiento->abonos);
                             }
 
+                        }else{
+                            //POLIZA SIN ANTECEDENTES
+                            //Deshaciendo saldos  en balanza￼￼        
+                            $asientos_contables = DB::table('polizas_movtos')->select('cuenta_contable_id', 'cargos', 'abonos','fecha')->where('poliza_id', '=', $id_poliza )->get();
+                            
+                            foreach($asientos_contables as $asiento)
+                            {
+                                $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asiento->cuenta_contable_id));
+                                $this->cancel_balances_polizas_ingresos($cc_array, $asiento->fecha, $asiento->cargos, $asiento->abonos);
+                            }
                         }
                         
                         //Eliminando partidas dentro de la poliza
@@ -499,59 +516,73 @@ class CustomerPolizaController extends Controller
 
     public function create_poliza_without_invoice(Request $request)
     {
-        //Objeto de polizas
-        $asientos = $request->movs_polizas;
-        $asientos_data = json_decode($asientos);
+        
+        $explode = explode('-', $request->date_invoice);
+        $anio = $explode[0];
+        $mes = $explode[1];
+        if(ContabPeriodoHelper::validar_ejercicio($anio) &&
+            ContabPeriodoHelper::validar_periodo($anio, $mes)){
+            
+            //Objeto de polizas  
+            $asientos = $request->movs_polizas;
+            $asientos_data = json_decode($asientos);
 
-        $tam_asientos = count($asientos_data);
-        $flag = "false";
+            $tam_asientos = count($asientos_data);
+            $flag = 3;//Error Logico
 
-        DB::beginTransaction();
+            DB::beginTransaction();
 
-        try {
+            try {
 
-            $id_poliza = DB::table('polizas')->insertGetId([
-                'tipo_poliza_id' => $request->type_poliza,
-                'numero' => $request->num_poliza,
-                'fecha' => $request->date_invoice,
-                'descripcion' => $request->descripcion_poliza,
-                'total_cargos' => $request->total_cargos_format,
-                'total_abonos' => $request->total_abonos_format
-            ]);
-
-            //Insertando movimientos de las polizas
-            for ($i=0; $i < $tam_asientos; $i++)
-            {
-              if ( $asientos_data[$i]->cuenta_contable_id ) {
-                if ( $asientos_data[$i]->cargo == 0 && $asientos_data[$i]->abono == 0) {
-                   /* NO_INSERTAR */
-                }
-                else{
-                  /* SE INSERTAR */
-                  $sql = DB::table('polizas_movtos')->insert([
-                    'poliza_id' => $id_poliza,
-                    'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
+                $id_poliza = DB::table('polizas')->insertGetId([
+                    'tipo_poliza_id' => $request->type_poliza,
+                    'numero' => $request->num_poliza,
                     'fecha' => $request->date_invoice,
-                    'exchange_rate' => $asientos_data[$i]->tipo_cambio,
-                    'descripcion' => $asientos_data[$i]->nombre,
-                    'cargos' => $asientos_data[$i]->cargo,
-                    'abonos' => $asientos_data[$i]->abono,
-                    'referencia' => $asientos_data[$i]->referencia
-                  ]);
+                    'descripcion' => $request->descripcion_poliza,
+                    'total_cargos' => $request->total_cargos_format,
+                    'total_abonos' => $request->total_abonos_format
+                ]);
+                //Insertando movimientos de las polizas
+                for ($i=0; $i < $tam_asientos; $i++)
+                {
+                if ( $asientos_data[$i]->cuenta_contable_id ) {
+                    if ( $asientos_data[$i]->cargo == 0 && $asientos_data[$i]->abono == 0) {
+                    /* NO_INSERTAR */
+                    }
+                    else{
+                    $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
+                    $this->add_balances_polizas_ingresos($cc_array, $request->date_invoice, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
+                    
+                    $sql = DB::table('polizas_movtos')->insert([
+                        'poliza_id' => $id_poliza,
+                        'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
+                        'fecha' => $request->date_invoice,
+                        'exchange_rate' => $asientos_data[$i]->tipo_cambio,
+                        'descripcion' => $asientos_data[$i]->nombre,
+                        'cargos' => $asientos_data[$i]->cargo,
+                        'abonos' => $asientos_data[$i]->abono,
+                        'referencia' => $asientos_data[$i]->referencia
+                    ]);
+                    }
                 }
-              }
+                }
+
+                DB::commit();
+
+                $flag = 1; //Poliza creada correctamente
+
+
+            } catch(\Exception $e){
+                $error = $e->getMessage();
+                DB::rollback();
+                dd($error);
             }
-
-            DB::commit();
-
-            $flag = "true";
-
-
-        } catch(\Exception $e){
-            $error = $e->getMessage();
-            DB::rollback();
-            dd($error);
+                
+        }else{
+            $flag = 2; // Periodo o ejercicio cerrado
         }
+        
+        
 
         return  $flag;
     }
