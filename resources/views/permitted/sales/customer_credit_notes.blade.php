@@ -46,7 +46,7 @@
               <div class="col-md-2 col-xs-12">
                 <div class="form-group">
                   <label for="currency_value">TC:<span style="color: red;">*</span></label>
-                  <input type="text" class="form-control" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;" required>
+                  <input onblur="redondeo_tc();" type="text" class="form-control" id="currency_value" name="currency_value" style="padding: 0.875rem 0.5rem;" required>
                 </div>
               </div>
               <div class="col-md-7 col-xs-12">
@@ -596,7 +596,7 @@
             <div class="ln_solid mt-5"></div>
             <div class="row">
               <div class="col-md-12 col-xs-12 text-right footer-form">
-                <button type="submit" class="btn btn-outline-primary">@lang('general.button_save')</button>
+                <button type="submit" class="btn btn-outline-primary submit">@lang('general.button_save')</button>
                 &nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-outline-danger">@lang('general.button_discard')</button>
               </div>
@@ -873,7 +873,7 @@
             dataType: "JSON",
             data: $("#form").serialize(),
             success: function (data) {
-                console.log(data);
+                // console.log(data);
 
                 if (data) {
                     $.each(data.items, function (key, value) {
@@ -988,6 +988,7 @@
           submitHandler: function(e){
             var form = $('#form')[0];
             var formData = new FormData(form);
+            $("form .submit").attr("disabled", true); //Deshabilito el boton de submit
             $.ajax({
               type: "POST",
               url: "/sales/customer-credit-notes-store",
@@ -1025,7 +1026,8 @@
                       type: 'error',
                       title: 'Error encontrado..',
                       text: 'Error al crear el CFDI - Egreso!',
-                    });
+                  });
+                  $("form .submit").attr("disabled", false); //Deshabilito el boton de submit
                 }
                 // console.log(data);
               },
@@ -1034,7 +1036,8 @@
                     type: 'error',
                     title: 'Oops...',
                     text: err.statusText,
-                  });
+                });
+                $("form .submit").attr("disabled", false); //Deshabilito el boton de submit
               }
             });
           }
@@ -1310,7 +1313,21 @@
             }
         });
     }
-
+    function redondeo_tc() {
+      var token = $('input[name="_token"]').val();
+      var valor = $('#currency_value').val();
+      $.ajax({
+          type: "POST",
+          url: "/sales/redondeo_tc",
+          data: { _token : token, tc: valor },
+          success: function (data){
+            var valor = $('#currency_value').val(data.text);
+          },
+          error: function (data) {
+            console.log('Error:', data);
+          }
+      });
+    }
 
   </script>
   @else

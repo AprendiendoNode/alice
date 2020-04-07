@@ -123,7 +123,7 @@
                 <div class="col-md-3 col-xs-12">
                   <div class="form-group">
                     <label for="currency_value">TC:<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control form-control-sm" id="currency_value" name="currency_value" required>
+                    <input onblur="redondeo_tc();" type="text" class="form-control form-control-sm" id="currency_value" name="currency_value" required>
                   </div>
                 </div>
                 <div class="col-md-3 col-xs-12">
@@ -353,7 +353,7 @@
               <div class="ln_solid mt-5"></div>
               <div class="row">
                 <div class="col-md-12 col-xs-12 text-right footer-form">
-                  <button type="submit" class="btn btn-outline-primary">@lang('general.button_save')</button>
+                  <button type="submit" class="btn btn-outline-primary submit">@lang('general.button_save')</button>
                   &nbsp;&nbsp;&nbsp;
                   <button type="button" class="btn btn-outline-danger">@lang('general.button_discard')</button>
                 </div>
@@ -810,6 +810,7 @@
             submitHandler: function(e){
               var form = $('#form')[0];
               var formData = new FormData(form);
+              $("form .submit").attr("disabled", true); //Deshabilito el boton de submit
               $.ajax({
                 type: "POST",
                 url: "/sales/customer-payments/customer-payments-store",
@@ -817,6 +818,7 @@
                 contentType: false,
                 processData: false,
                 success: function (data){
+                  $("form .submit").attr("disabled", false); //Deshabilito el boton de submit
                   if (data == 'error1') {
                     // return  __('customer_payment.error_currency_id_company_bank_account_id')
                     Swal.fire({
@@ -887,7 +889,7 @@
                         // Read more about handling dismissals
                         result.dismiss === Swal.DismissReason.timer
                       ) {
-                        // window.location.href = "/sales/customer-payments";
+                        window.location.href = "/sales/customer-payments";
                       }
                     });
                   }
@@ -907,6 +909,7 @@
                   }
                 },
                 error: function (err) {
+                  $("form .submit").attr("disabled", false); //Deshabilito el boton de submit
                   Swal.fire({
                     type: 'error',
                     title: 'Oops...',
@@ -1060,7 +1063,21 @@
         $("#form input[name='amount']").on("change", function () {
           totalItemReconciled();
         });
-
+        function redondeo_tc() {
+          var token = $('input[name="_token"]').val();
+          var valor = $('#currency_value').val();
+          $.ajax({
+              type: "POST",
+              url: "/sales/redondeo_tc",
+              data: { _token : token, tc: valor },
+              success: function (data){
+                var valor = $('#currency_value').val(data.text);
+              },
+              error: function (data) {
+                console.log('Error:', data);
+              }
+          });
+        }
     </script>
   @else
   @endif
