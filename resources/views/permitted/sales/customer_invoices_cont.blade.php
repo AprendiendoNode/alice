@@ -397,7 +397,7 @@
           <div class="ln_solid mt-5"></div>
           <div class="row">
             <div class="col-md-12 col-xs-12 text-right footer-form">
-              <button type="submit" class="btn btn-outline-primary">@lang('general.button_save')</button>
+              <button type="submit" class="btn btn-outline-primary submit">@lang('general.button_save')</button>
               &nbsp;&nbsp;&nbsp;
               <button type="button" class="btn btn-outline-danger">@lang('general.button_discard')</button>
             </div>
@@ -531,6 +531,7 @@
               var formData = new FormData(form);
               formData.append('group_sites', group_sites);
               // console.log(group_sites);
+              $("form .submit").attr("disabled", true); //Deshabilito el boton de submit
               $.ajax({
                 type: "POST",
                 url: "/sales/customer-invoices-store-cont",
@@ -569,7 +570,8 @@
                        type: 'error',
                        title: 'Error encontrado..',
                        text: 'Error al crear el  CFDI!',
-                     });
+                    });
+                    $("form .submit").attr("disabled", false); //Deshabilito el boton de submit
                   }
                 },
                 error: function (err) {
@@ -577,7 +579,8 @@
                      type: 'error',
                      title: 'Oops...',
                      text: err.statusText,
-                   });
+                  });
+                  $("form .submit").attr("disabled", false); //Deshabilito el boton de submit
                 }
               });
               // form.submit();
@@ -597,7 +600,7 @@
           // let id = $(this).val();
           // console.log(id);
           let row = $(this).attr('data-row');
-          console.log(row);
+          // console.log(row);
           totalItem();
 
       });
@@ -662,7 +665,7 @@
               // dataType: "JSON",
               data: { _token : token, id_currency: valor },
               success: function (data) {
-                console.log(data);
+                // console.log(data);
                 $('#currency_value').val(data);
               },
               error: function (error, textStatus, errorThrown) {
@@ -959,7 +962,7 @@
             type: "POST",
             data: { _token : token, cadena_id: cadena_id, contract_master_id: cont_maestro_id},
             success: function (data) {
-              console.log(data);
+              // console.log(data);
               var moneda_val = $('input[name="currency_id"]').val();
               var tc_val = $('input[name="currency_value"]').val();
               if (moneda_val == '' || tc_val == '') {
@@ -1124,7 +1127,7 @@
           data.forEach(function(key){
             amount_sum_annexes += parseFloat(key.monto);
           });
-          console.log(amount_sum_annexes);
+          // console.log(amount_sum_annexes);
 					var html = '';
                     var current_unit= data[0].unit_measure_id;
                     var current_sat = data[0].sat_product_id;

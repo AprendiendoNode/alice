@@ -239,6 +239,7 @@ $(function(){
                       title: 'Error encontrado..',
                       text: 'Realice la operacion nuevamente!',
                     });
+                    $("form .submit").attr("disabled", false); //Deshabilito el boton de submit
                   }
                 },
                 error: function (err) {
@@ -247,6 +248,7 @@ $(function(){
                       title: 'Oops...',
                       text: err.statusText,
                     });
+                  $("form .submit").attr("disabled", false); //Deshabilito el boton de submit
                 }
               });
             }

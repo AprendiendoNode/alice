@@ -495,7 +495,7 @@
           <div class="ln_solid mt-5"></div>
           <div class="row">
             <div class="col-md-12 col-xs-12 text-right footer-form">
-              <button type="submit" class="btn btn-outline-primary">@lang('general.button_save')</button>
+              <button type="submit" class="btn btn-outline-primary submit">@lang('general.button_save')</button>
               &nbsp;&nbsp;&nbsp;
               <button type="button" class="btn btn-outline-danger">@lang('general.button_discard')</button>
             </div>
@@ -592,6 +592,7 @@
             submitHandler: function(e){
               var form = $('#form')[0];
               var formData = new FormData(form);
+              $("form .submit").attr("disabled", true); //Deshabilito el boton de submit
               $.ajax({
                 type: "POST",
                 url: "/sales/customer-invoices-store",
@@ -629,7 +630,8 @@
                        type: 'error',
                        title: 'Error encontrado..',
                        text: 'Error al crear el  CFDI!',
-                     });
+                    });
+                    $("form .submit").attr("disabled", false); //Deshabilito el boton de submit
                   }
                   // console.log(data);
                 },
@@ -638,7 +640,8 @@
                      type: 'error',
                      title: 'Oops...',
                      text: err.statusText,
-                   });
+                  });
+                  $("form .submit").attr("disabled", false); //Deshabilito el boton de submit
                 }
               });
               // form.submit();
@@ -794,7 +797,7 @@
           // let id = $(this).val();
           // console.log(id);
           let row = $(this).attr('data-row');
-          console.log(row);
+          // console.log(row);
           totalItem();
 
       });
@@ -878,7 +881,7 @@
             data: $("#form").serialize(),
             success: function (data) {
                 if (data) {
-                    console.log(data);
+                    // console.log(data);
                     $.each(data.items, function (key, value) {
                         $("#item_txt_amount_untaxed_" + key).html(value);
                     });
