@@ -316,7 +316,6 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/dash_operacion_tickets','Noc\NocToolsController@dash_operacion_tickets');
   Route::post('/graph_operacion_tickets','Noc\NocToolsController@graph_operacion_tickets');
   Route::post('/all_disponibilidad','Noc\NocToolsController@all_disponibilidad');
-  Route::post('/dash_operacion_eq_act_mon','Noc\NocToolsController@dash_operacion_eq_act_mon');
   Route::post('/get_cl_diario','Noc\NocToolsController@get_cl_diario');
   Route::post('get_cl_instalaciones', 'Noc\NocToolsController@get_cl_instalaciones');
   Route::post('/get_cl_5_dia','Noc\NocToolsController@get_cl_5_dia');
@@ -1150,7 +1149,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices-cont-search', 'Sales\CustomerInvoiceController@search_cont');
     Route::post('/customer-data-annexes', 'Sales\CustomerInvoiceController@getDataContractAnnexes');
     Route::post('/customer-data-rzcustomer','Sales\CustomerInvoiceController@getrzcustomerid');
-    Route::post('/redondeo_tc','Sales\CustomerInvoiceController@redondeo_tc');
+
     //Notas de credito
     Route::get('/customer-credit-notes', 'Sales\CustomerCreditNoteController@index');
     Route::get('/credit-notes-history', 'Sales\CustomerCreditNoteController@view_egresos');
@@ -1260,11 +1259,7 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
    //Administrador Contabilidad
    Route::get('/view_accounting_configuration','Accounting\AccountingConfigurationController@index');
    Route::post('/get_periodo_actual','Accounting\AccountingConfigurationController@get_periodo_actual');
-   Route::post('/get_periodos_by_year','Accounting\AccountingConfigurationController@get_periodos_by_year');
-   Route::post('/get_periodo_month','Accounting\AccountingConfigurationController@get_periodo_month');
-   Route::post('/cerrarPeriodoMensual','Accounting\AccountingConfigurationController@cerrarPeriodoMensual');
-   Route::post('/cerrar_ejercicio','Accounting\AccountingConfigurationController@cerrar_ejercicio');
-   // Contabilidados
+   // Contabilidad
    Route::get('/view_balance_accounting','Accounting\BalanceController@index');
    Route::get('/balance_general_pdf/{periodo}','Accounting\BalanceController@generate_balace_pdf');
    Route::post('/get_balance_by_month','Accounting\BalanceController@getBalanceByMonth');
@@ -1301,6 +1296,7 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   Route::post('/get_billing_report','Sales\BillingReportController@get_billing_report');
   Route::get('/estado_resultados', 'Accounting\EstadoResultadoController@index');
   Route::post('/estado_resultados_search', 'Accounting\EstadoResultadoController@estado_resultados_search');
+  Route::post('/balance_general_search', 'Accounting\EstadoResultadoController@balance_general_search');
   //CXC
   Route::get('/view_cxc_history', 'Accounting\CustomerPolizaController@view_cxc');
   Route::post('/cxc_data', 'Accounting\CustomerPolizaController@cxc_data');
@@ -1312,8 +1308,6 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   Route::get('/view_purchase_poliza_pay', 'Purchases\HistoryPurchasesController@index_poliza_pay');
   Route::post('/polizas_pay_search','Purchases\HistoryPurchasesController@search_poliza_pay');
 
-  Route::post('/purchase_polizas_movs_save_pay', 'Purchases\HistoryPurchasesController@purchase_polizas_movs_save_pay');
-  Route::post('get_purchase_mov_pay_data', 'Purchases\HistoryPurchasesController@get_purchase_mov_pay_data');
 });
 
 Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
@@ -1335,7 +1329,7 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::post('/send_purchase_two', 'Purchases\HistoryPurchasesController@approval_two');
   Route::post('/deny_purchase', 'Purchases\HistoryPurchasesController@deny_purchase_act');
 
-  Route::post('purchase_poliza/contador', 'Purchases\HistoryPurchasesController@GetNextContador');
+
   //Cuentas bancarias de proveedor
   Route::get('/view_cb_provider', 'Purchases\CbProviderController@index');
 

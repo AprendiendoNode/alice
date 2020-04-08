@@ -48,13 +48,25 @@ class EstadoResultadoController extends Controller
         }
         $cuenta->total = number_format($cuenta->total, 2, '.', ',');
       };
-      
       $response = [
         'columnas' => $columns,
         'datos' => $resultados
       ];
       return response()->json( $response );
       
+  }
+  
+  public function balance_general_search(Request $request) {
+    $periodInit = $request->period_month.'-01';
+      $periodEnd = $request->period_month_end.'-01';
+      $response = [];
+      $resultados = DB::select('CALL Contab.px_balance_general_xperiodo(?,?)', [ $periodInit, $periodEnd ]);
+      $columns = array_keys(((array)$resultados[0]));
+      $response = [
+        'columnas' => $columns,
+        'datos' => $resultados
+      ];
+      return response()->json( $response );
   }
 
   private function sumaItems( ...$items ) {

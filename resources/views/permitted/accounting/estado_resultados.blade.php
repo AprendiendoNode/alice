@@ -22,6 +22,7 @@
           <div class="row">
             <div class="col-md-4">
               <div class="form-group mb-3 row">
+                <div class="col-md-12"><h4><strong>Estado de resultados</strong></h4></div>
                 <div class="col-md-12"><label>Elija el periodo</label></div>
                 <div class="col-md-6">
                   <input type="text" class="input-sm form-control required" id="period_month" name="period_month" placeholder="Desde" />
@@ -45,25 +46,7 @@
             <div class="table-responsive" id="all_month_table_content">
               <table id="all_month" class="table tablita table-striped stripe row-border order-column">
                 <thead>
-                  <tr>
-                  <!--  <th>Cuenta Movimiento</th>
-                    <th>Nombre</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>total</th>
-                    <th>%</th>
-                    <th class="text-left">Con CR y RD</th>
-                    <th>%</th>-->
+                  <tr>                  
                   </tr>
                 </thead>
                 <tbody>
@@ -74,6 +57,51 @@
         </div>
       </div>
     </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        {{-- <h5 class="card-title"><ins>Nomina Mensual</ins></h5> --}}
+        <form id="searchBalance" name="search" class="forms-sample" enctype="multipart/form-data" autocomplete="off">
+          {{ csrf_field() }}
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group mb-3 row">
+                <div class="col-md-12"><h4><strong>Balance general</strong></h4></div>
+                <div class="col-md-12"><label>Elija el periodo</label></div>
+                <div class="col-md-6">
+                  <input type="text" class="input-sm form-control required" id="period_month_balance" name="period_month" placeholder="Desde" />
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="input-sm form-control required" id="period_month_end_balance" name="period_month_end" placeholder="Hasta" />
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <div class="btn-group" role="group" aria-label="Basic example" style="margin-top: 1.8rem !important;">
+                  <button type="submit" class="btn btn-primary default" id="btnGenerarBalance">Generar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="row my-4">
+          <div class="col-lg-12 col-md-12 mb-4">
+            <div class="table-responsive" id="all_month_table_content_balance">
+              <table id="all_month_balance" class="table tablita table-striped stripe row-border order-column">
+                <thead>
+                  <tr>                  
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 @endsection
 
 @push('scripts')

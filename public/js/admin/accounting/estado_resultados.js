@@ -19,6 +19,25 @@ $(function() {
     clearBtn: true
   });
 
+  $("#period_month_balance").datepicker({
+    language: 'es',
+    format: " yyyy-mm",
+    viewMode: "months",
+    minViewMode: "months",
+    endDate: '1m',
+    autoclose: true,
+    clearBtn: true
+  });
+  $("#period_month_end_balance").datepicker({
+    language: 'es',
+    format: " yyyy-mm",
+    viewMode: "months",
+    minViewMode: "months",
+    endDate: '1m',
+    autoclose: true,
+    clearBtn: true
+  });
+
   const nowOfYear = moment().format('YYYY-MM');
   // $('#period_month').val(nowOfYear).datepicker('update');
 
@@ -48,6 +67,32 @@ $(function() {
       busqueda();
     }
   });
+  $("#searchBalance").validate({
+    ignore: "input[type=hidden]",
+    errorClass: "text-danger",
+    successClass: "text-success",
+    errorPlacement: function (error, element) {
+      var attr = $('[name="'+element[0].name+'"]').attr('datas');
+      if (element[0].id === 'fileInput') {
+        error.insertAfter($('#cont_file'));
+      }
+      else {
+        if(attr == 'sel_ingreso'){
+          error.insertAfter($('#cont_ingreso'));
+        }
+        else {
+          error.insertAfter(element);
+        }
+      }
+    },
+    rules: {
+    },
+    messages: {
+    },
+    submitHandler: function(e){
+      busquedaBalance();
+    }
+  });
 });
 
 function busqueda() {
@@ -64,13 +109,6 @@ function busqueda() {
     data: formData,
     contentType: false,
     processData: false,
-    /*success: function (data){
-      remplazar_thead_th_periodo($("#all_month"), 2 ,13);
-      remplazar_pintar_header($("#all_month"), 14,17);
-
-      fill_table_periodo(data, $("#all_month"));
-      pintar_celda($("#all_month"));
-    },*/
     success: data => renderTableEstados( data, $("#all_month") ),
     error: function (err) {
       Swal.fire({
@@ -81,6 +119,32 @@ function busqueda() {
     }
   });
 }
+
+function busquedaBalance() {
+  var form = $('#searchBalance')[0];
+  var formData = new FormData(form);
+  $("#btnGenerarBalance").attr("disabled","disabled");
+  $("#btnGenerarBalance").html(`
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <span class="sr-only">Generando...</span>
+  `);
+  $.ajax({
+    type: "POST",
+    url: "/accounting/balance_general_search",
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: data => renderTableBalance( data, $("#all_month_balance") ),
+    error: function (err) {
+      Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: err.statusText,
+        });
+    }
+  });
+}
+
 function remplazar_pintar_header(table, posicionini, posicionfin) {
   for (var i = posicionini; i <= posicionfin; i++) {
     table.DataTable().columns(i).header().to$().addClass('azul');
@@ -134,6 +198,29 @@ function fill_table_periodo (response, columnsLength,table) {
   });
   $("#btnGenerar").removeAttr("disabled");
   $("#btnGenerar").html("Generar");
+  vartable.DataTable().columns.adjust();
+}
+
+function fill_table_periodo_balance (response, columnsLength,table) {
+  //table.DataTable().destroy();
+  console.log("Colum lenght", columnsLength);
+  Configuration_table_no_options_biweekly.columnDefs[0] = {};
+  if( columnsLength > 11 ) {
+    Configuration_table_no_options_biweekly.buttons[2].orientation="landscape";
+    Configuration_table_no_options_biweekly.buttons[2].pageSize="A3";
+  } else {
+    Configuration_table_no_options_biweekly.buttons[2].orientation="portrait";
+    Configuration_table_no_options_biweekly.buttons[2].pageSize="A4";
+  }
+  var vartable = table.dataTable(Configuration_table_no_options_biweekly);
+  vartable.fnClearTable();
+  $.each(response, function(index, status){
+    const data = [];
+    for( let dt of Object.entries(status) ) data.push(dt[1]);
+    vartable.fnAddData( data );
+  });
+  $("#btnGenerarBalance").removeAttr("disabled");
+  $("#btnGenerarBalance").html("Generar");
   vartable.DataTable().columns.adjust();
 }
 
@@ -205,7 +292,7 @@ var Configuration_table_no_options_biweekly = {
         },
       }, {
         extend: 'csvHtml5',
-        title: 'Estado de resultados',
+        title: 'Balance general',
         init: function(api, node, config) {
            $(node).removeClass('btn-secondary')
         },
@@ -217,7 +304,7 @@ var Configuration_table_no_options_biweekly = {
         },
       }, {
         extend: 'pdfHtml5',
-        title: 'Estado de resultados',
+        title: 'Balance general',
         init: (api, node, config) => $(node).removeClass('btn-secondary'),
         text: '<i class="fas fa-file-pdf fastable mt-2"></i> Extraer a PDF',
         titleAttr: 'PDF',
@@ -380,4 +467,21 @@ function renderTableEstados( data, tableMain ) {
   for( let header of data.columnas ) thead.append(`<th>${header.toUpperCase()}</th>`);
   table.DataTable().destroy();
   fill_table_periodo( data.datos, data.columnas.length,$(table) );
+}
+
+function renderTableBalance( data, tableMain ) {
+  const parent = $("#all_month_table_content_balance");
+  const id = tableMain.attr("id");
+  const cssClass = tableMain.attr("class");
+
+  table = $(`<table id="${id}" clas="${cssClass}"></table>`);
+  parent.empty();
+  parent.html(table);
+  table.append("<thead><tr></tr></thead>");
+  table.append("<tbody></tbody>");
+  const thead = table.find("thead tr");
+
+  for( let header of data.columnas ) thead.append(`<th>${header.toUpperCase()}</th>`);
+  table.DataTable().destroy();
+  fill_table_periodo_balance( data.datos, data.columnas.length,$(table) );
 }
