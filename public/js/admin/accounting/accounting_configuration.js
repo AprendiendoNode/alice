@@ -99,6 +99,82 @@ $('#periodo').on('change', function(){
 
 });
 
+$('#form-cerrar-periodo').on('submit', function(e){
+  e.preventDefault();
+  
+  let ejercicio = $('#ejercicio').val();
+  let periodo = $('#periodo').val();
+
+  if(ejercicio != '' && periodo  != ''){
+      Swal.fire({
+          title: "¿Estás seguro?",
+          text: "No se podra revertir este cambio",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Confirmar',
+          cancelButtonText: 'Cancelar',
+          showLoaderOnConfirm: true,
+          preConfirm: () => {
+    
+            var _token = $('input[name="_token"]').val();
+            let form = $('#form-cerrar-periodo')[0];
+            let formData = new FormData(form);  
+    
+            const headers = new Headers({
+               "Accept": "application/json",
+               "X-Requested-With": "XMLHttpRequest",
+               "X-CSRF-TOKEN": _token
+            })
+    
+            var miInit = { method: 'post',
+                               headers: headers,
+                               credentials: "same-origin",
+                               body:formData,
+                               cache: 'default' };
+    
+             return fetch('/accounting/cerrarPeriodoMensual', miInit)
+                   .then(function(response){
+                     if (!response.ok) {
+                        throw new Error(response.statusText)
+                      }
+                     return response.text();
+                   })
+                   .catch(function(error){
+                     Swal.showValidationMessage(
+                       `Request failed: ${error}`
+                     )
+                   });
+          }//Preconfirm
+        }).then((result) => {
+          if (result.value == 1) {
+            Swal.fire({
+              title: 'Cierre del ejercicio realizado correctamente',
+              text: "",
+              type: 'success',
+            }).then(function (result) {
+              if (result.value) {
+                window.location = "/accounting/view_accounting_configuration";
+              }
+            })
+          }else{
+            Swal.fire(
+              'No se realizo el cierre del ejercicio','','error'
+            )
+          }
+        })
+
+  }else{
+      Swal.fire(
+          'Debe seleccionar el ejercicio','','error'
+        )
+  }
+
+  
+});
+/***************************************************************/
+
 $('#form-cerrar-ejercicio').on('submit', function(e){
     e.preventDefault();
     
