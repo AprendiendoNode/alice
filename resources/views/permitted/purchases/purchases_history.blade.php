@@ -213,9 +213,10 @@
                      <tr class="bg-primary" style="background: #088A68;">
                         <th> <small></small> </th>
                         <th> <small>Folio</small> </th>
+                        <th> <small>Factura</small> </th>
                         <th> <small>Fecha factura</small> </th>
                         <th> <small>Termino de pago</small> </th>
-                        <th> <small>Forma de pago</small> </th>
+                        <th> <small>Elaborado</small> </th>
                         <th> <small>Moneda</small> </th>
                         <th> <small>Total</small> </th>
                         <th> <small>Estado</small> </th>
@@ -226,6 +227,7 @@
                    </tbody>
                    <tfoot id='tfoot_average'>
                      <tr>
+                       <th></th>
                        <th></th>
                        <th></th>
                        <th></th>
@@ -336,9 +338,10 @@
                      <tr class="bg-primary" style="background: #088A68;">
                         <th> <small></small> </th>
                         <th> <small>Folio</small> </th>
+                        <th> <small>Factura</small> </th>
                         <th> <small>Fecha factura</small> </th>
                         <th> <small>Termino de pago</small> </th>
-                        <th> <small>Forma de pago</small> </th>
+                        <th> <small>Elaboro</small> </th>
                         <th> <small>Moneda</small> </th>
                         <th> <small>Total</small> </th>
                         <th> <small>Estado</small> </th>
@@ -350,6 +353,7 @@
                    </tbody>
                    <tfoot id='tfoot_average'>
                      <tr>
+                       <th></th>
                        <th></th>
                        <th></th>
                        <th></th>
@@ -461,9 +465,10 @@
                        <tr class="bg-primary" style="background: #088A68;">
                           <th> <small></small> </th>
                           <th> <small>Folio</small> </th>
+                          <th> <small>Factura</small> </th>
                           <th> <small>Fecha factura</small> </th>
                           <th> <small>Termino de pago</small> </th>
-                          <th> <small>Forma de pago</small> </th>
+                          <th> <small>Revisado</small> </th>
                           <th> <small>Moneda</small> </th>
                           <th> <small>Total</small> </th>
                           <th> <small>Estado</small> </th>
@@ -475,6 +480,7 @@
                      </tbody>
                      <tfoot id='tfoot_average'>
                        <tr>
+                         <th></th>
                          <th></th>
                          <th></th>
                          <th></th>

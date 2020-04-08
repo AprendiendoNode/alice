@@ -66,6 +66,7 @@ class Purchase extends Model
     'confirmacion',
     'date_delivery',
     'customer_bank_account_id',
+    'order_purchase_id',
     'created_uid',
     'updated_uid'
 ];

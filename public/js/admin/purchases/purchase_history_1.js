@@ -68,7 +68,7 @@ var Configuration_table_responsive_purchases_1= {
 		  "width": "0.1%",
 		  "createdCell": function (td, cellData, rowData, row, col){
 		    if ( cellData > 1 ) {
-		      if(rowData[9] != 'Elaboro'){
+		      if(rowData[10] != 'Elaboro'){
 		      	// console.log(rowData[9]);
 		        this.api().cell(td).checkboxes.disable();
 		      }
@@ -86,13 +86,13 @@ var Configuration_table_responsive_purchases_1= {
 		  "className": "text-center",
 		},
 		{
-		  "targets": 3,
-		  "width": "0.2%",
-		  "className": "text-center",
+			"targets": 3,
+			"width": "1%",
+			"className": "text-center",
 		},
 		{
 		  "targets": 4,
-		  "width": "1%",
+		  "width": "0.2%",
 		  "className": "text-center",
 		},
 		{
@@ -102,12 +102,12 @@ var Configuration_table_responsive_purchases_1= {
 		},
 		{
 		  "targets": 6,
-		  "width": "0.3%",
+		  "width": "1%",
 		  "className": "text-center",
 		},
 		{
 		  "targets": 7,
-		  "width": "0.5%",
+		  "width": "0.3%",
 		  "className": "text-center",
 		},
 		{
@@ -117,6 +117,11 @@ var Configuration_table_responsive_purchases_1= {
 		},
 		{
 		  "targets": 9,
+		  "width": "0.5%",
+		  "className": "text-center",
+		},
+		{
+		  "targets": 10,
 		  "visible": false,
 		  "searchable": false
 		}
@@ -254,9 +259,10 @@ function gen_payments_table(datajson, table){
     vartable.fnAddData([
         status.id,
         status.name,
+				status.name_fact,
         status.date,
         status.payment_terms,
-        status.payment_methods,
+        status.elaboro,
         status.currencies,
         status.amount_total,
         '<span class="badge badge-primary badge-pill px-1 text-white">'+status.estatus+'</span>',

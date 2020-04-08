@@ -76,13 +76,13 @@ var Configuration_table_responsive_purchases_1= {
 		  "className": "text-center",
 		},
 		{
-		  "targets": 3,
-		  "width": "0.2%",
-		  "className": "text-center",
+			"targets": 3,
+			"width": "1%",
+			"className": "text-center",
 		},
 		{
 		  "targets": 4,
-		  "width": "1%",
+		  "width": "0.2%",
 		  "className": "text-center",
 		},
 		{
@@ -92,16 +92,21 @@ var Configuration_table_responsive_purchases_1= {
 		},
 		{
 		  "targets": 6,
-		  "width": "0.3%",
+		  "width": "1%",
 		  "className": "text-center",
 		},
 		{
 		  "targets": 7,
-		  "width": "0.5%",
+		  "width": "0.3%",
 		  "className": "text-center",
 		},
 		{
 		  "targets": 8,
+		  "width": "0.5%",
+		  "className": "text-center",
+		},
+		{
+		  "targets": 9,
 		  "visible": true,
 		  "searchable": false
 		}
@@ -182,9 +187,10 @@ function gen_payments_table(datajson, table){
     vartable.fnAddData([
         status.id,
         status.name,
+				status.name_fact,
         status.date,
         status.payment_terms,
-        status.payment_methods,
+        status.elaboro,
         status.currencies,
         status.amount_total,
         // status.status,
