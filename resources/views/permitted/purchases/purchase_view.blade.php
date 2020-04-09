@@ -148,7 +148,7 @@
                   </div>
                 </div>
               </div>
-              
+
             </div>
             <div class="row">
               <div class="col-md-3 col-xs-12">
@@ -622,7 +622,7 @@
                                     @php
                                       $item_row++;
                                     @endphp
-                                  
+
                                   <!-- Agregar nuevo item -->
                                   <tr id="add_item">
                                       <td class="text-center">
@@ -634,7 +634,7 @@
                                       </td>
                                       <td class="text-right" colspan="10"></td>
                                   </tr>
-                                  
+
                                   </tbody>
                                   <tfoot>
                                     <!-- Totales -->
@@ -714,7 +714,7 @@
                               </tr>
                               </thead>
                               <tbody>
-                              
+
                               @php
                                   $item_relation_row = 0;
                                   $items_relation = old('item_relation',[]);
@@ -733,12 +733,12 @@
                                                   style="margin-bottom: 0;">
                                               <i class="fa fa-trash-o"></i>
                                           </button>
-                                          
+
                                           <input type="text"
                                                   id="item_relation_id_{{ $item_relation_row }}"
                                                   name="item_relation[{{ $item_relation_row }}][id]"
                                                   value="{{ old('item_relation.' . $item_relation_row . '.id') }}">
-                                          
+
                                       </td>
                                       <td class="text-center align-middle">
 
@@ -755,7 +755,7 @@
                               @php
                                   $item_relation_row++;
                               @endphp
-                             
+
                               <tr id="add_item_relation">
                                   <td class="text-center">
                                       <button type="button"
@@ -783,7 +783,7 @@
             <div class="ln_solid mt-5"></div>
             <div class="row">
               <div class="col-md-12 col-xs-12 text-right footer-form">
-                <button type="submit" class="btn btn-outline-primary">@lang('general.button_save')</button>
+                <button type="submit" id="btn_sub" class="btn btn-outline-primary">@lang('general.button_save')</button>
                 &nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-outline-danger">@lang('general.button_discard')</button>
               </div>
@@ -820,7 +820,7 @@
   <script src="{{ asset('plugins/momentupdate/moment.js')}}"></script>
   <link href="{{ asset('plugins/daterangepicker-master/daterangepicker.css')}}" rel="stylesheet" type="text/css">
   <script src="{{ asset('plugins/daterangepicker-master/daterangepicker.js')}}"></script>
-  
+
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
@@ -832,6 +832,9 @@
       // value = value of the element (file name)
       return this.optional(element) || (element.files[0].size <= param)
     });
+    //$('#btn_sub').on('click', function(){
+    //  $("#btn_sub").prop( "disabled", true );
+    //});
     $(function() {
       //-----------------------------------------------------------
         $("#form").validate({
@@ -883,6 +886,7 @@
           submitHandler: function(e){
             var form = $('#form')[0];
             var formData = new FormData(form);
+            $("#btn_sub").prop( "disabled", true );
             $.ajax({
               type: "POST",
               url: "/purchases/purchase-store",
@@ -892,6 +896,7 @@
               success: function (data){
                 console.log(data);
                 if (data == 'success') {
+                  $("#btn_sub").prop( "disabled", false );
                   let timerInterval;
                   Swal.fire({
                     type: 'success',
@@ -1179,7 +1184,7 @@
               @empty
               @endforelse
             </select>*/
-            
+
             // Columna de moneda OUTIE
 
               /*html += '<td>';
@@ -1375,7 +1380,7 @@
           getProductDyn(id_cart);
           $("#items tbody").append(html);
         }
-        
+
       });
       function getProductDyn(id_cart) {
         var token = $('input[name="_token"]').val();
@@ -1414,7 +1419,7 @@
                   html += '<option value="{{ $product_data->id  }}" selected >{{ $product_data->name }}</option>';
                 }else{
                   html += '<option value="{{ $product_data->id  }}">{{ $product_data->name }}</option>';
-                } 
+                }
                 @empty
                 @endforelse
                 html += '</div>';
@@ -1434,7 +1439,7 @@
                 }else{
                   html += '<option value="{{ $account->id  }}">{{ $account->cuenta . " - " . $account->nombre }}</option>';
                 }
-                
+
                 @empty
                 @endforelse
                 html += '</select>';
@@ -1621,7 +1626,7 @@
             }
         });
       });
-      
+
       function totalItem() {
         var iva = $("#iva").val();
 
