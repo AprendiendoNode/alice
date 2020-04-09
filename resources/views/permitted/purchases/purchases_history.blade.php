@@ -75,14 +75,16 @@
                     <div class="col-md-6" style="font-weight: bold;">
                       <p style="margin-bottom: 0px;">Folio: <span style="font-weight: normal;" id="modalFolio"></span></p>
                       <p style="margin-bottom: 0px;">Nombre: <span style="font-weight: normal;" id="modalNombre"></span></p>
-                      <p style="margin-bottom: 0px;">Fecha de registro: <span style="font-weight: normal;" id="modalFechaReg"></span></p>
+                      <p style="margin-bottom: 0px;">Orden de compra: <span style="font-weight: normal;" id="modalOrden"></span></p>
                       <p style="margin-bottom: 0px;">Fecha de facturación: <span style="font-weight: normal;" id="modalFechaFact"></span></p>
                       <p style="margin-bottom: 0px;">Fecha de vencimiento: <span style="font-weight: normal;" id="modalFechaVenc"></span></p>
                     </div>
                     <div class="col-md-6" style="font-weight: bold;">
+                      <p style="margin-bottom: 0px;">Fecha de registro: <span style="font-weight: normal;" id="modalFechaReg"></span></p>
                       <p style="margin-bottom: 0px;">Término de pago: <span style="font-weight: normal;" id="modalTerminoPago"></span></p>
                       <p style="margin-bottom: 0px;">Forma de pago: <span style="font-weight: normal;" id="modalFormaPago"></span></p>
-                      <p style="margin-bottom: 0px;">Método de pago: <span style="font-weight: normal;" id="modalMetodoPago"></span></p>
+
+                      <!-- <p style="margin-bottom: 0px;">Método de pago: <span style="font-weight: normal;" id="modalMetodoPago"></span></p>-->
                       <p style="margin-bottom: 0px;">Uso de CFDI: <span style="font-weight: normal;" id="modalUsoCFDI"></span></p>
                       <p style="margin-bottom: 0px;">Moneda: <span style="font-weight: normal;" id="modalMoneda"></span></p>
                     </div>
@@ -131,6 +133,18 @@
                       <p style="margin-bottom: 0px;" id="totales4">$ 0</p>
                       <p style="margin-bottom: 0px; border-top: 1px solid black;" id="totales5">$ 0</p>
                     </div>
+                  </div>
+                  <br>
+                  <div class="row mt-2" style="border: 1px solid black;">
+                    <div class="col-md-6" style="font-weight: bold;">
+                      <p style="margin-bottom: 0px;">Elaborado: <span style="font-weight: normal;" id="modalElaborado"></span></p>
+                      <p style="margin-bottom: 0px;">Revisado: <span style="font-weight: normal;" id="modalRevisado"></span></p>
+                      <p style="margin-bottom: 0px;">Autorizado: <span style="font-weight: normal;" id="modalAutorizado"></span></p>
+                    </div>
+                    <div class="col-md-6" style="font-weight: bold;">
+                    </div>
+
+
                   </div>
                 </div>
               </div>

@@ -31,13 +31,21 @@ function enviar(e, editing){
 
       $('#modalFolio').text(data[0].name);
       $('#modalNombre').text(data[0].name_fact);
-      $('#modalFechaReg').text(data[0].date);
+      $('#modalOrden').text(data[0].num_order);
       $('#modalFechaFact').text(data[0].fecha_fact);
       $('#modalFechaVenc').text(data[0].fecha_venc);
 
+      $('#modalFechaReg').text(data[0].date);
       $('#modalTerminoPago').text(data[0].payment_terms);
       $('#modalFormaPago').text(data[0].payment_ways);
-      $('#modalMetodoPago').text(data[0].payment_methods);
+
+      //
+      //$('#modalMetodoPago').text(data[0].payment_methods);
+      $('#modalElaborado').text(data[0].elaboro);
+      $('#modalRevisado').text(data[0].revisado);
+      $('#modalAutorizado').text(data[0].autorizado);
+
+
       $('#modalUsoCFDI').text(data[0].cfdi_uses);
       $('#modalMoneda').text(data[0].currencies);
 
