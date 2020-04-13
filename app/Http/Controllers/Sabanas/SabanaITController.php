@@ -302,6 +302,46 @@ class SabanaITController extends Controller
     return "ok";
   }
 
+
+  public function cl_act_prin(Request $request){
+
+    //Si es nulo el check estaba desmarcado y no se envio, de lo contrario estaba marcado.
+    $request->ck_correos==NULL? $ck_correos=0:$ck_correos=1;
+    $request->ck_tickets==NULL? $ck_tickets=0:$ck_tickets=1;
+    $request->ck_visita==NULL? $ck_visita=0:$ck_visita=1;
+    $request->ck_encuestas==NULL? $ck_encuestas=0:$ck_encuestas=1;
+    $request->ck_seguimiento_instalaciones==NULL? $ck_seguimiento_instalaciones=0:$ck_seguimiento_instalaciones=1;
+    $request->ck_levantamiento==NULL? $ck_levantamiento=0:$ck_levantamiento=1;
+    $request->ck_mantto==NULL? $ck_mantto=0:$ck_mantto=1;
+    $request->ck_llamadas==NULL? $ck_llamadas=0:$ck_llamadas=1;
+    $request->txtOtros==NULL? $txtOtros='': $txtOtros=$request->txtOtros;
+    $itc_id=$request->itc;
+    $fecha = date('Y-m-d');
+    info($request);
+
+
+    DB::table('cl_act_prin')
+    ->updateOrInsert(
+        ['fecha' => $fecha,'itc_id' => $itc_id],
+        ['correos' => $ck_correos,
+         'tickets'=>$ck_tickets,
+         'visita'=>$ck_visita,
+         'encuestas'=>$ck_encuestas,
+         'seguimiento_inst'=>$ck_seguimiento_instalaciones,
+         'levantamiento'=>$ck_levantamiento,
+         'mantto'=>$ck_mantto,
+         'llamadas'=>$ck_llamadas,
+         'Otros'=>$txtOtros,
+         'fecha'=>$fecha,
+         'itc_id'=>$itc_id
+        ]
+    );
+
+    return "ok";
+
+  }
+
+
   public function search_client_itc(Request $request){
     //info($request);
     $id_itc=$request->id_itc;

@@ -983,7 +983,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="text-center">
-                        <div class="row pb-3">
+                        <div class="row pb-2">
                             <div class=" col-md-12 text-center">
                                 <h4>Check List actividades diarias del ITC</h4>
                             </div>
@@ -1136,6 +1136,116 @@
                             </div>
                         </div>
                         </form>
+
+                        <div class="row pt-5 pb-3">
+                            <div class=" col-md-12 text-center">
+                                <h4>Actividades principales del ITC</h4>
+                            </div>
+                        </div>
+                        <form id="form_act_prin"class=""  method="post">
+                          {{ csrf_field() }}
+                        <div class="row">
+                            <table id="table_act_principales" class="table table-striped table-bordered compact-tab table-hover">
+                                <thead class="bg-aqua text-center">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Rubro</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center" style="font-size: 11px;">
+                                    <tr>
+                                        <td>1</td>
+                                        <td class="text-left">Seguimiento correos</td>
+                                        <td>
+                                          <div class="form-group">
+                                             <input name="ck_correos" type="checkbox" aria-label="">
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td class="text-left">Atención de tickets</td>
+                                        <td>
+                                          <div class="form-group">
+                                             <input name="ck_tickets" type="checkbox" aria-label="">
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td class="text-left">Visita a clientes</td>
+                                        <td>
+                                          <div class="form-group">
+                                             <input name="ck_visita" type="checkbox" aria-label="">
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td class="text-left">Seguimiento a encuestas</td>
+                                        <td>
+                                          <div class="form-group">
+                                             <input name="ck_encuestas" type="checkbox" aria-label="">
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td class="text-left">Seguimiento a instalaciones nuevas y mantenimiento</td>
+                                        <td>
+                                          <div class="form-group">
+                                             <input name="ck_seguimiento_instalaciones" type="checkbox" aria-label="">
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td class="text-left">Levantamiento</td>
+                                        <td>
+                                          <div class="form-group">
+                                             <input name="ck_levantamiento" type="checkbox" aria-label="">
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td class="text-left">Mantenimiento</td>
+                                        <td>
+                                          <div class="form-group">
+                                             <input name="ck_mantto" type="checkbox" aria-label="">
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td class="text-left">Seguimiento a llamadas</td>
+                                        <td>
+                                          <div class="form-group">
+                                             <input name="ck_llamadas" type="checkbox" aria-label="">
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td class="text-left">Otros</td>
+                                        <td>
+                                          <div class="form-group">
+                                             <textarea id="txtOtros"name="txtOtros" rows="8" cols="50"></textarea>
+                                          </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="row container-fluid">
+                              <div class="col-md-12 ">
+                                  <button id="btn_cl_principales" class="btn btn-success float-right" type="button">Aceptar</button>
+                              </div>
+                            </div>
+                        </div>
+                        </form>
+
 
                         <div class="row pt-5 pb-2">
                           <div class="col-md-12 text-center">
@@ -1423,7 +1533,7 @@
                         (Solo cuando se tengan proyectos)
                       </div>
                     </div>
-                    
+
                     <div class="row pt-5 pb-2">
                       <div class="col-md-2">
                         <p>Seleccione cliente:</p>
@@ -1434,13 +1544,13 @@
                         </select>
                       </div>
                       <div class="col-md-2">
-                    
+
                       </div>
                     </div>
-                    
+
                     <form id="ck_instalaciones_table_form">
                     <div class="row">
-                      
+
                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
                       <table id="table_cl_20" class="table table-striped table-bordered compact-tab table-hover">
                           <thead class="bg-aqua text-center">
@@ -1450,9 +1560,9 @@
                                   <th>Estado</th>
                               </tr>
                           </thead>
-                          
+
                           <tbody class="text-center" style="font-size: 11px;">
-                    
+
                               <tr>
                                   <td>1</td>
                                   <td class="text-left">Se realizo el Levantamiento en sitio.</td>
@@ -1775,11 +1885,11 @@
                                   </div>
                                 </td>
                               </tr>
-                    
+
                           </tbody>
                       </table>
-                      
-                      
+
+
                       <div class="row container-fluid">
                         <div class="col-md-12 ">
                             <button

@@ -44,7 +44,23 @@ $.ajax({
 
 
 });
+$('#btn_cl_principales').on('click',function(){
 
+var _token = $('meta[name="csrf-token"]').attr('content');
+var itc_id = $('#select_itc').val();
+var form = $('#form_act_prin');
+//var formData = new FormData(form);
+
+form.append(`<input type="hidden" name="itc" value="${itc_id}" />`);
+$.post('cl_act_prin', form.serialize(), response => {
+
+  form[0].reset();
+
+  Swal.fire('Checklist guardado', '', 'success');
+});
+
+
+});
 
 $('#cliente_5dia').on('change',function(){
   var cliente=$('#cliente_5dia').val();
