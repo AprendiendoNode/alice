@@ -168,3 +168,21 @@ $('#btn_cl_20dia').on('click',function(){
       }
     });
 });
+
+
+
+$('#btn_cl_oportunidades').on('click',function(){
+
+  var itc_id = $('#select_itc').val();
+  var form = $('#form_oportunidades');
+  //var formData = new FormData(form);
+
+  form.append(`<input type="hidden" name="itc" value="${itc_id}" />`);
+  $.post('cl_oportunidades', form.serialize(), response => {
+    //console.log(response);
+    form[0].reset();
+
+    Swal.fire('Checklist guardado', '', 'success');
+  });
+
+});

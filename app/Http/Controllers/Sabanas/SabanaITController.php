@@ -317,7 +317,7 @@ class SabanaITController extends Controller
     $request->txtOtros==NULL? $txtOtros='': $txtOtros=$request->txtOtros;
     $itc_id=$request->itc;
     $fecha = date('Y-m-d');
-    info($request);
+    //info($request);
 
 
     DB::table('cl_act_prin')
@@ -400,6 +400,35 @@ class SabanaITController extends Controller
         ]
     );
     return "ok";
+  }
+
+
+  public function cl_oportunidades(Request $request){
+
+    $oportunidad_cobertura=$request->oportunidad_cobertura;
+    $oportunidad_enlaces=$request->oportunidad_enlaces;
+    $oportunidad_cctv=$request->oportunidad_cctv;
+    $deteccion_propiedades=$request->deteccion_propiedades;
+    $deteccion_soporte=$request->deteccion_soporte;
+    $itc_id=$request->itc;
+    $fecha = date('Y-m-d');
+    //info($request);
+
+    DB::table('cl_oportunidades')
+    ->updateOrInsert(
+        ['fecha' => $fecha,'itc_id' => $itc_id],
+        ['oportunidad_cobertura' => $oportunidad_cobertura,
+         'oportunidad_enlaces'=>$oportunidad_enlaces,
+         'oportunidad_cctv'=>$oportunidad_cctv,
+         'deteccion_propiedades'=>$deteccion_propiedades,
+         'deteccion_soporte'=>$deteccion_soporte,
+         'fecha'=>$fecha,
+         'itc_id'=>$itc_id
+        ]
+    );
+
+    return "ok";
+
   }
 
   public function ck_inst_add(Request $request) {

@@ -1527,13 +1527,114 @@
                         </div>
 
                     </div>
+
+
+                    <div class="row pt-5 pb-2">
+                        <div class=" col-md-12 text-center">
+                            <h4>Check List Oportunidades</h4>
+                        </div>
+                    </div>
+
+                    <form id="form_oportunidades" class=""  method="post">
+                    {{ csrf_field() }}
+                    <div class="row">
+                        <table id="table_oportunidades" class="table table-striped table-bordered compact-tab table-hover">
+                            <thead class="bg-aqua text-center">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Rubro</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center" style="font-size: 11px;">
+                                <tr>
+                                    <td>1</td>
+                                    <td class="text-left">Detección de oportunidad de mejorar cobertura de WiFi en Sitio</td>
+                                    <td>
+                                      <div class="form-group">
+                                      <select class="form-control" name="oportunidad_cobertura">
+                                            <option value="0">No</option>
+                                            <option value="1">Si</option>
+                                            <option value="2">NA</option>
+                                            </optgroup>
+                                      </select>
+                                      </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td class="text-left">Detección de oportunidad de venta de enlaces en sitio</td>
+                                    <td>
+                                      <div class="form-group">
+                                      <select class="form-control" name="oportunidad_enlaces">
+                                            <option value="0">No</option>
+                                            <option value="1">Si</option>
+                                            <option value="2">NA</option>
+                                            </optgroup>
+                                      </select>
+                                      </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td class="text-left">Detección de oportunidad de venta de CCTV</td>
+                                    <td>
+                                      <div class="form-group">
+                                      <select  class="form-control" name="oportunidad_cctv">
+                                            <option value="0">No</option>
+                                            <option value="1">Si</option>
+                                            <option value="2">NA</option>
+                                            </optgroup>
+                                      </select>
+                                      </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td class="text-left">Deteccion de apertura de nuevas propiedades de la cadena</td>
+                                    <td>
+                                      <div class="form-group">
+                                      <select class="form-control" name="deteccion_propiedades">
+                                            <option value="0">No</option>
+                                            <option value="1">Si</option>
+                                            <option value="2">NA</option>
+                                            </optgroup>
+                                      </select>
+                                      </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td class="text-left">Deteccion de oportunidad de servicio de Soporte</td>
+                                    <td>
+                                      <div class="form-group">
+                                      <select class="form-control" name="deteccion_soporte">
+                                            <option value="0">No</option>
+                                            <option value="1">Si</option>
+                                            <option value="2">NA</option>
+                                            </optgroup>
+                                      </select>
+                                      </div>
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                        <div class="row container-fluid">
+                          <div class="col-md-12 ">
+                              <button id="btn_cl_oportunidades" class="btn btn-success float-right" type="button">Aceptar</button>
+                          </div>
+                        </div>
+                    </div>
+                    </form>
+
                     <div class="row pt-5 pb-2">
                       <div class="col-md-12 text-center">
                         <h4>Check List de instalaciones</h4>
                         (Solo cuando se tengan proyectos)
                       </div>
                     </div>
-
                     <div class="row pt-5 pb-2">
                       <div class="col-md-2">
                         <p>Seleccione cliente:</p>

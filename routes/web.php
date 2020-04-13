@@ -922,10 +922,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('get_nps_comment_itc', 'Sabanas\SabanaITController@get_nps_comment_itc');
     Route::post('sabana_itc_modal_encuestas_hover', 'Sabanas\SabanaITController@sabana_itc_modal_encuestas_hover');
     Route::post('cl_diario_itc', 'Sabanas\SabanaITController@cl_diario_itc');
+    Route::post('cl_act_prin', 'Sabanas\SabanaITController@cl_act_prin');
     Route::post('search_client_itc', 'Sabanas\SabanaITController@search_client_itc');
     Route::post('cl_inst_add', 'Sabanas\SabanaITController@ck_inst_add');
     Route::post('cl_5dia_itc', 'Sabanas\SabanaITController@cl_5dia_itc');
     Route::post('cl_20dia_itc', 'Sabanas\SabanaITController@cl_20dia_itc');
+    Route::post('cl_oportunidades', 'Sabanas\SabanaITController@cl_oportunidades');
+
     //Sabana Directiva
     Route::get('dash_sabana_directiva', 'Sabanas\SabanaDirectivaController@index');
     Route::post('getAllCadena','Sabanas\SabanaDirectivaController@getAllCadena');
