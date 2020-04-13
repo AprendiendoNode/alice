@@ -2039,7 +2039,7 @@
     <script src="{{ asset('bower_components/highcharts/series-label.js')}}"></script>
     <script src="{{ asset('bower_components/highcharts/exporting.js')}}"></script>
     <script src="{{ asset('js/admin/sabana/sabana_itc.js?v=7.1.1')}}"></script>
-    <script src="{{ asset('js/admin/sabana/sabana_checklist.js?v=2.0.0')}}"></script>
+    <script src="{{ asset('js/admin/sabana/sabana_checklist.js?v=2.2.3')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <style media="screen">

@@ -33,6 +33,18 @@ class NocToolsController extends Controller
     return $result;
   }
 
+  public function get_cl_act_prin(Request $request){
+    $date=$request->date;
+    $result=DB::Select('CALL px_get_cl_act_prin(?)',array($date));
+    return $result;
+  }
+
+  public function get_cl_oportunidades(Request $request){
+    $date=$request->date;
+    $result=DB::Select('CALL px_get_cl_oportunidades(?)',array($date));
+    return $result;
+  }
+
   public function get_cl_5_dia(Request $request){
     $date=$request->date;
     $result=DB::Select('CALL px_get_cl_5_dia(?)',array($date));

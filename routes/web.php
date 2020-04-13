@@ -320,6 +320,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('get_cl_instalaciones', 'Noc\NocToolsController@get_cl_instalaciones');
   Route::post('/get_cl_5_dia','Noc\NocToolsController@get_cl_5_dia');
   Route::post('/get_cl_20_dia','Noc\NocToolsController@get_cl_20_dia');
+  Route::post('/get_cl_act_prin','Noc\NocToolsController@get_cl_act_prin');
+  Route::post('/get_cl_oportunidades','Noc\NocToolsController@get_cl_oportunidades');
+
   //Carátula de entrega
   Route::get('/cover_equipment_delivery', 'Equipments\CoverDeliveryEquipmentController@index');
   Route::post('/cover_delivery_header', 'Equipments\CoverDeliveryEquipmentController@getHeader');

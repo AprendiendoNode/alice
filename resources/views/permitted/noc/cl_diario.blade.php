@@ -82,6 +82,40 @@
                 </table>
                 </div>
 
+                <div class="row pt-4">
+                  <div class="col-md-12">
+                    <div class="text-center">
+                      <h4>Actividades principales ITC</h4>
+                      <br>
+                      <div class="table-responsive">
+
+                      <table id="table_act_prin" class="table table-striped table-bordered compact-tab table-hover">
+                        <thead class="bg-aqua text-center">
+                          <tr>
+                              <th>Nombre</th>
+                              <th>Seguimiento correos</th>
+                              <th>Atención de tickets</th>
+                              <th>Visita a clientes</th>
+                              <th>Seguimiento a encuestas</th>
+                              <th>Seguimiento a instalaciones nuevas y mantenimiento</th>
+                              <th>Levantamiento</th>
+                              <th>Mantenimiento</th>
+                              <th>Seguimiento a llamadas</th>
+                              <th>Otros</th>
+                              <th>Fecha</th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-center"style="font-size: 11px;">
+
+
+                        </tbody>
+                      </table>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
   <div class="row pt-4">
       <div class="col-md-12">
 
@@ -149,11 +183,41 @@
                 <div class="row pt-4">
                   <div class="col-md-12">
                     <div class="text-center">
+                      <h4>Check List Oportunidades</h4>
+                      <br>
+                      <div class="table-responsive">
+
+                      <table id="table_oportunidades" class="table table-striped table-bordered compact-tab table-hover">
+                        <thead class="bg-aqua text-center">
+                          <tr>
+                              <th>Nombre</th>
+                              <th>Detección de oportunidad de mejorar cobertura de WiFi en Sitio</th>
+                              <th>Detección de oportunidad de venta de enlaces en sitio</th>
+                              <th>Detección de oportunidad de venta de CCTV</th>
+                              <th>Detección de apertura de nuevas propiedades de la cadena</th>
+                              <th>Detección de oportunidad de servicio de Soporte</th>
+                              <th>Fecha</th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-center"style="font-size: 11px;">
+
+
+                        </tbody>
+                      </table>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="row pt-4">
+                  <div class="col-md-12">
+                    <div class="text-center">
                       <h4>Check List de Instalaciones</h4>
                       <br>
                       <div class="table-responsive">
-                
-                
+
+
                       <table id="table_cl_instalaciones" class="table table-striped table-bordered compact-tab table-hover">
                         <thead class="bg-aqua text-center">
                           <tr>
@@ -187,16 +251,16 @@
                           </tr>
                         </thead>
                         <tbody class="text-center"style="font-size: 11px;">
-                
-                
+
+
                         </tbody>
                       </table>
                       </div>
                     </div>
                   </div>
-                
+
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -214,7 +278,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-    <script src="{{ asset('js/admin/noctools/checklist.js?v=3.3.1')}}"></script>
+    <script src="{{ asset('js/admin/noctools/checklist.js?v=1.4.4')}}"></script>
 
     <style media="screen">
     .tableFixHead          { overflow-y: auto; height: 620px; }

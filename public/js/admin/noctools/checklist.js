@@ -14,6 +14,8 @@ var date=$('#date_to_search').val();
 get_cl_diario(date);
 get_cl_5_dia(date);
 get_cl_20_dia(date);
+get_cl_act_prin(date);
+get_cl_oportunidades(date);
 get_cl_instalaciones(date);
 $('#btn-filtro').on('click',function(){
 var date=$('#date_to_search').val();
@@ -25,6 +27,8 @@ get_cl_diario(date);
 get_cl_5_dia(date);
 get_cl_20_dia(date);
 get_cl_instalaciones(date);
+get_cl_act_prin(date);
+get_cl_oportunidades(date);
 });
 
 
@@ -42,6 +46,36 @@ function get_cl_diario(date){
     data:{_token:_token,date:date},
     success:function(data){
       table_antenas(data,$('#table_cl_diario'));
+    },
+    error:function(data){
+
+    }
+  });
+}
+
+function get_cl_act_prin(date){
+  $.ajax({
+    type:"POST",
+    url:"/get_cl_act_prin",
+    data:{_token:_token,date:date},
+    success:function(data){
+      table_act_prin(data,$('#table_act_prin'));
+    },
+    error:function(data){
+
+    }
+  });
+}
+
+function get_cl_oportunidades(date){
+  console.log(date);
+  $.ajax({
+    type:"POST",
+    url:"/get_cl_oportunidades",
+    data:{_token:_token,date:date},
+    success:function(data){
+      console.log(data);
+      table_oportunidades(data,$('#table_oportunidades'));
     },
     error:function(data){
 
@@ -95,6 +129,50 @@ function table_antenas(datajson, table){
       eval_state(status.trato_cordial),
       eval_state(status.calendario_2dias),
       eval_state(status.diagnosticar_equipos),
+      status.fecha
+    ]);
+  });
+
+}
+
+function table_act_prin(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_chlist);
+  vartable.fnClearTable();
+
+  $.each(datajson, function(index, status){
+
+    vartable.fnAddData([
+      status.name,
+      eval_state(status.correos),
+      eval_state(status.tickets),
+      eval_state(status.visita),
+      eval_state(status.encuestas),
+      eval_state(status.seguimiento_inst),
+      eval_state(status.levantamiento),
+      eval_state(status.mantto),
+      eval_state(status.llamadas),
+      status.Otros,
+      status.fecha
+    ]);
+  });
+
+}
+
+function table_oportunidades(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_chlist);
+  vartable.fnClearTable();
+
+  $.each(datajson, function(index, status){
+
+    vartable.fnAddData([
+      status.name,
+      eval_state(status.oportunidad_cobertura),
+      eval_state(status.oportunidad_enlaces),
+      eval_state(status.oportunidad_cctv),
+      eval_state(status.deteccion_propiedades),
+      eval_state(status.deteccion_soporte),
       status.fecha
     ]);
   });
