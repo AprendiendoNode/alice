@@ -467,6 +467,7 @@ Route::group(['middleware' => 'auth'], function () {
   //Presupuesto proyectos.
   Route::get('/view_budget','Projects\BudgetController@index');
   Route::post('/get_annual_table', 'Projects\BudgetController@get_annual_budget');
+  Route::post('/get_annual_table_directiva', 'Projects\BudgetController@get_annual_budget_directiva');
   Route::post('/refresh_tablebudget','Projects\BudgetController@refresh_budget_sites');
   Route::post('/edit_presupuesto', 'Projects\BudgetController@update_budget');
   Route::get('/view_budget_report','Projects\BudgetController@index_budget_report');

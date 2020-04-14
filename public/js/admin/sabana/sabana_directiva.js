@@ -79,6 +79,50 @@ console.log(data);
   llenar_tablas();
 });*/
 
+$(document).on("click", ".cad, .sit", function() {
+  let tipo = $(this)[0].id.split("-")[0];
+  let id = $(this)[0].id.split("-")[1];
+  let date = $("#date_select").val()+"-01-01";
+  let _token = $('input[name="_token"]').val();
+  $.ajax({
+      type: "POST",
+      url: "/get_annual_table_directiva",
+      data: { date: date, tipo: tipo, id: id, _token : _token },
+      success: function (data){
+        console.log(data);
+        $("#modal-mantenimiento").modal("show");
+        generate_table_budget(data, $('#table_budget'));
+        document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+  });
+});
+
+function generate_table_budget(datajson, table) {
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_responsive_budget);
+  vartable.fnClearTable();
+  $.each(datajson, function(index, data){
+    vartable.fnAddData([
+      data.id,
+      data.Nombre_hotel,
+      data.key,
+      data.id_ubicacion,
+      data.moneda,
+      '<a href="javascript:void(0);" id="mt1_'+data.annual_budget_id+'" name="mt1_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.equipo_activo_monto + '"class="editable_monto1"></a>',
+      '<a href="javascript:void(0);" id="mt2_'+data.annual_budget_id+'" name="mt2_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.equipo_no_activo_monto + '"class="editable_monto2"></a>',
+      '<a href="javascript:void(0);" id="mt3_'+data.annual_budget_id+'" name="mt3_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.licencias_monto + '"class="editable_monto3"></a>',
+      '<a href="javascript:void(0);" id="mt4_'+data.annual_budget_id+'" name="mt4_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.mano_obra_monto + '"class="editable_monto4"></a>',
+      '<a href="javascript:void(0);" id="mt5_'+data.annual_budget_id+'" name="mt5_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.enlaces_monto + '"class="editable_monto5"></a>',
+      '<a href="javascript:void(0);" id="mt6_'+data.annual_budget_id+'" name="mt6_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.viaticos_monto + '"class="editable_monto6"></a>',
+      //'<a href="javascript:void(0);" id="mt_'+data.annual_budget_id+'" name="mt_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.monto + '"class="editable_monto"></a>',
+      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+data.hotel_id+'" class="btn btn-dark btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-edit"></span></a>',
+    ]);
+  });
+}
+
 function table_general(data,data_sites, table) {
   /*table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_cadena);*/
@@ -114,7 +158,7 @@ function table_general(data,data_sites, table) {
     if(status.fecha_vence.split("-")[0] > anio) {
       status.fecha_vence = anio+"-12-31";
     }
-    var aux_cad={id:"C"+status.cadena_id, "text":status.cadena.toString().trim(), "start_date":new Date(date_gantt,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"presupuesto_anual_USD":parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"ejercido":parseFloat(status.mantto).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"xejercer":(parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),progress: (parseFloat(status.mantto)/parseFloat(status.presupuesto_anual_USD)).toFixed(2), open: false,parent:"SIT1"};
+    var aux_cad={id:"C"+status.cadena_id, "text":"<span class='cad' id='cad-"+status.cadena_id+"'>"+status.cadena.toString().trim()+"</span>", "start_date":new Date(date_gantt,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"presupuesto_anual_USD":parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"ejercido":parseFloat(status.mantto).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"xejercer":(parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),progress: (parseFloat(status.mantto)/parseFloat(status.presupuesto_anual_USD)).toFixed(2), open: false,parent:"SIT1"};
     cadenas.push(aux_cad);
     i++;
     date_gantt=0;
@@ -128,7 +172,7 @@ function table_general(data,data_sites, table) {
     }
     date_real= parseInt(status.date_real.toString().split("-")[0]);
     date_gantt= date_real>anio? date_real:anio;
-    var aux_sitios={id: status.hotel_id, "text":status.Nombre_hotel.toString().trim(), "start_date":new Date(date_gantt,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"presupuesto_anual_USD": parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"ejercido":parseFloat(status.mantto).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"xejercer":(parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),progress: (parseFloat(status.mantto)/parseFloat(status.presupuesto_anual_USD)).toFixed(2),color:"gray",open: true,parent:"C"+status.cadena_id};
+    var aux_sitios={id: status.hotel_id, "text":"<span class='sit' id='sit-"+status.hotel_id+"'>"+status.Nombre_hotel.toString().trim()+"</span>", "start_date":new Date(date_gantt,00,01),"date_real":status.date_real.toString().split("-").reverse().join("-"),"end_date":status.fecha_vence.toString().split("-").reverse().join("-"),"mensualidad":parseFloat(status.USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"presupuesto_anual_USD": parseFloat(status.presupuesto_anual_USD).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"ejercido":parseFloat(status.mantto).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),"xejercer":(parseFloat(status.presupuesto_anual_USD)-parseFloat(status.mantto)).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),progress: (parseFloat(status.mantto)/parseFloat(status.presupuesto_anual_USD)).toFixed(2),color:"gray",open: true,parent:"C"+status.cadena_id};
     cadenas.push(aux_sitios);
     date_gantt=0;
   });

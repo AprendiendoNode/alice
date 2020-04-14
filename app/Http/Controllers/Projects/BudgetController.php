@@ -35,6 +35,14 @@ class BudgetController extends Controller
 
   		return $sql;
   	}
+    public function get_annual_budget_directiva(Request $request)
+  	{
+  		$date = $request->date;
+  		$tipo = $request->tipo;
+  		$id = $request->id;
+  		$sql = DB::select('CALL px_annual_budgets_directiva(?,?,?)', array($date, $tipo, $id));
+  		return $sql;
+  	}
     // Revisar
     public function get_annual_budget_by_id(Request $request)
     {

@@ -68,6 +68,43 @@
       </div>
   </div>
 
+  <div class="modal modal-default fade" id="modal-mantenimiento" data-backdrop="static">
+      <div class="modal-dialog" >
+        <div class="modal-content" style="width: 70vw; margin-left: -15vw;">
+          <div class="modal-header">
+            <h4 class="modal-title"><i class="fas fa-hotel" style="margin-right: 4px;"></i>Sitio(s)</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="row p-3">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="table-responsive">
+                <table id="table_budget" name='table_budget' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
+                  <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
+                  <thead>
+                      <tr class="bg-dark" style="color: white">
+                          <th><small>ID</small></th>
+                          <th> <small>Sitio</small> </th>
+                          <th> <small>Anexo</small> </th>
+                          <th> <small>ID ubicacion</small> </th>
+                          <th> <small>Moneda</small> </th>
+                          <th> <small>Equipo activo</small> </th>
+                          <th> <small>Equipo no activo</small> </th>
+                          <th> <small>Licencias</small> </th>
+                          <th> <small>Mano de obra</small> </th>
+                          <th> <small>Enlaces</small> </th>
+                          <th> <small>Viáticos</small> </th>
+                          <th> <small>Acciones</small> </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
 
   <div class="pb-2 bg-white shadow mb-5">
 
@@ -254,6 +291,10 @@
 
 @push('scripts')
   @if( auth()->user()->can('View dash sabana') )
+    <script src="{{ asset('plugins/momentupdate/moment.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('plugins/momentupdate/moment-with-locales.js') }}" type="text/javascript"></script>
+    <link type="text/css" href="css/bootstrap-editable.css" rel="stylesheet" />
+    <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
     <link href="{{ asset('bower_components/dhtmlx-gantt/dhtmlxgantt.css')}}" rel="stylesheet" type="text/css">
@@ -261,6 +302,7 @@
     <script src="{{ asset('bower_components/dhtmlx-gantt/ext/dhtmlxgantt_tooltip.js')}}"></script>
     <script src="{{ asset('bower_components/dhtmlx-gantt/ext/dhtmlxgantt_drag_timeline.js')}}"></script>
     <script src="{{ asset('js/admin/sabana/sabana_directiva.js?v=1.0.0')}}"></script>
+    <script src="{{ asset('js/admin/planning/budgets.js')}}"></script>
 
     <style media="screen">
     .icon_head_dash i{
@@ -332,6 +374,11 @@
     width:600px;
     height:600px;
       }
+
+    .cad, .sit {
+      cursor: pointer;
+    }
+
     </style>
 
   @else
