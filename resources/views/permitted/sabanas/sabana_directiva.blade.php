@@ -72,7 +72,7 @@
       <div class="modal-dialog" >
         <div class="modal-content" style="width: 70vw; margin-left: -15vw;">
           <div class="modal-header">
-            <h4 class="modal-title"><i class="fas fa-hotel" style="margin-right: 4px;"></i>Sitio(s)</h4>
+            <h4 class="modal-title">Presupuesto de mantenimiento</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="row p-3">
@@ -100,6 +100,16 @@
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row ">
+              <div class="col-sm-12">
+                <button type="button" class="btn btn-default closeModal pull-right" data-dismiss="modal">Close</button>
+              </div>
+              <!-- <div class="col-sm-3">
+                <button type="submit" class="btn btn-warning pull-right">Save changes</button>
+              </div> -->
             </div>
           </div>
         </div>
@@ -135,6 +145,71 @@
                     <br>
                     <div id="presupuesto_anual">
 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <div class="row ">
+            <div class="col-sm-12">
+              <button type="button" class="btn btn-default closeModal pull-right" data-dismiss="modal">Close</button>
+            </div>
+            <!-- <div class="col-sm-3">
+              <button type="submit" class="btn btn-warning pull-right">Save changes</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <!--Modal desglose-->
+  <div class="modal fade" id="modal-desglose">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- Contenido de modal. -->
+          <input type="hidden" id="id_annex" name="id_annex">
+          <form id="form_tc_des" class="form-inline">
+            <span class="input-group-addon"><i class="fas fa-dollar-sign fa-3x"></i></span>
+            <input id="tpgeneral_des" name="tpgeneral_des" type="number" class="form-control" placeholder="Tipo de cambio(pagos, viáticos)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10">
+            <div class="input-group">
+             <span class="input-group-addon"><i class="far fa-calendar-alt fa-3x"></i></span>
+             <input id="date_to_search_tc_des" type="text" class="form-control date_plug" name="date_to_search_tc_des">
+            </div>
+            <button type="button" class="btn btn-primary btnupdetc_des">Update</button>
+
+          </form>
+
+            <div class="table-responsive">
+              <div class="row fields_docm">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <h4 class="text-center text-danger">Presupuesto Anual</h4>
+                    <h5 class="text-center text-default">* Montos en USD</h5>
+                    <br>
+                    <div id="presupuesto_anual">
+                      <table id="table_desglose" name='table_desglose' class="display nowrap table table-bordered table-hover compact-tab w-100" cellspacing="0">
+                        <input type='hidden' id='_tokenb' name='_tokenb' value='{!! csrf_token() !!}'>
+                        <thead>
+                          <tr class="bg-primary" style="background: #3D82C2">
+                            <th> <small>Folio</small> </th>
+                            <th> <small>Factura</small> </th>
+                            <th> <small>Proveedor</small> </th>
+                            <th> <small>Monto</small> </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>

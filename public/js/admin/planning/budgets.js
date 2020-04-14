@@ -66,7 +66,7 @@ function generate_table_budget(datajson, table) {
       '<a href="javascript:void(0);" id="mt6_'+data.annual_budget_id+'" name="mt6_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.viaticos_monto + '"class="editable_monto6"></a>',
       //'<a href="javascript:void(0);" id="mt_'+data.annual_budget_id+'" name="mt_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.monto + '"class="editable_monto"></a>',
       '<a href="javascript:void(0);" onclick="enviar(this)" value="'+data.hotel_id+'" class="btn btn-dark btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-edit"></span></a>'
-      +(sabana_dir ? '<a href="javascript:void(0);" id="desglose-'+data.hotel_id+'" class="mt-1 btn btn-dark btn-sm text-white" role="button" data-target="#modal-desglose">Desglose</a>' : ''),
+      +(sabana_dir ? '<a href="javascript:void(0);" id="desglose-'+data.hotel_id+'" class="desglose mt-1 btn btn-dark btn-sm text-white" role="button" data-target="#modal-desglose">Desglose</a>' : ''),
     ]);
   });
 }
@@ -74,7 +74,7 @@ function enviar(e) {
   var valor= e.getAttribute('value');
   $('#id_annex').val(valor);
   $('#modal-view-algo').modal('show');
-  $('.modal-title').text('Presupuesto');
+  $('.modal-title').text('Presupuesto de mantenimiento');
   // $('#modal-view-algo').modal('hide');
   get_table_estimation(valor);
   console.log(valor);

@@ -1,3 +1,5 @@
+var sitio_desglose;
+
 $(function(){
 var _token = $('input[name="_token"]').val();
 
@@ -89,7 +91,6 @@ $(document).on("click", ".cad, .sit", function() {
       url: "/get_annual_table_directiva",
       data: { date: date, tipo: tipo, id: id, _token : _token },
       success: function (data){
-        console.log(data);
         $("#modal-mantenimiento").modal("show");
         generate_table_budget(data, $('#table_budget'));
         document.getElementById("table_budget_wrapper").childNodes[0].setAttribute("class", "form-inline");
@@ -98,6 +99,63 @@ $(document).on("click", ".cad, .sit", function() {
         console.log('Error:', data);
       }
   });
+});
+
+$(document).on("click", ".desglose", function() {
+  let id = $(this)[0].id.split("-")[1];
+  sitio_desglose = id;
+  let date = $("#date_to_search_tc_des").val();
+  let tipo_c = $("#tpgeneral_des").val();
+  let _token = $('input[name="_token"]').val();
+  $.ajax({
+      type: "POST",
+      url: "/get_desglose_payments_id",
+      data: { _token : token, site_id : id, tipo_c : tipo_c, date : date },
+      success: function (data){
+        $("#modal-desglose").modal("show");
+        generate_table_desglose(data, $('#table_desglose'));
+        document.getElementById("table_desglose_wrapper").childNodes[0].setAttribute("class", "form-inline");
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+  });
+});
+
+$('.btnupdetc_des').on('click', function(){
+  var tipo_c = $('#tpgeneral_des').val();
+  var date_search = $('#date_to_search_tc_des').val();
+  var id_sitio = $('#id_annex').val();
+  $.ajax({
+      type: "POST",
+      url: "/get_desglose_payments_id",
+      data: { _token : token, site_id : sitio_desglose, tipo_c : tipo_c, date : date_search },
+      success: function (data){
+        generate_table_desglose(data, $('#table_desglose'));
+        document.getElementById("table_desglose_wrapper").childNodes[0].setAttribute("class", "form-inline");
+      },
+      error: function (data) {
+        console.log('Error:', data);
+      }
+  });
+});
+
+function generate_table_desglose(datajson, table) {
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_responsive_budget_desglose);
+  vartable.fnClearTable();
+  $.each(datajson, function(index, data){
+    vartable.fnAddData([
+      data.folio,
+      data.factura,
+      data.proveedor,
+      data.pago_USD
+    ]);
+  });
+}
+
+$('#modal-view-algo, #modal-desglose').on('hidden.bs.modal', function() {
+    $('body').addClass('modal-open');
 });
 
 function table_general(data,data_sites, table) {
@@ -159,7 +217,7 @@ function table_general(data,data_sites, table) {
   load_gantt(cadenas,'gantt_cadenas');
   var pres_a=(totalFacturado.toFixed(2)*0.70);
   var xejercer=(pres_a-ejercido);
-console.log(ejercido/pres_a);
+  //console.log(ejercido/pres_a);
   $('#total_ejercido').text(ejercido.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
   $('#total_fact').text(totalFacturado.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
   $('#total_pres').text(pres_a.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
@@ -721,3 +779,99 @@ var Configuration_table_resp1={
               }
       }
 }
+
+var Configuration_table_responsive_budget_desglose= {
+  "order": [[ 0, "asc" ]],
+  paging: true,
+  //"pagingType": "simple",
+  Filter: true,
+  searching: true,
+  // "select": true,
+  "aLengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]],
+  "columnDefs": [
+      /*{ //Subida 1
+        "targets": 0,
+        "checkboxes": {
+          'selectRow': true
+        },
+        "width": "0.2%",
+        "createdCell": function (td, cellData, rowData, row, col){
+
+        }
+      }, */
+      {
+        "targets": [0,1,2,3],
+        "width": "1%",
+        "className": "text-center",
+      }
+  ],
+  // "select": {
+  //     'style': 'multi',
+  // },
+  dom: "<'row'<'col-sm-4'B><'col-sm-4'l><'col-sm-4'f>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="far fa-file-excel"></i> Excel',
+      titleAttr: 'Excel',
+      title: function ( e, dt, node, config ) {
+        var ax = '';
+        if($('input[name="date_to_search"]').val() != ''){
+          ax= '- Periodo: ' + $('input[name="date_to_search"]').val();
+        }
+        else {
+          txx='- Periodo: ';
+          var fecha = new Date();
+          var ano = fecha.getFullYear();
+          var mes = fecha.getMonth()+1;
+          var fechita = ano+'-'+mes;
+          ax = txx+fechita;
+        }
+        return 'Historial de pago '+ax;
+      },
+      init: function(api, node, config) {
+         $(node).removeClass('btn-default')
+      },
+      exportOptions: {
+          columns: [ 0,1,2,3,4 ],
+          modifier: {
+              page: 'all',
+          }
+      },
+      className: 'btn btn-success',
+    },
+  ],
+  language:{
+      "sProcessing":     "Procesando...",
+      "sLengthMenu":     "Mostrar _MENU_ registros",
+      "sZeroRecords":    "No se encontraron resultados",
+      "sEmptyTable":     "Ningún dato disponible",
+      "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+      "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+      "sInfoPostFix":    "",
+      "sSearch":         "<i class='fa fa-search'></i> Buscar:",
+      "sUrl":            "",
+      "sInfoThousands":  ",",
+      "sLoadingRecords": "Cargando...",
+      "oPaginate": {
+        "sFirst":    "Primero",
+        "sLast":     "Último",
+        "sNext":     "Siguiente",
+        "sPrevious": "Anterior"
+      },
+      "oAria": {
+        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      },
+      'select': {
+          'rows': {
+              _: "%d Filas seleccionadas",
+              0: "Haga clic en una fila para seleccionarla",
+              1: "Fila seleccionada 1"
+          }
+      }
+  },
+};
