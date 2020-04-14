@@ -23,43 +23,35 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
+          <h4 class="text-center text-danger">Presupuesto Anual</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
           <!-- Contenido de modal. -->
           <input type="hidden" id="id_annex" name="id_annex">
           <form id="form_tc" class="form-inline">
-            <input id="tpgeneral" name="tpgeneral" type="number" class="form-control" placeholder="Tipo de cambio(pagos, viáticos)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10">
-            <div class="input-group">
-             <span class="input-group-addon"><i class="far fa-calendar-alt fa-3x"></i></span>
-             <input id="date_to_search_tc" type="text" class="form-control date_plug" name="date_to_search_tc">
-            </div>
-            <button type="button" class="btn btn-primary btnupdetc">Update</button>
-
+            
           </form>
+          <div class="table-responsive">
+            <div class="row fields_docm">
+              <div class="col-md-12">
+                <div class="form-group">        
+                  <h6 class="text-left text-default">* Montos en USD</h6>
+                  <br>
+                  <div id="presupuesto_anual">
 
-            <div class="table-responsive">
-              <div class="row fields_docm">
-                <div class="col-md-12">
-                  <div class="form-group">
-                    <h4 class="text-center text-danger">Presupuesto Anual</h4>
-                    <h5 class="text-center text-default">* Montos en USD</h5>
-                    <br>
-                    <div id="presupuesto_anual">
-
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
-
+          </div>
         </div>
         <div class="modal-footer">
           <div class="row ">
             <div class="col-sm-12">
-              <button type="button" class="btn btn-default closeModal pull-right" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-default closeModal pull-right" data-dismiss="modal">Cerrar</button>
             </div>
-            <!-- <div class="col-sm-3">
+            <!--<div class="col-sm-3">
               <button type="submit" class="btn btn-warning pull-right">Save changes</button>
             </div> -->
           </div>

@@ -88,7 +88,11 @@ class EditDocumentPController extends Controller
 
   public function edit_project()
   {
-    $projects = Documentp::where('doc_type', 1)->where('status_id', '<>', 4)->orderBy('nombre_proyecto','ASC')->get();
+    $projects = Documentp::where('doc_type', 1)
+                          ->where('status_id', '<>', 4)
+                          ->where('anexo_id', 7)
+                          ->orderBy('nombre_proyecto','ASC')->get();
+
     $grupos = DB::table('cadenas')->select('id', 'name')->orderBy('name','ASC')->get();
     $itcs = DB::select('CALL px_ITC_todos_v2');
 

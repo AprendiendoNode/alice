@@ -43,6 +43,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 use App\Models\Base\Setting;
+use App\Models\Accounting\ContabPeriodoHelper;
 use anlutro\LaravelSettings\SettingStore;
 use Jenssegers\Date\Date;
 use Illuminate\Support\Facades\Schema;
@@ -253,61 +254,76 @@ class HistoryCreditNoteController extends Controller
     }
     public function customer_polizas_movs_save(Request $request)
     {
-      // return $request;
-      $flag = "false";
-      try {
-        DB::transaction(function () use($request){
-          //Objeto de polizas
-          $asientos = $request->movs_polizas;
-          $asientos_data = json_decode($asientos);
-          $fecha_general = $request->date_resive;
-          $tam_asientos = count($asientos_data);
-          $flag = "false";
-          //Inserto a poliza
-          $id_poliza = DB::table('polizas')->insertGetId([
-            'tipo_poliza_id' => $request->type_poliza,
-            'numero' => $request->num_poliza,
-            'fecha' => $request->date_resive,
-            'descripcion' => $request->descripcion_poliza,
-            'total_cargos' => $request->total_cargos_format,
-            'total_abonos' => $request->total_abonos_format
-          ]);
-          //Insertando movimientos de las polizas
-          for ($i=0; $i < $tam_asientos; $i++)
-          {
-            if ( $asientos_data[$i]->cuenta_contable_id ) {
-              if ( $asientos_data[$i]->cargo == 0 && $asientos_data[$i]->abono == 0) {
-                /* NO_INSERTAR */
+      $explode = explode('-', $request->date_resive);
+      $anio = $explode[0];
+      $mes = $explode[1];
+      $flag = 4;//Error logico;
+
+      if(ContabPeriodoHelper::validar_ejercicio($anio)){
+        if(ContabPeriodoHelper::validar_periodo($anio, $mes)){
+          try {
+            DB::transaction(function () use($request){
+              //Objeto de polizas
+              $asientos = $request->movs_polizas;
+              $asientos_data = json_decode($asientos);
+              $fecha_general = $request->date_resive;
+              $tam_asientos = count($asientos_data);
+              
+              //Inserto a poliza
+              $id_poliza = DB::table('polizas')->insertGetId([
+                'tipo_poliza_id' => $request->type_poliza,
+                'numero' => $request->num_poliza,
+                'fecha' => $request->date_resive,
+                'descripcion' => $request->descripcion_poliza,
+                'total_cargos' => $request->total_cargos_format,
+                'total_abonos' => $request->total_abonos_format
+              ]);
+              //Insertando movimientos de las polizas
+              for ($i=0; $i < $tam_asientos; $i++)
+              {
+                if ( $asientos_data[$i]->cuenta_contable_id ) {
+                  if ( $asientos_data[$i]->cargo == 0 && $asientos_data[$i]->abono == 0) {
+                    /* NO_INSERTAR */
+                  }
+                  else{
+                    //Acumulando saldos
+                    $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
+                    $this->add_balances_polizas_ingresos($cc_array, $fecha_general, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
+                    /* SE INSERTAR */
+                    $sql = DB::table('polizas_movtos')->insert([
+                      'poliza_id' => $id_poliza,
+                      'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
+                      'purchase_id' => $asientos_data[$i]->factura_id,
+                      'fecha' => $asientos_data[$i]->fecha,
+                      'exchange_rate' => $asientos_data[$i]->tipo_cambio,
+                      'descripcion' => $asientos_data[$i]->nombre,
+                      'cargos' => $asientos_data[$i]->cargo,
+                      'abonos' => $asientos_data[$i]->abono,
+                      'referencia' => $asientos_data[$i]->referencia
+                    ]);
+                    //Marcando facturas a contabilizado
+                    $customer_invoice = Purchase::findOrFail($asientos_data[$i]->factura_id);
+                    $customer_invoice->contabilizado = 1;
+                    $customer_invoice->save();
+                  }
+                }
               }
-              else{
-                //Acumulando saldos
-                $cc_array = DB::select('CALL Contab.px_busca_cuentas_xid(?)', array($asientos_data[$i]->cuenta_contable_id));
-                $this->add_balances_polizas_ingresos($cc_array, $fecha_general, $asientos_data[$i]->cargo, $asientos_data[$i]->abono);
-                /* SE INSERTAR */
-                $sql = DB::table('polizas_movtos')->insert([
-                  'poliza_id' => $id_poliza,
-                  'cuenta_contable_id' => $asientos_data[$i]->cuenta_contable_id,
-                  'purchase_id' => $asientos_data[$i]->factura_id,
-                  'fecha' => $asientos_data[$i]->fecha,
-                  'exchange_rate' => $asientos_data[$i]->tipo_cambio,
-                  'descripcion' => $asientos_data[$i]->nombre,
-                  'cargos' => $asientos_data[$i]->cargo,
-                  'abonos' => $asientos_data[$i]->abono,
-                  'referencia' => $asientos_data[$i]->referencia
-                ]);
-                //Marcando facturas a contabilizado
-                $customer_invoice = Purchase::findOrFail($asientos_data[$i]->factura_id);
-                $customer_invoice->contabilizado = 1;
-                $customer_invoice->save();
-              }
-            }
+            });
+
+            $flag = 1;
+
+          } catch(\Exception $e){
+              $error = $e->getMessage();
+              dd($error);
           }
-        });
-        $flag = "true";
-      } catch(\Exception $e){
-          $error = $e->getMessage();
-          dd($error);
+        }else{
+          $flag = 3;//El periodo se encuetra cerrado;
+        }
+      }else{
+        $flag = 2; // El ejercicio se encuetra cerrado;
       }
+
+      
       return  $flag;
     }
     public function add_balances_polizas_ingresos($cc_array, $periodo, $cargo, $abono)

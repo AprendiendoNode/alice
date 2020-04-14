@@ -12,6 +12,7 @@ use App\Models\Projects\Documentp_status_user;
 use App\Models\Projects\Deny_docpcomment;
 use App\Models\Projects\Documentp_project;
 use App\Mail\SolicitudCompraAprobada;
+use App\ParametrosPresupuesto;
 use Mail;
 use Auth;
 use DB;
@@ -57,14 +58,38 @@ class DocumentpHistoryController extends Controller
 
         return view('permitted.planning.estimation_site', compact('data'));
     }
-
+    //Este es el bueno
     public function get_estimation_site_by_site($anexo)
     {
+      $contract_annex = False;
       $data = DB::select('CALL px_presupuesto_vs_ejercido(?)', array($anexo));
 
-      return view('permitted.planning.estimation_site', compact('data'));
+      $facturacion_mensual = DB::table('documentp')->select()->where('anexo_id', $anexo)
+                              ->pluck('servicio_mensual')->first();
+
+      $documentosPReal = $data[7]->total_usd + $data[8]->total_usd + $data[9]->total_usd + $data[10]->total_usd + $data[11]->total_usd + $data[12]->total_usd + $data[13]->total_usd;
+      $documentosMReal = $data[21]->total_usd + $data[22]->total_usd + $data[23]->total_usd + $data[24]->total_usd + $data[25]->total_usd + $data[26]->total_usd + $data[27]->total_usd;
+      
+      if(ParametrosPresupuesto::getContracAnnex($anexo) != null){
+        $contract_annex = True;
+        $inversion_instalacion = ParametrosPresupuesto::getInversionInstalacion($anexo, $documentosPReal);
+        $mantenimiento = ParametrosPresupuesto::getMantenimiento($anexo, $documentosMReal);
+        $inversion_total = ParametrosPresupuesto::getInversionTotal($anexo, 3);
+        $tir = 0.0;
+        $utilidad_renta_anticipada = 0.0;
+      }else  {
+        $inversion_instalacion =0;
+        $mantenimiento = 0;
+        $inversion_total = 0;
+        $tir = 0.0;
+        $utilidad_renta_anticipada = 0.0;
+      }     
+      
+      return view('permitted.planning.estimation_site', 
+             compact('data', 'inversion_instalacion', 'mantenimiento', 'inversion_total', 'tir', 'utilidad_renta_anticipada', 'contract_annex'));
     }
 
+    /** Gastos del sitio recuperado de los diferentes modulos */
     public function get_estimation_site_by_site_data($anexo)
     {
       $data = DB::select('CALL px_presupuesto_vs_ejercido(?)', array($anexo));

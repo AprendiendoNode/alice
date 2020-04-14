@@ -150,7 +150,7 @@ $('#form-cerrar-periodo').on('submit', function(e){
         }).then((result) => {
           if (result.value == 1) {
             Swal.fire({
-              title: 'Cierre del ejercicio realizado correctamente',
+              title: 'Cierre del periodo realizado correctamente',
               text: "",
               type: 'success',
             }).then(function (result) {
@@ -160,7 +160,7 @@ $('#form-cerrar-periodo').on('submit', function(e){
             })
           }else{
             Swal.fire(
-              'No se realizo el cierre del ejercicio','','error'
+              'No se realizo el cierre del periodo','','error'
             )
           }
         })

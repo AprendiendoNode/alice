@@ -700,7 +700,7 @@ $('#form_save_asientos_contables').on('submit', function(e){
                  });
         }//Preconfirm
       }).then((result) => {
-        if (result.value == "true") {
+        if (result.value == 1) {
           Swal.fire({
             title: 'Poliza guardada',
             text: "",
@@ -711,9 +711,17 @@ $('#form_save_asientos_contables').on('submit', function(e){
             }
           })
         }
-        else {
+        else if (result.value == 2){
           Swal.fire(
-            'No se guardo la poliza','','warning'
+            'El ejercicio se encuentra cerrado','','warning'
+          )
+        }else if (result.value == 3){
+          Swal.fire(
+            'El periodo se encuentra cerrado','','warning'
+          )
+        }else{
+          Swal.fire(
+            'El periodo se encuentra cerrado','','warning'
           )
         }
       })

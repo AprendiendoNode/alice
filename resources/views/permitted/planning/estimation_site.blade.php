@@ -1,5 +1,7 @@
-<div id="" class="">
-  <h4 class="text-primary text-center">{{$data[0]->sitio}}</h4>
+<div class="row">
+  <div class="col-12">
+    <h4 class="text-primary text-center">{{$data[0]->sitio}}</h4>
+  </div>
   <table id="estimation_table" class="table table-bordered table-condensed">
     <thead>
       <tr style="background: #193257">
@@ -222,14 +224,44 @@
         <td class="text-bold">$ {{ number_format($data[12]->total_usd + $data[26]->total_usd, 2, '.', ',') }}  </td> <!-- Enlaces -->
         <td class="text-bold">$ {{ number_format($data[13]->total_usd + $data[27]->total_usd, 2, '.', ',') }}  </td> <!-- Costo ITC -->
         <td style="font-weight:bold">
-
           $ {{ number_format($data[7]->total_usd + $data[21]->total_usd + $data[8]->total_usd + $data[22]->total_usd + $data[9]->total_usd + $data[23]->total_usd + $data[10]->total_usd + $data[24]->total_usd + $data[11]->total_usd + $data[25]->total_usd + $data[12]->total_usd + $data[26]->total_usd + $data[13]->total_usd + $data[27]->total_usd, 2, '.', ',') }}
         </td>
       </tr>
     </tbody>
   </table>
 </div>
+@if($contract_annex)
+  <div class="row mt-3">
+    <div class="col-12">
+      <p class="font-weight-bold text-danger">Parametros financieros</p>
+    </div>
+  </div>
+  <div class="row mt-2"> 
+    <div class="col-12 col-sm-4">
+      <p class="font-weight-bold text-dark">Inversión instalación: <span>{{ number_format($inversion_instalacion, 2, '.', ',') }}</span></p>
+    </div>
+    <div class="col-12 col-sm-4">
+    <p class="font-weight-bold text-dark">Mantenimiento: <span>{{ $mantenimiento }}</span></p>
+    </div>
+    <div class="col-12 col-sm-4">
+      <p class="font-weight-bold text-dark">Inversión Total: <span> {{ $inversion_total }} </span></p>
+    </div>
+    <div class="col-12 col-sm-4">
+      <p class="font-weight-bold text-dark">TIR Proyectada: <span> {{ $tir }} </span></p>
+    </div>
+    <div class="col-12 col-sm-4">
+      <p class="font-weight-bold text-dark">% Utilidad / Renta proyectada: <span> {{ $utilidad_renta_anticipada }} </span></p>
+    </div>
+  </div>
+@else
+<div class="row mt-3">
+  <div class="col-12">
+    <p class="font-weight-bold text-danger"><i class="fas fa-exclamation-circle"></i> ESTE SITIO NO TIENE UN CONTRAT0 ANEXO</p>
+  </div>
+</div>
+@endif
 <style>
+
   .text-white{
     color: white;
   }

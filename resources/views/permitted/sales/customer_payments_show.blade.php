@@ -1187,22 +1187,30 @@ $('#form_save_asientos_contables').on('submit', function(e){
                });
       }//Preconfirm
     }).then((result) => {
-      console.log(result.value);
-      if (result.value == "true") {
-        Swal.fire({
-          title: 'Poliza guardada',
-          text: "",
-          type: 'success',
-        }).then(function (result) {
-          if (result.value) {
-            window.location = "/sales/customer-payments-show";
-          }
-        })
-      }else{
-        Swal.fire(
-          'No se guardo la poliza','','warning'
-        )
-      }
+      if (result.value == 1) {
+          Swal.fire({
+            title: 'Poliza guardada',
+            text: "",
+            type: 'success',
+          }).then(function (result) {
+            if (result.value) {
+              window.location = "/sales/customer-payments-show";
+            }
+          })
+        }
+        else if (result.value == 2){
+          Swal.fire(
+            'El ejercicio se encuentra cerrado','','warning'
+          )
+        }else if (result.value == 3){
+          Swal.fire(
+            'El periodo se encuentra cerrado','','warning'
+          )
+        }else{
+          Swal.fire(
+            'El periodo se encuentra cerrado','','warning'
+          )
+        }
     })
 
   }else{
