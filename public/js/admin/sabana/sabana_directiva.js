@@ -100,29 +100,6 @@ $(document).on("click", ".cad, .sit", function() {
   });
 });
 
-function generate_table_budget(datajson, table) {
-  table.DataTable().destroy();
-  var vartable = table.dataTable(Configuration_table_responsive_budget);
-  vartable.fnClearTable();
-  $.each(datajson, function(index, data){
-    vartable.fnAddData([
-      data.id,
-      data.Nombre_hotel,
-      data.key,
-      data.id_ubicacion,
-      data.moneda,
-      '<a href="javascript:void(0);" id="mt1_'+data.annual_budget_id+'" name="mt1_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.equipo_activo_monto + '"class="editable_monto1"></a>',
-      '<a href="javascript:void(0);" id="mt2_'+data.annual_budget_id+'" name="mt2_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.equipo_no_activo_monto + '"class="editable_monto2"></a>',
-      '<a href="javascript:void(0);" id="mt3_'+data.annual_budget_id+'" name="mt3_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.licencias_monto + '"class="editable_monto3"></a>',
-      '<a href="javascript:void(0);" id="mt4_'+data.annual_budget_id+'" name="mt4_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.mano_obra_monto + '"class="editable_monto4"></a>',
-      '<a href="javascript:void(0);" id="mt5_'+data.annual_budget_id+'" name="mt5_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.enlaces_monto + '"class="editable_monto5"></a>',
-      '<a href="javascript:void(0);" id="mt6_'+data.annual_budget_id+'" name="mt6_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.viaticos_monto + '"class="editable_monto6"></a>',
-      //'<a href="javascript:void(0);" id="mt_'+data.annual_budget_id+'" name="mt_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.monto + '"class="editable_monto"></a>',
-      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+data.hotel_id+'" class="btn btn-dark btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-edit"></span></a>',
-    ]);
-  });
-}
-
 function table_general(data,data_sites, table) {
   /*table.DataTable().destroy();
   var vartable = table.dataTable(Configuration_table_responsive_cadena);*/

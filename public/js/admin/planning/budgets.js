@@ -4,6 +4,13 @@ const headers = new Headers({
   "X-Requested-With": "XMLHttpRequest",
   "X-CSRF-TOKEN": token
 });
+
+//ESTE JS TAMBIÉN ESTÁ SIENDO USADO POR LA VISTA dash_sabana_directiva
+var sabana_dir = true;
+if(window.location.href.split("/").pop() != 'dash_sabana_directiva') {
+  sabana_dir = false;
+}
+
 $(function () {
    //management_products();
   moment.locale('es');
@@ -17,7 +24,9 @@ $(function () {
     clearBtn: true
   });
   $('.date_plug').val('').datepicker('update');
-  budget_tb(token);
+  if(sabana_dir == false) {
+    budget_tb(token);
+  }
 });
 
 function budget_tb(token) {
@@ -56,7 +65,8 @@ function generate_table_budget(datajson, table) {
       '<a href="javascript:void(0);" id="mt5_'+data.annual_budget_id+'" name="mt5_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.enlaces_monto + '"class="editable_monto5"></a>',
       '<a href="javascript:void(0);" id="mt6_'+data.annual_budget_id+'" name="mt6_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.viaticos_monto + '"class="editable_monto6"></a>',
       //'<a href="javascript:void(0);" id="mt_'+data.annual_budget_id+'" name="mt_'+data.annual_budget_id+'" data-type="text" data-pk="'+ data.annual_budget_id + '" data-url="" data-title="Nuevo monto" data-value="' + data.monto + '"class="editable_monto"></a>',
-      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+data.hotel_id+'" class="btn btn-dark btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-edit"></span></a>',
+      '<a href="javascript:void(0);" onclick="enviar(this)" value="'+data.hotel_id+'" class="btn btn-dark btn-sm" role="button" data-target="#modal-concept"><span class="fas fa-edit"></span></a>'
+      +(sabana_dir ? '<a href="javascript:void(0);" id="desglose-'+data.hotel_id+'" class="mt-1 btn btn-dark btn-sm text-white" role="button" data-target="#modal-desglose">Desglose</a>' : ''),
     ]);
   });
 }
