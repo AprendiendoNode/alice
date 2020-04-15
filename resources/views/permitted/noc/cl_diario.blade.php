@@ -278,7 +278,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-    <script src="{{ asset('js/admin/noctools/checklist.js?v=1.4.4')}}"></script>
+    <script src="{{ asset('js/admin/noctools/checklist.js?v=2.4.4')}}"></script>
 
     <style media="screen">
     .tableFixHead          { overflow-y: auto; height: 620px; }

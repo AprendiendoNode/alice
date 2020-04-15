@@ -33,7 +33,7 @@
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
           <div class="row">
             <form id="search_info" name="search_info" class="form-inline" method="post">
-              {{ csrf_field() }}              
+              {{ csrf_field() }}
             </form>
           </div>
         </div>
@@ -52,13 +52,13 @@
                   <th> <small>$ EA USD</small> </th>
                   <th> <small>$ ENA USD</small> </th>
                   <th> <small>$ MO USD</small> </th>
-                  <th> <small>Solicitó</small> </th>
+                  <th> <small>ITC</small> </th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
                   <th> <small>Dias de compra</small> </th>
                   <th> <small>Doc.</small> </th>
-                  <th> <small>Serv. mensual</small> </th>              
+                  <th> <small>Serv. mensual</small> </th>
                 </tr>
               </thead>
               <tbody>
@@ -109,7 +109,7 @@
                   <th> <small>$ EA USD</small> </th>
                   <th> <small>$ ENA USD</small> </th>
                   <th> <small>$ MO USD</small> </th>
-                  <th> <small>Solicitó</small> </th>
+                  <th> <small>ITC</small> </th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
@@ -170,7 +170,7 @@
                   <th> <small>$ EA USD</small> </th>
                   <th> <small>$ ENA USD</small> </th>
                   <th> <small>$ MO USD</small> </th>
-                  <th> <small>Solicitó</small> </th>
+                  <th> <small>ITC</small> </th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
@@ -234,7 +234,7 @@
                   <th> <small>$ EA USD</small> </th>
                   <th> <small>$ ENA USD</small> </th>
                   <th> <small>$ MO USD</small> </th>
-                  <th> <small>Solicitó</small> </th>
+                  <th> <small>ITC</small> </th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
@@ -301,16 +301,16 @@
         }
     </style>
       @if( auth()->user()->can('View level zero documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_0.js?v=3.2')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_0.js?v=4.2')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @elseif ( auth()->user()->can('View level one documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_1.js?v=3.2')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_1.js?v=4.2')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @elseif ( auth()->user()->can('View level two documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_2.js?v=3.2')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_2.js?v=4.2')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
       @elseif ( auth()->user()->can('View level three documentp notification') )
-        <script src="{{ asset('js/admin/documentp/requests_documentm_3.js?v=3.4')}}"></script>
+        <script src="{{ asset('js/admin/documentp/requests_documentm_3.js?v=4.4')}}"></script>
         <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=5.0.1')}}"></script>
       @endif
   @else

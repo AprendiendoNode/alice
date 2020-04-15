@@ -59,7 +59,7 @@ function documentp_table(datajson, table){
   var vartable = table.dataTable(Configuration_table_responsive_documentp);
   vartable.fnClearTable();
   let docs_m = datajson.filter(data => data.doc_type == 2);
-  console.log(docs_m);
+  //console.log(docs_m);
   $.each(docs_m, function(index, data){
     let type_doc = 'M';
     let badge = '';
@@ -100,7 +100,7 @@ function documentp_table(datajson, table){
     '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-    data.elaboro,
+    data.itc,
     badge,
     data.num_edit,
     parseInt(data.porcentaje_compra) + '%',

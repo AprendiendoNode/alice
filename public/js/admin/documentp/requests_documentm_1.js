@@ -99,7 +99,7 @@ function documentp_table(datajson, table){
     '$' + data.total_ea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '$' + data.total_ena.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     '$' + data.total_mo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-    data.elaboro,
+    data.itc,
     badge,
     data.num_edit,
     parseInt(data.porcentaje_compra) + '%',
