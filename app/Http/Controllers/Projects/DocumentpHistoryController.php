@@ -62,6 +62,13 @@ class DocumentpHistoryController extends Controller
     public function get_estimation_site_by_site($anexo)
     {
       $contract_annex = False;
+      $cotizador = False;
+      $inversion_instalacion =0;
+      $mantenimiento = 0;
+      $inversion_total = 0;
+      $tir = 0.0;
+      $utilidad_renta_anticipada = 0.0;
+
       $data = DB::select('CALL px_presupuesto_vs_ejercido(?)', array($anexo));
 
       $facturacion_mensual = DB::table('documentp')->select()->where('anexo_id', $anexo)
@@ -70,23 +77,20 @@ class DocumentpHistoryController extends Controller
       $documentosPReal = $data[7]->total_usd + $data[8]->total_usd + $data[9]->total_usd + $data[10]->total_usd + $data[11]->total_usd + $data[12]->total_usd + $data[13]->total_usd;
       $documentosMReal = $data[21]->total_usd + $data[22]->total_usd + $data[23]->total_usd + $data[24]->total_usd + $data[25]->total_usd + $data[26]->total_usd + $data[27]->total_usd;
       
-      if(ParametrosPresupuesto::getContracAnnex($anexo) != null){
-        $contract_annex = True;
+      if(ParametrosPresupuesto::getContracAnnex($anexo) != null){ $contract_annex = True; }
+      if(count(ParametrosPresupuesto::getCotizador($anexo)) != 0){ $cotizador = True; } 
+      
+      if(ParametrosPresupuesto::getContracAnnex($anexo) != null &&
+        count(ParametrosPresupuesto::getCotizador($anexo)) != 0){ 
         $inversion_instalacion = ParametrosPresupuesto::getInversionInstalacion($anexo, $documentosPReal);
         $mantenimiento = ParametrosPresupuesto::getMantenimiento($anexo, $documentosMReal);
         $inversion_total = ParametrosPresupuesto::getInversionTotal($anexo, 3);
-        $tir = 0.0;
+        $tir = ParametrosPresupuesto::getTir($anexo, $documentosMReal);
         $utilidad_renta_anticipada = 0.0;
-      }else  {
-        $inversion_instalacion =0;
-        $mantenimiento = 0;
-        $inversion_total = 0;
-        $tir = 0.0;
-        $utilidad_renta_anticipada = 0.0;
-      }     
+      }   
       
       return view('permitted.planning.estimation_site', 
-             compact('data', 'inversion_instalacion', 'mantenimiento', 'inversion_total', 'tir', 'utilidad_renta_anticipada', 'contract_annex'));
+             compact('data', 'inversion_instalacion', 'mantenimiento', 'inversion_total', 'tir', 'utilidad_renta_anticipada', 'contract_annex', 'cotizador'));
     }
 
     /** Gastos del sitio recuperado de los diferentes modulos */

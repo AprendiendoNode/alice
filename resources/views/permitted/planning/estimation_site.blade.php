@@ -260,6 +260,14 @@
   </div>
 </div>
 @endif
+
+@if($cotizador == False)
+<div class="row mt-1">
+  <div class="col-12">
+    <p class="font-weight-bold text-danger"><i class="fas fa-exclamation-circle"></i> ESTE SITIO NO TIENE UN COTIZADOR</p>
+  </div>
+</div>
+@endif
 <style>
 
   .text-white{

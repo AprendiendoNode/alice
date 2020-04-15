@@ -766,6 +766,12 @@ class CustomerPaymentController extends Controller
           $date_payment = Helper::createDateTime($request->date_payment);
           $request->merge(['date_payment' => Helper::dateTimeToSql($date_payment)]);
         }
+
+        $se_timbra = DB::table('payment_ways')->where('id', $customer_invoice->payment_way_id)->value('timbrado');
+
+          if ($se_timbra != 1 ) {
+            throw new \Exception("Este documento no se puede timbrar por la forma de pago.");
+          }
         //Obtiene folio
         $document_type = Helper::getNextDocumentTypeByCode('customer.payment');
         $request->merge(['document_type_id' => $document_type['id']]);
@@ -900,6 +906,8 @@ class CustomerPaymentController extends Controller
            $customer_payment->status = CustomerPayment::RECONCILED;
         }
         $customer_payment->update();
+
+        
         //Crear el CFDI si marcaron la opcion
         if(!empty($cfdi)){
           //Crear CFDI

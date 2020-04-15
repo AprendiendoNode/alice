@@ -5,7 +5,7 @@ namespace App;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Projects\Documentp;
-use App\Models\Projects\{Cotizador, Cotizador_gastos};
+use App\Models\Projects\{Cotizador, Cotizador_gastos, Cotizador_inversion};
 
 class ParametrosPresupuesto extends Model
 {
@@ -36,11 +36,10 @@ class ParametrosPresupuesto extends Model
 
     public static function getInversionTotal($anexo_id, $docp_id)
     {
-
         $meses_cobrados = ParametrosPresupuesto::getMesesCobrados($anexo_id);
         $gasto_mensual_mantto = ParametrosPresupuesto::getGastoMensual($anexo_id);
         $inversion_total = 35000;
-        $inversion_cotizador = 2500;
+        $inversion_cotizador = ParametrosPresupuesto::getInversion($anexo_id);
 
 
         $inversion_total = ($inversion_total / $inversion_cotizador) + ($gasto_mensual_mantto * $meses_cobrados);
@@ -48,44 +47,40 @@ class ParametrosPresupuesto extends Model
         return $inversion_total;
     }
     
-    public static function getTir($anexo_id)
+    public static function getTir($anexo_id, $documentosMReal)
     { 
         $renta = ParametrosPresupuesto::getServicioMensualContract($anexo_id);
         $mantenimiento = ParametrosPresupuesto::getMantenimiento($anexo_id, $documentosMReal);
-        $plazo = 36; // meses del contrato
-        $total_inversion = 1000;
-        $comision  = 100.00;
-        $total_inversion = $total_inversion - $comision;
+        $plazo = ParametrosPresupuesto::getPlazo($anexo_id);
+        $inversion = ParametrosPresupuesto::getInversion($anexo_id);
+        $comision = ParametrosPresupuesto::getComision($anexo_id);
+        $total_inversion = $inversion - $comision;
         
-        $mantenimiento = 200.00;
         $flujo_neto = $renta - $mantenimiento;
         $suma_total = $total_inversion;
         $vpc = 0.0;
         $tir =  .000000;
-        $tir_anualizado = 0.00;
         
-        while ($suma_total >= 1) {
+        while ($suma_total >= 1){ 
             $tir+= .000001;
             $suma_total= 0.0;
-            for ($i = 1; $i <= $plazo; $i++) {
-            //$vpc = $flujo_neto /   Math.pow(1 + $tir, $i);
-            $suma_total+= $vpc;
+
+            for ($i = 1; $i <= $plazo; $i++)
+            {
+                $vpc = $flujo_neto / pow((1 + $tir), $i);
+                $suma_total+= $vpc;
             }
+
             $suma_total-= $total_inversion;
         }
         
         $tir_anualizado = $tir * 100 * 12;
-        
+       
         return $tir_anualizado; 
     }
 
     public static function getServicioMensualContract($anexo_id)
     {
-        
-        /*
-        * Buscar en contract_sites->contract_annexes->contract_payments
-        * Convertir el monto a dolares si esta en pesos
-        */
         $contract_annex = DB::table('contract_sites as A')
                             ->select('B.number_months', 'B.date_scheduled_start', 'C.quantity', 'C.currency_id','D.id_ubicacion','D.servicios_id')
                             ->join('contract_annexes as B', 'A.contract_annex_id', '=', 'B.id')
@@ -109,8 +104,6 @@ class ParametrosPresupuesto extends Model
 
     public static function getMesesCobrados($anexo_id)
     {
-        //Buscar los meses del contrato y la fecha de inicio de facturacion en:
-        //contract_sites->contract_annexes
         $contract_annex = DB::table('contract_sites as A')
                             ->select('B.number_months', 'B.date_scheduled_start', 'C.id_ubicacion','C.servicios_id')
                             ->join('contract_annexes as B', 'A.contract_annex_id', '=', 'B.id')
@@ -141,6 +134,41 @@ class ParametrosPresupuesto extends Model
         $gasto_mensual = $cotizador_gastos[0]->total_gasto_mensual;
         
         return $gasto_mensual;
+    }
+
+    public static function getPlazo($anexo_id)
+    {
+        $contract_annex = DB::table('contract_sites as A')
+                            ->select('B.number_months', 'C.id_ubicacion', 'C.servicios_id')
+                            ->join('contract_annexes as B', 'A.contract_annex_id', '=', 'B.id')
+                            ->join('hotels as C', 'hotel_id', '=', 'C.id')
+                            ->where('A.hotel_id', $anexo_id)
+                            //->where('C.servicios_id', 1) //arrrendamiento | servicio administrado
+                            ->first(); 
+        
+        $plazo = $contract_annex->number_months;
+
+        return $plazo;
+    }
+
+    public static function getInversion($anexo_id)
+    {
+        $cotizador = ParametrosPresupuesto::getCotizador($anexo_id);
+        $cotizador_inversion =  Cotizador_inversion::where('cotizador_id',$cotizador[0]->id)->first();
+
+        $inversion_total = $cotizador_inversion->inversion_real;
+        
+        return $inversion_total;
+    }
+
+    public static function getComision($anexo_id)
+    {
+        $cotizador = ParametrosPresupuesto::getCotizador($anexo_id);
+        $cotizador_inversion =  Cotizador_inversion::where('cotizador_id',$cotizador[0]->id)->first();
+
+        $comision = $cotizador_inversion->comision;
+        
+        return $comision;
     }
 
     public static function getContracAnnex($anexo_id)
