@@ -66,14 +66,14 @@
                 <th> <small>$ EA USD</small> </th>
                 <th> <small>$ ENA USD</small> </th>
                 <th> <small>$ MO USD</small> </th>
-                <th> <small>Solicitó</small> </th>
+                <th> <small>ITC</small> </th>
                 <th> <small>Estatus</small> </th>
                 <th> <small>V.</small> </th>
                 <th> <small>% Compra</small> </th>
                 <th> <small>Dias de compra</small> </th>
                 <th> <small>Doc.</small> </th>
                 <th> <small>Serv. mensual</small> </th>
-                
+
               </tr>
             </thead>
             <tbody>
@@ -124,7 +124,7 @@
                 <th> <small>$ EA USD</small> </th>
                 <th> <small>$ ENA USD</small> </th>
                 <th> <small>$ MO USD</small> </th>
-                <th> <small>Solicitó</small> </th>
+                <th> <small>ITC</small> </th>
                 <th> <small>Estatus</small> </th>
                 <th> <small>V.</small> </th>
                 <th> <small>% Compra</small> </th>
@@ -195,7 +195,7 @@
                   <th> <small>$ EA USD</small> </th>
                   <th> <small>$ ENA USD</small> </th>
                   <th> <small>$ MO USD</small> </th>
-                  <th> <small>Solicitó</small> </th>
+                  <th> <small>ITC</small> </th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
@@ -259,7 +259,7 @@
                   <th> <small>$ EA USD</small> </th>
                   <th> <small>$ ENA USD</small> </th>
                   <th> <small>$ MO USD</small> </th>
-                  <th> <small>Solicitó</small> </th>
+                  <th> <small>ITC</small> </th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>V.</small> </th>
                   <th> <small>% Compra</small> </th>
@@ -313,16 +313,16 @@
     <script src="{{ asset('js/bootstrap-editable.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/documentp.css?v2=2.0.1')}}" >
     @if( auth()->user()->can('View level zero documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_0.js?v=3.1')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_0.js?v=4.1')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level one documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_all.js?v=3.1')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_all.js?v=4.1')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level two documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_2.js?v=3.1')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_2.js?v=4.1')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level three documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_3.js?v=3.4')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_3.js?v=4.4')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=5.0.0')}}"></script>
     @else
       @include('default.denied')
