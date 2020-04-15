@@ -22,6 +22,14 @@
             </div> --}}
           </li>
         </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link d-flex justify-content-center align-items-center" href="https://sites.google.com/a/sitwifi.com/planeacion/men%C3%BA" target="_blank">
+              <i class="fas fa-globe fa-2x"></i>
+              <span class="intranet-icon" style="margin-left: 10px; font-weight: bold;">Intranet</span>
+            </a>
+          </li>
+        </ul>
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown mr-1">
             <notification-component></notification-component>
