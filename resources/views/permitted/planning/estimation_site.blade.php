@@ -230,7 +230,7 @@
     </tbody>
   </table>
 </div>
-@if($contract_annex)
+@if($contract_annex && $cotizador)
   <div class="row mt-3">
     <div class="col-12">
       <p class="font-weight-bold text-danger">Parametros financieros</p>
@@ -238,35 +238,61 @@
   </div>
   <div class="row mt-2"> 
     <div class="col-12 col-sm-4">
-      <p class="font-weight-bold text-dark">Inversión instalación: <span>{{ number_format($inversion_instalacion, 2, '.', ',') }}</span></p>
+      <p class="font-weight-bold text-dark">Inversión instalación: <span>{{ number_format($inversion_instalacion, 2, '.', ',') }}</span>
+        @if($inversion_instalacion < 1)
+          <i class="text-success fa fa-check"></i>
+        @else
+          <i class="text-danger fa fa-times"></i>
+        @endif  
+      </p>
+     
     </div>
     <div class="col-12 col-sm-4">
-    <p class="font-weight-bold text-dark">Mantenimiento: <span>{{ $mantenimiento }}</span></p>
+      <p class="font-weight-bold text-dark">Mantenimiento: <span>{{ number_format($mantenimiento, 2, '.', ',') }}</span>
+        @if($mantenimiento < 1)
+          <i class="text-success fa fa-check"></i>
+        @else
+          <i class="text-danger fa fa-times"></i>
+        @endif 
+      </p>
     </div>
     <div class="col-12 col-sm-4">
-      <p class="font-weight-bold text-dark">Inversión Total: <span> {{ $inversion_total }} </span></p>
+      <p class="font-weight-bold text-dark">Inversión Total: <span> {{ number_format($inversion_total, 2, '.', ',') }}</span>
+        @if($inversion_total < 1)
+          <i class="text-success fa fa-check"></i>
+        @else
+          <i class="text-danger fa fa-times"></i>
+        @endif 
+      </p>
     </div>
     <div class="col-12 col-sm-4">
-      <p class="font-weight-bold text-dark">TIR Proyectada: <span> {{ $tir }} </span></p>
+      <p class="font-weight-bold text-dark">TIR Proyectada: <span>{{ number_format($tir, 2, '.', ',') }}</span>
+        @if($tir >= 50)
+          <i class="text-success fa fa-check"></i>
+        @else
+          <i class="text-danger fa fa-times"></i>
+        @endif 
+      </p>
     </div>
     <div class="col-12 col-sm-4">
-      <p class="font-weight-bold text-dark">% Utilidad / Renta proyectada: <span> {{ $utilidad_renta_anticipada }} </span></p>
+      <p class="font-weight-bold text-dark">% Utilidad / Renta proyectada: <span>{{ number_format($utilidad_renta_anticipada, 2, '.', ',') }} </span></p>
     </div>
   </div>
-@else
-<div class="row mt-3">
-  <div class="col-12">
-    <p class="font-weight-bold text-danger"><i class="fas fa-exclamation-circle"></i> ESTE SITIO NO TIENE UN CONTRAT0 ANEXO</p>
-  </div>
-</div>
 @endif
 
-@if($cotizador == False)
-<div class="row mt-1">
-  <div class="col-12">
-    <p class="font-weight-bold text-danger"><i class="fas fa-exclamation-circle"></i> ESTE SITIO NO TIENE UN COTIZADOR</p>
+@if($contract_annex == False)
+  <div class="row mt-3">
+    <div class="col-12">
+      <p class="font-weight-bold text-danger"><i class="fas fa-exclamation-circle"></i> ESTE SITIO NO TIENE UN CONTRAT0 ANEXO</p>
+    </div>
   </div>
-</div>
+@endif 
+@if($cotizador == False)
+  <div class="row mt-1">
+    <div class="col-12">
+      <p class="font-weight-bold text-danger"><i class="fas fa-exclamation-circle"></i> ESTE SITIO NO TIENE UN COTIZADOR</p>
+    </div>
+  </div>
 @endif
 <style>
 

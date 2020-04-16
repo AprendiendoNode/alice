@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('contentheader_title')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('Create purchase orders') )
     Compras
   @else
   {{ trans('message.denied') }}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb_title')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('Create purchase orders') )
     Compras
   @else
   {{ trans('message.denied') }}
@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('Create purchase orders') )
   <div class="row">
     <div class="col-md-12 grid-margin-onerem  stretch-card">
       <div class="card">
@@ -177,7 +177,7 @@
 @endsection
 
 @push('scripts')
-  @if( auth()->user()->can('View customers invoices') )
+  @if( auth()->user()->can('Create purchase orders') )
   <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.css') }}" type="text/css" />
   <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2-bootstrap.min.css') }}" type="text/css" />
   <script src="{{ asset('plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>

@@ -767,11 +767,6 @@ class CustomerPaymentController extends Controller
           $request->merge(['date_payment' => Helper::dateTimeToSql($date_payment)]);
         }
 
-        $se_timbra = DB::table('payment_ways')->where('id', $customer_invoice->payment_way_id)->value('timbrado');
-
-          if ($se_timbra != 1 ) {
-            throw new \Exception("Este documento no se puede timbrar por la forma de pago.");
-          }
         //Obtiene folio
         $document_type = Helper::getNextDocumentTypeByCode('customer.payment');
         $request->merge(['document_type_id' => $document_type['id']]);
@@ -797,28 +792,31 @@ class CustomerPaymentController extends Controller
               $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
               //Convertimos el monto aplicado si la moneda del documento es diferente a la de pago
               $item_reconciled_amount_reconciled = round(Helper::invertBalanceCurrency($customer_payment->currency,$item_reconciled_amount_reconciled,$customer_invoice->currency->code,$item_reconciled_currency_value),2);
+             
+              $se_timbra = DB::table('payment_ways')->where('id', $customer_invoice->payment_way_id)->value('timbrado');
 
-              //Guardar linea
-              $customer_payment_reconciled = CustomerPaymentReconciled::create([
-                'created_uid' => \Auth::user()->id,
-                'updated_uid' => \Auth::user()->id,
-                'customer_payment_id' => $customer_payment->id,
-                'name' => $customer_invoice->name,
-                'reconciled_id' => $customer_invoice->id,
-                'currency_value' => $item_reconciled_currency_value,
-                'amount_reconciled' => $item_reconciled_amount_reconciled,
-                'last_balance' => $customer_invoice->balance,
-                'sort_order' => $count,
-                'status' => 1,
-                'uuid_related' => $customer_invoice->customerInvoiceCfdi->uuid,
-                'serie_related' => $customer_invoice->serie,
-                'folio_related' => $customer_invoice->folio,
-                'currency_code_related' => $customer_invoice->currency->code,
-                'payment_method_code_related' => $customer_invoice->paymentMethod->code,
-                'current_balance' => $customer_invoice->balance - $item_reconciled_amount_reconciled,
-              ]);
+              if ($se_timbra == 1 ) {
+                //Guardar linea
+                $customer_payment_reconciled = CustomerPaymentReconciled::create([
+                  'created_uid' => \Auth::user()->id,
+                  'updated_uid' => \Auth::user()->id,
+                  'customer_payment_id' => $customer_payment->id,
+                  'name' => $customer_invoice->name,
+                  'reconciled_id' => $customer_invoice->id,
+                  'currency_value' => $item_reconciled_currency_value,
+                  'amount_reconciled' => $item_reconciled_amount_reconciled,
+                  'last_balance' => $customer_invoice->balance,
+                  'sort_order' => $count,
+                  'status' => 1,
+                  'uuid_related' => $customer_invoice->customerInvoiceCfdi->uuid,
+                  'serie_related' => $customer_invoice->serie,
+                  'folio_related' => $customer_invoice->folio,
+                  'currency_code_related' => $customer_invoice->currency->code,
+                  'payment_method_code_related' => $customer_invoice->paymentMethod->code,
+                  'current_balance' => $customer_invoice->balance - $item_reconciled_amount_reconciled,
+                ]);
 
-              $tmp_customer_payment_reconciled = CustomerPaymentReconciled::where('status', '=', '1')
+                $tmp_customer_payment_reconciled = CustomerPaymentReconciled::where('status', '=', '1')
                   ->where('reconciled_id', '=', $customer_invoice->id)
                   ->where(function ($query) {
                       $query->WhereHas('customerPayment', function ($q) {
@@ -826,8 +824,9 @@ class CustomerPaymentController extends Controller
                               [CustomerPayment::OPEN, CustomerPayment::RECONCILED]);
                       });
                   });
-              $customer_payment_reconciled->number_of_payment = $tmp_customer_payment_reconciled->count(); //Guarda el numero de parcialidad
-              $customer_payment_reconciled->save();
+                $customer_payment_reconciled->number_of_payment = $tmp_customer_payment_reconciled->count(); //Guarda el numero de parcialidad
+                $customer_payment_reconciled->save();
+              }                        
               //Actualiza el saldo de la factura relacionada
               $customer_invoice->balance -= $item_reconciled_amount_reconciled;
               if($customer_invoice->balance <= 0){
@@ -874,6 +873,8 @@ class CustomerPaymentController extends Controller
             }
           }
         }
+
+
         //Cfdi relacionados
         if (!empty($request->item_relation)) {
           foreach ($request->item_relation as $key => $result) {
@@ -891,6 +892,11 @@ class CustomerPaymentController extends Controller
             ]);
           }
         }
+
+      //$customer_invoice_result = CustomerInvoice::findOrFail($request->item_reconciled[0]['reconciled_id']);
+      //$se_timbra2 = DB::table('payment_ways')->where('id', $customer_invoice_result->payment_way_id)->value('timbrado');
+      
+      if($se_timbra == 1){
         //Registros de cfdi
         $customer_payment_cfdi = CustomerPaymentCfdi::create([
           'created_uid' => \Auth::user()->id,
@@ -899,15 +905,6 @@ class CustomerPaymentController extends Controller
           'name' => $customer_payment->name,
           'status' => 1,
         ]);
-
-        //Actualiza estatus de acuerdo al monto conciliado
-        $customer_payment->balance = $amount - $amount_reconciled;
-        if($customer_payment->balance <= 0 || !empty($request->cfdi)){ //Si es un CFDI lo marca como conciliado
-           $customer_payment->status = CustomerPayment::RECONCILED;
-        }
-        $customer_payment->update();
-
-        
         //Crear el CFDI si marcaron la opcion
         if(!empty($cfdi)){
           //Crear CFDI
@@ -937,7 +934,19 @@ class CustomerPaymentController extends Controller
         else {
           // return 'cfdi error';
         }
+      }  
+        
+        //Actualiza estatus de acuerdo al monto conciliado
+        $customer_payment->balance = $amount - $amount_reconciled;
+
+        if($customer_payment->balance <= 0 || !empty($request->cfdi)){ //Si es un CFDI lo marca como conciliado
+           $customer_payment->status = CustomerPayment::RECONCILED;
+        }
+
+        $customer_payment->update();
+
         \DB::commit();
+
         return 'success';
       }
       catch (\Exception $e) {
