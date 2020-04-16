@@ -2441,6 +2441,7 @@ class CustomerInvoiceController extends Controller
           // Begin a transaction
           $contract_id = json_decode($request->idents);
           $order = 1;
+          // return $contract_id;
           for ($i=0; $i <= (count($contract_id)-1); $i++) {
             $all_information_anexos = DB::select('CALL px_contract_annexes_data (?)', array($contract_id[$i]));
 
