@@ -529,4 +529,17 @@ class HistoryPurchasesController extends Controller
         }
     }
 
+    public function history_purchases(){
+      return view('permitted.purchases.new_history_purchases');
+    }
+
+    public function search_history(Request $request)
+    {
+        $date_a = Carbon::parse($request->filter_date_from)->format('Y-m-d');
+        $date_b = Carbon::parse($request->filter_date_to)->format('Y-m-d');
+
+        $resultados = DB::select('CALL px_purchases_xrango_hist (?,?)',array($date_a, $date_b));
+        return $resultados;
+    }
+
 }
