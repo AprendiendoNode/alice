@@ -696,6 +696,45 @@ public function getInvoicePdf(Request $request)
 
 }
 
+public function getInvoicePdf_directiva($id)
+{
+  $count = DB::table('pay_facturas')->select('name')->where('payment_id',$id)->count();
+
+  if($count != 0)
+  {
+    $sql = DB::table('pay_facturas')->select('name')->where('payment_id',$id)->get();
+    // Si solo hay una factura se envia el data del pdf directamente
+    if($count == 1){
+      $file = $sql[0]->name;
+      $path = public_path('/images/storage/'.$file);
+      if(File::exists($path)){
+        return response()->file($path);
+      }
+      // Si hay mas de una factura se procede a verificar cual es el pdf para descargarla
+    }else{
+      for($i = 0; $i < $count; $i++){
+
+        $file = $sql[$i]->name;
+        $new_name = substr($file, 34, 100);
+        $ext = substr($file, -3);
+
+
+        $file_name = $new_name;
+        $path = public_path('images/storage/'.$file);
+
+        // Si el archivo existe se añade en el zip
+        if(File::exists($path) && trim($ext) == 'pdf'){
+          return response()->file($path);
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
 public function update_pay (Request $request) {
   $ordenDeCompra = $request->get('ordenDeCompra');
   $concepto = $request->get('concepto');
@@ -711,7 +750,7 @@ public function update_pay (Request $request) {
   $total = $request->get('total'); //
   $currency = $request->get('currency');
   $payment = $request->get('payment');
-  
+
   $result = explode('|', $request->cc_key);
   $key_new = trim($result[0]);
   $name_cc_new = trim($result[1]);
@@ -723,7 +762,7 @@ public function update_pay (Request $request) {
   $vieja_referencia = "default";
   $nueva_referencia = "default";
   $result = DB::table('customer_bank_accounts')->select('referencia')->where('id', $cuenta)->first();
-  
+
   $sql = DB::table('pay_mov_cc')->select('id', 'key_cc','name_cc')->where('payments_id', $payment)->first();
 
   if(($payments_table[0]->referencia) == "default") {

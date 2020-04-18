@@ -653,6 +653,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get_payment_by_cuenta', 'Payments\FilterPayController@get_payments_cuentacontable');
     Route::post('/downloadInvoicePay', 'Payments\PayHistoryController@getInvoice');
     Route::post('/downloadInvoicePdf','Payments\PayHistoryController@getInvoicePdf');
+    Route::get('/getInvoicePdf_directiva/{id}','Payments\PayHistoryController@getInvoicePdf_directiva');
 
     //Ver pagados
     Route::get('/view_history_all_status_paid', 'Payments\PayHistoryPaidController@index');

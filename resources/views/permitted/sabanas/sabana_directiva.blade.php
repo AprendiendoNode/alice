@@ -205,6 +205,7 @@
                             <th> <small>Factura</small> </th>
                             <th> <small>Proveedor</small> </th>
                             <th> <small>Monto</small> </th>
+                            <th> <small>Ver</small> </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -428,8 +429,11 @@
     <script src="{{ asset('bower_components/dhtmlx-gantt/dhtmlxgantt.js')}}"></script>
     <script src="{{ asset('bower_components/dhtmlx-gantt/ext/dhtmlxgantt_tooltip.js')}}"></script>
     <script src="{{ asset('bower_components/dhtmlx-gantt/ext/dhtmlxgantt_drag_timeline.js')}}"></script>
-    <script src="{{ asset('js/admin/sabana/sabana_directiva.js?v=1.0.0')}}"></script>
-    <script src="{{ asset('js/admin/planning/budgets.js')}}"></script>
+    <link href="/plugins/sweetalert-master/dist/sweetalert.css" rel="stylesheet" type="text/css" />
+    <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
+    <script src="{{ asset('js/admin/sabana/sabana_directiva.js?v=1.0.10')}}"></script>
+    <script src="{{ asset('js/admin/planning/budgets.js?v=1.0.2')}}"></script>
+    <!--<script src="{{ asset('js/admin/payments/request_modal_payment.js?v=v4.1.2')}}"></script>-->
 
     <style media="screen">
     .icon_head_dash i{

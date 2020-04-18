@@ -149,10 +149,81 @@ function generate_table_desglose(datajson, table) {
       data.folio,
       data.factura,
       data.proveedor,
-      data.pago_USD
+      data.pago_USD,
+      '<a href="javascript:void(0);" id="fac-'+data.id+'" class="factura_pay btn btn-default btn-sm" role="button"><span class="fas fa-eye"></span></a>'
     ]);
   });
 }
+
+$(document).on("click", ".factura_pay", function(){
+  var token = $('input[name="_token"]').val();
+  let id = $(this)[0].id.split("-")[1];
+  let a = document.createElement("a");
+  a.href = "getInvoicePdf_directiva/"+id;
+  //a.download = filename;
+  document.body.appendChild(a);
+  a.target = "_blank";
+  a.click();
+  /*$.ajax({
+    type: "POST",
+    url: "/getInvoicePdf_directiva",
+    data: { id_fact : id , _token : token },
+    xhrFields: {responseType: 'blob'},
+    success: function(response, status, xhr){
+      console.log(response);
+    if(response !== '[object Blob]'){
+
+      var filename = "";
+      var disposition = xhr.getResponseHeader('Content-Disposition');
+
+                  if (disposition) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(disposition);
+                    if (matches !== null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                  }
+                  var linkelem = document.createElement('a');
+                  try {
+                      var blob = new Blob([response], { type: 'application/octet-stream' });
+
+                      if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                          //   IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                          window.navigator.msSaveBlob(blob, filename);
+                      } else {
+                          var URL = window.URL || window.webkitURL;
+                          var downloadUrl = URL.createObjectURL(blob);
+
+                          if (filename) {
+                              // use HTML5 a[download] attribute to specify filename
+                              var a = document.createElement("a");
+                              // safari doesn't support this yet
+                              if (typeof a.download === 'undefined') {
+                                  window.location = downloadUrl;
+                              } else {
+                                  a.href = downloadUrl;
+                                  //a.download = filename;
+                                  document.body.appendChild(a);
+                                  a.target = "_blank";
+                                  a.click();
+                              }
+                          } else {
+                              window.location = downloadUrl;
+                          }
+                      }
+
+                  } catch (ex) {
+                      console.log(ex);
+                  }
+                }else{
+                  swal("Factura no disponible", "", "error");
+                }
+              },
+              error: function (response) {
+
+              }
+
+        });*/
+});
+
 
 $('#modal-view-algo, #modal-desglose').on('hidden.bs.modal', function() {
     $('body').addClass('modal-open');
@@ -800,7 +871,7 @@ var Configuration_table_responsive_budget_desglose= {
         }
       }, */
       {
-        "targets": [0,1,2,3],
+        "targets": [0,1,2,3,4],
         "width": "1%",
         "className": "text-center",
       }
