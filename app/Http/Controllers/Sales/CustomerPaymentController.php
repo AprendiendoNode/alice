@@ -647,10 +647,12 @@ class CustomerPaymentController extends Controller
             $item_reconciled_amount_reconciled = round((double)$item_reconciled['amount_reconciled'],2);
             $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
             $amount_reconciled += $item_reconciled_amount_reconciled;
+            
             //Valida que el monto conciliado no supere el saldo de la factura
             $currency = Currency::findOrFail($request->currency_id);
             $customer_invoice = CustomerInvoice::findOrFail($item_reconciled['reconciled_id']);
             $tmp = round(Helper::invertBalanceCurrency($currency,$item_reconciled_amount_reconciled,$customer_invoice->currency->code,$item_reconciled_currency_value),2);
+            
             if($tmp > $customer_invoice->balance){
               return 'error5';
               // return __('customer_payment.error_reconciled_amount_reconciled_customer_invoice_balance');
@@ -680,6 +682,7 @@ class CustomerPaymentController extends Controller
     {
       //Validacion
       $cfdi = !empty($request->cfdi) ? 1 : 1;
+      $se_timbra = 0;
 
       \DB::beginTransaction();
       try {
@@ -724,13 +727,13 @@ class CustomerPaymentController extends Controller
         if (!empty($request->item_reconciled)) {
          foreach ($request->item_reconciled as $key => $item_reconciled) {
            if (!empty($item_reconciled['amount_reconciled'])) {
-             $item_reconciled_amount_reconciled = round((double)$item_reconciled['amount_reconciled'],2);
+             $item_reconciled_amount_reconciled = round((double)$item_reconciled['amount_reconciled'],4);
              $item_reconciled_currency_value = !empty($item_reconciled['currency_value']) ? round((double)$item_reconciled['currency_value'],4) : null;
              $amount_reconciled += $item_reconciled_amount_reconciled;
              //Valida que el monto conciliado no supere el saldo de la factura
              $currency = Currency::findOrFail($request->currency_id);
              $customer_invoice = CustomerInvoice::findOrFail($item_reconciled['reconciled_id']);
-             $tmp = round(Helper::invertBalanceCurrency($currency,$item_reconciled_amount_reconciled,$customer_invoice->currency->code,$item_reconciled_currency_value),2);
+             $tmp = round(Helper::invertBalanceCurrency($currency,$item_reconciled_amount_reconciled,$customer_invoice->currency->code,$item_reconciled_currency_value),4);
              if($tmp > $customer_invoice->balance){
                return 'error5';
                // return __('customer_payment.error_reconciled_amount_reconciled_customer_invoice_balance');
@@ -794,7 +797,7 @@ class CustomerPaymentController extends Controller
               $item_reconciled_amount_reconciled = round(Helper::invertBalanceCurrency($customer_payment->currency,$item_reconciled_amount_reconciled,$customer_invoice->currency->code,$item_reconciled_currency_value),2);
              
               $se_timbra = DB::table('payment_ways')->where('id', $customer_invoice->payment_way_id)->value('timbrado');
-
+              
               if ($se_timbra == 1 ) {
                 //Guardar linea
                 $customer_payment_reconciled = CustomerPaymentReconciled::create([
@@ -836,7 +839,9 @@ class CustomerPaymentController extends Controller
             }
           }
         }
-        //Facturas manuales
+        
+        /******* Facturas manuales *********/
+
         //Lineas
         if (!empty($request->item_manual_reconciled)) {
           foreach ($request->item_manual_reconciled as $key => $item_reconciled) {
@@ -874,7 +879,6 @@ class CustomerPaymentController extends Controller
           }
         }
 
-
         //Cfdi relacionados
         if (!empty($request->item_relation)) {
           foreach ($request->item_relation as $key => $result) {
@@ -891,51 +895,48 @@ class CustomerPaymentController extends Controller
               'uuid_related' => !empty($customer_payment_cfdi_relation) ? $customer_payment_cfdi_relation->uuid : '',
             ]);
           }
-        }
+        }      
 
-      //$customer_invoice_result = CustomerInvoice::findOrFail($request->item_reconciled[0]['reconciled_id']);
-      //$se_timbra2 = DB::table('payment_ways')->where('id', $customer_invoice_result->payment_way_id)->value('timbrado');
-      
-      if($se_timbra == 1){
-        //Registros de cfdi
-        $customer_payment_cfdi = CustomerPaymentCfdi::create([
-          'created_uid' => \Auth::user()->id,
-          'updated_uid' => \Auth::user()->id,
-          'customer_payment_id' => $customer_payment->id,
-          'name' => $customer_payment->name,
-          'status' => 1,
-        ]);
-        //Crear el CFDI si marcaron la opcion
-        if(!empty($cfdi)){
-          //Crear CFDI
-          $class_cfdi = setting('cfdi_version');
-          if (empty($class_cfdi)) {
-              throw new \Exception(__('general.error_cfdi_version'));
+        if($se_timbra == 1){
+          //Registros de cfdi
+          $customer_payment_cfdi = CustomerPaymentCfdi::create([
+            'created_uid' => \Auth::user()->id,
+            'updated_uid' => \Auth::user()->id,
+            'customer_payment_id' => $customer_payment->id,
+            'name' => $customer_payment->name,
+            'status' => 1,
+          ]);
+          //Crear el CFDI si marcaron la opcion
+          if(!empty($cfdi)){
+            //Crear CFDI
+            $class_cfdi = setting('cfdi_version');
+            if (empty($class_cfdi)) {
+                throw new \Exception(__('general.error_cfdi_version'));
+            }
+            if (!method_exists($this, $class_cfdi)) {
+                throw new \Exception(__('general.error_cfdi_class_exists'));
+            }
+            //Valida Empresa y PAC para timbrado
+            PacHelper::validateSatActions();
+            //Crear XML y timbra
+            $tmp = $this->$class_cfdi($customer_payment);
+            //Guardar registros de CFDI
+            $customer_payment_cfdi->fill(array_only($tmp,[
+                'pac_id',
+                'cfdi_version',
+                'uuid',
+                'date',
+                'file_xml',
+                'file_xml_pac',
+            ]));
+            $customer_payment_cfdi->save();
+            // return 'cfdi success';
           }
-          if (!method_exists($this, $class_cfdi)) {
-              throw new \Exception(__('general.error_cfdi_class_exists'));
+          else {
+            // return 'cfdi error';
           }
-          //Valida Empresa y PAC para timbrado
-          PacHelper::validateSatActions();
-          //Crear XML y timbra
-          $tmp = $this->$class_cfdi($customer_payment);
-          //Guardar registros de CFDI
-          $customer_payment_cfdi->fill(array_only($tmp,[
-              'pac_id',
-              'cfdi_version',
-              'uuid',
-              'date',
-              'file_xml',
-              'file_xml_pac',
-          ]));
-          $customer_payment_cfdi->save();
-          // return 'cfdi success';
         }
-        else {
-          // return 'cfdi error';
-        }
-      }  
-        
+              
         //Actualiza estatus de acuerdo al monto conciliado
         $customer_payment->balance = $amount - $amount_reconciled;
 

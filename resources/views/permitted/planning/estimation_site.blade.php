@@ -275,7 +275,13 @@
       </p>
     </div>
     <div class="col-12 col-sm-4">
-      <p class="font-weight-bold text-dark">% Utilidad / Renta proyectada: <span>{{ number_format($utilidad_renta_anticipada, 2, '.', ',') }} </span></p>
+      <p class="font-weight-bold text-dark">% Utilidad / Renta proyectada: <span>{{ number_format($utilidad_renta_anticipada, 2, '.', ',') }} </span>
+        @if($utilidad_renta_anticipada >= 33)
+          <i class="text-success fa fa-check"></i>
+        @else
+          <i class="text-danger fa fa-times"></i>
+        @endif 
+      </p>
     </div>
   </div>
 @endif

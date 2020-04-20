@@ -34,17 +34,29 @@ class ParametrosPresupuesto extends Model
         return $mantenimiento;
     }
 
-    public static function getInversionTotal($anexo_id, $docp_id)
+    public static function getInversionTotal($anexo_id, $documentosPReal)
     {
         $meses_cobrados = ParametrosPresupuesto::getMesesCobrados($anexo_id);
         $gasto_mensual_mantto = ParametrosPresupuesto::getGastoMensual($anexo_id);
-        $inversion_total = 35000;
+        $inversion_total = $documentosPReal;
         $inversion_cotizador = ParametrosPresupuesto::getInversion($anexo_id);
 
 
         $inversion_total = ($inversion_total / $inversion_cotizador) + ($gasto_mensual_mantto * $meses_cobrados);
 
         return $inversion_total;
+    }
+
+    public static function getUtilidadRenta($anexo_id)
+    {
+        $renta = ParametrosPresupuesto::getServicioMensualContract($anexo_id);
+        $total_gastos = ParametrosPresupuesto::getGastoMensual($anexo_id);
+
+        $utilidad_mensual = $renta - $total_gastos;
+        $utilidad_renta_percent =  $utilidad_mensual / $renta;
+        $utilidad_renta_percent *= 100;
+        
+        return $utilidad_renta_percent;
     }
     
     public static function getTir($anexo_id, $documentosMReal)

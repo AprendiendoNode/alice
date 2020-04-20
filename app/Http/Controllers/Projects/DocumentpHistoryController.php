@@ -84,9 +84,9 @@ class DocumentpHistoryController extends Controller
         count(ParametrosPresupuesto::getCotizador($anexo)) != 0){ 
         $inversion_instalacion = ParametrosPresupuesto::getInversionInstalacion($anexo, $documentosPReal);
         $mantenimiento = ParametrosPresupuesto::getMantenimiento($anexo, $documentosMReal);
-        $inversion_total = ParametrosPresupuesto::getInversionTotal($anexo, 3);
+        $inversion_total = ParametrosPresupuesto::getInversionTotal($anexo, $documentosPReal);
         $tir = ParametrosPresupuesto::getTir($anexo, $documentosMReal);
-        $utilidad_renta_anticipada = 0.0;
+        $utilidad_renta_anticipada = ParametrosPresupuesto::getUtilidadRenta($anexo);
       }   
       
       return view('permitted.planning.estimation_site', 
