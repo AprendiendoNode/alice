@@ -281,6 +281,7 @@ function all_data() {
           //SitiosEvaluados
           $("#total1").text(data[0][6].Count);
           $("#total2").text(data[1][6].Count);
+          $("#total-trim").text(data[5][6].Count);
           if(data[1][6].Count == 0) {
             $("#total-porcentaje").text("0%");
           } else {
@@ -289,6 +290,7 @@ function all_data() {
           $("#total-icon").html(data[0][6].Count < data[1][6].Count ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
           $("#res1").text(data[0][5].Count);
           $("#res2").text(data[1][5].Count);
+          $("#res-trim").text(data[5][5].Count);
           if(data[1][5].Count == 0) {
             $("#res-porcentaje").text("0%");
           } else {
@@ -297,6 +299,7 @@ function all_data() {
           $("#res-icon").html(data[0][5].Count < data[1][5].Count ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
           $("#sinres1").text(data[0][4].Count);
           $("#sinres2").text(data[1][4].Count);
+          $("#sinres-trim").text(data[5][4].Count);
           if(data[1][4].Count == 0) {
             $("#sinres-porcentaje").text("0%");
           } else {
@@ -310,7 +313,8 @@ function all_data() {
           for(var i = 0; i < data[4].length ; i++) {
             if(data[4][i].cal_anterior == "D") {
               old++;
-              new_row += "<tr id='seek" + (i + 1) + "' class='new_detractores_rows'><td>" + data[4][i].Nombre_hotel + "</td>";
+              new_row += "<tr id='seek" + (i + 1) + "' class='new_detractores_rows'><td class='actual_detractores'></td>";
+              new_row += "<td>" + data[4][i].Nombre_hotel + "</td>";
               switch(data[4][i].cal_siguiente) {
                 case "Pr":
                   new_row += "<td><span style='color: green;'>Promotor</span></td>";
@@ -324,13 +328,13 @@ function all_data() {
                 default:
                   new_row += "<td>No hay respuesta</td>";
               }
-              new_row += "<td class='actual_detractores'></td></tr>";
+              new_row += "</tr>";
             } else if(old > 0) {
               act++;
               if(act > old) {
-                new_row += "<tr id='seek" + (i + 1) + "' class='new_detractores_rows'><td></td>";
+                new_row += "<tr id='seek" + (i + 1) + "' class='new_detractores_rows'><td class='actual_detractores'>" + data[4][i].Nombre_hotel + "</td>";
                 new_row += "<td></td>";
-                new_row += "<td class='actual_detractores'>" + data[4][i].Nombre_hotel + "</td></tr>";
+                new_row += "<td></td></tr>";
                 $("#seek" + old).after(new_row);
                 new_row = "";
                 continue;
@@ -338,9 +342,9 @@ function all_data() {
                 $(".actual_detractores").eq(act - 1).text(data[4][i].Nombre_hotel);
               }
             } else {
-              new_row += "<tr id='seek" + (i + 1) + "' class='new_detractores_rows'><td></td>";
+              new_row += "<tr id='seek" + (i + 1) + "' class='new_detractores_rows'><td class='actual_detractores'>" + data[4][i].Nombre_hotel + "</td><td></td>";
               new_row += "<td></td>";
-              new_row += "<td class='actual_detractores'>" + data[4][i].Nombre_hotel + "</td></tr>";
+              new_row += "<td></td></tr>";
             }
             $("#seek" + i).after(new_row);
             new_row = "";

@@ -94,6 +94,7 @@ class NocToolsController extends Controller
     $anio_number = $aux[1];
     $date = $anio_number."-".$mes_number."-01";
     $result2 = DB::select('CALL NPS_MONTH (?)', array($date));
+    $trimestre = DB::select('CALL NPS_MONTH_TRIMESTRE (?)', array($date));
     $result4 = substr($meses[$mes_number], 0, 3);
     $result5 = DB::select('CALL px_detractores_xfecha(?)', array($date));
     $mes_number--;
@@ -107,7 +108,7 @@ class NocToolsController extends Controller
     $date = $anio_number."-".$mes_number."-01";
     $result1 = DB::select('CALL NPS_MONTH (?)', array($date));
     $result3 = substr($meses[$mes_number], 0, 3);
-    return array($result1, $result2, $result3, $result4, $result5);
+    return array($result1, $result2, $result3, $result4, $result5, $trimestre);
   }
 
   public function dash_operacion_tickets(Request $request) {

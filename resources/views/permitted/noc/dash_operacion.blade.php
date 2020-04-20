@@ -85,6 +85,7 @@
                         <td></td>
                         <td class="mes1"></td>
                         <td class="mes2"></td>
+                        <td>Últ. Trim.</td>
                         <td></td>
                         <td></td>
                       </tr>
@@ -92,6 +93,7 @@
                         <td style="color: green;">Total</td>
                         <td id="total1"></td>
                         <td id="total2"></td>
+                        <td id="total-trim"></td>
                         <td id="total-porcentaje"></td>
                         <td id="total-icon"></td>
                       </tr>
@@ -99,6 +101,7 @@
                         <td style="color: orange;">Respondieron</td>
                         <td id="res1"></td>
                         <td id="res2"></td>
+                        <td id="res-trim"></td>
                         <td id="res-porcentaje"></td>
                         <td id="res-icon"></td>
                       </tr>
@@ -106,6 +109,7 @@
                         <td style="color: red;">Sin respuesta</td>
                         <td id="sinres1"></td>
                         <td id="sinres2"></td>
+                        <td id="sinres-trim"></td>
                         <td id="sinres-porcentaje"></td>
                         <td id="sinres-icon"></td>
                       </tr>
@@ -130,9 +134,9 @@
 
                     <table id="detractores" class="table-responsive" style="text-align: center;">
                       <tr id="seek0" style="color: brown;">
+                        <td class="mes2"></td>
                         <td class="mes1"></td>
                         <td>Status actual</td>
-                        <td class="mes2"></td>
                       </tr>
                     </table>
 
