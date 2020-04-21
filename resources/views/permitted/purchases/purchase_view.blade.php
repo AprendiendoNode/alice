@@ -824,6 +824,8 @@
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
 
+  <script src="{{ asset('js/admin/purchases/modal_bank_purchase.js')}}"></script>
+
   <script type="text/javascript">
     var conceptIndex = 0;
     $.validator.addMethod('filesize', function(value, element, param) {
@@ -1756,7 +1758,13 @@
               });
           }
         });
-
+        $('#bank').on('change', function() {
+            $('#account').empty();
+            $('#account').append('<option value="">Elegir...</option>');
+            $('#clabe').val('');
+            $('#reference_banc').val('');
+            getCuentaClabe();
+        })
         /* Eventos en items cfdi relation */
         /*Selecciona factura*/
         $(document).on('select2:select', '#form #items_relation tbody .col-relation-id', function (e) {
@@ -2112,7 +2120,7 @@
       // End funciones cuenta contable.
   </script>
 
-  <script src="{{ asset('js/admin/purchases/modal_bank_purchase.js')}}"></script>
+
   <style media="screen">
     .btn-xs {
       padding: .35rem .4rem .25rem !important;
