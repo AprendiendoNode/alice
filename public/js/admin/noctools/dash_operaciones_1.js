@@ -34,8 +34,8 @@ $('#mes').datepicker().on('changeDate', function (ev) {
 
 $("footer").css("display", "none");
 
-function graph_tickets(title, data) {
-  var vals = Object.values(data);
+function graph_tickets(title, meses, cants) {
+  var vals = Object.values(cants);
   var chart = document.getElementById(title);
      var myChart = echarts.init(chart);
      var group=[];
@@ -68,7 +68,7 @@ function graph_tickets(title, data) {
      xAxis: {
          type: 'category',
          boundaryGap: true,
-         data: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+         data: Object.values(meses),
          axisTick: {
              alignWithLabel: true
          },
@@ -354,7 +354,6 @@ function all_data() {
              url: '/dash_operacion_tickets',
              data: { _token: _token, fecha: fecha },
              success: function (data) {
-               console.log(data);
                $("#anual_30").text(parseInt(data[1][0]['<30'] * 100) + "%");
                $("#30_1").text(parseInt(data[0][0]['<30'] * 100) + "%");
                $("#30_2").text(parseInt(data[0][1]['<30'] * 100) + "%");
@@ -390,7 +389,7 @@ function all_data() {
                   url: '/graph_operacion_tickets',
                   data: { _token: _token, fecha: fecha },
                   success: function (data) {
-                    graph_tickets('graph_tickets', data[0]);
+                    graph_tickets('graph_tickets', data[0], data[1]);
                     $.ajax({
                          type: "POST",
                          url: '/all_disponibilidad',

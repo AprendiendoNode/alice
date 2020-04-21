@@ -139,8 +139,24 @@ class NocToolsController extends Controller
   public function graph_operacion_tickets(Request $request) {
     $fecha = $request->fecha;
     $aux = explode("-", $fecha);
-    $year = $aux[1];
-    $result = DB::connection('zendesk')->select('CALL px_all_answers_ticketsxmes(?)', array($year));
+    $meses = array(
+      "01" => "Enero",
+      "02" => "Febrero",
+      "03" => "Marzo",
+      "04" => "Abril",
+      "05" => "Mayo",
+      "06" => "Junio",
+      "07" => "Julio",
+      "08" => "Agosto",
+      "09" => "Septiembre",
+      "10" => "Octubre",
+      "11" => "Noviembre",
+      "12" => "Diciembre"
+    );
+    $mes_number = array_search($aux[0], $meses);
+    $anio_number = $aux[1];
+    $date = $anio_number."-".$mes_number."-01";
+    $result = DB::connection('zendesk')->select('CALL px_all_answers_ticketsxmes(?)', array($date));
     return $result;
   }
 
