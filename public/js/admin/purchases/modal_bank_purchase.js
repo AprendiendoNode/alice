@@ -1,7 +1,11 @@
 $('.databank').on('click', function(){
   var proveedor_act = $('#customer_id').val();
   if (proveedor_act == '') {
-    swal("Operación abortada", "Selecciona un proveedor primero :(", "error");
+    Swal.fire({
+       type: 'error',
+       title: 'Operación abortada',
+       text: "Selecciona un proveedor primero :("
+     });
   }
   else {
     $('#data_account_bank')[0].reset();
@@ -78,6 +82,10 @@ function getCuentaClabe() {
                 $('#clabe').val('');
                 $('#reference_banc').val('');
             } else {
+                $('#account').empty();
+                $('#account').append('<option value="">Elegir...</option>');
+                $('#clabe').val('');
+                $('#reference_banc').val('');
                 datax = JSON.parse(data);
                 if ($.trim(data)) {
 

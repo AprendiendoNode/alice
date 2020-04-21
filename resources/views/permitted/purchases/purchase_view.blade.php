@@ -33,11 +33,11 @@
                         {{ csrf_field() }}
                         <div class="row form-group mb-2">
                           <label for="reg_provider" class="col-md-3 control-label">{{ trans('pay.proveedor') }}</label>
-                          <input class="form-control col-md-9" type="text" name="reg_provider" id="reg_provider" value="" readonly>
+                          <input class="form-control col-md-9 required" type="text" name="reg_provider" id="reg_provider" value="" readonly>
                         </div>
                         <div class="row form-group my-2">
                           <label for="reg_bancos" class="col-md-3 control-label">{{ trans('pay.bank') }}</label>
-                          <select id="reg_bancos" name="reg_bancos" class="col-md-9 form-control select2" style="width:100%;">
+                          <select id="reg_bancos" name="reg_bancos" class="col-md-9 form-control select2 required" style="width:100%;">
                             <option value="" selected>{{ trans('pay.select_op') }}</option>
                             @forelse ($banquitos as $data_banquitos)
                               <option value="{{ $data_banquitos->id }}"> {{ $data_banquitos->name }} </option>
@@ -47,7 +47,7 @@
                         </div>
                         <div class="row form-group my-2">
                           <label for="reg_coins" class="col-md-3 control-label">{{ trans('pay.type_coins') }}</label>
-                          <select id="reg_coins" name="reg_coins" class="col-md-9 form-control select2" style="width:100%;">
+                          <select id="reg_coins" name="reg_coins" class="col-md-9 form-control select2 required" style="width:100%;">
                             <option value="" selected>{{ trans('pay.select_op') }}</option>
                             @forelse ($currency as $data_currency)
                               <option value="{{ $data_currency->id }}"> {{ $data_currency->name }} </option>
@@ -57,19 +57,19 @@
                         </div>
                         <div class="row form-group my-2">
                           <label for="reg_cuenta" class="col-md-3 control-label">{{ trans('pay.cuenta') }}</label>
-                          <input class="col-md-9 form-control" type="text" name="reg_cuenta" id="reg_cuenta" value="">
+                          <input class="col-md-9 form-control required" type="text" name="reg_cuenta" id="reg_cuenta" value="">
                         </div>
                         <div class="row form-group my-2">
                           <label for="reg_clabe" class="col-md-3 control-label">{{ trans('pay.clabe') }}</label>
-                          <input class="col-md-9 form-control" type="text" name="reg_clabe" id="reg_clabe" value="">
+                          <input class="col-md-9 form-control required" type="text" name="reg_clabe" id="reg_clabe" value="">
                         </div>
                         <div class="row form-group my-2">
                           <label for="reg_reference" class="col-md-3 control-label">{{ trans('pay.reference') }}</label>
-                          <input class="col-md-9 form-control" type="text" name="reg_reference" id="reg_reference" value="">
+                          <input class="col-md-9 form-control required" type="text" name="reg_reference" id="reg_reference" value="">
                         </div>
                         <div class="row my-2">
                           @if( auth()->user()->can('Create data bank provider by multiple payment') )
-                            <button type="submit" class="btn btn-secondary col-md-4 mr-3"><i class="fas fa-plus-square"></i>&nbsp;{{ trans('message.create') }}</button>
+                            <button type="submit" id="btn_sub_bank" class="btn btn-secondary col-md-4 mr-3"><i class="fas fa-plus-square"></i>&nbsp;{{ trans('message.create') }}</button>
                             <!-- <button type="button" class="btn bg-navy create_provider"><i class="fa fa-plus-square-o" style="margin-right: 4px;"></i>{{ trans('message.create') }}</button> -->
                           @endif
                           <button type="button" class="btn btn-danger delete_provider col-md-7" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;{{ trans('message.cancelar') }} & {{ trans('message.ccmodal') }}</button>
@@ -924,6 +924,7 @@
                   });
                 }
                 if (data == 'false' || data == '5') {
+                  $("#btn_sub").prop( "disabled", false );
                   Swal.fire({
                      type: 'error',
                      title: 'Error encontrado..',
@@ -932,6 +933,7 @@
                 }
               },
               error: function (err) {
+                $("#btn_sub").prop( "disabled", false );
                 Swal.fire({
                    type: 'error',
                    title: 'Oops...',
@@ -945,6 +947,61 @@
       //-----------------------------------------------------------
       createEventListener_file();
       createEventListener_fileXml();
+
+      $('#data_account_bank').validate({
+        ignore: "input[type=hidden]",
+        errorClass: "text-danger",
+        successClass: "text-success",
+        errorPlacement: function (error, element) {
+          error.insertAfter(element);
+        },
+        rules: {},
+        messages: {},
+        submitHandler: function(e){
+          var id_prov = $('#customer_id').val();
+          var objData = $('#data_account_bank').find("select,textarea, input").serialize();
+          $("#btn_sub_bank").prop( "disabled", true );
+          $.ajax({
+              type: "POST",
+              url: "/setdata_bank",
+              data: objData + "&identificador=" + id_prov,
+              success: function(data) {
+                  if (data == '1') {
+                      $('#modal_bank').modal('toggle');
+                      Swal.fire({
+                         type: 'success',
+                         title: 'Operación Completada!',
+                         text: 'Cuenta ingresada con exito...',
+                       });
+                      $('#bank').empty();
+                      $('#bank').append('<option value="">Elegir...</option>');
+                      getBank(); //Esta en el otro js
+                      $("#btn_sub_bank").prop( "disabled", false );
+                  } else {
+                      $('#modal_bank').modal('toggle');
+                      Swal.fire({
+                         type: 'error',
+                         title: 'Operación abortada',
+                         text: 'Error al registrar intente otra vez :(',
+                       });
+                      $('#bank').empty();
+                      $('#bank').append('<option value="">Elegir...</option>');
+                      getBank(); //Esta en el otro js
+                      $("#btn_sub_bank").prop( "disabled", false );
+                  }
+              },
+              error: function(data) {
+                  $("#btn_sub_bank").prop( "disabled", false );
+                  Swal.fire({
+                     type: 'error',
+                     title: 'Oops...',
+                     text: err.statusText,
+                   });
+              }
+          });
+        }
+      });
+
     });
       $("#iva").select2({
         theme: 'bootstrap',

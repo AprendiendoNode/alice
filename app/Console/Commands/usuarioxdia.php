@@ -109,7 +109,8 @@ class usuarioxdia extends Command
               ];
               //Mail::to($it_correos)->bcc('alonsocauichv1@gmail.com')->send(new CmdAlerts($data));
               $this->info('ENVIO MASIVO');
-              Mail::to($it_correo)->bcc(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+              //Mail::to($it_correo)->bcc(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+              Mail::to($it_correo)->send(new CmdAlerts($data));
             }
           }
           else {
@@ -122,7 +123,8 @@ class usuarioxdia extends Command
               'fecha' => Date::now()->format('l j F Y H:i:s')
             ];
             $this->info('ENVIO UNICO ADMIN');
-            Mail::to(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+            //Mail::to(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+            Mail::to($it_correo)->send(new CmdAlerts($data));
           }
           /*-------------------------VERIFICACIONES DE USUARIOS-----------------------------------------*/
         }

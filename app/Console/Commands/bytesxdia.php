@@ -89,7 +89,8 @@ class bytesxdia extends Command
             'fecha' => Date::now()->format('l j F Y H:i:s')
           ];
           //Mail::to($it_correos)->bcc('alonsocauichv1@gmail.com')->send(new CmdAlerts($data));
-          Mail::to($it_correo)->bcc(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+          //Mail::to($it_correo)->bcc(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+          Mail::to($it_correo)->send(new CmdAlerts($data));
         }
       }
       else {
@@ -101,7 +102,8 @@ class bytesxdia extends Command
           'mensaje' => $mensaje,
           'fecha' => $date
         ];
-        Mail::to(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+        //Mail::to(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+        Mail::to($it_correo)->send(new CmdAlerts($data));
 
       }
       /*-------------------------VERIFICACIONES DE USUARIOS-----------------------------------------*/
@@ -379,7 +381,8 @@ class bytesxdia extends Command
                      'mensaje' => 'Favor de revisar el motivo de la no conexion y de capturar sus datos pertenecientes a la fecha del ',
                      'fecha' => Date::now()->format('l j F Y H:i:s')
                    ];
-                   Mail::to(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+                   //Mail::to(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+                   Mail::to($it_correo)->send(new CmdAlerts($data));
                  }
                  /*-------------------------VERIFICACIONES DE USUARIOS-----------------------------------------*/
               }
@@ -431,7 +434,8 @@ class bytesxdia extends Command
               'mensaje' => 'Favor de revisar el motivo de la no conexion y de capturar sus datos pertenecientes a la fecha del ',
               'fecha' => Date::now()->format('l j F Y H:i:s')
             ];
-            Mail::to(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+            //Mail::to(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+            Mail::to($it_correo)->send(new CmdAlerts($data));
           }
           /*-------------------------VERIFICACIONES DE USUARIOS-----------------------------------------*/
 

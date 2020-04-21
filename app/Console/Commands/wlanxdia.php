@@ -130,7 +130,8 @@ class wlanxdia extends Command
                 'fecha' => Date::now()->format('l j F Y H:i:s')
               ];
               $this->info('ENVIO a= '.$it_correo);
-              Mail::to($it_correo)->bcc(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+              //Mail::to($it_correo)->bcc(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+              Mail::to($it_correo)->send(new CmdAlerts($data));
             }
           }
           else {
@@ -143,7 +144,8 @@ class wlanxdia extends Command
               'fecha' => Date::now()->format('l j F Y H:i:s')
             ];
             $this->info('ENVIO MASIVO ADMIN');
-            Mail::to(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+            //Mail::to(['acauich@sitwifi.com', 'rkuman@sitwifi.com', 'jesquinca@sitwifi.com'])->send(new CmdAlerts($data));
+            Mail::to($it_correo)->send(new CmdAlerts($data));
           }
           /*-------------------------VERIFICACIONES DE USUARIOS-----------------------------------------*/
         }
