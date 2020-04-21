@@ -132,7 +132,8 @@ class NocToolsController extends Controller
     $anio_number = $aux[1];
     $date = $anio_number."-".$mes_number."-01";
     $result = DB::connection('zendesk')->select('CALL px_all_answers_solution_times(?)', array($date));
-    return array($result);
+    $result2 = DB::connection('zendesk')->select('CALL px_before_year_answers_solution_times(?)', array($date));
+    return array($result, $result2);
   }
 
   public function graph_operacion_tickets(Request $request) {

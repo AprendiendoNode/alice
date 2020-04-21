@@ -349,31 +349,38 @@ function all_data() {
             $("#seek" + i).after(new_row);
             new_row = "";
           }
-          /*$.ajax({
+          $.ajax({
              type: "POST",
              url: '/dash_operacion_tickets',
              data: { _token: _token, fecha: fecha },
              success: function (data) {
+               console.log(data);
+               $("#anual_30").text(parseInt(data[1][0]['<30'] * 100) + "%");
                $("#30_1").text(parseInt(data[0][0]['<30'] * 100) + "%");
                $("#30_2").text(parseInt(data[0][1]['<30'] * 100) + "%");
                $("#30_porc").html(data[0][0]['<30'] < data[0][1]['<30'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
                $("#30_color").html(0.95 <= data[0][1]['<30'] ? "<span class='green'></span>" : "<span class='red'></span>");
+               $("#anual_30_240").text(parseInt(data[1][0]['30<240'] * 100) + "%");
                $("#30_240_1").text(parseInt(data[0][0]['30<240'] * 100) + "%");
                $("#30_240_2").text(parseInt(data[0][1]['30<240'] * 100) + "%");
                $("#30_240_porc").html(data[0][0]['30<240'] < data[0][1]['30<240'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
                $("#30_240_color").html(0.03 >= data[0][1]['30<240'] ? "<span class='green'></span>" : "<span class='red'></span>");
+               $("#anual_240").text(parseInt(data[1][0]['>240'] * 100) + "%");
                $("#240_1").text(parseInt(data[0][0]['>240'] * 100) + "%");
                $("#240_2").text(parseInt(data[0][1]['>240'] * 100) + "%");
                $("#240_porc").html(data[0][0]['>240'] < data[0][1]['>240'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
                $("#240_color").html(0.02 >= data[0][1]['>240'] ? "<span class='green'></span>" : "<span class='red'></span>");
+               $("#anual_2hrs").text(parseInt(data[1][0]['<2hrs'] * 100) + "%");
                $("#2hrs_1").text(parseInt(data[0][0]['<2hrs'] * 100) + "%");
                $("#2hrs_2").text(parseInt(data[0][1]['<2hrs'] * 100) + "%");
                $("#2hrs_porc").html(data[0][0]['<2hrs'] < data[0][1]['<2hrs'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
                $("#2hrs_color").html(0.9 <= data[0][1]['<2hrs'] ? "<span class='green'></span>" : "<span class='red'></span>");
+               $("#anual_2dias").text(parseInt(data[1][0]['<2dias'] * 100) + "%");
                $("#2dias_1").text(parseInt(data[0][0]['<2dias'] * 100) + "%");
                $("#2dias_2").text(parseInt(data[0][1]['<2dias'] * 100) + "%");
                $("#2dias_porc").html(data[0][0]['<2dias'] < data[0][1]['<2dias'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
                $("#2dias_color").html(0.05 >= data[0][1]['<2dias'] ? "<span class='green'></span>" : "<span class='red'></span>");
+               $("#anual_M2dias").text(parseInt(data[1][0]['>2dias'] * 100) + "%");
                $("#M2dias_1").text(parseInt(data[0][0]['>2dias'] * 100) + "%");
                $("#M2dias_2").text(parseInt(data[0][1]['>2dias'] * 100) + "%");
                $("#M2dias_porc").html(data[0][0]['>2dias'] < data[0][1]['>2dias'] ? "<i class='fas fa-arrow-circle-up'></i>" : "<i class='fas fa-arrow-circle-down'></i>");
@@ -383,7 +390,7 @@ function all_data() {
                   url: '/graph_operacion_tickets',
                   data: { _token: _token, fecha: fecha },
                   success: function (data) {
-                    graph_tickets('graph_tickets', data[0]);*/
+                    graph_tickets('graph_tickets', data[0]);
                     $.ajax({
                          type: "POST",
                          url: '/all_disponibilidad',
@@ -1120,7 +1127,7 @@ function all_data() {
                            console.error(data);
                          }
                     });
-                  /*},
+                  },
                   error: function (data) {
                     console.error(data);
                   }
@@ -1129,7 +1136,7 @@ function all_data() {
              error: function (data) {
                console.error(data);
              }
-          });*/
+          });
        },
        error: function (data) {
          console.error(data);

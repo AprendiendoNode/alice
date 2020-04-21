@@ -158,6 +158,7 @@
                       <tr style="color: brown;">
                         <td>Tiempo</td>
                         <td>Objetivo</td>
+                        <td>Anual</td>
                         <td class="mes1"></td>
                         <td class="mes2"></td>
                         <td>%</td>
@@ -166,6 +167,7 @@
                       <tr>
                         <td>&#60;30</td>
                         <td>95%</td>
+                        <td id="anual_30"></td>
                         <td id="30_1"></td>
                         <td id="30_2"></td>
                         <td id="30_porc"></td>
@@ -174,6 +176,7 @@
                       <tr>
                         <td>30&#60;240</td>
                         <td>3%</td>
+                        <td id="anual_30_240"></td>
                         <td id="30_240_1"></td>
                         <td id="30_240_2"></td>
                         <td id="30_240_porc"></td>
@@ -182,6 +185,7 @@
                       <tr>
                         <td>&#62;240</td>
                         <td>2%</td>
+                        <td id="anual_240"></td>
                         <td id="240_1"></td>
                         <td id="240_2"></td>
                         <td id="240_porc"></td>
@@ -193,6 +197,7 @@
                       <tr style="color: brown;">
                         <td>Tiempo</td>
                         <td>Objetivo</td>
+                        <td>Anual</td>
                         <td class="mes1"></td>
                         <td class="mes2"></td>
                         <td>%</td>
@@ -201,6 +206,7 @@
                       <tr>
                         <td>&#60; 2 hrs</td>
                         <td>90%</td>
+                        <td id="anual_2hrs"></td>
                         <td id="2hrs_1"></td>
                         <td id="2hrs_2"></td>
                         <td id="2hrs_porc"></td>
@@ -209,6 +215,7 @@
                       <tr>
                         <td>&#60; 2 días</td>
                         <td>5%</td>
+                        <td id="anual_2dias"></td>
                         <td id="2dias_1"></td>
                         <td id="2dias_2"></td>
                         <td id="2dias_porc"></td>
@@ -217,6 +224,7 @@
                       <tr>
                         <td>&#62; 2 días</td>
                         <td>5%</td>
+                        <td id="anual_M2dias"></td>
                         <td id="M2dias_1"></td>
                         <td id="M2dias_2"></td>
                         <td id="M2dias_porc"></td>
@@ -942,7 +950,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <link href="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.min.js')}}"></script>
-    <script src="{{ asset('js/admin/noctools/dash_operaciones_1.js?v=1.0.8')}}"></script>
+    <script src="{{ asset('js/admin/noctools/dash_operaciones_1.js?v=1.0.10')}}"></script>
     <script src="{{ asset('js/admin/noctools/dash_operaciones_2.js')}}"></script>
     <style media="screen">
     .tableFixHead          { overflow-y: auto; height: 620px; }
