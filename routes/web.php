@@ -809,7 +809,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/contract_expiration_info', 'Contracts\ContratoController@contract_expiration_info');
     Route::post('/vigencia_contratos_12meses', 'Contracts\ContratoController@vigencia_contratos_12meses');
     Route::post('/vigencia_contratos_vencidos_12meses', 'Contracts\ContratoController@vigencia_contratos_vencidos_12meses');
+    //Caratula de Contratos
+    Route::get('/caratula_contrato', 'Contracts\CaratulaContractoController@index');
+    Route::post('/caratula_contrato_store', 'Contracts\CaratulaContractoController@store');
+    Route::get('/pdf_caratula_contrato', 'Contracts\CaratulaContractoController@view_pdf');
+    Route::get('/ver_caratula_contrato', 'Contracts\CaratulaContractoController@show_info');
+    Route::post('/search_caratula_contrato', 'Contracts\CaratulaContractoController@search_info');
 
+    Route::post('/monto_caratula_contrato', 'Contracts\CaratulaContractoController@redondeo');
+    Route::post('/delete_caratula_contrato', 'Contracts\CaratulaContractoController@delete_caratula_contrato');
+    Route::post('/editar_caratula_contrato', 'Contracts\CaratulaContractoController@editar_caratula_contrato');
+    Route::post('/save_edition_caratula_contrato', 'Contracts\CaratulaContractoController@save_edition_caratula_contrato');
+
+    Route::post('/download/caratula', 'Contracts\CaratulaContractoController@download_caratula_contrato');
     //Lista por facturar
     Route::get('/view_payauto', 'Contracts\PruebasController@index_pagos');
     Route::post('/recordmens', 'Contracts\PruebasController@record_a')->name('recordmens');
@@ -1158,7 +1170,7 @@ Route::group(['prefix' => 'sales',  'middleware' => 'auth'], function()
     Route::post('/customer-invoices-cont-search', 'Sales\CustomerInvoiceController@search_cont');
     Route::post('/customer-data-annexes', 'Sales\CustomerInvoiceController@getDataContractAnnexes');
     Route::post('/customer-data-rzcustomer','Sales\CustomerInvoiceController@getrzcustomerid');
-
+    Route::post('/redondeo_tc','Sales\CustomerInvoiceController@redondeo_tc');
     //Notas de credito
     Route::get('/customer-credit-notes', 'Sales\CustomerCreditNoteController@index');
     Route::get('/credit-notes-history', 'Sales\CustomerCreditNoteController@view_egresos');
