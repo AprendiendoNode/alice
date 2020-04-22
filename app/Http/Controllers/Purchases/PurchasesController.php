@@ -44,11 +44,11 @@ class PurchasesController extends Controller
         $satproduct = DB::select('CALL GetSatProductActivev2 ()');
         $impuestos =  DB::select('CALL GetAllTaxesActivev2 ()');
         $cadenas = Cadena::select('id', 'name')->get()->sortBy('name');
-        
+
         $document_type = DocumentType::where('cfdi_type_id', 2)->get();// Solo documentos de ingresos
         $cxclassifications = DB::table('cxclassifications')->select('id', 'name')->get();
         $accounting_account = DB::select('CALL Contab.px_catalogo_cuentas_contables()', array());
-        
+
         // $currency = Currency::select('id','name')->get();
         $banquitos = DB::table('banks')->select('id', 'name')->where('sitwifi', 0)->get();
         // Purchase order list
@@ -133,7 +133,7 @@ class PurchasesController extends Controller
             if($referencia != ($ref_sql->referencia)) {
 
               $nueva_referencia = $referencia;
-              
+
             }
             $currency_code = 'MXN'; //En caso que no haya moneda le digo por defecto es pesos mexicanos
 
@@ -152,14 +152,14 @@ class PurchasesController extends Controller
 
             $date = Carbon::now();
             $request->merge(['date' => $date]);
-            
+
             $date_fact = Helper::createDateTime($request->date_fact);
             $request->merge(['date_fact' => Helper::dateTimeToSql($date_fact)]);
 
 
             $date_due = $date; //La fecha de vencimiento por default
             $date_due_fix = $request->date_due;//Fix valida si la fecha de vencimiento esta vacia en caso de error
-            
+
             if (!empty($request->date_due)) {
               $date_due = Helper::createDate($request->date_due);
             } else {
@@ -168,12 +168,12 @@ class PurchasesController extends Controller
             }
             $request->merge(['date_due' => Helper::dateToSql($date_due)]);
             //Obtiene folio
-            $document_type = Helper::getNextDocumentTypeByCode($request->document_type);
+            $document_type = Helper::getNextDocumentTypeById($request->document_type);
             $request->merge(['document_type_id' => $document_type['id']]);
             $request->merge(['name' => $document_type['name']]);
             $request->merge(['serie' => $document_type['serie']]);
             $request->merge(['folio' => $document_type['folio']]);
-            // 
+            //
             $request->merge(['payment_term_id' => $request->payment_term_id]);
             $request->merge(['payment_way_id' => $request->payment_way_id]);
             $request->merge(['payment_method_id' => $request->payment_method_id]);
@@ -330,7 +330,7 @@ class PurchasesController extends Controller
             }
 
             // return $request->item;
-            
+
             //Guardar resumen de impuestos (Purchases Tax)
             if ($iva[0] != 0) {
                 $i = 0;
@@ -360,7 +360,7 @@ class PurchasesController extends Controller
               'updated_at'=>Carbon::now()
             ]);
             // Guardar Factura PDF y XML
-            
+
             if($file_pdf != null)
             {
                 $file_extension = $file_pdf->getClientOriginalExtension(); //** get filename extension
@@ -495,10 +495,10 @@ class PurchasesController extends Controller
                $item_amount_discount = round($item_quantity * $item_price_unit, 2) - $item_amount_untaxed; //descuento del importe del artículo
                $item_amount_tax = 0; //cantidad de impuestos
                $item_amount_tax_ret = 0; //importe del artículo reducción de impuestos
-                
+
                 if ($iva[0] != 0) {
                     foreach ($iva as $tax_id) {
-                        
+
                         $tax = Tax::findOrFail($tax_id);
                         $tmp = 0;
                         if ($tax->factor == 'Tasa') {
@@ -519,7 +519,7 @@ class PurchasesController extends Controller
                $item_subtotal_clean = $item_subtotal_quantity;
                $item_discount_clean = $item_amount_discount;
                $item_subtotal = $item_amount_untaxed ;
-               
+
                $items_tc[$key] =$resp_currency_value;
                //Tipo cambio (antiguo solo se guarda el tipo de cambio usado.)
                    /*if ($item['current'] === $currency_id) {
@@ -611,7 +611,7 @@ class PurchasesController extends Controller
      */
     public function show($id)
     {
-        // 
+        //
     }
 
     /**
