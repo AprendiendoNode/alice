@@ -166,6 +166,7 @@
         <th>COSTO U.</th>
         <th>MONEDA</th>
         <th>SUBTOTAL</th>
+        <th>% DESC.</th>
         <th>DESCUENTO</th>
         <th>TOTAL C/DESC.</th>
       </tr>
@@ -177,8 +178,9 @@
             <td colspan="2">{{$product->name}}</td>
             <td class="text-right">{{ number_format($product->price, 2, '.', ',') }}</td>
             <td>{{$product->code}}</td>
-            <td class="text-right">{{$product->subtotal}}</td>
-            <td style="text-align: center">{{ number_format($product->descuento, 2, '.', ',') }}</td>
+            <td style="text-align: right">{{$product->subtotal}}</td>
+            <td style="text-align: right">{{$product->descuento_percent}}</td>
+            <td style="text-align: right">{{ number_format($product->descuento, 2, '.', ',') }}</td>
             <td style="text-align: right">{{$product->total}}</td>
           </tr>
       @endforeach

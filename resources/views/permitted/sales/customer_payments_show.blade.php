@@ -154,6 +154,17 @@
                     </select>
                   </div>
                 </div>
+                <div class="col-md-3 col-xs-12">
+                  <div class="form-group">
+                    <label for="filter_status">Moneda: </label>
+                    <select class="form-control form-control-sm" id="filter_currency" name="filter_currency">
+                      @forelse ($currency as $data_currency)
+                        <option value="{{ $data_currency->id }}"> {{ $data_currency->code }} </option>
+                      @empty
+                      @endforelse
+                    </select>
+                  </div>
+                </div>
                 <div class="col-xs-12 pt-4">
                   <button type="submit"
                           onclick=""
@@ -550,7 +561,7 @@
             information.customers,
             information.payment_ways,
             information.date_payment,
-            information.currencies,
+            information.code,
             information.amount,
             information.balance,
             mail_status,
@@ -628,13 +639,13 @@
                 )
               }else{
                 let _token = $('meta[name="csrf-token"]').attr('content');
-
+                let currency_id = $('#filter_currency').val();
                 $("#tabla_asiento_contable tbody").empty();
 
                 $.ajax({
                     type: "POST",
                     url: '/sales/customer-payments-poliza-movs',
-                    data: {facturas: JSON.stringify(facturas) , _token : _token},
+                    data: {facturas: JSON.stringify(facturas) ,currency_id : currency_id , _token : _token},
                     success: function (data) {
                              
                       $('#data_asientos').html(data);

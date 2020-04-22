@@ -106,6 +106,7 @@ class CustomerPaymentController extends Controller
       $input_brand_office = !empty($request->filter_branch_office_id) ? $request->filter_branch_office_id : 0;
       $input_filter = !empty($request->filter_status) ? $request->filter_status : 0;
       $input_folio = !empty($request->filter_name) ? $request->filter_name : '';
+      $input_currency = !empty($request->filter_currency) ? $request->filter_currency : '';
 
       $resultados = array();
       $estatus = array("2", "3", "4");
@@ -150,8 +151,8 @@ class CustomerPaymentController extends Controller
       $date_a = Carbon::parse($input_date_from)->format('Y-m-d');
       $date_b = Carbon::parse($input_date_to)->format('Y-m-d');
 
-      $result = DB::select('CALL px_customer_payments_filters (?,?,?,?,?,?,?)',
-       array($date_a, $date_b, $input_folio, $input_pay_way, $input_customer, $input_brand_office, $input_filter) );
+      $result = DB::select('CALL px_customer_payments_filters (?,?,?,?,?,?,?,?)',
+       array($date_a, $date_b, $input_folio, $input_pay_way, $input_customer, $input_brand_office, $input_filter, $input_currency) );
       return json_encode($result);
     }
     /**
@@ -1202,9 +1203,10 @@ class CustomerPaymentController extends Controller
         $payment_way = DB::select('CALL GetAllPaymentWayv2 ()', array());
         $customer = DB::select('CALL px_only_customer_data ()', array());
         $sucursal = DB::select('CALL GetSucursalsActivev2 ()', array());
+        $currency = DB::select('CALL GetAllCurrencyActivev2 ()', array());
         $list_status = $this->list_status;
         return view('permitted.sales.customer_payments_show',
-        compact('customer', 'sucursal', 'payment_way', 'tipo_cadena_pagos', 'list_status'));
+        compact('customer', 'currency','sucursal', 'payment_way', 'tipo_cadena_pagos', 'list_status'));
     }
 
     /*
@@ -1334,21 +1336,31 @@ class CustomerPaymentController extends Controller
     //MOVIMIENTOS DE POLIZA DE INGRESO
     public function get_facts_mov_data(Request $request)
     {
+      //$data = DB::select('CALL poliza_mov_ingresos(?)', array($facturas[$i]));
         $tipos_poliza = DB::table('Contab.tipos_poliza')->select('id', 'clave', 'descripcion')->get();
         $next_id_num = DB::table('polizas')->max('numero') + 1;
         $cuentas_contables = DB::select('CALL Contab.px_catalogo_cuentas_contables()');
         $facturas = json_decode($request->facturas);
         $asientos = array();
+      
         for ($i=0; $i <= (count($facturas)-1); $i++)
         {
-          $data = DB::select('CALL poliza_mov_ingresos(?)', array($facturas[$i]));
-          //dd($data);
-          if(count($data) > 0)
+          $ingresos_temp = DB::table('ingresos_tmp')->insert([
+            'customer_payment_id' => $facturas[$i]
+          ]);
+        }
+
+        if($request->currency_id == 1){
+          $data = DB::select('CALL poliza_mov_ingresos_masivo_mxn()');
+        }else if($request->currency_id == 2){
+          $data = DB::select('CALL poliza_mov_ingresos_masivo_usd()');
+        }   
+          
+        if(count($data) > 0)
+        {
+          for($j=0; $j <= (count($data)-1); $j++)
           {
-            for($j=0; $j <= (count($data)-1); $j++)
-            {
-              array_push($asientos, $data[$j]);
-            }
+            array_push($asientos, $data[$j]);
           }
         }
 

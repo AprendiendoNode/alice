@@ -96,14 +96,15 @@
                       <thead>
                         <tr style="background: #496E7D;color:white;font-size:10px;">
                           <th></th>
-                          <th></th>
+                    
                           <th class="text-center">Cant. req.</th>
                           <th class="text-center">Cantidad</th>
                           <th width="250px">Producto</th>
                           <th>Costo unitario</th>
                           <th>Modeda</th>
                           <th>Subtotal</th>
-                          <th>Descuento</th>
+                          <th>% Desc.</th>
+                          <th>Total Des.</th>
                           <th>Total C/Desc.</th>
                           <th></th>
                         </tr>

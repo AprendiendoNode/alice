@@ -236,7 +236,7 @@ class DocumentpHistoryController extends Controller
         $v->porcentaje_compra = floor($v->porcentaje_compra);
       }
 
-      if (auth()->user()->can('Edit  bill of materials')) {
+      if (auth()->user()->can('Edit bill of materials')) {
         return view('permitted.documentp.table_products_modal_compras', compact('equipo_activo', 'materiales', 'mano_obra', 'viaticos','status', 'tipo_cambio'))->render();
       }else {
         return view('permitted.documentp.table_products_modal_itc', compact('equipo_activo', 'materiales', 'mano_obra', 'viaticos','status', 'tipo_cambio'))->render();

@@ -108,13 +108,13 @@ function generate_table_products(products){
         $('#tabla_productos tbody').append(`
             <tr>
                 <td id='${key.product_id}'><input value="${key.product_id}" class="product_id" type="hidden"></td>
-                <td><input value="${key.descuento}" class="descuento_percent" type="hidden"></td>
                 <td class="text-center">${cantidad}</td>
                 <td><input onblur="update_cantidades(this);"  value="${cantidad}" type="number" class="form-control form-control-sm cantidad" min="1" max="${cantidad}" required style="width:60px;text-align: right;"></td>
                 <td class="producto">${key.product}</td>
                 <td class="text-right precio">${precio}</td>
                 <td class="text-right code">${key.currencies.substring(0, 3)}</td>
                 <td class="text-right subtotal">${subtotal.toFixed(2)}</td>
+                <td><input style="width:50px" onblur="update_cantidades(this);" value="${key.descuento}" class="descuento_percent form-control form-control-sm" type="number"></td>
                 <td class="text-center descuento">${percent_amount.toFixed(2)}</td>
 				        <td class="text-right total">${key.total}</td>
 				        <td><button type="button" onclick="deleteRow(this);" class="btn borrar" data-id="' + key.id + '" href="#"><i class="fa fa-trash text-danger"></i></button></td>
