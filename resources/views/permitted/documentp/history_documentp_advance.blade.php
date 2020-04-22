@@ -60,21 +60,21 @@
             <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
               <thead>
                 <tr style="background: #088A68;">
-                  <th> <small>Nombre del proyecto</small> </th>
-                  <th> <small>Avance instalai</small> </th>
-                  <th> <small>Presupuesto $</small> </th>
-                  <th> <small>Presupuesto ejercido %</small> </th>
-                  <th> <small>Entrega compromiso</small> </th>
-                  <th> <small>Entrega estimada</small> </th>
-                  <th> <small>Dias de compra</small> </th>
+                  <th></th>
+                  <th> <small>Proyecto</small> </th>
+                  <th> <small>Avance instalación real</small> </th>
+                  <th> <small>Entrega de Materiales</small> </th>
+                  <th> <small>Entrega Eq. Activo</small> </th>
+                  <th> <small>Dias de proyecto(compras)</small> </th>
+                  <th> <small>Presupuesto USD</small> </th>
+                  <th> <small>Avance compras materiales real</small> </th>
+                  <th> <small>Avance compras eq. activo real</small> </th>
+                  <th> <small>Atraso compra </small> </th>
+                  <th><small>Fecha firma </small></th>
                   <th> <small>Motivos</small> </th>
-                  <th> <small>Fecha firma</small> </th>
-                  <th> <small>Atraso de proyecto</small> </th>
+                  <th> <small>Atraso instalación</small> </th>
                   <th> <small>Tipo de servicio</small> </th>
-                  <th> <small>Renta mensual</small> </th>
                   <th> <small>IT Concierge</small> </th>
-                  <th> <small></small> </th>
-                  <th> <small>Última actualización</small> </th>
                 </tr>
               </thead>
               <tbody>
@@ -102,7 +102,7 @@
         </div>
       </div>
       <br>
-  @elseif ( auth()->user()->can('View level one documentp notification') )
+  @elseif ( auth()->user()->can('View level one documentp notification') || auth()->user()->can('View level two documentp notification') || auth()->user()->can('View level three documentp notification'))
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
           <div class="row">
@@ -121,13 +121,19 @@
                   <th></th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>Proyecto</small> </th>
-                  <th> <small>Avance instalación</small> </th>
-                  <th> <small>Entrega compromiso</small> </th>
-                  <th> <small>Entrega estimada</small> </th>
-                  <!--<th> <small>Entrega compromiso</small> </th>-->
+                  <th> <small>Inicio de instalación</small> </th>
+                  <th> <small>Termino de instalación</small> </th>
+                  <th> <small>Dias de proyecto</small> </th>
+                  <th> <small>Avance instalación propuesto</small> </th>
+                  <th> <small>Avance instalación real</small> </th>
+                  <th> <small>Entrega de Materiales</small> </th>
+                  <th> <small>Entrega Eq. Activo</small> </th>
+                  <th> <small>Dias de proyecto(compras)</small> </th>
+                  <th> <small>Avance compras materiales. propuesto</small> </th>
+                  <th> <small>Avance compras eq.act. propuesto</small> </th>
                   <th> <small>Presupuesto USD</small> </th>
-                  <th> <small>Presupuesto ejercido %</small> </th>
-                  <th> <small>Entrega compromiso</small> </th>
+                  <th> <small>Avance compras materiales real</small> </th>
+                  <th> <small>Avance compras eq. activo real</small> </th>
                   <th> <small>Atraso compra </small> </th>
                   <th> <small>Motivos</small> </th>
                   <!--<th> <small>Fecha firma</small> </th>-->
@@ -137,6 +143,69 @@
                   <th> <small>IT Concierge</small> </th>
                   <th> <small>Facturando</small> </th>
                   <!--<th> <small>Última actualización</small> </th>-->
+                  <!--<th> <small>Estatus</small> </th>-->
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+              <tfoot id='tfoot_average'>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <br>
+      <!--<div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="row">
+            <form id="search_info" name="search_info" class="form-inline" method="post">
+              {{ csrf_field() }}
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="">
+        <div class="">
+          <div class="table-responsive">
+            <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
+              <thead>
+                <tr style="background: #088A68;">
+                  <th></th>
+                  <th> <small>Estatus</small> </th>
+                  <th> <small>Proyecto</small> </th>
+                  <th> <small>Avance instalación</small> </th>
+                  <th> <small>Inicio de instalación</small> </th>
+                  <th> <small>Termino de instalación</small> </th>
+                  <th> <small>Presupuesto USD</small> </th>
+                  <th> <small>Presupuesto ejercido %</small> </th>
+                  <th> <small>Entrega Eq. Activo</small> </th>
+                  <th> <small>Atraso compra </small> </th>
+                  <th> <small>Motivos</small> </th>
+                  <th> <small>Atraso instalación</small> </th>
+                  <th> <small>Tipo de servicio</small> </th>
+                  <th> <small>Renta mensual</small> </th>
+                  <th> <small>IT Concierge</small> </th>
+                  <th> <small>Facturando</small> </th>
                   <th> <small>Estatus</small> </th>
                   <th> <small>Comentario</small> </th>
                   <th> <small>Renta mensual</small> </th>
@@ -171,9 +240,8 @@
           </div>
         </div>
       </div>
-      <br>
-  @elseif ( auth()->user()->can('View level two documentp notification') )
-      <div class="row">
+      <br>-->
+      <!--<div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
           <div class="row">
             <form id="search_info" name="search_info" class="form-inline" method="post">
@@ -192,21 +260,21 @@
                   <th> <small>Estatus</small> </th>
                   <th> <small>Proyecto</small> </th>
                   <th> <small>Avance instalación</small> </th>
-                  <th> <small>Entrega compromiso</small> </th>
-                  <th> <small>Entrega estimada</small> </th>
-                  <!--<th> <small>Entrega compromiso</small> </th>-->
+                  <th> <small>Inicio de instalación</small> </th>
+                  <th> <small>Termino de instalación</small> </th>
+
                   <th> <small>Presupuesto USD</small> </th>
                   <th> <small>Presupuesto ejercido %</small> </th>
-                  <th> <small>Entrega compromiso</small> </th>
+                  <th> <small>Entrega Eq. Activo</small> </th>
                   <th> <small>Atraso compra </small> </th>
                   <th> <small>Motivos</small> </th>
-                  <!--<th> <small>Fecha firma</small> </th>-->
+
                   <th> <small>Atraso instalación</small> </th>
                   <th> <small>Tipo de servicio</small> </th>
                   <th> <small>Renta mensual</small> </th>
                   <th> <small>IT Concierge</small> </th>
                   <th> <small>Facturando</small> </th>
-                  <!--<th> <small>Última actualización</small> </th>-->
+
                   <th> <small>Estatus</small> </th>
                   <th> <small>Comentario</small> </th>
                   <th> <small>Renta mensual</small> </th>
@@ -241,77 +309,7 @@
           </div>
         </div>
       </div>
-      <br>
-  @elseif ( auth()->user()->can('View level three documentp notification') )
-      <div class="row">
-        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-          <div class="row">
-            <form id="search_info" name="search_info" class="form-inline" method="post">
-              {{ csrf_field() }}
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="">
-        <div class="">
-          <div class="table-responsive">
-            <table id="table_documentp" class="table table-striped table-bordered table-condensed" style="width:100%">
-              <thead>
-                <tr style="background: #088A68;">
-                  <th></th>
-                  <th> <small>Estatus</small> </th>
-                  <th> <small>Proyecto</small> </th>
-                  <th> <small>Avance instalación</small> </th>
-                  <th> <small>Entrega compromiso</small> </th>
-                  <th> <small>Entrega estimada</small> </th>
-                  <!--<th> <small>Entrega compromiso</small> </th>-->
-                  <th> <small>Presupuesto USD</small> </th>
-                  <th> <small>Presupuesto ejercido %</small> </th>
-                  <th> <small>Entrega compromiso</small> </th>
-                  <th> <small>Atraso compra </small> </th>
-                  <th> <small>Motivos</small> </th>
-                  <!--<th> <small>Fecha firma</small> </th>-->
-                  <th> <small>Atraso instalación</small> </th>
-                  <th> <small>Tipo de servicio</small> </th>
-                  <th> <small>Renta mensual</small> </th>
-                  <th> <small>IT Concierge</small> </th>
-                  <th> <small>Facturando</small> </th>
-                  <!--<th> <small>Última actualización</small> </th>-->
-                  <th> <small>Estatus</small> </th>
-                  <th> <small>Comentario</small> </th>
-                  <th> <small>Renta mensual</small> </th>
-                  <th> <small>Facturando</small> </th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-              <tfoot id='tfoot_average'>
-                <tr>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-      </div>
-      <br>
+      <br>-->
     @else
       @include('default.denied')
     @endif
@@ -376,16 +374,16 @@
     var user_id = {!! json_encode($user_id) !!};
     </script>
     @if( auth()->user()->can('View level zero documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_0.js?v=2.0.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_0.js?v=3.0.6')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level one documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.2.7')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.3.8')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level two documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.2.7')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.3.8')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
     @elseif ( auth()->user()->can('View level three documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.2.7')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.3.8')}}"></script>
       <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=5.0.0')}}"></script>
     @endif
 
