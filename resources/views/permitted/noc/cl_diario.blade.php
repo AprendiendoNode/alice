@@ -246,7 +246,7 @@
                               <th>Realizar / Revisar la Documentacion de Proyecto y Bitacora para cierre de proyecto</th>
                               <th>Realizar / Revisar la Memoria Técnica</th>
                               <th>Realizar / Revisar la Memoria Fotográfica</th>
-                              <th>Raizar la Carta de Entrega para firma con el cliente.</th>
+                              <th>Realizar la Carta de Entrega para firma con el cliente.</th>
                               <th>Fecha</th>
                           </tr>
                         </thead>
