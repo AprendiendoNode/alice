@@ -209,6 +209,7 @@ function documentp_table(datajson, table){
            <a class="dropdown-item" href="javascript:void(0);" onclick="enviar(this)" data-id="${data.id}"  data-cart="${data.documentp_cart_id}" value="${data.id}"><i class="fas fa-shopping-cart"></i> Ver productos</a>
            <a class="dropdown-item" href="javascript:void(0);" onclick="uploadActaEntrega(this)" data-id="${data.id}" value="${data.id}"><i class="fas fa-upload"></i> Subir acta de entrega</a>
            <a class="dropdown-item" target="_blank" href="/documentp_invoice/${data.id}/${data.documentp_cart_id}"><span class="far fa-file-pdf"></span> Imprimir productos</a>
+           <a class="dropdown-item" href="javascript:void(0);" onclick="deniega(this)" data-id="${data.id}" value="${data.id}"><i class="fas fa-ban"></i> Denegar</a>
        </div>
      </div>`,
       '<a href="javascript:void(0)" style="background-color:' + color +';" data-type="select" data-pk="'+ data.id +'" data-title="Estatus" data-value="' + data.alert + '" class="set-alert"></a>',

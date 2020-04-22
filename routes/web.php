@@ -405,6 +405,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/update_purchase_order/{id}/{order}', 'Projects\DocumentpController@update_purchase_order');
   Route::get('/get_comment_documentp_advance/id_doc/{id}', 'Projects\DocumentpHistoryController@get_comment_project');
   Route::post('/set_comment_documentp_advance', 'Projects\DocumentpHistoryController@update_comment_project');
+  Route::post('/set_comment_documentp_advance_deny', 'Projects\DocumentpHistoryController@update_comment_project_deny');
   Route::post('/set_comment_compras_documentp', 'Projects\DocumentpHistoryController@set_comment_compras_documentp');
   //Historial documento P | M
   Route::get('/view_history_documentm', 'Projects\DocumentpHistoryController@index');

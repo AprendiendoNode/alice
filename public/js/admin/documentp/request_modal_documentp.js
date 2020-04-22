@@ -16,7 +16,7 @@ function enviar(e){
   let id_documentp = element.dataset.id;
   let id_cart = element.dataset.cart;
 
-  
+
   data_table_products(miInit, id_documentp, id_cart);
   data_header(miInit, id_documentp);
   data_table_project_advance(miInit, id_documentp);
@@ -32,6 +32,54 @@ function enviar(e){
   });
 
 }
+function deniega(e){
+  var element = e;
+  let id_documentp = element.dataset.id;
+   //console.log(id_documentp);
+  document.getElementById('id_doc_deny').value = id_documentp;
+  $('#modal-deny').modal('show');
+}
+
+$('#addComment_deny').on('click', function(e){
+  e.preventDefault();
+  var _token = $('input[name="_token"]').val();
+  let id_documentp = document.getElementById('id_doc_deny').value;
+  let comment = document.getElementById('comment').value;
+
+  const headers = new Headers({
+    "Accept": "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+    "X-CSRF-TOKEN": _token
+  })
+  var form = $('#form_add_comment_deny')[0];
+  var formData = new FormData(form);
+  formData.append('id_doc_deny', id_documentp);
+
+  var miInit = { method: 'post',
+                    headers: headers,
+                    body: formData,
+                    credentials: "same-origin",
+                    cache: 'default' };
+
+      fetch(`/set_comment_documentp_advance_deny`,  miInit)
+        .then(response => {
+          return response.text();
+        })
+        .then(data => {
+          console.log(data);
+          if(data == "true"){
+            menssage_toast('Mensaje', '3', 'Comentario agregado' , '2000');
+            table_permission_zero();
+          }else{
+            menssage_toast('Mensaje', '2', 'Error inesperado' , '2000');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+})
+
 
 function addCommentModal(e){
   var element = e;
@@ -71,7 +119,7 @@ $('#addComment').on('click', function(e){
   var _token = $('input[name="_token"]').val();
   let id_documentp = document.getElementById('id_doc').value;
   let comment = document.getElementById('comment').value;
- 
+
   const headers = new Headers({
     "Accept": "application/json",
     "X-Requested-With": "XMLHttpRequest",
@@ -80,7 +128,7 @@ $('#addComment').on('click', function(e){
   var form = $('#form_add_comment')[0];
   var formData = new FormData(form);
   formData.append('id_doc', id_documentp);
- 
+
   var miInit = { method: 'post',
                     headers: headers,
                     body: formData,
@@ -179,20 +227,20 @@ async function uploadActaEntrega(e){
 				headers: headers,
 				credentials: "same-origin",
 				cache: 'default' };
-			
+
   // REVISO SI EL PROYECTO YA TIENE UNA ACTA DE ENTREGA SUBIDA
   const checkActaEntrega = await fetch(`/checkActaEntregaUpload/${id_documentp}`,  initGet)
   .then(result => result.json())
   .then(data => {
 	  return data;
   });
-  
+
   // SI EL USUARIO SELECCIONO UN ARCHIVO SE VALIDA LA EXTENSION Y SE PROCEDE A GUARDAR
   if (file) {
     var formData = new FormData();
     formData.append('id_documentp', id_documentp);
 	formData.append('file', file);
-	
+
     var init = { method: 'POST',
 				headers: headers,
 				credentials: "same-origin",
@@ -201,7 +249,7 @@ async function uploadActaEntrega(e){
 	let extension = get_extension_file(file.name);
 
 	if(extension == 'doc' || extension == 'docx' || extension == 'pdf'){
-		
+
 		if(checkActaEntrega == false){
 			fetch(`/uploadActaEntrega`,  init)
 				.then(response => {
@@ -209,11 +257,11 @@ async function uploadActaEntrega(e){
 						Swal.fire('Archivo guardado', file.name,'success');
 					}else{
 						Swal.fire('Ocurrio un error','','error');
-					}		
+					}
 				})
 				.catch(error => {
 					console.log(error);
-				}) 
+				})
 		}else{
 			Swal.fire({
 				title: 'Este documento ya tiene un acta de entrega',
@@ -232,21 +280,21 @@ async function uploadActaEntrega(e){
 							Swal.fire('Archivo guardado', file.name,'success');
 						}else{
 							Swal.fire('Ocurrio un error','','error');
-						}		
+						}
 					})
 					.catch(error => {
 						console.log(error);
-					}) 
+					})
 				}
 			  })
 		}
-		 
+
 	}else{
-		Swal.fire('Archivo no valido', 
-				'Solo puede subir archivos con las siguientes extensiones: .pdf, .doc, .docx' , 
+		Swal.fire('Archivo no valido',
+				'Solo puede subir archivos con las siguientes extensiones: .pdf, .doc, .docx' ,
 				'warning');
-	}                  
-	              
+	}
+
   }else{
     Swal.fire('No selecciono ningun archivo', '' , 'warning');
   }
@@ -380,7 +428,7 @@ function data_header(miInit, id_documentp){
           $('#densidad').text(data[0].densidad);
           $('#sitios').text(data[0].sitios);
           $('#num_oportunidad').text(data[0].num_oportunidad);
-          
+
            let id_documentp = data[0].id;
            document.getElementById('button_history').dataset.id = id_documentp;
         }

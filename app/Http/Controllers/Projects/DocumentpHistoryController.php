@@ -41,7 +41,7 @@ class DocumentpHistoryController extends Controller
 
     public function view_project_advance()
     {
-        $user_id = Auth::user()->id;        
+        $user_id = Auth::user()->id;
         return view('permitted.documentp.history_documentp_advance',compact('user_id'));
     }
 
@@ -76,20 +76,20 @@ class DocumentpHistoryController extends Controller
 
       $documentosPReal = $data[7]->total_usd + $data[8]->total_usd + $data[9]->total_usd + $data[10]->total_usd + $data[11]->total_usd + $data[12]->total_usd + $data[13]->total_usd;
       $documentosMReal = $data[21]->total_usd + $data[22]->total_usd + $data[23]->total_usd + $data[24]->total_usd + $data[25]->total_usd + $data[26]->total_usd + $data[27]->total_usd;
-      
+
       if(ParametrosPresupuesto::getContracAnnex($anexo) != null){ $contract_annex = True; }
-      if(count(ParametrosPresupuesto::getCotizador($anexo)) != 0){ $cotizador = True; } 
-      
+      if(count(ParametrosPresupuesto::getCotizador($anexo)) != 0){ $cotizador = True; }
+
       if(ParametrosPresupuesto::getContracAnnex($anexo) != null &&
-        count(ParametrosPresupuesto::getCotizador($anexo)) != 0){ 
+        count(ParametrosPresupuesto::getCotizador($anexo)) != 0){
         $inversion_instalacion = ParametrosPresupuesto::getInversionInstalacion($anexo, $documentosPReal);
         $mantenimiento = ParametrosPresupuesto::getMantenimiento($anexo, $documentosMReal);
         $inversion_total = ParametrosPresupuesto::getInversionTotal($anexo, $documentosPReal);
         $tir = ParametrosPresupuesto::getTir($anexo, $documentosMReal);
         $utilidad_renta_anticipada = ParametrosPresupuesto::getUtilidadRenta($anexo);
-      }   
-      
-      return view('permitted.planning.estimation_site', 
+      }
+
+      return view('permitted.planning.estimation_site',
              compact('data', 'inversion_instalacion', 'mantenimiento', 'inversion_total', 'tir', 'utilidad_renta_anticipada', 'contract_annex', 'cotizador'));
     }
 
@@ -337,6 +337,15 @@ class DocumentpHistoryController extends Controller
     {
       $project = Documentp_project::where('id_doc', $request->id_doc)
                 ->update(['comentario_manager' => $request->comment]);
+
+      return "true";
+    }
+
+    public function update_comment_project_deny(Request $request)
+    {
+      //info($request);
+      $update= DB::Table('documentp')->where('id', $request->id_doc_deny)->update(['status_id' => 4]);//Status 4 = Denegado
+      $project= DB::Table('documentp_project_advance')->where('id_doc', $request->id_doc_deny)->update(['comentario_deny' => $request->comment]);
 
       return "true";
     }

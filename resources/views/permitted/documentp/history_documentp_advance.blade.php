@@ -44,6 +44,30 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+
+  <!-- MODAL DENIEGA-->
+  <div id="modal-deny" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Añadir comentario | Gerencia Instalaciones </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <form id="form_add_comment_deny">
+            <input id="id_doc_deny" type="hidden" name="" value="">
+            <textarea class="form-control" id="comment" name="comment" rows="8" placeholder="Escriba un comentario"></textarea>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="addComment_deny" type="button" class="btn btn-primary" data-dismiss="modal">Guardar comentario</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
   @if( auth()->user()->can('View level zero documentp notification') )
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -374,17 +398,17 @@
     var user_id = {!! json_encode($user_id) !!};
     </script>
     @if( auth()->user()->can('View level zero documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_0.js?v=3.0.6')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_0.js?v=3.3.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.2.2')}}"></script>
     @elseif ( auth()->user()->can('View level one documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.3.8')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.4.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.2.2')}}"></script>
     @elseif ( auth()->user()->can('View level two documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.3.8')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.0.0')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.4.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=4.2.2')}}"></script>
     @elseif ( auth()->user()->can('View level three documentp notification') )
-      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.3.8')}}"></script>
-      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=5.0.0')}}"></script>
+      <script src="{{ asset('js/admin/documentp/requests_documentp_advance_1.js?v=7.4.6')}}"></script>
+      <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=5.2.2')}}"></script>
     @endif
 
 @else
