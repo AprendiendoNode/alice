@@ -130,7 +130,7 @@
                           <th>Reporte de elaborado y entregado al cliente o en la carpeta de acceso al cliente</th>
                           <th>NPS contestado</th>
                           <th>Factura entregada al cliente</th>
-                          <th>Memoria eécnica actualizada</th>
+                          <th>Memoria técnica actualizada</th>
                           <th>Inventario actualizado</th>
                           <th>Fecha</th>
                       </tr>
