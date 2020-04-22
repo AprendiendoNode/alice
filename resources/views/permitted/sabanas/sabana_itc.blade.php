@@ -1721,7 +1721,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>4</td>
+                                <td>5</td>
                                 <td class="text-left">Realizar Documento A para KickOff</td>
                                 <td>
                                   <div class="form-group">
@@ -1735,7 +1735,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>5</td>
+                                <td>6</td>
                                 <td class="text-left">Realizar una Junta Operativa Interna (Sitwifi) externa (Cliente)</td>
                                 <td>
                                   <div class="form-group">
@@ -1749,7 +1749,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>6</td>
+                                <td>7</td>
                                 <td class="text-left">Se tienen los Planos Arquitectonicos del Inmueble</td>
                                 <td>
                                   <div class="form-group">
@@ -1763,7 +1763,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>7</td>
+                                <td>8</td>
                                 <td class="text-left">Se tienen los Diagramas de Red y Sembrado de AP</td>
                                 <td>
                                   <div class="form-group">
@@ -1777,7 +1777,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>8</td>
+                                <td>9</td>
                                 <td class="text-left">Se Realizó el Project y entregó al cliente </td>
                                 <td>
                                   <div class="form-group">
@@ -1791,7 +1791,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>9</td>
+                                <td>10</td>
                                 <td class="text-left">Solicitar la entrega de Materiales (Administracion)</td>
                                 <td>
                                   <div class="form-group">
@@ -1805,7 +1805,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>10</td>
+                                <td>11</td>
                                 <td class="text-left">Solicitar y revisar el Equipo ACTIVO (Soporte)</td>
                                 <td>
                                   <div class="form-group">
@@ -1819,7 +1819,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>11</td>
+                                <td>12</td>
                                 <td class="text-left">Revisar el Rack que este tenga las preparaciones para tierra fisica</td>
                                 <td>
                                   <div class="form-group">
@@ -1833,7 +1833,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>12</td>
+                                <td>13</td>
                                 <td class="text-left">Revisar el Rack que tenga las preparaciones para corriente regulada</td>
                                 <td>
                                   <div class="form-group">
@@ -1847,7 +1847,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>13</td>
+                                <td>14</td>
                                 <td class="text-left">Reviasar con el contratista la Identificacion-Probado y Etiquetado de Cables UTP y FO</td>
                                 <td>
                                   <div class="form-group">
@@ -1861,7 +1861,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>14</td>
+                                <td>15</td>
                                 <td class="text-left">Revisar la Instalacion de Antenas Ruckus en Habitaciones y Áreas (aleatorio-selectivo)</td>
                                 <td>
                                   <div class="form-group">
@@ -1875,7 +1875,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>15</td>
+                                <td>16</td>
                                 <td class="text-left">Revisar la Instalacion y Configuracion de Equipo Activo</td>
                                 <td>
                                   <div class="form-group">
@@ -1889,7 +1889,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>16</td>
+                                <td>17</td>
                                 <td class="text-left">Realizar las Pruebas de Funcionamiento para entrega al cliente</td>
                                 <td>
                                   <div class="form-group">
@@ -1903,7 +1903,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>17</td>
+                                <td>18</td>
                                 <td class="text-left">Revisar la Instalacion de Enlace de Internet</td>
                                 <td>
                                   <div class="form-group">
@@ -1917,7 +1917,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>18</td>
+                                <td>19</td>
                                 <td class="text-left">Revisar la Configuracion de Enlace de Internet y Pruebas (Soporte)</td>
                                 <td>
                                   <div class="form-group">
@@ -1931,22 +1931,8 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td>19</td>
-                                <td class="text-left">Realizar / Revisar la Documentacion de Proyecto y Bitacora para cierre de proyecto</td>
-                                <td>
-                                  <div class="form-group">
-                                  <select class="form-control" name="clInstOp[]">
-                                        <option value="0">No</option>
-                                        <option value="1">Si</option>
-                                        <option value="2">NA</option>
-                                        </optgroup>
-                                  </select>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
                                 <td>20</td>
-                                <td class="text-left">Realizar / Revisar la Memoria Técnica</td>
+                                <td class="text-left">Actualizar en tiempo y forma los avances de proyecto en alice</td>
                                 <td>
                                   <div class="form-group">
                                   <select class="form-control" name="clInstOp[]">
@@ -1960,7 +1946,7 @@
                               </tr>
                               <tr>
                                 <td>21</td>
-                                <td class="text-left">Realizar / Revisar la Memoria Fotográfica</td>
+                                <td class="text-left">Realizar / Revisar la Documentacion de Proyecto y Bitacora para cierre de proyecto</td>
                                 <td>
                                   <div class="form-group">
                                   <select class="form-control" name="clInstOp[]">
@@ -1974,6 +1960,34 @@
                               </tr>
                               <tr>
                                 <td>22</td>
+                                <td class="text-left">Realizar / Revisar la Memoria Técnica</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>23</td>
+                                <td class="text-left">Realizar / Revisar la Memoria Fotográfica</td>
+                                <td>
+                                  <div class="form-group">
+                                  <select class="form-control" name="clInstOp[]">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">NA</option>
+                                        </optgroup>
+                                  </select>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>24</td>
                                 <td class="text-left">Realizar la Carta de Entrega para firma con el cliente.</td>
                                 <td>
                                   <div class="form-group">
