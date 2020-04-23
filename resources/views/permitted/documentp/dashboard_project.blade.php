@@ -299,11 +299,11 @@
 
                   <tr>
                     <td rowspan="2"> <strong>Cliente Nuevo</strong> </td>
-                    <td>Instalacion</td>
+                    <td>Instalación</td>
                     <td class="text-center p-2">{{ $status_projects[0]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[0]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[0]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[0]->riesgo + $status_projects[0]->atencion + $status_projects[0]->normal }} </td>
+                    <td class="text-center font-weight-bold" rowspan="2"> {{ $status_projects[0]->riesgo + $status_projects[0]->atencion + $status_projects[0]->normal }} </td>
                     <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[0]->instalado }}</td>
                   </tr>
                   <tr>
@@ -311,7 +311,6 @@
                     <td class="text-center p-2">{{ $status_projects[0]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[0]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[0]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[0]->riesgo + $status_projects[0]->atencion + $status_projects[0]->normal }} </td>
                     <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[0]->instalado }}</td>
                   </tr>
 
@@ -321,7 +320,7 @@
                     <td class="text-center p-2">{{ $status_projects[1]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[1]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[1]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[1]->riesgo + $status_projects[1]->atencion + $status_projects[1]->normal }} </td>
+                    <td class="text-center font-weight-bold" rowspan="2"> {{ $status_projects[1]->riesgo + $status_projects[1]->atencion + $status_projects[1]->normal }} </td>
                     <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[1]->instalado }}</td>
                   </tr>
 
@@ -330,17 +329,16 @@
                     <td class="text-center p-2">{{ $status_projects[1]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[1]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[1]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[1]->riesgo + $status_projects[1]->atencion + $status_projects[1]->normal }} </td>
                     <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[1]->instalado }}</td>
                   </tr>
 
                   <tr>
                     <td rowspan="2" > <strong>Renovación</strong> </td>
-                    <td>Instalacion</td>
+                    <td>Instalación</td>
                     <td class="text-center p-2">{{ $status_projects[2]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[2]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[2]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[2]->riesgo + $status_projects[2]->atencion + $status_projects[2]->normal }} </td>
+                    <td class="text-center font-weight-bold" rowspan="2"> {{ $status_projects[2]->riesgo + $status_projects[2]->atencion + $status_projects[2]->normal }} </td>
                     <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[2]->instalado }}</td>
                   </tr>
                   <tr>
@@ -348,7 +346,6 @@
                     <td class="text-center p-2">{{ $status_projects[2]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[2]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[2]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[2]->riesgo + $status_projects[2]->atencion + $status_projects[2]->normal }} </td>
                     <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[2]->instalado }}</td>
                   </tr>
 
@@ -359,15 +356,14 @@
                     <td class="text-center p-2">{{ $status_projects[4]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[4]->atencion }}</td>
                     <td class="text-center">{{ $status_projects[4]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[4]->riesgo + $status_projects[4]->atencion + $status_projects[4]->normal }} </td>
+                    <td class="text-center font-weight-bold" rowspan="2"> {{ $status_projects[4]->riesgo + $status_projects[4]->atencion + $status_projects[4]->normal }} </td>
                     <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[4]->instalado }}</td>
                   </tr>
                   <tr>
                     <td>Compras</td>
                     <td class="text-center p-2">{{ $status_projects[4]->riesgo }}</td>
                     <td class="text-center">{{ $status_projects[4]->atencion }}</td>
-                    <td class="text-center">{{ $status_projects[4]->normal }}</td>
-                    <td class="text-center font-weight-bold"> {{ $status_projects[4]->riesgo + $status_projects[4]->atencion + $status_projects[4]->normal }} </td>
+                    <td class="text-center">{{ $status_projects[4]->normal }}</td>                    
                     <td class="text-center font-weight-bold p-2">{{ $status_projects_instalado[4]->instalado }}</td>
                   </tr>
 
@@ -388,7 +384,7 @@
             </div>
 
             <div class="col-md-4 grid-margin text-center">
-                  <h4 class="card-title">NPS chart</h4>
+                  <h4 class="card-title">Medidor de desempeño</h4>
                   <div class="d-flex justify-content-center  border-bottom w-100">
                     <div id="main_nps" style="width: 100%; min-height: 120px; "></div>
                   </div>
@@ -894,7 +890,7 @@
     <script src="/plugins/sweetalert-master/dist/sweetalert-dev.js"></script>
     <script src="{{ asset('bower_components/datatables_bootstrap_4/datatables.js')}}" charset="utf-8"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=6.3.1')}}"></script>
+    <script src="{{ asset('js/admin/documentp/dashboard_project.js?v=6.4.2')}}"></script>
     <script src="{{ asset('js/admin/documentp/request_modal_documentp.js?v=1.0.1')}}"></script>
 
 @else

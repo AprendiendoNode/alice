@@ -58,7 +58,7 @@ function get_calif_project(){
   let calif = parseInt(total_verde) / total;
   calif *= 100;
   calif = parseInt(calif);
-  graph_gauge_hotel('main_nps', 'NPS', '0', '100', calif);
+  graph_gauge_hotel('main_nps', '', '0', '100', calif);
 /*  document.getElementById('calif_projects').innerHTML = `${calif} %`;
 
   if(calif > 76){
