@@ -12,6 +12,7 @@ use App\Models\Projects\Documentp_status_user;
 use App\Models\Projects\Deny_docpcomment;
 use App\Models\Projects\Documentp_project;
 use App\Mail\SolicitudCompraAprobada;
+use App\Mail\DocumentopDenegado;
 use App\ParametrosPresupuesto;
 use Mail;
 use Auth;
@@ -347,6 +348,14 @@ class DocumentpHistoryController extends Controller
       $update= DB::Table('documentp')->where('id', $request->id_doc_deny)->update(['status_id' => 4]);//Status 4 = Denegado
       $project= DB::Table('documentp_project_advance')->where('id_doc', $request->id_doc_deny)->update(['comentario_deny' => $request->comment]);
 
+      $query=DB::Table('documentp as A')->join('users as B','A.itc_id','=','B.id')->where('A.id',$request->id_doc_deny)->select('A.folio','A.nombre_proyecto','B.name','B.email')->get();//Status 4 = Denegado
+      $param = [
+        'folio' => $query[0]->folio,
+        'name'=>$query[0]->nombre_proyecto,
+        'user'=>$query[0]->name,
+      ];
+      Mail::to($query[0]->email)->send(new DocumentopDenegado($param));
+      //Mail::to('jcanul@sitwifi.com')->send(new DocumentopDenegado($param));
       return "true";
     }
 
