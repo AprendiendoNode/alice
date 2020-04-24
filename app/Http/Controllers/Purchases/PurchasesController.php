@@ -430,7 +430,7 @@ class PurchasesController extends Controller
         $increment_number = "";
         try {
             $data = [];
-            $document_type = DocumentType::where('code', '=', $value)->first();
+            $document_type = DocumentType::where('id', '=', $value)->first();
             if (!empty($document_type)) {
                $document_type->current_number += $document_type->increment_number;
                $increment_number = $document_type->current_number;

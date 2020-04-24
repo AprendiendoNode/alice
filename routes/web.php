@@ -1334,6 +1334,9 @@ Route::group(['prefix' => 'accounting', 'middleware' => 'auth'], function(){
   Route::get('/view_purchase_poliza_pay', 'Purchases\HistoryPurchasesController@index_poliza_pay');
   Route::post('/polizas_pay_search','Purchases\HistoryPurchasesController@search_poliza_pay');
 
+  Route::post('/purchase_polizas_movs_save_pay', 'Purchases\HistoryPurchasesController@purchase_polizas_movs_save_pay');
+  Route::post('get_purchase_mov_pay_data', 'Purchases\HistoryPurchasesController@get_purchase_mov_pay_data');
+
 });
 
 Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
@@ -1354,8 +1357,10 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth'], function(){
   Route::post('/send_purchase_one', 'Purchases\HistoryPurchasesController@approval_one');
   Route::post('/send_purchase_two', 'Purchases\HistoryPurchasesController@approval_two');
   Route::post('/deny_purchase', 'Purchases\HistoryPurchasesController@deny_purchase_act');
+  Route::post('purchase_poliza/contador', 'Purchases\HistoryPurchasesController@GetNextContador');
 
   Route::get('/history_purchases', 'Purchases\HistoryPurchasesController@history_purchases');
+
   Route::post('/view_purchases_search_history', 'Purchases\HistoryPurchasesController@search_history');
 
   //Cuentas bancarias de proveedor
