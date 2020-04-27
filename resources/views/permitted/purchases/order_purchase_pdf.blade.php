@@ -176,7 +176,7 @@
           <tr>
             <td class="text-center">{{$product->Cantidad}}</td>
             <td colspan="2">{{$product->name}}</td>
-            <td class="text-right">{{ number_format($product->price, 2, '.', ',') }}</td>
+            <td class="text-right">{{ number_format($product->price_cart_order, 2, '.', ',') }}</td>
             <td>{{$product->code}}</td>
             <td style="text-align: right">{{$product->subtotal}}</td>
             <td style="text-align: right">{{$product->descuento_percent}}</td>

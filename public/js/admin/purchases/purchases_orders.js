@@ -35,7 +35,19 @@ $('#provider_id').on('change', function(){
   let doc_id = $('#id_doc').val();
   let provider_id = $(this).val();
 
-  getProductsFromProjectsByProvider(doc_id, provider_id);
+  if(provider_id == 92 || provider_id == 992){
+    getDiversosProvidersFromProject(doc_id);
+  }else{
+    getProductsFromProjectsByProvider(doc_id, provider_id);
+  }
+
+})
+
+$('#provider_divesos_id').on('change', function(){
+  let doc_id = $('#id_doc').val();
+  let provider_id = $(this).val();
+
+  getProductsFromProjectsByProviderDiverso(doc_id, provider_id);
 })
 
 function getProvidersFromProject(doc_id){
@@ -68,6 +80,36 @@ function getProvidersFromProject(doc_id){
         });
 }
 
+function getDiversosProvidersFromProject(doc_id){
+
+  var miInit = {
+      method: 'get',
+      headers: headers,
+      credentials: "same-origin",
+      cache: 'default' };
+
+  fetch(`/purchases/getDiversosProvidersFromProject/doc_id/${doc_id}`, miInit)
+      .then(function(response){
+          if (!response.ok) {
+              throw new Error(response.statusText)
+          }
+          return response.json();
+      })
+      .then(function(data){
+        $('#provider_divesos_id').empty();
+        $('#provider_divesos_id').append(`<option value="">Elige un proveedor</option>`);
+        $.each(data, function(i, key) {
+          $('#provider_divesos_id').append(`<option value="${key.id}">${key.proveedor}</option>`);
+      });
+          console.log(data);
+      })
+      .catch(function(error){
+          Swal.showValidationMessage(
+              `Request failed: ${error}`
+          )
+      });
+}
+
 function getProductsFromProjectsByProvider(doc_id, provider_id){
 
     var miInit = {
@@ -94,6 +136,32 @@ function getProductsFromProjectsByProvider(doc_id, provider_id){
         });
 }
 
+function getProductsFromProjectsByProviderDiverso(doc_id, provider_id){
+
+  var miInit = {
+      method: 'get',
+      headers: headers,
+      credentials: "same-origin",
+      cache: 'default' };
+
+      
+  fetch(`/purchases/getProductsFromProjectsByProviderDiverso/doc_id/${doc_id}/provider_id/${provider_id}`, miInit)
+      .then(function(response){
+          if (!response.ok) {
+              throw new Error(response.statusText)
+          }
+          return response.json();
+      })
+      .then(function(data){
+          generate_table_products(data);
+      })
+      .catch(function(error){
+          Swal.showValidationMessage(
+              `Request failed: ${error}`
+          )
+      });
+}
+
 function generate_table_products(products){
 
     $("#tabla_productos tbody tr").remove();
@@ -109,9 +177,9 @@ function generate_table_products(products){
             <tr>
                 <td id='${key.product_id}'><input value="${key.product_id}" class="product_id" type="hidden"></td>
                 <td class="text-center">${cantidad}</td>
-                <td><input onblur="update_cantidades(this);"  value="${cantidad}" type="number" class="form-control form-control-sm cantidad" min="1" max="${cantidad}" required style="width:60px;text-align: right;"></td>
+                <td><input onblur="update_cantidades(this);" value="${cantidad}" type="number" class="form-control form-control-sm cantidad" min="1" max="${cantidad}" required style="width:60px;text-align: right;"></td>
                 <td class="producto">${key.product}</td>
-                <td class="text-right precio">${precio}</td>
+                <td><input onblur="update_cantidades(this);" value="${precio}" type="number" min="0.01" step=".01" class="form-control form-control-sm precio" required style="width:100px;text-align: right;"></td>
                 <td class="text-right code">${key.currencies.substring(0, 3)}</td>
                 <td class="text-right subtotal">${subtotal.toFixed(2)}</td>
                 <td><input style="width:50px" onblur="update_cantidades(this);" value="${key.descuento}" class="descuento_percent form-control form-control-sm" type="number"></td>
@@ -124,7 +192,6 @@ function generate_table_products(products){
     });
 
     sumaTotales();
-    
 }
 
 $("#form").on("submit", function(e){
@@ -138,7 +205,7 @@ $("#form").on("submit", function(e){
   $('#tabla_productos tbody tr').each(function(row, tr){
     let product_id = $(tr).find('.product_id').val();
     let cantidad = $(tr).find('.cantidad').val();
-    let precio = $(tr).find('.precio').text();
+    let precio = $(tr).find('.precio').val();
     let currency = $(tr).find('.code').text();
     let subtotal = $(tr).find('.subtotal').text();
     let descuento = $(tr).find('.descuento').text();
@@ -234,13 +301,12 @@ $("#form").on("submit", function(e){
     Swal.fire('Orden con diferentes monedas','La orden de compra solo deben tener productos de una sola moneda', 'error');
   }
   
-  
 })
 
 // Funcion para mofdificar datos al actualizar una cantidad de la tabla de pedidos
 function update_cantidades(e){
   let tr = e.parentNode.parentNode;
-  let precio = parseFloat($(tr).find('.precio').text());
+  let precio = parseFloat($(tr).find('.precio').val());
   let cantidad = parseInt($(tr).find('.cantidad').val());
   let descuento = parseFloat($(tr).find('.descuento_percent').val());
   let total = 0.0;
@@ -266,7 +332,7 @@ function sumaTotales(){
   $('#tabla_productos tbody tr').each(function(row, tr){
     let product_id = $(tr).find('.product_id').val();
     let cantidad = $(tr).find('.cantidad').val();
-    let precio = $(tr).find('.precio').text();
+    let precio = $(tr).find('.precio').val();
     let descuento = $(tr).find('.descuento').text();
     let subtotal = $(tr).find('.subtotal').text();
     let total = $(tr).find('.total').text();

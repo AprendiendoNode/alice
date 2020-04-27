@@ -67,7 +67,7 @@ class PurchaseOrderController extends Controller
         $format = new ConvertNumberToLetters();
         
         $ammount_letter = $format->convertir($order_purchases[0]->total);
-        
+
         $pdf = PDF::loadView('permitted.purchases.order_purchase_pdf', compact('ammount_letter', 'products', 'order_purchases'));
 
         return $pdf->stream();
@@ -79,12 +79,17 @@ class PurchaseOrderController extends Controller
         $date = $date->format('Y-m-d');
         $date_delivery =  Carbon::parse($request->date_delivery)->format('Y-m-d');
         $folio = $this->createFolio();
+        $provider_id = $request->provider_id;
         //Objeto de productos
         $products = $request->products;
         $products_data = json_decode($products);
         
         $tam_products = count($products_data);
         $flag = "false";
+
+        if($request->provider_id == 92 || $request->provider_id == 992){
+            $provider_id = $request->provider_divesos_id;
+        }
 
         DB::beginTransaction();
 
@@ -118,7 +123,7 @@ class PurchaseOrderController extends Controller
                 'order_address_delivery_id' => $request->address_delivery_id,
                 'order_cart_id' => $id_order_cart,
                 'order_status_id' => 1,
-                'provider_id' => $request->provider_id,
+                'provider_id' => $provider_id,
                 'tax_id' => 1,
                 'subtotal' => $request->subtotal,
                 'descuento' => $request->descuento,
@@ -148,17 +153,35 @@ class PurchaseOrderController extends Controller
         return $providers;
     }
 
+    public function getDiversosProvidersFromProject($doc_id)
+    {
+        $providers = DB::select('CALL px_proveedores_diversos_documentp_xid(?)', array($doc_id));
+
+        return $providers;
+    }
+
     public function getProductsFromProjectsByProvider($doc_id, $provider_id)
     {
         
         $documentp = Documentp::findOrFail($doc_id);
         $cart_id = $documentp->documentp_cart_id;
 
-        $products = DB::select('CALL px_in_documentp_cart_products_xprov(? ,?)', array($cart_id, $provider_id));
+        $products = DB::select('CALL px_in_documentp_cart_products_xprov(?,?)', array($cart_id, $provider_id));
         
         return $products;
     }
    
+    public function getProductsFromProjectsByProviderDiverso($doc_id, $provider_id)
+    {
+        
+        $documentp = Documentp::findOrFail($doc_id);
+        $cart_id = $documentp->documentp_cart_id;
+
+        $products = DB::select('CALL px_in_documentp_cart_products_xprov_diverso(?,?)', array($cart_id, $provider_id));
+        
+        return $products;
+    }
+
     public function show($id)
     {
         // 

@@ -39,17 +39,26 @@
                   </div>
                 </div> 
                 <div class="col-md-6 col-xs-12">
-                    <label for="provider_id" class="control-label  my-2">Proveedores:<span style="color: red;">*</span></label>
-                    <div class="input-group">
-                      <select required class="custom-select select2" id="provider_id" name="provider_id">
-                        <option value="" selected>Selecciona...</option>
-                        @forelse ($providers as $provider_data)
-                          <option value="{{ $provider_data->id  }}">{{ $provider_data->name }}</option>
-                        @empty
-                        @endforelse
-                      </select>                      
-                    </div>
-                  </div> 
+                  <label for="provider_id" class="control-label  my-2">Proveedores:<span style="color: red;">*</span></label>
+                  <div class="input-group">
+                    <select required class="custom-select select2" id="provider_id" name="provider_id">
+                      <option value="" selected>Selecciona...</option>
+                      @forelse ($providers as $provider_data)
+                        <option value="{{ $provider_data->id  }}">{{ $provider_data->name }}</option>
+                      @empty
+                      @endforelse
+                    </select>                      
+                  </div>
+                </div> 
+                <div class="col-md-6 col-xs-12">
+                  <label for="provider_id" class="control-label  my-2">Proveedor diverso:</label>
+                  <div class="input-group">
+                    <select required class="custom-select select2" id="provider_divesos_id" name="provider_divesos_id">
+                      <option value="" selected>Selecciona...</option>
+                     
+                    </select>                      
+                  </div>
+                </div> 
             </div>  
              
             <div class="row mt-3">
@@ -190,7 +199,7 @@
   
   <script src="{{ asset('plugins/jquery-wizard-master-two/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('plugins/jquery-wizard-master-two/additional-methods.js')}}"></script>
-  <script src="{{ asset('js/admin/purchases/purchases_orders.js?v=1.0')}}"></script>
+  <script src="{{ asset('js/admin/purchases/purchases_orders.js?v=1.5')}}"></script>
 
   <style media="screen">
     .white {background-color: #ffffff;}
