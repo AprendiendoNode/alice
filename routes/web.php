@@ -1478,3 +1478,10 @@ Route::group(['prefix' => 'base',  'middleware' => 'auth'], function()
       });
 
 });
+
+Route::prefix('hostpot')->group(function() {
+  Route::get('', 'Hostpots\Hostpots@Index');
+  Route::get('realms', 'Hostpots\Hostpots@getRealms');
+  Route::get('realm_sites','Hostpots\Hostpots@getRealmSites');
+  Route::get('chartsInfo', 'Hostpots\Hostpots@getChartsInfo');
+});
