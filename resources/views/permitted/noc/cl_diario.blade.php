@@ -31,7 +31,6 @@
         <div class="card">
             <div class="card-body">
               <div class="text-center">
-                <h4>Check List actividades diarias del ITC</h4>
                 <div class="row pb-3">
                   <div class="row pb-3 w-100">
                     <div class="col-md-4">
@@ -59,6 +58,46 @@
                     </div>
                   </div>
                 </div>
+                <br>
+                <div class="table-responsive">
+                <table id="table_cl_general" class="table table-striped table-bordered compact-tab table-hover">
+                  <thead class="text-center">
+                    <tr class="bg-dark">
+                      <th rowspan="2">Nombre.</th>
+                      <th colspan="3">Diario</th>
+                      <th rowspan="2">Ultima modificación</th>
+                      <th colspan="3">5 días</th>
+                      <th rowspan="2">Ultima modificación</th>
+                      <th colspan="3">20 días</th>
+                      <th rowspan="2">Ultima modificación</th>
+                      <th>Instalaciones</th>
+                      <th rowspan="2">Ultima modificación</th>
+                      <th>Oportunidades</th>
+                      <th rowspan="2">Ultima modificación</th>
+                      <th rowspan="2">Promedio</th>
+                    </tr>
+                    <tr class="bg-aqua">
+                      <th>Entregados</th>
+                      <th>Referencia</th>
+                      <th>%</th>
+                      <th>Entregados</th>
+                      <th>Referencia</th>
+                      <th>%</th>
+                      <th>Entregados</th>
+                      <th>Referencia</th>
+                      <th>%</th>
+                      <th>Entregados</th>
+                      <th>Entregados</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-center"style="font-size: 11px;">
+
+                  </tbody>
+                </table>
+                </div>
+                <br>
+                <h4>Check List actividades diarias del ITC</h4>
+
                 <br>
                 <table id="table_cl_diario" class="table table-striped table-bordered compact-tab table-hover">
                   <thead class="bg-aqua text-center">

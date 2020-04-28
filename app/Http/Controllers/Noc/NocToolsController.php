@@ -26,6 +26,11 @@ class NocToolsController extends Controller
     $cl_diario=DB::Table('cl_diario')->get();
     return view('permitted.noc.cl_diario',compact('cl_diario'));
   }
+  public function get_cl_general(Request $request){
+    $date=$request->date;
+    $result=DB::Select('CALL px_contador_clxitc_xmes(?)',array($date));
+    return $result;
+  }
 
   public function get_cl_diario(Request $request){
     $date=$request->date;

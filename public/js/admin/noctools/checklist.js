@@ -11,6 +11,7 @@ $('#date_to_search').datepicker({
 }).datepicker("setDate",'now');
 //$('#date_to_search').val('').datepicker('update');
 var date=$('#date_to_search').val();
+get_cl_general(date);
 get_cl_diario(date);
 get_cl_5_dia(date);
 get_cl_20_dia(date);
@@ -23,6 +24,7 @@ if (date == ''){
   var date = moment().format('YYYY-MM-DD');
 }
 //console.log(date);
+get_cl_general(date);
 get_cl_diario(date);
 get_cl_5_dia(date);
 get_cl_20_dia(date);
@@ -38,6 +40,24 @@ function get_cl_instalaciones(date) {
     table_instalaciones(response, $("#table_cl_instalaciones"));
   });
 }
+
+function get_cl_general(date){
+  $.ajax({
+    type:"POST",
+    url:"/get_cl_general",
+    data:{_token:_token,date:date},
+    success:function(data){
+      //console.log(date);
+      //console.log(data);
+      table_cl_general(data,$('#table_cl_general'));
+    },
+    error:function(data){
+
+    }
+  });
+
+}
+
 
 function get_cl_diario(date){
   $.ajax({
@@ -74,7 +94,7 @@ function get_cl_oportunidades(date){
     url:"/get_cl_oportunidades",
     data:{_token:_token,date:date},
     success:function(data){
-      console.log(data);
+      //console.log(data);
       table_oportunidades(data,$('#table_oportunidades'));
     },
     error:function(data){
@@ -109,6 +129,149 @@ function get_cl_20_dia(date){
 
     }
   });
+}
+function table_cl_general(datajson, table){
+  table.DataTable().destroy();
+  var vartable = table.dataTable(Configuration_table_chlist);
+  vartable.fnClearTable();
+
+  $.each(datajson, function(index, status){
+
+    vartable.fnAddData([
+      status.itc,
+      status.regs_d,//diario
+      status.dias_d,
+      eval_diario(status.regs_d,status.dias_d),
+      status.ultima_act_d,
+      eval_entregados(status.regs_5,status.ultima_act_5,5),//5 dia
+      status.dias_5,
+      evalua_520(status.regs_5,status.ultima_act_5,5),
+      status.ultima_act_5,
+      eval_entregados(status.regs_20,status.ultima_act_20,20),//20 dia
+      status.dias_20,
+      evalua_520(status.regs_20,status.ultima_act_20,20),
+      status.ultima_act_20,
+      status.regs_inst,//instalaciones
+      status.ultima_act_inst,
+      status.regs_op,//oportunidades
+      status.ultima_act_op,
+      promedio(status.regs_d,status.dias_d,status.regs_5,status.ultima_act_5,status.regs_20,status.ultima_act_20)
+    ]);
+
+  });
+
+
+}
+function promedio(regs_d,dias_d,regs_5,ult_5,regs_20,ult_20){
+let per = ((100/dias_d)*regs_d).toFixed(2);//diario
+//console.log(per);
+let entregados_5= eval_entregados(regs_5,ult_5,5);
+let entregados_20= eval_entregados(regs_20,ult_20,20);
+
+var result_5=get_advance(entregados_5);//5 dia
+var result_20=get_advance(entregados_20);//20 dia
+
+let promedio = ((parseFloat(per)+parseInt(result_5)+parseInt(result_20))/3).toFixed(2);
+var badge=set_badge(promedio);
+return badge;
+//return promedio.toFixed(2);
+
+}
+function get_advance(result){
+  switch (true) {
+    case result===null :
+        return 0;
+      break;
+    case result!=0 :
+        return 100;
+      break;
+    case result==0:
+      return 0;
+      break;
+
+    default: return 0;
+
+  }
+}
+function eval_diario(entregados,referencia){
+let per = ((100/referencia)*entregados).toFixed(2);
+var badge=set_badge(per);
+return badge;
+}
+function set_badge(per){
+  switch (true) {
+    case per>=86:
+        return '<span class="badge badge-success badge-pill">'+per.toString().replace(/\.00$/,'')+'%</span>';
+      break;
+
+    case per>=50:
+      return '<span class="badge badge-warning badge-pill">'+per.toString().replace(/\.00$/,'')+'%</span>';
+      break;
+
+    case per<=49:
+      return '<span class="badge badge-danger badge-pill">'+per.toString().replace(/\.00$/,'')+'%</span>';
+      break;
+
+    default: return '<span class="badge badge-dark badge-pill">N/A</span>';
+
+  }
+}
+function eval_entregados(entregados,fecha,type){
+  if(type==5){
+
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth()+1;
+    var fecha_entrega = moment(fecha);
+    var begin_date= moment(year+'-'+'0'+month+'-01');
+    var end_date = moment(year+'-'+'0'+month+'-05');
+
+    var flag=moment(fecha_entrega).isBetween(begin_date,end_date,'days', '[]');//[] para que sea inclusivo y () para que sea exclusivo
+    if (flag==true){
+      return entregados;
+    }
+    else{
+      return 0;
+    }
+  }
+  else{//type 20
+
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth()+1;
+    var fecha_entrega = moment(fecha);
+    var begin_date= moment(year+'-'+'0'+month+'-01');
+    var end_date = moment(year+'-'+'0'+month+'-20');
+
+    var flag=moment(fecha_entrega).isBetween(begin_date,end_date,'days', '[]');//[] para que sea inclusivo y () para que sea exclusivo
+    if (flag==true){
+      return entregados;
+    }
+    else{
+      return 0;
+    }
+
+  }
+
+}
+function evalua_520(entregados,fecha,type){
+  var result= eval_entregados(entregados,fecha,type);
+  //console.log(result);
+switch (true) {
+  case result===null :
+      return '<span class="badge badge-dark badge-pill">N/A</span>';
+    break;
+  case result!=0 :
+      return '<span class="badge badge-success badge-pill">100%</span>';
+    break;
+  case result==0:
+    return '<span class="badge badge-danger badge-pill">0%</span>';
+    break;
+
+  default: return '<span class="badge badge-dark badge-pill">N/A</span>';
+
+}
+
 }
 
 function table_antenas(datajson, table){
