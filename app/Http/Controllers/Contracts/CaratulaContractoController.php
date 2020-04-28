@@ -22,20 +22,21 @@ class CaratulaContractoController extends Controller
     {
       return view('permitted.contract.caratula_contrato');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function caratula_contrato_blank(Request $request)
+    {
+      $pdf = PDF::loadView('permitted.contract.pdf_caratula_contrato_blank');
+      return $pdf->stream();
+    }
     public function store(Request $request)
     {
       $user_id = Auth::id();
       $RazonSocial = $request->InputRazonSocial;
       $Representante = $request->InputRepresentante;
       $TelefonoContacto = $request->InputTelefonoContacto;
-      $CorreoContacto = $request->InputCorreoContacto;
+
+      $CorreoContactoCobranza = !empty($request->InputEmailCobranza) ?  $request->InputEmailCobranza  : '';
+      $CorreoContactoComercial = !empty($request->InputEmailComercial) ? $request->InputEmailComercial : '';
+      $CorreoContactoLegal = !empty($request->InputEmailLegal) ? $request->InputEmailLegal : '';
 
       $Rfc = $request->InputRfc;
       $Cfdi = $request->InputCfdi;
@@ -43,78 +44,65 @@ class CaratulaContractoController extends Controller
       $MetodoPago = $request->InputMetodoPago;
 
       $DireccionPersona = $request->InputDireccionPersona;
+      $CorreoPersona = $request->InputEmailCliente;
       $AtencionPersona = $request->InputAtencionPersona;
 
-      $Especificaciones = !empty($request->textareaEspecificaciones) ? $request->textareaEspecificaciones : '';
-
+      $TipoServicio = !empty($request->InputTipoServ) ? $request->InputTipoServ : '';
       $Vigencia = $request->InputVigencia;
-      $DiasPago = $request->InputDiasPago;
+
+      $MontoPago = $request->InputMontoPago;
       $MonedaPago = $request->InputMonedaPago;
+      $DosUltMeses = $request->InputDosUltMeses;
+
+      $AplicaGarantia = $request->InputAplicaGarantia;
+      $MontoGarantia = !empty($request->InputMontoGarantia) ? $request->InputMontoGarantia : 0;
 
       $CondicionesEspeciales = !empty($request->textareaCondicionesEspeciales) ? $request->textareaCondicionesEspeciales : '';
 
-      $AplicaGarantia = $request->InputAplicaGarantia;
-      if ($AplicaGarantia == 0) {
-        $AplicaGarantia_Save = '0';
-        $NoAplicaGarantia_Save = '';
-      }
-      if ($AplicaGarantia == 1) {
-        $AplicaGarantia_Save = '1';
-        $NoAplicaGarantia_Save = '';
-      }
-      $MontoPago = $request->InputMontoPago;
-      // $MontoGarantia = $request->InputMontoGarantia;
-      $MontoGarantia = !empty($request->InputMontoGarantia) ? $request->InputMontoGarantia : 0;
 
       $FormatoMontoPago = $MontoPago;
       $FormatoMontoGarantia = $MontoGarantia;
 
       $SinFormatoMontoPago = str_replace(",", "", $MontoPago);
       $SinFormatoMontoGarantia = str_replace(",", "", $MontoGarantia);
-
       $Observaciones = !empty($request->textareaObservaciones) ? $request->textareaObservaciones : '';
+
+
 
       $newId = DB::table('caratulacontrato')
                ->insertGetId([
                          'razon_social' => $RazonSocial,
                         'representante' => $Representante,
                     'telefono_contacto' => $TelefonoContacto,
-                      'correo_contacto' => $CorreoContacto,
+             'correo_contacto_cobranza' => $CorreoContactoCobranza,
+            'correo_contacto_comercial' => $CorreoContactoComercial,
+                'correo_contacto_legal' => $CorreoContactoLegal,
                                   'rfc' => $Rfc,
                                  'cfdi' => $Cfdi,
                             'direccion' => $Direccion,
                           'metodo_pago' => $MetodoPago,
                     'direccion_persona' => $DireccionPersona,
+                       'correo_cliente' => $CorreoPersona,
                      'atencion_persona' => $AtencionPersona,
-                     'especificaciones' => $Especificaciones,
+                        'tipo_servicio' => $TipoServicio,
                              'vigencia' => $Vigencia,
                            'monto_pago' => $SinFormatoMontoPago,
-                            'dias_pago' => $DiasPago,
-
                           'moneda_pago' => $MonedaPago,
 
-               'condiciones_especiales' => $CondicionesEspeciales,
-
-                      'aplica_garantia' => $AplicaGarantia_Save,
-                   'no_aplica_garantia' => $NoAplicaGarantia_Save,
+                     'pago_ultms_meses' => $DosUltMeses,
+                      'aplica_garantia' => $AplicaGarantia,
                        'monto_garantia' => $SinFormatoMontoGarantia,
-
+               'condiciones_especiales' => $CondicionesEspeciales,
                         'observaciones' => $Observaciones,
                           'created_uid' => $user_id,
                            'created_at' => \Carbon\Carbon::now()
                ]);
       $pdf = PDF::loadView('permitted.contract.pdf_caratula_contrato',
       compact(
-        'RazonSocial', 'Representante', 'TelefonoContacto', 'CorreoContacto',
-        'Rfc', 'Cfdi', 'Direccion', 'MetodoPago',
-        'DireccionPersona', 'AtencionPersona',
-        'Especificaciones',
-        'Vigencia',
-        'MontoPago', 'DiasPago', 'MonedaPago',
-        'CondicionesEspeciales',
-        'AplicaGarantia', 'MontoGarantia',
-        'Observaciones',
-        'FormatoMontoPago','FormatoMontoGarantia'
+        'RazonSocial','Representante','TelefonoContacto','CorreoContactoCobranza','CorreoContactoComercial',
+        'CorreoContactoLegal','Rfc','Cfdi','Direccion','MetodoPago','DireccionPersona','CorreoPersona',
+        'AtencionPersona','TipoServicio','Vigencia','MonedaPago','DosUltMeses','AplicaGarantia','CondicionesEspeciales',
+        'MontoPago','MontoGarantia'
       ))->setPaper('letter');
       return $pdf->stream();
     }
@@ -166,7 +154,10 @@ class CaratulaContractoController extends Controller
       $RazonSocial = $request->InputRazonSocial;
       $Representante = $request->InputRepresentante;
       $TelefonoContacto = $request->InputTelefonoContacto;
-      $CorreoContacto = $request->InputCorreoContacto;
+
+      $CorreoContactoCobranza = !empty($request->InputEmailCobranza) ?  $request->InputEmailCobranza  : '';
+      $CorreoContactoComercial = !empty($request->InputEmailComercial) ? $request->InputEmailComercial : '';
+      $CorreoContactoLegal = !empty($request->InputEmailLegal) ? $request->InputEmailLegal : '';
 
       $Rfc = $request->InputRfc;
       $Cfdi = $request->InputCfdi;
@@ -174,34 +165,25 @@ class CaratulaContractoController extends Controller
       $MetodoPago = $request->InputMetodoPago;
 
       $DireccionPersona = $request->InputDireccionPersona;
+      $CorreoPersona = $request->InputEmailCliente;
       $AtencionPersona = $request->InputAtencionPersona;
 
-      $Especificaciones = !empty($request->textareaEspecificaciones) ? $request->textareaEspecificaciones : '';
-
+      $TipoServicio = !empty($request->InputTipoServ) ? $request->InputTipoServ : '';
       $Vigencia = $request->InputVigencia;
-      $MontoPago = $request->InputMontoPago;
-      $DiasPago = $request->InputDiasPago;
 
+      $MontoPago = !empty($request->InputMontoPago) ? $request->InputMontoPago : 0;
       $MonedaPago = $request->InputMonedaPago;
-
-      $CondicionesEspeciales = !empty($request->textareaCondicionesEspeciales) ? $request->textareaCondicionesEspeciales : '';
+      $DosUltMeses = $request->InputDosUltMeses;
 
       $AplicaGarantia = $request->InputAplicaGarantia;
-      if ($AplicaGarantia == 0) {
-        $AplicaGarantia_Save = '0';
-        $NoAplicaGarantia_Save = '';
-      }
-      if ($AplicaGarantia == 1) {
-        $AplicaGarantia_Save = '1';
-        $NoAplicaGarantia_Save = '';
-      }
-      // $MontoGarantia = $request->InputMontoGarantia;
       $MontoGarantia = !empty($request->InputMontoGarantia) ? $request->InputMontoGarantia : 0;
+
+      $CondicionesEspeciales = !empty($request->textareaCondicionesEspeciales) ? $request->textareaCondicionesEspeciales : '';
+      $Observaciones = !empty($request->textareaObservaciones) ? $request->textareaObservaciones : '';
 
       $SinFormatoMontoPago = str_replace(",", "", $MontoPago);
       $SinFormatoMontoGarantia = str_replace(",", "", $MontoGarantia);
 
-      $Observaciones = !empty($request->textareaObservaciones) ? $request->textareaObservaciones : '';
 
       $newId = DB::table('caratulacontrato')
           ->where('id', '=', $id_received )
@@ -209,26 +191,24 @@ class CaratulaContractoController extends Controller
                     'razon_social' => $RazonSocial,
                    'representante' => $Representante,
                'telefono_contacto' => $TelefonoContacto,
-                 'correo_contacto' => $CorreoContacto,
+        'correo_contacto_cobranza' => $CorreoContactoCobranza,
+       'correo_contacto_comercial' => $CorreoContactoComercial,
+           'correo_contacto_legal' => $CorreoContactoLegal,
                              'rfc' => $Rfc,
                             'cfdi' => $Cfdi,
                        'direccion' => $Direccion,
                      'metodo_pago' => $MetodoPago,
                'direccion_persona' => $DireccionPersona,
+                  'correo_cliente' => $CorreoPersona,
                 'atencion_persona' => $AtencionPersona,
-                'especificaciones' => $Especificaciones,
+                   'tipo_servicio' => $TipoServicio,
                         'vigencia' => $Vigencia,
                       'monto_pago' => $SinFormatoMontoPago,
-                       'dias_pago' => $DiasPago,
-
                      'moneda_pago' => $MonedaPago,
-
-          'condiciones_especiales' => $CondicionesEspeciales,
-
-                 'aplica_garantia' => $AplicaGarantia_Save,
-              'no_aplica_garantia' => $NoAplicaGarantia_Save,
+                'pago_ultms_meses' => $DosUltMeses,
+                 'aplica_garantia' => $AplicaGarantia,
                   'monto_garantia' => $SinFormatoMontoGarantia,
-
+          'condiciones_especiales' => $CondicionesEspeciales,
                    'observaciones' => $Observaciones,
                      'updated_uid' => $user_id,
                      'updated_at' => \Carbon\Carbon::now()
@@ -259,60 +239,46 @@ class CaratulaContractoController extends Controller
       $RazonSocial = $resultados[0]->razon_social;
       $Representante = $resultados[0]->representante;
       $TelefonoContacto = $resultados[0]->telefono_contacto;
-      $CorreoContacto = $resultados[0]->correo_contacto;
+
+      $CorreoContactoCobranza = $resultados[0]->correo_contacto_cobranza;
+      $CorreoContactoComercial = $resultados[0]->correo_contacto_comercial;
+      $CorreoContactoLegal = $resultados[0]->correo_contacto_legal;
 
       $Rfc = $resultados[0]->rfc;
       $Cfdi = $resultados[0]->cfdi;
       $Direccion = $resultados[0]->direccion;
-      $MetodoPago = $resultados[0]->metodo_pago;
 
+      $MetodoPago = $resultados[0]->metodo_pago;
       $DireccionPersona = $resultados[0]->direccion_persona;
+      $CorreoPersona = $resultados[0]->correo_cliente;
       $AtencionPersona = $resultados[0]->atencion_persona;
 
-      $Especificaciones = $resultados[0]->especificaciones;
+      $TipoServicio = $resultados[0]->tipo_servicio;
       $Vigencia = $resultados[0]->vigencia;
 
-      $DiasPago = $resultados[0]->dias_pago;
-      $MonedaPago = $resultados[0]->moneda_pago;
+      // Aplicar formato
+      $SinFormatoMontoPago = $resultados[0]->monto_pago;
+      $MontoPago = number_format($SinFormatoMontoPago, 4, '.', ',');
 
-      $CondicionesEspeciales = $resultados[0]->condiciones_especiales;
+      $MonedaPago = $resultados[0]->moneda_pago;
+      $DosUltMeses = $resultados[0]->pago_ultms_meses;
 
       $AplicaGarantia = $resultados[0]->aplica_garantia;
-      if ($AplicaGarantia == 0) {
-        $AplicaGarantia_Save = '0';
-        $NoAplicaGarantia_Save = '';
-      }
-      if ($AplicaGarantia == 1) {
-        $AplicaGarantia_Save = '1';
-        $NoAplicaGarantia_Save = '';
-      }
+      //Aplicar formato
+      $SinFormatoMontoGarantia = $resultados[0]->monto_garantia;
+      $MontoGarantia = number_format($SinFormatoMontoGarantia, 4, '.', ',');
 
-      $MontoGarantia = $resultados[0]->monto_garantia;
-      $FormatoMontoGarantia = number_format($MontoGarantia, 4, '.', ',');
-      $SinFormatoMontoGarantia = str_replace(",", "", $MontoGarantia);
-
-      $MontoPago = $resultados[0]->monto_pago;
-      $FormatoMontoPago = number_format($MontoPago, 4, '.', ',');
-      $SinFormatoMontoPago = str_replace(",", "", $MontoPago);
-
+      $CondicionesEspeciales = $resultados[0]->condiciones_especiales;
       $Observaciones = $resultados[0]->observaciones;
 
       $pdf = PDF::loadView('permitted.contract.pdf_caratula_contrato',
       compact(
-        'RazonSocial', 'Representante', 'TelefonoContacto', 'CorreoContacto',
-        'Rfc', 'Cfdi', 'Direccion', 'MetodoPago',
-        'DireccionPersona', 'AtencionPersona',
-        'Especificaciones',
-        'Vigencia',
-        'MontoPago', 'DiasPago', 'MonedaPago',
-        'CondicionesEspeciales',
-        'AplicaGarantia', 'MontoGarantia',
-        'Observaciones',
-        'FormatoMontoPago', 'FormatoMontoGarantia'
+        'RazonSocial','Representante','TelefonoContacto','CorreoContactoCobranza','CorreoContactoComercial',
+        'CorreoContactoLegal','Rfc','Cfdi','Direccion','MetodoPago','DireccionPersona','CorreoPersona',
+        'AtencionPersona','TipoServicio','Vigencia','MonedaPago','DosUltMeses','AplicaGarantia','CondicionesEspeciales', 'Observaciones',
+        'MontoPago','MontoGarantia'
       ))->setPaper('letter');
 
-      // $pdf = PDF::loadView('permitted.contract.pdf_caratula_contrato2')->setPaper('letter');
       return $pdf->stream();
-      // return response( $pdf->stream()->header('Content-Type', 'application/octet-stream') );
     }
 }

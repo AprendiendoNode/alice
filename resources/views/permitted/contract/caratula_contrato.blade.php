@@ -21,16 +21,27 @@
       <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
           <div class="card">
+
+
             <form id="form" name="form" class="forms-sample" target="_blank" method="post" action="{{url('/caratula_contrato_store')}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="card-body">
-                    <pre>INFORMACIÓN GENERAL DEL CLIENTE</pre>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <div class="col-sm-9 mb-3">
+                            <a class="btn btn-secondary mr-2" target="_blank" href="{{url('/caratula_contrato_blank')}}" role="button">Descargar plantilla en blanco</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <pre class="text-uppercase">INFORMACIÓN GENERAL DEL CLIENTE</pre>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Razón social</label>
                                 <div class="col-sm-9">
-                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputRazonSocial" name="InputRazonSocial" maxlength="100" required />
+                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputRazonSocial" name="InputRazonSocial" maxlength="100" autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
@@ -38,7 +49,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Representante/Apoderado Legal</label>
                                 <div class="col-sm-9">
-                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputRepresentante" name="InputRepresentante" maxlength="100" required />
+                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputRepresentante" name="InputRepresentante" maxlength="100" autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
@@ -48,29 +59,48 @@
                                 <div class="col-sm-9">
                                     <input type="text"
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
-                                    class="form-control" id="InputTelefonoContacto" name="InputTelefonoContacto" maxlength="10" required />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Correo de contacto</label>
-                                <div class="col-sm-9">
-                                    <input type="email" class="form-control" id="InputCorreoContacto" name="InputCorreoContacto" maxlength="100" required />
+                                    class="form-control" id="InputTelefonoContacto" name="InputTelefonoContacto" maxlength="10" autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <pre class="text-uppercase">Correos de contactos</pre>
+                    <div class="row">
+                      <div class="col-md-12">
+                          <div class="form-group row">
+                              <label class="col-sm-2 col-form-label">Cobranza</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" id="InputEmailCobranza" name="InputEmailCobranza" maxlength="100" autocomplete="off" required />
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="form-group row">
+                              <label class="col-sm-2 col-form-label">Comercial</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" id="InputEmailComercial" name="InputEmailComercial" maxlength="100" autocomplete="off" required />
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="form-group row">
+                              <label class="col-sm-2 col-form-label">Legal</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" id="InputEmailLegal" name="InputEmailLegal" maxlength="100" autocomplete="off" required />
+                              </div>
+                          </div>
+                      </div>
+                    </div>
                     {{-- <p class="mt-4">This will install the dev dependencies in the local <span class="font-weight-bold">node_modules</span> folder in your root directory.</p> --}}
                     <hr class="mt-3">
 
-                    <pre>DATOS FISCALES DEL CLIENTE</pre>
+                    <pre class="text-uppercase">DATOS FISCALES DEL CLIENTE</pre>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">RFC</label>
                                 <div class="col-sm-9">
-                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputRfc" name="InputRfc" maxlength="100" required />
+                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputRfc" name="InputRfc" maxlength="100" autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
@@ -78,7 +108,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Uso de CFDI</label>
                                 <div class="col-sm-9">
-                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputCfdi" name="InputCfdi" maxlength="100" required />
+                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputCfdi" name="InputCfdi" maxlength="100" autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
@@ -86,7 +116,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Dirección</label>
                                 <div class="col-sm-9">
-                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputDireccion" name="InputDireccion" maxlength="300" required />
+                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputDireccion" name="InputDireccion" maxlength="300" autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
@@ -94,7 +124,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Forma y método de pago</label>
                                 <div class="col-sm-9">
-                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputMetodoPago" name="InputMetodoPago" maxlength="300" required autocomplete="off" />
+                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputMetodoPago" name="InputMetodoPago" maxlength="300" autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
@@ -102,13 +132,21 @@
                     {{-- <p class="mt-4">This will install the dev dependencies in the local <span class="font-weight-bold">node_modules</span> folder in your root directory.</p> --}}
                     <hr class="mt-3">
 
-                    <pre>DOMICILIO Y PERSONAS AUTORIZADAS PARA RECIBIR NOTIFICACIONES Y DOCUMENTOS</pre>
+                    <pre class="text-uppercase">DOMICILIO Y PERSONAS AUTORIZADAS PARA RECIBIR NOTIFICACIONES Y DOCUMENTOS - CLIENTE</pre>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Dirección</label>
                                 <div class="col-sm-9">
-                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputDireccionPersona" name="InputDireccionPersona" maxlength="300" required />
+                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputDireccionPersona" name="InputDireccionPersona" maxlength="300" autocomplete="off" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Correo electrónico</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="InputEmailCliente" name="InputEmailCliente" maxlength="300" autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
@@ -116,33 +154,28 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">En atención a</label>
                                 <div class="col-sm-9">
-                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputAtencionPersona" name="InputAtencionPersona" maxlength="300" required />
+                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputAtencionPersona" name="InputAtencionPersona" maxlength="300" autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{-- <p class="mt-4">This will install the dev dependencies in the local <span class="font-weight-bold">node_modules</span> folder in your root directory.</p> --}}
+
                     <hr class="mt-3">
 
-                    <pre>ESPECIFICACIONES DEL SERVICIO</pre>
+                    <pre class="text-uppercase">Especificaciones del servicio</pre>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group row">
-                                {{-- <label class="col-sm-3 col-form-label">Dirección</label> --}}
-                                <div class="col-sm-12">
-                                    <textarea onkeyup="mayuscula(this);" class="form-control" id="textareaEspecificaciones" name="textareaEspecificaciones" rows="4" required></textarea>
+                                <label class="col-sm-4 col-form-label">Tipo de servicio:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="InputTipoServ" name="InputTipoServ" maxlength="300" autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {{-- <p class="mt-4">Esta sección es<code><span class="font-weight-bold">Opcional</span></code>.</p> --}}
-                    <hr class="mt-3">
-
-                    <pre>VIGENCIA</pre>
-                    <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group row">
-                                <div class="col-sm-12">
+                                <label class="col-sm-4 col-form-label">Vigencia (Meses):</label>
+                                <div class="col-sm-8">
                                     <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
                                     class="form-control" id="InputVigencia" name="InputVigencia" maxlength="4" required autocomplete="off"/>
                                 </div>
@@ -151,7 +184,7 @@
                     </div>
                     <hr class="mt-3">
 
-                    <pre>CONTRAPRESTACIÓN Y FORMA DE PAGO</pre>
+                    <pre class="text-uppercase">CONTRAPRESTACIÓN Y FORMA DE PAGO</pre>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group row">
@@ -159,24 +192,11 @@
                                 <div class="col-sm-12">
                                     <input onblur="redondeo_monto();"
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
-                                    type="text" class="form-control" id="InputMontoPago" name="InputMontoPago" required />
+                                    type="text" class="form-control" id="InputMontoPago" name="InputMontoPago" autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group row">
-                                <label class="col-sm-12 col-form-label">DÍAS DE PAGO DE CADA MES</label>
-                                <div class="col-sm-12">
-                                    {{-- <input type="text" class="form-control" id="InputDiasPago" name="InputDiasPago" required /> --}}
-                                    <select  id="InputDiasPago" name="InputDiasPago" class="form-control form-control-sm required"  style="width: 100%;">
-                                      <option value="" selected > Elija </option>
-                                      @for ($i = 1; $i <= 31; $i++)
-                                        <option value="{{$i}}">{{ $i }}</option>
-                                      @endfor
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="col-md-4">
                             <div class="form-group row">
                                 <label class="col-sm-12 col-form-label">PESOS O DÓLARES </label>
@@ -186,29 +206,27 @@
                                     <option value="PESOS" >PESOS</option>
                                     <option value="DOLARES">DÓLARES</option>
                                   </select>
-                                    {{-- <input type="text" class="form-control" id="InputMonedaPago" name="InputMonedaPago" required /> --}}
                                 </div>
                                 <p class="mt-1 ml-2">(<span class="font-weight-bold">Más el correspondiente impuesto</span>).</p>
                             </div>
                         </div>
-                    </div>
-                    {{-- <p class="mt-4">This will install the dev dependencies in the local <span class="font-weight-bold">node_modules</span> folder in your root directory.</p> --}}
-                    <hr class="mt-3">
-
-                    <pre>CONDICIONES ESPECIALES</pre>
-                    <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                             <div class="form-group row">
+                                <label class="col-sm-12 col-form-label">PAGO DOS ÚLTIMOS MESES</label>
                                 <div class="col-sm-12">
-                                    <textarea class="form-control" id="textareaCondicionesEspeciales" name="textareaCondicionesEspeciales" rows="4" required></textarea>
+                                    <select  id="InputDosUltMeses" name="InputDosUltMeses" class="form-control form-control-sm required"  style="width: 100%;">
+                                      <option value="" selected > Elija </option>
+                                      <option value="no" > NO </option>
+                                      <option value="si" > SI </option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{-- <p class="mt-4">Esta sección es<code><span class="font-weight-bold">Opcional</span></code>.</p> --}}
+
                     <hr class="mt-3">
 
-                    <pre>DEPÓSITO EN GARANTÍA</pre>
+                    <pre class="text-uppercase">DEPÓSITO EN GARANTÍA</pre>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row">
@@ -233,35 +251,38 @@
                                 <div class="col-sm-12">
                                     <input onblur="redondeo_garantia();"
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
-                                    type="text" class="form-control" id="InputMontoGarantia" name="InputMontoGarantia" />
+                                    type="text" class="form-control" id="InputMontoGarantia" name="InputMontoGarantia" autocomplete="off" />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <hr class="mt-3">
 
-                    <pre>OBSERVACIONES</pre>
+                    <pre class="text-uppercase">Condiciones especiales</pre>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <textarea class="form-control" id="textareaObservaciones" name="textareaObservaciones" rows="4" required></textarea>
+                                    <textarea onkeyup="mayuscula(this);" class="form-control" id="textareaCondicionesEspeciales" name="textareaCondicionesEspeciales" rows="4" required></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{-- <p class="mt-4">Esta sección es<code><span class="font-weight-bold">Opcional</span></code>.</p> --}}
+
                     <hr class="mt-3">
 
-                    <pre>PENALIZACIONES</pre>
-                    <p class="mt-4 text-justify">
-                        Para el caso de que <span class="font-weight-bold">EL CLIENTE</span> incurra en algunas de las causales de rescisión estipuladas en la cláusula novena del Contrato o en su caso decida terminar anticipadamente el Contrato y/o
-                        Anexo según aplique, pagará por concepto de pena convencional a <span class="font-weight-bold">EL PRESTADOR</span> el importe de todas las mensualidades de la <span class="font-weight-bold">CONTRAPRESTACIÓN</span> establecida
-                        en la presente Carátula, correspondientes a los meses restantes en la vigencia del Contrato y/o Anexo según aplique. Lo anterior, no exime al <span class="font-weight-bold">CLIENTE</span> del pago de todas las mensualidades de
-                        la <span class="font-weight-bold">CONTRAPRESTACIÓN</span> por los Servicios ya prestados en la fecha de terminación o rescisión del Contrato y/o Anexo según aplique. Dicho pago deberá ser realizado dentro de los 10 (diez) días
-                        naturales siguientes de la fecha en la que el <span class="font-weight-bold">PRESTADOR</span> notifique al <span class="font-weight-bold">CLIENTE</span> la rescisión del Contrato o el <span
-                          class="font-weight-bold">CLIENTE</span> notifique al <span class="font-weight-bold">PRESTADOR</span> la terminación anticipada del presente Contrato, según sea el caso.
-                    </p>
+                    <pre class="text-uppercase">Observaciones</pre>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <textarea onkeyup="mayuscula(this);" class="form-control" id="textareaObservaciones" name="textareaObservaciones" rows="4" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <hr class="mt-3">
 
                     <button type="submit" class="btn btn-primary mr-2">Guardar y descargar</button>

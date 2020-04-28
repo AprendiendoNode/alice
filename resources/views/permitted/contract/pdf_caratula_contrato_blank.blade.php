@@ -381,6 +381,9 @@
           width: 100% !important;
           text-align: justify !important;
         }
+        .mt-5 {
+          margin-top: 2rem !important;
+        }
     </style>
 </head>
 
@@ -415,12 +418,26 @@
       $request_monto_garantia = !empty($MontoGarantia) ? $MontoGarantia : '';
       $request_observaciones = !empty($Observaciones) ? $Observaciones : '';
 
-      if ($request_aplica_garantia == 0) {
+      if ($request_moneda_pago == '') {
+        $request_type_pesos = ' ';
+        $request_type_dolares = ' ';
+      }
+      if ($request_aplica_garantia == '') {
+        $request_aplicagarantia = ' ';
+        $request_monto_garantia = ' ';
+      }
+      if ($request_pago_dos_ult_meses == '') {
+        $request_pay_dosmeses_si= ' ';
+        $request_pay_dosmeses_no = ' ';
+      }
+
+
+      if ($request_aplica_garantia == '0') {
         $request_aplicagarantia = 'NO';
         // $request_noaplicagarantia = 'X';
         $request_monto_garantia = '';
       }
-      if ($request_aplica_garantia == 1) {
+      if ($request_aplica_garantia == '1') {
         $request_aplicagarantia = 'SI';
         // $request_noaplicagarantia = ' ';
       }
@@ -456,15 +473,15 @@
         </tr>
         <tr>
             <td class="tg-0gdy white_space">Razón social:</td>
-            <td class="tg-e19j" colspan="2"><span class="normal">{{ $request_razon_social }}</span></td>
+            <td class="tg-e19j" colspan="2"><hr class="mt-5"><span class="normal">{{ $request_razon_social }}</span></td>
         </tr>
         <tr>
             <td class="tg-0gdy white_space">Representante/Apoderado Legal:</td>
-            <td class="tg-e19j" colspan="2"><span class="normal"> {{ $request_representante }} </span> </td>
+            <td class="tg-e19j" colspan="2"><hr class="mt-5"><span class="normal"> {{ $request_representante }} </span> </td>
         </tr>
         <tr>
             <td class="tg-0gdy white_space">Teléfono de contacto:</td>
-            <td class="tg-e19j" colspan="2"><span class="normal"> {{ $request_telefono_contacto }} </span></td>
+            <td class="tg-e19j" colspan="2"><hr class="mt-5"><span class="normal"> {{ $request_telefono_contacto }} </span></td>
         </tr>
         <tr>
             <td class="tg-0gdy white_space silver_css">Correo de contactos</td>
@@ -472,15 +489,15 @@
         </tr>
         <tr>
             <td class="tg-0gdy white_space">Cobranza:</td>
-            <td class="tg-e19j" colspan="2"><span class="normal"> {{ $request_correo_contacto_cobranza }} </span></td>
+            <td class="tg-e19j" colspan="2"><hr class="mt-5"><span class="normal"> {{ $request_correo_contacto_cobranza }} </span></td>
         </tr>
         <tr>
             <td class="tg-0gdy white_space">Comercial:</td>
-            <td class="tg-e19j" colspan="2"><span class="normal"> {{ $request_correo_contacto_comercial }} </span></td>
+            <td class="tg-e19j" colspan="2"><hr class="mt-5"><span class="normal"> {{ $request_correo_contacto_comercial }} </span></td>
         </tr>
         <tr>
             <td class="tg-0gdy white_space">Legal:</td>
-            <td class="tg-e19j" colspan="2"><span class="normal"> {{ $request_correo_contacto_legal }} </span></td>
+            <td class="tg-e19j" colspan="2"><hr class="mt-5"><span class="normal"> {{ $request_correo_contacto_legal }} </span></td>
         </tr>
     </table>
     <table class="tg collapse_style" width="100%">
@@ -489,17 +506,17 @@
       </tr>
       <tr>
           <td class="tg-ncgm white_space">RFC:</td>
-          <td class="tg-b2g7" colspan="2"><span class="normal">{{ $request_rfc }}</span></td>
+          <td class="tg-b2g7" colspan="2"><hr class="mt-5"><span class="normal">{{ $request_rfc }}</span></td>
           <td class="tg-ncgm white_space">USO DE CFDI:</td>
-          <td class="tg-b2g7" colspan="2"><span class="normal">{{ $request_cfdi }}</span></td>
+          <td class="tg-b2g7" colspan="2"><hr class="mt-5"><span class="normal">{{ $request_cfdi }}</span></td>
       </tr>
       <tr>
           <td class="tg-ncgm white_space">Dirección:</td>
-          <td class="tg-b2g7" colspan="5"><span class="normal"> {{ $request_direccion }} </span></td>
+          <td class="tg-b2g7" colspan="5"><hr class="mt-5"><span class="normal"> {{ $request_direccion }} </span></td>
       </tr>
       <tr>
           <td class="tg-ncgm white_space">Forma y método de pago:</td>
-          <td class="tg-b2g7" colspan="5"><span class="normal"> {{ $request_metodo_pago }} </span></td>
+          <td class="tg-b2g7" colspan="5"><hr class="mt-5"><span class="normal"> {{ $request_metodo_pago }} </span></td>
       </tr>
     </table>
     <table class="tg collapse_style" width="100%">
@@ -519,6 +536,7 @@
         </td>
         <td class="tg-ncgm white_space">Dirección:</td>
         <td class="tg-b2g7">
+          <hr class="mt-5">
           <span class="normal">
           {{ $request_direccion_persona }}
           </span>
@@ -533,6 +551,7 @@
         </td>
         <td class="tg-ncgm white_space">Correo electrónico</td>
         <td class="tg-b2g7">
+          <hr class="mt-5">
           <span class="normal">
           {{ $request_correo_persona }}
           </span>
@@ -548,6 +567,7 @@
         </td>
         <td class="tg-ncgm white_space">En atención a:</td>
         <td class="tg-b2g7">
+          <hr class="mt-5">
           <span class="normal">
             {{ $request_atencion_persona }}
           </span>
@@ -561,9 +581,9 @@
       </tr>
       <tr>
           <td class="tg-ncgm white_space">Tipo de servicio:</td>
-          <td class="tg-b2g7" colspan="2"><span class="normal">{{ $request_servicio }}</span></td>
-          <td class="tg-ncgm white_space">Vigencia:</td>
-          <td class="tg-b2g7" colspan="2"><span class="normal">{{ $request_vigencia }}&nbsp;&nbsp;Meses.</span></td>
+          <td class="tg-b2g7" colspan="2"><hr class="mt-5"><span class="normal">{{ $request_servicio }}</span></td>
+          <td class="tg-ncgm white_space">Vigencia (Meses):</td>
+          <td class="tg-b2g7" colspan="2"><hr class="mt-5"><span class="normal">{{ $request_vigencia }}&nbsp;&nbsp;</span></td>
       </tr>
       <tr>
         <td class="tg-vni7 th_height mayusculas_css" colspan="6">Contraprestación y forma de pago</td>
@@ -576,7 +596,7 @@
         </th>
         <th class="tg-e19j " >
           <span class="normal text_left"> {{ $request_monto_pago }} </span>
-          <br>&nbsp;
+          <br><hr>&nbsp;
         </th>
         <th class="tg-0gdy white_space center">
           MONEDA:<br>&nbsp;
@@ -601,7 +621,9 @@
           <td class="tg-ncgm white_space">Aplica:</td>
           <td class="tg-b2g7" colspan="2"><span class="normal lightgray mayusculas_css">&nbsp;&nbsp;&nbsp;{{ $request_aplicagarantia }}&nbsp;&nbsp;&nbsp;</span></td>
           <td class="tg-ncgm white_space">Monto:</td>
-          <td class="tg-b2g7" colspan="2"><span class="normal">{{ $request_monto_garantia }}</span></td>
+          <td class="tg-b2g7" colspan="2">
+            <hr class="mt-5">
+            <span class="normal">{{ $request_monto_garantia }}</span></td>
       </tr>
     </table>
     <table class="tg collapse_style" width="100%">
@@ -611,9 +633,12 @@
       <tr>
         <td class="tg-ncgm" colspan="2">
           <p class="normal" style="line-height: 1.2em !important; margin-top: 0em!important; margin-bottom: 0.5em!important;
-          padding-top: 0.5em!important; padding-left: 1em!important; padding-right: 1.7em!important;">
+          padding-top: 0.5em!important; padding-left: 1em!important; padding-right: 1.7em!important; min-height: 100px!important;">
           {{ $request_condiciones_especiales }}
           </p>
+          <br><hr>
+          <br><hr>
+          <br><hr>
         </td>
       </tr>
     </table>
@@ -624,10 +649,12 @@
       <tr>
         <td class="tg-ncgm" colspan="2">
           <p class="normal" style="line-height: 1.2em !important; margin-top: 0em!important; margin-bottom: 0.5em!important;
-          padding-top: 0.5em!important; padding-left: 1em!important; padding-right: 1.7em!important;">
+          padding-top: 0.5em!important; padding-left: 1em!important; padding-right: 1.7em!important; min-height: 100px!important;">
           {{ $request_observaciones }}
           </p>
-          <br>
+          <br><hr>
+          <br><hr>
+          <br><hr>
         </td>
       </tr>
     </table>
@@ -1171,7 +1198,7 @@
           <br><span class="bolds">Cargo:</span>&nbsp;<span class="normal">Representante(s) Legal(es)</span>
         </td>
         <td>
-          <span class="bolds">Por:</span>&nbsp;<span class="normal">{{ $request_atencion_persona }}</span>
+          <span class="bolds text_left">Por:</span>&nbsp;<span class="normal">_________________________________________________{{ $request_atencion_persona }}</span>
           <br><span class="bolds">Cargo:</span>&nbsp;<span class="normal">Representante/Apoderado legal</span>
           <br><span class="bolds"></span>
           <br><span class="bolds"></span>

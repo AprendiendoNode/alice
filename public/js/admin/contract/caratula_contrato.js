@@ -125,3 +125,7 @@ function redondeo_garantia() {
       });
     }
 }
+
+$('.plantilla').on('click', function() {
+  $('#form_blank')[0].submit();
+});

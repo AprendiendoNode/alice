@@ -209,8 +209,8 @@ $(function(){
                 contentType: false,
                 processData: false,
                 success: function (data){
-                  console.log(data);
-                  /*if(data == "success"){
+                  // console.log(data);
+                  if(data == "success"){
                     let timerInterval;
                     Swal.fire({
                       type: 'success',
@@ -242,7 +242,7 @@ $(function(){
                       text: 'Realice la operacion nuevamente!',
                     });
                     $("form .submit").attr("disabled", false); //Deshabilito el boton de submit
-                  }*/
+                  }
                 },
                 error: function (err) {
                   Swal.fire({

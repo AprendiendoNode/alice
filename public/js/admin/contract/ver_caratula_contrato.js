@@ -118,10 +118,10 @@ function table_caratula(datajson, table) {
         var dropdown = a01 + a02 + a03 + a04 + a05 + a06 + a07 + a08;
         vartable.fnAddData([
             (index + 1),
+            information.rfc,
             information.razon_social,
             information.telefono_contacto,
-            information.correo_contacto,
-            information.rfc,
+            information.tipo_servicio,
             information.created_at,
             dropdown
         ]);
@@ -223,7 +223,10 @@ function caratula_edit(e) {
                 $('#InputRazonSocial').val(data[0].razon_social);
                 $('#InputRepresentante').val(data[0].representante);
                 $('#InputTelefonoContacto').val(data[0].telefono_contacto);
-                $('#InputCorreoContacto').val(data[0].correo_contacto);
+
+                $('#InputEmailCobranza').val(data[0].correo_contacto_cobranza);
+                $('#InputEmailComercial').val(data[0].correo_contacto_comercial);
+                $('#InputEmailLegal').val(data[0].correo_contacto_legal);
 
                 $('#InputRfc').val(data[0].rfc);
                 $('#InputCfdi').val(data[0].cfdi);
@@ -231,22 +234,15 @@ function caratula_edit(e) {
                 $('#InputMetodoPago').val(data[0].metodo_pago);
 
                 $('#InputDireccionPersona').val(data[0].direccion_persona);
+                $('#InputEmailCliente').val(data[0].correo_cliente);
                 $('#InputAtencionPersona').val(data[0].atencion_persona);
 
-                $('#textareaEspecificaciones').text(data[0].especificaciones);
-
+                $('#InputTipoServ').val(data[0].tipo_servicio);
                 $('#InputVigencia').val(data[0].vigencia);
 
                 $('#InputMontoPago').val(data[0].monto_pago);
-
-
-                $('#InputDiasPago').val(data[0].dias_pago).trigger('change');
                 $('#InputMonedaPago').val(data[0].moneda_pago).trigger('change');
-
-                // $('#InputDiasPago').val(data[0].dias_pago);
-                // $('#InputMonedaPago').val(data[0].moneda_pago);
-
-                $('#textareaCondicionesEspeciales').text(data[0].condiciones_especiales);
+                $('#InputDosUltMeses').val(data[0].pago_ultms_meses).trigger('change');
 
                 $('#InputAplicaGarantia').val(data[0].aplica_garantia).trigger('change');
                 if (data[0].aplica_garantia == 0) {
@@ -257,8 +253,9 @@ function caratula_edit(e) {
                   $("#InputMontoGarantia").prop('required',false);
                 }
                 $('#InputMontoGarantia').val(data[0].monto_garantia);
-                $('#textareaObservaciones').text(data[0].observaciones);
 
+                $('#textareaCondicionesEspeciales').text(data[0].condiciones_especiales);
+                $('#textareaObservaciones').text(data[0].observaciones);
                 $('#modal-Edit').modal('show');
             } else {
                 Swal.fire({

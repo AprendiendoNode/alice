@@ -183,6 +183,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('detailed_pro_gen', 'Inventory\ProjectController@getProjectTableGen');
   //Modulo de inventario - Carta de entrega
   Route::get('/detailed_cover', 'Inventory\EntryLetterController@index');
+  Route::post('/data_info_header', 'Inventory\EntryLetterController@search_cover');
+  Route::post('/save_data_info_header', 'Inventory\EntryLetterController@update_data_cover');
+  Route::get('/detailed_cover_pdf', 'Inventory\EntryLetterController@pdf_cover');
   //Modulo de inventario - Reporte Distribucion
   Route::get('/detailed_distribution', 'Inventory\DistributionController@index');
 
@@ -813,6 +816,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/vigencia_contratos_vencidos_12meses', 'Contracts\ContratoController@vigencia_contratos_vencidos_12meses');
     //Caratula de Contratos
     Route::get('/caratula_contrato', 'Contracts\CaratulaContractoController@index');
+    Route::get('/caratula_contrato_blank', 'Contracts\CaratulaContractoController@caratula_contrato_blank');
     Route::post('/caratula_contrato_store', 'Contracts\CaratulaContractoController@store');
     Route::get('/pdf_caratula_contrato', 'Contracts\CaratulaContractoController@view_pdf');
     Route::get('/ver_caratula_contrato', 'Contracts\CaratulaContractoController@show_info');
@@ -986,7 +990,10 @@ Route::group(['middleware' => 'auth'], function () {
     //NodeJS Views
     Route::get('/site_view', 'Sockets\SiteController@index');
     Route::post('/savesite', 'Sockets\SiteController@savesite');
-
+    //Dashboard clientes
+    Route::get('/dash_client', 'Dashboard\DashClientController@index');
+    //Dashboard clientes compartido
+    Route::get('/dash_client_shared', 'Dashboard\DashClientSharedController@index');
 });
 
 

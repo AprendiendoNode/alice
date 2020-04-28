@@ -31,10 +31,10 @@
                                     <thead class="bg-primary">
                                         <tr>
                                             <th>No</th>
+                                            <th>RFC</th>
                                             <th>Razón social</th>
                                             <th>Teléfono</th>
-                                            <th>Correo</th>
-                                            <th>RFC</th>
+                                            <th>Tipo Servicio</th>
                                             <th>Fecha</th>
                                             <th>Acciones</th>
                                         </tr>
@@ -104,18 +104,52 @@
                                                   </div>
                                               </div>
                                           </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header bg-primary mt-0 mb-0 pt-0 pb-0" id="headingDosMail">
+                                    <h5 class="mb-0">
+                                        <a class="btn btn-link mb-0 text-white collapsed" href="collapseDosMail" data-toggle="collapse" data-target="#collapseDosMail" aria-expanded="false" aria-controls="collapseDosMail" style="text-decoration: none;">
+                                            CORREO DE CONTACTO
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapseDosMail" class="collapse" aria-labelledby="headingDosMail" data-parent="#accordion">
+                                    <div class="card-body pt-0">
+                                      <div class="row">
                                           <div class="col-md-6">
-                                              <div class="form-group row">
-                                                  <label class="col-sm-12 col-form-label">Correo de contacto</label>
-                                                  <div class="col-sm-12">
-                                                      <input type="email" class="form-control" id="InputCorreoContacto" name="InputCorreoContacto" maxlength="100" autocomplete="off" required />
-                                                  </div>
-                                              </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-12 col-form-label">Cobranza</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" id="InputEmailCobranza" name="InputEmailCobranza" maxlength="100" autocomplete="off" required />
+                                                </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-12 col-form-label">Comercial</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" id="InputEmailComercial" name="InputEmailComercial" maxlength="100" autocomplete="off" required />
+                                                </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-12 col-form-label">Legal</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" id="InputEmailLegal" name="InputEmailLegal" maxlength="100" autocomplete="off" required />
+                                                </div>
+                                            </div>
                                           </div>
                                       </div>
                                     </div>
                                 </div>
                             </div>
+
+
                             <div class="card">
                                 <div class="card-header bg-primary mt-0 mb-0 pt-0 pb-0" id="headingDos">
                                     <h5 class="mb-0">
@@ -131,7 +165,7 @@
                                               <div class="form-group row">
                                                   <label class="col-sm-12 col-form-label">RFC</label>
                                                   <div class="col-sm-12">
-                                                      <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputRfc" name="InputRfc" maxlength="100" required />
+                                                      <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputRfc" name="InputRfc" maxlength="100" autocomplete="off" required />
                                                   </div>
                                               </div>
                                           </div>
@@ -139,7 +173,7 @@
                                               <div class="form-group row">
                                                   <label class="col-sm-12 col-form-label">Uso de CFDI</label>
                                                   <div class="col-sm-12">
-                                                      <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputCfdi" name="InputCfdi" maxlength="100" required />
+                                                      <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputCfdi" name="InputCfdi" maxlength="100" autocomplete="off" required />
                                                   </div>
                                               </div>
                                           </div>
@@ -147,7 +181,7 @@
                                               <div class="form-group row">
                                                   <label class="col-sm-12 col-form-label">Dirección</label>
                                                   <div class="col-sm-12">
-                                                      <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputDireccion" name="InputDireccion" maxlength="100" required />
+                                                      <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputDireccion" name="InputDireccion" maxlength="300" autocomplete="off" required />
                                                   </div>
                                               </div>
                                           </div>
@@ -155,7 +189,7 @@
                                               <div class="form-group row">
                                                   <label class="col-sm-12 col-form-label">Forma y método de pago</label>
                                                   <div class="col-sm-12">
-                                                      <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputMetodoPago" name="InputMetodoPago" maxlength="300" required autocomplete="off"/>
+                                                      <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputMetodoPago" name="InputMetodoPago" maxlength="300" autocomplete="off" required />
                                                   </div>
                                               </div>
                                           </div>
@@ -178,15 +212,23 @@
                                               <div class="form-group row">
                                                   <label class="col-sm-12 col-form-label">Dirección</label>
                                                   <div class="col-sm-12">
-                                                      <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputDireccionPersona" name="InputDireccionPersona" maxlength="300" required />
+                                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputDireccionPersona" name="InputDireccionPersona" maxlength="300" autocomplete="off" required />
                                                   </div>
                                               </div>
                                           </div>
                                           <div class="col-md-6">
                                               <div class="form-group row">
+                                                  <label class="col-sm-12 col-form-label">Correo electrónico</label>
+                                                  <div class="col-sm-12">
+                                                    <input type="text" class="form-control" id="InputEmailCliente" name="InputEmailCliente" maxlength="300" autocomplete="off" required />
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="col-md-12">
+                                              <div class="form-group row">
                                                   <label class="col-sm-12 col-form-label">En atención a</label>
                                                   <div class="col-sm-12">
-                                                      <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputAtencionPersona" name="InputAtencionPersona" maxlength="300" required />
+                                                    <input onkeyup="mayuscula(this);" type="text" class="form-control" id="InputAtencionPersona" name="InputAtencionPersona" maxlength="300" autocomplete="off" required />
                                                   </div>
                                               </div>
                                           </div>
@@ -205,41 +247,28 @@
                                 <div id="collapseCuatro" class="collapse" aria-labelledby="headingCuatro" data-parent="#accordion">
                                     <div class="card-body">
                                       <div class="row">
-                                          <div class="col-md-12">
-                                              <div class="form-group row">
-                                                  {{-- <label class="col-sm-3 col-form-label">Dirección</label> --}}
-                                                  <div class="col-sm-12">
-                                                      <textarea onkeyup="mayuscula(this);" class="form-control" id="textareaEspecificaciones" name="textareaEspecificaciones" rows="4" required></textarea>
-                                                  </div>
-                                              </div>
-                                          </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Tipo de servicio:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="InputTipoServ" name="InputTipoServ" maxlength="300" autocomplete="off" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Vigencia (Meses):</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
+                                                    class="form-control" id="InputVigencia" name="InputVigencia" maxlength="4" required autocomplete="off"/>
+                                                </div>
+                                            </div>
+                                        </div>
                                       </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-header bg-primary mt-0 mb-0 pt-0 pb-0" id="headingCinco">
-                                    <h5 class="mb-0">
-                                        <a class="btn btn-link mb-0 text-white collapsed" href="collapseCinco" data-toggle="collapse" data-target="#collapseCinco" aria-expanded="false" aria-controls="collapseCinco" style="text-decoration: none;">
-                                            VIGENCIA
-                                        </a>
-                                    </h5>
-                                </div>
-                                <div id="collapseCinco" class="collapse" aria-labelledby="headingCinco" data-parent="#accordion">
-                                    <div class="card-body">
-                                      <div class="row">
-                                          <div class="col-md-12">
-                                              <div class="form-group row">
-                                                  <div class="col-sm-12">
-                                                      <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
-                                                       class="form-control" id="InputVigencia" name="InputVigencia" maxlength="4" required autocomplete="off" />
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="card">
                                 <div class="card-header bg-primary mt-0 mb-0 pt-0 pb-0" id="headingSeis">
                                     <h5 class="mb-0">
@@ -263,23 +292,8 @@
                                           </div>
                                           <div class="col-md-4">
                                               <div class="form-group row">
-                                                  <label class="col-sm-12 col-form-label">DÍAS DE PAGO DE CADA MES</label>
-                                                  <div class="col-sm-12">
-                                                      {{-- <input type="text" class="form-control" id="InputDiasPago" name="InputDiasPago" required /> --}}
-                                                      <select  id="InputDiasPago" name="InputDiasPago" class="form-control form-control-sm required"  style="width: 100%;">
-                                                        <option value="" selected > Elija </option>
-                                                        @for ($i = 1; $i <= 31; $i++)
-                                                          <option value="{{$i}}">{{ $i }}</option>
-                                                        @endfor
-                                                      </select>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                          <div class="col-md-4">
-                                              <div class="form-group row">
                                                   <label class="col-sm-12 col-form-label">PESOS O DÓLARES </label>
                                                   <div class="col-sm-12">
-                                                      {{-- <input type="text" class="form-control" id="InputMonedaPago" name="InputMonedaPago" required /> --}}
                                                       <select  id="InputMonedaPago" name="InputMonedaPago" class="form-control form-control-sm required"  style="width: 100%;">
                                                         <option value="" selected> Elija </option>
                                                         <option value="PESOS" >PESOS</option>
@@ -289,25 +303,15 @@
                                                   <p class="mt-1 ml-2">(<span class="font-weight-bold">Más el correspondiente impuesto</span>).</p>
                                               </div>
                                           </div>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header bg-primary mt-0 mb-0 pt-0 pb-0" id="headingSiete">
-                                    <h5 class="mb-0">
-                                        <a class="btn btn-link mb-0 text-white collapsed" href="collapseSiete" data-toggle="collapse" data-target="#collapseSiete" aria-expanded="false" aria-controls="collapseSiete" style="text-decoration: none;">
-                                            CONDICIONES ESPECIALES
-                                        </a>
-                                    </h5>
-                                </div>
-                                <div id="collapseSiete" class="collapse" aria-labelledby="headingSiete" data-parent="#accordion">
-                                    <div class="card-body">
-                                      <div class="row">
-                                          <div class="col-md-12">
+                                          <div class="col-md-4">
                                               <div class="form-group row">
+                                                  <label class="col-sm-12 col-form-label">PAGO DOS ÚLTIMOS MESES</label>
                                                   <div class="col-sm-12">
-                                                      <textarea class="form-control" id="textareaCondicionesEspeciales" name="textareaCondicionesEspeciales" rows="4" required></textarea>
+                                                      <select  id="InputDosUltMeses" name="InputDosUltMeses" class="form-control form-control-sm required"  style="width: 100%;">
+                                                        <option value="" selected > Elija </option>
+                                                        <option value="no" > NO </option>
+                                                        <option value="si" > SI </option>
+                                                      </select>
                                                   </div>
                                               </div>
                                           </div>
@@ -315,8 +319,11 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
                             <div class="card">
-                                <div class="card-header bg-primary mt-0 mb-0 pt-0 pb-0" id="headingOcho">
+                              <div class="card-header bg-primary mt-0 mb-0 pt-0 pb-0" id="headingOcho">
                                     <h5 class="mb-0">
                                         <a class="btn btn-link mb-0 text-white collapsed" href="collapseOcho" data-toggle="collapse" data-target="#collapseOcho" aria-expanded="false" aria-controls="collapseOcho" style="text-decoration: none;">
                                             DEPÓSITO EN GARANTÍA
@@ -332,8 +339,6 @@
                                                       <div class="form-group row">
                                                           <label class="col-sm-12 col-form-label">APLICA</label>
                                                           <div class="col-sm-12">
-                                                              {{-- <input id="InputAplicaGarantia" name="InputAplicaGarantia" type="checkbox" data-toggle="toggle"data-onstyle="primary" data-offstyle="danger" value="0"
-                                                              data-on="Si" data-off="No"> --}}
                                                               <select  id="InputAplicaGarantia" name="InputAplicaGarantia" class="form-control form-control-sm"  style="width: 100%;" required>
                                                                 <option value="0" selected >NO</option>
                                                                 <option value="1">SI</option>
@@ -350,6 +355,30 @@
                                                       <input onblur="redondeo_garantia();"
                                                       oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
                                                       type="text" class="form-control" id="InputMontoGarantia" name="InputMontoGarantia" required/>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="card">
+                                <div class="card-header bg-primary mt-0 mb-0 pt-0 pb-0" id="headingSiete">
+                                    <h5 class="mb-0">
+                                        <a class="btn btn-link mb-0 text-white collapsed" href="collapseSiete" data-toggle="collapse" data-target="#collapseSiete" aria-expanded="false" aria-controls="collapseSiete" style="text-decoration: none;">
+                                            CONDICIONES ESPECIALES
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapseSiete" class="collapse" aria-labelledby="headingSiete" data-parent="#accordion">
+                                    <div class="card-body">
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                              <div class="form-group row">
+                                                  <div class="col-sm-12">
+                                                      <textarea onkeyup="mayuscula(this);" class="form-control" id="textareaCondicionesEspeciales" name="textareaCondicionesEspeciales" rows="4" required></textarea>
                                                   </div>
                                               </div>
                                           </div>
@@ -379,6 +408,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                       </div>
                       <div class="col-12 mt-2">
