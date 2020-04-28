@@ -53,9 +53,17 @@ class Hostpots extends Controller
                     ]);
                 }
             break;
-            case 2: $dataset = []; break;
+            case 2:
+                foreach( $data->sites as $id) {
+                    $resultSet = DB::connection('FreeWifi')->select('CALL get_new_user_day_chain_venue(?, ?, ?,?)',[intval($data->chain), intval($id), $data->dateStart, $data->dateEnd]);
+                    array_push($dataset, [
+                        'site' => DB::select("SELECT Nombre_hotel as nombre FROM hotels WHERE id = ?", [$id])[0]->nombre,
+                        'data' => $resultSet
+                    ]);
+                }
+            break;
 
-            case 3: // UPLOAD MB
+            case 3: // DOWNLOAD MB
                 foreach( $data->sites as $id) {
                     $resultSet = DB::connection('FreeWifi')->select('CALL get_mb_download_chain_venue(?, ?, ?,?)',[intval($data->chain), intval($id), $data->dateStart, $data->dateEnd]);
                     array_push($dataset, [
@@ -65,7 +73,7 @@ class Hostpots extends Controller
                 }
             break;
 
-            case 4: // DOWNLOAD MB
+            case 4: // UPLOAD MB
                 foreach( $data->sites as $id) {
                     $resultSet = DB::connection('FreeWifi')->select('CALL get_mb_upload_chain_venue(?, ?, ?,?)',[intval($data->chain), intval($id), $data->dateStart, $data->dateEnd]);
                     array_push($dataset, [
@@ -77,6 +85,16 @@ class Hostpots extends Controller
             case 5: // AVG SESSION DURATION
                 foreach( $data->sites as $id) {
                     $resultSet = DB::connection('FreeWifi')->select('CALL get_avg_min_session_chain_venue(?, ?, ?,?)',[intval($data->chain), intval($id), $data->dateStart, $data->dateEnd]);
+                    array_push($dataset, [
+                        'site' => DB::select("SELECT Nombre_hotel as nombre FROM hotels WHERE id = ?", [$id])[0]->nombre,
+                        'data' => $resultSet
+                    ]);
+                }
+            break;
+            case 6: // DAILY REVENUE ESTIMATE
+                foreach( $data->sites as $id) {
+                    $resultSet = DB::connection('FreeWifi')->select('CALL get_revenue_total_session_chain_venue(?, ?, ?,?)',[intval($data->chain), intval($id), $data->dateStart, $data->dateEnd]);
+                    // $resultSet = DB::connection('FreeWifi')->select('CALL get_revenue_total_session_chain_venue(?, ?, ?,?)',[112,68,'2019-03-17','2020-04-27']);
                     array_push($dataset, [
                         'site' => DB::select("SELECT Nombre_hotel as nombre FROM hotels WHERE id = ?", [$id])[0]->nombre,
                         'data' => $resultSet
